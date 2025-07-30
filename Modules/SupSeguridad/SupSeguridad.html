@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syncro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Orbitron:wght@500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="/CSS/EstiloGeneral.css">
+</head>
+<body>
+    <div class="app-container">
+        
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2 class="logo-container">
+                    <i class="ri-refresh-line logo-icon"></i>
+                    <span class="logo-text">Syncro</span>
+                </h2>
+                <button class="collapse-btn">
+                    <i class="ri-menu-line menu-icon"></i>
+                    <i class="ri-arrow-right-s-line collapse-icon"></i>
+                </button>
+            </div>
+            <nav class="sidebar-nav">
+                    <ul>
+                        <li>
+                            <a href="#"><i class="ri-pie-chart-2-line"></i> <span>Dashboard</span></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="ri-shield-user-line"></i> <span>Autorizar Permisos</span></a>
+                        </li>
+                    </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="avatar">JP</div>
+                    <div class="user-info">
+                        <span class="name">Juan Pérez</span>
+                        <span class="role">Supervisor</span>
+                    </div>
+                </div>
+                <button class="logout-btn"><i class="ri-logout-box-r-line"></i></button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="main-header">
+                <h1><span style="font-size: 1.5rem;">🛡️</span> Autorización de permisos</h1>
+                <div class="header-actions">
+                    <div class="search-bar">
+                        <input type="text" placeholder="Buscar por folio o nombre...">
+                        <i class="ri-search-line"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Cards Section -->
+            <section class="cards-section">
+                <div class="card">
+                    <div class="card-icon" style="background-color: #ECEFF1;">
+                        <i class="ri-file-list-2-line" style="color: #455A64;"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Total de Permisos</h3>
+                        <p class="count">247</p>
+                        <p class="trend"><i class="ri-arrow-up-line"></i> 12% este mes</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon" style="background-color: #FFF8E1;">
+                        <i class="ri-alarm-warning-line" style="color: #FF8F00;"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Por Autorizar</h3>
+                        <p class="count">32</p>
+                        <p class="trend"><i class="ri-arrow-down-line"></i> 5% esta semana</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon" style="background-color: #E8F5E9;">
+                        <i class="ri-check-line" style="color: #2E7D32;"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Activos</h3>
+                        <p class="count">170</p>
+                        <p class="trend"><i class="ri-arrow-down-line"></i> 1% este mes</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon" style="background-color: #E3F2FD;">
+                        <i class="ri-flag-line" style="color: #1565C0;"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Permisos Terminados</h3>
+                        <p class="count">198</p>
+                        <p class="trend"><i class="ri-arrow-up-line"></i> 8% este mes</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon" style="background-color: #FFEBEE;">
+                        <i class="ri-close-circle-line" style="color: #C62828;"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>No Autorizados</h3>
+                        <p class="count">15</p>
+                        <p class="trend"><i class="ri-arrow-up-line" style="color: #C62828;"></i> 3% este mes</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Actions Section -->
+            <section class="actions-section">
+                <button class="btn secondary">
+                    <i class="ri-download-line"></i> Exportar a Excel
+                </button>
+                
+                <div class="filter-dropdown">
+                    <select id="status-filter">
+                        <option value="all">Todos</option>
+                        <option value="completed">Espera seguridad</option>
+                        <option value="canceled">No autorizado</option>
+                        <option value="continua">Activo</option>
+                        <option value="wait-area">Continua</option>
+                        <option value="wait-security">Terminado</option>
+                        <option value="wait-security">Cancelado</option>
+                    </select>
+                    <i class="ri-arrow-down-s-line"></i>
+                </div>
+            </section>
+
+            <!-- Permits Table -->
+            <section class="permits-table">
+                <div class="table-header">
+                    <h3>Listado de Permisos</h3>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Permiso</th>
+                                <th>Tipo de permiso</th>
+                                <th>Área</th>
+                                <th>Solicitante</th>
+                                <th>Fecha y hora</th>
+                                <th>Autoriza</th>
+                                <th>Estatus</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body">
+                            <tr>
+                                <td>PM-2023-00145</td>
+                                <td>Trabajo en Altura</td>
+                                <td>Sistemas</td>
+                                <td>Juan Pérez</td>
+                                <td>17/07/2023 14:35:12</td>
+                                <td>Ing Jose Hernandez</td>
+                                <td><span class="status-badge active">Activo</span></td>
+                                <td>
+                                    <button class="action-btn view"><i class="ri-eye-line"></i></button>
+                                    <button class="action-btn print"><i class="ri-printer-line"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>PM-2023-00144</td>
+                                <td>Trabajo Eléctrico</td>
+                                <td>Electrico</td>
+                                <td>María García</td>
+                                <td>17/07/2023 15:25:12</td>
+                                <td>Ingeniero Jose</td>
+                                <td><span class="status-badge completed">Terminado</span></td>
+                                <td>
+                                    <button class="action-btn view"><i class="ri-eye-line"></i></button>
+                                    <button class="action-btn print"><i class="ri-printer-line"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>PM-2023-00143</td>
+                                <td>Espacios Confinados</td>
+                                <td>Almacen</td>
+                                <td>María García</td>
+                                <td>17/07/2023 04:53:10</td>
+                                <td>Ingeniero Pedro</td>
+                                <td><span class="status-badge canceled">Cancelado</span></td>
+                                <td>
+                                    <button class="action-btn view"><i class="ri-eye-line"></i></button>
+                                    <button class="action-btn print"><i class="ri-printer-line"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>PM-2023-00142</td>
+                                <td>Trabajo en Caliente</td>
+                                <td>Sistemas</td>
+                                <td>Ana Martínez</td>
+                                <td>17/07/2023 14:35:01</td>
+                                <td>Ingeniero Angel</td>
+                                <td><span class="status-badge continua">Continua</span></td>
+                                <td>
+                                    <button class="action-btn view"><i class="ri-eye-line"></i></button>
+                                    <button class="action-btn print"><i class="ri-printer-line"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>PM-2023-00141</td>
+                                <td>Trabajo en Frío</td>
+                                <td>Producción</td>
+                                <td>Carlos López</td>
+                                <td>10/07/2023 14:38:12</td>
+                                <td>Inge. Aaron</td>
+                                <td><span class="status-badge completed">Terminado</span></td>
+                                <td>
+                                    <button class="action-btn view"><i class="ri-eye-line"></i></button>
+                                    <button class="action-btn print"><i class="ri-printer-line"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-footer">
+                    <div class="pagination">
+                        <button class="pagination-btn"><i class="ri-arrow-left-s-line"></i></button>
+                        <button class="pagination-btn active">1</button>
+                        <button class="pagination-btn">2</button>
+                        <button class="pagination-btn">3</button>
+                        <button class="pagination-btn"><i class="ri-arrow-right-s-line"></i></button>
+                    </div>
+                    <div class="records-counter">
+                        <span id="records-count">0</span> registros
+                    </div>
+                    <div class="items-per-page">
+                        <span>Items por página:</span>
+                        <select>
+                            <option>10</option>
+                            <option selected>25</option>
+                            <option>50</option>
+                            <option>100</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/JS/MenuSupervisor.js"></script>
+</body>
+</html>

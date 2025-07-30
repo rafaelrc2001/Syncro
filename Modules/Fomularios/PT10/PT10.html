@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syncro - Nuevo Permiso Completo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="/CSS/EstiloFormularios.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar (igual al existente) -->
+        <aside class="sidebar">
+            <!-- Contenido del sidebar igual al original -->
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="main-header">
+                <h1><span style="font-size: 1.5rem;">🧰</span> Nuevo Permiso de Trabajo Completo</h1>
+                <div class="header-actions">
+                    <button class="btn secondary" id="back-btn">
+                        <i class="ri-arrow-left-line"></i> Volver
+                    </button>
+                </div>
+            </header>
+
+            <!-- Progress Steps -->
+            <div class="progress-container">
+                <div class="progress-steps">
+                    <div class="step active" data-step="1">
+                        <div class="step-number">1</div>
+                        <div class="step-title">Encabezado</div>
+                    </div>
+                    <div class="step" data-step="2">
+                        <div class="step-number">2</div>
+                        <div class="step-title">Permiso de Excavación/Perforación</div>
+                    </div>
+                    <div class="step" data-step="3">
+                        <div class="step-number">3</div>
+                        <div class="step-title">AST</div>
+                    </div>
+                    <div class="step" data-step="4">
+                        <div class="step-number">4</div>
+                        <div class="step-title">Participantes</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Sections -->
+            <form id="complete-permit-form">
+                <!-- Sección 1: Encabezado -->
+                <section class="form-section active" data-section="1">
+                    <div class="form-container">
+                        <div class="form-header">
+                            <div class="form-icon">
+                                <i class="ri-file-text-line"></i>
+                            </div>
+                            <div>
+                                <h2>Información General del Permiso</h2>
+                                <p>Complete los datos básicos del permiso</p>
+                            </div>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="permit-number">Número de Permiso</label>
+                                <input type="text" id="permit-number" name="permit-number" readonly value="GSI-SI-FO-002-XXXX">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="permit-date">Fecha</label>
+                                <input type="date" id="permit-date" name="permit-date" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="company">Empresa</label>
+                                <input type="text" id="company" name="company" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="subcontract">Subcontrata</label>
+                                <input type="text" id="subcontract" name="subcontract" value="PRO-AGROINDUSTRIA">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="area">Área</label>
+                                <div class="select-wrapper">
+                                    <select id="area" name="area" required>
+                                        <option value="" disabled selected>Seleccione un área</option>
+                                        <option value="area6">Área 6</option>
+                                        <option value="pajaritos">Pajaritos</option>
+                                    </select>
+                                    <i class="ri-arrow-down-s-line select-arrow"></i>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="work-description">Descripción del trabajo</label>
+                                <textarea id="work-description" name="work-description" rows="2" required></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn secondary" id="cancel-btn">
+                                <i class="ri-close-line"></i> Cancelar
+                            </button>
+                            <button type="button" class="btn primary next-step" data-next="2">
+                                Siguiente <i class="ri-arrow-right-line"></i>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sección 2: Permiso de Excavación/Perforación -->
+                <section class="form-section" data-section="2">
+                    <div class="form-container">
+                        <div class="form-header">
+                            <div class="form-icon" style="background: linear-gradient(135deg, #795548 0%, #5D4037 100%);">
+                                <i class="ri-shovel-line"></i>
+                            </div>
+                            <div>
+                                <h2>Permiso de Excavación/Perforación</h2>
+                                <p>Complete los detalles específicos para trabajos de excavación</p>
+                            </div>
+                        </div>
+
+                        <!-- Información general -->
+                        <div class="form-section-title">
+                            <i class="ri-file-text-line"></i>
+                            <h3>Información General</h3>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="project">Proyecto</label>
+                                <input type="text" id="project" name="project" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="subcontract">Subcontrata</label>
+                                <input type="text" id="subcontract" name="subcontract" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="permit-date">Fecha</label>
+                                <input type="date" id="permit-date" name="permit-date" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="permit-number">No. Permiso</label>
+                                <input type="text" id="permit-number" name="permit-number" readonly value="GSI-SI-FO-060-XXXX">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="excavation-location">Lugar y motivo de la excavación/perforación</label>
+                                <textarea id="excavation-location" name="excavation-location" rows="2" required></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label>¿Se adjunta plano de localización?</label>
+                                <div class="radio-group compact">
+                                    <label class="radio-option">
+                                        <input type="radio" name="location-plan" value="SI" required>
+                                        <span class="radio-custom"></span>
+                                        SI
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="location-plan" value="NO">
+                                        <span class="radio-custom"></span>
+                                        NO
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="start-date">Fecha de inicio</label>
+                                <input type="date" id="start-date" name="start-date" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="expected-end">Duración prevista hasta</label>
+                                <input type="date" id="expected-end" name="expected-end" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="valid-until">Permiso válido hasta</label>
+                                <input type="date" id="valid-until" name="valid-until" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="requested-by">Solicitado por</label>
+                                <input type="text" id="requested-by" name="requested-by" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="extended-until">Permiso ampliado hasta</label>
+                                <input type="date" id="extended-until" name="extended-until">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="extended-by">Permiso ampliado por</label>
+                                <input type="text" id="extended-by" name="extended-by">
+                            </div>
+                        </div>
+
+                        <!-- Dimensiones y terreno -->
+                        <div class="form-section-title">
+                            <i class="ri-ruler-line"></i>
+                            <h3>Dimensiones y Terreno</h3>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="average-depth">Profundidad media (m)</label>
+                                <input type="number" step="0.01" id="average-depth" name="average-depth" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="max-depth">Profundidad máxima (m)</label>
+                                <input type="number" step="0.01" id="max-depth" name="max-depth" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="width">Anchura (m)</label>
+                                <input type="number" step="0.01" id="width" name="width" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="length">Longitud (m)</label>
+                                <input type="number" step="0.01" id="length" name="length" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="terrain-type">Tipo de terreno</label>
+                                <select id="terrain-type" name="terrain-type" required>
+                                    <option value="">Seleccione...</option>
+                                    <option value="ARCILLA">Arcilla</option>
+                                    <option value="ARENA">Arena</option>
+                                    <option value="GRAVA">Grava</option>
+                                    <option value="ROCA">Roca</option>
+                                    <option value="RELLENO">Relleno</option>
+                                    <option value="OTRO">Otro</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Instalaciones subterráneas afectadas -->
+                        <div class="form-section-title">
+                            <i class="ri-map-pin-line"></i>
+                            <h3>Instalaciones Subterráneas Afectadas</h3>
+                        </div>
+
+                        <div class="underground-facilities">
+                            <div class="facility-item">
+                                <label>Tubería de gas</label>
+                                <div class="radio-group compact">
+                                    <label class="radio-option">
+                                        <input type="radio" name="gas-pipe" value="SI">
+                                        <span class="radio-custom"></span>
+                                        SI
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="gas-pipe" value="NO">
+                                        <span class="radio-custom"></span>
+                                        NO
+                                    </label>
+                                </div>
+                                <input type="text" name="gas-type" placeholder="Tipo de gas" class="compact">
+                                <input type="text" name="gas-checked-by" placeholder="Comprobado por" class="compact">
+                            </div>
+
+                            <div class="facility-item">
+                                <label>Línea eléctrica</label>
+                                <div class="radio-group compact">
+                                    <label class="radio-option">
+                                        <input type="radio" name="electric-line" value="SI">
+                                        <span class="radio-custom"></span>
+                                        SI
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="electric-line" value="NO">
+                                        <span class="radio-custom"></span>
+                                        NO
+                                    </label>
+                                </div>
+                                <input type="text" name="electric-voltage" placeholder="Voltios" class="compact">
+                                <input type="text" name="electric-checked-by" placeholder="Comprobado por" class="compact">
+                            </div>
+
+                            <div class="facility-item">
+                                <label>Tubería contra incendios</label>
+                                <div class="radio-group compact">
+                                    <label class="radio-option">
+                                        <input type="radio" name="fire-pipe" value="SI">
+                                        <span class="radio-custom"></span>
+                                        SI
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="fire-pipe" value="NO">
+                                        <span class="radio-custom"></span>
+                                        NO
+                                    </label>
+                                </div>
+                                <input type="text" name="fire-pressure" placeholder="Kg/cm²" class="compact">
+                                <input type="text" name="fire-checked-by" placeholder="Comprobado por" class="compact">
+                            </div>
+
+                            <div class="facility-item">
+                                <label>Alcantarillado</label>
+                                <div class="radio-group compact">
+                                    <label class="radio-option">
+                                        <input type="radio" name="sewer" value="SI">
+                                        <span class="radio-custom"></span>
+                                        SI
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="sewer" value="NO">
+                                        <span class="radio-custom"></span>
+                                        NO
+                                    </label>
+                                </div>
+                                <input type="text" name="sewer-diameter" placeholder="Diámetro (m)" class="compact">
+                                <input type="text" name="sewer-checked-by" placeholder="Comprobado por" class="compact">
+                            </div>
+
+                            <div class="facility-item">
+                                <label>Otras instalaciones</label>
+                                <div class="radio-group compact">
+                                    <label class="radio-option">
+                                        <input type="radio" name="other-facilities" value="SI">
+                                        <span class="radio-custom"></span>
+                                        SI
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="other-facilities" value="NO">
+                                        <span class="radio-custom"></span>
+                                        NO
+                                    </label>
+                                </div>
+                                <input type="text" name="other-facilities-desc" placeholder="Especificar" class="compact">
+                                <input type="text" name="other-facilities-checked-by" placeholder="Comprobado por" class="compact">
+                            </div>
+                        </div>
+
+                        <!-- Riesgos y medidas preventivas -->
+                        <div class="form-section-title">
+                            <i class="ri-alert-line"></i>
+                            <h3>Riesgos y Medidas Preventivas</h3>
+                        </div>
+
+                        <div class="risk-prevention">
+                            <!-- Derrumbe y desprendimiento -->
+                            <div class="risk-item">
+                                <label>Derrumbe y desprendimiento</label>
+                                <div class="radio-group compact">
+                                    <label class="radio-option">
+                                        <input type="radio" name="collapse-risk" value="SI" required>
+                                        <span class="radio-custom"></span>
+                                        SI
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="collapse-risk" value="NO">
+                                        <span class="radio-custom"></span>
+                                        NO
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Talud -->
+                            <div class="risk-item">
+                                <label>¿Se requiere talud?</label>
+                                <div class="radio-group compact">
+                                    <label class="radio-option">
+                                        <input type="radio" name="slope-required" value="SI">
+                                        <span class="radio-custom"></span>
+                                        SI
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="slope-required" value="NO">
+                                        <span class="radio-custom"></span>
+                                        NO
+                                    </label>
+                                </div>
+                                <input type="number" name="slope-angle" placeholder="Ángulo de talud (°)" class="compact">
+                                <input type="number" name="slope-from-depth" placeholder="A partir de (m)" class="compact">
+                            </div>
+
+                            <!-- Bermas -->
+                            <div class="risk-item">
+                                <label>¿Se requieren bermas?</label>
+                                <div class="radio-group compact">
+                                    <label class="radio-option">
+                                        <input type="radio" name="berms-required" value="SI">
+                                        <span class="radio-custom"></span>
+                                        SI
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="berms-required" value="NO">
+                                        <span class="radio-custom"></span>
+                                        NO
+                                    </label>
+                                </div>
+                                <input type="number" name="berms-length" placeholder="Longitud de meseta (m)" class="compact">
+                                <input type="number" name="berms-height" placeholder="Alturas de contrameseta (m)" class="compact">
+                            </div>
+
+                            <!-- Entibación -->
+                            <div class="risk-item">
+                                <label>¿Se requiere entibación?</label>
+                                <div class="radio-group compact">
+                                    <label class="radio-option">
+                                        <input type="radio" name="shoring-required" value="SI">
+                                        <span class="radio-custom"></span>
+                                        SI
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="shoring-required" value="NO">
+                                        <span class="radio-custom"></span>
+                                        NO
+                                    </label>
+                                </div>
+                                <div class="shoring-types">
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="shoring-light">
+                                        <span class="checkbox-custom"></span>
+                                        Ligera
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="shoring-semi">
+                                        <span class="checkbox-custom"></span>
+                                        Semicuajada
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="shoring-full">
+                                        <span class="checkbox-custom"></span>
+                                        Cuajada
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="shoring-other">
+                                        <span class="checkbox-custom"></span>
+                                        Otros
+                                    </label>
+                                    <input type="text" name="shoring-other-desc" placeholder="Especificar" class="compact">
+                                </div>
+                            </div>
+
+                            <!-- Distancia de seguridad -->
+                            <div class="risk-item">
+                                <label>Distancia de seguridad al borde</label>
+                                <input type="number" name="static-distance" placeholder="Para solicitaciones estáticas (m)" class="compact">
+                                <input type="number" name="dynamic-distance" placeholder="Para solicitaciones dinámicas (m)" class="compact">
+                            </div>
+
+                            <!-- Caída de personas y vehículos -->
+                            <div class="risk-item">
+                                <label>¿Riesgo de caída de personas/vehículos?</label>
+                                <div class="radio-group compact">
+                                    <label class="radio-option">
+                                        <input type="radio" name="fall-risk" value="SI">
+                                        <span class="radio-custom"></span>
+                                        SI
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="fall-risk" value="NO">
+                                        <span class="radio-custom"></span>
+                                        NO
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Balizamiento -->
+                            <div class="risk-item">
+                                <label>¿Requiere balizamiento?</label>
+                                <div class="radio-group compact">
+                                    <label class="radio-option">
+                                        <input type="radio" name="marking-required" value="SI">
+                                        <span class="radio-custom"></span>
+                                        SI
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="marking-required" value="NO">
+                                        <span class="radio-custom"></span>
+                                        NO
+                                    </label>
+                                </div>
+                                <input type="number" name="marking-distance" placeholder="Distancia al borde (m)" class="compact">
+                            </div>
+
+                            <!-- Protección rígida -->
+                            <div class="risk-item">
+                                <label>¿Requiere protección rígida?</label>
+                                <div class="radio-group compact">
+                                    <label class="radio-option">
+                                        <input type="radio" name="rigid-protection" value="SI">
+                                        <span class="radio-custom"></span>
+                                        SI
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="rigid-protection" value="NO">
+                                        <span class="radio-custom"></span>
+                                        NO
+                                    </label>
+                                </div>
+                                <input type="number" name="protection-distance" placeholder="Distancia al borde (m)" class="compact">
+                            </div>
+
+                            <!-- Señalización especial -->
+                            <div class="risk-item">
+                                <label>¿Requiere señalización especial?</label>
+                                <div class="radio-group compact">
+                                    <label class="radio-option">
+                                        <input type="radio" name="special-signage" value="SI">
+                                        <span class="radio-custom"></span>
+                                        SI
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="special-signage" value="NO">
+                                        <span class="radio-custom"></span>
+                                        NO
+                                    </label>
+                                </div>
+                                <input type="text" name="signage-details" placeholder="Especificar" class="compact">
+                            </div>
+
+                            <!-- Protección anticaída -->
+                            <div class="risk-item">
+                                <label>¿Requiere protección anticaída?</label>
+                                <div class="radio-group compact">
+                                    <label class="radio-option">
+                                        <input type="radio" name="fall-protection" value="SI">
+                                        <span class="radio-custom"></span>
+                                        SI
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="fall-protection" value="NO">
+                                        <span class="radio-custom"></span>
+                                        NO
+                                    </label>
+                                </div>
+                                <input type="text" name="protection-type" placeholder="Tipo de protección" class="compact">
+                                <input type="text" name="anchorage-point" placeholder="Anclaje" class="compact">
+                            </div>
+
+                            <!-- Atmósfera peligrosa -->
+                            <div class="risk-item">
+                                <label>¿Atmósfera peligrosa?</label>
+                                <div class="radio-group compact">
+                                    <label class="radio-option">
+                                        <input type="radio" name="hazardous-atmosphere" value="SI">
+                                        <span class="radio-custom"></span>
+                                        SI
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="hazardous-atmosphere" value="NO">
+                                        <span class="radio-custom"></span>
+                                        NO
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Espacio confinado -->
+                            <div class="risk-item">
+                                <label>¿Se considera espacio confinado?</label>
+                                <div class="radio-group compact">
+                                    <label class="radio-option">
+                                        <input type="radio" name="confined-space" value="SI">
+                                        <span class="radio-custom"></span>
+                                        SI
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="confined-space" value="NO">
+                                        <span class="radio-custom"></span>
+                                        NO
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Trabajos en proximidad de líneas en carga -->
+                            <div class="risk-item">
+                                <label>¿Trabajos en proximidad de líneas en carga?</label>
+                                <div class="radio-group compact">
+                                    <label class="radio-option">
+                                        <input type="radio" name="live-lines" value="SI">
+                                        <span class="radio-custom"></span>
+                                        SI
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="live-lines" value="NO">
+                                        <span class="radio-custom"></span>
+                                        NO
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Excavación manual de aproximación -->
+                            <div class="risk-item">
+                                <label>¿Excavación manual de aproximación?</label>
+                                <div class="radio-group compact">
+                                    <label class="radio-option">
+                                        <input type="radio" name="manual-excavation" value="SI">
+                                        <span class="radio-custom"></span>
+                                        SI
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="manual-excavation" value="NO">
+                                        <span class="radio-custom"></span>
+                                        NO
+                                    </label>
+                                </div>
+                                <textarea name="manual-excavation-measures" placeholder="Medidas a adoptar" rows="2"></textarea>
+                            </div>
+
+                            <!-- Otras medidas -->
+                            <div class="risk-item">
+                                <label>Otras medidas</label>
+                                <div class="other-measures">
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="spark-proof-tools">
+                                        <span class="checkbox-custom"></span>
+                                        Herramienta antichispa
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="dielectric-gloves">
+                                        <span class="checkbox-custom"></span>
+                                        Guantes y calzado dieléctrico
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="special-ppe">
+                                        <span class="checkbox-custom"></span>
+                                        EPP especial
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="other-measures">
+                                        <span class="checkbox-custom"></span>
+                                        Otros
+                                    </label>
+                                    <input type="text" name="other-measures-desc" placeholder="Especificar" class="compact">
+                                </div>
+                            </div>
+
+                            <!-- Medidas adicionales -->
+                            <div class="risk-item">
+                                <label>Medidas adicionales</label>
+                                <div class="additional-measures">
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="physical-lockout">
+                                        <span class="checkbox-custom"></span>
+                                        Aplicar bloqueo físico
+                                    </label>
+                                    <input type="text" name="lockout-details" placeholder="Especificar líneas/instalaciones" class="compact">
+                                    
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="drain-clean">
+                                        <span class="checkbox-custom"></span>
+                                        Drenar y limpiar/lavar
+                                    </label>
+                                    
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="flood-inert">
+                                        <span class="checkbox-custom"></span>
+                                        Inundar/anegar o crear atmósfera inerte
+                                    </label>
+                                    
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="continuous-watch">
+                                        <span class="checkbox-custom"></span>
+                                        Vigilante continuo
+                                    </label>
+                                    <input type="text" name="watch-details" placeholder="Para controlar" class="compact">
+                                    
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="other-additional">
+                                        <span class="checkbox-custom"></span>
+                                        Otras medidas adicionales
+                                    </label>
+                                    <input type="text" name="additional-details" placeholder="Especificar" class="compact">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Observaciones -->
+                        <div class="form-section-title">
+                            <i class="ri-edit-line"></i>
+                            <h3>Observaciones</h3>
+                        </div>
+
+                        <div class="form-group">
+                            <textarea id="observations" name="observations" rows="4"></textarea>
+                        </div>
+
+                        <!-- Responsables -->
+                        <div class="form-section-title">
+                            <i class="ri-user-star-line"></i>
+                            <h3>Responsables</h3>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="machine-operator">Operador de maquinaria/encargado de excavación</label>
+                                <input type="text" id="machine-operator" name="machine-operator" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="subcontractor-supervisor">Supervisor de Seguridad, Subcontratista</label>
+                                <input type="text" id="subcontractor-supervisor" name="subcontractor-supervisor" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="safety-supervisor">Supervisor de Seguridad</label>
+                                <input type="text" id="safety-supervisor" name="safety-supervisor" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="area-engineer">Ing. Responsable del área</label>
+                                <input type="text" id="area-engineer" name="area-engineer" required>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn secondary prev-step" data-prev="1">
+                                <i class="ri-arrow-left-line"></i> Anterior
+                            </button>
+                            <button type="button" class="btn primary next-step" data-next="3">
+                                Siguiente <i class="ri-arrow-right-line"></i>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sección 3: AST -->
+                <section class="form-section" data-section="3">
+                    <div class="form-container">
+                        <div class="form-header">
+                            <div class="form-icon" style="background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);">
+                                <i class="ri-alert-line"></i>
+                            </div>
+                            <div>
+                                <h2>Análisis de Seguridad en el Trabajo (AST)</h2>
+                                <p>Describa las actividades y riesgos asociados</p>
+                            </div>
+                        </div>
+
+                        <div class="ast-activities">
+                            <div class="ast-table-header">
+                                <div>No.</div>
+                                <div>Secuencia de la Actividad</div>
+                                <div>Personal Ejecutor</div>
+                                <div>Peligros Potenciales</div>
+                                <div>Acciones Preventivas</div>
+                                <div>Responsable</div>
+                            </div>
+
+                            <div class="ast-activity" data-index="1">
+                                <div class="ast-activity-number">1</div>
+                                <div class="ast-activity-field">
+                                    <textarea name="ast-activity-1" rows="2"></textarea>
+                                </div>
+                                <div class="ast-activity-field">
+                                    <input type="text" name="ast-personnel-1">
+                                </div>
+                                <div class="ast-activity-field">
+                                    <textarea name="ast-hazards-1" rows="2"></textarea>
+                                </div>
+                                <div class="ast-activity-field">
+                                    <textarea name="ast-preventions-1" rows="2"></textarea>
+                                </div>
+                                <div class="ast-activity-field">
+                                    <input type="text" name="ast-responsible-1">
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn secondary" id="add-activity">
+                            <i class="ri-add-line"></i> Añadir Actividad
+                        </button>
+
+                        <div class="form-section-title">
+                            <i class="ri-shield-user-line"></i>
+                            <h3>Equipo de Protección Personal</h3>
+                        </div>
+
+                        <div class="form-group">
+                            <textarea id="ppe-required" name="ppe-required" rows="2" placeholder="Describa el EPP requerido"></textarea>
+                        </div>
+
+                        <div class="form-section-title">
+                            <i class="ri-tools-line"></i>
+                            <h3>Maquinaria, Equipo y Herramientas</h3>
+                        </div>
+
+                        <div class="form-group">
+                            <textarea id="equipment-tools" name="equipment-tools" rows="2" placeholder="Liste maquinaria y herramientas a utilizar"></textarea>
+                        </div>
+
+                        <div class="form-section-title">
+                            <i class="ri-box-line"></i>
+                            <h3>Materiales y Accesorios</h3>
+                        </div>
+
+                        <div class="form-group">
+                            <textarea id="materials" name="materials" rows="2" placeholder="Liste materiales y accesorios necesarios"></textarea>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn secondary prev-step" data-prev="2">
+                                <i class="ri-arrow-left-line"></i> Anterior
+                            </button>
+                            <button type="button" class="btn primary next-step" data-next="4">
+                                Siguiente <i class="ri-arrow-right-line"></i>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sección 4: Participantes -->
+                <section class="form-section" data-section="4">
+                    <div class="form-container">
+                        <div class="form-header">
+                            <div class="form-icon" style="background: linear-gradient(135deg, #2196F3 0%, #0D47A1 100%);">
+                                <i class="ri-team-line"></i>
+                            </div>
+                            <div>
+                                <h2>Personal Participante</h2>
+                                <p>Registre a todas las personas involucradas</p>
+                            </div>
+                        </div>
+
+                        <div class="participants-table">
+                            <div class="participants-header">
+                                <div>No.</div>
+                                <div>Nombre</div>
+                                <div>No. Credencial</div>
+                                <div>Cargo</div>
+                                <div>Función</div>
+                                <div>Acciones</div>
+                            </div>
+
+                            <div class="participant-row" data-index="1">
+                                <div class="participant-number">1</div>
+                                <div class="participant-field">
+                                    <input type="text" name="participant-name-1" required>
+                                </div>
+                                <div class="participant-field">
+                                    <input type="text" name="participant-credential-1">
+                                </div>
+                                <div class="participant-field">
+                                    <input type="text" name="participant-position-1">
+                                </div>
+                                <div class="participant-field">
+                                    <select name="participant-role-1" required>
+                                        <option value="">Seleccione...</option>
+                                        <option value="PARTICIPA">Participa</option>
+                                        <option value="REVISA">Revisa</option>
+                                        <option value="ANALIZA">Analiza</option>
+                                        <option value="AUTORIZA">Autoriza</option>
+                                    </select>
+                                </div>
+                                <div class="participant-actions">
+                                    <button type="button" class="action-btn remove-participant" title="Eliminar">
+                                        <i class="ri-delete-bin-line"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn secondary" id="add-participant">
+                            <i class="ri-user-add-line"></i> Añadir Participante
+                        </button>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn secondary prev-step" data-prev="3">
+                                <i class="ri-arrow-left-line"></i> Anterior
+                            </button>
+                            <button type="submit" class="btn primary">
+                                <i class="ri-save-line"></i> Guardar Permiso Completo
+                            </button>
+                            <button type="button" class="btn tertiary" id="print-complete-btn">
+                                <i class="ri-printer-line"></i> Vista de Impresión
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            </form>
+        </main>
+    </div>
+
+    <!-- Modal de confirmación -->
+    <div class="modal" id="confirmation-modal">
+        <div class="modal-content">
+            <div class="modal-icon success">
+                <i class="ri-checkbox-circle-line"></i>
+            </div>
+            <h3>Permiso creado exitosamente</h3>
+            <p>El permiso de trabajo con AST ha sido registrado en el sistema con el número: <strong id="generated-permit">GSI-SI-FO-002-XXXX</strong></p>
+            <div class="modal-actions">
+                <button class="btn secondary" id="modal-close-btn">Cerrar</button>
+                <button class="btn primary" id="modal-print-btn">
+                    <i class="ri-printer-line"></i> Imprimir
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/Modules/Fomularios/PT10/PT10.js"></script>
+</body>
+</html>

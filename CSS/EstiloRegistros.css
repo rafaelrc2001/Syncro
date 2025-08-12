@@ -1,4 +1,4 @@
-/* Modal Styles */
+* ESTE VA A REMPLAZAR A LA PARTE DE LAS TABLAS */
 
 
 /* Base Styles */
@@ -13,699 +13,10 @@
     --rojo-alerta: #D32F2F;
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Roboto', sans-serif;
-}
 
-body {
-    background-color: var(--blanco-neutro);
-    color: var(--gris-acero);
-}
-
-h1, h2, h3, h4, h5, h6 {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-    color: var(--negro-carbon);
-}
-
-/* App Layout */
-.app-container {
-    display: flex;
-    min-height: 100vh;
-}
-
-/* Sidebar Styles */
-.sidebar {
-    width: 280px;
-    background-color: var(--azul-petroleo);
-    color: white;
-    display: flex;
-    flex-direction: column;
-    transition: all 0.3s ease;
-}
-
-.sidebar.collapsed {
-    width: 80px;
-}
-
-.sidebar.collapsed .sidebar-title,
-.sidebar.collapsed .sidebar-nav li a span,
-.sidebar.collapsed .user-info {
-    display: none;
-}
-
-.sidebar.collapsed .collapse-icon {
-    display: inline;
-}
-
-.sidebar.collapsed .sidebar-header {
-    justify-content: center;
-}
-
-.sidebar.collapsed .sidebar-nav li a {
-    justify-content: center;
-}
-
-.sidebar.collapsed .sidebar-footer {
-    justify-content: center;
-}
-
-.sidebar.collapsed .logout-btn {
-    display: none;
-}
-
-.sidebar.collapsed .menu-icon {
-    display: none;
-}
-
-.menu-icon {
-    display: inline;
-    transition: opacity 0.3s ease;
-}
-.sidebar-header {
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Logo styles */
-.sidebar-header h2 {
-    color: white;
-    font-size: 1.2rem;
-    display: flex;
-    align-items: center;
-    transition: all 0.3s ease;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-}
-
-.logo-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: white;
-    text-decoration: none;
-    width: 100%;
-}
-
-.logo-icon {
-    font-size: 1.5rem;
-    color: var(--verde-tecnico);
-    transition: transform 0.3s ease, color 0.3s ease;
-    display: flex;
-    align-items: center;
-}
-
-.logo-text {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.4rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    background: linear-gradient(90deg, #ffffff, #e0e0e0);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 8px rgba(0, 191, 165, 0.3);
-    transition: all 0.3s ease;
-    position: relative;
-    padding-left: 5px;
-}
-
-.logo-text::after {
-    content: '';
-    position: absolute;
-    bottom: -3px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, var(--verde-tecnico), transparent);
-    opacity: 0.7;
-    transition: all 0.3s ease;
-}
-
-/* Hover effect */
-.logo-container:hover .logo-icon {
-    transform: rotate(45deg);
-    color: #ffffff;
-}
-
-.logo-container:hover .logo-text {
-    background: linear-gradient(90deg, #ffffff, #ffffff);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-/* Sidebar collapsed state */
-.sidebar.collapsed .logo-text {
-    display: none;
-}
-
-.sidebar.collapsed .logo-icon {
-    font-size: 1.8rem;
-    margin: 0 auto;
-}
-
-.sidebar.collapsed .logo-container {
-    justify-content: center;
-}
-
-.collapse-icon {
-    display: none;
-    position: absolute;
-    transition: opacity 0.3s ease;
-}
-
-.collapse-btn {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.2rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-    position: relative;
-}
-
-.sidebar-nav {
-    flex: 1;
-    padding: 20px 0;
-}
-
-.sidebar-nav ul {
-    list-style: none;
-}
-
-.sidebar-nav li a {
-    display: flex;
-    align-items: center;
-    padding: 12px 20px;
-    color: rgba(255, 255, 255, 0.8);
-    text-decoration: none;
-    transition: all 0.3s ease;
-    gap: 12px;
-}
-
-.sidebar-nav li a i {
-    font-size: 1.1rem;
-}
-
-.sidebar-nav li a:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: white;
-}
-
-.sidebar-nav li.active a {
-    background-color: rgba(255, 255, 255, 0.2);
-    color: white;
-    border-left: 4px solid var(--naranja-seguridad);
-}
-
-.sidebar-footer {
-    padding: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.user-profile {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background-color: var(--verde-tecnico);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 500;
-    font-size: 0.9rem;
-}
-
-.logout-btn {
-    background: none;
-    border: none;
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.logout-btn:hover {
-    color: white;
-}
-
-/* Main Content Styles */
-.main-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-}
-
-.main-header {
-    padding: 20px 30px;
-    background-color: white;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.main-header h1 {
-    font-size: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.search-bar {
-    position: relative;
-}
-
-.search-bar input {
-    padding: 10px 15px 10px 35px;
-    border: 1px solid var(--plata-industrial);
-    border-radius: 4px;
-    width: 250px;
-    transition: all 0.3s ease;
-}
-
-.search-bar input:focus {
-    outline: none;
-    border-color: var(--azul-petroleo);
-    box-shadow: 0 0 0 2px rgba(0, 59, 92, 0.2);
-}
-
-.search-bar i {
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--plata-industrial);
-}
-
-/* Cards Section */
-.cards-section {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 20px;
-    padding: 20px 30px;
-}
-
-.card {
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    padding: 20px;
-    display: flex;
-    gap: 15px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.card::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 4px;
-    background-color: var(--azul-petroleo);
-}
-
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-.card-icon {
-    width: 50px;
-    height: 50px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-}
-
-.card-content {
-    flex: 1;
-}
-
-.card-content h3 {
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: var(--gris-acero);
-    margin-bottom: 5px;
-}
-
-.card-content .count {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--negro-carbon);
-    margin-bottom: 5px;
-}
-
-.card-content .trend {
-    font-size: 0.8rem;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-/* Actions Section */
-.actions-section {
-    padding: 0 30px 20px;
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-    margin-top: 40px;
-}
-
-.btn {
-    padding: 10px 20px;
-    border-radius: 4px;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border: none;
-}
-
-.btn i {
-    font-size: 1rem;
-}
-
-.btn.primary {
-    background-color: var(--naranja-seguridad);
-    color: white;
-}
-
-.btn.primary:hover {
-    background-color: #E65100;
-    box-shadow: 0 2px 10px rgba(255, 111, 0, 0.3);
-}
-
-.btn.secondary {
-    background-color: var(--verde-tecnico);
-    color: white;
-}
-
-.btn.secondary:hover {
-    background-color: #00897B;
-    box-shadow: 0 2px 10px rgba(0, 191, 165, 0.3);
-}
-
-.filter-dropdown {
-    position: relative;
-    margin-left: auto;
-}
-
-.filter-dropdown select {
-    padding: 10px 35px 10px 15px;
-    border: 1px solid var(--plata-industrial);
-    border-radius: 4px;
-    appearance: none;
-    background-color: white;
-    cursor: pointer;
-    min-width: 200px;
-}
-
-.filter-dropdown i {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
-    color: var(--gris-acero);
-}
-
-
-
-
-
-
-/* Status badges */
-.status-badge {
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    display: inline-block;
-    text-transform: capitalize;
-    text-align: center;
-    min-width: 120px;
-    border: 1px solid rgba(0,0,0,0.05);
-    transition: all 0.2s ease;
-}
-
-.status-badge.active {
-    background-color: #E8F5E9;
-    color: #2E7D32;
-}
-
-.status-badge.completed {
-    background-color: #E3F2FD;
-    color: #1565C0;
-}
-
-.status-badge.canceled {
-    background-color: #FFEBEE;
-    color: #C62828;
-}
-
-.status-badge.pending {
-    background-color: #FFF8E1;
-    color: #FF8F00;
-}
-
-.status-badge.continua {
-    background-color: #F3E5F5;
-    color: #7B1FA2;
-}
-
-.status-badge.wait-area {
-    background-color: #FFF3E0;
-    color: #EF6C00;
-}
-
-.status-badge.wait-security {
-    background-color: #ECEFF1;
-    color: #455A64;
-}
-
-.status-badge:hover {
-    filter: brightness(95%);
-}
-
-.action-btn {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    border: none;
-    background: none;
-    color: var(--gris-acero);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.action-btn:hover {
-    background-color: var(--blanco-neutro);
-}
-
-.action-btn.view:hover {
-    color: var(--azul-petroleo);
-}
-
-.action-btn.print:hover {
-    color: var(--naranja-seguridad);
-}
-
-
-
-.records-counter {
-    background-color: var(--azul-petroleo);
-    color: white;
-    padding: 5px 15px;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    font-weight: 500;
-}
-
-.items-per-page {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 0.9rem;
-}
-
-.items-per-page select {
-    padding: 5px 10px;
-    border: 1px solid var(--plata-industrial);
-    border-radius: 4px;
-    background-color: white;
-    cursor: pointer;
-}
-
-
-/* Responsive Styles */
-@media (max-width: 768px) {
-    .cards-section {
-        grid-template-columns: 1fr 1fr;
-    }
-    
-    .actions-section {
-        flex-direction: column;
-    }
-    
-    .filter-dropdown {
-        margin-left: 0;
-        width: 100%;
-    }
-    
-    table {
-        display: block;
-        overflow-x: auto;
-    }
-    
-    .table-footer {
-        flex-direction: column;
-        gap: 15px;
-    }
-    
-    .records-counter {
-        order: 2;
-    }
-}
-
-@media (max-width: 576px) {
-    .cards-section {
-        grid-template-columns: 1fr;
-    }
-    
-    .main-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
-    }
-    
-    .header-actions {
-        width: 100%;
-    }
-    
-    .search-bar input {
-        width: 100%;
-    }
-}
-
-/* CSS PARA POWER BI */
-
-.dashboard-container {
-    display: flex;
-    min-height: 100vh;
-}
-
-.dashboard-frame {
-    height: 100%;
-    width: 100%;
-    padding: 0;
-    margin: 0;
-}
-
-.powerbi-fullscreen-container {
-    height: 100%;
-    width: 100%;
-    background: white;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
-}
-
-.powerbi-fullscreen-container iframe {
-    width: 100%;
-    height: 150%;
-    border: none;
-}
-
-/* Submenu Styles */
-.sidebar-nav li.has-submenu {
-    position: relative;
-}
-
-.sidebar-nav li.has-submenu > a .submenu-icon {
-    margin-left: auto;
-    transition: transform 0.3s ease;
-}
-
-.sidebar-nav li.has-submenu.active > a .submenu-icon {
-    transform: rotate(180deg);
-}
-
-.sidebar-nav .submenu {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
-    background-color: rgba(0, 0, 0, 0.1);
-    list-style: none;
-}
-
-.sidebar-nav li.has-submenu.active .submenu {
-    max-height: 500px;
-}
-
-.sidebar-nav .submenu li a {
-    padding-left: 52px;
-    font-size: 0.9rem;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    color: rgba(255, 255, 255, 0.7);
-}
-
-.sidebar-nav .submenu li a i {
-    font-size: 0.9rem;
-}
-
-.sidebar-nav .submenu li.active a {
-    background-color: rgba(255, 255, 255, 0.2);
-    color: white;
-    border-left: 4px solid var(--naranja-seguridad);
-}
-
-/* Collapsed state for submenus */
-.sidebar.collapsed .submenu {
-    display: none;
-}
-
-.sidebar.collapsed .submenu-icon {
-    display: none;
-}
-
-.sidebar.collapsed li.has-submenu > a {
-    justify-content: center;
-}
-
-
+/***************************************************************************************************** 
+********************************************Modal Styles**********************************************
+******************************************************************************************************/
 .modal {
     display: none;
     position: fixed;
@@ -822,6 +133,12 @@ h1, h2, h3, h4, h5, h6 {
     color: white;
 }
 
+
+/***************************************************************************************************** 
+********************************************Botones**********************************************
+******************************************************************************************************/
+
+
 /* Action buttons */
 .action-btn.edit {
     color: var(--azul-petroleo);
@@ -836,8 +153,923 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .action-btn.delete:hover {
-    background-color: rgba(211, 47, 47, 0.1);
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Ajusta el espacio del botón "Registrar Categoría" */
+.actions-section {
+    margin-top: 20px;  /* Separa el botón del encabezado */
+    margin-bottom: 15px; /* Espacio entre el botón y la tabla */
+}
+
+/* Opcional: Ajusta el padding del botón para mejor proporción */
+#register-categoria-btn {
+    padding: 10px 15px;
+}
+
+/* Estilos responsive */
+@media (max-width: 768px) {
+    table {
+        display: block;
+        overflow-x: auto;
+    }
+    
+    .table-footer {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .records-counter {
+        order: 2;
+    }
 }
 
 
 
+
+
+/***************************************************************************************************** 
+****************************Estilos específicos para la tabla de categorías***************************
+******************************************************************************************************/
+
+/* ====================== */
+/* CONTENEDOR PRINCIPAL */
+/* ====================== */
+.categoria-table-container {
+    width: fit-content;
+    max-width: 1200px;
+    min-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border: 2px solid var(--plata-industrial);
+}
+
+/* ====================== */
+/* ESTILOS DE TABLA */
+/* ====================== */
+#categorias-table {
+    width: 100%;
+    font-size: 0.9rem;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 15px 15px; /* Celdas más grandes */
+    vertical-align: middle; /* Centrado vertical */
+    text-align: center; /* Centrado horizontal */
+    border-bottom: 0px solid var(--plata-industrial);
+    min-width: 100px; /* Ancho mínimo por columna */
+}
+
+th {
+    font-size: 0.85rem; /* Encabezados más legibles */
+    padding: 14px 16px; /* Más altura en encabezados */
+}
+
+#categorias-table th {
+    background-color: var(--azul-petroleo);
+    color: white;
+    font-size: 0.85rem;
+    padding: 14px 16px;
+}
+
+/* Columna de acciones */
+#categorias-table td:last-child {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* ====================== */
+/* BOTONES DE ACCIÓN */
+/* ====================== */
+.action-btn {
+    padding: 8px 10px;
+    font-size: 0.95rem;
+    margin: 0 4px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.action-btn.edit {
+    color: var(--azul-petroleo);
+}
+
+.action-btn.delete {
+    color: var(--rojo-alerta);
+}
+
+/* ====================== */
+/* FOOTER REORGANIZADO */
+/* ====================== */
+.categoria-table-footer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    padding: 12px 0;
+    font-size: 0.8rem;
+    background: transparent;
+}
+
+/* Paginación (izquierda) */
+.pagination {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.pagination-btn {
+    padding: 4px 8px;
+    border: 1px solid var(--azul-petroleo);
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.pagination-btn.active {
+    background: var(--azul-petroleo);
+    color: white;
+    border-color: var(--azul-petroleo);
+}
+
+/* Contador (centro) */
+.records-counter {
+    padding: 0 10px;
+    white-space: nowrap;
+    color: var(--blanco-neutro);
+    font-size: 0.75rem;
+}
+
+/* Selector (derecha) */
+.items-per-page {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.items-per-page select {
+    padding: 4px 6px;
+    border: 1px solid var(--plata-industrial);
+    border-radius: 4px;
+    font-size: 0.75rem;
+}
+
+/* ====================== */
+/* RESPONSIVE */
+/* ====================== */
+@media (max-width: 992px) {
+    .categoria-table-container {
+        min-width: 90%;
+    }
+}
+
+@media (max-width: 768px) {
+    .categoria-table-container {
+        min-width: 95%;
+        padding: 15px;
+    }
+    
+    #categorias-table td:last-child {
+        flex-wrap: wrap;
+    }
+    
+    .categoria-table-footer {
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
+    
+    .records-counter {
+        order: 1;
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 576px) {
+    #categorias-table th,
+    #categorias-table td {
+        padding: 10px 8px;
+        font-size: 0.8rem;
+    }
+    
+    .action-btn {
+        padding: 6px 8px;
+    }
+}
+
+/*me falta el area form*/
+
+
+
+/***************************************************************************************************** 
+****************************Estilos específicos para la tabla de Areas***************************
+******************************************************************************************************/
+
+/* ====================== */
+/* CONTENEDOR PRINCIPAL */
+/* ====================== */
+.area-table-container {
+    width: fit-content;
+    max-width: 1200px;
+    min-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border: 2px solid var(--plata-industrial);
+}
+
+/* ====================== */
+/* ESTILOS DE TABLA */
+/* ====================== */
+#area-table {
+    width: 100%;
+    font-size: 0.9rem;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 15px 15px; /* Celdas más grandes */
+    vertical-align: middle; /* Centrado vertical */
+    text-align: center; /* Centrado horizontal */
+    border-bottom: 0px solid var(--plata-industrial);
+    min-width: 100px; /* Ancho mínimo por columna */
+}
+
+th {
+    font-size: 0.85rem; /* Encabezados más legibles */
+    padding: 14px 16px; /* Más altura en encabezados */
+}
+
+#area-table th {
+    background-color: var(--azul-petroleo);
+    color: white;
+    font-size: 0.85rem;
+    padding: 14px 16px;
+}
+
+/* Columna de acciones */
+#area-table td:last-child {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* ====================== */
+/* BOTONES DE ACCIÓN */
+/* ====================== */
+.action-btn {
+    padding: 8px 10px;
+    font-size: 0.95rem;
+    margin: 0 4px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.action-btn.edit {
+    color: var(--azul-petroleo);
+}
+
+.action-btn.delete {
+    color: var(--rojo-alerta);
+}
+
+/* ====================== */
+/* FOOTER REORGANIZADO */
+/* ====================== */
+.area-table-footer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    padding: 12px 0;
+    font-size: 0.8rem;
+    background: transparent;
+}
+
+/* Paginación (izquierda) */
+.pagination {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.pagination-btn {
+    padding: 4px 8px;
+    border: 1px solid var(--azul-petroleo);
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.pagination-btn.active {
+    background: var(--azul-petroleo);
+    color: white;
+    border-color: var(--azul-petroleo);
+}
+
+/* Contador (centro) */
+.records-counter {
+    padding: 0 10px;
+    white-space: nowrap;
+    color: var(--blanco-neutro);
+    font-size: 0.75rem;
+}
+
+/* Selector (derecha) */
+.items-per-page {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.items-per-page select {
+    padding: 4px 6px;
+    border: 1px solid var(--plata-industrial);
+    border-radius: 4px;
+    font-size: 0.75rem;
+}
+
+/* ====================== */
+/* RESPONSIVE */
+/* ====================== */
+@media (max-width: 992px) {
+    .area-table-container {
+        min-width: 90%;
+    }
+}
+
+@media (max-width: 768px) {
+    .area-table-container {
+        min-width: 95%;
+        padding: 15px;
+    }
+    
+    #area-table td:last-child {
+        flex-wrap: wrap;
+    }
+    
+    .area-table-footer {
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
+    
+    .records-counter {
+        order: 1;
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 576px) {
+    #area-table th,
+    #area-table td {
+        padding: 10px 8px;
+        font-size: 0.8rem;
+    }
+    
+    .action-btn {
+        padding: 6px 8px;
+    }
+}
+
+/***************************************************************************************************** 
+****************************Estilos específicos para la tabla de Departamentos***************************
+******************************************************************************************************/
+
+/* ====================== */
+/* CONTENEDOR PRINCIPAL */
+/* ====================== */
+.departamento-table-container {
+    width: fit-content;
+    max-width: 1200px;
+    min-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border: 2px solid var(--plata-industrial);
+}
+
+/* ====================== */
+/* ESTILOS DE TABLA */
+/* ====================== */
+#departamento-table {
+    width: 100%;
+    font-size: 0.9rem;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 15px 15px; /* Celdas más grandes */
+    vertical-align: middle; /* Centrado vertical */
+    text-align: center; /* Centrado horizontal */
+    border-bottom: 0px solid var(--plata-industrial);
+    min-width: 100px; /* Ancho mínimo por columna */
+}
+
+th {
+    font-size: 0.85rem; /* Encabezados más legibles */
+    padding: 14px 16px; /* Más altura en encabezados */
+}
+
+#departamento-table th {
+    background-color: var(--azul-petroleo);
+    color: white;
+    font-size: 0.85rem;
+    padding: 14px 16px;
+}
+
+/* Columna de acciones */
+#departamento-table td:last-child {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* ====================== */
+/* BOTONES DE ACCIÓN */
+/* ====================== */
+.action-btn {
+    padding: 8px 10px;
+    font-size: 0.95rem;
+    margin: 0 4px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.action-btn.edit {
+    color: var(--azul-petroleo);
+}
+
+.action-btn.delete {
+    color: var(--rojo-alerta);
+}
+
+/* ====================== */
+/* FOOTER REORGANIZADO */
+/* ====================== */
+.departamento-table-footer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    padding: 12px 0;
+    font-size: 0.8rem;
+    background: transparent;
+}
+
+/* Paginación (izquierda) */
+.pagination {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.pagination-btn {
+    padding: 4px 8px;
+    border: 1px solid var(--azul-petroleo);
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.pagination-btn.active {
+    background: var(--azul-petroleo);
+    color: white;
+    border-color: var(--azul-petroleo);
+}
+
+/* Contador (centro) */
+.records-counter {
+    padding: 0 10px;
+    white-space: nowrap;
+    color: var(--blanco-neutro);
+    font-size: 0.75rem;
+}
+
+/* Selector (derecha) */
+.items-per-page {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.items-per-page select {
+    padding: 4px 6px;
+    border: 1px solid var(--plata-industrial);
+    border-radius: 4px;
+    font-size: 0.75rem;
+}
+
+/* ====================== */
+/* RESPONSIVE */
+/* ====================== */
+@media (max-width: 992px) {
+    .departamento-table-container {
+        min-width: 90%;
+    }
+}
+
+@media (max-width: 768px) {
+    .departamento-table-container {
+        min-width: 95%;
+        padding: 15px;
+    }
+    
+    #departamento-table td:last-child {
+        flex-wrap: wrap;
+    }
+    
+    .departamento-table-footer {
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
+    
+    .records-counter {
+        order: 1;
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 576px) {
+    #departamento-table th,
+    #departamento-table td {
+        padding: 10px 8px;
+        font-size: 0.8rem;
+    }
+    
+    .action-btn {
+        padding: 6px 8px;
+    }
+}
+
+/***************************************************************************************************** 
+****************************Estilos específicos para la tabla de Supervisor***************************
+******************************************************************************************************/
+
+/* ====================== */
+/* CONTENEDOR PRINCIPAL */
+/* ====================== */
+.supervisor-table-container {
+    width: fit-content;
+    max-width: 1200px;
+    min-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border: 2px solid var(--plata-industrial);
+}
+
+/* ====================== */
+/* ESTILOS DE TABLA */
+/* ====================== */
+#supervisor-table {
+    width: 100%;
+    font-size: 0.9rem;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 15px 15px; /* Celdas más grandes */
+    vertical-align: middle; /* Centrado vertical */
+    text-align: center; /* Centrado horizontal */
+    border-bottom: 0px solid var(--plata-industrial);
+    min-width: 100px; /* Ancho mínimo por columna */
+}
+
+th {
+    font-size: 0.85rem; /* Encabezados más legibles */
+    padding: 14px 16px; /* Más altura en encabezados */
+}
+
+#supervisor-table th {
+    background-color: var(--azul-petroleo);
+    color: white;
+    font-size: 0.85rem;
+    padding: 14px 16px;
+}
+
+/* Columna de acciones */
+#supervisor-table td:last-child {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* ====================== */
+/* BOTONES DE ACCIÓN */
+/* ====================== */
+.action-btn {
+    padding: 8px 10px;
+    font-size: 0.95rem;
+    margin: 0 4px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.action-btn.edit {
+    color: var(--azul-petroleo);
+}
+
+.action-btn.delete {
+    color: var(--rojo-alerta);
+}
+
+/* ====================== */
+/* FOOTER REORGANIZADO */
+/* ====================== */
+.supervisor-table-footer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    padding: 12px 0;
+    font-size: 0.8rem;
+    background: transparent;
+}
+
+/* Paginación (izquierda) */
+.pagination {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.pagination-btn {
+    padding: 4px 8px;
+    border: 1px solid var(--azul-petroleo);
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.pagination-btn.active {
+    background: var(--azul-petroleo);
+    color: white;
+    border-color: var(--azul-petroleo);
+}
+
+/* Contador (centro) */
+.records-counter {
+    padding: 0 10px;
+    white-space: nowrap;
+    color: var(--blanco-neutro);
+    font-size: 0.75rem;
+}
+
+/* Selector (derecha) */
+.items-per-page {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.items-per-page select {
+    padding: 4px 6px;
+    border: 1px solid var(--plata-industrial);
+    border-radius: 4px;
+    font-size: 0.75rem;
+}
+
+/* ====================== */
+/* RESPONSIVE */
+/* ====================== */
+@media (max-width: 992px) {
+    .supervisor-table-container {
+        min-width: 90%;
+    }
+}
+
+@media (max-width: 768px) {
+    .supervisor-table-container {
+        min-width: 95%;
+        padding: 15px;
+    }
+    
+    #supervisor-table td:last-child {
+        flex-wrap: wrap;
+    }
+    
+    .supervisor-table-footer {
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
+    
+    .records-counter {
+        order: 1;
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 576px) {
+    #supervisor-table th,
+    #supervisor-table td {
+        padding: 10px 8px;
+        font-size: 0.8rem;
+    }
+    
+    .action-btn {
+        padding: 6px 8px;
+    }
+}
+
+/***************************************************************************************************** 
+****************************Estilos específicos para la tabla de Sucursales***************************
+******************************************************************************************************/
+
+
+
+/* ====================== */
+/* CONTENEDOR PRINCIPAL */
+/* ====================== */
+.sucursal-table-container {
+    width: fit-content;
+    max-width: 1200px;
+    min-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border: 2px solid var(--plata-industrial);
+}
+
+/* ====================== */
+/* ESTILOS DE TABLA */
+/* ====================== */
+#sucursal-table {
+    width: 100%;
+    font-size: 0.9rem;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 15px 15px; /* Celdas más grandes */
+    vertical-align: middle; /* Centrado vertical */
+    text-align: center; /* Centrado horizontal */
+    border-bottom: 0px solid var(--plata-industrial);
+    min-width: 100px; /* Ancho mínimo por columna */
+}
+
+th {
+    font-size: 0.85rem; /* Encabezados más legibles */
+    padding: 14px 16px; /* Más altura en encabezados */
+}
+
+#sucursal-table th {
+    background-color: var(--azul-petroleo);
+    color: white;
+    font-size: 0.85rem;
+    padding: 14px 16px;
+}
+
+/* Columna de acciones */
+#sucursal-table td:last-child {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* ====================== */
+/* BOTONES DE ACCIÓN */
+/* ====================== */
+.action-btn {
+    padding: 8px 10px;
+    font-size: 0.95rem;
+    margin: 0 4px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.action-btn.edit {
+    color: var(--azul-petroleo);
+}
+
+.action-btn.delete {
+    color: var(--rojo-alerta);
+}
+
+/* ====================== */
+/* FOOTER REORGANIZADO */
+/* ====================== */
+.sucursal-table-footer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    padding: 12px 0;
+    font-size: 0.8rem;
+    background: transparent;
+}
+
+/* Paginación (izquierda) */
+.pagination {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.pagination-btn {
+    padding: 4px 8px;
+    border: 1px solid var(--azul-petroleo);
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.pagination-btn.active {
+    background: var(--azul-petroleo);
+    color: white;
+    border-color: var(--azul-petroleo);
+}
+
+/* Contador (centro) */
+.records-counter {
+    padding: 0 10px;
+    white-space: nowrap;
+    color: var(--blanco-neutro);
+    font-size: 0.75rem;
+}
+
+/* Selector (derecha) */
+.items-per-page {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.items-per-page select {
+    padding: 4px 6px;
+    border: 1px solid var(--plata-industrial);
+    border-radius: 4px;
+    font-size: 0.75rem;
+}
+
+/* ====================== */
+/* RESPONSIVE */
+/* ====================== */
+@media (max-width: 992px) {
+    .sucursal-table-container {
+        min-width: 90%;
+    }
+}
+
+@media (max-width: 768px) {
+    .sucursal-table-container {
+        min-width: 95%;
+        padding: 15px;
+    }
+    
+    #sucursal-table td:last-child {
+        flex-wrap: wrap;
+    }
+    
+    .sucursal-table-footer {
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
+    
+    .records-counter {
+        order: 1;
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 576px) {
+    #sucursal-table th,
+    #sucursal-table td {
+        padding: 10px 8px;
+        font-size: 0.8rem;
+    }
+    
+    .action-btn {
+        padding: 6px 8px;
+    }
+}

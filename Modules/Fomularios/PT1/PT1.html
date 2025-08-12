@@ -35,7 +35,7 @@
                     </div>
                     <div class="step" data-step="2">
                         <div class="step-number">2</div>
-                        <div class="step-title">Permiso No Peligroso</div>
+                        <div id="PermisoNP"class="step-title">Permiso No Peligroso</div>
                     </div>
                     <div class="step" data-step="3">
                         <div class="step-number">3</div>
@@ -62,6 +62,8 @@
                                 <p>Complete los datos básicos del permiso</p>
                             </div>
                         </div>
+
+
 
                         <div class="form-grid">
                             <div class="form-group">
@@ -94,13 +96,12 @@
                                     </select>
                                     <i class="ri-arrow-down-s-line select-arrow"></i>
                                 </div>
+                            </div>
+                            
                             
 
-                            <div class="form-group">
-                                <label for="work-description">Descripción del trabajo</label>
-                                <textarea id="work-description" name="work-description" rows="2" required></textarea>
-                            </div>
-                        </div>
+
+                        
 
                         <div class="form-group">
                             <label for="plant">Planta o lugar de trabajo</label>
@@ -118,8 +119,16 @@
                             <label for="applicant">Nombre de quien solicita</label>
                             <input type="text" id="applicant" name="applicant" required class="compact">
                         </div>
+                        <div class="form-group">
+                                <label for="work-description">Descripción del trabajo</label>
+                                <textarea id="work-description" name="work-description" rows="2" required></textarea>
+                        </div>
 
+                        
                     </div>
+
+
+                    
                         <div class="form-actions">
                             <button type="button" class="btn secondary" id="cancel-btn">
                                 <i class="ri-close-line"></i> Cancelar
@@ -131,6 +140,7 @@
                        
                     
                     </div>
+               <!-- Fin Sección 1: Encabezado -->
                 </section>
 
                 <!-- Sección 2: Permiso No Peligroso -->
@@ -146,45 +156,49 @@
                             </div>
                         </div>
 
-                        <div class="form-grid">
 
+
+                        <div class="form-grid" style="grid-template-columns: 1fr 1fr 1fr;">
                             <div class="form-group">
-                                <label for="maintenance-type">Tipo de mantenimiento</label>
-                                <div class="radio-group compact">
-                                    <label class="radio-option">
-                                        <input type="radio" name="maintenance-type" value="PREDICTIVO" required>
-                                        <span class="radio-custom"></span>
-                                        PREDICTIVO
-                                    </label>
-                                    <label class="radio-option">
-                                        <input type="radio" name="maintenance-type" value="PREVENTIVO">
-                                        <span class="radio-custom"></span>
-                                        PREVENTIVO
-                                    </label>
-                                    <label class="radio-option">
-                                        <input type="radio" name="maintenance-type" value="CORRECTIVO">
-                                        <span class="radio-custom"></span>
-                                        CORRECTIVO
-                                    </label>
-                                    <label class="radio-option">
-                                        <input type="radio" name="maintenance-type" value="APOYO">
-                                        <span class="radio-custom"></span>
-                                        APOYO
-                                    </label>
-                                    <label class="radio-option other-option">
-                                        <input type="radio" name="maintenance-type" value="OTRO">
-                                        <span class="radio-custom"></span>
-                                        OTRO:
-                                        <input type="text" id="other-maintenance" class="other-input compact" disabled>
-                                    </label>
+                                <div class="form-group">
+                                    <label for="maintenance-type">Tipo de mantenimiento</label>
+                                    <div class="select-wrapper">
+                                        <select id="maintenance-type" name="maintenance-type" required>
+                                            <option value="" disabled selected>Seleccione un tipo</option>
+                                            <option value="PREDICTIVO">PREDICTIVO</option>
+                                            <option value="PREVENTIVO">PREVENTIVO</option>
+                                            <option value="CORRECTIVO">CORRECTIVO</option>
+                                            <option value="APOYO">APOYO</option>
+                                            <option value="OTRO">OTRO</option>
+                                        </select>
+                                        <i class="ri-arrow-down-s-line select-arrow"></i>
+                                    </div>
+                                    <!-- Campo de texto para "OTRO" (oculto inicialmente) -->
+                                    <div id="other-maintenance-container" class="form-group" style="display: none; margin-top: 0.5rem;">
+                                        <input type="text" id="other-maintenance" name="other-maintenance" class="compact" placeholder="Especifique...">
+                                    </div>
                                 </div>
                             </div>
-
                             <div class="form-group">
-                                <label for="work-order">O.T. No.</label>
-                                <input type="text" id="work-order" name="work-order" required class="compact">
-                            </div>
+                                <div class="form-group">
+                                    <label for="work-order">O.T. No.</label>
+                                    <input type="text" id="work-order" name="work-order" required class="compact">
+                                </div>
 
+                            </div>
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label for="start-time">Hora de inicio</label>
+                                    <input type="time" id="start-time" name="start-time" required class="compact">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section-title">
+                            <i class="ri-tools-line"></i>
+                            <h3>Equipo</h3>
+                        </div>
+                        <div class="form-grid" style="grid-template-columns: 1fr 1fr 1fr;">
                             <div class="form-group">
                                 <label>¿Tiene equipo a intervenir?</label>
                                 <div class="radio-group" id="equipment-toggle">
@@ -200,57 +214,53 @@
                                     </label>
                                 </div>
                             </div>
-                            
-                            <div id="equipment-details">
+                            <div class="form-group">
                                 <div class="form-group">
                                     <label for="equipment">Equipo a Intervenir</label>
                                     <input type="text" id="equipment" name="equipment" required class="compact">
                                 </div>
-                            
-                                <div class="form-group">
-                                    <label for="start-time">Hora de inicio</label>
-                                    <input type="time" id="start-time" name="start-time" required class="compact">
-                                </div>
-                            
+                            </div>
+                            <div class="form-group">
                                 <div class="form-group">
                                     <label for="tag">TAG</label>
                                     <input type="text" id="tag" name="tag" class="compact">
                                 </div>
-                            
-                                <!-- Condiciones del equipo -->
-                                <div class="form-section-title">
-                                    <i class="ri-settings-3-line"></i>
-                                    <h3>Condiciones actuales del equipo</h3>
-                                </div>
-                            
-                                <div class="form-grid compact-grid">
-                                    <div class="form-group">
-                                        <label for="fluid">Fluido</label>
-                                        <input type="text" id="fluid" name="fluid" class="compact">
-                                    </div>
-                            
-                                    <div class="form-group">
-                                        <label for="pressure">Presión</label>
-                                        <input type="text" id="pressure" name="pressure" class="compact">
-                                    </div>
-                            
-                                    <div class="form-group">
-                                        <label for="temperature">Temperatura</label>
-                                        <input type="text" id="temperature" name="temperature" class="compact">
-                                    </div>
-                                </div>
                             </div>
+                        </div>
 
-                        
-                    </div>
-                    <div class="form-actions">
-                        <button type="button" class="btn secondary prev-step" data-prev="1">
-                            <i class="ri-arrow-left-line"></i> Anterior
-                        </button>
-                        <button type="button" class="btn primary next-step" data-next="3">
-                            Siguiente <i class="ri-arrow-right-line"></i>
-                        </button>
-                    </div>
+
+                        <div class="form-section-title" id="equipment-conditions-title">
+                            <i class="ri-settings-3-line"></i>
+                            <h3>Condiciones actuales del equipo</h3>
+                        </div>
+                        <div class="form-grid" id="equipment-conditions-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+                            <div class="form-group">
+                                <label for="fluid">Fluido</label>
+                                <input type="text" id="fluid" name="fluid" class="compact">
+                            </div>
+                            <div class="form-group">
+                                <label for="pressure">Presión</label>
+                                <input type="text" id="pressure" name="pressure" class="compact">
+                            </div>
+                            <div class="form-group">
+                                <label for="temperature">Temperatura</label>
+                                <input type="text" id="temperature" name="temperature" class="compact">
+                            </div>
+                        </div>
+                    
+                            
+       
+
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn secondary prev-step" data-prev="1">
+                                <i class="ri-arrow-left-line"></i> Anterior
+                            </button>
+                            <button type="button" class="btn primary next-step" data-next="3">
+                                Siguiente <i class="ri-arrow-right-line"></i>
+                            </button>
+                        </div>
+                    
                 </section>
 
                 
@@ -322,7 +332,7 @@
                                 Siguiente <i class="ri-arrow-right-line"></i>
                             </button>
                         </div>
-                    </div>
+                    
                 </section>
 
 
@@ -341,7 +351,7 @@
                             </div>
                         </div>
 
-                        <div class="ast-activities">
+                        <div class="ast-activities extended">
                             <div class="ast-table-header">
                                 <div>No.</div>
                                 <div>Secuencia de la Actividad</div>
@@ -349,15 +359,22 @@
                                 <div>Peligros Potenciales</div>
                                 <div>Acciones Preventivas</div>
                                 <div>Responsable</div>
+                                <div>Acciones</div>
                             </div>
-
+                        
                             <div class="ast-activity" data-index="1">
                                 <div class="ast-activity-number">1</div>
                                 <div class="ast-activity-field">
                                     <textarea name="ast-activity-1" rows="2"></textarea>
                                 </div>
                                 <div class="ast-activity-field">
-                                    <input type="text" name="ast-personnel-1">
+                                    <select name="ast-personnel-1">
+                                        <option value="">-- Seleccione --</option>
+                                        <option value="juan">Juan Pérez</option>
+                                        <option value="maria">María López</option>
+                                        <option value="carlos">Carlos Gómez</option>
+                                        <option value="ana">Ana Martínez</option>
+                                    </select>
                                 </div>
                                 <div class="ast-activity-field">
                                     <textarea name="ast-hazards-1" rows="2"></textarea>
@@ -366,10 +383,23 @@
                                     <textarea name="ast-preventions-1" rows="2"></textarea>
                                 </div>
                                 <div class="ast-activity-field">
-                                    <input type="text" name="ast-responsible-1">
+                                    <select name="ast-personnel-1">
+                                        <option value="">-- Seleccione --</option>
+                                        <option value="juan">Juan Pérez</option>
+                                        <option value="maria">María López</option>
+                                        <option value="carlos">Carlos Gómez</option>
+                                        <option value="ana">Ana Martínez</option>
+                                    </select>
+                                </div>
+                                <div class="ast-activity-actions">
+                                    <button type="button" class="action-btn remove-activity" title="Eliminar">
+                                        <i class="ri-delete-bin-line"></i>
+                                    </button>
                                 </div>
                             </div>
+                            
                         </div>
+                        
 
                         <button type="button" class="btn secondary" id="add-activity">
                             <i class="ri-add-line"></i> Añadir Actividad
@@ -443,5 +473,6 @@
     </div>
 
     <script src="/Modules/Fomularios/PT1/PT1.js"></script>
+    <script src="/Modules/Fomularios/PT1/email.js"></script>
 </body>
 </html>

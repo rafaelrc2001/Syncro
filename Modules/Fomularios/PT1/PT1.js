@@ -138,6 +138,37 @@ function initEquipmentToggle() {
 }
 
 
+document.addEventListener('DOMContentLoaded', function() {
+    const equipmentRadios = document.querySelectorAll('input[name="has-equipment"]');
+    
+    const equipmentFields = [
+        document.getElementById('equipment').closest('.form-group'),
+        document.getElementById('tag').closest('.form-group'),
+        document.getElementById('equipment-conditions-title'),
+        document.getElementById('equipment-conditions-grid')
+    ];
+
+    function toggleEquipmentFields() {
+        const showEquipment = document.querySelector('input[name="has-equipment"]:checked').value === 'si';
+
+        equipmentFields.forEach(element => {
+            if (element) {
+                element.style.display = showEquipment ? 'block' : 'none';
+            }
+        });
+
+        const equipmentField = document.getElementById('equipment');
+        if (equipmentField) {
+            equipmentField.required = showEquipment;
+        }
+    }
+
+    equipmentRadios.forEach(radio => {
+        radio.addEventListener('change', toggleEquipmentFields);
+    });
+
+    toggleEquipmentFields();
+});
 
 
 
@@ -394,8 +425,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     <textarea name="ast-activity-${newIndex}" rows="2"></textarea>
                 </div>
                 <div class="ast-activity-field">
-                    <input type="text" name="ast-personnel-${newIndex}">
-                </div>
+                                    <select name="ast-personnel-1">
+                                        <option value="">-- Seleccione --</option>
+                                        <option value="juan">Juan Pérez</option>
+                                        <option value="maria">María López</option>
+                                        <option value="carlos">Carlos Gómez</option>
+                                        <option value="ana">Ana Martínez</option>
+                                    </select>
+                                </div>
                 <div class="ast-activity-field">
                     <textarea name="ast-hazards-${newIndex}" rows="2"></textarea>
                 </div>
@@ -403,7 +440,18 @@ document.addEventListener('DOMContentLoaded', function() {
                     <textarea name="ast-preventions-${newIndex}" rows="2"></textarea>
                 </div>
                 <div class="ast-activity-field">
-                    <input type="text" name="ast-responsible-${newIndex}">
+                                    <select name="ast-personnel-1">
+                                        <option value="">-- Seleccione --</option>
+                                        <option value="juan">Juan Pérez</option>
+                                        <option value="maria">María López</option>
+                                        <option value="carlos">Carlos Gómez</option>
+                                        <option value="ana">Ana Martínez</option>
+                                    </select>
+                                </div>
+                <div class="ast-activity-actions">
+                    <button type="button" class="action-btn remove-activity" title="Eliminar">
+                        <i class="ri-delete-bin-line"></i>
+                    </button>
                 </div>
             `;
             
@@ -420,10 +468,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const participantCount = document.querySelectorAll('.participant-row').length;
             const newIndex = participantCount + 1;
             
-            if (newIndex > 15) {
-                alert('Máximo 15 participantes permitidos');
-                return;
-            }
+  
             
             const newParticipant = document.createElement('div');
             newParticipant.className = 'participant-row';
@@ -543,4 +588,26 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    // ESTA PARTE ES PARA EL BOTON DE ELIMINAR ESPECIFICAMENTE PARA LA PARTE DE LAS ACTIVIDADES
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.remove-activity')) {
+            const activityRow = e.target.closest('.ast-activity');
+            if (activityRow) {
+                activityRow.remove();
+                // Renumber remaining activities
+                document.querySelectorAll('.ast-activity').forEach((row, index) => {
+                    row.setAttribute('data-index', index + 1);
+                    row.querySelector('.ast-activity-number').textContent = index + 1;
+                    // Update all input names with new index
+                    row.querySelectorAll('[name^="ast-"]').forEach(input => {
+                        const name = input.getAttribute('name');
+                        const newName = name.replace(/ast-([a-z]+)-(\d+)/, (match, p1, p2) => `ast-${p1}-${index + 1}`);
+                        input.setAttribute('name', newName);
+                    });
+                });
+            }
+        }
+    });
 });
+

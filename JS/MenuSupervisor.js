@@ -45,15 +45,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // 4. Print Button Functionality
-    const printButtons = document.querySelectorAll('.action-btn.print');
-    printButtons.forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            const permitId = this.closest('tr').querySelector('td:first-child').textContent;
-            alert(`Imprimiendo permiso: ${permitId}`);
-        });
-    });
+    // 4. Print Button Functionality - Manejado por LogicaImprimir.js
+    // El manejo de los botones de impresión se ha movido a LogicaImprimir.js
     
     // 5. Logout button
     const logoutBtn = document.querySelector('.logout-btn');

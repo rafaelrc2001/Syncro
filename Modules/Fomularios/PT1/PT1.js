@@ -1,4 +1,163 @@
+
+// Datos de ejemplo para el autocompletado de plantas
+const plantSuggestions = [
+    "Planta de Producción Principal",
+    "Planta de Almacenamiento Norte",
+    "Planta de Procesamiento Secundario",
+    "Área de Mantenimiento General",
+    "Sala de Máquinas 1",
+    "Sala de Máquinas 2",
+    "Zona de Almacenamiento de Materiales",
+    "Área de Servicios Generales",
+    "Planta de Tratamiento de Aguas",
+    "Subestación Eléctrica"
+];
+
+// Función para mostrar sugerencias de autocompletado
+function showPlantSuggestions(input, suggestionsContainer) {
+    const inputValue = input.value.toLowerCase();
+    suggestionsContainer.innerHTML = '';
+    suggestionsContainer.style.display = 'none'; // Ocultar por defecto
+
+    if (inputValue.length === 0) {
+        return;
+    }
+
+    const filteredSuggestions = plantSuggestions.filter(suggestion => 
+        suggestion.toLowerCase().includes(inputValue)
+    );
+
+    if (filteredSuggestions.length === 0) {
+        const noResults = document.createElement('div');
+        noResults.className = 'autocomplete-suggestion';
+        noResults.textContent = 'No se encontraron resultados';
+        suggestionsContainer.appendChild(noResults);
+        suggestionsContainer.style.display = 'block';
+        return;
+    }
+
+    filteredSuggestions.forEach(suggestion => {
+        const suggestionElement = document.createElement('div');
+        suggestionElement.className = 'autocomplete-suggestion';
+        suggestionElement.textContent = suggestion;
+        
+        suggestionElement.addEventListener('click', function() {
+            input.value = suggestion;
+            document.getElementById('plant-value').value = suggestion;
+            suggestionsContainer.style.display = 'none';
+        });
+        
+        suggestionsContainer.appendChild(suggestionElement);
+    });
+    
+    suggestionsContainer.style.display = 'block';
+}
+
+// Inicializar autocompletado para el campo de planta
+function initPlantAutocomplete() {
+    const plantInput = document.getElementById('plant');
+    const suggestionsContainer = document.getElementById('plant-suggestions');
+    
+    if (!plantInput || !suggestionsContainer) return;
+
+    // Mostrar sugerencias al escribir
+    plantInput.addEventListener('input', function() {
+        showPlantSuggestions(this, suggestionsContainer);
+    });
+
+    // Ocultar sugerencias al hacer clic fuera
+    document.addEventListener('click', function(e) {
+        if (e.target !== plantInput && !suggestionsContainer.contains(e.target)) {
+            suggestionsContainer.style.display = 'none';
+        }
+    });
+
+    // Manejar teclado
+    plantInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            suggestionsContainer.style.display = 'none';
+        }
+    });
+}
+
+
+
+// Manejar el toggle de equipo a intervenir con esto se esconden las etiquetas de equipo
+function initEquipmentToggle() {
+    const equipmentToggle = document.getElementById('equipment-toggle');
+    const equipmentDetails = document.getElementById('equipment-details');
+    const equipmentFields = [
+        document.getElementById('equipment'),
+        document.getElementById('tag'),
+        document.getElementById('fluid'),
+        document.getElementById('pressure'),
+        document.getElementById('temperature')
+    ];
+
+    if (!equipmentToggle || !equipmentDetails || !equipmentFields.every(field => field)) return;
+    
+    const radioButtons = equipmentToggle.querySelectorAll('input[type="radio"]');
+    
+    radioButtons.forEach(radio => {
+        radio.addEventListener('change', function() {
+            if (this.value === 'no') {
+                // Deshabilitar campos
+                equipmentFields.forEach(field => {
+                    field.disabled = true;
+                    field.value = ''; // Limpiar los valores
+                    field.required = false; // Quitar el requerido si lo tiene
+                });
+                
+                // Cambiar estilo visual
+                equipmentDetails.style.opacity = '0.6';
+            } else {
+                // Habilitar campos
+                equipmentFields.forEach(field => {
+                    field.disabled = false;
+                    if (field.id === 'equipment') {
+                        field.required = true; // Volver a poner requerido si es necesario
+                    }
+                });
+                
+                // Restaurar estilo visual
+                equipmentDetails.style.opacity = '1';
+            }
+        });
+    });
+    
+    // Ejecutar al cargar la página por si 'no' está seleccionado por defecto
+    const selectedRadio = equipmentToggle.querySelector('input[type="radio"]:checked');
+    if (selectedRadio && selectedRadio.value === 'no') {
+        equipmentFields.forEach(field => {
+            field.disabled = true;
+            field.value = '';
+            field.required = false;
+        });
+        equipmentDetails.style.opacity = '0.6';
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 document.addEventListener('DOMContentLoaded', function() {
+    // Inicializar autocompletado de plantas
+    initPlantAutocomplete();
+    
+    // Inicializar toggle de equipo
+    initEquipmentToggle();
+    
     // Manejar el botón de volver
     const backBtn = document.getElementById('back-btn');
     if (backBtn) {
@@ -23,7 +182,7 @@ document.addEventListener('DOMContentLoaded', function() {
         timeField.value = `${hours}:${minutes}`;
     }
 
-    // Habilitar campos "OTRO" cuando se selecciona la opción
+    // Habilitar campos "OTRO" cuando se selecciona la opcións
     document.querySelectorAll('input[type="radio"][value="OTRO"]').forEach(radio => {
         radio.addEventListener('change', function() {
             const otherInput = this.closest('.other-option').querySelector('.other-input');

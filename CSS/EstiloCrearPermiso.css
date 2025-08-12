@@ -4,7 +4,7 @@
     --plata-industrial: #B0BEC5;
     --blanco-neutro: #F5F5F5;
 }
-.modal {
+#modalPermisos.modal {
     display: none;
     position: fixed;
     z-index: 1000;

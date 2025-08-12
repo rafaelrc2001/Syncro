@@ -39,18 +39,24 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             
             // Get form values
-            const departmentName = document.getElementById('department-name').value;
-            const currentDate = new Date().toLocaleDateString();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const extension = document.getElementById('extension').value;
+            const password = document.getElementById('password').value;
 
             // Here you would typically send this data to a server
-            console.log('Registrando departamento:', departmentName);
+            console.log('Registrando departamento:',{
+                name, email, extension, password
+            });
 
             // For demo purposes, we'll just add to the table
             const tableBody = document.querySelector('#table-body');
             const newRow = document.createElement('tr');
             newRow.innerHTML = `
-                <td>${departmentName}</td>
-                <td>${currentDate}</td>
+                <td>${name}</td>
+                <td>${email}</td>
+                <td>${extension}</td>
+                <td>${password}</td>
                 <td>
                     <button class="action-btn edit"><i class="ri-edit-line"></i></button>
                     <button class="action-btn delete"><i class="ri-delete-bin-line"></i></button>
@@ -113,11 +119,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Update MenuJefe.js functionality for this page
     const currentPath = window.location.pathname.toLowerCase();
     const menuRoutes = {
-        'dashboard': '/Syncro/Modules/JefeSeguridad/Dash-Jefe.html',
-        'autorizar permisos': '/Syncro/Modules/JefeSeguridad/JefeSeguridad.html',
-        'registrar área': '/Syncro/Modules/JefeSeguridad/CrearArea.html',
-        'registrar departamento': '/Modules/SupSeguridad/CrearDepartamento.html',
-        'registrar supervisor': '/Modules/SupSeguridad/CrearSupervisor.html'
+       'dashboard': '/Modules/JefeSeguridad/Dash-Jefe.html',
+        'autorizar permisos': '/Modules/JefeSeguridad/JefeSeguridad.html',
+        'área': '/Modules/JefeSeguridad/CrearArea.html',
+        'categoria': '/Modules/JefeSeguridad/CrearCategoria.html',
+        'sucursal': '/Modules/JefeSeguridad/CrearSucursal.html',
+        'departamento': '/Modules/JefeSeguridad/CrearDepartamento.html',
+        'supervisor': '/Modules/JefeSeguridad/CrearSupervisor.html'
     };
 
     // Mark active menu item

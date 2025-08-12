@@ -113,11 +113,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Update MenuJefe.js functionality for this page
     const currentPath = window.location.pathname.toLowerCase();
     const menuRoutes = {
-        'dashboard': '/Syncro/Modules/JefeSeguridad/Dash-Jefe.html',
-        'autorizar permisos': '/Syncro/Modules/JefeSeguridad/JefeSeguridad.html',
-        'registrar área': '/Syncro/Modules/JefeSeguridad/CrearArea.html',
-        'registrar departamento': '/Modules/SupSeguridad/CrearDepartamento.html',
-        'registrar supervisor': '/Modules/SupSeguridad/CrearSupervisor.html'
+         'dashboard': '/Modules/JefeSeguridad/Dash-Jefe.html',
+        'autorizar permisos': '/Modules/JefeSeguridad/JefeSeguridad.html',
+        'área': '/Modules/JefeSeguridad/CrearArea.html',
+        'categoria': '/Modules/JefeSeguridad/CrearCategoria.html',
+        'sucursal': '/Modules/JefeSeguridad/CrearSucursal.html',
+        'departamento': '/Modules/JefeSeguridad/CrearDepartamento.html',
+        'supervisor': '/Modules/JefeSeguridad/CrearSupervisor.html'
     };
 
     // Mark active menu item

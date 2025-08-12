@@ -221,13 +221,20 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 0.8rem;
 }
 
-/* Campos de formulario compactos */
-.form-group input[type="text"],
-.form-group input[type="date"],
-.form-group input[type="time"],
-.form-group input[type="number"],
-.form-group select,
-.form-group textarea {
+/* Form field containers */
+.form-group .select-wrapper,
+.form-group .autocomplete-container {
+    width: 100%;
+    max-width: 400px; /* Match other form fields */
+    min-width: 200px;
+    
+}
+
+.autocomplete-container {
+    position: relative; /* Esto asegura que las sugerencias se ubiquen debajo del input */
+}
+
+.autocomplete-input {
     width: 100%;
     padding: 0.5rem 0.75rem;
     border: 1px solid var(--plata-industrial);
@@ -235,6 +242,72 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 0.8rem;
     transition: all 0.2s ease;
     background-color: white;
+}
+
+.autocomplete-input:focus {
+    outline: none;
+    border-color: var(--azul-petroleo);
+    box-shadow: 0 0 0 2px rgba(0, 59, 92, 0.1);
+}
+
+.autocomplete-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    background: white;
+    border: 1px solid var(--plata-industrial);
+    border-top: none;
+    border-radius: 0 0 0.25rem 0.25rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: none;
+}
+
+.autocomplete-suggestions div {
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.autocomplete-suggestions div:hover {
+    background-color: var(--blanco-neutro);
+}
+
+.autocomplete-suggestions .selected {
+    background-color: var(--azul-petroleo);
+    color: white;
+}
+
+/* Form fields */
+.form-group input[type="text"],
+.form-group input[type="date"],
+.form-group input[type="time"],
+.form-group input[type="number"],
+.form-group select,
+.form-group textarea,
+#applicant,
+.autocomplete-input {
+    width: 100%;
+    max-width: 400px; /* Consistent max width */
+    min-width: 200px; /* Minimum width to prevent squishing */
+    height: 38px; /* Consistent height */
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--plata-industrial);
+    border-radius: 0.25rem;
+    font-size: 0.8rem;
+    transition: all 0.2s ease;
+    background-color: white;
+    box-sizing: border-box;
+}
+
+/* Textarea specific styles */
+.form-group textarea {
+    min-height: 5rem;
+    resize: vertical;
+    height: auto; /* Override the fixed height for textareas */
 }
 
 .form-group input[type="text"]:focus,
@@ -274,6 +347,8 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Radio buttons y checkboxes */
 .radio-group {
+    max-width: 50%;
+    min-width: 200px;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -319,15 +394,21 @@ h1, h2, h3, h4, h5, h6 {
 .other-option {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.25rem;
+    font-size: 0.8rem;
+    width: 100%;
+    max-width: 50%;
+    min-width: 200px;
 }
 
 .other-input {
     flex: 1;
-    padding: 0.25rem 0.5rem;
+    padding: 0.4rem 0.5rem;
     border: 1px solid var(--plata-industrial);
     border-radius: 0.25rem;
     font-size: 0.8rem;
+    height: auto;
+    min-width: 0;
 }
 
 .other-input:disabled {
@@ -613,4 +694,9 @@ h1, h2, h3, h4, h5, h6 {
     .step:not(:last-child)::after {
         display: none;
     }
+}
+
+#equipment-details[disabled] {
+    opacity: 0.6;
+    pointer-events: none;
 }

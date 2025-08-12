@@ -6,7 +6,8 @@
     <title>Syncro</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Orbitron:wght@500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
-    <link rel="stylesheet" href="/CSS/EstiloJefe.css">
+    <link rel="stylesheet" href="/CSS/EstiloJefe.css"> 
+    
 </head>
 <body>
     <div class="app-container">
@@ -32,9 +33,11 @@
                     <li class="has-submenu">
                         <a href="#"><i class="ri-add-circle-line"></i> <span>Registrar</span> <i class="ri-arrow-down-s-line submenu-icon"></i></a>
                         <ul class="submenu">
-                            <li><a href="#"><i class="ri-building-2-line"></i> <span>Registrar Área</span></a></li>
-                            <li><a href="#"><i class="ri-community-line"></i> <span>Registrar Departamento</span></a></li>
-                            <li><a href="#"><i class="ri-user-settings-line"></i> <span>Registrar Supervisor</span></a></li>
+                             <li><a><span>área</span></a></li>
+                             <li><a><span>categoria</span></a></li>
+                             <li><a><span>sucursal</span></a></li>
+                             <li><a><span>departamento</span></a></li>
+                             <li><a><span>supervisor</span></a></li>
                         </ul>
                     </li>
                 </ul>
@@ -170,7 +173,7 @@
                                 <td><span class="status-badge active">Activo</span></td>
                                 <td>
                                     <button class="action-btn view"><i class="ri-eye-line"></i></button>
-                                    <button class="action-btn print"><i class="ri-printer-line"></i></button>
+                                    <button id="btnImprimir" class="action-btn print"><i class="ri-printer-line"></i></button>
                                 </td>
                             </tr>
                             <tr>
@@ -183,7 +186,7 @@
                                 <td><span class="status-badge completed">Terminado</span></td>
                                 <td>
                                     <button class="action-btn view"><i class="ri-eye-line"></i></button>
-                                    <button class="action-btn print"><i class="ri-printer-line"></i></button>
+                                    <button id="btnImprimir" class="action-btn print"><i class="ri-printer-line"></i></button>
                                 </td>
                             </tr>
                             <tr>
@@ -196,7 +199,7 @@
                                 <td><span class="status-badge canceled">Cancelado</span></td>
                                 <td>
                                     <button class="action-btn view"><i class="ri-eye-line"></i></button>
-                                    <button class="action-btn print"><i class="ri-printer-line"></i></button>
+                                    <button id="btnImprimir" class="action-btn print"><i class="ri-printer-line"></i></button>
                                 </td>
                             </tr>
                             <tr>
@@ -209,7 +212,7 @@
                                 <td><span class="status-badge continua">Continua</span></td>
                                 <td>
                                     <button class="action-btn view"><i class="ri-eye-line"></i></button>
-                                    <button class="action-btn print"><i class="ri-printer-line"></i></button>
+                                    <button id="btnImprimir" class="action-btn print"><i class="ri-printer-line"></i></button>
                                 </td>
                             </tr>
                             <tr>
@@ -222,7 +225,7 @@
                                 <td><span class="status-badge completed">Terminado</span></td>
                                 <td>
                                     <button class="action-btn view"><i class="ri-eye-line"></i></button>
-                                    <button class="action-btn print"><i class="ri-printer-line"></i></button>
+                                    <button id="btnImprimir" class="action-btn print"><i class="ri-printer-line"></i></button>
                                 </td>
                             </tr>
                         </tbody>
@@ -252,6 +255,11 @@
             </section>
         </main>
     </div>
+
+
+       
+    
+    
 
     <script src="/JS/MenuJefe.js"></script>
 </body>

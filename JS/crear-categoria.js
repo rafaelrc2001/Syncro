@@ -1,10 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Modal functionality
-    const registerBtn = document.getElementById('register-supervisor-btn');
-    const modal = document.getElementById('supervisor-modal');
+    const registerBtn = document.getElementById('register-categoria-btn');
+    const modal = document.getElementById('categoria-modal');
     const closeModalBtn = document.querySelector('.close-modal');
     const cancelBtn = document.querySelector('.cancel-btn');
-    const supervisorForm = document.getElementById('supervisor-form');
+    const categoriaForm = document.getElementById('categoria-form');
 
     // Open modal
     if (registerBtn) {
@@ -34,29 +34,23 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Form submission
-    if (supervisorForm) {
-        supervisorForm.addEventListener('submit', function(e) {
+    if (categoriaForm) {
+        categoriaForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
             // Get form values
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const extension = document.getElementById('extension').value;
-            const password = document.getElementById('password').value;
+            const categoriaName = document.getElementById('categoria-name').value;
+            const currentDate = new Date().toLocaleDateString();
 
             // Here you would typically send this data to a server
-            console.log('Registrando supervisor:', {
-                name, email, extension, password
-            });
+            console.log('Registrando categoria:', categoriaName);
 
             // For demo purposes, we'll just add to the table
             const tableBody = document.querySelector('#table-body');
             const newRow = document.createElement('tr');
             newRow.innerHTML = `
-                <td>${name}</td>
-                <td>${email}</td>
-                <td>${extension}</td>
-                <td>${password}</td>
+                <td>${categoriaName}</td>
+                <td>${currentDate}</td>
                 <td>
                     <button class="action-btn edit"><i class="ri-edit-line"></i></button>
                     <button class="action-btn delete"><i class="ri-delete-bin-line"></i></button>
@@ -71,11 +65,11 @@ document.addEventListener('DOMContentLoaded', function() {
             recordsCount.textContent = currentCount + 1;
 
             // Reset form and close modal
-            supervisorForm.reset();
+            categoriaForm.reset();
             closeModal();
 
             // Show success message
-            alert('Supervisor registrado exitosamente');
+            alert('Categoria registrada exitosamente');
         });
     }
 
@@ -84,22 +78,14 @@ document.addEventListener('DOMContentLoaded', function() {
         // Edit button
         if (e.target.closest('.action-btn.edit')) {
             const row = e.target.closest('tr');
-            const cells = row.querySelectorAll('td');
+            const categoriaName = row.querySelector('td:first-child').textContent;
             
-            // Get current values
-            const name = cells[0].textContent;
-            const password = cells[1].textContent;
-            const email = cells[2].textContent;
-            const extension = cells[3].textContent;
             
             // Fill modal with current values
-            document.getElementById('name').value = name;
-            document.getElementById('email').value = email;
-            document.getElementById('extension').value = extension;
-            document.getElementById('password').value = password;
+            document.getElementById('categoria-name').value = categoriaName;
             
             // Change modal title and button
-            document.querySelector('.modal-header h3').innerHTML = '<i class="ri-edit-line"></i> Editar Supervisor';
+            document.querySelector('.modal-header h3').innerHTML = '<i class="ri-edit-line"></i> Editar Categoria';
             document.querySelector('.modal-body button[type="submit"]').textContent = 'Guardar Cambios';
             
             // Open modal
@@ -111,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Delete button
         if (e.target.closest('.action-btn.delete')) {
-            if (confirm('¿Estás seguro que deseas eliminar este supervisor?')) {
+            if (confirm('¿Estás seguro que deseas eliminar esta Categoria?')) {
                 const row = e.target.closest('tr');
                 row.remove();
                 
@@ -120,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const currentCount = parseInt(recordsCount.textContent);
                 recordsCount.textContent = currentCount - 1;
                 
-                alert('Supervisor eliminado exitosamente');
+                alert('Categoria eliminada exitosamente');
             }
         }
     });
@@ -128,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Update MenuJefe.js functionality for this page
     const currentPath = window.location.pathname.toLowerCase();
     const menuRoutes = {
-       'dashboard': '/Modules/JefeSeguridad/Dash-Jefe.html',
+        'dashboard': '/Modules/JefeSeguridad/Dash-Jefe.html',
         'autorizar permisos': '/Modules/JefeSeguridad/JefeSeguridad.html',
         'área': '/Modules/JefeSeguridad/CrearArea.html',
         'categoria': '/Modules/JefeSeguridad/CrearCategoria.html',

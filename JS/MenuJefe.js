@@ -3,9 +3,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const menuRoutes = {
         'dashboard': '/Modules/JefeSeguridad/Dash-Jefe.html',
         'autorizar permisos': '/Modules/JefeSeguridad/JefeSeguridad.html',
-        'registrar área': '/Modules/JefeSeguridad/CrearArea.html',
-        'registrar departamento': '/Modules/JefeSeguridad/CrearDepartamento.html',
-        'registrar supervisor': '/Modules/JefeSeguridad/CrearSupervisor.html'
+        'área': '/Modules/JefeSeguridad/CrearArea.html',
+        'categoria': '/Modules/JefeSeguridad/CrearCategoria.html',
+        'sucursal': '/Modules/JefeSeguridad/CrearSucursal.html',
+        'departamento': '/Modules/JefeSeguridad/CrearDepartamento.html',
+        'supervisor': '/Modules/JefeSeguridad/CrearSupervisor.html'
     };
     
 
@@ -68,20 +70,13 @@ document.addEventListener('DOMContentLoaded', function() {
             menuItems.forEach(item => {
                 item.parentElement.classList.remove('active');
             });
-            
+
             // Marcar el elemento actual como activo
             parentLi.classList.add('active');
-            
-            // Si es un submenú, marcar también el menú padre
+
+            // Si es un submenú, solo expandir el menú padre (sin marcarlo como activo)
             if (parentMenu) {
-                // No marcar el menú 'Registro' como activo, solo el submenú
-                parentMenu.classList.add('active');
-                
-                // Si el menú padre es 'Registro', quitamos la clase 'active' del enlace principal
-                const registroLink = parentMenu.querySelector('a[href*="registro"]');
-                if (registroLink) {
-                    registroLink.parentElement.classList.remove('active');
-                }
+                parentMenu.classList.add('active'); // Solo para expandir, no para resaltar
             }
         }
     }
@@ -145,15 +140,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // 4. Print Button Functionality
-    const printButtons = document.querySelectorAll('.action-btn.print');
-    printButtons.forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            const permitId = this.closest('tr').querySelector('td:first-child').textContent;
-            alert(`Imprimiendo permiso: ${permitId}`);
-        });
-    });
+    // 4. Print Button Functionality - Manejado por LogicaImprimir.js
+    // El manejo de los botones de impresión se ha movido a LogicaImprimir.js
     
     // 5. Logout button
     const logoutBtn = document.querySelector('.logout-btn');
@@ -200,4 +188,12 @@ document.addEventListener('DOMContentLoaded', function() {
             recordsCount.textContent = count;
         }
     }
+    
+    document.querySelectorAll('.submenu li a').forEach(item => {
+        item.addEventListener('click', function() {
+            document.querySelectorAll('.submenu li').forEach(li => li.classList.remove('active'));
+            this.parentElement.classList.add('active');
+        });
+    });
 });
+

@@ -760,6 +760,21 @@ td {
     color: rgba(255, 255, 255, 0.7);
 }
 
+/* SOLO la opción seleccionada del submenú se pinta */
+.sidebar-nav .submenu li.active a {
+    background: linear-gradient(to right, var(--naranja-seguridad) 6px, transparent 6px);
+    color: white;
+    border-left: 4px solid var(--naranja-seguridad);
+}
+
+/* Las demás opciones del submenú NO se pintan */
+.sidebar-nav .submenu li a {
+    background: transparent;
+    color: rgba(255, 255, 255, 0.7);
+    border-left: none;
+    transition: background 0.2s, color 0.2s, border-left 0.2s;
+}
+
 .sidebar-nav .submenu li a i {
     font-size: 0.9rem;
 }

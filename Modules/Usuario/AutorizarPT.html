@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Orbitron:wght@500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="/CSS/EstiloGeneral.css">
+    <link rel="stylesheet" href="/CSS/EstiloImprimir.css">
 </head>
 <body>
     <div class="app-container">
@@ -166,8 +167,8 @@
                                 <td>17/07/2023 14:35:12</td>
                                 <td><span class="status-badge active">Activo</span></td>
                                 <td>
-                                    <button class="action-btn view"><i class="ri-eye-line"></i></button>
-                                    <button class="action-btn print"><i class="ri-printer-line"></i></button>
+                                    <button id="btnVer"class="action-btn view ver-permiso"><i class="ri-eye-line"></i></button>
+                                    <button id="btnImprimir" class="action-btn print"><i class="ri-printer-line"></i></button>
                                 </td>
                             </tr>
                             <tr>
@@ -179,8 +180,8 @@
                                 <td>17/07/2023 15:25:12</td>
                                 <td><span class="status-badge completed">Terminado</span></td>
                                 <td>
-                                    <button class="action-btn view"><i class="ri-eye-line"></i></button>
-                                    <button class="action-btn print"><i class="ri-printer-line"></i></button>
+                                    <button id="btnVer"class="action-btn view ver-permiso"><i class="ri-eye-line"></i></button>
+                                    <button id="btnImprimir" class="action-btn print"><i class="ri-printer-line"></i></button>
                                 </td>
                             </tr>
                             <tr>
@@ -192,8 +193,8 @@
                                 <td>17/07/2023 04:53:10</td>
                                 <td><span class="status-badge canceled">Cancelado</span></td>
                                 <td>
-                                    <button class="action-btn view"><i class="ri-eye-line"></i></button>
-                                    <button class="action-btn print"><i class="ri-printer-line"></i></button>
+                                    <button id="btnVer"class="action-btn view ver-permiso"><i class="ri-eye-line"></i></button>
+                                    <button id="btnImprimir" class="action-btn print"><i class="ri-printer-line"></i></button>
                                 </td>
                             </tr>
                             <tr>
@@ -205,8 +206,8 @@
                                 <td>17/07/2023 14:35:01</td>
                                 <td><span class="status-badge continua">Continua</span></td>
                                 <td>
-                                    <button class="action-btn view"><i class="ri-eye-line"></i></button>
-                                    <button class="action-btn print"><i class="ri-printer-line"></i></button>
+                                    <button id="btnVer"class="action-btn view ver-permiso"><i class="ri-eye-line"></i></button>
+                                    <button id="btnImprimir" class="action-btn print"><i class="ri-printer-line"></i></button>
                                 </td>
                             </tr>
                             <tr>
@@ -218,8 +219,8 @@
                                 <td>10/07/2023 14:38:12</td>
                                 <td><span class="status-badge wait-area">Espera área</span></td>
                                 <td>
-                                    <button class="action-btn view"><i class="ri-eye-line"></i></button>
-                                    <button class="action-btn print"><i class="ri-printer-line"></i></button>
+                                    <button id="btnVer"class="action-btn view ver-permiso"><i class="ri-eye-line"></i></button>
+                                    <button id="btnImprimir" class="action-btn print"><i class="ri-printer-line"></i></button>
                                 </td>
                             </tr>
                         </tbody>
@@ -250,6 +251,119 @@
         </main>
     </div>
 
+
+    
+
+
+     <!-- Modal de selección de imprimir -->
+     <div id="modalImprimir" class="modal" hidden>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Imprimir Permiso</h2>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <h2>PERMISO DE TRABAJO NO PELIGROSO</h2>
+                    <p>Número de permiso: PT-NP-2023-0042</p>
+                </div>
+                
+                <div>
+                    <div>
+                        <div>Planta o lugar de trabajo:</div>
+                        <div>UREA II</div>
+                    </div>
+                    
+                    <div>
+                        <div>Nombre de quien solicita:</div>
+                        <div>Ing. Juan Pérez Martínez</div>
+                    </div>
+                    
+                    <div>
+                        <div>Tipo de mantenimiento:</div>
+                        <div>PREVENTIVO</div>
+                    </div>
+                    
+                    <div>
+                        <div>O.T. No.:</div>
+                        <div>OT-2023-0428</div>
+                    </div>
+                    
+                    <div>
+                        <div>Equipo a Intervenir:</div>
+                        <div>Bomba centrífuga P-2105</div>
+                    </div>
+                    
+                    <div>
+                        <div>Hora de inicio:</div>
+                        <div>08:30 AM</div>
+                    </div>
+                    
+                    <div>
+                        <div>TAG:</div>
+                        <div>BP-2105-001</div>
+                    </div>
+                    
+                    <div>
+                        <div>Fecha:</div>
+                        <div>15/11/2023</div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3>Condiciones actuales del equipo</h3>
+                </div>
+                
+                <div>
+                    <div>
+                        <div>Fluido:</div>
+                        <div>Amoníaco</div>
+                    </div>
+                    
+                    <div>
+                        <div>Presión:</div>
+                        <div>0 bar (equipo aislado)</div>
+                    </div>
+                    
+                    <div>
+                        <div>Temperatura:</div>
+                        <div>Ambiente (25°C)</div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div>
+                        <div></div>
+                        <div>Nombre y firma del solicitante</div>
+                        <div>Ing. Juan Pérez Martínez</div>
+                    </div>
+                    
+                    <div>
+                        <div></div>
+                        <div>Nombre y firma del supervisor</div>
+                        <div>Ing. Carlos Rodríguez</div>
+                    </div>
+                    
+                    <div>
+                        <div></div>
+                        <div>Nombre y firma del ejecutor</div>
+                        <div>Téc. Luis González</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="print-actions">
+                    <button class="btn primary print-button">
+                        <i class="ri-printer-line"></i> Imprimir Permiso
+                    </button>
+                    <button class="btn secondary close-print no-print">
+                        <i class="ri-close-line"></i> Cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="/JS/MenuUsuario.js"></script>
+    <script src="../../JS/LogicaImprimir.js"></script>
 </body>
 </html>

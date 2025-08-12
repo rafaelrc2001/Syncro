@@ -1,0 +1,1076 @@
+
+/* ESTE VA A REMPLAZAR A LA PARTE DE LAS TABLAS */
+
+
+/* Base Styles */
+:root {
+    --azul-petroleo: #003B5C;
+    --gris-acero: #4A4A4A;
+    --plata-industrial: #B0BEC5;
+    --naranja-seguridad: #FF6F00;
+    --verde-tecnico: #00BFA5;
+    --blanco-neutro: #F5F5F5;
+    --negro-carbon: #1C1C1C;
+    --rojo-alerta: #D32F2F;
+}
+
+
+/***************************************************************************************************** 
+********************************************Modal Styles**********************************************
+******************************************************************************************************/
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    padding: 20px;
+    background-color: var(--azul-petroleo);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    color: white;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--gris-acero);
+    font-size: 0.9rem;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid var(--plata-industrial);
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--azul-petroleo);
+    box-shadow: 0 0 0 2px rgba(0, 59, 92, 0.2);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.cancel-btn {
+    background-color: var(--plata-industrial);
+    color: var(--gris-acero);
+}
+
+.cancel-btn:hover {
+    background-color: #9E9E9E;
+    color: white;
+}
+
+
+/***************************************************************************************************** 
+********************************************Botones**********************************************
+******************************************************************************************************/
+
+
+/* Action buttons */
+.action-btn.edit {
+    color: var(--azul-petroleo);
+}
+
+.action-btn.edit:hover {
+    background-color: rgba(0, 59, 92, 0.1);
+}
+
+.action-btn.delete {
+    color: var(--rojo-alerta);
+}
+
+.action-btn.delete:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Ajusta el espacio del botón "Registrar Categoría" */
+.actions-section {
+    margin-top: 20px;  /* Separa el botón del encabezado */
+    margin-bottom: 15px; /* Espacio entre el botón y la tabla */
+}
+
+/* Opcional: Ajusta el padding del botón para mejor proporción */
+#register-categoria-btn {
+    padding: 10px 15px;
+}
+
+/* Estilos responsive */
+@media (max-width: 768px) {
+    table {
+        display: block;
+        overflow-x: auto;
+    }
+    
+    .table-footer {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .records-counter {
+        order: 2;
+    }
+}
+
+
+
+
+
+/***************************************************************************************************** 
+****************************Estilos específicos para la tabla de categorías***************************
+******************************************************************************************************/
+
+/* ====================== */
+/* CONTENEDOR PRINCIPAL */
+/* ====================== */
+.categoria-table-container {
+    width: fit-content;
+    max-width: 1200px;
+    min-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border: 2px solid var(--plata-industrial);
+}
+
+/* ====================== */
+/* ESTILOS DE TABLA */
+/* ====================== */
+#categorias-table {
+    width: 100%;
+    font-size: 0.9rem;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 15px 15px; /* Celdas más grandes */
+    vertical-align: middle; /* Centrado vertical */
+    text-align: center; /* Centrado horizontal */
+    border-bottom: 0px solid var(--plata-industrial);
+    min-width: 100px; /* Ancho mínimo por columna */
+}
+
+th {
+    font-size: 0.85rem; /* Encabezados más legibles */
+    padding: 14px 16px; /* Más altura en encabezados */
+}
+
+#categorias-table th {
+    background-color: var(--azul-petroleo);
+    color: white;
+    font-size: 0.85rem;
+    padding: 14px 16px;
+}
+
+/* Columna de acciones */
+#categorias-table td:last-child {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* ====================== */
+/* BOTONES DE ACCIÓN */
+/* ====================== */
+.action-btn {
+    padding: 8px 10px;
+    font-size: 0.95rem;
+    margin: 0 4px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.action-btn.edit {
+    color: var(--azul-petroleo);
+}
+
+.action-btn.delete {
+    color: var(--rojo-alerta);
+}
+
+/* ====================== */
+/* FOOTER REORGANIZADO */
+/* ====================== */
+.categoria-table-footer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    padding: 12px 0;
+    font-size: 0.8rem;
+    background: transparent;
+}
+
+/* Paginación (izquierda) */
+.pagination {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.pagination-btn {
+    padding: 4px 8px;
+    border: 1px solid var(--azul-petroleo);
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.pagination-btn.active {
+    background: var(--azul-petroleo);
+    color: white;
+    border-color: var(--azul-petroleo);
+}
+
+/* Contador (centro) */
+.records-counter {
+    padding: 0 10px;
+    white-space: nowrap;
+    color: var(--blanco-neutro);
+    font-size: 0.75rem;
+}
+
+/* Selector (derecha) */
+.items-per-page {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.items-per-page select {
+    padding: 4px 6px;
+    border: 1px solid var(--plata-industrial);
+    border-radius: 4px;
+    font-size: 0.75rem;
+}
+
+/* ====================== */
+/* RESPONSIVE */
+/* ====================== */
+@media (max-width: 992px) {
+    .categoria-table-container {
+        min-width: 90%;
+    }
+}
+
+@media (max-width: 768px) {
+    .categoria-table-container {
+        min-width: 95%;
+        padding: 15px;
+    }
+    
+    #categorias-table td:last-child {
+        flex-wrap: wrap;
+    }
+    
+    .categoria-table-footer {
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
+    
+    .records-counter {
+        order: 1;
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 576px) {
+    #categorias-table th,
+    #categorias-table td {
+        padding: 10px 8px;
+        font-size: 0.8rem;
+    }
+    
+    .action-btn {
+        padding: 6px 8px;
+    }
+}
+
+/*me falta el area form*/
+
+
+
+/***************************************************************************************************** 
+****************************Estilos específicos para la tabla de Areas***************************
+******************************************************************************************************/
+
+/* ====================== */
+/* CONTENEDOR PRINCIPAL */
+/* ====================== */
+.area-table-container {
+    width: fit-content;
+    max-width: 1200px;
+    min-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border: 2px solid var(--plata-industrial);
+}
+
+/* ====================== */
+/* ESTILOS DE TABLA */
+/* ====================== */
+#area-table {
+    width: 100%;
+    font-size: 0.9rem;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 15px 15px; /* Celdas más grandes */
+    vertical-align: middle; /* Centrado vertical */
+    text-align: center; /* Centrado horizontal */
+    border-bottom: 0px solid var(--plata-industrial);
+    min-width: 100px; /* Ancho mínimo por columna */
+}
+
+th {
+    font-size: 0.85rem; /* Encabezados más legibles */
+    padding: 14px 16px; /* Más altura en encabezados */
+}
+
+#area-table th {
+    background-color: var(--azul-petroleo);
+    color: white;
+    font-size: 0.85rem;
+    padding: 14px 16px;
+}
+
+/* Columna de acciones */
+#area-table td:last-child {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* ====================== */
+/* BOTONES DE ACCIÓN */
+/* ====================== */
+.action-btn {
+    padding: 8px 10px;
+    font-size: 0.95rem;
+    margin: 0 4px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.action-btn.edit {
+    color: var(--azul-petroleo);
+}
+
+.action-btn.delete {
+    color: var(--rojo-alerta);
+}
+
+/* ====================== */
+/* FOOTER REORGANIZADO */
+/* ====================== */
+.area-table-footer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    padding: 12px 0;
+    font-size: 0.8rem;
+    background: transparent;
+}
+
+/* Paginación (izquierda) */
+.pagination {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.pagination-btn {
+    padding: 4px 8px;
+    border: 1px solid var(--azul-petroleo);
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.pagination-btn.active {
+    background: var(--azul-petroleo);
+    color: white;
+    border-color: var(--azul-petroleo);
+}
+
+/* Contador (centro) */
+.records-counter {
+    padding: 0 10px;
+    white-space: nowrap;
+    color: var(--blanco-neutro);
+    font-size: 0.75rem;
+}
+
+/* Selector (derecha) */
+.items-per-page {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.items-per-page select {
+    padding: 4px 6px;
+    border: 1px solid var(--plata-industrial);
+    border-radius: 4px;
+    font-size: 0.75rem;
+}
+
+/* ====================== */
+/* RESPONSIVE */
+/* ====================== */
+@media (max-width: 992px) {
+    .area-table-container {
+        min-width: 90%;
+    }
+}
+
+@media (max-width: 768px) {
+    .area-table-container {
+        min-width: 95%;
+        padding: 15px;
+    }
+    
+    #area-table td:last-child {
+        flex-wrap: wrap;
+    }
+    
+    .area-table-footer {
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
+    
+    .records-counter {
+        order: 1;
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 576px) {
+    #area-table th,
+    #area-table td {
+        padding: 10px 8px;
+        font-size: 0.8rem;
+    }
+    
+    .action-btn {
+        padding: 6px 8px;
+    }
+}
+
+/***************************************************************************************************** 
+****************************Estilos específicos para la tabla de Departamentos***************************
+******************************************************************************************************/
+
+/* ====================== */
+/* CONTENEDOR PRINCIPAL */
+/* ====================== */
+.departamento-table-container {
+    width: fit-content;
+    max-width: 1200px;
+    min-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border: 2px solid var(--plata-industrial);
+}
+
+/* ====================== */
+/* ESTILOS DE TABLA */
+/* ====================== */
+#departamento-table {
+    width: 100%;
+    font-size: 0.9rem;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 15px 15px; /* Celdas más grandes */
+    vertical-align: middle; /* Centrado vertical */
+    text-align: center; /* Centrado horizontal */
+    border-bottom: 0px solid var(--plata-industrial);
+    min-width: 100px; /* Ancho mínimo por columna */
+}
+
+th {
+    font-size: 0.85rem; /* Encabezados más legibles */
+    padding: 14px 16px; /* Más altura en encabezados */
+}
+
+#departamento-table th {
+    background-color: var(--azul-petroleo);
+    color: white;
+    font-size: 0.85rem;
+    padding: 14px 16px;
+}
+
+/* Columna de acciones */
+#departamento-table td:last-child {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* ====================== */
+/* BOTONES DE ACCIÓN */
+/* ====================== */
+.action-btn {
+    padding: 8px 10px;
+    font-size: 0.95rem;
+    margin: 0 4px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.action-btn.edit {
+    color: var(--azul-petroleo);
+}
+
+.action-btn.delete {
+    color: var(--rojo-alerta);
+}
+
+/* ====================== */
+/* FOOTER REORGANIZADO */
+/* ====================== */
+.departamento-table-footer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    padding: 12px 0;
+    font-size: 0.8rem;
+    background: transparent;
+}
+
+/* Paginación (izquierda) */
+.pagination {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.pagination-btn {
+    padding: 4px 8px;
+    border: 1px solid var(--azul-petroleo);
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.pagination-btn.active {
+    background: var(--azul-petroleo);
+    color: white;
+    border-color: var(--azul-petroleo);
+}
+
+/* Contador (centro) */
+.records-counter {
+    padding: 0 10px;
+    white-space: nowrap;
+    color: var(--blanco-neutro);
+    font-size: 0.75rem;
+}
+
+/* Selector (derecha) */
+.items-per-page {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.items-per-page select {
+    padding: 4px 6px;
+    border: 1px solid var(--plata-industrial);
+    border-radius: 4px;
+    font-size: 0.75rem;
+}
+
+/* ====================== */
+/* RESPONSIVE */
+/* ====================== */
+@media (max-width: 992px) {
+    .departamento-table-container {
+        min-width: 90%;
+    }
+}
+
+@media (max-width: 768px) {
+    .departamento-table-container {
+        min-width: 95%;
+        padding: 15px;
+    }
+    
+    #departamento-table td:last-child {
+        flex-wrap: wrap;
+    }
+    
+    .departamento-table-footer {
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
+    
+    .records-counter {
+        order: 1;
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 576px) {
+    #departamento-table th,
+    #departamento-table td {
+        padding: 10px 8px;
+        font-size: 0.8rem;
+    }
+    
+    .action-btn {
+        padding: 6px 8px;
+    }
+}
+
+/***************************************************************************************************** 
+****************************Estilos específicos para la tabla de Supervisor***************************
+******************************************************************************************************/
+
+/* ====================== */
+/* CONTENEDOR PRINCIPAL */
+/* ====================== */
+.supervisor-table-container {
+    width: fit-content;
+    max-width: 1200px;
+    min-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border: 2px solid var(--plata-industrial);
+}
+
+/* ====================== */
+/* ESTILOS DE TABLA */
+/* ====================== */
+#supervisor-table {
+    width: 100%;
+    font-size: 0.9rem;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 15px 15px; /* Celdas más grandes */
+    vertical-align: middle; /* Centrado vertical */
+    text-align: center; /* Centrado horizontal */
+    border-bottom: 0px solid var(--plata-industrial);
+    min-width: 100px; /* Ancho mínimo por columna */
+}
+
+th {
+    font-size: 0.85rem; /* Encabezados más legibles */
+    padding: 14px 16px; /* Más altura en encabezados */
+}
+
+#supervisor-table th {
+    background-color: var(--azul-petroleo);
+    color: white;
+    font-size: 0.85rem;
+    padding: 14px 16px;
+}
+
+/* Columna de acciones */
+#supervisor-table td:last-child {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* ====================== */
+/* BOTONES DE ACCIÓN */
+/* ====================== */
+.action-btn {
+    padding: 8px 10px;
+    font-size: 0.95rem;
+    margin: 0 4px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.action-btn.edit {
+    color: var(--azul-petroleo);
+}
+
+.action-btn.delete {
+    color: var(--rojo-alerta);
+}
+
+/* ====================== */
+/* FOOTER REORGANIZADO */
+/* ====================== */
+.supervisor-table-footer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    padding: 12px 0;
+    font-size: 0.8rem;
+    background: transparent;
+}
+
+/* Paginación (izquierda) */
+.pagination {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.pagination-btn {
+    padding: 4px 8px;
+    border: 1px solid var(--azul-petroleo);
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.pagination-btn.active {
+    background: var(--azul-petroleo);
+    color: white;
+    border-color: var(--azul-petroleo);
+}
+
+/* Contador (centro) */
+.records-counter {
+    padding: 0 10px;
+    white-space: nowrap;
+    color: var(--blanco-neutro);
+    font-size: 0.75rem;
+}
+
+/* Selector (derecha) */
+.items-per-page {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.items-per-page select {
+    padding: 4px 6px;
+    border: 1px solid var(--plata-industrial);
+    border-radius: 4px;
+    font-size: 0.75rem;
+}
+
+/* ====================== */
+/* RESPONSIVE */
+/* ====================== */
+@media (max-width: 992px) {
+    .supervisor-table-container {
+        min-width: 90%;
+    }
+}
+
+@media (max-width: 768px) {
+    .supervisor-table-container {
+        min-width: 95%;
+        padding: 15px;
+    }
+    
+    #supervisor-table td:last-child {
+        flex-wrap: wrap;
+    }
+    
+    .supervisor-table-footer {
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
+    
+    .records-counter {
+        order: 1;
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 576px) {
+    #supervisor-table th,
+    #supervisor-table td {
+        padding: 10px 8px;
+        font-size: 0.8rem;
+    }
+    
+    .action-btn {
+        padding: 6px 8px;
+    }
+}
+
+/***************************************************************************************************** 
+****************************Estilos específicos para la tabla de Sucursales***************************
+******************************************************************************************************/
+
+
+
+/* ====================== */
+/* CONTENEDOR PRINCIPAL */
+/* ====================== */
+.sucursal-table-container {
+    width: fit-content;
+    max-width: 1200px;
+    min-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border: 2px solid var(--plata-industrial);
+}
+
+/* ====================== */
+/* ESTILOS DE TABLA */
+/* ====================== */
+#sucursal-table {
+    width: 100%;
+    font-size: 0.9rem;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 15px 15px; /* Celdas más grandes */
+    vertical-align: middle; /* Centrado vertical */
+    text-align: center; /* Centrado horizontal */
+    border-bottom: 0px solid var(--plata-industrial);
+    min-width: 100px; /* Ancho mínimo por columna */
+}
+
+th {
+    font-size: 0.85rem; /* Encabezados más legibles */
+    padding: 14px 16px; /* Más altura en encabezados */
+}
+
+#sucursal-table th {
+    background-color: var(--azul-petroleo);
+    color: white;
+    font-size: 0.85rem;
+    padding: 14px 16px;
+}
+
+/* Columna de acciones */
+#sucursal-table td:last-child {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* ====================== */
+/* BOTONES DE ACCIÓN */
+/* ====================== */
+.action-btn {
+    padding: 8px 10px;
+    font-size: 0.95rem;
+    margin: 0 4px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.action-btn.edit {
+    color: var(--azul-petroleo);
+}
+
+.action-btn.delete {
+    color: var(--rojo-alerta);
+}
+
+/* ====================== */
+/* FOOTER REORGANIZADO */
+/* ====================== */
+.sucursal-table-footer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    padding: 12px 0;
+    font-size: 0.8rem;
+    background: transparent;
+}
+
+/* Paginación (izquierda) */
+.pagination {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.pagination-btn {
+    padding: 4px 8px;
+    border: 1px solid var(--azul-petroleo);
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.pagination-btn.active {
+    background: var(--azul-petroleo);
+    color: white;
+    border-color: var(--azul-petroleo);
+}
+
+/* Contador (centro) */
+.records-counter {
+    padding: 0 10px;
+    white-space: nowrap;
+    color: var(--blanco-neutro);
+    font-size: 0.75rem;
+}
+
+/* Selector (derecha) */
+.items-per-page {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.items-per-page select {
+    padding: 4px 6px;
+    border: 1px solid var(--plata-industrial);
+    border-radius: 4px;
+    font-size: 0.75rem;
+}
+
+/* ====================== */
+/* RESPONSIVE */
+/* ====================== */
+@media (max-width: 992px) {
+    .sucursal-table-container {
+        min-width: 90%;
+    }
+}
+
+@media (max-width: 768px) {
+    .sucursal-table-container {
+        min-width: 95%;
+        padding: 15px;
+    }
+    
+    #sucursal-table td:last-child {
+        flex-wrap: wrap;
+    }
+    
+    .sucursal-table-footer {
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
+    
+    .records-counter {
+        order: 1;
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 576px) {
+    #sucursal-table th,
+    #sucursal-table td {
+        padding: 10px 8px;
+        font-size: 0.8rem;
+    }
+    
+    .action-btn {
+        padding: 6px 8px;
+    }
+}

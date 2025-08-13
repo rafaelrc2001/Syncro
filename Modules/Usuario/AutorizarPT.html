@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Orbitron:wght@500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="/CSS/EstiloGeneral.css">
-    <link rel="stylesheet" href="/CSS/EstiloImprimir.css">
+    <link rel="stylesheet" href="/CSS/EstiloVer.css">
 </head>
 <body>
     <div class="app-container">
@@ -41,7 +41,7 @@
                     <div class="avatar">JP</div>
                     <div class="user-info">
                         <span class="name">Juan Pérez</span>
-                        <span class="role">Supervisor</span>
+                        <span class="role">Usuario</span>
                     </div>
                 </div>
                 <button class="logout-btn"><i class="ri-logout-box-r-line"></i></button>
@@ -165,7 +165,7 @@
                                 <td>Sistemas</td>
                                 <td>Juan Pérez</td>
                                 <td>17/07/2023 14:35:12</td>
-                                <td><span class="status-badge active">Activo</span></td>
+                                <td><span class="status-badge wait-area">Por Autorizar</span></td>
                                 <td>
                                     <button id="btnVer"class="action-btn view ver-permiso"><i class="ri-eye-line"></i></button>
                                     <button id="btnImprimir" class="action-btn print"><i class="ri-printer-line"></i></button>
@@ -178,7 +178,7 @@
                                 <td>Electrico</td>
                                 <td>María García</td>
                                 <td>17/07/2023 15:25:12</td>
-                                <td><span class="status-badge completed">Terminado</span></td>
+                                <td><span class="status-badge wait-area">Por Autorizar</span></td>
                                 <td>
                                     <button id="btnVer"class="action-btn view ver-permiso"><i class="ri-eye-line"></i></button>
                                     <button id="btnImprimir" class="action-btn print"><i class="ri-printer-line"></i></button>
@@ -191,7 +191,7 @@
                                 <td>Almacen</td>
                                 <td>María García</td>
                                 <td>17/07/2023 04:53:10</td>
-                                <td><span class="status-badge canceled">Cancelado</span></td>
+                                <td><span class="status-badge wait-area">Por Autorizar</span></td>
                                 <td>
                                     <button id="btnVer"class="action-btn view ver-permiso"><i class="ri-eye-line"></i></button>
                                     <button id="btnImprimir" class="action-btn print"><i class="ri-printer-line"></i></button>
@@ -204,7 +204,7 @@
                                 <td>Sistemas</td>
                                 <td>Ana Martínez</td>
                                 <td>17/07/2023 14:35:01</td>
-                                <td><span class="status-badge continua">Continua</span></td>
+                                <td><span class="status-badge wait-area">Por Autorizar</span></td>
                                 <td>
                                     <button id="btnVer"class="action-btn view ver-permiso"><i class="ri-eye-line"></i></button>
                                     <button id="btnImprimir" class="action-btn print"><i class="ri-printer-line"></i></button>
@@ -217,7 +217,7 @@
                                 <td>Producción</td>
                                 <td>Carlos López</td>
                                 <td>10/07/2023 14:38:12</td>
-                                <td><span class="status-badge wait-area">Espera área</span></td>
+                                <td><span class="status-badge wait-area">Por Autorizar</span></td>
                                 <td>
                                     <button id="btnVer"class="action-btn view ver-permiso"><i class="ri-eye-line"></i></button>
                                     <button id="btnImprimir" class="action-btn print"><i class="ri-printer-line"></i></button>
@@ -363,7 +363,278 @@
         </div>
     </div>
 
+
+      <!-- Modal de ver -->
+<div id="modalVer" class="modal">
+    <div class="modal-content executive-view">
+        <!-- Header del Modal -->
+        <div class="modal-header">
+            <div class="permit-title">
+                <h2>PERMISO DE TRABAJO NO PELIGROSO</h2>
+                <div class="permit-number">No. GSI-SI-FO-002 PERMISO DE TRABAJO NO PELIGROSO</div>
+            </div>
+            <span class="close-modal">&times;</span>
+        </div>
+
+        <!-- Cuerpo del Modal -->
+        <div class="modal-body">
+            <!-- Sección 1: Información General -->
+            <div class="executive-section">
+                <div class="section-header">
+                    <i class="ri-information-line"></i>
+                    <h3>Información General</h3>
+                </div>
+                <div class="executive-grid">
+                    <div class="executive-item">
+                        <label>Fecha:</label>
+                        <p class="highlight">15/07/2023</p>
+                    </div>
+                    <div class="executive-item">
+                        <label>Empresa:</label>
+                        <p>PRO-AGROINDUSTRIA</p>
+                    </div>
+                    <div class="executive-item">
+                        <label>Sucursal:</label>
+                        <p>Área 6</p>
+                    </div>
+                    <div class="executive-item">
+                        <label>Área:</label>
+                        <p class="highlight">UREA I</p>
+                    </div>
+                    
+                    <div class="executive-item">
+                        <label>Solicitante:</label>
+                        <p>Ing. Luis Torres</p>
+
+                    </div>
+                    <div class="executive-item full-width">
+                        <label>Descripción del trabajo:</label>
+                        <p class="description-box">Mantenimiento preventivo a válvulas de control en línea de producción principal.</p>
+                    </div>                  
+                    
+
+                </div>
+            </div>
+
+            <!-- Sección 2: Detalles Técnicos -->
+            <div class="executive-section">
+                <div class="section-header">
+                    <i class="ri-tools-line"></i>
+                    <h3>Permiso de Trabajo</h3>
+                </div>
+                <div class="executive-grid">
+
+                    <div class="executive-item">
+                        <label>Planta o Lugar de Trabajo</label>
+                        <p>Urea 1</p>
+                    </div>
+                    <div class="executive-item">
+                        <label>Tipo de actividad:</label>
+                        <p>PREVENTIVO</p>
+                    </div>
+                    <div class="executive-item">
+                        <label>O.T. No.:</label>
+                        <p>MT-2023-0456</p>
+                    </div>
+                    <div class="executive-item">
+                        <label>Equipo:</label>
+                        <p>Válvula FC-205</p>
+                    </div>
+                    <div class="executive-item">
+                        <label>TAG:</label>
+                        <p>TV-205A</p>
+                    </div>
+                    <div class="executive-item">
+                        <label>Horario:</label>
+                        <p>08:00 - 16:00 hrs</p>
+                    </div>
+                    <div class="executive-item">
+                        <label>Fluido:</label>
+                        <p>  8  </p>
+                    </div>
+                    <div class="executive-item">
+                        <label>Presion:</label>
+                        <p>  5 kg  </p>
+                    </div>
+                    <div class="executive-item">
+                        <label>Temperatura:</label>
+                        <p>  16c  </p>
+                    </div>
+
+                </div>
+          
+                
+                
+            </div>
+
+          <div class="executive-section">
+            <div class="section-header">
+                <i class="ri-shield-check-line"></i>
+                <h3>AST - Análisis de Seguridad en el Trabajo</h3>
+            </div>
+            <div class="ast-summary">
+                <table class="ast-table">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Secuencia de la Actividad</th>
+                            <th>Personal Ejecutor</th>
+                            <th>Peligros Potenciales</th>
+                            <th>Descripción</th>
+                            <th>Responsable</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Mantenimiento de válvula</td>
+                            <td>Juan Pérez</td>
+                            <td>Fluidos a presión</td>
+                            <td>Uso de EPP, bloqueo de línea</td>
+                            <td>Ingeniero Pedro Perez</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Cerrado de válvula</td>
+                            <td>Juan Pez</td>
+                            <td>Presión</td>
+                            <td>Uso de EPP, bloqueo de línea</td>
+                            <td>Ingeniero Angel Antonio</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="safety-grid">
+                <div class="safety-item">
+                    <h4><i class="ri-shield-user-line"></i> EPP Requerido</h4>
+                    <ul class="safety-list">
+                        <li>Casco de seguridad</li>
+                        <li>Lentes de protección</li>
+                        <li>Guantes antiimpacto</li>
+                        <li>Calzado de seguridad</li>
+                    </ul>
+                </div>
+                <div class="safety-item">
+                    <h4><i class="ri-tools-line"></i> Maquinaria y Herramientas</h4>
+                    <ul class="safety-list">
+                        <li>Llave Stillson</li>
+                        <li>Multímetro</li>
+                        <li>Escalera dieléctrica</li>
+                    </ul>
+                </div>
+                <div class="safety-item">
+                    <h4><i class="ri-box-line"></i> Materiales y Accesorios</h4>
+                    <ul class="safety-list">
+                        <li>Empaques</li>
+                        <li>Lubricante</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+            <!-- Sección 4: Participantes -->
+           <div class="executive-section">
+    <div class="section-header">
+        <i class="ri-team-line"></i>
+        <h3>Personal Involucrado</h3>
+    </div>
+    <div class="ast-summary">
+        <table class="ast-table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Función</th>
+                    <th>Credencial</th>
+                    <th>Cargo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Juan Pérez Martínez</td>
+                    <td><span class="role-badge supervisor">Supervisor</span></td>
+                    <td>CR-45876</td>
+                    <td>Supervisor</td>
+                </tr>
+                <tr>
+                    <td>Carlos Rodríguez López</td>
+                    <td><span class="role-badge technician">Técnico</span></td>
+                    <td>CR-32451</td>
+                    <td>Ayudante</td>
+                </tr>
+                <tr>
+                    <td>Ana Gómez Sánchez</td>
+                    <td><span class="role-badge safety">Seguridad</span></td>
+                    <td>CR-78901</td>
+                    <td>Ayudante</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div class="executive-section">
+    <label for="responsable-aprobador" style="font-weight:600;display:block;margin-bottom:8px;">
+        Agregar nombre del responsable del área:
+    </label>
+    <input type="text" id="responsable-aprobador" placeholder="Nombre del responsable del área" style="width:100%;padding:8px;border-radius:4px;border:1px solid #ccc;">
+</div>
+
+
+            <!-- Sección 5: Aprobaciones -->
+            <div class="approval-section">
+                <div class="approval-stamps">
+                    <div class="stamp">
+                        <div class="stamp-title">Responsable del area:</div>
+                        <div class="stamp-placeholder"></div>
+                        <div class="stamp-name " id="stamp-aprobador">Ing. Luis Torres</div>
+                    </div>
+                    <div class="stamp approved">
+                        <div class="stamp-title">Pendiente por aprobar:</div>
+                        <div class="stamp-placeholder"></div>
+                        <div class="stamp-name" >Pendiente</div>
+                    </div>
+                    <div class="stamp">
+                        <div class="stamp-title">Cierre:</div>
+                        <div class="stamp-placeholder"></div>
+                        <div class="stamp-name"></div>
+                        <div class="stamp-date"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer del Modal -->
+        <div class="modal-footer">
+                    <button class="btn print-btn close-btn">
+                            <i class="ri-check-line"></i> Aceptar
+                    </button>
+                    <button class="btn close-btn">
+                            <i class="ri-close-line"></i> No autorizar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+           <div id="modalComentario" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Agregar comentario</h2>
+        </div>
+        <div class="modal-body">
+            <textarea id="comentario" rows="4" style="width:100%;" placeholder="Escribe tu comentario aquí..."></textarea>
+        </div>
+        <div class="modal-footer">
+            <button class="btn enviar-btn"><i class="ri-send-plane-line"></i> Enviar</button>
+            <button class="btn cancelar-btn"><i class="ri-arrow-go-back-line"></i> Cancelar</button>
+        </div>
+    </div>
+</div>
+
+
     <script src="/JS/MenuUsuario.js"></script>
     <script src="../../JS/LogicaImprimir.js"></script>
+    <script src="../../JS/LogicaVer.js"></script>
 </body>
 </html>

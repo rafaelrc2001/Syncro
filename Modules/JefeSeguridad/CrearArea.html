@@ -7,8 +7,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Orbitron:wght@500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="/CSS/EstiloJefe.css">
-    <!--<link rel="stylesheet" href="/CSS/tablacategorias2.css"> -->
-   <link rel="stylesheet" href="/CSS/EstiloRegistros.css"> 
+    <link rel="stylesheet" href="/CSS/EstiloRegistros.css">
+   <link rel="stylesheet" href="/CSS/tablacategorias2.css"> 
     </head>
 <body>
     <div class="app-container">
@@ -76,36 +76,50 @@
             </section>
 
             <!-- Areas Table -->
-            <section class="area-table-container">
+            <section class="table-container-crud">
                 <div class="table-header">
                     <h3>Lista de Áreas</h3>
                 </div>
                 <div class="table-container">
-                    <table id="area-table">
+                    <table class="table-crud" id="area-table">
                         <thead>
                             <tr>
                                 <th>Nombre del Área</th>
-                                <th>Acciones</th>
+                                <th class="actions-cell">Acciones</th>
                             </tr>
                         </thead>
                         <tbody id="table-body">
                             <tr>
-                                <td>SAMP</td>
-                                <td>
+                                <td>Planta 1</td>
+                                <td class="actions-cell">
                                     <button class="action-btn edit"><i class="ri-edit-line"></i></button>
                                     <button class="action-btn delete"><i class="ri-delete-bin-line"></i></button>
                                 </td>
                             </tr>
                             <tr>
-                                <td>UREA</td>
-                                <td>
+                                <td>Taller de instrumentos</td>
+                                <td class="actions-cell">
                                     <button class="action-btn edit"><i class="ri-edit-line"></i></button>
                                     <button class="action-btn delete"><i class="ri-delete-bin-line"></i></button>
                                 </td>
                             </tr>
                             <tr>
-                                <td>APT</td>
-                                <td>
+                                <td>Planta de PTA</td>
+                                <td class="actions-cell">
+                                    <button class="action-btn edit"><i class="ri-edit-line"></i></button>
+                                    <button class="action-btn delete"><i class="ri-delete-bin-line"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Bascula 3</td>
+                                <td class="actions-cell">
+                                    <button class="action-btn edit"><i class="ri-edit-line"></i></button>
+                                    <button class="action-btn delete"><i class="ri-delete-bin-line"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Bascula 2</td>
+                                <td class="actions-cell">
                                     <button class="action-btn edit"><i class="ri-edit-line"></i></button>
                                     <button class="action-btn delete"><i class="ri-delete-bin-line"></i></button>
                                 </td>
@@ -113,7 +127,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="area-table-footer">
+                <div class="table-footer-crud">
                     <div class="pagination">
                         <button class="pagination-btn"><i class="ri-arrow-left-s-line"></i></button>
                         <button class="pagination-btn active">1</button>
@@ -122,7 +136,7 @@
                         <button class="pagination-btn"><i class="ri-arrow-right-s-line"></i></button>
                     </div>
                     <div class="records-counter">
-                        <span id="records-count">3</span> registros
+                        <span id="records-count">5</span> registros
                     </div>
                     <div class="items-per-page">
                         <span>Items por página:</span>
@@ -149,11 +163,11 @@
                 <form id="area-form">
                     <div class="form-group">
                         <label for="area-name">Nombre del Área</label>
-                        <input type="text" id="area-name" name="area-name" required>
+                        <input type="text" id="area-name" name="area-name" placeholder="Ingrese el nombre del área" required>
                     </div>
                     <div class="form-actions">
                         <button type="button" class="btn cancel-btn">Cancelar</button>
-                        <button type="submit" class="btn primary">Registrar</button>
+                        <button type="submit" class="btn primary"><i class="ri-save-line"></i> Registrar</button>
                     </div>
                 </form>
             </div>

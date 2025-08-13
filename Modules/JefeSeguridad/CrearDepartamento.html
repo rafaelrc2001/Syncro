@@ -7,9 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Orbitron:wght@500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="/CSS/EstiloJefe.css">
-    <!--<link rel="stylesheet" href="/CSS/tablacategorias2.css"> --> 
-    <link rel="stylesheet" href="/CSS/EstiloRegistros.css"> 
-    
+    <link rel="stylesheet" href="/CSS/EstiloRegistros.css">
 </head>
 <body>
     <div class="app-container">
@@ -77,19 +75,18 @@
             </section>
 
             <!-- Departments Table -->
-            <section class="departamento-table-container">
+            <section class="table-container-crud">
                 <div class="table-header">
                     <h3>Lista de Departamentos</h3>
                 </div>
                 <div class="table-container">
-                    <table id="departamento-table">
+                    <table class="table-crud" id="departamento-table">
                         <thead>
                             <tr>
                                 <th>Nombre del Departamento</th>
                                 <th>Correo</th>
                                 <th>Extensión</th>
-                                <th>Contraseña</th>
-                                <th>Acciones</th>
+                                <th class="actions-cell">Acciones</th>
                             </tr>
                         </thead>
                         <tbody id="table-body">
@@ -97,36 +94,33 @@
                                 <td>Mantenimiento</td>
                                 <td>mantenimiento@gmail.com</td>
                                 <td>921-568-4785</td>
-                                <td>man123</td>
-                                <td>
-                                    <button class="action-btn edit"><i class="ri-edit-line"></i></button>
-                                    <button class="action-btn delete"><i class="ri-delete-bin-line"></i></button>
+                                <td class="actions-cell">
+                                    <button class="action-btn edit" title="Editar"><i class="ri-edit-line"></i></button>
+                                    <button class="action-btn delete" title="Eliminar"><i class="ri-delete-bin-line"></i></button>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Producción</td>
                                 <td>produccion@gmail.com</td>
                                 <td>921-345-7952</td>
-                                <td>man123</td>
-                                <td>
-                                    <button class="action-btn edit"><i class="ri-edit-line"></i></button>
-                                    <button class="action-btn delete"><i class="ri-delete-bin-line"></i></button>
+                                <td class="actions-cell">
+                                    <button class="action-btn edit" title="Editar"><i class="ri-edit-line"></i></button>
+                                    <button class="action-btn delete" title="Eliminar"><i class="ri-delete-bin-line"></i></button>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Seguridad</td>
                                 <td>seguridad@gmail.com</td>
                                 <td>921-874-6872</td>
-                                <td>man123</td>
-                                <td>
-                                    <button class="action-btn edit"><i class="ri-edit-line"></i></button>
-                                    <button class="action-btn delete"><i class="ri-delete-bin-line"></i></button>
+                                <td class="actions-cell">
+                                    <button class="action-btn edit" title="Editar"><i class="ri-edit-line"></i></button>
+                                    <button class="action-btn delete" title="Eliminar"><i class="ri-delete-bin-line"></i></button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="departamento-table-footer">
+                <div class="table-footer-crud">
                     <div class="pagination">
                         <button class="pagination-btn"><i class="ri-arrow-left-s-line"></i></button>
                         <button class="pagination-btn active">1</button>

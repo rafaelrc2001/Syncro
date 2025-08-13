@@ -56,9 +56,16 @@
     gap: 10px;
 }
 
-.modal-header h2::before {
+/* Only apply lock icon to specific modal headers where needed */
+#modalPermisos .modal-header h2::before {
     content: "🔒";
     font-size: 1.3rem;
+    margin-right: 8px;
+}
+
+/* Style for the permission type selection heading */
+#modalPermisos .modal-header h2.titulo-permiso {
+    color: white;
 }
 
 .close-modal {

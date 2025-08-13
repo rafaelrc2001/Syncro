@@ -44,7 +44,7 @@
                     <div class="avatar">JP</div>
                     <div class="user-info">
                         <span class="name">Juan Pérez</span>
-                        <span class="role">Supervisor</span>
+                        <span class="role">Usuario</span>
                     </div>
                 </div>
                 <button class="logout-btn"><i class="ri-logout-box-r-line"></i></button>
@@ -132,13 +132,13 @@
                 <div class="filter-dropdown">
                     <select id="status-filter">
                         <option value="all">Todos</option>
-                        <option value="active">Espera área</option>
-                        <option value="completed">Espera seguridad</option>
-                        <option value="canceled">No autorizado</option>
-                        <option value="continua">Activo</option>
+                        <option value="active">Activo </option>
+                        <option value="completed">Terminado</option>
+                        <option value="canceled">Cancelado </option>
+                        <option value="continua">Espera área</option>
                         <option value="wait-area">Continua</option>
-                        <option value="wait-security">Terminado</option>
-                        <option value="wait-security">Cancelado</option>
+                        <option value="wait-security">Espera seguridad</option>
+                        <option value="wait-security">No autorizado</option>
                     </select>
                     <i class="ri-arrow-down-s-line"></i>
                 </div>
@@ -262,7 +262,7 @@
     <div id="modalPermisos" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Seleccionar Tipo de Permiso</h2>
+                <h2 class="titulo-permiso">Seleccionar Tipo de Permiso</h2>
                 <span class="close-modal">&times;</span>
             </div>
             <div class="modal-body">
@@ -332,7 +332,7 @@
         <div class="modal-header">
             <div class="permit-title">
                 <h2>PERMISO DE TRABAJO NO PELIGROSO</h2>
-                <div class="permit-number">No. GSI-SI-FO-002-XXXX</div>
+                <div class="permit-number">No. GSI-SI-FO-002 PERMISO DE TRABAJO NO PELIGROSO</div>
             </div>
             <span class="close-modal">&times;</span>
         </div>
@@ -381,7 +381,7 @@
             <div class="executive-section">
                 <div class="section-header">
                     <i class="ri-tools-line"></i>
-                    <h3>Detalles Técnicos</h3>
+                    <h3>Permiso de Trabajo</h3>
                 </div>
                 <div class="executive-grid">
 
@@ -534,36 +534,6 @@
 </div>
 
 
-<div class="executive-section">
-    <label for="responsable-aprobador" style="font-weight:600;display:block;margin-bottom:8px;">
-        Agregar nombre del responsable:
-    </label>
-    <input type="text" id="responsable-aprobador" placeholder="Nombre del responsable" style="width:100%;padding:8px;border-radius:4px;border:1px solid #ccc;">
-</div>
-
-
-            <!-- Sección 5: Aprobaciones -->
-            <div class="approval-section">
-                <div class="approval-stamps">
-                    <div class="stamp">
-                        <div class="stamp-title">Aprobado por:</div>
-                        <div class="stamp-placeholder"></div>
-                        <div class="stamp-name " id="stamp-aprobador">Ing. Luis Torres</div>
-                    </div>
-                    <div class="stamp approved">
-                        <div class="stamp-title">Pendiente por aprobar:</div>
-                        <div class="stamp-placeholder"></div>
-                        <div class="stamp-name" >Pendiente</div>
-                    </div>
-                    <div class="stamp">
-                        <div class="stamp-title">Cierre:</div>
-                        <div class="stamp-placeholder"></div>
-                        <div class="stamp-name"></div>
-                        <div class="stamp-date"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <!-- Footer del Modal -->
         <div class="modal-footer">

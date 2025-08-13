@@ -8,10 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Lato:wght@400;500&family=Roboto+Mono&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="/CSS/EstiloJefe.css"> <!--Quiero que este remplace la parte del jefe para que asi pueda mover toda la tabla a la parte de registro -->
-   <!-- <link rel="stylesheet" href="/CSS/tablacategorias2.css">  -->
-
-   <link rel="stylesheet" href="/CSS/EstiloRegistros.css"> 
+    <link rel="stylesheet" href="/CSS/EstiloJefe.css">
+    <link rel="stylesheet" href="/CSS/EstiloRegistros.css">
    
 </head>
 <body>
@@ -80,51 +78,51 @@
             </section>
 
             <!-- Categoria Table -->
-         <section class="categoria-table-container"> <!-- Añade la clase "categoria-table" -->
+            <section class="table-container-crud">
                 <div class="table-header">
-                    <h3>Lista de Categorias</h3>
+                    <h3>Lista de Categorías</h3>
                 </div>
                 <div class="table-container">
-                    <table id="categorias-table">
+                    <table class="table-crud" id="categorias-table">
                         <thead>
                             <tr>
-                                <th>Nombre de la Categoria</th>                               
-                                <th>Acciones</th>
+                                <th>Nombre de la Categoría</th>                               
+                                <th class="actions-cell">Acciones</th>
                             </tr>
                         </thead>
                         <tbody id="table-body">
                             <tr>
                                 <td>SAMP</td>
-                                <td>
-                                    <button class="action-btn edit"><i class="ri-edit-line"></i></button>
-                                    <button class="action-btn delete"><i class="ri-delete-bin-line"></i></button>
+                                <td class="actions-cell">
+                                    <button class="action-btn edit" title="Editar"><i class="ri-edit-line"></i></button>
+                                    <button class="action-btn delete" title="Eliminar"><i class="ri-delete-bin-line"></i></button>
                                 </td>
                             </tr>
                             <tr>
                                 <td>UREA</td>
-                                <td>
-                                    <button class="action-btn edit"><i class="ri-edit-line"></i></button>
-                                    <button class="action-btn delete"><i class="ri-delete-bin-line"></i></button>
+                                <td class="actions-cell">
+                                    <button class="action-btn edit" title="Editar"><i class="ri-edit-line"></i></button>
+                                    <button class="action-btn delete" title="Eliminar"><i class="ri-delete-bin-line"></i></button>
                                 </td>
                             </tr>
                             <tr>
                                 <td>APT</td>
-                                <td>
-                                    <button class="action-btn edit"><i class="ri-edit-line"></i></button>
-                                    <button class="action-btn delete"><i class="ri-delete-bin-line"></i></button>
+                                <td class="actions-cell">
+                                    <button class="action-btn edit" title="Editar"><i class="ri-edit-line"></i></button>
+                                    <button class="action-btn delete" title="Eliminar"><i class="ri-delete-bin-line"></i></button>
                                 </td>
                             </tr>
                             <tr>
-                                <td>Area 6</td>
-                                <td>
-                                    <button class="action-btn edit"><i class="ri-edit-line"></i></button>
-                                    <button class="action-btn delete"><i class="ri-delete-bin-line"></i></button>
+                                <td>AREA 6</td>
+                                <td class="actions-cell">
+                                    <button class="action-btn edit" title="Editar"><i class="ri-edit-line"></i></button>
+                                    <button class="action-btn delete" title="Eliminar"><i class="ri-delete-bin-line"></i></button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                 <div class="categoria-table-footer"> 
+                <div class="table-footer-crud"> 
                     <div class="pagination">
                         <button class="pagination-btn"><i class="ri-arrow-left-s-line"></i></button>
                         <button class="pagination-btn active">1</button>
@@ -149,22 +147,22 @@
         </main>
     </div>
 
-    <!-- Modal para registrar área -->
+    <!-- Modal para registrar categoría -->
     <div class="modal" id="categoria-modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3><i class="ri-building-2-line"></i> Registrar Nueva Categoria</h3>
+                <h3><i class="ri-list-check"></i> Registrar Nueva Categoría</h3>
                 <button class="close-modal">&times;</button>
             </div>
             <div class="modal-body">
                 <form id="categoria-form">
                     <div class="form-group">
-                        <label for="categoria-name">Nombre de la Categoria</label>
-                        <input type="text" id="categoria-name" name="categoria-name" required>
+                        <label for="categoria-name">Nombre de la Categoría</label>
+                        <input type="text" id="categoria-name" name="categoria-name" placeholder="Ingrese el nombre de la categoría" required>
                     </div>
                     <div class="form-actions">
                         <button type="button" class="btn cancel-btn">Cancelar</button>
-                        <button type="submit" class="btn primary">Registrar</button>
+                        <button type="submit" class="btn primary"><i class="ri-save-line"></i> Registrar</button>
                     </div>
                 </form>
             </div>

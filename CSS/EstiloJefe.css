@@ -1,3 +1,10 @@
+/* ESTO VA A REMPLAZAR LA PARTE DEL ESTILO DEL JEFE QUE ES BASICAQMENTE EL MENU */
+
+
+
+
+/* EstiloJefe.css limpiado: se ha eliminado todo lo relacionado con la tabla */
+
 /* Base Styles */
 :root {
     --azul-petroleo: #003B5C;
@@ -28,7 +35,6 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--negro-carbon);
 }
 
-/* App Layout */
 .app-container {
     display: flex;
     min-height: 100vh;
@@ -58,30 +64,19 @@ h1, h2, h3, h4, h5, h6 {
     display: inline;
 }
 
-.sidebar.collapsed .sidebar-header {
-    justify-content: center;
-}
-
-.sidebar.collapsed .sidebar-nav li a {
-    justify-content: center;
-}
-
-.sidebar.collapsed .sidebar-footer {
-    justify-content: center;
-}
-
-.sidebar.collapsed .logout-btn {
-    display: none;
-}
-
+.sidebar.collapsed .sidebar-header,
+.sidebar.collapsed .sidebar-nav li a,
+.sidebar.collapsed .sidebar-footer,
+.sidebar.collapsed .logout-btn,
 .sidebar.collapsed .menu-icon {
-    display: none;
+    justify-content: center;
 }
 
 .menu-icon {
     display: inline;
     transition: opacity 0.3s ease;
 }
+
 .sidebar-header {
     padding: 20px;
     display: flex;
@@ -90,16 +85,15 @@ h1, h2, h3, h4, h5, h6 {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Logo styles */
 .sidebar-header h2 {
     color: white;
     font-size: 1.2rem;
     display: flex;
     align-items: center;
-    transition: all 0.3s ease;
     margin: 0;
     padding: 0;
     width: 100%;
+    transition: all 0.3s ease;
 }
 
 .logo-container {
@@ -147,7 +141,6 @@ h1, h2, h3, h4, h5, h6 {
     transition: all 0.3s ease;
 }
 
-/* Hover effect */
 .logo-container:hover .logo-icon {
     transform: rotate(45deg);
     color: #ffffff;
@@ -155,12 +148,11 @@ h1, h2, h3, h4, h5, h6 {
 
 .logo-container:hover .logo-text {
     background: linear-gradient(90deg, #ffffff, #ffffff);
-    background-clip: text;
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
-/* Sidebar collapsed state */
 .sidebar.collapsed .logo-text {
     display: none;
 }
@@ -213,10 +205,6 @@ h1, h2, h3, h4, h5, h6 {
     gap: 12px;
 }
 
-.sidebar-nav li a i {
-    font-size: 1.1rem;
-}
-
 .sidebar-nav li a:hover {
     background-color: rgba(255, 255, 255, 0.1);
     color: white;
@@ -266,6 +254,129 @@ h1, h2, h3, h4, h5, h6 {
 
 .logout-btn:hover {
     color: white;
+}
+
+
+
+/* Estructura para la parte del submenu */
+.sidebar-nav li.has-submenu {
+    position: relative;
+}
+
+.sidebar-nav li.has-submenu > a .submenu-icon {
+    margin-left: auto;
+    transition: transform 0.3s ease;
+}
+
+.sidebar-nav li.has-submenu.active > a .submenu-icon {
+    transform: rotate(180deg);
+}
+
+.sidebar-nav .submenu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    background-color: rgba(0, 0, 0, 0.1);
+    list-style: none;
+}
+
+.sidebar-nav li.has-submenu.active .submenu {
+    max-height: 500px;
+}
+
+/* Items del submenu */
+.sidebar-nav .submenu li a {
+    padding-left: 52px;
+    font-size: 0.9rem;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    color: rgba(255, 255, 255, 0.7);
+    background: transparent;
+    border-left: none;
+    transition: all 0.3s ease;
+}
+
+.sidebar-nav .submenu li a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.sidebar-nav .submenu li.active a {
+    background: linear-gradient(to right, var(--naranja-seguridad) 6px, transparent 6px);
+    color: white;
+    border-left: 4px solid var(--naranja-seguridad);
+}
+
+/* Iconos del submenu */
+.sidebar-nav li a i.submenu-icon {
+    font-size: 1.1rem;
+}
+
+.sidebar-nav .submenu li a i {
+    font-size: 0.9rem;
+}
+
+/* Estado colapsado del sidebar */
+.sidebar.collapsed .submenu {
+    display: none;
+}
+
+.sidebar.collapsed .submenu-icon {
+    display: none;
+}
+
+.sidebar.collapsed li.has-submenu > a {
+    justify-content: center;
+}
+
+/* Estilos para el botón de colapso */
+.collapse-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    position: relative;
+}
+
+.collapse-icon {
+    display: none;
+    position: absolute;
+    transition: opacity 0.3s ease;
+}
+
+/* Estado colapsado del menú */
+.sidebar.collapsed .collapse-icon {
+    display: inline;
+}
+
+.sidebar.collapsed .menu-icon {
+    display: none;
+}
+
+/* Estilos para el ícono de sincronización (syncro) */
+.sync-icon {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.8);
+    transition: all 0.3s ease;
+    margin-left: auto; /* Para alinear a la derecha */
+    padding: 0 10px;
+}
+
+.sync-icon:hover {
+    color: white;
+    transform: rotate(180deg);
+    cursor: pointer;
+}
+
+/* Estado colapsado para el ícono sync */
+.sidebar.collapsed .sync-icon {
+    display: none;
 }
 
 /* Main Content Styles */
@@ -388,6 +499,7 @@ h1, h2, h3, h4, h5, h6 {
     gap: 5px;
 }
 
+
 /* Actions Section */
 .actions-section {
     padding: 0 30px 20px;
@@ -455,6 +567,7 @@ h1, h2, h3, h4, h5, h6 {
     pointer-events: none;
     color: var(--gris-acero);
 }
+
 
 /* Permits Table */
 .permits-table {
@@ -697,103 +810,4 @@ td {
     .search-bar input {
         width: 100%;
     }
-}
-
-/* CSS PARA POWER BI */
-
-.dashboard-container {
-    display: flex;
-    min-height: 100vh;
-}
-
-.dashboard-frame {
-    height: 100%;
-    width: 100%;
-    padding: 0;
-    margin: 0;
-}
-
-.powerbi-fullscreen-container {
-    height: 100%;
-    width: 100%;
-    background: white;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
-}
-
-.powerbi-fullscreen-container iframe {
-    width: 100%;
-    height: 150%;
-    border: none;
-}
-
-/* Submenu Styles */
-.sidebar-nav li.has-submenu {
-    position: relative;
-}
-
-.sidebar-nav li.has-submenu > a .submenu-icon {
-    margin-left: auto;
-    transition: transform 0.3s ease;
-}
-
-.sidebar-nav li.has-submenu.active > a .submenu-icon {
-    transform: rotate(180deg);
-}
-
-.sidebar-nav .submenu {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
-    background-color: rgba(0, 0, 0, 0.1);
-    list-style: none;
-}
-
-.sidebar-nav li.has-submenu.active .submenu {
-    max-height: 500px;
-}
-
-.sidebar-nav .submenu li a {
-    padding-left: 52px;
-    font-size: 0.9rem;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    color: rgba(255, 255, 255, 0.7);
-}
-
-/* SOLO la opción seleccionada del submenú se pinta */
-.sidebar-nav .submenu li.active a {
-    background: linear-gradient(to right, var(--naranja-seguridad) 6px, transparent 6px);
-    color: white;
-    border-left: 4px solid var(--naranja-seguridad);
-}
-
-/* Las demás opciones del submenú NO se pintan */
-.sidebar-nav .submenu li a {
-    background: transparent;
-    color: rgba(255, 255, 255, 0.7);
-    border-left: none;
-    transition: background 0.2s, color 0.2s, border-left 0.2s;
-}
-
-.sidebar-nav .submenu li a i {
-    font-size: 0.9rem;
-}
-
-.sidebar-nav .submenu li.active a {
-    background-color: rgba(255, 255, 255, 0.2);
-    color: white;
-    border-left: 4px solid var(--naranja-seguridad);
-}
-
-/* Collapsed state for submenus */
-.sidebar.collapsed .submenu {
-    display: none;
-}
-
-.sidebar.collapsed .submenu-icon {
-    display: none;
-}
-
-.sidebar.collapsed li.has-submenu > a {
-    justify-content: center;
 }

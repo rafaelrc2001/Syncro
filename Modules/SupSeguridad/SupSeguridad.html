@@ -259,7 +259,7 @@
             <div class="modal-header">
                 <div class="permit-title">
                     <h2>PERMISO DE TRABAJO NO PELIGROSO</h2>
-                    <div class="permit-number">No. GSI-SI-FO-002-XXXX</div>
+                    <div class="permit-number">No. GSI-SI-FO-002 PERMISO DE TRABAJO NO PELIGROSO</div>
                 </div>
                 <span class="close-modal">&times;</span>
             </div>
@@ -308,7 +308,7 @@
                 <div class="executive-section">
                     <div class="section-header">
                         <i class="ri-tools-line"></i>
-                        <h3>Detalles Técnicos</h3>
+                        <h3>Permiso de Trabajo </h3>
                     </div>
                     <div class="executive-grid">
 
@@ -459,21 +459,37 @@
 
 
 
-<div class="executive-section">
-    <label for="responsable-aprobador" style="font-weight:600;display:block;margin-bottom:8px;">
-        Seleccionar responsable:
-    </label>
-    <select id="responsable-aprobador" 
-            style="width:100%;padding:8px;border-radius:4px;border:1px solid #ccc;"
-            onchange="actualizarAprobador(this.value)">
-        <option value="" disabled selected>Seleccione un responsable...</option>
-        <option value="Juan Pérez Martínez">Juan Pérez Martínez</option>
-        <option value="María García López">María García López</option>
-        <option value="Carlos Rodríguez Sánchez">Carlos Rodríguez Sánchez</option>
-        <option value="Ana Martínez González">Ana Martínez González</option>
-        <option value="Luis Hernández Ramírez">Luis Hernández Ramírez</option>
-        <option value="Patricia Díaz Fernández">Patricia Díaz Fernández</option>
-    </select>
+<div class="executive-section" style="display: flex; gap: 20px;">
+    <div style="flex: 1;">
+        <label for="responsable-aprobador" style="font-weight:600;display:block;margin-bottom:8px;">
+            Seleccionar Supervisor de Seguridad:
+        </label>
+        <select id="responsable-aprobador" 
+                style="width:100%;padding:8px;border-radius:4px;border:1px solid #ccc;"
+                onchange="actualizarAprobador(this.value)">
+            <option value="" disabled selected>Seleccione un supervisor...</option>
+            <option value="Juan Pérez Martínez">Juan Pérez Martínez</option>
+            <option value="María García López">María García López</option>
+            <option value="Carlos Rodríguez Sánchez">Carlos Rodríguez Sánchez</option>
+            <option value="Ana Martínez González">Ana Martínez González</option>
+            <option value="Luis Hernández Ramírez">Luis Hernández Ramírez</option>
+            <option value="Patricia Díaz Fernández">Patricia Díaz Fernández</option>
+        </select>
+    </div>
+    <div style="flex: 1;">
+        <label for="responsable-aprobador2" style="font-weight:600;display:block;margin-bottom:8px;">
+            Seleccionar la categoria a la que pertenece:
+        </label>
+        <select id="responsable-aprobador2" 
+                style="width:100%;padding:8px;border-radius:4px;border:1px solid #ccc;"
+                onchange="actualizarAprobador2(this.value)">
+            <option value="" disabled selected>Seleccione una categoria...</option>
+            <option value="Juan Pérez Martínez">SAMP</option>
+            <option value="María García López">APT</option>
+            <option value="Carlos Rodríguez Sánchez">UREA</option>
+            <option value="Ana Martínez González">AREA 6</option>
+        </select>
+    </div>
 </div>
 
 
@@ -481,14 +497,14 @@
                 <div class="approval-section">
                     <div class="approval-stamps">
                         <div class="stamp">
-                            <div class="stamp-title">Preparado por:</div>
+                            <div class="stamp-title">Responsable del area:</div>
                             <div class="stamp-placeholder"></div>
                             <div class="stamp-name">Ing. Luis Torres</div>
                         </div>
                         <div class="stamp approved">
-                            <div class="stamp-title">Aprobado por:</div>
+                            <div class="stamp-title">Supervisor de Seguridad:</div>
                             <div class="stamp-placeholder"><i class="ri-checkbox-circle-fill"></i></div>
-                            <div class="stamp-name" id="nombre-aprobador">Seleccione un responsable</div>
+                            <div class="stamp-name" id="nombre-aprobador">Seleccione un supervisor</div>
                         </div>
                         <div class="stamp">
                             <div class="stamp-title">Cierre:</div>
@@ -507,9 +523,6 @@
                 </button>
                 <button class="btn close-btn">
                     <i class="ri-close-line"></i> No autorizar
-                </button>
-                <button class="btn close-btn regresar-btn">
-                    <i class="ri-arrow-go-back-line"></i> Regresar
                 </button>
             </div>
         </div>

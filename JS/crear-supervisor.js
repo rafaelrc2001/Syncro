@@ -1,10 +1,18 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Modal functionality
+    // URL base de la API
+    const API_URL = 'http://localhost:3000/api';
+    
+    // Elementos del DOM
     const registerBtn = document.getElementById('register-supervisor-btn');
     const modal = document.getElementById('supervisor-modal');
     const closeModalBtn = document.querySelector('.close-modal');
     const cancelBtn = document.querySelector('.cancel-btn');
     const supervisorForm = document.getElementById('supervisor-form');
+    const submitBtn = document.querySelector('.modal-body button[type="submit"]');
+    
+    // Estado global para controlar si estamos editando
+    let editando = false;
+    let supervisorId = null;
 
     // Open modal
     if (registerBtn) {
@@ -16,6 +24,18 @@ document.addEventListener('DOMContentLoaded', function() {
     // Close modal
     function closeModal() {
         modal.classList.remove('active');
+        if (supervisorForm) {
+            supervisorForm.reset();
+        }
+        
+        // Restaurar estado de edición
+        if (editando) {
+            editando = false;
+            supervisorId = null;
+            if (submitBtn) {
+                submitBtn.textContent = 'Registrar Supervisor';
+            }
+        }
     }
 
     if (closeModalBtn) {
@@ -33,98 +53,205 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Función para cargar los supervisores desde la API
+    async function cargarSupervisores() {
+        try {
+            const response = await fetch(`${API_URL}/supervisores`);
+            if (!response.ok) throw new Error('Error al cargar los supervisores');
+            
+            const supervisores = await response.json();
+            const tableBody = document.querySelector('#table-body');
+            
+            // Limpiar tabla
+            tableBody.innerHTML = '';
+            
+            // Actualizar contador
+            document.getElementById('records-count').textContent = supervisores.length;
+            
+            // Llenar tabla
+            supervisores.forEach(supervisor => {
+                const row = document.createElement('tr');
+                row.dataset.id = supervisor.id;
+                row.innerHTML = `
+                    <td>${supervisor.nombre}</td>
+                    <td>${supervisor.correo || ''}</td>
+                    <td>${supervisor.extension || ''}</td>
+                    <td>
+                        <button class="action-btn edit" data-id="${supervisor.id}"><i class="ri-edit-line"></i></button>
+                        <button class="action-btn delete" data-id="${supervisor.id}"><i class="ri-delete-bin-line"></i></button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+            
+            // Agregar event listeners a los botones
+            agregarEventListenersBotones();
+            
+        } catch (error) {
+            console.error('Error al cargar supervisores:', error);
+            alert('Error al cargar los supervisores: ' + error.message);
+        }
+    }
+    
+    // Función para agregar event listeners a los botones de editar/eliminar
+    function agregarEventListenersBotones() {
+        // Eliminar event listeners anteriores
+        document.querySelectorAll('.action-btn').forEach(btn => {
+            btn.replaceWith(btn.cloneNode(true));
+        });
+        
+        // Agregar nuevos event listeners
+        document.addEventListener('click', manejarAccionesSupervisor);
+    }
+    
+    // Función para manejar las acciones de los supervisores (editar/eliminar)
+    async function manejarAccionesSupervisor(e) {
+        // Editar
+        if (e.target.closest('.action-btn.edit')) {
+            e.preventDefault();
+            const btn = e.target.closest('.action-btn.edit');
+            const id = btn.dataset.id;
+            
+            try {
+                const response = await fetch(`${API_URL}/supervisores/${id}`);
+                if (!response.ok) throw new Error('Error al cargar el supervisor');
+                
+                const supervisor = await response.json();
+                
+                // Llenar el formulario
+                document.getElementById('name').value = supervisor.nombre || '';
+                document.getElementById('email').value = supervisor.correo || '';
+                document.getElementById('extension').value = supervisor.extension || '';
+                
+                // Cambiar el estado a edición
+                editando = true;
+                supervisorId = id;
+                
+                // Cambiar texto del botón
+                submitBtn.textContent = 'Actualizar Supervisor';
+                
+                // Abrir el modal
+                modal.classList.add('active');
+                
+            } catch (error) {
+                console.error('Error al cargar el supervisor:', error);
+                alert('Error al cargar el supervisor: ' + error.message);
+            }
+        }
+        
+        // Eliminar
+        if (e.target.closest('.action-btn.delete')) {
+            e.preventDefault();
+            const btn = e.target.closest('.action-btn.delete');
+            const id = btn.dataset.id;
+            
+            if (confirm('¿Estás seguro que deseas eliminar este supervisor?')) {
+                try {
+                    const response = await fetch(`${API_URL}/supervisores/${id}`, {
+                        method: 'DELETE'
+                    });
+                    
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || 'Error al eliminar el supervisor');
+                    }
+                    
+                    // Recargar la lista de supervisores
+                    await cargarSupervisores();
+                    alert('Supervisor eliminado exitosamente');
+                    
+                } catch (error) {
+                    console.error('Error al eliminar el supervisor:', error);
+                    alert('Error al eliminar el supervisor: ' + error.message);
+                }
+            }
+        }
+    }
+    
     // Form submission
     if (supervisorForm) {
-        supervisorForm.addEventListener('submit', function(e) {
+        supervisorForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            // Get form values
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const extension = document.getElementById('extension').value;
-            const password = document.getElementById('password').value;
-
-            // Here you would typically send this data to a server
-            console.log('Registrando supervisor:', {
-                name, email, extension, password
-            });
-
-            // For demo purposes, we'll just add to the table
-            const tableBody = document.querySelector('#table-body');
-            const newRow = document.createElement('tr');
-            newRow.innerHTML = `
-                <td>${name}</td>
-                <td>${email}</td>
-                <td>${extension}</td>
-                <td>${password}</td>
-                <td>
-                    <button class="action-btn edit"><i class="ri-edit-line"></i></button>
-                    <button class="action-btn delete"><i class="ri-delete-bin-line"></i></button>
-                </td>
-            `;
+            // Obtener valores del formulario
+            const nombre = document.getElementById('name').value.trim();
+            const correo = document.getElementById('email').value.trim();
+            const extension = document.getElementById('extension').value.trim();
+            const contraseña = document.getElementById('password').value;
             
-            tableBody.appendChild(newRow);
+            // Validaciones
+            if (!nombre) {
+                alert('El nombre del supervisor es requerido');
+                return;
+            }
             
-            // Update records count
-            const recordsCount = document.getElementById('records-count');
-            const currentCount = parseInt(recordsCount.textContent);
-            recordsCount.textContent = currentCount + 1;
-
-            // Reset form and close modal
-            supervisorForm.reset();
-            closeModal();
-
-            // Show success message
-            alert('Supervisor registrado exitosamente');
+            if (!editando && !contraseña) {
+                alert('La contraseña es requerida para nuevos supervisores');
+                return;
+            }
+            
+            try {
+                let url = `${API_URL}/supervisores`;
+                let method = 'POST';
+                let bodyData = { nombre };
+                
+                // Agregar campos opcionales si tienen valor
+                if (correo) bodyData.correo = correo;
+                if (extension) bodyData.extension = extension;
+                
+                // Si estamos editando, actualizamos la URL, método y datos
+                if (editando && supervisorId) {
+                    url += `/${supervisorId}`;
+                    method = 'PUT';
+                    // Solo incluimos la contraseña si se proporcionó una nueva
+                    if (contraseña) {
+                        bodyData.contraseña = contraseña;
+                    }
+                } else {
+                    // Para creación, la contraseña es obligatoria
+                    bodyData.contraseña = contraseña;
+                }
+                
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(bodyData)
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Error al guardar el supervisor');
+                }
+                
+                // Cerrar el modal y limpiar el formulario
+                closeModal();
+                supervisorForm.reset();
+                
+                // Recargar la lista de supervisores
+                await cargarSupervisores();
+                
+                // Mostrar mensaje de éxito
+                alert(editando ? 'Supervisor actualizado exitosamente' : 'Supervisor registrado exitosamente');
+                
+                // Resetear estado de edición
+                editando = false;
+                supervisorId = null;
+                submitBtn.textContent = 'Registrar Supervisor';
+                
+            } catch (error) {
+                console.error('Error al guardar el supervisor:', error);
+                alert('Error al guardar el supervisor: ' + error.message);
+            }
         });
     }
 
-    // Edit and delete functionality (delegated events)
-    document.addEventListener('click', function(e) {
-        // Edit button
-        if (e.target.closest('.action-btn.edit')) {
-            const row = e.target.closest('tr');
-            const cells = row.querySelectorAll('td');
-            
-            // Get current values
-            const name = cells[0].textContent;
-            const password = cells[1].textContent;
-            const email = cells[2].textContent;
-            const extension = cells[3].textContent;
-            
-            // Fill modal with current values
-            document.getElementById('name').value = name;
-            document.getElementById('email').value = email;
-            document.getElementById('extension').value = extension;
-            document.getElementById('password').value = password;
-            
-            // Change modal title and button
-            document.querySelector('.modal-header h3').innerHTML = '<i class="ri-edit-line"></i> Editar Supervisor';
-            document.querySelector('.modal-body button[type="submit"]').textContent = 'Guardar Cambios';
-            
-            // Open modal
-            modal.classList.add('active');
-            
-            // Store reference to row being edited
-            modal.dataset.editingRow = row.rowIndex;
-        }
-        
-        // Delete button
-        if (e.target.closest('.action-btn.delete')) {
-            if (confirm('¿Estás seguro que deseas eliminar este supervisor?')) {
-                const row = e.target.closest('tr');
-                row.remove();
-                
-                // Update records count
-                const recordsCount = document.getElementById('records-count');
-                const currentCount = parseInt(recordsCount.textContent);
-                recordsCount.textContent = currentCount - 1;
-                
-                alert('Supervisor eliminado exitosamente');
-            }
-        }
+    // Cargar los supervisores al iniciar
+    cargarSupervisores().catch(error => {
+        console.error('Error al cargar supervisores:', error);
     });
-
+    
     // Update MenuJefe.js functionality for this page
     const currentPath = window.location.pathname.toLowerCase();
     const menuRoutes = {

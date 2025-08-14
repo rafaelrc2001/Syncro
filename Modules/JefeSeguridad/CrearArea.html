@@ -8,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="/CSS/EstiloJefe.css">
     <link rel="stylesheet" href="/CSS/EstiloRegistros.css">
-   <link rel="stylesheet" href="/CSS/tablacategorias2.css"> 
+  
     </head>
 <body>
     <div class="app-container">
@@ -161,13 +161,14 @@
             </div>
             <div class="modal-body">
                 <form id="area-form">
+                    <input type="hidden" id="area-id" name="area-id" value="">
                     <div class="form-group">
                         <label for="area-name">Nombre del Área</label>
                         <input type="text" id="area-name" name="area-name" placeholder="Ingrese el nombre del área" required>
                     </div>
                     <div class="form-actions">
                         <button type="button" class="btn cancel-btn">Cancelar</button>
-                        <button type="submit" class="btn primary"><i class="ri-save-line"></i> Registrar</button>
+                        <button type="submit" id="submit-btn" class="btn primary"><i class="ri-save-line"></i> Registrar</button>
                     </div>
                 </form>
             </div>

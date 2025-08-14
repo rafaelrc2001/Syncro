@@ -1,10 +1,19 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Modal functionality
+    // URL base de la API
+    const API_URL = 'http://localhost:3000/api';
+    
+    // Elementos del DOM
     const registerBtn = document.getElementById('register-sucursal-btn');
     const modal = document.getElementById('sucursal-modal');
     const closeModalBtn = document.querySelector('.close-modal');
     const cancelBtn = document.querySelector('.cancel-btn');
-    const sucursalForm = document.getElementById('sucusal-form');
+    const sucursalForm = document.getElementById('sucursal-form');
+    const sucursalNameInput = document.getElementById('sucursal-name');
+    const submitBtn = document.querySelector('.modal-body button[type="submit"]');
+    
+    // Estado global para controlar si estamos editando
+    let editando = false;
+    let sucursalId = null;
 
     // Open modal
     if (registerBtn) {
@@ -16,6 +25,18 @@ document.addEventListener('DOMContentLoaded', function() {
     // Close modal
     function closeModal() {
         modal.classList.remove('active');
+        if (sucursalForm) {
+            sucursalForm.reset();
+        }
+        
+        // Restaurar estado de edición
+        if (editando) {
+            editando = false;
+            sucursalId = null;
+            if (submitBtn) {
+                submitBtn.textContent = 'Registrar Sucursal';
+            }
+        }
     }
 
     if (closeModalBtn) {
@@ -33,82 +54,176 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Función para cargar las sucursales desde la API
+    async function cargarSucursales() {
+        try {
+            const response = await fetch(`${API_URL}/sucursales`);
+            if (!response.ok) throw new Error('Error al cargar las sucursales');
+            
+            const sucursales = await response.json();
+            const tableBody = document.querySelector('#table-body');
+            
+            // Limpiar tabla
+            tableBody.innerHTML = '';
+            
+            // Actualizar contador
+            document.getElementById('records-count').textContent = sucursales.length;
+            
+            // Llenar tabla
+            sucursales.forEach(sucursal => {
+                const row = document.createElement('tr');
+                row.dataset.id = sucursal.id;
+                row.innerHTML = `
+                    <td>${sucursal.nombre}</td>
+                    <td>
+                        <button class="action-btn edit" data-id="${sucursal.id}"><i class="ri-edit-line"></i></button>
+                        <button class="action-btn delete" data-id="${sucursal.id}"><i class="ri-delete-bin-line"></i></button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+            
+            // Agregar event listeners a los botones
+            agregarEventListenersBotones();
+            
+        } catch (error) {
+            console.error('Error al cargar sucursales:', error);
+            alert('Error al cargar las sucursales: ' + error.message);
+        }
+    }
+    
+    // Función para agregar event listeners a los botones de editar/eliminar
+    function agregarEventListenersBotones() {
+        // Eliminar event listeners anteriores
+        document.querySelectorAll('.action-btn').forEach(btn => {
+            btn.replaceWith(btn.cloneNode(true));
+        });
+        
+        // Agregar nuevos event listeners
+        document.addEventListener('click', manejarAccionesSucursal);
+    }
+    
+    // Función para manejar las acciones de las sucursales (editar/eliminar)
+    async function manejarAccionesSucursal(e) {
+        // Editar
+        if (e.target.closest('.action-btn.edit')) {
+            e.preventDefault();
+            const btn = e.target.closest('.action-btn.edit');
+            const id = btn.dataset.id;
+            
+            try {
+                const response = await fetch(`${API_URL}/sucursales/${id}`);
+                if (!response.ok) throw new Error('Error al cargar la sucursal');
+                
+                const sucursal = await response.json();
+                
+                // Llenar el formulario
+                sucursalNameInput.value = sucursal.nombre;
+                
+                // Cambiar el estado a edición
+                editando = true;
+                sucursalId = id;
+                
+                // Cambiar texto del botón
+                submitBtn.textContent = 'Actualizar Sucursal';
+                
+                // Abrir el modal
+                modal.classList.add('active');
+                
+            } catch (error) {
+                console.error('Error al cargar la sucursal:', error);
+                alert('Error al cargar la sucursal: ' + error.message);
+            }
+        }
+        
+        // Eliminar
+        if (e.target.closest('.action-btn.delete')) {
+            e.preventDefault();
+            const btn = e.target.closest('.action-btn.delete');
+            const id = btn.dataset.id;
+            
+            if (confirm('¿Estás seguro que deseas eliminar esta sucursal?')) {
+                try {
+                    const response = await fetch(`${API_URL}/sucursales/${id}`, {
+                        method: 'DELETE'
+                    });
+                    
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || 'Error al eliminar la sucursal');
+                    }
+                    
+                    // Recargar la lista de sucursales
+                    await cargarSucursales();
+                    alert('Sucursal eliminada exitosamente');
+                    
+                } catch (error) {
+                    console.error('Error al eliminar la sucursal:', error);
+                    alert('Error al eliminar la sucursal: ' + error.message);
+                }
+            }
+        }
+    }
+    
     // Form submission
     if (sucursalForm) {
-        sucursalForm.addEventListener('submit', function(e) {
+        sucursalForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            // Get form values
-            const sucursalName = document.getElementById('sucursal-name').value;
-            const currentDate = new Date().toLocaleDateString();
-
-            // Here you would typically send this data to a server
-            console.log('Registrando Sucursal:', sucursalName);
-
-            // For demo purposes, we'll just add to the table
-            const tableBody = document.querySelector('#table-body');
-            const newRow = document.createElement('tr');
-            newRow.innerHTML = `
-                <td>${sucursalName}</td>
-                <td>${currentDate}</td>
-                <td>
-                    <button class="action-btn edit"><i class="ri-edit-line"></i></button>
-                    <button class="action-btn delete"><i class="ri-delete-bin-line"></i></button>
-                </td>
-            `;
+            const nombre = sucursalNameInput.value.trim();
             
-            tableBody.appendChild(newRow);
+            if (!nombre) {
+                alert('El nombre de la sucursal es requerido');
+                return;
+            }
             
-            // Update records count
-            const recordsCount = document.getElementById('records-count');
-            const currentCount = parseInt(recordsCount.textContent);
-            recordsCount.textContent = currentCount + 1;
-
-            // Reset form and close modal
-            sucursalForm.reset();
-            closeModal();
-
-            // Show success message
-            alert('Sucursal registrada exitosamente');
+            try {
+                let url = `${API_URL}/sucursales`;
+                let method = 'POST';
+                
+                // Si estamos editando, cambiamos la URL y el método
+                if (editando && sucursalId) {
+                    url += `/${sucursalId}`;
+                    method = 'PUT';
+                }
+                
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ nombre })
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Error al guardar la sucursal');
+                }
+                
+                // Cerrar el modal y limpiar el formulario
+                closeModal();
+                sucursalForm.reset();
+                
+                // Recargar la lista de sucursales
+                await cargarSucursales();
+                
+                // Mostrar mensaje de éxito
+                alert(editando ? 'Sucursal actualizada exitosamente' : 'Sucursal registrada exitosamente');
+                
+                // Resetear estado de edición
+                editando = false;
+                sucursalId = null;
+                submitBtn.textContent = 'Registrar Sucursal';
+                
+            } catch (error) {
+                console.error('Error al guardar la sucursal:', error);
+                alert('Error al guardar la sucursal: ' + error.message);
+            }
         });
     }
 
-    // Edit and delete functionality (delegated events)
-    document.addEventListener('click', function(e) {
-        // Edit button
-        if (e.target.closest('.action-btn.edit')) {
-            const row = e.target.closest('tr');
-            const sucursalName = row.querySelector('td:first-child').textContent;
-            
-            // Fill modal with current values
-            document.getElementById('sucursal-name').value = sucursalName;
-            
-            // Change modal title and button
-            document.querySelector('.modal-header h3').innerHTML = '<i class="ri-edit-line"></i> Editar Área';
-            document.querySelector('.modal-body button[type="submit"]').textContent = 'Guardar Cambios';
-            
-            // Open modal
-            modal.classList.add('active');
-            
-            // Store reference to row being edited
-            modal.dataset.editingRow = row.rowIndex;
-        }
-        
-        // Delete button
-        if (e.target.closest('.action-btn.delete')) {
-            if (confirm('¿Estás seguro que deseas eliminar esta área?')) {
-                const row = e.target.closest('tr');
-                row.remove();
-                
-                // Update records count
-                const recordsCount = document.getElementById('records-count');
-                const currentCount = parseInt(recordsCount.textContent);
-                recordsCount.textContent = currentCount - 1;
-                
-                alert('Sucursal eliminada exitosamente');
-            }
-        }
-    });
+    // Cargar las sucursales al iniciar
+    cargarSucursales();
 
     // Update MenuJefe.js functionality for this page
     const currentPath = window.location.pathname.toLowerCase();

@@ -1,16 +1,40 @@
+//Notas:
+//Tengo dos funciones de estatus una mas arrbiba en el codigo y la otra hasta abajo
+
+
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const db = require('./database');
 require('dotenv').config();
+const tablasRoutes = require('./tablas');
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Configuración de CORS
+const corsOptions = {
+  origin: ['http://127.0.0.1:5500', 'http://localhost:5500'],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Manejar preflight requests
+app.options('*', cors(corsOptions));
+
+// Rutas de la API
+app.use('/api', tablasRoutes);
+
+
+
+
 
 // Ruta para obtener todas las categorías
 app.get('/api/categorias', async (req, res) => {
@@ -146,9 +170,7 @@ app.listen(PORT, () => {
 // Ruta para obtener todas las áreas
 app.get('/api/areas', async (req, res) => {
   try {
-    console.log('Obteniendo todas las áreas...');
     const result = await db.query('SELECT id_area as id, nombre FROM areas');
-    console.log('Áreas encontradas:', result.rows);
     res.json(result.rows);
   } catch (err) {
     console.error('Error al obtener áreas:', err);
@@ -160,15 +182,11 @@ app.get('/api/areas', async (req, res) => {
 app.get('/api/areas/:id', async (req, res) => {
   const { id } = req.params;
   try {
-    console.log(`Obteniendo área con ID: ${id}`);
     const result = await db.query('SELECT id_area as id, nombre FROM areas WHERE id_area = $1', [id]);
     
     if (result.rows.length === 0) {
-      console.log('Área no encontrada');
       return res.status(404).json({ error: 'Área no encontrada' });
     }
-    
-    console.log('Área encontrada:', result.rows[0]);
     res.json(result.rows[0]);
   } catch (err) {
     console.error('Error al obtener el área:', err);
@@ -178,25 +196,15 @@ app.get('/api/areas/:id', async (req, res) => {
 
 // Ruta para crear una nueva área
 app.post('/api/areas', async (req, res) => {
-  console.log('Body recibido:', req.body); // Ver el body completo
   const { nombre } = req.body;
   
   if (!nombre) {
-    console.log('Error: Nombre no proporcionado');
     return res.status(400).json({ error: 'El nombre del área es requerido' });
   }
   
   try {
-    console.log('Intentando insertar área:', nombre);
     const query = 'INSERT INTO areas(nombre) VALUES($1) RETURNING id_area as id, nombre';
-    console.log('Query a ejecutar:', query, 'con valores:', [nombre]);
-    
     const result = await db.query(query, [nombre]);
-    console.log('Resultado de la inserción:', result.rows[0]);
-    
-    // Verificar si la tabla realmente tiene datos
-    const checkQuery = await db.query('SELECT * FROM areas');
-    console.log('Contenido actual de la tabla areas:', checkQuery.rows);
     
     res.status(201).json(result.rows[0]);
   } catch (err) {
@@ -218,7 +226,6 @@ app.put('/api/areas/:id', async (req, res) => {
   const { id } = req.params;
   const { nombre } = req.body;
   
-  console.log('Actualizando área ID:', id, 'con datos:', { nombre });
   
   if (!nombre) {
     return res.status(400).json({ error: 'El nombre del área es requerido' });
@@ -230,7 +237,6 @@ app.put('/api/areas/:id', async (req, res) => {
       [nombre, id]
     );
     
-    console.log('Resultado de la actualización:', result.rows[0]);
     
     if (result.rowCount === 0) {
       return res.status(404).json({ error: 'Área no encontrada' });
@@ -253,25 +259,19 @@ app.put('/api/areas/:id', async (req, res) => {
 // Ruta para eliminar un área
 app.delete('/api/areas/:id', async (req, res) => {
   const { id } = req.params;
-  console.log('Solicitud para eliminar área ID:', id);
   
   try {
-    console.log('Ejecutando DELETE en la base de datos...');
     const result = await db.query(
       'DELETE FROM areas WHERE id_area = $1 RETURNING id_area as id, nombre',
       [id]
     );
     
-    console.log('Resultado de la eliminación:', result.rows[0]);
-    
     if (result.rowCount === 0) {
-      console.log('No se encontró el área con ID:', id);
       return res.status(404).json({ error: 'Área no encontrada' });
     }
     
     // Verificar si la tabla realmente se actualizó
     const remainingAreas = await db.query('SELECT * FROM areas');
-    console.log('Áreas restantes en la base de datos:', remainingAreas.rows);
     
     res.json({ 
       message: 'Área eliminada correctamente',
@@ -752,5 +752,6 @@ app.delete('/api/supervisores/:id', async (req, res) => {
     });
   }
 });
+
 
 

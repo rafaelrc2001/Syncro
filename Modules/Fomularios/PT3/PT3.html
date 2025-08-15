@@ -35,15 +35,15 @@
                     </div>
                     <div class="step" data-step="2">
                         <div class="step-number">2</div>
-                        <div class="step-title">Permiso de Trabajo de Entrada a Espacios Confinados</div>
+                        <div id="PermisoNP"class="step-title">Permiso No Peligroso</div>
                     </div>
                     <div class="step" data-step="3">
                         <div class="step-number">3</div>
-                        <div class="step-title">AST</div>
+                        <div class="step-title">Participantes</div>
                     </div>
                     <div class="step" data-step="4">
                         <div class="step-number">4</div>
-                        <div class="step-title">Participantes</div>
+                        <div class="step-title">AST</div>
                     </div>
                 </div>
             </div>
@@ -534,93 +534,8 @@
                     </div>
                 </section>
 
-                <!-- Sección 3: AST -->
+                <!-- Sección 3: Participantes -->
                 <section class="form-section" data-section="3">
-                    <div class="form-container">
-                        <div class="form-header">
-                            <div class="form-icon" style="background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);">
-                                <i class="ri-alert-line"></i>
-                            </div>
-                            <div>
-                                <h2>Análisis de Seguridad en el Trabajo (AST)</h2>
-                                <p>Describa las actividades y riesgos asociados</p>
-                            </div>
-                        </div>
-
-                        <div class="ast-activities">
-                            <div class="ast-table-header">
-                                <div>No.</div>
-                                <div>Secuencia de la Actividad</div>
-                                <div>Personal Ejecutor</div>
-                                <div>Peligros Potenciales</div>
-                                <div>Acciones Preventivas</div>
-                                <div>Responsable</div>
-                            </div>
-
-                            <div class="ast-activity" data-index="1">
-                                <div class="ast-activity-number">1</div>
-                                <div class="ast-activity-field">
-                                    <textarea name="ast-activity-1" rows="2"></textarea>
-                                </div>
-                                <div class="ast-activity-field">
-                                    <input type="text" name="ast-personnel-1">
-                                </div>
-                                <div class="ast-activity-field">
-                                    <textarea name="ast-hazards-1" rows="2"></textarea>
-                                </div>
-                                <div class="ast-activity-field">
-                                    <textarea name="ast-preventions-1" rows="2"></textarea>
-                                </div>
-                                <div class="ast-activity-field">
-                                    <input type="text" name="ast-responsible-1">
-                                </div>
-                            </div>
-                        </div>
-
-                        <button type="button" class="btn secondary" id="add-activity">
-                            <i class="ri-add-line"></i> Añadir Actividad
-                        </button>
-
-                        <div class="form-section-title">
-                            <i class="ri-shield-user-line"></i>
-                            <h3>Equipo de Protección Personal</h3>
-                        </div>
-
-                        <div class="form-group">
-                            <textarea id="ppe-required" name="ppe-required" rows="2" placeholder="Describa el EPP requerido"></textarea>
-                        </div>
-
-                        <div class="form-section-title">
-                            <i class="ri-tools-line"></i>
-                            <h3>Maquinaria, Equipo y Herramientas</h3>
-                        </div>
-
-                        <div class="form-group">
-                            <textarea id="equipment-tools" name="equipment-tools" rows="2" placeholder="Liste maquinaria y herramientas a utilizar"></textarea>
-                        </div>
-
-                        <div class="form-section-title">
-                            <i class="ri-box-line"></i>
-                            <h3>Materiales y Accesorios</h3>
-                        </div>
-
-                        <div class="form-group">
-                            <textarea id="materials" name="materials" rows="2" placeholder="Liste materiales y accesorios necesarios"></textarea>
-                        </div>
-
-                        <div class="form-actions">
-                            <button type="button" class="btn secondary prev-step" data-prev="2">
-                                <i class="ri-arrow-left-line"></i> Anterior
-                            </button>
-                            <button type="button" class="btn primary next-step" data-next="4">
-                                Siguiente <i class="ri-arrow-right-line"></i>
-                            </button>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Sección 4: Participantes -->
-                <section class="form-section" data-section="4">
                     <div class="form-container">
                         <div class="form-header">
                             <div class="form-icon" style="background: linear-gradient(135deg, #2196F3 0%, #0D47A1 100%);">
@@ -674,6 +589,111 @@
                             <i class="ri-user-add-line"></i> Añadir Participante
                         </button>
 
+                        <div class="form-section-title">
+                            <i class="ri-shield-user-line"></i>
+                            <h3>Equipo de Protección Personal</h3>
+                        </div>
+
+                        <div class="form-group">
+                            <textarea id="ppe-required" name="ppe-required" rows="2" placeholder="Describa el EPP requerido"></textarea>
+                        </div>
+
+                        <div class="form-section-title">
+                            <i class="ri-tools-line"></i>
+                            <h3>Maquinaria, Equipo y Herramientas</h3>
+                        </div>
+
+                        <div class="form-group">
+                            <textarea id="equipment-tools" name="equipment-tools" rows="2" placeholder="Liste maquinaria y herramientas a utilizar"></textarea>
+                        </div>
+
+                        <div class="form-section-title">
+                            <i class="ri-box-line"></i>
+                            <h3>Materiales y Accesorios</h3>
+                        </div>
+
+                        <div class="form-group">
+                            <textarea id="materials" name="materials" rows="2" placeholder="Liste materiales y accesorios necesarios"></textarea>
+                        </div>
+                    
+                        <div class="form-actions">
+                            <button type="button" class="btn secondary prev-step" data-prev="2">
+                                <i class="ri-arrow-left-line"></i> Anterior
+                            </button>
+                            <button type="button" class="btn primary next-step" data-next="4">
+                                Siguiente <i class="ri-arrow-right-line"></i>
+                            </button>
+                        </div>
+                    
+                </section>
+
+<!-- Sección 4: AST -->
+                <section class="form-section" data-section="4">
+                    <div class="form-container">
+                        <div class="form-header">
+                            <div class="form-icon" style="background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);">
+                                <i class="ri-alert-line"></i>
+                            </div>
+                            <div>
+                                <h2>Análisis de Seguridad en el Trabajo (AST)</h2>
+                                <p>Describa las actividades y riesgos asociados</p>
+                            </div>
+                        </div>
+
+                        <div class="ast-activities extended">
+                            <div class="ast-table-header">
+                                <div>No.</div>
+                                <div>Secuencia de la Actividad</div>
+                                <div>Personal Ejecutor</div>
+                                <div>Peligros Potenciales</div>
+                                <div>Acciones Preventivas</div>
+                                <div>Responsable</div>
+                                <div>Acciones</div>
+                            </div>
+                        
+                            <div class="ast-activity" data-index="1">
+                                <div class="ast-activity-number">1</div>
+                                <div class="ast-activity-field">
+                                    <textarea name="ast-activity-1" rows="2"></textarea>
+                                </div>
+                                <div class="ast-activity-field">
+                                    <select name="ast-personnel-1">
+                                        <option value="">-- Seleccione --</option>
+                                        <option value="juan">Juan Pérez</option>
+                                        <option value="maria">María López</option>
+                                        <option value="carlos">Carlos Gómez</option>
+                                        <option value="ana">Ana Martínez</option>
+                                    </select>
+                                </div>
+                                <div class="ast-activity-field">
+                                    <textarea name="ast-hazards-1" rows="2"></textarea>
+                                </div>
+                                <div class="ast-activity-field">
+                                    <textarea name="ast-preventions-1" rows="2"></textarea>
+                                </div>
+                                <div class="ast-activity-field">
+                                    <select name="ast-personnel-1">
+                                        <option value="">-- Seleccione --</option>
+                                        <option value="juan">Juan Pérez</option>
+                                        <option value="maria">María López</option>
+                                        <option value="carlos">Carlos Gómez</option>
+                                        <option value="ana">Ana Martínez</option>
+                                    </select>
+                                </div>
+                                <div class="ast-activities-actions">
+                                    <button type="button" class="action-btn remove-participant" title="Eliminar">
+                                        <i class="ri-delete-bin-line"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        
+
+                        <button type="button" class="btn secondary" id="add-activity">
+                            <i class="ri-add-line"></i> Añadir Actividad
+                        </button>
+
                         <div class="form-actions">
                             <button type="button" class="btn secondary prev-step" data-prev="3">
                                 <i class="ri-arrow-left-line"></i> Anterior
@@ -685,12 +705,15 @@
                                 <i class="ri-printer-line"></i> Vista de Impresión
                             </button>
                         </div>
+                        
                     </div>
                 </section>
+
+
+
             </form>
         </main>
     </div>
-
     <!-- Modal de confirmación -->
     <div class="modal" id="confirmation-modal">
         <div class="modal-content">
@@ -708,6 +731,11 @@
         </div>
     </div>
 
-    <script src="/Modules/Fomularios/PT3/PT3.js"></script>
+    <script src="/Modules/Fomularios/Generales/email.js"></script>
+    <script src="/Modules/Fomularios/Generales/seccion1.js"></script>
+    <script src="/Modules/Fomularios/PT3/seccion2.js"></script>
+    <script src="/Modules/Fomularios/Generales/seccion3.js"></script>
+    <script src="/Modules/Fomularios/Generales/seccion4.js"></script>
+    <script src="/Modules/Fomularios/Generales/navegacion.js"></script>
 </body>
 </html>

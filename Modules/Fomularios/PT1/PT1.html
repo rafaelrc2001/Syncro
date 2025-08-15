@@ -133,7 +133,7 @@
                             <button type="button" class="btn secondary" id="cancel-btn">
                                 <i class="ri-close-line"></i> Cancelar
                             </button>
-                            <button type="button" class="btn primary next-step" data-next="2">
+                            <button type="button" id="seccion1" class="btn primary next-step" data-next="2">
                                 Siguiente <i class="ri-arrow-right-line"></i>
                             </button>
                         </div>
@@ -273,195 +273,186 @@
 
                 
 
-                <!-- Sección 3: Participantes -->
-                <section class="form-section" data-section="3">
-                    <div class="form-container">
-                        <div class="form-header">
-                            <div class="form-icon" style="background: linear-gradient(135deg, #2196F3 0%, #0D47A1 100%);">
-                                <i class="ri-team-line"></i>
-                            </div>
-                            <div>
-                                <h2>Personal Participante</h2>
-                                <p>Registre a todas las personas involucradas</p>
-                            </div>
+             <!-- Sección 3: Participantes -->
+             <section class="form-section" data-section="3">
+                <div class="form-container">
+                    <div class="form-header">
+                        <div class="form-icon" style="background: linear-gradient(135deg, #2196F3 0%, #0D47A1 100%);">
+                            <i class="ri-team-line"></i>
+                        </div>
+                        <div>
+                            <h2>Personal Participante</h2>
+                            <p>Registre a todas las personas involucradas</p>
+                        </div>
+                    </div>
+
+                    <div class="participants-table">
+                        <div class="participants-header">
+                            <div>No.</div>
+                            <div>Nombre</div>
+                            <div>No. Credencial</div>
+                            <div>Cargo</div>
+                            <div>Función</div>
+                            <div>Acciones</div>
                         </div>
 
-                        <div class="participants-table">
-                            <div class="participants-header">
-                                <div>No.</div>
-                                <div>Nombre</div>
-                                <div>No. Credencial</div>
-                                <div>Cargo</div>
-                                <div>Función</div>
-                                <div>Acciones</div>
+                        <div class="participant-row" data-index="1">
+                            <div class="participant-number">1</div>
+                            <div class="participant-field">
+                                <input type="text" name="participant-name-1" required>
                             </div>
-
-                            <div class="participant-row" data-index="1">
-                                <div class="participant-number">1</div>
-                                <div class="participant-field">
-                                    <input type="text" name="participant-name-1" required>
-                                </div>
-                                <div class="participant-field">
-                                    <input type="text" name="participant-credential-1">
-                                </div>
-                                <div class="participant-field">
-                                    <input type="text" name="participant-position-1">
-                                </div>
-                                <div class="participant-field">
-                                    <select name="participant-role-1" required>
-                                        <option value="">Seleccione...</option>
-                                        <option value="PARTICIPA">Participa</option>
-                                        <option value="REVISA">Revisa</option>
-                                        <option value="ANALIZA">Analiza</option>
-                                        <option value="AUTORIZA">Autoriza</option>
-                                    </select>
-                                </div>
-                                <div class="participant-actions">
-                                    <button type="button" class="action-btn remove-participant" title="Eliminar">
-                                        <i class="ri-delete-bin-line"></i>
-                                    </button>
-                                </div>
+                            <div class="participant-field">
+                                <input type="text" name="participant-credential-1">
+                            </div>
+                            <div class="participant-field">
+                                <input type="text" name="participant-position-1">
+                            </div>
+                            <div class="participant-field">
+                                <select name="participant-role-1" required>
+                                    <option value="">Seleccione...</option>
+                                    <option value="PARTICIPA">Participa</option>
+                                    <option value="REVISA">Revisa</option>
+                                    <option value="ANALIZA">Analiza</option>
+                                    <option value="AUTORIZA">Autoriza</option>
+                                </select>
+                            </div>
+                            <div class="participant-actions">
+                                <button type="button" class="action-btn remove-participant" title="Eliminar">
+                                    <i class="ri-delete-bin-line"></i>
+                                </button>
                             </div>
                         </div>
+                    </div>
 
-                        <button type="button" class="btn secondary" id="add-participant">
-                            <i class="ri-user-add-line"></i> Añadir Participante
+                    <button type="button" class="btn secondary" id="add-participant">
+                        <i class="ri-user-add-line"></i> Añadir Participante
+                    </button>
+
+                    <div class="form-section-title">
+                        <i class="ri-shield-user-line"></i>
+                        <h3>Equipo de Protección Personal</h3>
+                    </div>
+
+                    <div class="form-group">
+                        <textarea id="ppe-required" name="ppe-required" rows="2" placeholder="Describa el EPP requerido"></textarea>
+                    </div>
+
+                    <div class="form-section-title">
+                        <i class="ri-tools-line"></i>
+                        <h3>Maquinaria, Equipo y Herramientas</h3>
+                    </div>
+
+                    <div class="form-group">
+                        <textarea id="equipment-tools" name="equipment-tools" rows="2" placeholder="Liste maquinaria y herramientas a utilizar"></textarea>
+                    </div>
+
+                    <div class="form-section-title">
+                        <i class="ri-box-line"></i>
+                        <h3>Materiales y Accesorios</h3>
+                    </div>
+
+                    <div class="form-group">
+                        <textarea id="materials" name="materials" rows="2" placeholder="Liste materiales y accesorios necesarios"></textarea>
+                    </div>
+                
+                    <div class="form-actions">
+                        <button type="button" class="btn secondary prev-step" data-prev="2">
+                            <i class="ri-arrow-left-line"></i> Anterior
                         </button>
-
-                    
-
-
-
-                        <div class="form-actions">
-                            <button type="button" class="btn secondary prev-step" data-prev="2">
-                                <i class="ri-arrow-left-line"></i> Anterior
-                            </button>
-                            <button type="button" class="btn primary next-step" data-next="4">
-                                Siguiente <i class="ri-arrow-right-line"></i>
-                            </button>
-                        </div>
-                    
-                </section>
-
-
-
-
-                <!-- Sección 4: AST -->
-                <section class="form-section" data-section="4">
-                    <div class="form-container">
-                        <div class="form-header">
-                            <div class="form-icon" style="background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);">
-                                <i class="ri-alert-line"></i>
-                            </div>
-                            <div>
-                                <h2>Análisis de Seguridad en el Trabajo (AST)</h2>
-                                <p>Describa las actividades y riesgos asociados</p>
-                            </div>
-                        </div>
-
-                        <div class="ast-activities extended">
-                            <div class="ast-table-header">
-                                <div>No.</div>
-                                <div>Secuencia de la Actividad</div>
-                                <div>Personal Ejecutor</div>
-                                <div>Peligros Potenciales</div>
-                                <div>Acciones Preventivas</div>
-                                <div>Responsable</div>
-                                <div>Acciones</div>
-                            </div>
-                        
-                            <div class="ast-activity" data-index="1">
-                                <div class="ast-activity-number">1</div>
-                                <div class="ast-activity-field">
-                                    <textarea name="ast-activity-1" rows="2"></textarea>
-                                </div>
-                                <div class="ast-activity-field">
-                                    <select name="ast-personnel-1">
-                                        <option value="">-- Seleccione --</option>
-                                        <option value="juan">Juan Pérez</option>
-                                        <option value="maria">María López</option>
-                                        <option value="carlos">Carlos Gómez</option>
-                                        <option value="ana">Ana Martínez</option>
-                                    </select>
-                                </div>
-                                <div class="ast-activity-field">
-                                    <textarea name="ast-hazards-1" rows="2"></textarea>
-                                </div>
-                                <div class="ast-activity-field">
-                                    <textarea name="ast-preventions-1" rows="2"></textarea>
-                                </div>
-                                <div class="ast-activity-field">
-                                    <select name="ast-personnel-1">
-                                        <option value="">-- Seleccione --</option>
-                                        <option value="juan">Juan Pérez</option>
-                                        <option value="maria">María López</option>
-                                        <option value="carlos">Carlos Gómez</option>
-                                        <option value="ana">Ana Martínez</option>
-                                    </select>
-                                </div>
-                                <div class="ast-activity-actions">
-                                    <button type="button" class="action-btn remove-activity" title="Eliminar">
-                                        <i class="ri-delete-bin-line"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            
-                        </div>
-                        
-
-                        <button type="button" class="btn secondary" id="add-activity">
-                            <i class="ri-add-line"></i> Añadir Actividad
+                        <button type="button" class="btn primary next-step" data-next="4">
+                            Siguiente <i class="ri-arrow-right-line"></i>
                         </button>
+                    </div>
+                
+            </section>
 
-                        <div class="form-section-title">
-                            <i class="ri-shield-user-line"></i>
-                            <h3>Equipo de Protección Personal</h3>
+<!-- Sección 4: AST -->
+            <section class="form-section" data-section="4">
+                <div class="form-container">
+                    <div class="form-header">
+                        <div class="form-icon" style="background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);">
+                            <i class="ri-alert-line"></i>
                         </div>
-
-                        <div class="form-group">
-                            <textarea id="ppe-required" name="ppe-required" rows="2" placeholder="Describa el EPP requerido"></textarea>
+                        <div>
+                            <h2>Análisis de Seguridad en el Trabajo (AST)</h2>
+                            <p>Describa las actividades y riesgos asociados</p>
                         </div>
+                    </div>
 
-                        <div class="form-section-title">
-                            <i class="ri-tools-line"></i>
-                            <h3>Maquinaria, Equipo y Herramientas</h3>
+                    <div class="ast-activities extended">
+                        <div class="ast-table-header">
+                            <div>No.</div>
+                            <div>Secuencia de la Actividad</div>
+                            <div>Personal Ejecutor</div>
+                            <div>Peligros Potenciales</div>
+                            <div>Acciones Preventivas</div>
+                            <div>Responsable</div>
+                            <div>Acciones</div>
                         </div>
-
-                        <div class="form-group">
-                            <textarea id="equipment-tools" name="equipment-tools" rows="2" placeholder="Liste maquinaria y herramientas a utilizar"></textarea>
-                        </div>
-
-                        <div class="form-section-title">
-                            <i class="ri-box-line"></i>
-                            <h3>Materiales y Accesorios</h3>
-                        </div>
-
-                        <div class="form-group">
-                            <textarea id="materials" name="materials" rows="2" placeholder="Liste materiales y accesorios necesarios"></textarea>
-                        </div>
-
-
-
-                        <div class="form-actions">
-                            <button type="button" class="btn secondary prev-step" data-prev="3">
-                                <i class="ri-arrow-left-line"></i> Anterior
-                            </button>
-                            <button type="submit" class="btn primary">
-                                <i class="ri-save-line"></i> Guardar Permiso Completo
-                            </button>
-                            <button type="button" class="btn tertiary" id="print-complete-btn">
-                                <i class="ri-printer-line"></i> Vista de Impresión
-                            </button>
+                    
+                        <div class="ast-activity" data-index="1">
+                            <div class="ast-activity-number">1</div>
+                            <div class="ast-activity-field">
+                                <textarea name="ast-activity-1" rows="2"></textarea>
+                            </div>
+                            <div class="ast-activity-field">
+                                <select name="ast-personnel-1">
+                                    <option value="">-- Seleccione --</option>
+                                    <option value="juan">Juan Pérez</option>
+                                    <option value="maria">María López</option>
+                                    <option value="carlos">Carlos Gómez</option>
+                                    <option value="ana">Ana Martínez</option>
+                                </select>
+                            </div>
+                            <div class="ast-activity-field">
+                                <textarea name="ast-hazards-1" rows="2"></textarea>
+                            </div>
+                            <div class="ast-activity-field">
+                                <textarea name="ast-preventions-1" rows="2"></textarea>
+                            </div>
+                            <div class="ast-activity-field">
+                                <select name="ast-personnel-1">
+                                    <option value="">-- Seleccione --</option>
+                                    <option value="juan">Juan Pérez</option>
+                                    <option value="maria">María López</option>
+                                    <option value="carlos">Carlos Gómez</option>
+                                    <option value="ana">Ana Martínez</option>
+                                </select>
+                            </div>
+                            <div class="ast-activities-actions">
+                                <button type="button" class="action-btn remove-participant" title="Eliminar">
+                                    <i class="ri-delete-bin-line"></i>
+                                </button>
+                            </div>
                         </div>
                         
                     </div>
-                </section>
+                    
+
+                    <button type="button" class="btn secondary" id="add-activity">
+                        <i class="ri-add-line"></i> Añadir Actividad
+                    </button>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn secondary prev-step" data-prev="3">
+                            <i class="ri-arrow-left-line"></i> Anterior
+                        </button>
+                        <button type="submit" class="btn primary">
+                            <i class="ri-save-line"></i> Guardar Permiso Completo
+                        </button>
+                        <button type="button" class="btn tertiary" id="print-complete-btn">
+                            <i class="ri-printer-line"></i> Vista de Impresión
+                        </button>
+                    </div>
+                    
+                </div>
+            </section>
 
 
 
-            </form>
-        </main>
-    </div>
+        </form>
+    </main>
+</div>
 
     <!-- Modal de confirmación -->
     <div class="modal" id="confirmation-modal">
@@ -480,7 +471,13 @@
         </div>
     </div>
 
-    <script src="/Modules/Fomularios/PT1/PT1.js"></script>
-    <script src="/Modules/Fomularios/PT1/email.js"></script>
+     <!-- <script src="/Modules/Fomularios/PT1/PT1.js"></script>-->
+    <script src="/Modules/Fomularios/Generales/email.js"></script>
+    <script src="/Modules/Fomularios/Generales/seccion1.js"></script>
+    <script src="/Modules/Fomularios/PT1/seccion2.js"></script>
+    <script src="/Modules/Fomularios/Generales/seccion3.js"></script>
+    <script src="/Modules/Fomularios/Generales/seccion4.js"></script>
+    <script src="/Modules/Fomularios/Generales/navegacion.js"></script>
+  
 </body>
 </html>

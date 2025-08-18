@@ -1,16 +1,17 @@
-// Autocompletado de planta
-const plantSuggestions = [
-    "Planta de Producción Principal",
-    "Planta de Almacenamiento Norte",
-    "Planta de Procesamiento Secundario",
-    "Área de Mantenimiento General",
-    "Sala de Máquinas 1",
-    "Sala de Máquinas 2",
-    "Zona de Almacenamiento de Materiales",
-    "Área de Servicios Generales",
-    "Planta de Tratamiento de Aguas",
-    "Subestación Eléctrica"
-];
+// Autocompletado de planta dinámico desde /api/areas
+let plantSuggestions = [];
+
+async function fetchPlantSuggestions() {
+    try {
+        const response = await fetch('http://localhost:3000/api/areas');
+        if (!response.ok) throw new Error('Error al obtener áreas');
+        const areas = await response.json();
+        plantSuggestions = areas.map(area => area.nombre);
+        console.log('Áreas para autocompletado:', plantSuggestions);
+    } catch (err) {
+        console.error('No se pudieron cargar las áreas para autocompletado:', err);
+    }
+}
 
 function showPlantSuggestions(input, suggestionsContainer) {
     const inputValue = input.value.toLowerCase();
@@ -73,7 +74,48 @@ function initPlantAutocomplete() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    initPlantAutocomplete();
+    fetchPlantSuggestions().then(() => {
+        initPlantAutocomplete();
+    });
+
+    // Poblar sucursales dinámicamente
+    async function populateSucursales() {
+    // NOTA IMPORTANTE:
+    // Si cambias el nombre de la columna id_area en tu tabla sucursales,
+    // debes actualizar el nombre de la propiedad en este archivo (seccion1.js)
+    // y también en el endpoint de listas.js donde se hace el SELECT.
+        const areaSelect = document.getElementById('area');
+        if (!areaSelect) {
+            console.warn('No se encontró el select con id="area"');
+            return;
+        }
+        try {
+            const response = await fetch('http://localhost:3000/api/sucursales');
+            if (!response.ok) throw new Error('Error al obtener sucursales');
+            const sucursales = await response.json();
+            console.log('Sucursales recibidas:', sucursales);
+            // Limpiar opciones excepto el placeholder
+            areaSelect.innerHTML = '<option value="" disabled selected>Seleccione una sucursal</option>';
+            if (sucursales.length === 0) {
+                const option = document.createElement('option');
+                option.value = "";
+                option.disabled = true;
+                option.textContent = 'No hay sucursales registradas';
+                areaSelect.appendChild(option);
+            } else {
+                // Soporta ambos formatos: {id_sucursal, nombre} o {id, nombre}
+                sucursales.forEach(sucursal => {
+                    const option = document.createElement('option');
+                    option.value = sucursal.id_sucursal|| sucursal.id;
+                    option.textContent = sucursal.nombre;
+                    areaSelect.appendChild(option);
+                });
+            }
+        } catch (err) {
+            console.error('No se pudieron cargar las sucursales:', err);
+        }
+    }
+    populateSucursales();
 
     // Botón volver
     const backBtn = document.getElementById('back-btn');
@@ -103,4 +145,3 @@ document.addEventListener('DOMContentLoaded', () => {
         timeField.value = `${hours}:${minutes}`;
     }
 });
-

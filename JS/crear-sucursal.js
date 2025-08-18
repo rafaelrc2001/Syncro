@@ -72,12 +72,12 @@ document.addEventListener('DOMContentLoaded', function() {
             // Llenar tabla
             sucursales.forEach(sucursal => {
                 const row = document.createElement('tr');
-                row.dataset.id = sucursal.id;
+                row.dataset.id = sucursal.id_sucursal;
                 row.innerHTML = `
                     <td>${sucursal.nombre}</td>
                     <td>
-                        <button class="action-btn edit" data-id="${sucursal.id}"><i class="ri-edit-line"></i></button>
-                        <button class="action-btn delete" data-id="${sucursal.id}"><i class="ri-delete-bin-line"></i></button>
+                        <button class="action-btn edit" data-id="${sucursal.id_sucursal}"><i class="ri-edit-line"></i></button>
+                        <button class="action-btn delete" data-id="${sucursal.id_sucursal}"><i class="ri-delete-bin-line"></i></button>
                     </td>
                 `;
                 tableBody.appendChild(row);

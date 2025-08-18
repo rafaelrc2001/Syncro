@@ -91,8 +91,6 @@
                                 <div class="select-wrapper">
                                     <select id="area" name="area" required>
                                         <option value="" disabled selected>Seleccione una sucursal</option>
-                                        <option value="area6">Área 6</option>
-                                        <option value="pajaritos">Pajaritos</option>
                                     </select>
                                     <i class="ri-arrow-down-s-line select-arrow"></i>
                                 </div>
@@ -130,9 +128,6 @@
 
                     
                         <div class="form-actions">
-                            <button type="button" class="btn secondary" id="cancel-btn">
-                                <i class="ri-close-line"></i> Cancelar
-                            </button>
                             <button type="button" id="seccion1" class="btn primary next-step" data-next="2">
                                 Siguiente <i class="ri-arrow-right-line"></i>
                             </button>
@@ -302,10 +297,10 @@
                                 <input type="text" name="participant-name-1" required>
                             </div>
                             <div class="participant-field">
-                                <input type="text" name="participant-credential-1">
+                                <input type="text" name="participant-credential-1" required>
                             </div>
                             <div class="participant-field">
-                                <input type="text" name="participant-position-1">
+                                <input type="text" name="participant-position-1" required>
                             </div>
                             <div class="participant-field">
                                 <select name="participant-role-1" required>
@@ -359,7 +354,7 @@
                         <button type="button" class="btn secondary prev-step" data-prev="2">
                             <i class="ri-arrow-left-line"></i> Anterior
                         </button>
-                        <button type="button" class="btn primary next-step" data-next="4">
+                        <button type="button" id="btn-save-participants" class="btn primary next-step" data-next="4">
                             Siguiente <i class="ri-arrow-right-line"></i>
                         </button>
                     </div>
@@ -405,18 +400,14 @@
                                 </select>
                             </div>
                             <div class="ast-activity-field">
-                                <textarea name="ast-hazards-1" rows="2"></textarea>
+                                <textarea name="ast-hazards-1" rows="2" required></textarea>
                             </div>
                             <div class="ast-activity-field">
                                 <textarea name="ast-preventions-1" rows="2"></textarea>
                             </div>
                             <div class="ast-activity-field">
-                                <select name="ast-personnel-1">
+                                <select name="ast-personnel-1" required>
                                     <option value="">-- Seleccione --</option>
-                                    <option value="juan">Juan Pérez</option>
-                                    <option value="maria">María López</option>
-                                    <option value="carlos">Carlos Gómez</option>
-                                    <option value="ana">Ana Martínez</option>
                                 </select>
                             </div>
                             <div class="ast-activities-actions">
@@ -477,7 +468,6 @@
     <script src="/Modules/Fomularios/PT1/seccion2.js"></script>
     <script src="/Modules/Fomularios/Generales/seccion3.js"></script>
     <script src="/Modules/Fomularios/Generales/seccion4.js"></script>
-    <script src="/Modules/Fomularios/Generales/navegacion.js"></script>
-  
+    <script src="/Modules/Fomularios/Generales/navegacion.js"></script>  
 </body>
 </html>

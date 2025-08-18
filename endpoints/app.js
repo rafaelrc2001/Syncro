@@ -7,7 +7,9 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const db = require('./database');
 require('dotenv').config();
+
 const tablasRoutes = require('./tablas');
+const listasRoutes = require('./listas');
 
 
 const app = express();
@@ -30,7 +32,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.options('*', cors(corsOptions));
 
 // Rutas de la API
-app.use('/api', tablasRoutes);
+
+app.use('/api', tablasRoutes);  // Monta las rutas de tablas.js bajo el prefijo /api
+app.use('/api', require('./listas'));// Monta las rutas de listas.js bajo el prefijo /api
 
 
 
@@ -309,7 +313,7 @@ app.delete('/api/areas/:id', async (req, res) => {
 // Ruta para obtener todas las sucursales
 app.get('/api/sucursales', async (req, res) => {
   try {
-    const result = await db.query('SELECT id_area as id, nombre FROM sucursales');
+    const result = await db.query('SELECT id_sucursal as id, nombre FROM sucursales');
     res.json(result.rows);
   } catch (err) {
     console.error('Error al obtener sucursales:', err);
@@ -321,7 +325,7 @@ app.get('/api/sucursales', async (req, res) => {
 app.get('/api/sucursales/:id', async (req, res) => {
   const { id } = req.params;
   try {
-    const result = await db.query('SELECT id_area as id, nombre FROM sucursales WHERE id_area = $1', [id]);
+    const result = await db.query('SELECT id_sucursal as id, nombre FROM sucursales WHERE id_sucursal = $1', [id]);
     
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'Sucursal no encontrada' });
@@ -343,7 +347,7 @@ app.post('/api/sucursales', async (req, res) => {
   }
   
   try {
-    const query = 'INSERT INTO sucursales(nombre) VALUES($1) RETURNING id_area as id, nombre';
+    const query = 'INSERT INTO sucursales(nombre) VALUES($1) RETURNING id_sucursal as id, nombre';
     const result = await db.query(query, [nombre]);
     
     res.status(201).json(result.rows[0]);
@@ -371,7 +375,7 @@ app.put('/api/sucursales/:id', async (req, res) => {
   
   try {
     const result = await db.query(
-      'UPDATE sucursales SET nombre = $1 WHERE id_area = $2 RETURNING id_area as id, nombre',
+      'UPDATE sucursales SET nombre = $1 WHERE id_sucursal = $2 RETURNING id_sucursal as id, nombre',
       [nombre, id]
     );
     
@@ -399,7 +403,7 @@ app.delete('/api/sucursales/:id', async (req, res) => {
   
   try {
     const result = await db.query(
-      'DELETE FROM sucursales WHERE id_area = $1 RETURNING id_area as id, nombre',
+      'DELETE FROM sucursales WHERE id_sucursal = $1 RETURNING id_sucursal as id, nombre',
       [id]
     );
     
@@ -752,6 +756,5 @@ app.delete('/api/supervisores/:id', async (req, res) => {
     });
   }
 });
-
 
 

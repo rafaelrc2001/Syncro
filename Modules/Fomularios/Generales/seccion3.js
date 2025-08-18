@@ -157,6 +157,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 body: JSON.stringify(astData)
             });
+            const astResult = await astResponse.json();
+            if (astResult.success && astResult.data && astResult.data.id_ast) {
+                sessionStorage.setItem('id_ast', astResult.data.id_ast);
+                console.log('[DEBUG] id_ast guardado en sessionStorage:', astResult.data.id_ast);
+            }
 
             if (!astResponse.ok) {
                 const error = await astResponse.json();

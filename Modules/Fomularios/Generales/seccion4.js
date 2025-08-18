@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const astActivitiesContainer = document.querySelector('.ast-activities');
 
     if (addActivityBtn && astActivitiesContainer) {
-        addActivityBtn.addEventListener('click', function () {
+        addActivityBtn.addEventListener('click', async function () {
             const activityCount = document.querySelectorAll('.ast-activity').length;
             const newIndex = activityCount + 1;
 
@@ -23,6 +23,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('Máximo 10 actividades permitidas');
                 return;
             }
+
+            // Obtener participantes desde el backend
+            let participantes = [];
+            try {
+                const response = await fetch('http://localhost:3000/api/participantes');
+                participantes = await response.json();
+            } catch (error) {
+                console.error('Error al obtener participantes:', error);
+            }
+
+            // Crear select de personal ejecutor
+            let optionsPersonal = '<option value="">-- Seleccione --</option>';
+            participantes.forEach(part => {
+                optionsPersonal += `<option value="${part.id_ast_participan}">${part.nombre}</option>`;
+            });
+
+            // Crear select de responsable
+            let optionsResponsable = '<option value="">-- Seleccione --</option>';
+            participantes.forEach(part => {
+                optionsResponsable += `<option value="${part.id_ast_participan}">${part.nombre}</option>`;
+            });
 
             const newActivity = document.createElement('div');
             newActivity.className = 'ast-activity';
@@ -34,11 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <div class="ast-activity-field">
                     <select name="ast-personnel-${newIndex}" required>
-                        <option value="">-- Seleccione --</option>
-                        <option value="juan">Juan Pérez</option>
-                        <option value="maria">María López</option>
-                        <option value="carlos">Carlos Gómez</option>
-                        <option value="ana">Ana Martínez</option>
+                        ${optionsPersonal}
                     </select>
                 </div>
                 <div class="ast-activity-field">
@@ -49,11 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <div class="ast-activity-field">
                     <select name="ast-responsible-${newIndex}" required>
-                        <option value="">-- Seleccione --</option>
-                        <option value="juan">Juan Pérez</option>
-                        <option value="maria">María López</option>
-                        <option value="carlos">Carlos Gómez</option>
-                        <option value="ana">Ana Martínez</option>
+                        ${optionsResponsable}
                     </select>
                 </div>
                 <div class="ast-activities-actions">
@@ -224,6 +237,73 @@ document.addEventListener('DOMContentLoaded', () => {
                     throw new Error(resultPTNP.error || 'Error al guardar PT No Peligroso');
                 }
 
+                // 4. Insertar actividades AST usando el id_permiso generado
+                const astActivities = [];
+                const astActivityElements = document.querySelectorAll('.ast-activity');
+                let validAst = true;
+                astActivityElements.forEach((activityEl) => {
+                    const index = activityEl.getAttribute('data-index');
+                    const secuencia = activityEl.querySelector(`textarea[name="ast-activity-${index}"]`)?.value.trim();
+                    const personal_ejecutor = activityEl.querySelector(`select[name="ast-personnel-${index}"]`)?.value;
+                    const peligros_potenciales = activityEl.querySelector(`textarea[name="ast-hazards-${index}"]`)?.value.trim();
+                    const acciones_preventivas = activityEl.querySelector(`textarea[name="ast-preventions-${index}"]`)?.value.trim();
+                    const responsableSelect = activityEl.querySelector(`select[name="ast-responsible-${index}"]`);
+                    const responsable = responsableSelect?.value;
+
+                    if (!secuencia) {
+                        console.error(`Actividad ${index}: secuencia está vacío o undefined`);
+                        validAst = false;
+                    }
+                    if (!personal_ejecutor) {
+                        console.error(`Actividad ${index}: personal_ejecutor está vacío o undefined`);
+                        validAst = false;
+                    }
+                    if (!peligros_potenciales) {
+                        console.error(`Actividad ${index}: peligros_potenciales está vacío o undefined`);
+                        validAst = false;
+                    }
+                    if (!acciones_preventivas) {
+                        console.error(`Actividad ${index}: acciones_preventivas está vacío o undefined`);
+                        validAst = false;
+                    }
+                    if (!responsable) {
+                        console.error(`Actividad ${index}: responsable está vacío o undefined`);
+                        validAst = false;
+                        if (responsableSelect) {
+                            responsableSelect.style.borderColor = '#ff4444';
+                            responsableSelect.addEventListener('change', function () {
+                                this.style.borderColor = '';
+                            }, { once: true });
+                        }
+                    }
+
+                    astActivities.push({
+                        id_ast: idAst,
+                        secuencia,
+                        personal_ejecutor,
+                        peligros_potenciales,
+                        acciones_preventivas,
+                        responsable
+                    });
+                });
+                if (!validAst) {
+                    alert('Por favor completa todos los campos obligatorios de las actividades AST antes de guardar. Revisa la consola para detalles.');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalHTML;
+                    return;
+                }
+                console.log('Actividades AST a enviar:', astActivities);
+
+                const responseAST = await fetch('http://localhost:3000/api/ast-actividades', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ actividades: astActivities })
+                });
+                const resultAST = await responseAST.json();
+                if (!responseAST.ok || !resultAST.success) {
+                    throw new Error(resultAST.error || 'Error al guardar actividades AST');
+                }
+
                 // Marcar como insertado
                 sessionStorage.setItem('permisoCompletoInserted', 'true');
 
@@ -263,25 +343,54 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Modo de prueba: No se está usando n8n');
         return true; // Siempre retorna éxito
     };
+    // ==============================
+    // Imprimir en consola el nombre seleccionado en los selects AST
+    // ==============================
+    function imprimirNombreSeleccionado(event) {
+        const select = event.target;
+        const selectedOption = select.options[select.selectedIndex];
+        if (selectedOption && selectedOption.value) {
+            console.log(`Seleccionado en ${select.name}: ${selectedOption.textContent}`);
+        }
+    }
+
+    document.addEventListener('change', function(event) {
+        if (event.target.matches('select[name^="ast-personnel-"]') || event.target.matches('select[name^="ast-responsible-"]')) {
+            imprimirNombreSeleccionado(event);
+        }
+    });
 });
 
-// Función para poblar los selects de participantes en AST
+// Poblar ambos selects de cada actividad AST
 async function poblarSelectParticipantes() {
     try {
-        // 1. Obtener la lista de participantes del backend
         const response = await fetch('http://localhost:3000/api/participantes');
         const participantes = await response.json();
 
-        // 2. Seleccionar todos los selects de personal en AST
-        const selects = document.querySelectorAll('select[name^="ast-personnel-"]');
+        if (!Array.isArray(participantes)) {
+            console.error('La respuesta de participantes no es un array:', participantes);
+            return;
+        }
 
-        selects.forEach(select => {
-            // Limpiar opciones actuales
+        // Poblar selects de personal ejecutor
+        const selectsPersonal = document.querySelectorAll('select[name^="ast-personnel-"]');
+        selectsPersonal.forEach(select => {
             select.innerHTML = '<option value="">-- Seleccione --</option>';
-            // Agregar cada participante como opción
             participantes.forEach(part => {
                 const option = document.createElement('option');
-                option.value = part.id; // o part.nombre si no tienes id
+                option.value = part.id_ast_participan; // o part.nombre si no tienes id
+                option.textContent = part.nombre;
+                select.appendChild(option);
+            });
+        });
+
+        // Poblar selects de responsable
+        const selectsResponsable = document.querySelectorAll('select[name^="ast-responsible-"]');
+        selectsResponsable.forEach(select => {
+            select.innerHTML = '<option value="">-- Seleccione --</option>';
+            participantes.forEach(part => {
+                const option = document.createElement('option');
+                option.value = part.id_ast_participan;
                 option.textContent = part.nombre;
                 select.appendChild(option);
             });
@@ -293,3 +402,7 @@ async function poblarSelectParticipantes() {
 
 // Llama a la función cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', poblarSelectParticipantes);
+
+const idAst = sessionStorage.getItem('id_ast');
+console.log('[DEBUG] idAst leído en seccion4:', idAst);
+

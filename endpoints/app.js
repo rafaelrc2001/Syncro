@@ -9,7 +9,7 @@ const db = require('./database');
 require('dotenv').config();
 
 const tablasRoutes = require('./tablas');
-const listasRoutes = require('./listas');
+const listasRouter = require('./listas');
 
 
 const app = express();
@@ -34,7 +34,7 @@ app.options('*', cors(corsOptions));
 // Rutas de la API
 
 app.use('/api', tablasRoutes);  // Monta las rutas de tablas.js bajo el prefijo /api
-app.use('/api', require('./listas'));// Monta las rutas de listas.js bajo el prefijo /api
+app.use('/api', listasRouter);// Monta las rutas de listas.js bajo el prefijo /api
 
 
 

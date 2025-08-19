@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 credencial: credential,
                 cargo: position,
                 funcion: role,
-                id_estatus: 1
+                id_estatus: sessionStorage.getItem('id_estatus') 
             });
         });
         return participants;
@@ -128,7 +128,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // 1. Primero guardamos los participantes
             const participants = collectParticipants();
-            await fetch('http://localhost:3000/api/ast-participan', {
+            console.log('[DEBUG] Participantes a enviar:', participants);
+            const respPart = await fetch('http://localhost:3000/api/ast-participan', {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json',
@@ -136,6 +137,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 body: JSON.stringify({ participants })
             });
+            const respPartJson = await respPart.json();
+            console.log('[DEBUG] Respuesta backend ast-participan:', respPart.status, respPartJson);
+            if (!respPart.ok) {
+                throw new Error(respPartJson.error || 'Error al guardar participantes');
+            }
 
             // 2. Luego guardamos los datos de AST
             const astData = {
@@ -170,6 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Marcar como insertado en sessionStorage
             sessionStorage.setItem('participantsInserted', 'true');
+            sessionStorage.setItem('permisoCompletoInserted', 'true');
 
             showNotification('success', 'Datos guardados correctamente');
 
@@ -190,19 +197,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Al cargar la página, si ya está insertado, solo navega
-    if (sessionStorage.getItem('participantsInserted') === 'true') {
-        btnSaveParticipants.addEventListener('click', goToNextSection);
-    } else {
-        btnSaveParticipants.addEventListener('click', handleInsertAndNavigate);
-    }
-    // Limpiar el estado de inserción al volver a la sección anterior
-    const prevBtn = document.querySelector('.form-actions .prev-step[data-prev="2"]');
-    if (prevBtn) {
-        prevBtn.addEventListener('click', () => {
-            sessionStorage.removeItem('participantsInserted');
-        });
-    }
+    // El botón 'siguiente' solo inserta y cambia de sección, sin lógica de bloqueo
+    btnSaveParticipants.addEventListener('click', handleInsertAndNavigate);
+
 
 
 
@@ -271,3 +268,5 @@ document.getElementById('btn-save-ast')?.addEventListener('click', async (e) => 
         console.log(`[${type.toUpperCase()}] ${message}`);
     }
 });
+
+console.log('seccion3.js cargado');

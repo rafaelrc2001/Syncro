@@ -3,6 +3,8 @@ const router = express.Router();
 const db = require('./database');
 const { pool } = require('./database'); 
 
+console.log('[DEBUG] tablas.js cargado');
+
 // Ruta para insertar el estatus por defecto
 // Ruta para insertar el estatus por defecto
 // Ruta para insertar el estatus por defecto
@@ -74,7 +76,7 @@ router.post('/ast-participan', async (req, res) => {
       const result = await db.query(
         `INSERT INTO ast_participan 
          (nombre, credencial, cargo, funcion, id_estatus) 
-         VALUES ($1, $2, $3, $4, $5) 
+         VALUES ($1, $2, $3, $4, $5)
          RETURNING *`,
         [
           participant.nombre,
@@ -171,12 +173,11 @@ router.post('/permisos-trabajo', async (req, res) => {
     id_sucursal,
     id_tipo_permiso,
     id_estatus,
-    id_ast,
-    id_autorizacion
+    id_ast
   } = req.body;
 
   // Validar que todos los campos existan y sean enteros
-  if ([id_area, id_departamento, id_sucursal, id_tipo_permiso, id_estatus, id_ast, id_autorizacion].some(v => typeof v === 'undefined')) {
+  if ([id_area, id_departamento, id_sucursal, id_tipo_permiso, id_estatus, id_ast].some(v => typeof v === 'undefined')) {
     return res.status(400).json({
       success: false,
       error: 'Todos los campos son requeridos para permisos_trabajo'
@@ -186,10 +187,10 @@ router.post('/permisos-trabajo', async (req, res) => {
   try {
     const result = await db.query(
       `INSERT INTO permisos_trabajo (
-        id_area, id_departamento, id_sucursal, id_tipo_permiso, id_estatus, id_ast, id_autorizacion
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7)
+        id_area, id_departamento, id_sucursal, id_tipo_permiso, id_estatus, id_ast
+      ) VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING *`,
-      [id_area, id_departamento, id_sucursal, id_tipo_permiso, id_estatus, id_ast, id_autorizacion]
+      [id_area, id_departamento, id_sucursal, id_tipo_permiso, id_estatus, id_ast]
     );
     res.status(201).json({
       success: true,
@@ -218,19 +219,20 @@ router.post('/permisos-trabajo', async (req, res) => {
 // Ruta para insertar en la tabla autorizaciones
 
 router.post('/autorizaciones', async (req, res) => {
-  let { id_supervisor, id_categoria, responsable_area } = req.body;
+  let { id_permiso, id_supervisor, id_categoria, responsable_area } = req.body;
 
   // Asignar valores por defecto si no vienen en el body
+  if (!id_permiso) return res.status(400).json({ success: false, error: 'id_permiso es requerido' });
   if (!id_supervisor) id_supervisor = 2; // Cambia este valor por el que corresponda
   if (!id_categoria) id_categoria = 7;   // Cambia este valor por el que corresponda
   if (!responsable_area) responsable_area = 'Por Defecto'; // Cambia este valor por el que corresponda
 
   try {
     const result = await db.query(
-      `INSERT INTO autorizaciones (id_supervisor, id_categoria, responsable_area)
-       VALUES ($1, $2, $3)
+      `INSERT INTO autorizaciones (id_permiso, id_supervisor, id_categoria, responsable_area)
+       VALUES ($1, $2, $3, $4)
        RETURNING *`,
-      [id_supervisor, id_categoria, responsable_area]
+      [id_permiso, id_supervisor, id_categoria, responsable_area]
     );
     res.status(201).json({
       success: true,
@@ -372,6 +374,27 @@ router.post('/ast-actividades', async (req, res) => {
     message: 'Actividades AST creadas exitosamente',
     data: results
   });
+});
+
+// Ejemplo en Express
+router.get('/api/participantes', async (req, res) => {
+  const id_estatus = parseInt(req.query.id_estatus, 10);
+  console.log('[DEBUG] id_estatus recibido:', id_estatus);
+  if (!Number.isInteger(id_estatus) || id_estatus <= 0) {
+    console.log('[DEBUG] id_estatus inválido, devolviendo array vacío:', id_estatus);
+    return res.json([]);
+  }
+  let query = 'SELECT * FROM ast_participan WHERE id_estatus = $1';
+  let params = [id_estatus];
+  console.log('[DEBUG] Query ejecutada:', query, params);
+  try {
+    const result = await pool.query(query, params);
+    console.log('[DEBUG] Resultados:', result.rows);
+    res.json(result.rows);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+  console.log('[DEBUG] Entrando a /api/participantes');
 });
 
 

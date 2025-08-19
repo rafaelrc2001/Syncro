@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 const db = require('./database');
 require('dotenv').config();
 
-const tablasRoutes = require('./tablas');
+const tablasRouter = require('./tablas');
 const listasRouter = require('./listas');
 
 
@@ -33,7 +33,7 @@ app.options('*', cors(corsOptions));
 
 // Rutas de la API
 
-app.use('/api', tablasRoutes);  // Monta las rutas de tablas.js bajo el prefijo /api
+app.use('/api', tablasRouter);  // Monta las rutas de tablas.js bajo el prefijo /api
 app.use('/api', listasRouter);// Monta las rutas de listas.js bajo el prefijo /api
 
 

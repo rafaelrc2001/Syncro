@@ -263,13 +263,14 @@ router.post('/pt-no-peligroso', async (req, res) => {
     tag,
     fluido,
     presion,
-    temperatura
+    temperatura,
+    empresa
   } = req.body;
 
   // Mostrar por consola los datos recibidos
 
   // Validar campos obligatorios
-  if (!id_permiso || !nombre_solicitante || !descripcion_trabajo || !tipo_mantenimiento || !equipo_intervencion || !hora_inicio) {
+  if (!id_permiso || !nombre_solicitante || !descripcion_trabajo || !tipo_mantenimiento || !hora_inicio || !empresa) {
     return res.status(400).json({
       success: false,
       error: 'Faltan campos obligatorios para pt_no_peligroso'
@@ -279,8 +280,8 @@ router.post('/pt-no-peligroso', async (req, res) => {
   try {
     const result = await db.query(
       `INSERT INTO pt_no_peligroso (
-        id_permiso, nombre_solicitante, descripcion_trabajo, tipo_mantenimiento, ot_no, equipo_intervencion, hora_inicio, tag, fluido, presion, temperatura
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+        id_permiso, nombre_solicitante, descripcion_trabajo, tipo_mantenimiento, ot_no, equipo_intervencion, hora_inicio, tag, fluido, presion, temperatura, empresa
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
       RETURNING *`,
       [
         id_permiso,
@@ -293,7 +294,8 @@ router.post('/pt-no-peligroso', async (req, res) => {
         tag || null,
         fluido || null,
         presion || null,
-        temperatura || null
+        temperatura || null,
+        empresa
       ]
     );
     res.status(201).json({

@@ -60,10 +60,87 @@ function initPlantAutocomplete() {
 
     if (!plantInput || !suggestionsContainer) return;
 
+
+
+    const plantIdHidden = document.getElementById('plant-id-hidden');
     plantInput.addEventListener('input', function () {
         showPlantSuggestions(this, suggestionsContainer);
-        // Guardar el valor actual de planta en sessionStorage
-        sessionStorage.setItem('plant_value', this.value);
+        const selectedArea = (window.areas || []).find(a => a.nombre === this.value);
+        const warningId = 'plant-warning';
+        let warning = document.getElementById(warningId);
+        if (selectedArea) {
+            sessionStorage.setItem('plant_value', selectedArea.id_area || selectedArea.id);
+            if (plantIdHidden) plantIdHidden.value = selectedArea.id_area || selectedArea.id;
+            console.log('[DEBUG] plant_value guardado:', selectedArea.id_area || selectedArea.id);
+            if (warning) warning.remove();
+        } else {
+            sessionStorage.setItem('plant_value', '');
+            if (plantIdHidden) plantIdHidden.value = '';
+            console.log('[DEBUG] plant_value guardado: vacío');
+            // Solo mostrar advertencia si el input no está vacío
+            if (this.value.trim() && !warning) {
+                warning = document.createElement('div');
+                warning.id = warningId;
+                warning.style.color = '#d9534f';
+                warning.style.fontSize = '0.95em';
+                warning.style.marginTop = '4px';
+                warning.textContent = 'Debe seleccionar un área válida de la lista.';
+                plantInput.parentNode.insertBefore(warning, plantInput.nextSibling);
+            } else if (!this.value.trim() && warning) {
+                warning.remove();
+            }
+        }
+    });
+
+    // Al perder el foco, si el valor no es válido, limpiar el input y advertencia
+    plantInput.addEventListener('blur', function () {
+        setTimeout(() => { // Esperar a que termine el click en sugerencia
+            const selectedArea = (window.areas || []).find(a => a.nombre === this.value);
+            const warning = document.getElementById('plant-warning');
+            if (!selectedArea) {
+                this.value = '';
+                sessionStorage.setItem('plant_value', '');
+                if (!warning) {
+                    const w = document.createElement('div');
+                    w.id = 'plant-warning';
+                    w.style.color = '#d9534f';
+                    w.style.fontSize = '0.95em';
+                    w.style.marginTop = '4px';
+                    w.textContent = 'Debe seleccionar un área válida de la lista.';
+                    plantInput.parentNode.insertBefore(w, plantInput.nextSibling);
+                }
+            } else if (warning) {
+                warning.remove();
+            }
+        }, 150);
+    });
+
+    // Al hacer click en sugerencia, guardar el id y limpiar advertencia
+    suggestionsContainer.addEventListener('click', function (e) {
+        if (e.target.classList.contains('autocomplete-suggestion')) {
+            const selectedArea = (window.areas || []).find(a => a.nombre === e.target.textContent);
+            if (selectedArea) {
+                plantInput.value = selectedArea.nombre;
+                sessionStorage.setItem('plant_value', selectedArea.id_area || selectedArea.id);
+                if (plantIdHidden) plantIdHidden.value = selectedArea.id_area || selectedArea.id;
+                console.log('[DEBUG] plant_value guardado (click):', selectedArea.id_area || selectedArea.id);
+                const warning = document.getElementById('plant-warning');
+                if (warning) warning.remove();
+            }
+        }
+    });
+    // Quitar advertencia si se selecciona una sugerencia válida
+    suggestionsContainer.addEventListener('click', function (e) {
+        if (e.target.classList.contains('autocomplete-suggestion')) {
+            const selectedArea = (window.areas || []).find(a => a.nombre === plantInput.value);
+            if (selectedArea) {
+                sessionStorage.setItem('plant_value', selectedArea.id);
+                const warning = document.getElementById('plant-warning');
+                if (warning) warning.remove();
+            } else {
+                sessionStorage.setItem('plant_value', '');
+            }
+        }
     });
 
     // También guardar el valor cuando se selecciona una sugerencia
@@ -88,9 +165,9 @@ function initPlantAutocomplete() {
 
 // === Poblar sucursales dinámicamente ===
 async function populateSucursales() {
-    const areaSelect = document.getElementById('area');
-    if (!areaSelect) {
-        console.warn('No se encontró el select con id="area"');
+    const sucursalSelect = document.getElementById('sucursal');
+    if (!sucursalSelect) {
+        console.warn('No se encontró el select con id="sucursal"');
         return;
     }
 
@@ -101,22 +178,27 @@ async function populateSucursales() {
         console.log('Sucursales recibidas:', sucursales);
 
         // Limpiar opciones excepto el placeholder
-        areaSelect.innerHTML = '<option value="" disabled selected>Seleccione una sucursal</option>';
+        sucursalSelect.innerHTML = '<option value="" disabled selected>Seleccione una sucursal</option>';
 
         if (sucursales.length === 0) {
             const option = document.createElement('option');
             option.value = "";
             option.disabled = true;
             option.textContent = 'No hay sucursales registradas';
-            areaSelect.appendChild(option);
+            sucursalSelect.appendChild(option);
         } else {
             sucursales.forEach(sucursal => {
                 const option = document.createElement('option');
                 option.value = sucursal.id_sucursal || sucursal.id;
                 option.textContent = sucursal.nombre;
-                areaSelect.appendChild(option);
+                sucursalSelect.appendChild(option);
             });
         }
+
+        // Guardar el id de sucursal seleccionado en sessionStorage
+        sucursalSelect.addEventListener('change', function() {
+            sessionStorage.setItem('id_sucursal', this.value);
+        });
     } catch (err) {
         console.error('No se pudieron cargar las sucursales:', err);
     }
@@ -233,10 +315,5 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
     }
-
-    const areaSelect = document.getElementById('area-select');
-    areaSelect.addEventListener('change', function() {
-        sessionStorage.setItem('plant_value', this.value); // this.value debe ser el id numérico
-    });
 });
 

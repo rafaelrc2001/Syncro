@@ -66,11 +66,11 @@
 
 
                         <div class="form-grid">
-                            <div class="form-group">
+                        <!--    <div class="form-group">
                                 <label for="permit-number">Número de Permiso</label>
                                 <input type="text" id="permit-number" name="permit-number" readonly value="GSI-SI-FO-002-XXXX">
                             </div>
-
+                        -->
                             <div class="form-group">
                                 <label for="permit-date">Fecha</label>
                                 <input type="date" id="permit-date" name="permit-date" required>
@@ -89,7 +89,7 @@
                             <div class="form-group">
                                 <label for="area">Sucursal</label>
                                 <div class="select-wrapper">
-                                    <select id="area" name="area" required>
+                                    <select id="sucursal" name="sucursal" required>
                                         <option value="" disabled selected>Seleccione una sucursal</option>
                                     </select>
                                     <i class="ri-arrow-down-s-line select-arrow"></i>
@@ -110,6 +110,7 @@
                                        autocomplete="off">
                                 <div id="plant-suggestions" class="autocomplete-suggestions"></div>
                                 <input type="hidden" id="plant-value" name="plant-value">
+                                <input type="hidden" id="plant-id-hidden" name="plant-id-hidden">
                             </div>
                         </div>
 

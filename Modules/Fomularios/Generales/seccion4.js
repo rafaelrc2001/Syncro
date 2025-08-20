@@ -10,10 +10,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==============================
-    // 1. Agregar y eliminar actividades
+    // 1. Agregar y eliminar actividades con re-numeración
     // ==============================
     const addActivityBtn = document.getElementById('add-activity');
     const astActivitiesContainer = document.querySelector('.ast-activities');
+
+    // Función para re-numerar actividades y actualizar los atributos name
+    function renumerarActividades() {
+        const activities = astActivitiesContainer.querySelectorAll('.ast-activity');
+        activities.forEach((activity, idx) => {
+            const newIndex = idx + 1;
+            activity.setAttribute('data-index', newIndex);
+            // Actualiza el número visual
+            const numberDiv = activity.querySelector('.ast-activity-number');
+            if (numberDiv) numberDiv.textContent = newIndex;
+            // Actualiza los names de los campos
+            const textareaActivity = activity.querySelector('textarea[name^="ast-activity-"]');
+            if (textareaActivity) textareaActivity.name = `ast-activity-${newIndex}`;
+            const selectPersonnel = activity.querySelector('select[name^="ast-personnel-"]');
+            if (selectPersonnel) selectPersonnel.name = `ast-personnel-${newIndex}`;
+            const textareaHazards = activity.querySelector('textarea[name^="ast-hazards-"]');
+            if (textareaHazards) textareaHazards.name = `ast-hazards-${newIndex}`;
+            const textareaPreventions = activity.querySelector('textarea[name^="ast-preventions-"]');
+            if (textareaPreventions) textareaPreventions.name = `ast-preventions-${newIndex}`;
+            const selectResponsible = activity.querySelector('select[name^="ast-responsible-"]');
+            if (selectResponsible) selectResponsible.name = `ast-responsible-${newIndex}`;
+        });
+    }
 
     if (addActivityBtn && astActivitiesContainer) {
         addActivityBtn.addEventListener('click', async function () {
@@ -75,6 +98,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
             astActivitiesContainer.appendChild(newActivity);
+            // No es necesario renumerar aquí, solo al eliminar
+        });
+
+        // Delegación de eventos para eliminar actividades y renumerar
+        astActivitiesContainer.addEventListener('click', function (event) {
+            if (event.target.closest('.remove-participant')) {
+                const activityDiv = event.target.closest('.ast-activity');
+                if (activityDiv) {
+                    activityDiv.remove();
+                    renumerarActividades();
+                }
+            }
+        });
+    }
+
+    if (astActivitiesContainer) {
+        astActivitiesContainer.addEventListener('click', function (event) {
+            if (event.target.closest('.remove-participant')) {
+                const activityDiv = event.target.closest('.ast-activity');
+                if (activityDiv) activityDiv.remove();
+            }
         });
     }
 
@@ -84,6 +128,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const permitForm = document.getElementById('complete-permit-form');
     if (permitForm) {
         permitForm.addEventListener('submit', async function (e) {
+            // Validar que plant_value no esté vacío antes de continuar
+            let plantValue = sessionStorage.getItem('plant_value');
+            // Si no está en sessionStorage, intenta leer del input hidden
+            if (!plantValue || isNaN(parseInt(plantValue, 10))) {
+                const plantIdHidden = document.getElementById('plant-id-hidden');
+                if (plantIdHidden && plantIdHidden.value && !isNaN(parseInt(plantIdHidden.value, 10))) {
+                    plantValue = plantIdHidden.value;
+                    sessionStorage.setItem('plant_value', plantValue); // Sincroniza por si acaso
+                }
+            }
+            if (!plantValue || isNaN(parseInt(plantValue, 10))) {
+                // Mostrar advertencia visual en el input de área si existe
+                const plantInput = document.getElementById('plant');
+                let warning = document.getElementById('plant-warning');
+                if (plantInput && !warning) {
+                    warning = document.createElement('div');
+                    warning.id = 'plant-warning';
+                    warning.style.color = '#d9534f';
+                    warning.style.fontSize = '0.95em';
+                    warning.style.marginTop = '4px';
+                    warning.textContent = 'Debe seleccionar un área válida de la lista antes de continuar.';
+                    plantInput.parentNode.insertBefore(warning, plantInput.nextSibling);
+                }
+                alert('Debe seleccionar un área válida de la lista antes de continuar.');
+                e.preventDefault();
+                return;
+            }
+            // Log para ver el valor de plant_value justo antes de leerlo
+            console.log('[DEBUG] (submit) sessionStorage.plant_value:', sessionStorage.getItem('plant_value'));
             e.preventDefault();
 
             const submitBtn = permitForm.querySelector('button[type="submit"]');
@@ -121,13 +194,31 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
 
-                // Recuperar el valor de planta como id_area desde sessionStorage
-                const id_area = sessionStorage.getItem('plant_value') || 1;
+
+
+                // Recuperar y validar los ids
+                const id_area = parseInt(sessionStorage.getItem('plant_value'), 10);
                 const id_departamento = 1;
-                const id_sucursal = sessionStorage.getItem('id_sucursal');
+                const id_sucursal = parseInt(sessionStorage.getItem('id_sucursal'), 10);
                 const id_tipo_permiso = 1;
-                const id_estatus = sessionStorage.getItem('id_estatus');
-                const id_ast = sessionStorage.getItem('id_ast') || 1;
+                const id_estatus = parseInt(sessionStorage.getItem('id_estatus'), 10);
+                const id_ast = parseInt(sessionStorage.getItem('id_ast'), 10) || 1;
+
+                // Log para depuración
+                console.log('[DEBUG] id_area:', id_area, 'plant_value:', sessionStorage.getItem('plant_value'));
+                console.log('[DEBUG] id_departamento:', id_departamento);
+                console.log('[DEBUG] id_sucursal:', id_sucursal, 'id_sucursal_raw:', sessionStorage.getItem('id_sucursal'));
+                console.log('[DEBUG] id_tipo_permiso:', id_tipo_permiso);
+                console.log('[DEBUG] id_estatus:', id_estatus, 'id_estatus_raw:', sessionStorage.getItem('id_estatus'));
+                console.log('[DEBUG] id_ast:', id_ast, 'id_ast_raw:', sessionStorage.getItem('id_ast'));
+
+                // Validar que todos los ids sean números válidos
+                if ([id_area, id_departamento, id_sucursal, id_tipo_permiso, id_estatus, id_ast].some(v => isNaN(v) || typeof v !== 'number')) {
+                    alert('Error: Debe seleccionar correctamente todas las listas (área, sucursal, estatus, etc).');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalHTML;
+                    return;
+                }
 
                 // 1. Insertar permiso
                 const permisoResponse = await fetch('http://localhost:3000/api/permisos-trabajo', {
@@ -141,23 +232,40 @@ document.addEventListener('DOMContentLoaded', () => {
                 const id_permiso = permisoResult.data.id_permiso || permisoResult.data.id;
 
                 // 2. Insertar PT no peligroso
-                const nombre_solicitante = document.getElementById('nombre_solicitante')?.value || 'Solicitante';
-                const descripcion_trabajo = document.getElementById('descripcion_trabajo')?.value || 'Descripción';
-                const tipo_mantenimiento = document.getElementById('tipo_mantenimiento')?.value || 'Preventivo';
-                const ot_no = document.getElementById('ot_no')?.value || null;
-                const equipo_intervencion = document.getElementById('equipo_intervencion')?.value || 'Equipo';
+                const nombre_solicitante = document.getElementById('applicant')?.value || null;
+                const descripcion_trabajo = document.getElementById('work-description')?.value || null;
+                const tipo_mantenimiento = document.getElementById('maintenance-type')?.value || null;
+                const ot_no = document.getElementById('work-order')?.value || null;
+                const equipo_intervencion = document.getElementById('equipment')?.value || null;
                 const fecha = document.getElementById('permit-date')?.value || '2025-08-19';
                 const hora = document.getElementById('start-time')?.value || '08:00';
-                const hora_inicio = `${fecha} ${hora}`; // Resultado: "2025-08-19 08:00"
+                const hora_inicio = `${fecha} ${hora}`;
                 const tag = document.getElementById('tag')?.value || null;
-                const fluido = document.getElementById('fluido')?.value || null;
-                const presion = document.getElementById('presion')?.value || null;
-                const temperatura = document.getElementById('temperatura')?.value || null;
+                const fluido = document.getElementById('fluid')?.value || null;
+                const presion = document.getElementById('pressure')?.value || null;
+                const temperatura = document.getElementById('temperature')?.value || null;
+                const empresa = document.getElementById('company')?.value || null;
+
+                // Mostrar en consola los valores que se van a enviar
+                console.log('[DEBUG] Datos a enviar PT No Peligroso:', {
+                    id_permiso,
+                    nombre_solicitante,
+                    descripcion_trabajo,
+                    tipo_mantenimiento,
+                    ot_no,
+                    equipo_intervencion,
+                    hora_inicio,
+                    tag,
+                    fluido,
+                    presion,
+                    temperatura,
+                    empresa
+                });
 
                 const ptResponse = await fetch('http://localhost:3000/api/pt-no-peligroso', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id_permiso, nombre_solicitante, descripcion_trabajo, tipo_mantenimiento, ot_no, equipo_intervencion, hora_inicio, tag, fluido, presion, temperatura })
+                    body: JSON.stringify({ id_permiso, nombre_solicitante, descripcion_trabajo, tipo_mantenimiento, ot_no, equipo_intervencion, hora_inicio, tag, fluido, presion, temperatura, empresa })
                 });
                 const ptResult = await ptResponse.json();
                 if (!ptResponse.ok || !ptResult.success) throw new Error(ptResult.error || 'Error al guardar PT No Peligroso');
@@ -339,3 +447,39 @@ router.get('/api/participantes', async (req, res) => {
 
 module.exports = router;
 
+// ==============================
+// Nueva ruta para insertar PT No Peligroso
+// ==============================
+router.post('/api/pt-no-peligroso', async (req, res) => {
+    const { id_permiso, nombre_solicitante, descripcion_trabajo, tipo_mantenimiento, ot_no, equipo_intervencion, hora_inicio, tag, fluido, presion, temperatura, empresa } = req.body;
+
+    // Validar campos obligatorios
+    if (!id_permiso || !nombre_solicitante || !descripcion_trabajo || !tipo_mantenimiento || !hora_inicio || !empresa) {
+        return res.status(400).json({
+            success: false,
+            error: 'Faltan campos obligatorios para pt_no_peligroso'
+        });
+    }
+
+    const query = `
+        INSERT INTO pt_no_peligroso (id_permiso, nombre_solicitante, descripcion_trabajo, tipo_mantenimiento, ot_no, equipo_intervencion, hora_inicio, tag, fluido, presion, temperatura, empresa)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+        RETURNING *;
+    `;
+    const values = [id_permiso, nombre_solicitante, descripcion_trabajo, tipo_mantenimiento, ot_no, equipo_intervencion, hora_inicio, tag, fluido, presion, temperatura, empresa];
+
+    try {
+        const result = await pool.query(query, values);
+        const newEntry = result.rows[0];
+        res.status(201).json({
+            success: true,
+            data: newEntry
+        });
+    } catch (error) {
+        console.error('Error al insertar PT No Peligroso:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Error al insertar PT No Peligroso'
+        });
+    }
+});

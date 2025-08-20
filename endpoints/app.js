@@ -10,6 +10,7 @@ require('dotenv').config();
 
 const tablasRouter = require('./tablas');
 const listasRouter = require('./listas');
+const vertablasRouter = require('./vertablas');
 
 
 const app = express();
@@ -35,6 +36,7 @@ app.options('*', cors(corsOptions));
 
 app.use('/api', tablasRouter);  // Monta las rutas de tablas.js bajo el prefijo /api
 app.use('/api', listasRouter);// Monta las rutas de listas.js bajo el prefijo /api
+app.use('/api', vertablasRouter); // Monta las rutas de vertablas.js bajo el prefijo /api
 
 
 

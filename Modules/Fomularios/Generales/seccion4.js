@@ -309,7 +309,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const modal = document.getElementById('confirmation-modal');
                 if (modal) {
                     modal.querySelector('h3').textContent = 'Permiso creado exitosamente';
-                    modal.querySelector('p').innerHTML = 'El permiso ha sido registrado con número: <strong id="generated-permit">GSI-SI-FO-002-XXXX</strong>';
+                    const permitNumber = `GSI-PT-N${id_permiso}`;
+                    const permitText = `El permiso de trabajo con AST ha sido registrado en el sistema con el número: <strong id="generated-permit">${permitNumber}</strong>`;
+                    modal.querySelector('p').innerHTML = permitText;
                     modal.classList.add('active');
                 }
 

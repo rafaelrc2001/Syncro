@@ -192,6 +192,17 @@ router.post('/permisos-trabajo', async (req, res) => {
       RETURNING *`,
       [id_area, id_departamento, id_sucursal, id_tipo_permiso, id_estatus, id_ast]
     );
+  const id_permiso = result.rows[0].id_permiso;
+  const prefijo = `GSI-PT-N${id_permiso}`;
+  console.log('[DEBUG] id_permiso generado:', id_permiso);
+  console.log('[DEBUG] prefijo a guardar:', prefijo);
+  const updateQuery = 'UPDATE permisos_trabajo SET prefijo = $1 WHERE id_permiso = $2';
+  const updateParams = [prefijo, id_permiso];
+  console.log('[DEBUG] Ejecutando UPDATE:', updateQuery, updateParams);
+  const updateResult = await db.query(updateQuery, updateParams);
+  console.log('[DEBUG] Resultado UPDATE:', updateResult.rowCount, 'filas actualizadas');
+  // Actualizar el objeto de respuesta con el prefijo
+  result.rows[0].prefijo = prefijo;
     res.status(201).json({
       success: true,
       message: 'Permiso de trabajo registrado exitosamente',
@@ -321,12 +332,7 @@ router.post('/pt-no-peligroso', async (req, res) => {
 // Ruta para insertar en la tabla ast_actividades
 router.post('/ast-actividades', async (req, res) => {
   const { actividades } = req.body;
-  console.log('[DEBUG][AST-ACTIVIDADES] req.body:', req.body);
-  if (Array.isArray(actividades)) {
-    actividades.forEach((act, idx) => {
-      console.log(`[DEBUG][AST-ACTIVIDADES] Actividad ${idx + 1}:`, act);
-    });
-  }
+  // ...existing code...
 
   if (!Array.isArray(actividades) || actividades.length === 0) {
     return res.status(400).json({

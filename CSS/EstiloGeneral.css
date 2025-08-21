@@ -511,6 +511,7 @@ td {
 }
 
 /* Status badges */
+
 .status-badge {
     padding: 5px 12px;
     border-radius: 20px;
@@ -524,16 +525,19 @@ td {
     transition: all 0.2s ease;
 }
 
+/*Este es el de area*/
 .status-badge.active {
     background-color: #E8F5E9;
     color: #2E7D32;
 }
 
-.status-badge.completed {
-    background-color: #E3F2FD;
-    color: #1565C0;
+/*Este es el de Terminado*/
+.status-badge.completed { 
+    background-color: #E3F2FD; 
+    color: #1565C0; 
 }
 
+/*Para cancelado*/
 .status-badge.canceled {
     background-color: #FFEBEE;
     color: #C62828;
@@ -541,9 +545,10 @@ td {
 
 .status-badge.pending {
     background-color: #FFF8E1;
-    color: #FF8F00;
+    color: #00ff37;
 }
 
+/*Para continua*/
 .status-badge.continua {
     background-color: #F3E5F5;
     color: #7B1FA2;
@@ -555,13 +560,42 @@ td {
 }
 
 .status-badge.wait-security {
-    background-color: #ECEFF1;
+    background-color: #e7d16c;
     color: #455A64;
 }
+
+/*Espera seguridad*/
+.status-badge.wait-area2 {
+    background-color: #b68c4e;
+    color: #774e11;
+}
+
+.status-badge.wait-area3 {
+    background-color: #bdc592;
+    color: #7a5b0c;
+}
+
+/*Este es el de No autorizado*/ 
+.status-badge.wait-security2 {
+    background-color: #cc1b29;
+    color: #ffffff;
+}
+
+
+.status-badge.wait-security3 {
+    background-color: #3806ec;
+    color: #607D8B;
+}
+
+
+
 
 .status-badge:hover {
     filter: brightness(95%);
 }
+
+
+
 
 .action-btn {
     width: 30px;

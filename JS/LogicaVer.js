@@ -186,3 +186,8 @@ document.querySelectorAll('#modalVer .close-modal').forEach(btn => {
 document.getElementById('responsable-aprobador').addEventListener('input', function() {
     document.getElementById('stamp-aprobador').textContent = this.value || 'Nombre del Aprobador';
 });
+
+// Actualizar el nombre del encargado del área
+document.getElementById('responsable-aprobador2').addEventListener('input', function() {
+    document.getElementById('stamp-cierre').textContent = this.value || 'Nombre del Encargado';
+});

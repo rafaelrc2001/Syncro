@@ -4,6 +4,7 @@
 let permisosGlobal = [];
 let paginaActual = 1;
 const registrosPorPagina = 7;
+let filtroBusqueda = '';
 
 // --- Tarjetas ---
 async function cargarTargetas() {
@@ -72,8 +73,10 @@ function mostrarPermisosFiltrados(filtro) {
     const tbody = document.getElementById('table-body');
     tbody.innerHTML = '';
     let filtrados = permisosGlobal;
+
+    // Filtrado por estatus
     if (filtro !== 'all') {
-        filtrados = permisosGlobal.filter(permiso => {
+        filtrados = filtrados.filter(permiso => {
             const estatus = permiso.estatus.toLowerCase().trim();
             const filtroNorm = filtro.toLowerCase().trim();
             if (filtroNorm === 'continua') {
@@ -82,44 +85,39 @@ function mostrarPermisosFiltrados(filtro) {
             return estatus === filtroNorm;
         });
     }
+
+    // Filtrado por folio
+    if (filtroBusqueda) {
+        filtrados = filtrados.filter(permiso => {
+            return (permiso.prefijo || '').toLowerCase().includes(filtroBusqueda);
+        });
+    }
+
     // Paginación
     const totalPaginas = Math.ceil(filtrados.length / registrosPorPagina);
     if (paginaActual > totalPaginas) paginaActual = totalPaginas || 1;
     const inicio = (paginaActual - 1) * registrosPorPagina;
     const fin = inicio + registrosPorPagina;
     const paginaDatos = filtrados.slice(inicio, fin);
+
     paginaDatos.forEach(permiso => {
         const row = document.createElement('tr');
-        // Normaliza el estatus para asignar clase
         let estatusNorm = permiso.estatus.toLowerCase().trim();
         let badgeClass = '';
         switch (estatusNorm) {
-            case 'por autorizar':
-                badgeClass = 'wait-area'; break;
-            case 'espera area':
-                badgeClass = 'wait-area2'; break;
-            case 'en espera del área':
-                badgeClass = 'wait-area3'; break;
-            case 'activo':
-                badgeClass = 'active'; break;
-            case 'terminado':
-                badgeClass = 'completed'; break;
-            case 'completed':
-                badgeClass = 'completed2'; break;
-            case 'cancelado':
-                badgeClass = 'canceled'; break;
-            case 'canceled':
-                badgeClass = 'canceled2'; break;
-            case 'continua':
-                badgeClass = 'continua'; break;
-            case 'espera seguridad':
-                badgeClass = 'wait-security'; break;
-            case 'no autorizado':
-                badgeClass = 'wait-security2'; break;
-            case 'wait-security':
-                badgeClass = 'wait-security3'; break;
-            default:
-                badgeClass = '';
+            case 'por autorizar': badgeClass = 'wait-area'; break;
+            case 'espera area': badgeClass = 'wait-area2'; break;
+            case 'en espera del área': badgeClass = 'wait-area3'; break;
+            case 'activo': badgeClass = 'active'; break;
+            case 'terminado': badgeClass = 'completed'; break;
+            case 'completed': badgeClass = 'completed2'; break;
+            case 'cancelado': badgeClass = 'canceled'; break;
+            case 'canceled': badgeClass = 'canceled2'; break;
+            case 'continua': badgeClass = 'continua'; break;
+            case 'espera seguridad': badgeClass = 'wait-security'; break;
+            case 'no autorizado': badgeClass = 'wait-security2'; break;
+            case 'wait-security': badgeClass = 'wait-security3'; break;
+            default: badgeClass = '';
         }
         row.innerHTML = `
             <td>${permiso.prefijo}</td>
@@ -136,14 +134,16 @@ function mostrarPermisosFiltrados(filtro) {
         `;
         tbody.appendChild(row);
     });
+
     const recordsCount = document.getElementById('records-count');
     if (recordsCount) {
         let texto = filtrados.length;
         recordsCount.parentElement.innerHTML = `<span id="records-count">${texto}</span>`;
     }
     asignarEventosVer();
-    // Actualizar paginación
     actualizarPaginacion(totalPaginas, filtro);
+}
+
 function actualizarPaginacion(totalPaginas, filtro) {
     const pagContainer = document.querySelector('.pagination');
     if (!pagContainer) return;
@@ -156,7 +156,7 @@ function actualizarPaginacion(totalPaginas, filtro) {
     btnPrev.onclick = () => {
         if (paginaActual > 1) {
             paginaActual--;
-            mostrarPermisosFiltrados(filtro);
+            mostrarPermisosFiltrados(document.getElementById('status-filter').value);
         }
     };
     pagContainer.appendChild(btnPrev);
@@ -167,7 +167,7 @@ function actualizarPaginacion(totalPaginas, filtro) {
         btn.textContent = i;
         btn.onclick = () => {
             paginaActual = i;
-            mostrarPermisosFiltrados(filtro);
+            mostrarPermisosFiltrados(document.getElementById('status-filter').value);
         };
         pagContainer.appendChild(btn);
     }
@@ -179,11 +179,10 @@ function actualizarPaginacion(totalPaginas, filtro) {
     btnNext.onclick = () => {
         if (paginaActual < totalPaginas) {
             paginaActual++;
-            mostrarPermisosFiltrados(filtro);
+            mostrarPermisosFiltrados(document.getElementById('status-filter').value);
         }
     };
     pagContainer.appendChild(btnNext);
-}
 }
 
 // Evento del select
@@ -195,4 +194,14 @@ document.getElementById('status-filter').addEventListener('change', function() {
 document.addEventListener('DOMContentLoaded', () => {
     cargarTargetas();
     cargarPermisosTabla();
+    // Búsqueda por folio compatible con paginación
+    const searchInput = document.querySelector('.search-bar input');
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            filtroBusqueda = searchInput.value.trim().toLowerCase();
+            paginaActual = 1;
+            mostrarPermisosFiltrados(document.getElementById('status-filter').value);
+        });
+    }
 });
+

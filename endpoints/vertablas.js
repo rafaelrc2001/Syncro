@@ -7,6 +7,7 @@ router.get('/vertablas', async (req, res) => {
     try {
         const result = await pool.query(`
             SELECT 
+                pt.id_permiso,
                 pt.prefijo,
                 tp.nombre AS tipo_permiso,
                 ptnp.descripcion_trabajo AS descripcion,

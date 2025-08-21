@@ -12,6 +12,7 @@ const tablasRouter = require('./tablas');
 const listasRouter = require('./listas');
 const vertablasRouter = require('./vertablas');
 const targetasRouter = require('./targetas');
+const verformulariosRouter = require('./verformularios');
 
 
 const app = express();
@@ -39,6 +40,7 @@ app.use('/api', tablasRouter);  // Monta las rutas de tablas.js bajo el prefijo 
 app.use('/api', listasRouter);// Monta las rutas de listas.js bajo el prefijo /api
 app.use('/api', vertablasRouter); // Monta las rutas de vertablas.js bajo el prefijo /api
 app.use('/api', targetasRouter); // Monta las rutas de targetas.js bajo el prefijo /api
+app.use('/api', verformulariosRouter); // Monta las rutas de verformularios.js bajo el prefijo /api
 
 
 

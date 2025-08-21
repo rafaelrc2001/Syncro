@@ -253,8 +253,8 @@
         <!-- Header del Modal -->
         <div class="modal-header">
             <div class="permit-title">
-                <h2>PERMISO DE TRABAJO NO PELIGROSO</h2>
-                <div class="permit-number">No. GSI-SI-FO-002 PERMISO DE TRABAJO NO PELIGROSO</div>
+                <h2 id="modal-tipo-permiso">PERMISO DE TRABAJO NO PELIGROSO</h2>
+                <div class="permit-number" id="modal-prefijo">No. GSI-SI-FO-002 PERMISO DE TRABAJO NO PELIGROSO</div>
             </div>
             <span class="close-modal">&times;</span>
         </div>
@@ -309,39 +309,39 @@
 
                     <div class="executive-item">
                         <label>Planta o Lugar de Trabajo</label>
-                        <p>Urea 1</p>
+                        <p id="modal-planta">Urea 1</p>
                     </div>
                     <div class="executive-item">
                         <label>Tipo de actividad:</label>
-                        <p>PREVENTIVO</p>
+                        <p id="modal-tipo-actividad">PREVENTIVO</p>
                     </div>
                     <div class="executive-item">
                         <label>O.T. No.:</label>
-                        <p>MT-2023-0456</p>
+                        <p id="modal-ot">MT-2023-0456</p>
                     </div>
                     <div class="executive-item">
                         <label>Equipo:</label>
-                        <p>Válvula FC-205</p>
+                        <p id="modal-equipo">Válvula FC-205</p>
                     </div>
                     <div class="executive-item">
                         <label>TAG:</label>
-                        <p>TV-205A</p>
+                        <p id="modal-tag">TV-205A</p>
                     </div>
                     <div class="executive-item">
                         <label>Horario:</label>
-                        <p>08:00 - 16:00 hrs</p>
+                        <p id="modal-horario">08:00 - 16:00 hrs</p>
                     </div>
                     <div class="executive-item">
                         <label>Fluido:</label>
-                        <p>  8  </p>
+                        <p id="modal-fluido">8</p>
                     </div>
                     <div class="executive-item">
                         <label>Presion:</label>
-                        <p>  5 kg  </p>
+                        <p id="modal-presion">5 kg</p>
                     </div>
                     <div class="executive-item">
                         <label>Temperatura:</label>
-                        <p>  16c  </p>
+                        <p id="modal-temperatura">16c</p>
                     </div>
 
                 </div>
@@ -367,49 +367,28 @@
                             <th>Responsable</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Mantenimiento de válvula</td>
-                            <td>Juan Pérez</td>
-                            <td>Fluidos a presión</td>
-                            <td>Uso de EPP, bloqueo de línea</td>
-                            <td>Ingeniero Pedro Perez</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Cerrado de válvula</td>
-                            <td>Juan Pez</td>
-                            <td>Presión</td>
-                            <td>Uso de EPP, bloqueo de línea</td>
-                            <td>Ingeniero Angel Antonio</td>
-                        </tr>
+                    <tbody id="modal-ast-actividades-body">
+                        <!-- Actividades AST dinámicas -->
                     </tbody>
                 </table>
             </div>
             <div class="safety-grid">
                 <div class="safety-item">
                     <h4><i class="ri-shield-user-line"></i> EPP Requerido</h4>
-                    <ul class="safety-list">
+                    <ul class="safety-list" id="modal-epp-list">
                         <li>Casco de seguridad</li>
-                        <li>Lentes de protección</li>
-                        <li>Guantes antiimpacto</li>
-                        <li>Calzado de seguridad</li>
                     </ul>
                 </div>
                 <div class="safety-item">
                     <h4><i class="ri-tools-line"></i> Maquinaria y Herramientas</h4>
-                    <ul class="safety-list">
+                    <ul class="safety-list" id="modal-maquinaria-list">
                         <li>Llave Stillson</li>
-                        <li>Multímetro</li>
-                        <li>Escalera dieléctrica</li>
                     </ul>
                 </div>
                 <div class="safety-item">
                     <h4><i class="ri-box-line"></i> Materiales y Accesorios</h4>
-                    <ul class="safety-list">
+                    <ul class="safety-list" id="modal-materiales-list">
                         <li>Empaques</li>
-                        <li>Lubricante</li>
                     </ul>
                 </div>
             </div>
@@ -431,25 +410,8 @@
                     <th>Cargo</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>Juan Pérez Martínez</td>
-                    <td><span class="role-badge supervisor">Supervisor</span></td>
-                    <td>CR-45876</td>
-                    <td>Supervisor</td>
-                </tr>
-                <tr>
-                    <td>Carlos Rodríguez López</td>
-                    <td><span class="role-badge technician">Técnico</span></td>
-                    <td>CR-32451</td>
-                    <td>Ayudante</td>
-                </tr>
-                <tr>
-                    <td>Ana Gómez Sánchez</td>
-                    <td><span class="role-badge safety">Seguridad</span></td>
-                    <td>CR-78901</td>
-                    <td>Ayudante</td>
-                </tr>
+            <tbody id="modal-ast-participantes-body">
+                <!-- Participantes AST dinámicos -->
             </tbody>
         </table>
     </div>

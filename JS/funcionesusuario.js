@@ -77,7 +77,7 @@ function mostrarPermisosFiltrados(filtro) {
             const estatus = permiso.estatus.toLowerCase().trim();
             const filtroNorm = filtro.toLowerCase().trim();
             if (filtroNorm === 'continua') {
-                return estatus === 'en espera del área';
+                return estatus === 'continua';
             }
             return estatus === filtroNorm;
         });
@@ -139,18 +139,7 @@ function mostrarPermisosFiltrados(filtro) {
     const recordsCount = document.getElementById('records-count');
     if (recordsCount) {
         let texto = filtrados.length;
-        let nombre = '';
-        switch (filtro) {
-            case 'all': nombre = 'registros'; break;
-            case 'active': nombre = 'activos'; break;
-            case 'completed': nombre = 'terminados'; break;
-            case 'canceled': nombre = 'cancelados'; break;
-            case 'continua': nombre = 'en espera área'; break;
-            case 'wait-area': nombre = 'continuas'; break;
-            case 'wait-security': nombre = 'espera seguridad/no autorizados'; break;
-            default: nombre = 'registros';
-        }
-        recordsCount.parentElement.innerHTML = `<span id="records-count">${texto}</span> ${nombre}`;
+        recordsCount.parentElement.innerHTML = `<span id="records-count">${texto}</span>`;
     }
     asignarEventosVer();
     // Actualizar paginación

@@ -60,6 +60,8 @@
                 </div>
             </header>
 
+           
+            
             <!-- Cards Section -->
             <section class="cards-section">
                 <div class="card">
@@ -68,8 +70,7 @@
                     </div>
                     <div class="card-content">
                         <h3>Total de Permisos</h3>
-                        <p class="count">247</p>
-                        <p class="trend"><i class="ri-arrow-up-line"></i> 12% este mes</p>
+                        <p class="count"></p>
                     </div>
                 </div>
 
@@ -79,8 +80,7 @@
                     </div>
                     <div class="card-content">
                         <h3>Por Autorizar</h3>
-                        <p class="count">32</p>
-                        <p class="trend"><i class="ri-arrow-down-line"></i> 5% esta semana</p>
+                        <p class="count"></p>
                     </div>
                 </div>
 
@@ -90,8 +90,7 @@
                     </div>
                     <div class="card-content">
                         <h3>Activos</h3>
-                        <p class="count">170</p>
-                        <p class="trend"><i class="ri-arrow-down-line"></i> 1% este mes</p>
+                        <p class="count"></p>
                     </div>
                 </div>
 
@@ -101,24 +100,26 @@
                     </div>
                     <div class="card-content">
                         <h3>Permisos Terminados</h3>
-                        <p class="count">198</p>
-                        <p class="trend"><i class="ri-arrow-up-line"></i> 8% este mes</p>
+                        <p class="count"></p>
                     </div>
-                </div>
+                    </div>
                 <div class="card">
-    <div class="card-icon" style="background-color: #FFEBEE;">
-        <i class="ri-close-circle-line" style="color: #C62828;"></i>
-    </div>
-    <div class="card-content">
-        <h3>No Autorizados</h3>
-        <p class="count">15</p>
-        <p class="trend"><i class="ri-arrow-up-line" style="color: #C62828;"></i> 3% este mes</p>
-    </div>
-</div>
+                <div class="card-icon" style="background-color: #FFEBEE;">
+                 <i class="ri-close-circle-line" style="color: #C62828;"></i>
+                </div>
+                <div class="card-content">
+                <h3>No Autorizados</h3>
+                <p class="count"></p>
+                </div>
+                </div>
             </section>
 
-            <!-- Actions Section -->
+
+             <!-- Actions Section -->
             <section class="actions-section">
+                <button id="btnNuevoPermiso" class="btn primary">
+                    <i class="ri-add-line"></i> Generar Nuevo Permiso
+                </button>
                 <button class="btn secondary">
                     <i class="ri-download-line"></i> Exportar a Excel
                 </button>
@@ -126,13 +127,13 @@
                 <div class="filter-dropdown">
                     <select id="status-filter">
                         <option value="all">Todos</option>
-                        <option value="active">Espera área</option>
-                        <option value="completed">Espera seguridad</option>
-                        <option value="canceled">No autorizado</option>
-                        <option value="continua">Activo</option>
-                        <option value="wait-area">Continua</option>
-                        <option value="wait-security">Terminado</option>
-                        <option value="wait-security">Cancelado</option>
+                        <option value="Activo">Activo</option>
+                        <option value="Terminado">Terminado</option>
+                        <option value="Cancelado">Cancelado</option>
+                        <option value="En espera del área">En espera del área</option>
+                        <option value="Continua">Continua</option>
+                        <option value="Espera seguridad">Espera seguridad</option>
+                        <option value="No autorizado">No autorizado</option>
                     </select>
                     <i class="ri-arrow-down-s-line"></i>
                 </div>
@@ -158,71 +159,7 @@
                             </tr>
                         </thead>
                         <tbody id="table-body">
-                            <tr>
-                                <td>PM-2023-00145</td>
-                                <td>Trabajo en Altura</td>
-                                <td>Limpieza</td>
-                                <td>Sistemas</td>
-                                <td>Juan Pérez</td>
-                                <td>17/07/2023 14:35:12</td>
-                                <td><span class="status-badge wait-area">Por Autorizar</span></td>
-                                <td>
-                                    <button id="btnVer"class="action-btn view ver-permiso"><i class="ri-eye-line"></i></button>
-                                    <button id="btnImprimir" class="action-btn print"><i class="ri-printer-line"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>PM-2023-00144</td>
-                                <td>Trabajo Eléctrico</td>
-                                <td>Actividad electrica</td>
-                                <td>Electrico</td>
-                                <td>María García</td>
-                                <td>17/07/2023 15:25:12</td>
-                                <td><span class="status-badge wait-area">Por Autorizar</span></td>
-                                <td>
-                                    <button id="btnVer"class="action-btn view ver-permiso"><i class="ri-eye-line"></i></button>
-                                    <button id="btnImprimir" class="action-btn print"><i class="ri-printer-line"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>PM-2023-00143</td>
-                                <td>Espacios Confinados</td>
-                                <td>Actividad de obras</td>
-                                <td>Almacen</td>
-                                <td>María García</td>
-                                <td>17/07/2023 04:53:10</td>
-                                <td><span class="status-badge wait-area">Por Autorizar</span></td>
-                                <td>
-                                    <button id="btnVer"class="action-btn view ver-permiso"><i class="ri-eye-line"></i></button>
-                                    <button id="btnImprimir" class="action-btn print"><i class="ri-printer-line"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>PM-2023-00142</td>
-                                <td>Trabajo en Caliente</td>
-                                <td>Construcción</td>
-                                <td>Sistemas</td>
-                                <td>Ana Martínez</td>
-                                <td>17/07/2023 14:35:01</td>
-                                <td><span class="status-badge wait-area">Por Autorizar</span></td>
-                                <td>
-                                    <button id="btnVer"class="action-btn view ver-permiso"><i class="ri-eye-line"></i></button>
-                                    <button id="btnImprimir" class="action-btn print"><i class="ri-printer-line"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>PM-2023-00141</td>
-                                <td>Trabajo en Frío</td>
-                                <td>Mantenimiento</td>
-                                <td>Producción</td>
-                                <td>Carlos López</td>
-                                <td>10/07/2023 14:38:12</td>
-                                <td><span class="status-badge wait-area">Por Autorizar</span></td>
-                                <td>
-                                    <button id="btnVer"class="action-btn view ver-permiso"><i class="ri-eye-line"></i></button>
-                                    <button id="btnImprimir" class="action-btn print"><i class="ri-printer-line"></i></button>
-                                </td>
-                            </tr>
+                            <!-- Aquí se llenarán las filas dinámicamente -->
                         </tbody>
                     </table>
                 </div>
@@ -234,22 +171,14 @@
                         <button class="pagination-btn">3</button>
                         <button class="pagination-btn"><i class="ri-arrow-right-s-line"></i></button>
                     </div>
-                    <div class="records-counter">
+                     <div class="records-counter">
                         <span id="records-count">0</span> registros
-                    </div>
-                    <div class="items-per-page">
-                        <span>Items por página:</span>
-                        <select>
-                            <option>10</option>
-                            <option selected>25</option>
-                            <option>50</option>
-                            <option>100</option>
-                        </select>
                     </div>
                 </div>
             </section>
         </main>
     </div>
+
 
 
     
@@ -641,8 +570,9 @@
 </div>
 
 
-    <script src="/JS/MenuUsuario.js"></script>
-    <script src="../../JS/LogicaImprimir.js"></script>
-    <script src="../../JS/LogicaVer.js"></script>
+    <script src="/JS/usuario/MenuUsuario.js"></script>
+    <script src="/JS/usuario/LogicaImprimir.js"></script>
+    <script src="/JS/generales/LogicaVer.js"></script>
+    <script src="/JS/usuario/tabla-autorizar.js"></script>
 </body>
 </html>

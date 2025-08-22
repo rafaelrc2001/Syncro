@@ -14,7 +14,7 @@ require('dotenv').config();
 
 const tablasRouter = require('./tablas');
 const listasRouter = require('./listas');
-const vertablasRouter = require('./targetas');
+const vertablasRouter = require('./vertablas');
 const targetasRouter = require('./verformularios');
 const verformulariosRouter = require('./loginconsulta');
 

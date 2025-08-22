@@ -60,7 +60,10 @@ function asignarEventosVer() {
 
 async function cargarPermisosTabla() {
     try {
-        const response = await fetch('http://localhost:3000/api/vertablas');
+        const usuario = JSON.parse(localStorage.getItem('usuario'));
+        const id_departamento = usuario && usuario.id ? usuario.id : null;
+        if (!id_departamento) throw new Error('No se encontró el id de departamento del usuario');
+    const response = await fetch(`http://localhost:3000/api/autorizar/${id_departamento}`);
         if (!response.ok) throw new Error('Error al consultar permisos');
         permisosGlobal = await response.json();
         mostrarPermisosFiltrados('all');

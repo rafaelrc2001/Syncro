@@ -198,7 +198,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Recuperar y validar los ids
                 const id_area = parseInt(sessionStorage.getItem('plant_value'), 10);
-                const id_departamento = 1;
+                // Obtener id del departamento del usuario logueado
+                let id_departamento = 1;
+                const usuario = JSON.parse(localStorage.getItem('usuario'));
+                if (usuario && usuario.id) {
+                    id_departamento = Number(usuario.id);
+                }
                 const id_sucursal = parseInt(sessionStorage.getItem('id_sucursal'), 10);
                 const id_tipo_permiso = 1;
                 const id_estatus = parseInt(sessionStorage.getItem('id_estatus'), 10);

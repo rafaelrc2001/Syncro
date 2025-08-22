@@ -19,49 +19,59 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Animación del botón de login
-    const loginBtn = document.querySelector('.login-btn');
-    const loginForm = document.querySelector('.login-form');
-    
-    loginForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Simular carga
-        loginBtn.classList.add('loading');
-        
-        // Obtener credenciales
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
-        
-        // Simular autenticación (en producción sería una llamada AJAX)
-        setTimeout(() => {
-            loginBtn.classList.remove('loading');
-            
-            // Verificar credenciales y redirigir según el rol
-            if (username === 'admin' && password === 'admin123') {
-                // Redirigir a Crear-PT para administradores
-                window.location.href = 'Modules/Usuario/CrearPT.html';
-            } else if (username === 'supervisor' && password === 'supervisor123') {
-                // Redirigir a SupSeguridad para supervisores
-                window.location.href = 'Modules/SupSeguridad/SupSeguridad.html';
-            } else if (username === 'jefe' && password === 'jefe123') {
-                // Redirigir a JefeSeguridad
-                window.location.href = 'Modules/JefeSeguridad/JefeSeguridad.html';
-            } 
-        }, 1000);
-    });
-    
-    // Efecto hover en inputs
-    const inputs = document.querySelectorAll('.input-group input');
-    inputs.forEach(input => {
-        input.addEventListener('focus', function() {
-            this.parentElement.querySelector('i').style.color = '#00B4FF';
-        });
-        
-        input.addEventListener('blur', function() {
-            if (!this.value) {
-                this.parentElement.querySelector('i').style.color = '#D9D9D9';
+        // Animación del botón de login
+        const loginBtn = document.querySelector('.login-btn');
+        const loginForm = document.querySelector('.login-form');
+
+        loginForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            loginBtn.classList.add('loading');
+
+            // Obtener credenciales
+            const email = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                // Llamada real al backend para autenticar
+                const response = await fetch('http://localhost:3000/endpoints/loginDepartamento', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await response.json();
+                loginBtn.classList.remove('loading');
+                if (data.success && data.usuario) {
+                    // Guardar datos del usuario en localStorage
+                    localStorage.setItem('usuario', JSON.stringify(data.usuario));
+                    // Redirigir según el rol
+                    if (data.usuario.rol === 'usuario') {
+                        window.location.href = 'Modules/Usuario/Dash-Usuario.html';
+                    } else if (data.usuario.rol === 'supervisor') {
+                        window.location.href = 'Modules/SupSeguridad/Dash-Supervisor.html';
+                    } else if (data.usuario.rol === 'jefe') {
+                        window.location.href = 'Modules/JefeSeguridad/Dash-Jefe.html';
+                    } else {
+                        alert('Rol no reconocido.');
+                    }
+                } else {
+                    alert('Correo o contraseña incorrectos');
+                }
+            } catch (error) {
+                loginBtn.classList.remove('loading');
+                alert('Error de conexión con el servidor');
             }
         });
+
+        // Efecto hover en inputs
+        const inputs = document.querySelectorAll('.input-group input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.querySelector('i').style.color = '#00B4FF';
+            });
+            input.addEventListener('blur', function() {
+                if (!this.value) {
+                    this.parentElement.querySelector('i').style.color = '#D9D9D9';
+                }
+            });
+        });
     });
-});

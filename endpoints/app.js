@@ -1,3 +1,6 @@
+// Inicialización de app
+// ...existing code...
+// Endpoint de login de usuario departamento
 //Notas:
 //Tengo dos funciones de estatus una mas arrbiba en el codigo y la otra hasta abajo
 
@@ -8,31 +11,34 @@ const bodyParser = require('body-parser');
 const db = require('./database');
 require('dotenv').config();
 
+
 const tablasRouter = require('./tablas');
 const listasRouter = require('./listas');
 const vertablasRouter = require('./vertablas');
 const targetasRouter = require('./targetas');
 const verformulariosRouter = require('./verformularios');
 
+const loginconsultaRouter = require('./loginconsulta');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Configuración de CORS
+// Configuración de CORS (debe ir antes de cualquier ruta)
 const corsOptions = {
-  origin: ['http://127.0.0.1:5500', 'http://localhost:5500'],
+  origin: ["http://localhost:5500", "http://127.0.0.1:5500"],
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 };
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 // Middleware
-app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Manejar preflight requests
-app.options('*', cors(corsOptions));
+// Endpoint de login de usuario departamento
+app.use('/endpoints', loginconsultaRouter);
 
 // Rutas de la API
 
@@ -762,5 +768,4 @@ app.delete('/api/supervisores/:id', async (req, res) => {
     });
   }
 });
-
 

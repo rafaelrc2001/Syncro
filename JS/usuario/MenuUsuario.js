@@ -1,4 +1,38 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // --- Lógica de usuario, avatar y logout ---
+    // Muestra el nombre del usuario, iniciales en el avatar y gestiona el cierre de sesión
+    const usuario = JSON.parse(localStorage.getItem('usuario'));
+    if (usuario && usuario.nombre && usuario.id) {
+        // Nombre en el sidebar/footer
+        document.querySelectorAll('.user-info .name').forEach(el => {
+            el.textContent = usuario.nombre;
+        });
+        // Avatar con iniciales
+        const avatarDiv = document.querySelector('.user-profile .avatar');
+        if (avatarDiv && usuario.nombre) {
+            const partes = usuario.nombre.trim().split(' ');
+            let iniciales = '';
+            if (partes.length === 1) {
+                iniciales = partes[0].substring(0, 2).toUpperCase();
+            } else {
+                iniciales = (partes[0][0] + partes[1][0]).toUpperCase();
+            }
+            avatarDiv.textContent = iniciales;
+        }
+        // Mensaje de entrada por consola
+        console.log(`Entraste al departamento ${usuario.nombre} con el id: ${usuario.id}`);
+    }
+    // Botón cerrar sesión
+    const btnLogout = document.querySelector('.logout-btn');
+    if (btnLogout) {
+        btnLogout.addEventListener('click', function() {
+            if (usuario && usuario.nombre && usuario.id) {
+                console.log(`Saliste del departamento ${usuario.nombre} con el id: ${usuario.id}`);
+            }
+            localStorage.removeItem('usuario');
+            window.location.href = '/login.html';
+        });
+    }
     // 1. Mapeo de rutas para el menú
     const menuRoutes = {
         'dashboard': '/Modules/Usuario/Dash-Usuario.html',

@@ -14,9 +14,9 @@ require('dotenv').config();
 
 const tablasRouter = require('./tablas');
 const listasRouter = require('./listas');
-const vertablasRouter = require('./vertablas');
-const targetasRouter = require('./targetas');
-const verformulariosRouter = require('./verformularios');
+const vertablasRouter = require('./targetas');
+const targetasRouter = require('./verformularios');
+const verformulariosRouter = require('./loginconsulta');
 
 const loginconsultaRouter = require('./loginconsulta');
 
@@ -212,28 +212,22 @@ app.get('/api/areas/:id', async (req, res) => {
 
 // Ruta para crear una nueva área
 app.post('/api/areas', async (req, res) => {
-  const { nombre } = req.body;
-  
+  const { nombre, id_departamento } = req.body;
+
   if (!nombre) {
     return res.status(400).json({ error: 'El nombre del área es requerido' });
   }
-  
+  if (!id_departamento) {
+    return res.status(400).json({ error: 'El departamento es requerido' });
+  }
+
   try {
-    const query = 'INSERT INTO areas(nombre) VALUES($1) RETURNING id_area as id, nombre';
-    const result = await db.query(query, [nombre]);
-    
+    const query = 'INSERT INTO areas(nombre, id_departamento) VALUES($1, $2) RETURNING id_area, nombre, id_departamento';
+    const result = await db.query(query, [nombre, id_departamento]);
     res.status(201).json(result.rows[0]);
   } catch (err) {
-    console.error('Error al crear área:', {
-      message: err.message,
-      code: err.code,
-      detail: err.detail,
-      stack: err.stack
-    });
-    res.status(500).json({ 
-      error: 'Error al crear el área',
-      details: err.message 
-    });
+    console.error('Error al crear área:', err);
+    res.status(500).json({ error: 'Error al crear el área' });
   }
 });
 

@@ -47,6 +47,18 @@ router.get('/participantes', async (req, res) => {
   }
 });
 
+// Endpoint para obtener todos los departamentos
+// Endpoint para obtener todos los departamentos
+// Endpoint para obtener todos los departamentos
+router.get('/departamentos', async (req, res) => {
+  try {
+    const result = await db.query('SELECT id_departamento, nombre FROM departamentos ORDER BY nombre ASC');
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Error al obtener departamentos:', err);
+    res.status(500).json({ error: 'Error al obtener departamentos' });
+  }
+});
 
 
 module.exports = router;

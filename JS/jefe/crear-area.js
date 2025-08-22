@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const areaIdInput = document.getElementById('area-id');
     const submitBtn = document.getElementById('submit-btn');
     const recordsCount = document.getElementById('records-count');
+    const departamentoSelect = document.getElementById('departamento-select');
 
     // URL base de la API
     const API_URL = 'http://localhost:3000/api';
@@ -80,29 +81,51 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Cargar departamentos en el desplegable
+    async function cargarDepartamentosDesplegable() {
+        try {
+            const response = await fetch(`${API_URL}/departamentos`);
+            if (!response.ok) throw new Error('Error al cargar los departamentos');
+            const departamentos = await response.json();
+            departamentoSelect.innerHTML = '<option value="">-- Selecciona --</option>';
+            departamentos.forEach(dep => {
+                const option = document.createElement('option');
+                option.value = dep.id_departamento;
+                option.textContent = dep.nombre;
+                departamentoSelect.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Error al cargar departamentos en el desplegable:', error);
+            alert('Error al cargar los departamentos: ' + error.message);
+        }
+    }
+
+    cargarDepartamentosDesplegable();
+
     // Función para manejar el envío del formulario
     if (areaForm) {
         areaForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const nombre = areaNameInput.value.trim();
-            const id = areaIdInput.value;
+            const id_departamento = parseInt(departamentoSelect.value, 10);
             
             if (!nombre) {
                 alert('El nombre del área es obligatorio');
                 return;
             }
+            if (!id_departamento) {
+                alert('Debes seleccionar un departamento');
+                return;
+            }
             
             try {
-                const url = id ? `${API_URL}/areas/${id}` : `${API_URL}/areas`;
-                const method = id ? 'PUT' : 'POST';
-                
+                const url = `${API_URL}/areas`;
+                const body = { nombre, id_departamento };
                 const response = await fetch(url, {
-                    method: method,
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ nombre })
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
                 });
                 
                 if (!response.ok) {
@@ -117,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 closeModal();
                 
                 // Mostrar mensaje de éxito
-                alert(`Área ${id ? 'actualizada' : 'creada'} correctamente`);
+                alert('Área creada correctamente');
                 
             } catch (error) {
                 console.error('Error al guardar el área:', error);

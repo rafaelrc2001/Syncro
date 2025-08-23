@@ -87,8 +87,8 @@ async function cargarPermisosTabla() {
         if (!id_departamento) throw new Error('No se encontró el id de departamento del usuario');
         const response = await fetch(`http://localhost:3000/api/vertablas/${id_departamento}`);
         if (!response.ok) throw new Error('Error al consultar permisos');
-        permisosGlobal = await response.json();
-        mostrarPermisosFiltrados('all');
+    permisosGlobal = await response.json();
+    mostrarPermisosFiltrados('En espera del área');
     } catch (err) {
         console.error('Error al cargar permisos:', err);
     }

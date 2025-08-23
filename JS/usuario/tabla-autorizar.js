@@ -70,7 +70,7 @@ async function cargarPermisosTabla() {
     const response = await fetch(`http://localhost:3000/api/autorizar/${id_departamento}`);
         if (!response.ok) throw new Error('Error al consultar permisos');
         permisosGlobal = await response.json();
-        mostrarPermisosFiltrados('all');
+    mostrarPermisosFiltrados('En espera del área');
     } catch (err) {
         console.error('Error al cargar permisos:', err);
     }

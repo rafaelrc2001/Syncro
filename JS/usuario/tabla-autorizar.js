@@ -49,6 +49,8 @@ async function cargarTargetas() {
     }
 }
 
+
+
 // --- Tabla de permisos ---
 function asignarEventosVer() {
     document.querySelectorAll('.action-btn.view').forEach(btn => {
@@ -57,6 +59,8 @@ function asignarEventosVer() {
         });
     });
 }
+
+
 
 async function cargarPermisosTabla() {
     try {
@@ -71,6 +75,8 @@ async function cargarPermisosTabla() {
         console.error('Error al cargar permisos:', err);
     }
 }
+
+
 
 function mostrarPermisosFiltrados(filtro) {
     const tbody = document.getElementById('table-body');
@@ -89,12 +95,14 @@ function mostrarPermisosFiltrados(filtro) {
         });
     }
 
+
     // Filtrado por folio
     if (filtroBusqueda) {
         filtrados = filtrados.filter(permiso => {
             return (permiso.prefijo || '').toLowerCase().includes(filtroBusqueda);
         });
     }
+
 
     // Paginación
     const totalPaginas = Math.ceil(filtrados.length / registrosPorPagina);
@@ -147,6 +155,7 @@ function mostrarPermisosFiltrados(filtro) {
     actualizarPaginacion(totalPaginas, filtro);
 }
 
+
 function actualizarPaginacion(totalPaginas, filtro) {
     const pagContainer = document.querySelector('.pagination');
     if (!pagContainer) return;
@@ -193,6 +202,8 @@ document.getElementById('status-filter').addEventListener('change', function() {
     paginaActual = 1;
     mostrarPermisosFiltrados(this.value);
 });
+
+
 
 document.addEventListener('DOMContentLoaded', () => {
     cargarTargetas();

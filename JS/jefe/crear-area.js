@@ -47,19 +47,20 @@ document.addEventListener('DOMContentLoaded', function() {
             const response = await fetch(`${API_URL}/areas`);
             if (!response.ok) throw new Error('Error al cargar las áreas');
             const areas = await response.json();
-            
+            console.log('[cargarAreas] Array recibido:', areas);
             tableBody.innerHTML = ''; // Limpiar tabla
-            
             areas.forEach(area => {
+                console.log('[cargarAreas] area individual:', area);
+                const id = area.id !== undefined ? area.id : area.id_area;
                 const newRow = document.createElement('tr');
-                newRow.dataset.id = area.id;
+                newRow.dataset.id = id;
                 newRow.innerHTML = `
                     <td>${area.nombre}</td>
                     <td>
-                        <button class="action-btn edit" data-id="${area.id}">
+                        <button class="action-btn edit" data-id="${id}">
                             <i class="ri-edit-line"></i>
                         </button>
-                        <button class="action-btn delete" data-id="${area.id}">
+                        <button class="action-btn delete" data-id="${id}">
                             <i class="ri-delete-bin-line"></i>
                         </button>
                     </td>
@@ -155,6 +156,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.edit').forEach(btn => {
             btn.addEventListener('click', async (e) => {
                 const id = e.currentTarget.dataset.id;
+                console.log('[Editar área] id recibido en frontend:', id);
                 try {
                     const response = await fetch(`${API_URL}/areas/${id}`);
                     if (!response.ok) throw new Error('Error al cargar el área');

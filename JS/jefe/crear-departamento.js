@@ -60,25 +60,25 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!response.ok) throw new Error('Error al cargar los departamentos');
             
             const departamentos = await response.json();
+            console.log('[cargarDepartamentos] Array recibido:', departamentos);
             const tableBody = document.querySelector('#table-body');
-            
             // Limpiar tabla
             tableBody.innerHTML = '';
-            
             // Actualizar contador
             document.getElementById('records-count').textContent = departamentos.length;
-            
             // Llenar tabla
             departamentos.forEach(depto => {
+                console.log('[cargarDepartamentos] departamento individual:', depto);
+                const id = depto.id !== undefined ? depto.id : depto.id_departamento;
                 const row = document.createElement('tr');
-                row.dataset.id = depto.id;
+                row.dataset.id = id;
                 row.innerHTML = `
                     <td>${depto.nombre}</td>
                     <td>${depto.correo || ''}</td>
                     <td>${depto.extension || ''}</td>
                     <td>
-                        <button class="action-btn edit" data-id="${depto.id}"><i class="ri-edit-line"></i></button>
-                        <button class="action-btn delete" data-id="${depto.id}"><i class="ri-delete-bin-line"></i></button>
+                        <button class="action-btn edit" data-id="${id}"><i class="ri-edit-line"></i></button>
+                        <button class="action-btn delete" data-id="${id}"><i class="ri-delete-bin-line"></i></button>
                     </td>
                 `;
                 tableBody.appendChild(row);
@@ -144,22 +144,24 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             const btn = e.target.closest('.action-btn.delete');
             const id = btn.dataset.id;
-            
             if (confirm('¿Estás seguro que deseas eliminar este departamento?')) {
                 try {
                     const response = await fetch(`${API_URL}/departamentos/${id}`, {
                         method: 'DELETE'
                     });
-                    
                     if (!response.ok) {
                         const errorData = await response.json();
-                        throw new Error(errorData.error || 'Error al eliminar el departamento');
+                        // Si es por relación, mostrar advertencia, no error
+                        if (errorData.error && errorData.error.includes('relacion')) {
+                            alert('No se puede eliminar el departamento porque tiene registros relacionados.');
+                        } else {
+                            throw new Error(errorData.error || 'Error al eliminar el departamento');
+                        }
+                        return;
                     }
-                    
                     // Recargar la lista de departamentos
                     await cargarDepartamentos();
                     alert('Departamento eliminado exitosamente');
-                    
                 } catch (error) {
                     console.error('Error al eliminar el departamento:', error);
                     alert('Error al eliminar el departamento: ' + error.message);

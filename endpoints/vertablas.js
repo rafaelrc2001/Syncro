@@ -19,7 +19,8 @@ router.get('/vertablas', async (req, res) => {
             INNER JOIN tipos_permisos tp ON pt.id_tipo_permiso = tp.id_tipo_permiso
             INNER JOIN areas a ON pt.id_area = a.id_area
             INNER JOIN estatus e ON pt.id_estatus = e.id_estatus
-            INNER JOIN pt_no_peligroso ptnp ON pt.id_permiso = ptnp.id_permiso;
+            INNER JOIN pt_no_peligroso ptnp ON pt.id_permiso = ptnp.id_permiso
+            ORDER BY pt.fecha_hora DESC;
         `);
         res.json(result.rows);
     } catch (error) {
@@ -46,7 +47,8 @@ router.get('/vertablas/:id_departamento', async (req, res) => {
             INNER JOIN areas a ON pt.id_area = a.id_area
             INNER JOIN estatus e ON pt.id_estatus = e.id_estatus
             INNER JOIN pt_no_peligroso ptnp ON pt.id_permiso = ptnp.id_permiso
-            WHERE pt.id_departamento = $1;
+            WHERE pt.id_departamento = $1
+            ORDER BY pt.fecha_hora DESC;
         `, [id_departamento]);
         res.json(result.rows);
     } catch (error) {
@@ -58,7 +60,7 @@ router.get('/vertablas/:id_departamento', async (req, res) => {
 // Nueva función para obtener permisos por departamento
 async function obtenerPermisosPorDepartamento(id_departamento) {
     try {
-        const result = await pool.query(`
+    const result = await pool.query(`
 SELECT 
     pt.id_permiso,
     pt.prefijo,
@@ -73,8 +75,9 @@ INNER JOIN tipos_permisos tp ON pt.id_tipo_permiso = tp.id_tipo_permiso
 INNER JOIN areas a ON pt.id_area = a.id_area
 INNER JOIN estatus e ON pt.id_estatus = e.id_estatus
 INNER JOIN pt_no_peligroso ptnp ON pt.id_permiso = ptnp.id_permiso
-WHERE pt.id_departamento = $1;
-        `, [id_departamento]);
+WHERE pt.id_departamento = $1
+ORDER BY pt.fecha_hora DESC;
+    `, [id_departamento]);
         return result.rows;
     } catch (error) {
         console.error('Error al consultar permisos por departamento:', error);
@@ -100,7 +103,8 @@ router.get('/autorizar/:id_departamento', async (req, res) => {
             INNER JOIN areas a ON pt.id_area = a.id_area
             INNER JOIN estatus e ON pt.id_estatus = e.id_estatus
             INNER JOIN pt_no_peligroso ptnp ON pt.id_permiso = ptnp.id_permiso
-            WHERE a.id_departamento = $1;
+            WHERE a.id_departamento = $1
+            ORDER BY pt.fecha_hora DESC;
         `, [id_departamento]);
         res.json(result.rows);
     } catch (error) {

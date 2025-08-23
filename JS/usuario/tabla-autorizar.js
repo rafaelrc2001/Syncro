@@ -1,3 +1,44 @@
+// --- Tarjetas desde autorizar ---
+async function cargarTargetasDesdeAutorizar() {
+    try {
+        const usuario = JSON.parse(localStorage.getItem('usuario'));
+        const id_departamento = usuario && usuario.id ? usuario.id : null;
+        if (!id_departamento) throw new Error('No se encontró el id de departamento del usuario');
+        const response = await fetch(`http://localhost:3000/api/autorizar/${id_departamento}`);
+        if (!response.ok) throw new Error('Error al consultar permisos');
+        const permisos = await response.json();
+
+        // Conteos por estatus
+        let total = permisos.length;
+        let porAutorizar = 0;
+        let activos = 0;
+        let terminados = 0;
+        let noAutorizados = 0;
+
+        permisos.forEach(item => {
+            const estatus = item.estatus.toLowerCase();
+            if (estatus === 'espera area' || estatus === 'espera seguridad' || estatus === 'en espera del área') {
+                porAutorizar++;
+            } else if (estatus === 'activo') {
+                activos++;
+            } else if (estatus === 'terminado') {
+                terminados++;
+            } else if (estatus === 'no autorizado') {
+                noAutorizados++;
+            }
+        });
+
+        // Actualiza las tarjetas en el HTML
+        const counts = document.querySelectorAll('.card-content .count');
+        counts[0].textContent = total;
+        counts[1].textContent = porAutorizar;
+        counts[2].textContent = activos;
+        counts[3].textContent = terminados;
+        counts[4].textContent = noAutorizados;
+    } catch (err) {
+        console.error('Error al cargar targetas desde permisos:', err);
+    }
+}
 // funcionesusuario.js
 // Centraliza la lógica de tarjetas y tabla de permisos para el usuario
 
@@ -6,56 +47,23 @@ let paginaActual = 1;
 const registrosPorPagina = 7;
 let filtroBusqueda = '';
 
-// --- Tarjetas ---
-async function cargarTargetas() {
-    try {
-        const response = await fetch('http://localhost:3000/api/targetas');
-        if (!response.ok) throw new Error('Error al consultar targetas');
-        const data = await response.json();
-        // Mostrar los datos recibidos en consola
-        console.log('Datos recibidos de /api/targetas:', data);
-        // Actualiza el total de permisos
-        document.querySelector('.card-content .count').textContent = data.total;
-        // Actualiza los valores por estatus
-        let porAutorizar = 0;
-        let activos = 0;
-        let terminados = 0;
-        let noAutorizados = 0;
-        data.estatus.forEach(item => {
-            const estatus = item.estatus.toLowerCase();
-            if (estatus === 'espera area' || estatus === 'espera seguridad' || estatus === 'en espera del área') {
-                porAutorizar += parseInt(item.cantidad);
-            } else if (estatus === 'activo') {
-                activos = item.cantidad;
-            } else if (estatus === 'terminado') {
-                terminados = item.cantidad;
-            } else if (estatus === 'no autorizado') {
-                noAutorizados = item.cantidad;
-            }
-        });
-        // Asume que las tarjetas están en el mismo orden que tu HTML
-        const counts = document.querySelectorAll('.card-content .count');
-        counts[0].textContent = data.total;
-        counts[1].textContent = porAutorizar;
-        counts[2].textContent = activos;
-        counts[3].textContent = terminados;
-        counts[4].textContent = noAutorizados;
-        // Log para verificar el orden y los valores
-        counts.forEach((el, i) => {
-            console.log(`Tarjeta ${i}:`, el.previousElementSibling ? el.previousElementSibling.textContent : '', '->', el.textContent);
-        });
-    } catch (err) {
-        console.error('Error al cargar targetas:', err);
-    }
-}
-
 
 
 // --- Tabla de permisos ---
 function asignarEventosVer() {
     document.querySelectorAll('.action-btn.view').forEach(btn => {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', async function() {
             document.getElementById('modalVer').classList.add('active');
+            const id_permiso = btn.getAttribute('data-idpermiso');
+            console.log('ID del permiso:', id_permiso);
+            try {
+                const response = await fetch(`http://localhost:3000/api/verformularios?id=${encodeURIComponent(id_permiso)}`);
+                if (!response.ok) throw new Error('Error al obtener datos del permiso');
+                const data = await response.json();
+                // Aquí puedes mostrar los datos en el modal si lo necesitas
+            } catch (err) {
+                console.error('Error al obtener datos del permiso:', err);
+            }
         });
     });
 }
@@ -67,10 +75,10 @@ async function cargarPermisosTabla() {
         const usuario = JSON.parse(localStorage.getItem('usuario'));
         const id_departamento = usuario && usuario.id ? usuario.id : null;
         if (!id_departamento) throw new Error('No se encontró el id de departamento del usuario');
-    const response = await fetch(`http://localhost:3000/api/autorizar/${id_departamento}`);
+        const response = await fetch(`http://localhost:3000/api/autorizar/${id_departamento}`);
         if (!response.ok) throw new Error('Error al consultar permisos');
         permisosGlobal = await response.json();
-    mostrarPermisosFiltrados('En espera del área');
+        mostrarPermisosFiltrados('En espera del área');
     } catch (err) {
         console.error('Error al cargar permisos:', err);
     }
@@ -95,14 +103,12 @@ function mostrarPermisosFiltrados(filtro) {
         });
     }
 
-
     // Filtrado por folio
     if (filtroBusqueda) {
         filtrados = filtrados.filter(permiso => {
             return (permiso.prefijo || '').toLowerCase().includes(filtroBusqueda);
         });
     }
-
 
     // Paginación
     const totalPaginas = Math.ceil(filtrados.length / registrosPorPagina);
@@ -139,7 +145,7 @@ function mostrarPermisosFiltrados(filtro) {
             <td>${permiso.fecha_hora}</td>
             <td><span class="status-badge${badgeClass ? ' ' + badgeClass : ''}">${permiso.estatus}</span></td>
             <td>
-                <button class="action-btn view"><i class="ri-eye-line"></i></button>
+                <button class="action-btn view" data-idpermiso="${permiso.id_permiso}"><i class="ri-eye-line"></i></button>
                 <button class="action-btn print"><i class="ri-printer-line"></i></button>
             </td>
         `;
@@ -206,7 +212,7 @@ document.getElementById('status-filter').addEventListener('change', function() {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    cargarTargetas();
+    cargarTargetasDesdeAutorizar();
     cargarPermisosTabla();
     // Búsqueda por folio compatible con paginación
     const searchInput = document.querySelector('.search-bar input');

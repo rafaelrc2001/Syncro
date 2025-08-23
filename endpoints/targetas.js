@@ -35,4 +35,96 @@ router.get('/targetas', async (req, res) => {
     }
 });
 
+
+//ESTA ES MI FUNCION PARA LAS TARGETAS EN tabla-crearpt.js
+
+
+async function cargarTargetasDesdePermisos() {
+    try {
+        const usuario = JSON.parse(localStorage.getItem('usuario'));
+        const id_departamento = usuario && usuario.id ? usuario.id : null;
+        if (!id_departamento) throw new Error('No se encontró el id de departamento del usuario');
+        const response = await fetch(`http://localhost:3000/api/vertablas/${id_departamento}`);
+        if (!response.ok) throw new Error('Error al consultar permisos');
+        const permisos = await response.json();
+
+        // Conteos por estatus
+        let total = permisos.length;
+        let porAutorizar = 0;
+        let activos = 0;
+        let terminados = 0;
+        let noAutorizados = 0;
+
+        permisos.forEach(item => {
+            const estatus = item.estatus.toLowerCase();
+            if (estatus === 'espera area' || estatus === 'espera seguridad' || estatus === 'en espera del área') {
+                porAutorizar++;
+            } else if (estatus === 'activo') {
+                activos++;
+            } else if (estatus === 'terminado') {
+                terminados++;
+            } else if (estatus === 'no autorizado') {
+                noAutorizados++;
+            }
+        });
+
+        // Actualiza las tarjetas en el HTML
+        const counts = document.querySelectorAll('.card-content .count');
+        counts[0].textContent = total;
+        counts[1].textContent = porAutorizar;
+        counts[2].textContent = activos;
+        counts[3].textContent = terminados;
+        counts[4].textContent = noAutorizados;
+    } catch (err) {
+        console.error('Error al cargar targetas desde permisos:', err);
+    }
+}
+
+
+
+//esta va aser la que se va a uzar en tabla-autorizar.js por el momento es igual pero le hare unos ajustes
+
+async function cargarTargetasDesdeAutorizar() {
+    try {
+        const usuario = JSON.parse(localStorage.getItem('usuario'));
+        const id_departamento = usuario && usuario.id ? usuario.id : null;
+        if (!id_departamento) throw new Error('No se encontró el id de departamento del usuario');
+        // Cambia el endpoint aquí:
+        const response = await fetch(`http://localhost:3000/api/autorizar/${id_departamento}`);
+        if (!response.ok) throw new Error('Error al consultar permisos');
+        const permisos = await response.json();
+
+        // Conteos por estatus
+        let total = permisos.length;
+        let porAutorizar = 0;
+        let activos = 0;
+        let terminados = 0;
+        let noAutorizados = 0;
+
+        permisos.forEach(item => {
+            const estatus = item.estatus.toLowerCase();
+            if (estatus === 'espera area' || estatus === 'espera seguridad' || estatus === 'en espera del área') {
+                porAutorizar++;
+            } else if (estatus === 'activo') {
+                activos++;
+            } else if (estatus === 'terminado') {
+                terminados++;
+            } else if (estatus === 'no autorizado') {
+                noAutorizados++;
+            }
+        });
+
+        // Actualiza las tarjetas en el HTML
+        const counts = document.querySelectorAll('.card-content .count');
+        counts[0].textContent = total;
+        counts[1].textContent = porAutorizar;
+        counts[2].textContent = activos;
+        counts[3].textContent = terminados;
+        counts[4].textContent = noAutorizados;
+    } catch (err) {
+        console.error('Error al cargar targetas desde permisos:', err);
+    }
+}
+
+
 module.exports = router;

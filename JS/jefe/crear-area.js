@@ -1,4 +1,15 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Importar funciones reutilizables
+    // Si usas módulos ES6, descomenta la siguiente línea y usa type="module" en tu HTML
+    // import { filtrarPorBusqueda, obtenerPagina, renderizarPaginacion } from './paginacion-busqueda.js';
+
+    // Variables para paginación y búsqueda
+    let areasGlobal = [];
+    let paginaActual = 1;
+    const registrosPorPagina = 5;
+    let terminoBusqueda = '';
+    let paginacionContainer = document.getElementById('paginacion-container');
+    let searchInput = document.getElementById('search-bar');
     // Elementos del DOM
     const registerBtn = document.getElementById('register-area-btn');
     const modal = document.getElementById('area-modal');
@@ -41,45 +52,116 @@ document.addEventListener('DOMContentLoaded', function() {
     // Cargar áreas al iniciar
     cargarAreas();
 
+    // Event listener para búsqueda
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            terminoBusqueda = searchInput.value;
+            paginaActual = 1;
+            renderizarTablaAreas();
+        });
+    }
+
     // Función para cargar las áreas desde la API
     async function cargarAreas() {
         try {
             const response = await fetch(`${API_URL}/areas`);
             if (!response.ok) throw new Error('Error al cargar las áreas');
-            const areas = await response.json();
-            console.log('[cargarAreas] Array recibido:', areas);
-            tableBody.innerHTML = ''; // Limpiar tabla
-            areas.forEach(area => {
-                console.log('[cargarAreas] area individual:', area);
-                const id = area.id !== undefined ? area.id : area.id_area;
-                const newRow = document.createElement('tr');
-                newRow.dataset.id = id;
-                newRow.innerHTML = `
-                    <td>${area.nombre}</td>
-                    <td>
-                        <button class="action-btn edit" data-id="${id}">
-                            <i class="ri-edit-line"></i>
-                        </button>
-                        <button class="action-btn delete" data-id="${id}">
-                            <i class="ri-delete-bin-line"></i>
-                        </button>
-                    </td>
-                `;
-                tableBody.appendChild(newRow);
-            });
-
-            // Actualizar contador de registros
-            if (recordsCount) {
-                recordsCount.textContent = areas.length;
-            }
-
-            // Agregar event listeners a los botones
-            agregarEventListenersBotones();
-            
+            areasGlobal = await response.json();
+            renderizarTablaAreas();
         } catch (error) {
             console.error('Error al cargar áreas:', error);
             alert('Error al cargar las áreas: ' + error.message);
         }
+    }
+
+    // Renderizar tabla con paginación y búsqueda
+    function renderizarTablaAreas() {
+        // Si usas módulos, importa filtrarPorBusqueda y obtenerPagina
+        // const filtradas = filtrarPorBusqueda(areasGlobal, terminoBusqueda, ['nombre']);
+        // const pagina = obtenerPagina(filtradas, paginaActual, registrosPorPagina);
+        // ---
+        // Como ejemplo sin import, replico la lógica aquí:
+        let filtradas = areasGlobal;
+        if (terminoBusqueda) {
+            const lowerTerm = terminoBusqueda.toLowerCase();
+            filtradas = areasGlobal.filter(area =>
+                (area.nombre || '').toLowerCase().includes(lowerTerm)
+            );
+        }
+        const inicio = (paginaActual - 1) * registrosPorPagina;
+        const pagina = filtradas.slice(inicio, inicio + registrosPorPagina);
+
+        tableBody.innerHTML = '';
+        pagina.forEach(area => {
+            const id = area.id_area !== undefined ? area.id_area : area.id;
+            const newRow = document.createElement('tr');
+            newRow.setAttribute('data-id', id);
+            newRow.innerHTML = `
+                <td>${area.nombre}</td>
+                <td>
+                    <button class="action-btn edit" data-id="${id}">
+                        <i class="ri-edit-line"></i>
+                    </button>
+                    <button class="action-btn delete" data-id="${id}">
+                        <i class="ri-delete-bin-line"></i>
+                    </button>
+                </td>
+            `;
+            // Refuerza que los botones tengan el data-id correcto
+            const editBtn = newRow.querySelector('.action-btn.edit');
+            const deleteBtn = newRow.querySelector('.action-btn.delete');
+            if (editBtn) editBtn.setAttribute('data-id', id);
+            if (deleteBtn) deleteBtn.setAttribute('data-id', id);
+            tableBody.appendChild(newRow);
+        });
+        // Actualizar contador
+        if (recordsCount) recordsCount.textContent = filtradas.length;
+        // Renderizar paginación
+        renderizarPaginacion(filtradas.length);
+        agregarEventListenersBotones();
+    }
+
+    // Renderizar controles de paginación
+    function renderizarPaginacion(totalRegistros) {
+        if (!paginacionContainer) return;
+        paginacionContainer.innerHTML = '';
+        const totalPaginas = Math.ceil(totalRegistros / registrosPorPagina);
+        if (totalPaginas <= 1) return;
+        // Botón anterior
+        const btnPrev = document.createElement('button');
+        btnPrev.className = 'pagination-btn';
+        btnPrev.innerHTML = '<i class="ri-arrow-left-s-line"></i>';
+        btnPrev.disabled = paginaActual === 1;
+        btnPrev.addEventListener('click', () => {
+            if (paginaActual > 1) {
+                paginaActual--;
+                renderizarTablaAreas();
+            }
+        });
+        paginacionContainer.appendChild(btnPrev);
+        // Botones de página
+        for (let i = 1; i <= totalPaginas; i++) {
+            const btn = document.createElement('button');
+            btn.className = 'pagination-btn' + (i === paginaActual ? ' active' : '');
+            btn.textContent = i;
+            btn.addEventListener('click', () => {
+                paginaActual = i;
+                renderizarTablaAreas();
+            });
+            paginacionContainer.appendChild(btn);
+        }
+        // Botón siguiente
+        const btnNext = document.createElement('button');
+        btnNext.className = 'pagination-btn';
+        btnNext.innerHTML = '<i class="ri-arrow-right-s-line"></i>';
+        btnNext.disabled = paginaActual === totalPaginas || totalPaginas === 0;
+        btnNext.addEventListener('click', () => {
+            if (paginaActual < totalPaginas) {
+                paginaActual++;
+                renderizarTablaAreas();
+            }
+        });
+        paginacionContainer.appendChild(btnNext);
     }
 
     // Cargar departamentos en el desplegable
@@ -152,57 +234,65 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Función para agregar event listeners a los botones de editar/eliminar
     function agregarEventListenersBotones() {
-        // Botones de editar
-        document.querySelectorAll('.edit').forEach(btn => {
-            btn.addEventListener('click', async (e) => {
-                const id = e.currentTarget.dataset.id;
-                console.log('[Editar área] id recibido en frontend:', id);
+        // Limpiar listeners previos
+        document.querySelectorAll('.action-btn').forEach(btn => {
+            btn.replaceWith(btn.cloneNode(true));
+        });
+        document.removeEventListener('click', manejarAccionesArea);
+        document.addEventListener('click', manejarAccionesArea);
+    }
+
+    // Manejo global de acciones editar/eliminar área
+    async function manejarAccionesArea(e) {
+        // Editar
+        if (e.target.closest('.action-btn.edit')) {
+            e.preventDefault();
+            const btn = e.target.closest('.action-btn.edit');
+            const id = btn.dataset.id || btn.closest('tr')?.dataset.id;
+            if (!id) {
+                alert('No se pudo obtener el ID del área.');
+                return;
+            }
+            try {
+                const response = await fetch(`${API_URL}/areas/${id}`);
+                if (!response.ok) throw new Error('Error al cargar el área');
+                const area = await response.json();
+                areaIdInput.value = area.id_area !== undefined ? area.id_area : area.id;
+                areaNameInput.value = area.nombre;
+                submitBtn.textContent = 'Actualizar Área';
+                modal.classList.add('active');
+            } catch (error) {
+                console.error('Error al cargar el área:', error);
+                alert('Error al cargar el área: ' + error.message);
+            }
+        }
+        // Eliminar
+        if (e.target.closest('.action-btn.delete')) {
+            e.preventDefault();
+            const btn = e.target.closest('.action-btn.delete');
+            const id = btn.dataset.id || btn.closest('tr')?.dataset.id;
+            console.log('Eliminar área:', { btn, id });
+            if (!id || id === 'undefined' || id === '') {
+                alert('No se pudo obtener el ID del área.');
+                return;
+            }
+            if (confirm('¿Estás seguro de que quieres eliminar esta área?')) {
                 try {
-                    const response = await fetch(`${API_URL}/areas/${id}`);
-                    if (!response.ok) throw new Error('Error al cargar el área');
-                    const area = await response.json();
-                    
-                    // Llenar el formulario con los datos del área
-                    areaIdInput.value = area.id;
-                    areaNameInput.value = area.nombre;
-                    
-                    // Cambiar el texto del botón
-                    submitBtn.textContent = 'Actualizar Área';
-                    
-                    // Mostrar el modal
-                    modal.classList.add('active');
-                } catch (error) {
-                    console.error('Error al cargar el área:', error);
-                    alert('Error al cargar el área: ' + error.message);
-                }
-            });
-        });
-        
-        // Botones de eliminar
-        document.querySelectorAll('.delete').forEach(btn => {
-            btn.addEventListener('click', async (e) => {
-                if (confirm('¿Estás seguro de que quieres eliminar esta área?')) {
-                    const id = e.currentTarget.dataset.id;
-                    try {
-                        const response = await fetch(`${API_URL}/areas/${id}`, {
-                            method: 'DELETE'
-                        });
-                        
-                        if (!response.ok) {
-                            const error = await response.json();
-                            throw new Error(error.error || 'Error al eliminar el área');
-                        }
-                        
-                        // Recargar la lista de áreas
-                        await cargarAreas();
-                        alert('Área eliminada correctamente');
-                    } catch (error) {
-                        console.error('Error al eliminar el área:', error);
-                        alert('Error al eliminar el área: ' + error.message);
+                    const response = await fetch(`${API_URL}/areas/${id}`, {
+                        method: 'DELETE'
+                    });
+                    if (!response.ok) {
+                        const error = await response.json();
+                        throw new Error(error.error || 'Error al eliminar el área');
                     }
+                    await cargarAreas();
+                    alert('Área eliminada correctamente');
+                } catch (error) {
+                    console.error('Error al eliminar el área:', error);
+                    alert('Error al eliminar el área: ' + error.message);
                 }
-            });
-        });
+            }
+        }
     }
 
     // Update MenuJefe.js functionality for this page

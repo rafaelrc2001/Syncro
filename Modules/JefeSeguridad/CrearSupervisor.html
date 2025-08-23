@@ -61,7 +61,7 @@
                 <h1><i class="ri-community-line"></i> Registro de Supervisores</h1>
                 <div class="header-actions">
                     <div class="search-bar">
-                        <input type="text" placeholder="Buscar por nombre de departamento...">
+                        <input type="text" id="search-bar" placeholder="Buscar por nombre de supervisor...">
                         <i class="ri-search-line"></i>
                     </div>
                 </div>
@@ -91,59 +91,17 @@
                             </tr>
                         </thead>
                         <tbody id="table-body">
-                            <tr>
-                                <td>Jose Garcia Vidal</td>
-                                <td>jose_garcia@gmail.com</td>
-                                <td>291</td>
-                                <td>921-386-7925</td>
-                                <td class="actions-cell">
-                                    <button class="action-btn edit" title="Editar"><i class="ri-edit-line"></i></button>
-                                    <button class="action-btn delete" title="Eliminar"><i class="ri-delete-bin-line"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Carol Dalina Del Angel</td>
-                                <td>carol_dalina@gmail.com</td>
-                                <td>278</td>
-                                <td>921-345-3954</td>
-                                <td class="actions-cell">
-                                    <button class="action-btn edit" title="Editar"><i class="ri-edit-line"></i></button>
-                                    <button class="action-btn delete" title="Eliminar"><i class="ri-delete-bin-line"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Klisma Gonzalez Gonzalez</td>
-                                <td>klisma_gonza@gmail.com</td>
-                                <td>359</td>
-                                <td>921-7815-6359</td>
-                                <td class="actions-cell">
-                                    <button class="action-btn edit" title="Editar"><i class="ri-edit-line"></i></button>
-                                    <button class="action-btn delete" title="Eliminar"><i class="ri-delete-bin-line"></i></button>
-                                </td>
-                            </tr>
+                            <!-- Datos dinámicos -->
                         </tbody>
                     </table>
                 </div>
+                <div id="paginacion-container" class="pagination"></div>
                 <div class="table-footer-crud">
-                    <div class="pagination">
-                        <button class="pagination-btn"><i class="ri-arrow-left-s-line"></i></button>
-                        <button class="pagination-btn active">1</button>
-                        <button class="pagination-btn">2</button>
-                        <button class="pagination-btn">3</button>
-                        <button class="pagination-btn"><i class="ri-arrow-right-s-line"></i></button>
-                    </div>
+                    <!-- La paginación ahora es dinámica con JS -->
                     <div class="records-counter">
                         <span id="records-count">3</span> registros
                     </div>
-                    <div class="items-per-page">
-                        <span>Items por página:</span>
-                        <select>
-                            <option>10</option>
-                            <option selected>25</option>
-                            <option>50</option>
-                            <option>100</option>
-                        </select>
-                    </div>
+                    
                 </div>
             </section>
         </main>

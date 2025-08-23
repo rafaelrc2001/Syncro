@@ -1,4 +1,15 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Importar funciones reutilizables
+    // Si usas módulos ES6, descomenta la siguiente línea y usa type="module" en tu HTML
+    // import { filtrarPorBusqueda, obtenerPagina, renderizarPaginacion } from './paginacion-busqueda.js';
+
+    // Variables para paginación y búsqueda
+    let supervisoresGlobal = [];
+    let paginaActual = 1;
+    const registrosPorPagina = 5;
+    let terminoBusqueda = '';
+    const paginacionContainer = document.getElementById('paginacion-container');
+    const searchInput = document.getElementById('search-bar');
     // URL base de la API
     const API_URL = 'http://localhost:3000/api';
     
@@ -58,39 +69,106 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const response = await fetch(`${API_URL}/supervisores`);
             if (!response.ok) throw new Error('Error al cargar los supervisores');
-            
-            const supervisores = await response.json();
-            const tableBody = document.querySelector('#table-body');
-            
-            // Limpiar tabla
-            tableBody.innerHTML = '';
-            
-            // Actualizar contador
-            document.getElementById('records-count').textContent = supervisores.length;
-            
-            // Llenar tabla
-            supervisores.forEach(supervisor => {
-                const row = document.createElement('tr');
-                row.dataset.id = supervisor.id;
-                row.innerHTML = `
-                    <td>${supervisor.nombre}</td>
-                    <td>${supervisor.correo || ''}</td>
-                    <td>${supervisor.extension || ''}</td>
-                    <td>
-                        <button class="action-btn edit" data-id="${supervisor.id}"><i class="ri-edit-line"></i></button>
-                        <button class="action-btn delete" data-id="${supervisor.id}"><i class="ri-delete-bin-line"></i></button>
-                    </td>
-                `;
-                tableBody.appendChild(row);
-            });
-            
-            // Agregar event listeners a los botones
-            agregarEventListenersBotones();
-            
+            supervisoresGlobal = await response.json();
+            renderizarTablaSupervisores();
         } catch (error) {
             console.error('Error al cargar supervisores:', error);
             alert('Error al cargar los supervisores: ' + error.message);
         }
+    }
+
+    // Event listener para búsqueda
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            terminoBusqueda = searchInput.value;
+            paginaActual = 1;
+            renderizarTablaSupervisores();
+        });
+    }
+
+    // Renderizar tabla con paginación y búsqueda
+    function renderizarTablaSupervisores() {
+        // Si usas módulos, importa filtrarPorBusqueda y obtenerPagina
+        // const filtradas = filtrarPorBusqueda(supervisoresGlobal, terminoBusqueda, ['nombre', 'correo', 'extension']);
+        // const pagina = obtenerPagina(filtradas, paginaActual, registrosPorPagina);
+        // ---
+        // Como ejemplo sin import, replico la lógica aquí:
+        let filtradas = supervisoresGlobal;
+        if (terminoBusqueda) {
+            const lowerTerm = terminoBusqueda.toLowerCase();
+            filtradas = supervisoresGlobal.filter(sup =>
+                (sup.nombre || '').toLowerCase().includes(lowerTerm) ||
+                (sup.correo || '').toLowerCase().includes(lowerTerm) ||
+                (sup.extension || '').toLowerCase().includes(lowerTerm)
+            );
+        }
+        const inicio = (paginaActual - 1) * registrosPorPagina;
+        const pagina = filtradas.slice(inicio, inicio + registrosPorPagina);
+
+        const tableBody = document.querySelector('#table-body');
+        tableBody.innerHTML = '';
+        pagina.forEach(supervisor => {
+            const row = document.createElement('tr');
+            row.dataset.id = supervisor.id;
+            row.innerHTML = `
+                <td>${supervisor.nombre}</td>
+                <td>${supervisor.correo || ''}</td>
+                <td>${supervisor.extension || ''}</td>
+                <td>
+                    <button class="action-btn edit" data-id="${supervisor.id}"><i class="ri-edit-line"></i></button>
+                    <button class="action-btn delete" data-id="${supervisor.id}"><i class="ri-delete-bin-line"></i></button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+        // Actualizar contador
+        document.getElementById('records-count').textContent = filtradas.length;
+        // Renderizar paginación
+        renderizarPaginacion(filtradas.length);
+        agregarEventListenersBotones();
+    }
+
+    // Renderizar controles de paginación
+    function renderizarPaginacion(totalRegistros) {
+        if (!paginacionContainer) return;
+        paginacionContainer.innerHTML = '';
+        const totalPaginas = Math.ceil(totalRegistros / registrosPorPagina);
+        if (totalPaginas <= 1) return;
+        // Botón anterior
+        const btnPrev = document.createElement('button');
+        btnPrev.className = 'pagination-btn';
+        btnPrev.innerHTML = '<i class="ri-arrow-left-s-line"></i>';
+        btnPrev.disabled = paginaActual === 1;
+        btnPrev.addEventListener('click', () => {
+            if (paginaActual > 1) {
+                paginaActual--;
+                renderizarTablaSupervisores();
+            }
+        });
+        paginacionContainer.appendChild(btnPrev);
+        // Botones de página
+        for (let i = 1; i <= totalPaginas; i++) {
+            const btn = document.createElement('button');
+            btn.className = 'pagination-btn' + (i === paginaActual ? ' active' : '');
+            btn.textContent = i;
+            btn.addEventListener('click', () => {
+                paginaActual = i;
+                renderizarTablaSupervisores();
+            });
+            paginacionContainer.appendChild(btn);
+        }
+        // Botón siguiente
+        const btnNext = document.createElement('button');
+        btnNext.className = 'pagination-btn';
+        btnNext.innerHTML = '<i class="ri-arrow-right-s-line"></i>';
+        btnNext.disabled = paginaActual === totalPaginas || totalPaginas === 0;
+        btnNext.addEventListener('click', () => {
+            if (paginaActual < totalPaginas) {
+                paginaActual++;
+                renderizarTablaSupervisores();
+            }
+        });
+        paginacionContainer.appendChild(btnNext);
     }
     
     // Función para agregar event listeners a los botones de editar/eliminar

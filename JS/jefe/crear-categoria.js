@@ -6,36 +6,114 @@ function showNotification(message, type = 'success') {
     alert(message); // Muestra un popup simple como en los otros archivos
 }
 
+// Variables para paginación y búsqueda
+let categoriasGlobal = [];
+let paginaActual = 1;
+const registrosPorPagina = 5;
+let terminoBusqueda = '';
+const paginacionContainer = document.getElementById('paginacion-container');
+const searchInput = document.getElementById('search-bar');
+
 // Función para cargar las categorías desde la API
 async function loadCategorias() {
     try {
         const response = await fetch(`${API_URL}/categorias`);
         if (!response.ok) throw new Error('Error al cargar las categorías');
-        
-        const categorias = await response.json();
-        const tableBody = document.querySelector('#table-body');
-        tableBody.innerHTML = ''; // Limpiar tabla
-        
-        categorias.forEach(categoria => {
-            const row = document.createElement('tr');
-            row.dataset.id = categoria.id;
-            row.innerHTML = `
-                <td>${categoria.nombre}</td>
-                <td class="actions-cell">
-                    <button class="action-btn edit" data-id="${categoria.id}"><i class="ri-edit-line"></i></button>
-                    <button class="action-btn delete" data-id="${categoria.id}"><i class="ri-delete-bin-line"></i></button>
-                </td>
-            `;
-            tableBody.appendChild(row);
-        });
-        
-        // Actualizar contador de registros
-        document.getElementById('records-count').textContent = categorias.length;
-        
+        categoriasGlobal = await response.json();
+        renderizarTablaCategorias();
     } catch (error) {
         console.error('Error al cargar categorías:', error);
         showNotification('Error al cargar las categorías', 'error');
     }
+}
+
+// Event listener para búsqueda
+if (searchInput) {
+    searchInput.addEventListener('input', function() {
+        terminoBusqueda = searchInput.value;
+        paginaActual = 1;
+        renderizarTablaCategorias();
+    });
+}
+
+// Renderizar tabla con paginación y búsqueda
+function renderizarTablaCategorias() {
+    // Si usas módulos, importa filtrarPorBusqueda y obtenerPagina
+    // const filtradas = filtrarPorBusqueda(categoriasGlobal, terminoBusqueda, ['nombre']);
+    // const pagina = obtenerPagina(filtradas, paginaActual, registrosPorPagina);
+    // ---
+    // Como ejemplo sin import, replico la lógica aquí:
+    let filtradas = categoriasGlobal;
+    if (terminoBusqueda) {
+        const lowerTerm = terminoBusqueda.toLowerCase();
+        filtradas = categoriasGlobal.filter(cat =>
+            (cat.nombre || '').toLowerCase().includes(lowerTerm)
+        );
+    }
+    const inicio = (paginaActual - 1) * registrosPorPagina;
+    const pagina = filtradas.slice(inicio, inicio + registrosPorPagina);
+
+    const tableBody = document.querySelector('#table-body');
+    tableBody.innerHTML = '';
+    pagina.forEach(categoria => {
+        const row = document.createElement('tr');
+        row.dataset.id = categoria.id;
+        row.innerHTML = `
+            <td>${categoria.nombre}</td>
+            <td class="actions-cell">
+                <button class="action-btn edit" data-id="${categoria.id}"><i class="ri-edit-line"></i></button>
+                <button class="action-btn delete" data-id="${categoria.id}"><i class="ri-delete-bin-line"></i></button>
+            </td>
+        `;
+        tableBody.appendChild(row);
+    });
+    // Actualizar contador
+    document.getElementById('records-count').textContent = filtradas.length;
+    // Renderizar paginación
+    renderizarPaginacion(filtradas.length);
+}
+
+// Renderizar controles de paginación
+function renderizarPaginacion(totalRegistros) {
+    if (!paginacionContainer) return;
+    paginacionContainer.innerHTML = '';
+    const totalPaginas = Math.ceil(totalRegistros / registrosPorPagina);
+    if (totalPaginas <= 1) return;
+    // Botón anterior
+    const btnPrev = document.createElement('button');
+    btnPrev.className = 'pagination-btn';
+    btnPrev.innerHTML = '<i class="ri-arrow-left-s-line"></i>';
+    btnPrev.disabled = paginaActual === 1;
+    btnPrev.addEventListener('click', () => {
+        if (paginaActual > 1) {
+            paginaActual--;
+            renderizarTablaCategorias();
+        }
+    });
+    paginacionContainer.appendChild(btnPrev);
+    // Botones de página
+    for (let i = 1; i <= totalPaginas; i++) {
+        const btn = document.createElement('button');
+        btn.className = 'pagination-btn' + (i === paginaActual ? ' active' : '');
+        btn.textContent = i;
+        btn.addEventListener('click', () => {
+            paginaActual = i;
+            renderizarTablaCategorias();
+        });
+        paginacionContainer.appendChild(btn);
+    }
+    // Botón siguiente
+    const btnNext = document.createElement('button');
+    btnNext.className = 'pagination-btn';
+    btnNext.innerHTML = '<i class="ri-arrow-right-s-line"></i>';
+    btnNext.disabled = paginaActual === totalPaginas || totalPaginas === 0;
+    btnNext.addEventListener('click', () => {
+        if (paginaActual < totalPaginas) {
+            paginaActual++;
+            renderizarTablaCategorias();
+        }
+    });
+    paginacionContainer.appendChild(btnNext);
 }
 
 // Función para crear o actualizar una categoría

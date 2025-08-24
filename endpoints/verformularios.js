@@ -7,7 +7,7 @@ router.get('/verformularios', async (req, res) => {
     try {
         const id = req.query.id;
         if (!id) return res.status(400).json({ error: 'Falta el parámetro id' });
-        // Consulta extendida para obtener todos los datos de la sección 1
+        // Consulta extendida para obtener todos los datos de la sección 1, incluyendo el departamento
         const queryGeneral = `
             SELECT 
                 pt.id_permiso,
@@ -16,14 +16,21 @@ router.get('/verformularios', async (req, res) => {
                 tp.nombre AS tipo_permiso,
                 ptnp.empresa,
                 s.nombre AS sucursal,
-                a.nombre AS area,
+                a.nombre AS area, 
+                d.nombre AS departamento,   -- 👈 aquí se agrega el nombre del departamento
                 ptnp.nombre_solicitante AS solicitante,
                 ptnp.descripcion_trabajo
             FROM permisos_trabajo pt
-            INNER JOIN pt_no_peligroso ptnp ON pt.id_permiso = ptnp.id_permiso
-            INNER JOIN sucursales s ON pt.id_sucursal = s.id_sucursal
-            INNER JOIN areas a ON pt.id_area = a.id_area
-            INNER JOIN tipos_permisos tp ON pt.id_tipo_permiso = tp.id_tipo_permiso
+            INNER JOIN pt_no_peligroso ptnp 
+                ON pt.id_permiso = ptnp.id_permiso
+            INNER JOIN sucursales s 
+                ON pt.id_sucursal = s.id_sucursal
+            INNER JOIN areas a 
+                ON pt.id_area = a.id_area
+            INNER JOIN departamentos d
+                ON pt.id_departamento = d.id_departamento  -- 👈 unión con departamentos
+            INNER JOIN tipos_permisos tp 
+                ON pt.id_tipo_permiso = tp.id_tipo_permiso
             WHERE pt.id_permiso = $1
         `;
         const resultGeneral = await pool.query(queryGeneral, [id]);

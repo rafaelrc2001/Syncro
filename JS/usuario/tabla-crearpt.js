@@ -218,6 +218,10 @@ function mostrarInformacionGeneral(data) {
     document.querySelector('#modalVer .executive-item:nth-child(4) .highlight').textContent = data.area || '';
     document.querySelector('#modalVer .executive-item:nth-child(5) p').textContent = data.solicitante || '';
     document.querySelector('#modalVer .executive-item.full-width .description-box').textContent = data.descripcion_trabajo || '';
+    // Actualizar departamento
+    if (document.getElementById('ver-departamento')) {
+        document.getElementById('ver-departamento').textContent = data.departamento || '';
+    }
     // Actualizar tipo de permiso y prefijo en el header del modal
     document.getElementById('modal-tipo-permiso').textContent = data.tipo_permiso || '';
     document.getElementById('modal-prefijo').textContent = data.prefijo ? `No. ${data.prefijo}` : '';

@@ -1,9 +1,4 @@
-// Mostrar el modal de ver al hacer clic en el botón de "view"
-document.querySelectorAll('.action-btn.view').forEach(btn => {
-    btn.addEventListener('click', function() {
-        document.getElementById('modalVer').classList.add('active');
-    });
-});
+// (Eliminado: la apertura del modal se maneja en tabla-autorizar.js para evitar conflicto y asegurar que primero se llenen los datos)
 
 // Botón "Aceptar": cierra ambos modales
 document.querySelectorAll('#modalVer .print-btn.close-btn').forEach(btn => {

@@ -1,3 +1,4 @@
+
 // --- Tarjetas desde autorizar ---
 async function cargarTargetasDesdeAutorizar() {
     try {
@@ -368,3 +369,95 @@ function mostrarParticipantesAST(participantes) {
         console.warn('participantes no es un array:', participantes);
     }
 }
+
+
+
+// Cierra el modal de ver y el de comentario al dar clic en el botón 'Aceptar' exclusivo de AutorizarPT
+
+
+
+// --- Lógica para el botón Enviar del modal de comentario ---
+document.addEventListener('DOMContentLoaded', () => {
+    // ...existing code...
+
+    // Lógica para el botón Aceptar (abre el modal de comentario)
+    const btnAutorizar = document.getElementById('btn-autorizar-pt');
+    if (btnAutorizar) {
+        btnAutorizar.addEventListener('click', function() {
+            const modalVer = document.getElementById('modalVer');
+            const modalComentario = document.getElementById('modalComentario');
+            if (modalVer) modalVer.classList.remove('active');
+            if (modalComentario) modalComentario.classList.add('active');
+        });
+    }
+
+});
+
+
+// --- Lógica exclusiva para los botones de AutorizarPT ---
+document.addEventListener('DOMContentLoaded', () => {
+    // Botón "Aceptar" (abre modalAceptado)
+    const btnAceptar = document.getElementById('btn-autorizar-pt');
+    if (btnAceptar) {
+        btnAceptar.addEventListener('click', function() {
+            document.getElementById('modalVer').classList.remove('active');
+            // Oculta el modalComentario si estuviera abierto
+            const modalComentario = document.getElementById('modalComentario');
+            if (modalComentario) {
+                modalComentario.classList.remove('active');
+                modalComentario.setAttribute('hidden', '');
+            }
+            // Muestra el modalAceptado correctamente
+            const modalAceptado = document.getElementById('modalAceptado');
+            if (modalAceptado) {
+                modalAceptado.classList.add('active');
+                modalAceptado.removeAttribute('hidden');
+            }
+        });
+    }
+
+    // Botón "No autorizar" (abre modalComentario)
+    const btnNoAutorizar = document.getElementById('btn-noautorizar-pt');
+    if (btnNoAutorizar) {
+        btnNoAutorizar.addEventListener('click', function() {
+            document.getElementById('modalVer').classList.remove('active');
+            const modalComentario = document.getElementById('modalComentario');
+            if (modalComentario) {
+                modalComentario.classList.add('active');
+                modalComentario.removeAttribute('hidden');
+            }
+        });
+    }
+
+    // Botón "Cerrar" en modalAceptado (cierra modal y regresa a la página)
+    const btnCerrarAceptado = document.querySelector('#modalAceptado .cerrar-btn');
+    if (btnCerrarAceptado) {
+        btnCerrarAceptado.addEventListener('click', function() {
+            document.getElementById('modalAceptado').classList.remove('active');
+            // Redirigir o recargar la página (ajusta si quieres otro comportamiento)
+            window.location.reload();
+        });
+    }
+
+    // Botón "Enviar" en modalComentario (cierra el modal)
+    const btnEnviarComentario = document.querySelector('#modalComentario .enviar-btn');
+    if (btnEnviarComentario) {
+        btnEnviarComentario.addEventListener('click', function() {
+            document.getElementById('modalComentario').classList.remove('active');
+        });
+    }
+
+    // Botón "Cancelar" en modalComentario (cierra modalComentario y regresa a modalVer)
+    const btnCancelarComentario = document.querySelector('#modalComentario .cancelar-btn');
+    if (btnCancelarComentario) {
+        btnCancelarComentario.addEventListener('click', function() {
+            document.getElementById('modalComentario').classList.remove('active');
+            document.getElementById('modalVer').classList.add('active');
+        });
+    }
+});
+
+
+/*
+GSI-PT-N13	Permiso de trabajo no peligroso	Poner una antena	Oficina Opip	Ingeniero Ricardo	2025-08-23T18:42:21.372Z	cancelado
+*/

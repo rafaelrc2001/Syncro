@@ -13,11 +13,13 @@ require('dotenv').config();
 
 
 
+
 const tablasRouter = require('./tablas');
 const listasRouter = require('./listas');
 const vertablasRouter = require('./vertablas');
 const targetasRouter = require('./verformularios');
 const verformulariosRouter = require('./loginconsulta');
+const autorizacionesEstatusRouter = require('./autorizaciones_estatus');
 
 const loginconsultaRouter = require('./loginconsulta');
 
@@ -43,11 +45,13 @@ app.use('/endpoints', loginconsultaRouter);
 
 // Rutas de la API
 
+
 app.use('/api', tablasRouter);  // Monta las rutas de tablas.js bajo el prefijo /api
 app.use('/api', listasRouter);// Monta las rutas de listas.js bajo el prefijo /api
 app.use('/api', vertablasRouter); // Monta las rutas de vertablas.js bajo el prefijo /api
 app.use('/api', targetasRouter); // Monta las rutas de targetas.js bajo el prefijo /api
 app.use('/api', verformulariosRouter); // Monta las rutas de verformularios.js bajo el prefijo /api
+app.use('/api', autorizacionesEstatusRouter); // Monta las rutas de autorizaciones_estatus.js bajo el prefijo /api
 
 // ================= RUTAS DE TABLAS BASE =================
 const tablasBase = require('./tablasbase');

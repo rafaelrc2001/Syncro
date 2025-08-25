@@ -488,7 +488,7 @@
                     <div class="stamp">
                         <div class="stamp-title">Encargado del área:</div>
                         <div class="stamp-placeholder"></div>
-                        <div class="stamp-name" id="stamp-cierre">Ing. Carlos Ramírez</div>
+                        <div class="stamp-name" id="stamp-encargado">Ing. Carlos Ramírez</div>
                         <div class="stamp-date"></div>
                     </div>
                         <div class="stamp approved">
@@ -502,18 +502,18 @@
 
         <!-- Footer del Modal -->
         <div class="modal-footer">
-                    <button class="btn print-btn close-btn">
-                            <i class="ri-check-line"></i> Aceptar
-                    </button>
-                    <button class="btn close-btn">
-                            <i class="ri-close-line"></i> No autorizar
-                    </button>
+            <button id="btn-autorizar-pt" class="btn print-btn close-btn">
+                <i class="ri-check-line"></i> Aceptar
+            </button>
+            <button id="btn-noautorizar-pt" class="btn close-btn">
+                <i class="ri-close-line"></i> No autorizar
+            </button>
                 </div>
             </div>
         </div>
 
 
-           <div id="modalComentario" class="modal">
+        <div id="modalComentario" class="modal" hidden>
     <div class="modal-content">
         <div class="modal-header">
             <h2>Agregar comentario</h2>
@@ -528,6 +528,26 @@
     </div>
 </div>
 
+
+
+
+
+
+
+    <div id="modalAceptado" class="modal" hidden>
+        <div class="modal-content modal-aceptado-content">
+            <div class="modal-header modal-aceptado-header">
+                <i class="ri-checkbox-circle-fill modal-aceptado-icon"></i>
+                <h2 class="modal-aceptado-title">¡Permiso aceptado!</h2>
+            </div>
+            <div class="modal-body modal-aceptado-body">
+                <p class="modal-aceptado-msg">El permiso ha sido autorizado exitosamente.<br><span class="modal-aceptado-folio">Folio: cs234</span></p>
+            </div>
+            <div class="modal-footer modal-aceptado-footer">
+                <button class="btn cerrar-btn"><i></i> Cerrar</button>
+            </div>
+        </div>
+    </div>
 
     <script src="/JS/usuario/MenuUsuario.js"></script>
     <script src="/JS/generales/LogicaVer.js"></script>

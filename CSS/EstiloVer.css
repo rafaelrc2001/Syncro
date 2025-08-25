@@ -1,3 +1,70 @@
+/* Modal de Aceptado (igual que modalComentario) */
+#modalAceptado.modal {
+      position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 59, 92, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+#modalAceptado.modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+#modalAceptado .modal-content {
+    width: 90%;
+    max-width: 400px;
+    margin: auto;
+    max-height: 90vh;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* --- MODAL ACEPTADO PERSONALIZADO --- */
+.modal-aceptado-content {
+    max-width: 400px !important;
+    width: 90% !important;
+    margin: auto !important;
+}
+
+.modal-aceptado-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.modal-aceptado-icon {
+    font-size: 3rem;
+    margin-bottom: 8px;
+}
+
+.modal-aceptado-title {
+    text-align: center;
+    width: 100%;
+    color: #fff;
+}
+
+.modal-aceptado-body {
+    text-align: center;
+}
+
+.modal-aceptado-msg {
+    text-align: center;
+}
+
 /* Modal de Visualización de Permisos - Estilo Ejecutivo */
 #modalVer.modal {
     position: fixed;

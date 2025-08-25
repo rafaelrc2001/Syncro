@@ -1,12 +1,17 @@
 // (Eliminado: la apertura del modal se maneja en tabla-autorizar.js para evitar conflicto y asegurar que primero se llenen los datos)
 
-// Botón "Aceptar": cierra ambos modales
-document.querySelectorAll('#modalVer .print-btn.close-btn').forEach(btn => {
+
+// Botón "Aceptar": cierra ambos modales, excepto los botones exclusivos de AutorizarPT
+document.querySelectorAll('#modalVer .print-btn.close-btn:not(#btn-autorizar-pt):not(#btn-noautorizar-pt)').forEach(btn => {
     btn.addEventListener('click', function() {
         document.getElementById('modalVer').classList.remove('active');
         document.getElementById('modalComentario').classList.remove('active');
     });
 });
+
+// Botón "No autorizar" (exclusivo de AutorizarPT): lógica personalizada, no se cierra aquí
+
+
 
 // Botón "No autorizar": muestra el modal de comentario y cierra el de ver
 document.querySelectorAll('#modalVer .btn.close-btn:not(.print-btn)').forEach(btn => {

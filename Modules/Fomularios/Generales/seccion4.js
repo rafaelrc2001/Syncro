@@ -315,9 +315,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (modal) {
                     modal.querySelector('h3').textContent = 'Permiso creado exitosamente';
                     const permitNumber = `GSI-PT-N${id_permiso}`;
+                    window.permitNumber = permitNumber;
                     const permitText = `El permiso de trabajo con AST ha sido registrado en el sistema con el número: <strong id="generated-permit">${permitNumber}</strong>`;
                     modal.querySelector('p').innerHTML = permitText;
                     modal.classList.add('active');
+                        // Llamar a n8nFormHandler para enviar los datos a n8n
+                        if (typeof n8nFormHandler === 'function') {
+                            try {
+                                await n8nFormHandler();
+                            } catch (err) {
+                                console.error('Error al enviar datos a n8n:', err);
+                            }
+                        }
                 }
 
             } catch (error) {

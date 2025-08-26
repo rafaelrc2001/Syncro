@@ -114,6 +114,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td>${supervisor.nombre}</td>
                 <td>${supervisor.correo || ''}</td>
                 <td>${supervisor.extension || ''}</td>
+                <td>${supervisor.telefono || ''}</td>
                 <td>
                     <button class="action-btn edit" data-id="${supervisor.id}"><i class="ri-edit-line"></i></button>
                     <button class="action-btn delete" data-id="${supervisor.id}"><i class="ri-delete-bin-line"></i></button>

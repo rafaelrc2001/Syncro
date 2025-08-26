@@ -113,8 +113,6 @@ document.addEventListener('DOMContentLoaded', function() {
             row.dataset.id = id;
             row.innerHTML = `
                 <td>${depto.nombre}</td>
-                <td>${depto.correo || ''}</td>
-                <td>${depto.extension || ''}</td>
                 <td>
                     <button class="action-btn edit" data-id="${id}"><i class="ri-edit-line"></i></button>
                     <button class="action-btn delete" data-id="${id}"><i class="ri-delete-bin-line"></i></button>

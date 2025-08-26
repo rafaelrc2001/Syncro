@@ -239,7 +239,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 // 2. Insertar PT no peligroso
                 const nombre_solicitante = document.getElementById('applicant')?.value || null;
                 const descripcion_trabajo = document.getElementById('work-description')?.value || null;
-                const tipo_mantenimiento = document.getElementById('maintenance-type')?.value || null;
+                let tipo_mantenimiento = document.getElementById('maintenance-type')?.value || null;
+                // Si el tipo es OTRO, tomar el valor del input adicional
+                if (tipo_mantenimiento === 'OTRO') {
+                    const otroInput = document.getElementById('other-maintenance');
+                    if (otroInput && otroInput.value.trim()) {
+                        tipo_mantenimiento = otroInput.value.trim();
+                    }
+                }
                 const ot_no = document.getElementById('work-order')?.value || null;
                 const equipo_intervencion = document.getElementById('equipment')?.value || null;
                 const fecha = document.getElementById('permit-date')?.value || '2025-08-19';

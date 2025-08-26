@@ -7,6 +7,12 @@ function initEquipmentToggle() {
         document.getElementById('equipment-conditions-grid')
     ];
 
+    // Campos adicionales
+    const tagField = document.getElementById('tag');
+    const fluidField = document.getElementById('fluid');
+    const pressureField = document.getElementById('pressure');
+    const temperatureField = document.getElementById('temperature');
+
     function toggleEquipmentFields() {
         const showEquipment = document.querySelector('input[name="has-equipment"]:checked').value === 'si';
         equipmentFields.forEach(element => {
@@ -14,6 +20,11 @@ function initEquipmentToggle() {
         });
         const equipmentField = document.getElementById('equipment');
         if (equipmentField) equipmentField.required = showEquipment;
+        // Hacer obligatorios los campos adicionales si corresponde
+        if (tagField) tagField.required = showEquipment;
+        if (fluidField) fluidField.required = showEquipment;
+        if (pressureField) pressureField.required = showEquipment;
+        if (temperatureField) temperatureField.required = showEquipment;
     }
 
     equipmentRadios.forEach(radio => {

@@ -10,9 +10,9 @@ router.use(express.json());
 router.post('/loginDepartamento', async (req, res) => {
 	const { email, password } = req.body;
 	try {
-		// Consulta la tabla departamentos (ajusta los nombres de columnas según tu BD)
+		// Consulta la tabla departamentos usando el nombre en vez de correo, ignorando mayúsculas/minúsculas
 		const result = await db.query(
-			'SELECT id_departamento as id, nombre, correo, contraseña, extension FROM departamentos WHERE correo = $1',
+			'SELECT id_departamento as id, nombre, correo, contraseña, extension FROM departamentos WHERE LOWER(nombre) = LOWER($1)',
 			[email]
 		);
 		if (result.rows.length === 0) {

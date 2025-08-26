@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
             loginBtn.classList.add('loading');
 
             // Obtener credenciales
-            const email = document.getElementById('username').value;
+            const departamentoNombre = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
             try {
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const response = await fetch('http://localhost:3000/endpoints/loginDepartamento', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password })
+                    body: JSON.stringify({ email: departamentoNombre, password })
                 });
                 const data = await response.json();
                 loginBtn.classList.remove('loading');
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         alert('Rol no reconocido.');
                     }
                 } else {
-                    alert('Correo o contraseña incorrectos');
+                    alert('Nombre de departamento o contraseña incorrectos');
                 }
             } catch (error) {
                 loginBtn.classList.remove('loading');

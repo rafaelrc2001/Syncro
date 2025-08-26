@@ -73,6 +73,8 @@ function initPlantAutocomplete() {
             if (plantIdHidden) plantIdHidden.value = selectedArea.id_area || selectedArea.id;
             console.log('[DEBUG] plant_value guardado:', selectedArea.id_area || selectedArea.id);
             if (warning) warning.remove();
+            // Consultar correo por id_area y mostrar en consola
+            obtenerCorreoPorArea(selectedArea.id_area || selectedArea.id);
         } else {
             sessionStorage.setItem('plant_value', '');
             if (plantIdHidden) plantIdHidden.value = '';
@@ -126,6 +128,8 @@ function initPlantAutocomplete() {
                 console.log('[DEBUG] plant_value guardado (click):', selectedArea.id_area || selectedArea.id);
                 const warning = document.getElementById('plant-warning');
                 if (warning) warning.remove();
+                // Consultar correo por id_area y mostrar en consola
+                obtenerCorreoPorArea(selectedArea.id_area || selectedArea.id);
             }
         }
     });
@@ -137,6 +141,8 @@ function initPlantAutocomplete() {
                 sessionStorage.setItem('plant_value', selectedArea.id);
                 const warning = document.getElementById('plant-warning');
                 if (warning) warning.remove();
+                // Consultar correo por id_area y mostrar en consola
+                obtenerCorreoPorArea(selectedArea.id_area || selectedArea.id);
             } else {
                 sessionStorage.setItem('plant_value', '');
             }
@@ -149,6 +155,8 @@ function initPlantAutocomplete() {
             const selectedArea = (window.areas || []).find(a => a.nombre === plantInput.value);
             if (selectedArea) {
                 sessionStorage.setItem('plant_value', selectedArea.id);
+                // Consultar correo por id_area y mostrar en consola
+                obtenerCorreoPorArea(selectedArea.id_area || selectedArea.id);
             } else {
                 sessionStorage.setItem('plant_value', '');
             }
@@ -201,6 +209,29 @@ async function populateSucursales() {
         });
     } catch (err) {
         console.error('No se pudieron cargar las sucursales:', err);
+    }
+}
+
+// === Función para consultar correo por id_area ===
+async function obtenerCorreoPorArea(id_area) {
+    if (!id_area) {
+        console.warn('No se proporcionó id_area para consultar correo');
+        return;
+    }
+    try {
+        const response = await fetch(`http://localhost:3000/api/correo-area?id_area=${id_area}`);
+        if (!response.ok) throw new Error('No se pudo obtener el correo');
+        const data = await response.json();
+        if (data && data.correo) {
+            window.correoDepartamento = data.correo;
+            console.log('[CORREO DEPARTAMENTO]', data.correo);
+        } else {
+            window.correoDepartamento = null;
+            console.warn('No se encontró correo para el área seleccionada');
+        }
+    } catch (err) {
+        window.correoDepartamento = null;
+        console.error('Error al consultar correo por área:', err);
     }
 }
 

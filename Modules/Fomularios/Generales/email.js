@@ -13,14 +13,15 @@ window.n8nFormHandler = async function() {
         fechaSolicitud: new Date().toISOString(),
         mantenimiento: document.getElementById('maintenance-type')?.value,
         tipopermiso: document.getElementById('PermisoNP')?.value,
-        correo: document.getElementById('correo')?.value,
+        correo: window.correoDepartamento || document.getElementById('correo')?.value,
+        //correo: window.correoDepartamento ? window.correoDepartamento : '',
     };
 
     // Imprimir los datos en consola para prueba
     console.log('Datos enviados a n8n:', formData);
 
     // Enviar datos a n8n
-    const response = await fetch('http://localhost:5678/webhook-test/formulario-PT', {
+    const response = await fetch('https://xwd4grn8-5678.usw3.devtunnels.ms/webhook/formulario-PT', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

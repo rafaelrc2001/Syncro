@@ -61,4 +61,33 @@ router.get('/departamentos', async (req, res) => {
 });
 
 
+// Endpoint para obtener el correo a partir del id_area
+// Endpoint para obtener el correo a partir del id_area
+// Endpoint para obtener el correo a partir del id_area
+// Endpoint para obtener el correo a partir del id_area
+// Endpoint para obtener el correo a partir del id_area
+router.get('/correo-area', async (req, res) => {
+  const id_area = parseInt(req.query.id_area, 10);
+  if (!Number.isInteger(id_area) || id_area <= 0) {
+    return res.status(400).json({ error: 'id_area inválido' });
+  }
+  try {
+    const result = await db.query(`
+      SELECT a.id_area, d.correo
+      FROM areas a
+      INNER JOIN departamentos d ON a.id_departamento = d.id_departamento
+      WHERE a.id_area = $1
+    `, [id_area]);
+    if (result.rows.length > 0) {
+      res.json(result.rows[0]);
+    } else {
+      res.status(404).json({ error: 'No se encontró el área o el correo' });
+    }
+  } catch (err) {
+    console.error('Error al obtener correo por área:', err);
+    res.status(500).json({ error: 'Error al obtener correo por área' });
+  }
+});
+
+
 module.exports = router;

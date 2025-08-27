@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td>${supervisor.nombre}</td>
                 <td>${supervisor.correo || ''}</td>
                 <td>${supervisor.extension || ''}</td>
-                <td>${supervisor.telefono || ''}</td>
+                <td>${supervisor.usuario || ''}</td>
                 <td>
                     <button class="action-btn edit" data-id="${supervisor.id}"><i class="ri-edit-line"></i></button>
                     <button class="action-btn delete" data-id="${supervisor.id}"><i class="ri-delete-bin-line"></i></button>
@@ -256,6 +256,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const nombre = document.getElementById('name').value.trim();
             const correo = document.getElementById('email').value.trim();
             const extension = document.getElementById('extension').value.trim();
+            const usuario = document.getElementById('username').value.trim();
             const contraseña = document.getElementById('password').value;
             
             // Validaciones
@@ -277,6 +278,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Agregar campos opcionales si tienen valor
                 if (correo) bodyData.correo = correo;
                 if (extension) bodyData.extension = extension;
+                if (usuario) bodyData.usuario = usuario;
                 
                 // Si estamos editando, actualizamos la URL, método y datos
                 if (editando && supervisorId) {

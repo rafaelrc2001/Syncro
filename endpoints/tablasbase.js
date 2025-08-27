@@ -434,7 +434,7 @@ exports.deleteDepartamento = async (req, res) => {
 // ================= SUPERVISORES =================
 exports.getSupervisores = async (req, res) => {
   try {
-    const result = await db.query('SELECT id_supervisor as id, nombre, correo, extension FROM supervisores');
+  const result = await db.query('SELECT id_supervisor as id, nombre, correo, extension, usuario FROM supervisores');
     res.json(result.rows);
   } catch (err) {
     console.error('Error al obtener supervisores:', err);
@@ -446,7 +446,7 @@ exports.getSupervisorById = async (req, res) => {
   const { id } = req.params;
   try {
     const result = await db.query(
-      'SELECT id_supervisor as id, nombre, correo, extension FROM supervisores WHERE id_supervisor = $1', 
+  'SELECT id_supervisor as id, nombre, correo, extension, usuario FROM supervisores WHERE id_supervisor = $1', 
       [id]
     );
     if (result.rows.length === 0) {
@@ -460,17 +460,17 @@ exports.getSupervisorById = async (req, res) => {
 };
 
 exports.createSupervisor = async (req, res) => {
-  const { nombre, correo, extension, contraseña } = req.body;
+  const { nombre, correo, extension, usuario, contraseña } = req.body;
   if (!nombre || !contraseña) {
     return res.status(400).json({ error: 'El nombre y la contraseña son campos requeridos' });
   }
   try {
     const query = `
-      INSERT INTO supervisores(nombre, correo, extension, contraseña) 
-      VALUES($1, $2, $3, $4) 
-      RETURNING id_supervisor as id, nombre, correo, extension
+      INSERT INTO supervisores(nombre, correo, extension, usuario, contraseña) 
+      VALUES($1, $2, $3, $4, $5) 
+      RETURNING id_supervisor as id, nombre, correo, extension, usuario
     `;
-    const result = await db.query(query, [nombre, correo || null, extension || null, contraseña]);
+    const result = await db.query(query, [nombre, correo || null, extension || null, usuario || null, contraseña]);
     res.status(201).json(result.rows[0]);
   } catch (err) {
     console.error('Error al crear supervisor:', {
@@ -487,7 +487,7 @@ exports.createSupervisor = async (req, res) => {
 
 exports.updateSupervisor = async (req, res) => {
   const { id } = req.params;
-  const { nombre, correo, extension, contraseña } = req.body;
+  const { nombre, correo, extension, usuario, contraseña } = req.body;
   if (!nombre) {
     return res.status(400).json({ error: 'El nombre del supervisor es requerido' });
   }
@@ -497,19 +497,19 @@ exports.updateSupervisor = async (req, res) => {
     if (contraseña) {
       query = `
         UPDATE supervisores 
-        SET nombre = $1, correo = $2, extension = $3, contraseña = $4 
-        WHERE id_supervisor = $5 
-        RETURNING id_supervisor as id, nombre, correo, extension
+        SET nombre = $1, correo = $2, extension = $3, usuario = $4, contraseña = $5 
+        WHERE id_supervisor = $6 
+        RETURNING id_supervisor as id, nombre, correo, extension, usuario
       `;
-      params = [nombre, correo || null, extension || null, contraseña, id];
+      params = [nombre, correo || null, extension || null, usuario || null, contraseña, id];
     } else {
       query = `
         UPDATE supervisores 
-        SET nombre = $1, correo = $2, extension = $3 
-        WHERE id_supervisor = $4 
-        RETURNING id_supervisor as id, nombre, correo, extension
+        SET nombre = $1, correo = $2, extension = $3, usuario = $4 
+        WHERE id_supervisor = $5 
+        RETURNING id_supervisor as id, nombre, correo, extension, usuario
       `;
-      params = [nombre, correo || null, extension || null, id];
+      params = [nombre, correo || null, extension || null, usuario || null, id];
     }
     const result = await db.query(query, params);
     if (result.rowCount === 0) {

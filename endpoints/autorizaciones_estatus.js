@@ -1,15 +1,10 @@
-
 const express = require('express');
 const router = express.Router();
 const db = require('./database');
 const { pool } = require('./database');
 
 
-// Nueva ruta para insertar un estatus personalizado 'espera seguridad' con id_estatus recibido
-// Nueva ruta para insertar un estatus personalizado 'espera seguridad' con id_estatus recibido
-// Nueva ruta para insertar un estatus personalizado 'espera seguridad' con id_estatus recibido
-// Nueva ruta para insertar un estatus personalizado 'espera seguridad' con id_estatus recibido
-// Nueva ruta para insertar un estatus personalizado 'espera seguridad' con id_estatus recibido
+// Nueva ruta para actualizar el estatus a 'espera seguridad' usando el id_estatus recibido
 router.post('/estatus/seguridad', async (req, res) => {
   const { id_estatus } = req.body;
   const ESTATUS = 'espera seguridad';
@@ -23,19 +18,25 @@ router.post('/estatus/seguridad', async (req, res) => {
 
   try {
     const result = await db.query(
-      'INSERT INTO estatus (id_estatus, estatus) VALUES ($1, $2) RETURNING id_estatus as id, estatus',
-      [id_estatus, ESTATUS]
+      'UPDATE estatus SET estatus = $1 WHERE id_estatus = $2 RETURNING id_estatus as id, estatus',
+      [ESTATUS, id_estatus]
     );
-    res.status(201).json({
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'No se encontró el estatus para actualizar'
+      });
+    }
+    res.status(200).json({
       success: true,
-      message: 'Estatus de seguridad creado exitosamente',
+      message: 'Estatus de seguridad actualizado exitosamente',
       data: result.rows[0]
     });
   } catch (err) {
     console.error('Error en la base de datos:', err);
     res.status(500).json({
       success: false,
-      error: 'Error al crear el estatus de seguridad',
+      error: 'Error al actualizar el estatus de seguridad',
       details: err.message
     });
   }
@@ -54,10 +55,10 @@ router.post('/autorizaciones/area', async (req, res) => {
   const { id_permiso, responsable_area, encargado_area } = req.body;
 
   // Validar que los campos requeridos estén presentes
-  if (!id_permiso || !responsable_area || !encargado_area) {
+  if (!id_permiso || !responsable_area) {
     return res.status(400).json({
       success: false,
-      error: 'id_permiso, responsable_area y encargado_area son requeridos'
+      error: 'id_permiso y responsable_area son requeridos'
     });
   }
 
@@ -85,7 +86,7 @@ router.post('/autorizaciones/area', async (req, res) => {
   try {
     const result = await db.query(
       `INSERT INTO autorizaciones (
-        id_permiso, id_supervisor, id_categoria, responsable_area, encargado_area
+        id_permiso, id_supervisor, id_categoria, responsable_area, operador_area
       ) VALUES ($1, $2, $3, $4, $5)
       RETURNING *`,
       [id_permiso, null, null, responsable_area, encargado_area]
@@ -105,8 +106,67 @@ router.post('/autorizaciones/area', async (req, res) => {
   }
 });
 
+// Ruta para obtener el id_estatus de permisos_trabajo por id_permiso
+router.get('/permisos-trabajo/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const result = await db.query('SELECT id_estatus FROM permisos_trabajo WHERE id_permiso = $1', [id]);
+        if (result.rows.length === 0) {
+            return res.status(404).json({ success: false, message: 'Permiso no encontrado' });
+        }
+        res.json(result.rows[0]);
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
 
 
-// ...existing code...
+
+
+
+
+
+// Nueva ruta para actualizar el estatus a 'no autorizado' usando el id_estatus recibido
+router.post('/estatus/no_autorizado', async (req, res) => {
+  const { id_estatus } = req.body;
+  const ESTATUS = 'no autorizado';
+
+  if (!id_estatus) {
+    return res.status(400).json({
+      success: false,
+      error: 'id_estatus es requerido'
+    });
+  }
+
+  try {
+    const result = await db.query(
+      'UPDATE estatus SET estatus = $1 WHERE id_estatus = $2 RETURNING id_estatus as id, estatus',
+      [ESTATUS, id_estatus]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'No se encontró el estatus para actualizar'
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: 'Estatus de no autorizado actualizado exitosamente',
+      data: result.rows[0]
+    });
+  } catch (err) {
+    console.error('Error en la base de datos:', err);
+    res.status(500).json({
+      success: false,
+      error: 'Error al actualizar el estatus de no autorizado',
+      details: err.message
+    });
+  }
+});
+
+
+
+
+
 // Dejar solo un module.exports al final
 module.exports = router;

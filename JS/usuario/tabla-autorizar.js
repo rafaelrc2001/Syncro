@@ -1,4 +1,3 @@
-
 // --- Tarjetas desde autorizar ---
 async function cargarTargetasDesdeAutorizar() {
     try {
@@ -55,6 +54,7 @@ function asignarEventosVer() {
     document.querySelectorAll('.action-btn.view').forEach(btn => {
         btn.addEventListener('click', async function() {
             const idPermiso = this.getAttribute('data-idpermiso');
+            window.idPermisoActual = idPermiso; // Guardar el ID globalmente
             console.log('ID del permiso consultado:', idPermiso);
             try {
                 const response = await fetch(`http://localhost:3000/api/verformularios?id=${encodeURIComponent(idPermiso)}`);
@@ -380,16 +380,7 @@ function mostrarParticipantesAST(participantes) {
 document.addEventListener('DOMContentLoaded', () => {
     // ...existing code...
 
-    // Lógica para el botón Aceptar (abre el modal de comentario)
-    const btnAutorizar = document.getElementById('btn-autorizar-pt');
-    if (btnAutorizar) {
-        btnAutorizar.addEventListener('click', function() {
-            const modalVer = document.getElementById('modalVer');
-            const modalComentario = document.getElementById('modalComentario');
-            if (modalVer) modalVer.classList.remove('active');
-            if (modalComentario) modalComentario.classList.add('active');
-        });
-    }
+    // Eliminar lógica duplicada: el modal de comentario solo debe mostrarse al dar clic en 'No autorizar'.
 
 });
 
@@ -399,7 +390,70 @@ document.addEventListener('DOMContentLoaded', () => {
     // Botón "Aceptar" (abre modalAceptado)
     const btnAceptar = document.getElementById('btn-autorizar-pt');
     if (btnAceptar) {
-        btnAceptar.addEventListener('click', function() {
+        btnAceptar.addEventListener('click', async function() {
+            // Obtener el id_permiso del permiso actual desde la variable global
+            const idPermiso = window.idPermisoActual;
+            // Obtener responsable_area y operador_area desde los inputs del DOM
+            const responsableInput = document.getElementById('responsable-aprobador');
+            const operadorInput = document.getElementById('responsable-aprobador2');
+            const responsable_area = responsableInput ? responsableInput.value.trim() : '';
+            const operador_area = operadorInput ? operadorInput.value.trim() : '';
+            if (!idPermiso) {
+                alert('No se pudo obtener el ID del permiso. Selecciona un permiso válido.');
+                return;
+            }
+            if (!responsable_area) {
+                alert('Debes ingresar el nombre del responsable del área antes de autorizar.');
+                if (responsableInput) responsableInput.focus();
+                return;
+            }
+            // 1. Insertar autorización de área
+            try {
+                const resp = await fetch('http://localhost:3000/api/autorizaciones/area', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id_permiso: idPermiso, responsable_area, encargado_area: operador_area })
+                });
+                if (!resp.ok) {
+                    const data = await resp.json();
+                    if (resp.status === 409) {
+                        alert('Este permiso ya fue autorizado previamente.');
+                        return;
+                    } else {
+                        alert(data.error || 'Error al autorizar el permiso.');
+                        return;
+                    }
+                }
+            } catch (err) {
+                console.error('Error al insertar autorización de área:', err);
+            }
+
+            // 2. Consultar el id_estatus desde permisos_trabajo
+            let idEstatus = null;
+            try {
+                const resp = await fetch(`http://localhost:3000/api/permisos-trabajo/${idPermiso}`);
+                if (resp.ok) {
+                    const permisoData = await resp.json();
+                    idEstatus = permisoData.id_estatus || (permisoData.data && permisoData.data.id_estatus);
+                }
+            } catch (err) {
+                console.error('Error al consultar id_estatus:', err);
+            }
+
+            // 3. Actualizar el estatus si se obtuvo el id_estatus
+            if (idEstatus) {
+                try {
+                    await fetch('http://localhost:3000/api/estatus/seguridad', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id_estatus: idEstatus })
+                    });
+                } catch (err) {
+                    console.error('Error al actualizar estatus de seguridad:', err);
+                }
+            }
+
+            // ...lógica original...
             document.getElementById('modalVer').classList.remove('active');
             // Oculta el modalComentario si estuviera abierto
             const modalComentario = document.getElementById('modalComentario');
@@ -416,18 +470,78 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+
+
+
+
+
     // Botón "No autorizar" (abre modalComentario)
     const btnNoAutorizar = document.getElementById('btn-noautorizar-pt');
     if (btnNoAutorizar) {
-        btnNoAutorizar.addEventListener('click', function() {
+        btnNoAutorizar.addEventListener('click', async function() {
+
+
+            const idPermiso = window.idPermisoActual;
+            // Obtener responsable_area y operador_area desde los inputs del DO
+            if (!idPermiso) {
+                alert('No se pudo obtener el ID del permiso. Selecciona un permiso válido.');
+                return;
+            }
+          
+
+
             document.getElementById('modalVer').classList.remove('active');
             const modalComentario = document.getElementById('modalComentario');
+            
+             // 2. Consultar el id_estatus desde permisos_trabajo
+            let idEstatus = null;
+            try {
+                const resp = await fetch(`http://localhost:3000/api/permisos-trabajo/${idPermiso}`);
+                if (resp.ok) {
+                    const permisoData = await resp.json();
+                    idEstatus = permisoData.id_estatus || (permisoData.data && permisoData.data.id_estatus);
+                }
+            } catch (err) {
+                console.error('Error al consultar id_estatus:', err);
+            }
+
+            // 3. Actualizar el estatus si se obtuvo el id_estatus
+            if (idEstatus) {
+                try {
+                    await fetch('http://localhost:3000/api/estatus/no_autorizado', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id_estatus: idEstatus })
+                    });
+                } catch (err) {
+                    console.error('Error al actualizar estatus de no_autorizado:', err);
+                }
+            }
+            
+            
             if (modalComentario) {
                 modalComentario.classList.add('active');
                 modalComentario.removeAttribute('hidden');
             }
+
+
+
+
         });
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // Botón "Cerrar" en modalAceptado (cierra modal y regresa a la página)
     const btnCerrarAceptado = document.querySelector('#modalAceptado .cerrar-btn');
@@ -458,6 +572,3 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-/*
-GSI-PT-N13	Permiso de trabajo no peligroso	Poner una antena	Oficina Opip	Ingeniero Ricardo	2025-08-23T18:42:21.372Z	cancelado
-*/

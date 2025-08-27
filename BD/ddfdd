@@ -24,8 +24,8 @@ CREATE TABLE IF NOT EXISTS public.ast_actividades
 (
     id_ast_actividades integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
     id_ast integer NOT NULL,
-    num_actividad character varying(5) COLLATE pg_catalog."default",
-    secuencia_actividad character varying(50) COLLATE pg_catalog."default",
+    num_actividad character varying(200) COLLATE pg_catalog."default",
+    secuencia_actividad character varying(300) COLLATE pg_catalog."default",
     personal_ejecutor character varying(150) COLLATE pg_catalog."default",
     peligros_potenciales character varying(350) COLLATE pg_catalog."default",
     acciones_preventivas character varying(350) COLLATE pg_catalog."default",
@@ -51,6 +51,7 @@ CREATE TABLE IF NOT EXISTS public.autorizaciones
     id_supervisor integer,
     id_categoria integer,
     responsable_area character varying(100) COLLATE pg_catalog."default",
+    operador_area character varying(150) COLLATE pg_catalog."default",
     CONSTRAINT autorizaciones_pkey PRIMARY KEY (id_autorizacion)
 );
 
@@ -76,6 +77,14 @@ CREATE TABLE IF NOT EXISTS public.estatus
     id_estatus integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
     estatus character varying(100) COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT estatus_pkey PRIMARY KEY (id_estatus)
+);
+
+CREATE TABLE IF NOT EXISTS public.jefe
+(
+    id_jefe serial NOT NULL,
+    usuario character varying(50) COLLATE pg_catalog."default",
+    "contraseña" character varying(100) COLLATE pg_catalog."default",
+    CONSTRAINT jefe_pkey PRIMARY KEY (id_jefe)
 );
 
 CREATE TABLE IF NOT EXISTS public.permisos_trabajo
@@ -124,6 +133,7 @@ CREATE TABLE IF NOT EXISTS public.supervisores
     correo character varying(100) COLLATE pg_catalog."default",
     extension character varying(20) COLLATE pg_catalog."default",
     "contraseña" character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    usuario character varying(150) COLLATE pg_catalog."default",
     CONSTRAINT supervisores_pkey PRIMARY KEY (id_supervisor)
 );
 
@@ -218,11 +228,6 @@ ALTER TABLE IF EXISTS public.pt_no_peligroso
     ON DELETE NO ACTION;
 
 END;
-
-
-
-
-
 
 
 

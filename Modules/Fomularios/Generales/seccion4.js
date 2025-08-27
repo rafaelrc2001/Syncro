@@ -21,12 +21,14 @@ document.addEventListener('DOMContentLoaded', () => {
         activities.forEach((activity, idx) => {
             const newIndex = idx + 1;
             activity.setAttribute('data-index', newIndex);
-            // Actualiza el número visual
+            // Columna No.: número automático
             const numberDiv = activity.querySelector('.ast-activity-number');
-            if (numberDiv) numberDiv.textContent = newIndex;
+            if (numberDiv) {
+                numberDiv.textContent = newIndex;
+            }
             // Actualiza los names de los campos
-            const textareaActivity = activity.querySelector('textarea[name^="ast-activity-"]');
-            if (textareaActivity) textareaActivity.name = `ast-activity-${newIndex}`;
+            const activityTextarea = activity.querySelector('textarea[name^="ast-activity-"]');
+            if (activityTextarea) activityTextarea.name = `ast-activity-${newIndex}`;
             const selectPersonnel = activity.querySelector('select[name^="ast-personnel-"]');
             if (selectPersonnel) selectPersonnel.name = `ast-personnel-${newIndex}`;
             const textareaHazards = activity.querySelector('textarea[name^="ast-hazards-"]');
@@ -37,6 +39,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (selectResponsible) selectResponsible.name = `ast-responsible-${newIndex}`;
         });
     }
+
+        // Actualizar el div de secuencia en tiempo real
+        if (astActivitiesContainer) {
+            // Ya no es necesario actualizar el número con el texto, solo renumerar si se elimina o agrega
+        }
 
     if (addActivityBtn && astActivitiesContainer) {
         addActivityBtn.addEventListener('click', async function () {
@@ -287,13 +294,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 let validAst = true;
 
                 document.querySelectorAll('.ast-activity').forEach((row, index) => {
-                    const secuencia = index + 1;
-                    const personal_ejecutor = row.querySelector(`select[name^="ast-personnel-"]`).value;
-                    const peligros_potenciales = row.querySelector(`textarea[name^="ast-hazards-"]`).value.trim();
-                    const acciones_preventivas = row.querySelector(`textarea[name^="ast-preventions-"]`).value.trim();
-                    const responsable = row.querySelector(`select[name^="ast-responsible-"]`).value;
+                    // Guardar el texto de la actividad como 'secuencia'
+                    const secuencia = row.querySelector('textarea[name^="ast-activity-"]').value.trim();
+                    const personal_ejecutor = row.querySelector('select[name^="ast-personnel-"]').value;
+                    const peligros_potenciales = row.querySelector('textarea[name^="ast-hazards-"]').value.trim();
+                    const acciones_preventivas = row.querySelector('textarea[name^="ast-preventions-"]').value.trim();
+                    const responsable = row.querySelector('select[name^="ast-responsible-"]').value;
 
-                    if (!personal_ejecutor || !peligros_potenciales || !acciones_preventivas || !responsable) {
+                    if (!secuencia || !personal_ejecutor || !peligros_potenciales || !acciones_preventivas || !responsable) {
                         validAst = false;
                     }
 

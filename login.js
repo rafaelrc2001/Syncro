@@ -27,23 +27,41 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             loginBtn.classList.add('loading');
 
-            // Obtener credenciales
             const departamentoNombre = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
             try {
-                // Llamada real al backend para autenticar
-                const response = await fetch('http://localhost:3000/endpoints/loginDepartamento', {
+                // 1. Intentar login de departamento
+                let response = await fetch('http://localhost:3000/endpoints/loginDepartamento', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email: departamentoNombre, password })
                 });
-                const data = await response.json();
+                let data = await response.json();
+
+                // 2. Si falla, intentar login de jefe
+                if (!data.success || !data.usuario) {
+                    response = await fetch('http://localhost:3000/endpoints/loginJefe', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ usuario: departamentoNombre, password })
+                    });
+                    data = await response.json();
+                }
+
+                // 3. Si falla, intentar login de supervisor
+                if (!data.success || !data.usuario) {
+                    response = await fetch('http://localhost:3000/endpoints/loginSupervisor', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ usuario: departamentoNombre, password })
+                    });
+                    data = await response.json();
+                }
+
                 loginBtn.classList.remove('loading');
                 if (data.success && data.usuario) {
-                    // Guardar datos del usuario en localStorage
                     localStorage.setItem('usuario', JSON.stringify(data.usuario));
-                    // Redirigir según el rol
                     if (data.usuario.rol === 'usuario') {
                         window.location.href = 'Modules/Usuario/Dash-Usuario.html';
                     } else if (data.usuario.rol === 'supervisor') {
@@ -54,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         alert('Rol no reconocido.');
                     }
                 } else {
-                    alert('Nombre de departamento o contraseña incorrectos');
+                    alert('Usuario o contraseña incorrectos');
                 }
             } catch (error) {
                 loginBtn.classList.remove('loading');

@@ -513,6 +513,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ id_estatus: idEstatus })
                     });
+                    // Actualiza la tabla y tarjetas aquí
+                    cargarPermisosTabla();
+                    cargarTargetasDesdeAutorizar();
                 } catch (err) {
                     console.error('Error al actualizar estatus de no_autorizado:', err);
                 }

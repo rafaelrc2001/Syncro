@@ -13,14 +13,7 @@ document.querySelectorAll('#modalVer .print-btn.close-btn:not(#btn-autorizar-pt)
 
 
 
-// Botón "No autorizar": muestra el modal de comentario y cierra el de ver
-document.querySelectorAll('#modalVer .btn.close-btn:not(.print-btn)').forEach(btn => {
-    btn.addEventListener('click', function(e) {
-        e.preventDefault();
-        document.getElementById('modalVer').classList.remove('active');
-        document.getElementById('modalComentario').classList.add('active');
-    });
-});
+// ...eliminado: la lógica de mostrar el modalComentario al hacer clic en 'No autorizar' se maneja solo en tabla-autorizar.js...
 
 // Botón "Enviar": cierra el modal de comentario
 document.querySelectorAll('#modalComentario .enviar-btn').forEach(btn => {

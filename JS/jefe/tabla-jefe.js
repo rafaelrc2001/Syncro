@@ -54,6 +54,15 @@ function asignarEventosVer() {
     document.querySelectorAll('.action-btn.view').forEach(btn => {
         btn.addEventListener('click', async function() {
             const idPermiso = this.getAttribute('data-idpermiso');
+                       // Reinicia el select de supervisor y el campo visual cada vez que se abre el modal
+                       const supervisorSelect = document.getElementById('responsable-aprobador');
+                       if (supervisorSelect) supervisorSelect.selectedIndex = 0;
+                       const nombreAprobador = document.getElementById('nombre-aprobador');
+                       if (nombreAprobador) nombreAprobador.textContent = 'Seleccione un supervisor';
+
+                       // Reinicia el select de categoría cada vez que se abre el modal
+                       const categoriaSelect = document.getElementById('responsable-aprobador2');
+                       if (categoriaSelect) categoriaSelect.selectedIndex = 0;
             window.idPermisoActual = idPermiso; // Guardar el ID globalmente
             console.log('ID del permiso consultado:', idPermiso);
             try {
@@ -413,4 +422,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 select.appendChild(option);
             });
         });
+
+   
 });

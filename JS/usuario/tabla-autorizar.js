@@ -375,16 +375,6 @@ function mostrarParticipantesAST(participantes) {
 // Cierra el modal de ver y el de comentario al dar clic en el botón 'Aceptar' exclusivo de AutorizarPT
 
 
-
-// --- Lógica para el botón Enviar del modal de comentario ---
-document.addEventListener('DOMContentLoaded', () => {
-    // ...existing code...
-
-    // Eliminar lógica duplicada: el modal de comentario solo debe mostrarse al dar clic en 'No autorizar'.
-
-});
-
-
 // --- Lógica exclusiva para los botones de AutorizarPT ---
 document.addEventListener('DOMContentLoaded', () => {
     // Botón "Aceptar" (abre modalAceptado)

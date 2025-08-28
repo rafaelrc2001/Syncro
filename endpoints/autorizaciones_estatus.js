@@ -4,6 +4,47 @@ const db = require('./database');
 const { pool } = require('./database');
 
 
+
+
+// Nueva ruta para actualizar el estatus a 'activo' usando el id_estatus recibido
+router.post('/estatus/activo', async (req, res) => {
+  const { id_estatus } = req.body;
+  const ESTATUS = 'activo';
+
+  if (!id_estatus) {
+    return res.status(400).json({
+      success: false,
+      error: 'id_estatus es requerido'
+    });
+  }
+
+  try {
+    const result = await db.query(
+      'UPDATE estatus SET estatus = $1 WHERE id_estatus = $2 RETURNING id_estatus as id, estatus',
+      [ESTATUS, id_estatus]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'No se encontró el estatus para actualizar'
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: 'Estatus activo actualizado exitosamente',
+      data: result.rows[0]
+    });
+  } catch (err) {
+    console.error('Error en la base de datos:', err);
+    res.status(500).json({
+      success: false,
+      error: 'Error al actualizar el estatus activo',
+      details: err.message
+    });
+  }
+});
+
+
 // Nueva ruta para actualizar el estatus a 'espera seguridad' usando el id_estatus recibido
 router.post('/estatus/seguridad', async (req, res) => {
   const { id_estatus } = req.body;

@@ -1,3 +1,4 @@
+
 // --- Tarjetas desde autorizar ---
 async function cargarTargetasDesdeAutorizar() {
     try {
@@ -424,4 +425,221 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
    
+
+
+
+
+
+
+
+
+
+
+        //BOTONES DE INSERTAR:
+
+        // --- Lógica exclusiva para los botones de AutorizarPT ---
+        // Lógica simplificada: solo muestra los modales, sin inserciones ni consultas
+        document.addEventListener('DOMContentLoaded', () => {
+            // Botón "Aceptar" (abre modalAceptado)
+            const btnAceptar = document.getElementById('btn-autorizar-pt');
+            if (btnAceptar) {
+                btnAceptar.addEventListener('click', function() {
+                    // Oculta el modalVer
+                    document.getElementById('modalVer').classList.remove('active');
+                    // Oculta el modalComentario si estuviera abierto
+                    const modalComentario = document.getElementById('modalComentario');
+                    if (modalComentario) {
+                        modalComentario.classList.remove('active');
+                        modalComentario.setAttribute('hidden', '');
+                    }
+                    // Muestra el modalAceptado correctamente
+                    const modalAceptado = document.getElementById('modalAceptado');
+                    if (modalAceptado) {
+                        modalAceptado.classList.add('active');
+                        modalAceptado.removeAttribute('hidden');
+                    }
+                });
+            }
+
+            // Botón "No autorizar" (abre modalComentario)
+            const btnNoAutorizar = document.getElementById('btn-noautorizar-pt');
+            if (btnNoAutorizar) {
+                btnNoAutorizar.addEventListener('click', function() {
+                    // Oculta el modalVer
+                    document.getElementById('modalVer').classList.remove('active');
+                    // Oculta el modalAceptado si estuviera abierto
+                    const modalAceptado = document.getElementById('modalAceptado');
+                    if (modalAceptado) {
+                        modalAceptado.classList.remove('active');
+                        modalAceptado.setAttribute('hidden', '');
+                    }
+                    // Mostrar el modalComentario
+                    const modalComentario = document.getElementById('modalComentario');
+                    if (modalComentario) {
+                        modalComentario.classList.add('active');
+                        modalComentario.removeAttribute('hidden');
+                    }
+                });
+            }
+        });
+
+        
+// document.addEventListener('DOMContentLoaded', () => {
+//     // Botón "Aceptar" (abre modalAceptado)
+//     const btnAceptar = document.getElementById('btn-autorizar-pt');
+//     if (btnAceptar) {
+//         btnAceptar.addEventListener('click', async function() {
+//             // Obtener el id_permiso del permiso actual desde la variable global
+//             const idPermiso = window.idPermisoActual;
+//             // Obtener responsable_area y operador_area desde los inputs del DOM
+//             const responsableInput = document.getElementById('responsable-aprobador');
+//             const operadorInput = document.getElementById('responsable-aprobador2');
+//             const responsable_area = responsableInput ? responsableInput.value.trim() : '';
+//             const operador_area = operadorInput ? operadorInput.value.trim() : '';
+//             if (!idPermiso) {
+//                 alert('No se pudo obtener el ID del permiso. Selecciona un permiso válido.');
+//                 return;
+//             }
+//             if (!responsable_area) {
+//                 alert('Debes ingresar el nombre del responsable del área antes de autorizar.');
+//                 if (responsableInput) responsableInput.focus();
+//                 return;
+//             }
+//             // 1. Insertar autorización de área (sin restricción de duplicados)
+//             try {
+//                 await fetch('http://localhost:3000/api/autorizaciones/area', {
+//                     method: 'POST',
+//                     headers: { 'Content-Type': 'application/json' },
+//                     body: JSON.stringify({ id_permiso: idPermiso, responsable_area, encargado_area: operador_area })
+//                 });
+//             } catch (err) {
+//                 console.error('Error al insertar autorización de área:', err);
+//             }
+//
+//             // 2. Consultar el id_estatus desde permisos_trabajo
+//             let idEstatus = null;
+//             try {
+//                 const resp = await fetch(`http://localhost:3000/api/permisos-trabajo/${idPermiso}`);
+//                 if (resp.ok) {
+//                     const permisoData = await resp.json();
+//                     idEstatus = permisoData.id_estatus || (permisoData.data && permisoData.data.id_estatus);
+//                 }
+//             } catch (err) {
+//                 console.error('Error al consultar id_estatus:', err);
+//             }
+//
+//             // 3. Actualizar el estatus si se obtuvo el id_estatus
+//             if (idEstatus) {
+//                 try {
+//                     await fetch('http://localhost:3000/api/estatus/seguridad', {
+//                         method: 'POST',
+//                         headers: { 'Content-Type': 'application/json' },
+//                         body: JSON.stringify({ id_estatus: idEstatus })
+//                     });
+//                 } catch (err) {
+//                     console.error('Error al actualizar estatus de seguridad:', err);
+//                 }
+//             }
+//
+//             // ...lógica original...
+//             document.getElementById('modalVer').classList.remove('active');
+//             // Oculta el modalComentario si estuviera abierto
+//             const modalComentario = document.getElementById('modalComentario');
+//             if (modalComentario) {
+//                 modalComentario.classList.remove('active');
+//                 modalComentario.setAttribute('hidden', '');
+//             }
+//             // Muestra el modalAceptado correctamente
+//             const modalAceptado = document.getElementById('modalAceptado');
+//             if (modalAceptado) {
+//                 modalAceptado.classList.add('active');
+//                 modalAceptado.removeAttribute('hidden');
+//             }
+//         });
+//     }
+//
+//     // Botón "No autorizar" (abre modalComentario)
+//     const btnNoAutorizar = document.getElementById('btn-noautorizar-pt');
+//     if (btnNoAutorizar) {
+//         btnNoAutorizar.addEventListener('click', async function() {
+//             const idPermiso = window.idPermisoActual;
+//             const responsableInput = document.getElementById('responsable-aprobador');
+//             const operadorInput = document.getElementById('responsable-aprobador2');
+//             const responsable_area = responsableInput ? responsableInput.value.trim() : '';
+//             const operador_area = operadorInput ? operadorInput.value.trim() : '';
+//             if (!idPermiso) {
+//                 alert('No se pudo obtener el ID del permiso. Selecciona un permiso válido.');
+//                 return;
+//             }
+//             if (!responsable_area) {
+//                 alert('Debes ingresar el nombre del responsable del área antes de continuar.');
+//                 if (responsableInput) responsableInput.focus();
+//                 return;
+//             }
+//             // 1. Insertar autorización de área (sin restricción de duplicados)
+//             try {
+//                 await fetch('http://localhost:3000/api/autorizaciones/area', {
+//                     method: 'POST',
+//                     headers: { 'Content-Type': 'application/json' },
+//                     body: JSON.stringify({ id_permiso: idPermiso, responsable_area, encargado_area: operador_area })
+//                 });
+//             } catch (err) {
+//                 console.error('Error al insertar autorización de área:', err);
+//                 alert('Error al insertar autorización de área.');
+//                 return;
+//             }
+//
+//             // 2. Consultar el id_estatus desde permisos_trabajo
+//             let idEstatus = null;
+//             try {
+//                 const resp = await fetch(`http://localhost:3000/api/permisos-trabajo/${idPermiso}`);
+//                 if (resp.ok) {
+//                     const permisoData = await resp.json();
+//                     idEstatus = permisoData.id_estatus || (permisoData.data && permisoData.data.id_estatus);
+//                 }
+//             } catch (err) {
+//                 console.error('Error al consultar id_estatus:', err);
+//                 // No bloquea el modalComentario, solo muestra error en consola
+//             }
+//
+//             // 3. Actualizar el estatus si se obtuvo el id_estatus
+//             if (idEstatus) {
+//                 try {
+//                     await fetch('http://localhost:3000/api/estatus/no_autorizado', {
+//                         method: 'POST',
+//                         headers: { 'Content-Type': 'application/json' },
+//                         body: JSON.stringify({ id_estatus: idEstatus })
+//                     });
+//                 } catch (err) {
+//                     console.error('Error al actualizar estatus de no_autorizado:', err);
+//                 }
+//             }
+//
+//             // Oculta el modalVer
+//             document.getElementById('modalVer').classList.remove('active');
+//             // Oculta el modalAceptado si estuviera abierto
+//             const modalAceptado = document.getElementById('modalAceptado');
+//             if (modalAceptado) {
+//                 modalAceptado.classList.remove('active');
+//                 modalAceptado.setAttribute('hidden', '');
+//             }
+//
+//             // Mostrar el modalComentario
+//             const modalComentario = document.getElementById('modalComentario');
+//             if (modalComentario) {
+//                 modalComentario.classList.add('active');
+//                 modalComentario.removeAttribute('hidden');
+//             }
+//
+//             // Actualiza la tabla y tarjetas
+//             cargarPermisosTabla();
+//             cargarTargetasDesdeAutorizar();
+//         });
+//     }
+// });
+
+
+
+
+
 });

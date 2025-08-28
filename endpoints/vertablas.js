@@ -120,7 +120,7 @@ router.get('/autorizar/:id_departamento', async (req, res) => {
 
 
 
-//estas son para el  JEFE
+//estas son para el  JEFE Y EL SUPERVISOR PORQUE VEN LOS PERMISOS GENERALES
 //**************************
 
 // Nueva función para el jefe: obtener todos los permisos generales (sin filtrar por departamento)
@@ -149,6 +149,11 @@ router.get('/autorizar-jefe', async (req, res) => {
         res.status(500).json({ error: 'Error al consultar permisos generales para el jefe' });
     }
 });
+
+
+
+
+
 
 
 module.exports = router;

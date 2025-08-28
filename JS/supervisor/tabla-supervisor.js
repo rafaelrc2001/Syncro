@@ -17,7 +17,7 @@ async function cargarTargetasDesdeAutorizar() {
 
         permisos.forEach(item => {
             const estatus = item.estatus.toLowerCase();
-            if (estatus === 'espera area' || estatus === 'espera seguridad' || estatus === 'en espera del área') {
+            if (estatus === 'espera seguridad' ) {
                 porAutorizar++;
             } else if (estatus === 'activo') {
                 activos++;
@@ -87,13 +87,13 @@ function asignarEventosVer() {
 }
 
 
-
+//aca es donde se actualiza el estatus (el de todos es el all)
 async function cargarPermisosTabla() {
     try {
         const response = await fetch('http://localhost:3000/api/autorizar-jefe');
         if (!response.ok) throw new Error('Error al consultar permisos');
         permisosGlobal = await response.json();
-    mostrarPermisosFiltrados('all');
+    mostrarPermisosFiltrados('Espera seguridad');
     } catch (err) {
         console.error('Error al cargar permisos:', err);
     }

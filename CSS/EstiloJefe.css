@@ -1,7 +1,75 @@
 /* ESTO VA A REMPLAZAR LA PARTE DEL ESTILO DEL JEFE QUE ES BASICAQMENTE EL MENU */
 
+/* Status badges */
 
+.status-badge {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: inline-block;
+    text-transform: capitalize;
+    text-align: center;
+    min-width: 120px;
+    border: 1px solid rgba(0,0,0,0.05);
+    transition: all 0.2s ease;
+}
 
+/*Este es el de area*/
+.status-badge.active {
+    background-color: #E8F5E9;
+    color: #2E7D32;
+}
+
+/*Este es el de Terminado*/
+.status-badge.completed { 
+    background-color: #E3F2FD; 
+    color: #1565C0; 
+}
+
+/*Para cancelado*/
+.status-badge.canceled {
+    background-color: #FFEBEE;
+    color: #C62828;
+}
+
+.status-badge.pending {
+    background-color: #FFF8E1;
+    color: #00ff37;
+}
+
+/*Para continua*/
+.status-badge.continua {
+    background-color: #F3E5F5;
+    color: #7B1FA2;
+}
+
+.status-badge.wait-area {
+    background-color: #FFF3E0;
+    color: #EF6C00;
+}
+
+.status-badge.wait-security {
+    background-color: #e7d16c;
+    color: #455A64;
+}
+
+/*Espera seguridad*/
+.status-badge.wait-area2 {
+    background-color: #b68c4e;
+    color: #774e11;
+}
+
+.status-badge.wait-area3 {
+    background-color: #bdc592;
+    color: #7a5b0c;
+}
+
+/*Este es el de No autorizado*/ 
+.status-badge.wait-security2 {
+    background-color: #cc1b29;
+    color: #ffffff;
+}
 
 /* EstiloJefe.css limpiado: se ha eliminado todo lo relacionado con la tabla */
 
@@ -637,16 +705,19 @@ td {
     transition: all 0.2s ease;
 }
 
+/*Este es el de area*/
 .status-badge.active {
     background-color: #E8F5E9;
     color: #2E7D32;
 }
 
-.status-badge.completed {
-    background-color: #E3F2FD;
-    color: #1565C0;
+/*Este es el de Terminado*/
+.status-badge.completed { 
+    background-color: #E3F2FD; 
+    color: #1565C0; 
 }
 
+/*Para cancelado*/
 .status-badge.canceled {
     background-color: #FFEBEE;
     color: #C62828;
@@ -654,9 +725,10 @@ td {
 
 .status-badge.pending {
     background-color: #FFF8E1;
-    color: #FF8F00;
+    color: #00ff37;
 }
 
+/*Para continua*/
 .status-badge.continua {
     background-color: #F3E5F5;
     color: #7B1FA2;
@@ -668,12 +740,25 @@ td {
 }
 
 .status-badge.wait-security {
-    background-color: #ECEFF1;
+    background-color: #e7d16c;
     color: #455A64;
 }
 
-.status-badge:hover {
-    filter: brightness(95%);
+/*Espera seguridad*/
+.status-badge.wait-area2 {
+    background-color: #b68c4e;
+    color: #774e11;
+}
+
+.status-badge.wait-area3 {
+    background-color: #bdc592;
+    color: #7a5b0c;
+}
+
+/*Este es el de No autorizado*/ 
+.status-badge.wait-security2 {
+    background-color: #cc1b29;
+    color: #ffffff;
 }
 
 .action-btn {

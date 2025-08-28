@@ -47,8 +47,8 @@
                 <div class="user-profile">
                     <div class="avatar">JP</div>
                     <div class="user-info">
-                        <span class="name">Juan Pérez</span>
-                        <span class="role">Supervisor</span>
+                        <span class="name">admin</span>
+                        <span class="role">Jefe</span>
                     </div>
                 </div>
                 <button class="logout-btn"><i class="ri-logout-box-r-line"></i></button>
@@ -67,7 +67,7 @@
                 </div>
             </header>
 
-            <!-- Cards Section -->
+             <!-- Cards Section -->
             <section class="cards-section">
                 <div class="card">
                     <div class="card-icon" style="background-color: #ECEFF1;">
@@ -75,8 +75,7 @@
                     </div>
                     <div class="card-content">
                         <h3>Total de Permisos</h3>
-                        <p class="count">247</p>
-                        <p class="trend"><i class="ri-arrow-up-line"></i> 12% este mes</p>
+                        <p class="count"></p>
                     </div>
                 </div>
 
@@ -86,8 +85,7 @@
                     </div>
                     <div class="card-content">
                         <h3>Por Autorizar</h3>
-                        <p class="count">32</p>
-                        <p class="trend"><i class="ri-arrow-down-line"></i> 5% esta semana</p>
+                        <p class="count"></p>
                     </div>
                 </div>
 
@@ -97,8 +95,7 @@
                     </div>
                     <div class="card-content">
                         <h3>Activos</h3>
-                        <p class="count">170</p>
-                        <p class="trend"><i class="ri-arrow-down-line"></i> 1% este mes</p>
+                        <p class="count"></p>
                     </div>
                 </div>
 
@@ -108,19 +105,17 @@
                     </div>
                     <div class="card-content">
                         <h3>Permisos Terminados</h3>
-                        <p class="count">198</p>
-                        <p class="trend"><i class="ri-arrow-up-line"></i> 8% este mes</p>
+                        <p class="count"></p>
                     </div>
-                </div>
+                    </div>
                 <div class="card">
-                    <div class="card-icon" style="background-color: #FFEBEE;">
-                        <i class="ri-close-circle-line" style="color: #C62828;"></i>
-                    </div>
-                    <div class="card-content">
-                        <h3>No Autorizados</h3>
-                        <p class="count">15</p>
-                        <p class="trend"><i class="ri-arrow-up-line" style="color: #C62828;"></i> 3% este mes</p>
-                    </div>
+                <div class="card-icon" style="background-color: #FFEBEE;">
+                 <i class="ri-close-circle-line" style="color: #C62828;"></i>
+                </div>
+                <div class="card-content">
+                <h3>No Autorizados</h3>
+                <p class="count"></p>
+                </div>
                 </div>
             </section>
 
@@ -132,13 +127,14 @@
                 
                 <div class="filter-dropdown">
                     <select id="status-filter">
-                        <option value="all">Todos</option>
-                        <option value="completed">Espera seguridad</option>
-                        <option value="canceled">No autorizado</option>
-                        <option value="continua">Activo</option>
-                        <option value="wait-area">Continua</option>
-                        <option value="wait-security">Terminado</option>
-                        <option value="wait-security">Cancelado</option>
+                        <option value="all" selected>Todos</option>
+                        <option value="Activo">Activo</option>
+                        <option value="Terminado">Terminado</option>
+                        <option value="Cancelado">Cancelado</option>
+                        <option value="En espera del área">En espera del área</option>
+                        <option value="Continua">Continua</option>
+                        <option value="Espera seguridad">Espera seguridad</option>
+                        <option value="No autorizado">No autorizado</option>
                     </select>
                     <i class="ri-arrow-down-s-line"></i>
                 </div>
@@ -155,80 +151,16 @@
                             <tr>
                                 <th>Permiso</th>
                                 <th>Tipo de permiso</th>
+                                <th>Tipo de actividad</th>
                                 <th>Área</th>
                                 <th>Solicitante</th>
                                 <th>Fecha y hora</th>
-                                <th>Autoriza</th>
                                 <th>Estatus</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody id="table-body">
-                            <tr>
-                                <td>PM-2023-00145</td>
-                                <td>Trabajo en Altura</td>
-                                <td>Sistemas</td>
-                                <td>Juan Pérez</td>
-                                <td>17/07/2023 14:35:12</td>
-                                <td>Ing Jose Hernandez</td>
-                                <td><span class="status-badge active">Activo</span></td>
-                                <td>
-                                    <button class="action-btn view"><i class="ri-eye-line"></i></button>
-                                    <button id="btnImprimir" class="action-btn print"><i class="ri-printer-line"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>PM-2023-00144</td>
-                                <td>Trabajo Eléctrico</td>
-                                <td>Electrico</td>
-                                <td>María García</td>
-                                <td>17/07/2023 15:25:12</td>
-                                <td>Ingeniero Jose</td>
-                                <td><span class="status-badge completed">Terminado</span></td>
-                                <td>
-                                    <button class="action-btn view"><i class="ri-eye-line"></i></button>
-                                    <button id="btnImprimir" class="action-btn print"><i class="ri-printer-line"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>PM-2023-00143</td>
-                                <td>Espacios Confinados</td>
-                                <td>Almacen</td>
-                                <td>María García</td>
-                                <td>17/07/2023 04:53:10</td>
-                                <td>Ingeniero Pedro</td>
-                                <td><span class="status-badge canceled">Cancelado</span></td>
-                                <td>
-                                    <button class="action-btn view"><i class="ri-eye-line"></i></button>
-                                    <button id="btnImprimir" class="action-btn print"><i class="ri-printer-line"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>PM-2023-00142</td>
-                                <td>Trabajo en Caliente</td>
-                                <td>Sistemas</td>
-                                <td>Ana Martínez</td>
-                                <td>17/07/2023 14:35:01</td>
-                                <td>Ingeniero Angel</td>
-                                <td><span class="status-badge continua">Continua</span></td>
-                                <td>
-                                    <button class="action-btn view"><i class="ri-eye-line"></i></button>
-                                    <button id="btnImprimir" class="action-btn print"><i class="ri-printer-line"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>PM-2023-00141</td>
-                                <td>Trabajo en Frío</td>
-                                <td>Producción</td>
-                                <td>Carlos López</td>
-                                <td>10/07/2023 14:38:12</td>
-                                <td>Inge. Aaron</td>
-                                <td><span class="status-badge completed">Terminado</span></td>
-                                <td>
-                                    <button class="action-btn view"><i class="ri-eye-line"></i></button>
-                                    <button id="btnImprimir" class="action-btn print"><i class="ri-printer-line"></i></button>
-                                </td>
-                            </tr>
+                            <!-- Aquí se llenarán las filas dinámicamente -->
                         </tbody>
                     </table>
                 </div>
@@ -240,17 +172,8 @@
                         <button class="pagination-btn">3</button>
                         <button class="pagination-btn"><i class="ri-arrow-right-s-line"></i></button>
                     </div>
-                    <div class="records-counter">
+                     <div class="records-counter">
                         <span id="records-count">0</span> registros
-                    </div>
-                    <div class="items-per-page">
-                        <span>Items por página:</span>
-                        <select>
-                            <option>10</option>
-                            <option selected>25</option>
-                            <option>50</option>
-                            <option>100</option>
-                        </select>
                     </div>
                 </div>
             </section>

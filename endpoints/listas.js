@@ -90,4 +90,38 @@ router.get('/correo-area', async (req, res) => {
 });
 
 
+
+
+// Endpoint para obtener todos los supervisores
+// Endpoint para obtener todos los supervisores
+// Endpoint para obtener todos los supervisores
+router.get('/supervisores', async (req, res) => {
+  try {
+    const result = await db.query('SELECT id_supervisor, nombre FROM supervisores ORDER BY nombre ASC');
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Error al obtener supervisores:', err);
+    res.status(500).json({ error: 'Error al obtener supervisores' });
+  }
+});
+
+
+// Endpoint para obtener todos las categorias
+// Endpoint para obtener todos los categorias
+// Endpoint para obtener todos los categorias
+router.get('/categorias', async (req, res) => {
+  try {
+  const result = await db.query('SELECT id_categoria, nombre FROM categorias_seguridad ORDER BY nombre ASC');
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Error al obtener categorias:', err);
+    res.status(500).json({ error: 'Error al obtener categorias' });
+  }
+});
+
+
+
+
+
+
 module.exports = router;

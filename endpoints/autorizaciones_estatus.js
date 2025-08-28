@@ -43,6 +43,16 @@ router.post('/estatus/seguridad', async (req, res) => {
 });
 
 
+
+
+
+
+
+
+
+
+
+
 // Ruta para insertar autorizaciones
 // Ruta para insertar autorizaciones
 // Ruta para insertar autorizaciones
@@ -123,9 +133,10 @@ router.get('/permisos-trabajo/:id', async (req, res) => {
 
 
 
-
-
-
+//no autorizado
+//no autorizado
+//no autorizado
+//no autorizado
 // Nueva ruta para actualizar el estatus a 'no autorizado' usando el id_estatus recibido
 router.post('/estatus/no_autorizado', async (req, res) => {
   const { id_estatus } = req.body;
@@ -163,6 +174,8 @@ router.post('/estatus/no_autorizado', async (req, res) => {
     });
   }
 });
+
+
 
 
 

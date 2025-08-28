@@ -182,214 +182,178 @@
 
     
  
-        <!-- Modal de ver -->
-        <div id="modalVer" class="modal">
-            <div class="modal-content executive-view">
-                <!-- Header del Modal -->
-                <div class="modal-header">
-                    <div class="permit-title">
-                        <h2>PERMISO DE TRABAJO NO PELIGROSO</h2>
-                        <div class="permit-number">No. GSI-SI-FO-002 PERMISO DE TRABAJO NO PELIGROSO</div>
-                    </div>
-                    <span class="close-modal">&times;</span>
+           <!-- Modal de ver -->
+<div id="modalVer" class="modal">
+    <div class="modal-content executive-view">
+        <!-- Header del Modal -->
+        <div class="modal-header">
+            <div class="permit-title">
+                <h2 id="modal-tipo-permiso">PERMISO DE TRABAJO NO PELIGROSO</h2>
+                <div class="permit-number" id="modal-prefijo">No. GSI-SI-FO-002 PERMISO DE TRABAJO NO PELIGROSO</div>
+            </div>
+            <span class="close-modal">&times;</span>
+        </div>
+
+        <!-- Cuerpo del Modal -->
+        <div class="modal-body">
+            <!-- Sección 1: Información General -->
+            <div class="executive-section">
+                <div class="section-header">
+                    <i class="ri-information-line"></i>
+                    <h3>Información General</h3>
                 </div>
-    
-                <!-- Cuerpo del Modal -->
-                <div class="modal-body">
-                    <!-- Sección 1: Información General -->
-                    <div class="executive-section">
-                        <div class="section-header">
-                            <i class="ri-information-line"></i>
-                            <h3>Información General</h3>
-                        </div>
-                        <div class="executive-grid">
-                            <div class="executive-item">
-                                <label>Fecha:</label>
-                                <p class="highlight">15/07/2023</p>
-                            </div>
-                            <div class="executive-item">
-                                <label>Empresa:</label>
-                                <p>PRO-AGROINDUSTRIA</p>
-                            </div>
-                            <div class="executive-item">
-                                <label>Sucursal:</label>
-                                <p>Área 6</p>
-                            </div>
-                            <div class="executive-item">
-                                <label>Área:</label>
-                                <p class="highlight">UREA I</p>
-                            </div>
-                            
-                            <div class="executive-item">
-                                <label>Solicitante:</label>
-                                <p>Ing. Luis Torres</p>
-    
-                            </div>
-                            <div class="executive-item full-width">
-                                <label>Descripción del trabajo:</label>
-                                <p class="description-box">Mantenimiento preventivo a válvulas de control en línea de producción principal.</p>
-                            </div>                  
-                            
-    
-                        </div>
+                <div class="executive-grid">
+                    <div class="executive-item">
+                        <label>Fecha:</label>
+                        <p class="highlight">15/07/2023</p>
                     </div>
-    
-                    <!-- Sección 2: Detalles Técnicos -->
-                    <div class="executive-section">
-                        <div class="section-header">
-                            <i class="ri-tools-line"></i>
-                            <h3>Permiso de Trabajo </h3>
-                        </div>
-                        <div class="executive-grid">
-    
-                            <div class="executive-item">
-                                <label>Planta o Lugar de Trabajo</label>
-                                <p>Urea 1</p>
-                            </div>
-                            <div class="executive-item">
-                                <label>Tipo de actividad:</label>
-                                <p>PREVENTIVO</p>
-                            </div>
-                            <div class="executive-item">
-                                <label>O.T. No.:</label>
-                                <p>MT-2023-0456</p>
-                            </div>
-                            <div class="executive-item">
-                                <label>Equipo:</label>
-                                <p>Válvula FC-205</p>
-                            </div>
-                            <div class="executive-item">
-                                <label>TAG:</label>
-                                <p>TV-205A</p>
-                            </div>
-                            <div class="executive-item">
-                                <label>Horario:</label>
-                                <p>08:00 - 16:00 hrs</p>
-                            </div>
-                            <div class="executive-item">
-                                <label>Fluido:</label>
-                                <p>  8  </p>
-                            </div>
-                            <div class="executive-item">
-                                <label>Presion:</label>
-                                <p>  5 kg  </p>
-                            </div>
-                            <div class="executive-item">
-                                <label>Temperatura:</label>
-                                <p>  16c  </p>
-                            </div>
-    
-                        </div>
+                    <div class="executive-item">
+                        <label>Empresa:</label>
+                        <p>PRO-AGROINDUSTRIA</p>
+                    </div>
+                    <div class="executive-item">
+                        <label>Sucursal:</label>
+                        <p>Área 6</p>
+                    </div>
+                    <div class="executive-item">
+                        <label>Departamento que creo el PT:</label>
+                        <p class="highlight" id="ver-departamento"></p>
+                    </div>
+                    
+                    <div class="executive-item">
+                        <label>Solicitante:</label>
+                        <p>Ing. Luis Torres</p>
+
+                    </div>
+                    <div class="executive-item full-width">
+                        <label>Descripción del trabajo:</label>
+                        <p class="description-box">Mantenimiento preventivo a válvulas de control en línea de producción principal.</p>
+                    </div>                  
+                    
+
+                </div>
+            </div>
+
+            <!-- Sección 2: Detalles Técnicos -->
+            <div class="executive-section">
+                <div class="section-header">
+                    <i class="ri-tools-line"></i>
+                    <h3>Permiso de Trabajo</h3>
+                </div>
+                <div class="executive-grid">
+
+                    <div class="executive-item">
+                        <label>Planta o Lugar de Trabajo</label>
+                        <p id="modal-planta">Urea 1</p>
+                    </div>
+                    <div class="executive-item">
+                        <label>Tipo de actividad:</label>
+                        <p id="modal-tipo-actividad">PREVENTIVO</p>
+                    </div>
+                    <div class="executive-item">
+                        <label>O.T. No.:</label>
+                        <p id="modal-ot">MT-2023-0456</p>
+                    </div>
+                    <div class="executive-item">
+                        <label>Equipo:</label>
+                        <p id="modal-equipo">Válvula FC-205</p>
+                    </div>
+                    <div class="executive-item">
+                        <label>TAG:</label>
+                        <p id="modal-tag">TV-205A</p>
+                    </div>
+                    <div class="executive-item">
+                        <label>Horario:</label>
+                        <p id="modal-horario">08:00 - 16:00 hrs</p>
+                    </div>
+                    <div class="executive-item">
+                        <label>Fluido:</label>
+                        <p id="modal-fluido">8</p>
+                    </div>
+                    <div class="executive-item">
+                        <label>Presion:</label>
+                        <p id="modal-presion">5 kg</p>
+                    </div>
+                    <div class="executive-item">
+                        <label>Temperatura:</label>
+                        <p id="modal-temperatura">16c</p>
+                    </div>
+
+                </div>
+          
                 
-                        
-                        
-                    </div>
-    
-                <div class="executive-section">
-                    <div class="section-header">
-                        <i class="ri-shield-check-line"></i>
-                        <h3>AST - Análisis de Seguridad en el Trabajo</h3>
-                    </div>
-                    <div class="ast-summary">
-                        <table class="ast-table">
-                            <thead>
-                                <tr>
-                                    <th>No.</th>
-                                    <th>Actividad</th>
-                                    <th>Ejecutor</th>
-                                    <th>Peligros</th>
-                                    <th>Acciones Preventivas</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Mantenimiento de válvula</td>
-                                    <td>Juan Pérez</td>
-                                    <td>Fluidos a presión</td>
-                                    <td>Uso de EPP, bloqueo de línea</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Cerrado de válvula</td>
-                                    <td>Juan Pez</td>
-                                    <td>Presión</td>
-                                    <td>Uso de EPP, bloqueo de línea</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="safety-grid">
-                        <div class="safety-item">
-                            <h4><i class="ri-shield-user-line"></i> EPP Requerido</h4>
-                            <ul class="safety-list">
-                                <li>Casco de seguridad</li>
-                                <li>Lentes de protección</li>
-                                <li>Guantes antiimpacto</li>
-                                <li>Calzado de seguridad</li>
-                            </ul>
-                        </div>
-                        <div class="safety-item">
-                            <h4><i class="ri-tools-line"></i> Maquinaria y Herramientas</h4>
-                            <ul class="safety-list">
-                                <li>Llave Stillson</li>
-                                <li>Multímetro</li>
-                                <li>Escalera dieléctrica</li>
-                            </ul>
-                        </div>
-                        <div class="safety-item">
-                            <h4><i class="ri-box-line"></i> Materiales y Accesorios</h4>
-                            <ul class="safety-list">
-                                <li>Empaques</li>
-                                <li>Lubricante</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-    
-                    <!-- Sección 4: Participantes -->
-                <div class="executive-section">
+                
+            </div>
+
+          <div class="executive-section">
             <div class="section-header">
-                <i class="ri-team-line"></i>
-                <h3>Personal Involucrado</h3>
+                <i class="ri-shield-check-line"></i>
+                <h3>AST - Análisis de Seguridad en el Trabajo</h3>
             </div>
             <div class="ast-summary">
                 <table class="ast-table">
-                        <thead>
-                            <tr>
-                                <th>No.</th>
-                                <th>Secuencia de la Actividad</th>
-                                <th>Personal Ejecutor</th>
-                                <th>Peligros Potenciales</th>
-                                <th>Descripción</th>
-                                <th>Responsable</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Mantenimiento de válvula</td>
-                                <td>Juan Pérez</td>
-                                <td>Fluidos a presión</td>
-                                <td>Uso de EPP, bloqueo de línea</td>
-                                <td>Ingeniero Pedro Perez</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Cerrado de válvula</td>
-                                <td>Juan Pez</td>
-                                <td>Presión</td>
-                                <td>Uso de EPP, bloqueo de línea</td>
-                                <td>Ingeniero Angel Antonio</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Secuencia de la Actividad</th>
+                            <th>Personal Ejecutor</th>
+                            <th>Peligros Potenciales</th>
+                            <th>Acciones Preventivas</th>
+                            <th>Responsable</th>
+                        </tr>
+                    </thead>
+                    <tbody id="modal-ast-actividades-body">
+                        <!-- Actividades AST dinámicas -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="safety-grid">
+                <div class="safety-item">
+                    <h4><i class="ri-shield-user-line"></i> EPP Requerido</h4>
+                    <ul class="safety-list" id="modal-epp-list">
+                        <li>Casco de seguridad</li>
+                    </ul>
+                </div>
+                <div class="safety-item">
+                    <h4><i class="ri-tools-line"></i> Maquinaria y Herramientas</h4>
+                    <ul class="safety-list" id="modal-maquinaria-list">
+                        <li>Llave Stillson</li>
+                    </ul>
+                </div>
+                <div class="safety-item">
+                    <h4><i class="ri-box-line"></i> Materiales y Accesorios</h4>
+                    <ul class="safety-list" id="modal-materiales-list">
+                        <li>Empaques</li>
+                    </ul>
+                </div>
             </div>
         </div>
-    
-    
-    
-    <div class="executive-section" style="display: flex; gap: 20px;">
+
+            <!-- Sección 4: Participantes -->
+           <div class="executive-section">
+    <div class="section-header">
+        <i class="ri-team-line"></i>
+        <h3>Personal Involucrado</h3>
+    </div>
+    <div class="ast-summary">
+        <table class="ast-table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Función</th>
+                    <th>Credencial</th>
+                    <th>Cargo</th>
+                </tr>
+            </thead>
+            <tbody id="modal-ast-participantes-body">
+                <!-- Participantes AST dinámicos -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+ <div class="executive-section" style="display: flex; gap: 20px;">
         <div style="flex: 1;">
             <label for="responsable-aprobador" style="font-weight:600;display:block;margin-bottom:8px;">
                 Seleccionar Supervisor de Seguridad:
@@ -421,7 +385,8 @@
             </select>
         </div>
     </div>
-    
+
+
     
                     <!-- Sección 5: Aprobaciones -->
                     <div class="approval-section">
@@ -429,18 +394,18 @@
                             <div class="stamp">
                                 <div class="stamp-title">Responsable del area:</div>
                                 <div class="stamp-placeholder"></div>
-                                <div class="stamp-name">Ing. Luis Torres</div>
+                                <div class="stamp-name"></div>
+                            </div>
+                            <div class="stamp">
+                                <div class="stamp-title">Operador del área:</div>
+                                <div class="stamp-placeholder"></div>
+                                <div class="stamp-name"></div>
+                                <div class="stamp-date"></div>
                             </div>
                             <div class="stamp approved">
                                 <div class="stamp-title">Supervisor de Seguridad:</div>
                                 <div class="stamp-placeholder"><i class="ri-checkbox-circle-fill"></i></div>
                                 <div class="stamp-name" id="nombre-aprobador">Seleccione un supervisor</div>
-                            </div>
-                            <div class="stamp">
-                                <div class="stamp-title">Cierre:</div>
-                                <div class="stamp-placeholder"></div>
-                                <div class="stamp-name"></div>
-                                <div class="stamp-date"></div>
                             </div>
                         </div>
                     </div>
@@ -475,6 +440,21 @@
         </div>
     
     
+            <div id="modalAceptado" class="modal" hidden>
+        <div class="modal-content modal-aceptado-content">
+            <div class="modal-header modal-aceptado-header">
+                <i class="ri-checkbox-circle-fill modal-aceptado-icon"></i>
+                <h2 class="modal-aceptado-title">¡Permiso aceptado!</h2>
+            </div>
+            <div class="modal-body modal-aceptado-body">
+                <p class="modal-aceptado-msg">El permiso ha sido autorizado exitosamente.<br><span class="modal-aceptado-folio"></span></p>
+            </div>
+            <div class="modal-footer modal-aceptado-footer">
+                <button class="btn cerrar-btn"><i></i> Cerrar</button>
+            </div>
+        </div>
+    </div>
+
     
 
        

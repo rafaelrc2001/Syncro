@@ -77,6 +77,17 @@ function asignarEventosVer() {
                 if (typeof mostrarParticipantesAST === 'function') {
                     mostrarParticipantesAST(data.participantes_ast || []);
                 }
+                // Asignar responsables de área
+                const responsables = data.responsables_area || {};
+
+                // Selecciona los elementos .stamp-name correspondientes
+                const responsableAreaElem = document.querySelectorAll('.stamp')[0].querySelector('.stamp-name');
+                const operadorAreaElem = document.querySelectorAll('.stamp')[1].querySelector('.stamp-name');
+
+                // Asigna los valores
+                responsableAreaElem.textContent = responsables.responsable_area || '';
+                operadorAreaElem.textContent = responsables.operador_area || '';
+
                 // Abrir el modal
                 document.getElementById('modalVer').classList.add('active');
             } catch (err) {
@@ -374,3 +385,32 @@ function mostrarParticipantesAST(participantes) {
 
 
 
+document.addEventListener('DOMContentLoaded', () => {
+    // Supervisores
+    fetch('http://localhost:3000/api/supervisores')
+        .then(res => res.json())
+        .then(data => {
+            const select = document.getElementById('responsable-aprobador');
+            select.innerHTML = '<option value="" disabled selected>Seleccione un supervisor...</option>';
+            data.forEach(sup => {
+                const option = document.createElement('option');
+                option.value = sup.nombre;
+                option.textContent = sup.nombre;
+                select.appendChild(option);
+            });
+        });
+
+    // Categorías
+    fetch('http://localhost:3000/api/categorias')
+        .then(res => res.json())
+        .then(data => {
+            const select = document.getElementById('responsable-aprobador2');
+            select.innerHTML = '<option value="" disabled selected>Seleccione una categoria...</option>';
+            data.forEach(cat => {
+                const option = document.createElement('option');
+                option.value = cat.nombre;
+                option.textContent = cat.nombre;
+                select.appendChild(option);
+            });
+        });
+});

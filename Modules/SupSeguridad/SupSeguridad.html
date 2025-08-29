@@ -175,7 +175,8 @@
 
 
  
-         <!-- Modal de ver -->
+ 
+           <!-- Modal de ver -->
 <div id="modalVer" class="modal">
     <div class="modal-content executive-view">
         <!-- Header del Modal -->
@@ -346,58 +347,107 @@
 </div>
 
 
+ <div class="executive-section" style="display: flex; gap: 20px;">
+        <div style="flex: 1;">
+            <label for="responsable-aprobador" style="font-weight:600;display:block;margin-bottom:8px;">
+                Seleccionar Supervisor de Seguridad:
+            </label>
+            <select id="responsable-aprobador" 
+                    style="width:100%;padding:8px;border-radius:4px;border:1px solid #ccc;"
+                    onchange="actualizarAprobador(this.value)">
+                <option value="" disabled selected>Seleccione un supervisor...</option>
+                <option value="Juan Pérez Martínez">Juan Pérez Martínez</option>
+                <option value="María García López">María García López</option>
+                <option value="Carlos Rodríguez Sánchez">Carlos Rodríguez Sánchez</option>
+                <option value="Ana Martínez González">Ana Martínez González</option>
+                <option value="Luis Hernández Ramírez">Luis Hernández Ramírez</option>
+                <option value="Patricia Díaz Fernández">Patricia Díaz Fernández</option>
+            </select>
+        </div>
+        <div style="flex: 1;">
+            <label for="responsable-aprobador2" style="font-weight:600;display:block;margin-bottom:8px;">
+                Seleccionar la categoria a la que pertenece:
+            </label>
+            <select id="responsable-aprobador2" 
+                    style="width:100%;padding:8px;border-radius:4px;border:1px solid #ccc;"
+                    onchange="actualizarAprobador2(this.value)">
+                <option value="" disabled selected>Seleccione una categoria...</option>
+                <option value="Juan Pérez Martínez">SAMP</option>
+                <option value="María García López">APT</option>
+                <option value="Carlos Rodríguez Sánchez">UREA</option>
+                <option value="Ana Martínez González">AREA 6</option>
+            </select>
+        </div>
+    </div>
 
-                <!-- Sección 5: Aprobaciones -->
-                <div class="approval-section">
-                    <div class="approval-stamps">
-                        <div class="stamp">
-                            <div class="stamp-title">Responsable del area:</div>
-                            <div class="stamp-placeholder"></div>
-                            <div class="stamp-name">Ing. Luis Torres</div>
-                        </div>
-                        <div class="stamp approved">
-                            <div class="stamp-title">Supervisor de Seguridad:</div>
-                            <div class="stamp-placeholder"><i class="ri-checkbox-circle-fill"></i></div>
-                            <div class="stamp-name" id="nombre-aprobador">Seleccione un supervisor</div>
-                        </div>
-                        <div class="stamp">
-                            <div class="stamp-title">Cierre:</div>
-                            <div class="stamp-placeholder"></div>
-                            <div class="stamp-name"></div>
-                            <div class="stamp-date"></div>
+
+    
+                    <!-- Sección 5: Aprobaciones -->
+                    <div class="approval-section">
+                        <div class="approval-stamps">
+                            <div class="stamp">
+                                <div class="stamp-title">Responsable del area:</div>
+                                <div class="stamp-placeholder"></div>
+                                <div class="stamp-name"></div>
+                            </div>
+                            <div class="stamp">
+                                <div class="stamp-title">Operador del área:</div>
+                                <div class="stamp-placeholder"></div>
+                                <div class="stamp-name"></div>
+                                <div class="stamp-date"></div>
+                            </div>
+                            <div class="stamp approved">
+                                <div class="stamp-title">Supervisor de Seguridad:</div>
+                                <div class="stamp-placeholder"><i class="ri-checkbox-circle-fill"></i></div>
+                                <div class="stamp-name" id="nombre-aprobador">Seleccione un supervisor</div>
+                            </div>
                         </div>
                     </div>
                 </div>
+    
+                <!-- Footer del Modal -->
+                <div class="modal-footer">
+                    <button id="btn-autorizar-pt" class="btn print-btn close-btn">
+                        <i class="ri-check-line"></i> Aceptar
+                    </button>
+                    <button id="btn-noautorizar-pt" class="btn close-btn">
+                        <i class="ri-close-line"></i> No autorizar
+                    </button>
+                </div>
             </div>
-
-            <!-- Footer del Modal -->
-            <div class="modal-footer">
-                <button class="btn print-btn close-btn">
-                    <i class="ri-check-line"></i> Aceptar
-                </button>
-                <button class="btn close-btn">
-                    <i class="ri-close-line"></i> No autorizar
-                </button>
+        </div>
+    
+    
+        <div id="modalComentario" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Agregar comentario</h2>
+                </div>
+                <div class="modal-body">
+                    <textarea id="comentario" rows="4" style="width:100%;" placeholder="Escribe tu comentario aquí..."></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn enviar-btn"><i class="ri-send-plane-line"></i> Enviar</button>
+                    <button class="btn cancelar-btn"><i class="ri-arrow-go-back-line"></i> Cancelar</button>
+                </div>
+            </div>
+        </div>
+    
+    
+            <div id="modalAceptado" class="modal" hidden>
+        <div class="modal-content modal-aceptado-content">
+            <div class="modal-header modal-aceptado-header">
+                <i class="ri-checkbox-circle-fill modal-aceptado-icon"></i>
+                <h2 class="modal-aceptado-title">¡Permiso aceptado!</h2>
+            </div>
+            <div class="modal-body modal-aceptado-body">
+                <p class="modal-aceptado-msg">El permiso ha sido autorizado exitosamente.<br><span class="modal-aceptado-folio"></span></p>
+            </div>
+            <div class="modal-footer modal-aceptado-footer">
+                <button class="btn cerrar-btn"><i></i> Cerrar</button>
             </div>
         </div>
     </div>
-
-
-    <div id="modalComentario" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Agregar comentario</h2>
-            </div>
-            <div class="modal-body">
-                <textarea id="comentario" rows="4" style="width:100%;" placeholder="Escribe tu comentario aquí..."></textarea>
-            </div>
-            <div class="modal-footer">
-                <button class="btn enviar-btn"><i class="ri-send-plane-line"></i> Enviar</button>
-                <button class="btn cancelar-btn"><i class="ri-arrow-go-back-line"></i> Cancelar</button>
-            </div>
-        </div>
-    </div>
-
 
 
 
@@ -406,6 +456,7 @@
     <script src="/JS/supervisor/MenuSupervisor.js"></script>
     <script src="/JS/generales/LogicaVer.js"></script>
     <script src="/JS/supervisor/tabla-supervisor.js"></script>
-
+    
+    
 </body>
 </html>

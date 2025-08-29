@@ -19,7 +19,13 @@ router.get('/verformularios', async (req, res) => {
                 a.nombre AS area, 
                 d.nombre AS departamento,   -- 👈 aquí se agrega el nombre del departamento
                 ptnp.nombre_solicitante AS solicitante,
-                ptnp.descripcion_trabajo
+                ptnp.descripcion_trabajo,
+                ptnp.trabajo_area_riesgo_controlado,
+                ptnp.necesita_entrega_fisica,
+                ptnp.necesita_ppe_adicional,
+                ptnp.area_circundante_riesgo,
+                ptnp.necesita_supervision,
+                ptnp.observaciones_analisis_previo
             FROM permisos_trabajo pt
             INNER JOIN pt_no_peligroso ptnp 
                 ON pt.id_permiso = ptnp.id_permiso
@@ -47,7 +53,13 @@ router.get('/verformularios', async (req, res) => {
                 TO_CHAR(pnp.hora_inicio, 'HH24:MI') || ' hrs' AS horario,
                 pnp.fluido,
                 pnp.presion,
-                pnp.temperatura
+                pnp.temperatura,
+                pnp.trabajo_area_riesgo_controlado,
+                pnp.necesita_entrega_fisica,
+                pnp.necesita_ppe_adicional,
+                pnp.area_circundante_riesgo,
+                pnp.necesita_supervision,
+                pnp.observaciones_analisis_previo
             FROM permisos_trabajo pt
             LEFT JOIN pt_no_peligroso pnp ON pt.id_permiso = pnp.id_permiso
             LEFT JOIN areas a ON pt.id_area = a.id_area
@@ -165,7 +177,13 @@ router.get('/verformularios_jefe', async (req, res) => {
                 a.nombre AS area, 
                 d.nombre AS departamento,   -- 👈 aquí se agrega el nombre del departamento
                 ptnp.nombre_solicitante AS solicitante,
-                ptnp.descripcion_trabajo
+                ptnp.descripcion_trabajo,
+                ptnp.trabajo_area_riesgo_controlado,
+                ptnp.necesita_entrega_fisica,
+                ptnp.necesita_ppe_adicional,
+                ptnp.area_circundante_riesgo,
+                ptnp.necesita_supervision,
+                ptnp.observaciones_analisis_previo
             FROM permisos_trabajo pt
             INNER JOIN pt_no_peligroso ptnp 
                 ON pt.id_permiso = ptnp.id_permiso

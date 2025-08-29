@@ -309,6 +309,13 @@ function mostrarDetallesTecnicos(detalles) {
     document.getElementById('modal-fluido').textContent = detalles.fluido || '';
     document.getElementById('modal-presion').textContent = detalles.presion || '';
     document.getElementById('modal-temperatura').textContent = detalles.temperatura || '';
+    // Nuevos valores de análisis previo
+    document.getElementById('modal-trabajo-area-riesgo-controlado').textContent = detalles.trabajo_area_riesgo_controlado || '';
+    document.getElementById('modal-necesita-entrega-fisica').textContent = detalles.necesita_entrega_fisica || '';
+    document.getElementById('modal-necesita-ppe-adicional').textContent = detalles.necesita_ppe_adicional || '';
+    document.getElementById('modal-area-circundante-riesgo').textContent = detalles.area_circundante_riesgo || '';
+    document.getElementById('modal-necesita-supervision').textContent = detalles.necesita_supervision || '';
+    document.getElementById('modal-observaciones-analisis-previo').textContent = detalles.observaciones_analisis_previo || '';
 }
 
 // Función para llenar la sección AST (EPP, Maquinaria, Materiales)

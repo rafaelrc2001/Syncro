@@ -278,13 +278,39 @@ document.addEventListener('DOMContentLoaded', () => {
                     fluido,
                     presion,
                     temperatura,
-                    empresa
+                    empresa,
+                    // Nuevos campos
+                    trabajo_area_riesgo_controlado: document.querySelector('input[name="risk-area"]:checked')?.value || null,
+                    necesita_entrega_fisica: document.querySelector('input[name="physical-delivery"]:checked')?.value || null,
+                    necesita_ppe_adicional: document.querySelector('input[name="additional-ppe"]:checked')?.value || null,
+                    area_circundante_riesgo: document.querySelector('input[name="surrounding-risk"]:checked')?.value || null,
+                    necesita_supervision: document.querySelector('input[name="supervision-needed"]:checked')?.value || null,
+                    observaciones_analisis_previo: document.getElementById('pre-work-observations')?.value || null
                 });
 
                 const ptResponse = await fetch('http://localhost:3000/api/pt-no-peligroso', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id_permiso, nombre_solicitante, descripcion_trabajo, tipo_mantenimiento, ot_no, equipo_intervencion, hora_inicio, tag, fluido, presion, temperatura, empresa })
+                    body: JSON.stringify({
+                        id_permiso,
+                        nombre_solicitante,
+                        descripcion_trabajo,
+                        tipo_mantenimiento,
+                        ot_no,
+                        equipo_intervencion,
+                        hora_inicio,
+                        tag,
+                        fluido,
+                        presion,
+                        temperatura,
+                        empresa,
+                        trabajo_area_riesgo_controlado: document.querySelector('input[name="risk-area"]:checked')?.value || null,
+                        necesita_entrega_fisica: document.querySelector('input[name="physical-delivery"]:checked')?.value || null,
+                        necesita_ppe_adicional: document.querySelector('input[name="additional-ppe"]:checked')?.value || null,
+                        area_circundante_riesgo: document.querySelector('input[name="surrounding-risk"]:checked')?.value || null,
+                        necesita_supervision: document.querySelector('input[name="supervision-needed"]:checked')?.value || null,
+                        observaciones_analisis_previo: document.getElementById('pre-work-observations')?.value || null
+                    })
                 });
                 const ptResult = await ptResponse.json();
                 if (!ptResponse.ok || !ptResult.success) throw new Error(ptResult.error || 'Error al guardar PT No Peligroso');

@@ -116,6 +116,12 @@ CREATE TABLE IF NOT EXISTS public.pt_no_peligroso
     presion character varying(20) COLLATE pg_catalog."default",
     temperatura character varying(20) COLLATE pg_catalog."default",
     empresa character varying(250) COLLATE pg_catalog."default",
+    trabajo_area_riesgo_controlado character varying(2) COLLATE pg_catalog."default",
+    necesita_entrega_fisica character varying(2) COLLATE pg_catalog."default",
+    necesita_ppe_adicional character varying(2) COLLATE pg_catalog."default",
+    area_circundante_riesgo character varying(2) COLLATE pg_catalog."default",
+    necesita_supervision character varying(2) COLLATE pg_catalog."default",
+    observaciones_analisis_previo text COLLATE pg_catalog."default",
     CONSTRAINT pt_no_peligroso_pkey PRIMARY KEY (id_ptnp)
 );
 
@@ -228,10 +234,6 @@ ALTER TABLE IF EXISTS public.pt_no_peligroso
     ON DELETE NO ACTION;
 
 END;
-
-
-
-
 
 -- Tablas principales
 SELECT * FROM areas;

@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="/CSS/EstiloFormularios.css">
+   <!-- <link rel="stylesheet" href="/Modules/Fomularios/Generales/seccion2.css">-->
 </head>
 <body>
     <div class="app-container">
@@ -251,6 +252,153 @@
                         </div>
                     
                             
+<!-- NUEVA SECCIÓN: Análisis Previo al Trabajo -->
+        <div class="form-section-title">
+            <i class="ri-checkbox-multiple-line"></i>
+            <h3>Análisis Previo al Trabajo</h3>
+        </div>
+        <div class="pre-work-analysis">
+            <table class="pre-work-table">
+                <thead>
+                    <tr>
+                        <th class="question-column">Seleccione una opción</th>
+                        <th class="option-column text-center">SI</th>
+                        <th class="option-column text-center">NO</th>
+                        <th class="option-column text-center">N/A</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="question-column">¿El trabajo se realizará en un área de riesgo controlado?</td>
+                        <td class="option-column text-center">
+                            <label class="radio-option">
+                                <input type="radio" name="risk-area" value="si" required>
+                                <span class="radio-custom"></span>
+                               
+                            </label>
+                        </td>
+                        <td class="option-column text-center">
+                            <label class="radio-option">
+                                <input type="radio" name="risk-area" value="no">
+                                <span class="radio-custom"></span>
+                                
+                            </label>
+                        </td>
+                        <td class="option-column text-center">
+                            <label class="radio-option">
+                                <input type="radio" name="risk-area" value="na">
+                                <span class="radio-custom"></span>
+                                
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="question-column">¿Se necesita entrega física, para efectuar el trabajo por parte del personal de la planta o departamento?</td>
+                        <td class="option-column text-center">
+                            <label class="radio-option">
+                                <input type="radio" name="physical-delivery" value="si" required>
+                                <span class="radio-custom"></span>
+                                
+                            </label>
+                        </td>
+                        <td class="option-column text-center">
+                            <label class="radio-option">
+                                <input type="radio" name="physical-delivery" value="no">
+                                <span class="radio-custom"></span>
+                               
+                            </label>
+                        </td>
+                        <td class="option-column text-center">
+                            <label class="radio-option">
+                                <input type="radio" name="physical-delivery" value="na">
+                                <span class="radio-custom"></span>
+                        
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="question-column">¿El personal que va a ejecutar el trabajo, necesita equipo de protección personal adicional al estandar del área donde se desarrollara el trabajo?</td>
+                        <td class="option-column text-center">
+                            <label class="radio-option">
+                                <input type="radio" name="additional-ppe" value="si" required>
+                                <span class="radio-custom"></span>
+                                
+                            </label>
+                        </td>
+                        <td class="option-column text-center">
+                            <label class="radio-option">
+                                <input type="radio" name="additional-ppe" value="no">
+                                <span class="radio-custom"></span>
+                                
+                            </label>
+                        </td>
+                        <td class="option-column text-center">
+                            <label class="radio-option">
+                                <input type="radio" name="additional-ppe" value="na">
+                                <span class="radio-custom"></span>
+                               
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="question-column">¿En el área circundante se efectuarán trabajos con riesgo?</td>
+                        <td class="option-column text-center">
+                            <label class="radio-option">
+                                <input type="radio" name="surrounding-risk" value="si" required>
+                                <span class="radio-custom"></span>
+                                
+                            </label>
+                        </td>
+                        <td class="option-column text-center">
+                            <label class="radio-option">
+                                <input type="radio" name="surrounding-risk" value="no">
+                                <span class="radio-custom"></span>
+                                
+                            </label>
+                        </td>
+                        <td class="option-column text-center">
+                            <label class="radio-option">
+                                <input type="radio" name="surrounding-risk" value="na">
+                                <span class="radio-custom"></span>
+                                
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="question-column">¿Necesita supervisión el personal?</td>
+                        <td class="option-column text-center">
+                            <label class="radio-option">
+                                <input type="radio" name="supervision-needed" value="si" required>
+                                <span class="radio-custom"></span>
+                                
+                            </label>
+                        </td>
+                        <td class="option-column text-center">
+                            <label class="radio-option">
+                                <input type="radio" name="supervision-needed" value="no">
+                                <span class="radio-custom"></span>
+                                
+                            </label>
+                        </td>
+                        <td class="option-column text-center">
+                            <label class="radio-option">
+                                <input type="radio" name="supervision-needed" value="na">
+                                <span class="radio-custom"></span>
+                            
+                            </label>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="form-group">
+                <label for="pre-work-observations">Observaciones:</label>
+                <textarea id="pre-work-observations" name="pre-work-observations" rows="3" placeholder="Ingrese observaciones adicionales..."></textarea>
+            </div>
+        </div>
+        <!-- FIN NUEVA SECCIÓN -->
+
+
+
        
 
                         </div>
@@ -263,6 +411,7 @@
                             </button>
                         </div>
                     
+                        
                 </section>
 
 

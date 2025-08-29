@@ -6,9 +6,9 @@
     <title>Syncro - Nuevo Permiso Completo</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
-    <link rel="stylesheet" href="/CSS/EstiloFormularios.css">
+    <link rel="stylesheet" href="/Modules/Fomularios/Generales/seccion2.css">
+       <link rel="stylesheet" href="/CSS/EstiloFormularios.css">
 </head>
-<!-- Prueba de actualizar rama -->
 <body>
     <div class="app-container">
         <!-- Sidebar (igual al existente) -->
@@ -36,7 +36,7 @@
                     </div>
                     <div class="step" data-step="2">
                         <div class="step-number">2</div>
-                        <div id="PermisoNP"class="step-title">Permiso No Peligroso</div>
+                        <div id="PermisoNP"class="step-title">Permiso Equipo Linea</div>
                     </div>
                     <div class="step" data-step="3">
                         <div class="step-number">3</div>
@@ -67,11 +67,11 @@
 
 
                         <div class="form-grid">
-                            <div class="form-group">
+                        <!--    <div class="form-group">
                                 <label for="permit-number">Número de Permiso</label>
                                 <input type="text" id="permit-number" name="permit-number" readonly value="GSI-SI-FO-002-XXXX">
                             </div>
-
+                        -->
                             <div class="form-group">
                                 <label for="permit-date">Fecha</label>
                                 <input type="date" id="permit-date" name="permit-date" required>
@@ -90,10 +90,8 @@
                             <div class="form-group">
                                 <label for="area">Sucursal</label>
                                 <div class="select-wrapper">
-                                    <select id="area" name="area" required>
+                                    <select id="sucursal" name="sucursal" required>
                                         <option value="" disabled selected>Seleccione una sucursal</option>
-                                        <option value="area6">Área 6</option>
-                                        <option value="pajaritos">Pajaritos</option>
                                     </select>
                                     <i class="ri-arrow-down-s-line select-arrow"></i>
                                 </div>
@@ -113,6 +111,7 @@
                                        autocomplete="off">
                                 <div id="plant-suggestions" class="autocomplete-suggestions"></div>
                                 <input type="hidden" id="plant-value" name="plant-value">
+                                <input type="hidden" id="plant-id-hidden" name="plant-id-hidden">
                             </div>
                         </div>
 
@@ -131,10 +130,7 @@
 
                     
                         <div class="form-actions">
-                            <button type="button" class="btn secondary" id="cancel-btn">
-                                <i class="ri-close-line"></i> Cancelar
-                            </button>
-                            <button type="button" class="btn primary next-step" data-next="2">
+                            <button type="button" id="seccion1" class="btn primary next-step" data-next="2">
                                 Siguiente <i class="ri-arrow-right-line"></i>
                             </button>
                         </div>
@@ -144,57 +140,44 @@
                <!-- Fin Sección 1: Encabezado -->
                 </section>
 
-               <!-- Sección 2: Apertura de Equipo o Línea -->
-               <section class="form-section" data-section="2">
-                <div class="form-container">
-                    <div class="form-header">
-                        <div class="form-icon" style="background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);">
-                            <i class="ri-checkbox-circle-line"></i>
-                        </div>
-                        <div>
-                            <h2>Permiso para Apertura de Equipo o Línea</h2>
-                            <p>Complete los detalles específicos del permiso</p>
-                        </div>
-                    </div>
+            
 
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="plant">Planta o lugar de trabajo</label>
-                            <div class="radio-group horizontal">
-                                <label class="radio-option">
-                                    <input type="radio" name="plant" value="UREA I" required>
-                                    <span class="radio-custom"></span>
-                                    UREA I
-                                </label>
-                                <label class="radio-option">
-                                    <input type="radio" name="plant" value="UREA II">
-                                    <span class="radio-custom"></span>
-                                    UREA II
-                                </label>
-                                <label class="radio-option">
-                                    <input type="radio" name="plant" value="SAMP">
-                                    <span class="radio-custom"></span>
-                                    SAMP
-                                </label>
-                                <label class="radio-option other-option">
-                                    <input type="radio" name="plant" value="OTRO">
-                                    <span class="radio-custom"></span>
-                                    OTRO:
-                                    <input type="text" id="other-plant" class="other-input compact" disabled>
-                                </label>
+
+                
+
+                 
+                <!-- Sección 2: Permiso No Peligroso -->
+                
+   <!-- Sección 2: Permiso para apertura equipo línea -->
+                <section class="form-section" data-section="2">
+                    <div class="form-container">
+                        <div class="form-header">
+                            <div class="form-icon" style="background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);">
+                                <i class="ri-checkbox-circle-line"></i>
+                            </div>
+                            <div>
+                                <h2>Permiso para Apertura de Equipo o Línea</h2>
+                                <p>Complete los detalles específicos del permiso</p>
                             </div>
                         </div>
+            <!-- SECCIÓN GRIS: Información General y Condiciones Actuales -->
+            <div class="color-section gray-section">
 
-                        <div class="form-group">
-                            <label for="applicant">Nombre de quien solicita</label>
-                            <input type="text" id="applicant" name="applicant" required class="compact">
-                        </div>
-
-                        <div class="form-group">
+                        <!-- Información General -->
+                <div class="form-section-title">
+                    <i class="ri-file-text-line"></i>
+                    <h3>Información General</h3>
+                </div>
+                <div class="form-table">
+                    <!-- Tipo de mantenimiento -->
+                    <div class="form-table-row">
+                        <div class="form-table-label">
                             <label for="maintenance-type">Tipo de mantenimiento</label>
-                            <div class="radio-group horizontal">
+                        </div>
+                        <div class="form-table-options">
+                            <div class="radio-group horizontal" id="maintenance-type-toggle">
                                 <label class="radio-option">
-                                    <input type="radio" name="maintenance-type" value="PREDICTIVO" required>
+                                    <input type="radio" name="maintenance-type" value="PREDICTIVO">
                                     <span class="radio-custom"></span>
                                     PREDICTIVO
                                 </label>
@@ -209,249 +192,600 @@
                                     CORRECTIVO
                                 </label>
                                 <label class="radio-option">
-                                    <input type="radio" name="maintenance-type" value="APOYO">
+                                    <input type="radio" name="maintenance-type" value="CORRECTIVO">
                                     <span class="radio-custom"></span>
                                     APOYO
                                 </label>
                                 <label class="radio-option other-option">
-                                    <input type="radio" name="maintenance-type" value="OTRO">
+                                    <input type="radio" name="maintenance-type" value="OTRO" id="other-maintenance-radio">
                                     <span class="radio-custom"></span>
                                     OTRO:
-                                    <input type="text" id="other-maintenance" class="other-input compact" disabled>
+                                    <input type="text" id="other-maintenance-type" class="other-input" disabled>
                                 </label>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="form-group">
+                    <!-- O.T. No. -->
+                    <div class="form-table-row">
+                        <div class="form-table-label">
                             <label for="work-order">O.T. No.</label>
-                            <input type="text" id="work-order" name="work-order" required class="compact">
                         </div>
-
-                        <div class="form-group">
-                            <label for="equipment">Equipo a Intervenir</label>
-                            <input type="text" id="equipment" name="equipment" required class="compact">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="start-time">Hora de inicio</label>
-                            <input type="time" id="start-time" name="start-time" required class="compact">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="tag">TAG</label>
-                            <input type="text" id="tag" name="tag" class="compact">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="work-description">Descripción del trabajo</label>
-                            <textarea id="work-description" name="work-description" rows="2" required></textarea>
+                        <div class="form-table-options">
+                            <input type="text" id="work-order" name="work-order" required>
                         </div>
                     </div>
 
-                    <!-- Condiciones actuales del equipo -->
+                    <!-- TAG -->
+                    <div class="form-table-row">
+                        <div class="form-table-label">
+                            <label for="tag">TAG</label>
+                        </div>
+                        <div class="form-table-options">
+                            <input type="text" id="tag" name="tag">
+                        </div>
+                    </div>
+
+                    <!-- Hora de inicio -->
+                    <div class="form-table-row">
+                        <div class="form-table-label">
+                            <label for="start-time">Hora de inicio</label>
+                        </div>
+                        <div class="form-table-options">
+                            <input type="time" id="start-time" name="start-time" required>
+                        </div>
+                    </div>
+
+                    <!-- Equipo a Intervenir -->
+                    <div class="form-table-row">
+                        <div class="form-table-label">
+                            <label class="required-field">¿Tiene equipo a intervenir?</label>
+                            <div class="label-description">Si cuenta con equipo, descríbalo por favor</div>
+                        </div>
+                        <div class="form-table-options">
+                            <div class="radio-group horizontal" id="equipment-toggle">
+                                <label class="radio-option">
+                                    <input type="radio" name="has-equipment" value="no">
+                                    <span class="radio-custom"></span>
+                                    No
+                                </label>
+                                <label class="radio-option other-option">
+                                    <input type="radio" name="has-equipment" value="si" id="has-equipment-yes">
+                                    <span class="radio-custom"></span>
+                                    Sí
+                                    <input type="text" id="equipment-description" class="other-input" disabled>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Condiciones actuales del equipo o línea a intervenir -->
+                <div class="conditions-section" id="equipment-conditions">
                     <div class="form-section-title">
                         <i class="ri-settings-3-line"></i>
                         <h3>Condiciones actuales del equipo o línea a intervenir</h3>
                     </div>
-
-                    <div class="form-grid compact-grid">
-                        <div class="form-group">
-                            <label for="fluid">Fluido</label>
-                            <input type="text" id="fluid" name="fluid" class="compact">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="pressure">Presión</label>
-                            <input type="text" id="pressure" name="pressure" class="compact">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="temperature">Temperatura</label>
-                            <input type="text" id="temperature" name="temperature" class="compact">
-                        </div>
-                    </div>
-
-                    <!-- Antecedentes -->
-                    <div class="form-section-title">
-                        <i class="ri-history-line"></i>
-                        <h3>Antecedentes</h3>
-                    </div>
-
-                    <div class="form-group">
-                        <textarea id="background" name="background" rows="3" placeholder="Describa los antecedentes del trabajo a realizar"></textarea>
-                    </div>
-
-                    <!-- Requisitos para efectuar el trabajo -->
-                    <div class="form-section-title">
-                        <i class="ri-checkbox-multiple-line"></i>
-                        <h3>Requisitos para efectuar el trabajo</h3>
-                    </div>
-
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>¿Debe de estar fuera de operación el equipo o línea?</label>
-                            <div class="yes-no-na">
-                                <label><input type="radio" name="out-of-operation" value="SI"> SI</label>
-                                <label><input type="radio" name="out-of-operation" value="NO"> NO</label>
-                                <label><input type="radio" name="out-of-operation" value="N/A"> N/A</label>
+                    <div class="form-table grid-layout">
+                        <div class="form-table-row">
+                            <div class="form-table-label">
+                                <label for="fluid">Fluido</label>
+                            </div>
+                            <div class="form-table-options">
+                                <input type="text" id="fluid" name="fluid" placeholder="Ej: Agua, Aire, Aceite">
                             </div>
                         </div>
-
-                        <div class="form-group">
-                            <label>¿Debe estar despresionado y purgado?</label>
-                            <div class="yes-no-na">
-                                <label><input type="radio" name="depressurized" value="SI"> SI</label>
-                                <label><input type="radio" name="depressurized" value="NO"> NO</label>
-                                <label><input type="radio" name="depressurized" value="N/A"> N/A</label>
+                        <div class="form-table-row">
+                            <div class="form-table-label">
+                                <label for="pressure">Presión</label>
+                            </div>
+                            <div class="form-table-options">
+                                <input type="text" id="pressure" name="pressure" placeholder="Ej: 100 psi, 5 bar">
                             </div>
                         </div>
-
-                        <div class="form-group">
-                            <label>¿Es necesario aislarlo?</label>
-                            <div class="yes-no-na">
-                                <label><input type="radio" name="isolated" value="SI"> SI</label>
-                                <label><input type="radio" name="isolated" value="NO"> NO</label>
-                                <label><input type="radio" name="isolated" value="N/A"> N/A</label>
+                        <div class="form-table-row">
+                            <div class="form-table-label">
+                                <label for="temperature">Temperatura</label>
+                            </div>
+                            <div class="form-table-options">
+                                <input type="text" id="temperature" name="temperature" placeholder="Ej: 25°C, 80°F">
                             </div>
                         </div>
-
-                        <div class="form-group">
-                            <label>¿Con válvulas?</label>
-                            <div class="yes-no-na">
-                                <label><input type="radio" name="with-valves" value="SI"> SI</label>
-                                <label><input type="radio" name="with-valves" value="NO"> NO</label>
-                                <label><input type="radio" name="with-valves" value="N/A"> N/A</label>
+                        <div class="form-table-row">
+                            <div class="form-table-label">
+                                <label for="background">Descripción de antecedentes</label>
                             </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>¿Con juntas ciegas?</label>
-                            <div class="yes-no-na">
-                                <label><input type="radio" name="with-blinds" value="SI"> SI</label>
-                                <label><input type="radio" name="with-blinds" value="NO"> NO</label>
-                                <label><input type="radio" name="with-blinds" value="N/A"> N/A</label>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>¿Pudo quedar producto entrampado?</label>
-                            <div class="yes-no-na">
-                                <label><input type="radio" name="trapped-product" value="SI"> SI</label>
-                                <label><input type="radio" name="trapped-product" value="NO"> NO</label>
-                                <label><input type="radio" name="trapped-product" value="N/A"> N/A</label>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>¿El equipo y/o línea requiere lavado?</label>
-                            <div class="yes-no-na">
-                                <label><input type="radio" name="requires-washing" value="SI"> SI</label>
-                                <label><input type="radio" name="requires-washing" value="NO"> NO</label>
-                                <label><input type="radio" name="requires-washing" value="N/A"> N/A</label>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>¿El equipo y/o línea requiere neutralizado?</label>
-                            <div class="yes-no-na">
-                                <label><input type="radio" name="requires-neutralization" value="SI"> SI</label>
-                                <label><input type="radio" name="requires-neutralization" value="NO"> NO</label>
-                                <label><input type="radio" name="requires-neutralization" value="N/A"> N/A</label>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>¿El equipo y/o línea requiere vaporizado?</label>
-                            <div class="yes-no-na">
-                                <label><input type="radio" name="requires-steaming" value="SI"> SI</label>
-                                <label><input type="radio" name="requires-steaming" value="NO"> NO</label>
-                                <label><input type="radio" name="requires-steaming" value="N/A"> N/A</label>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>¿Se deben suspender los trabajos adyacentes?</label>
-                            <div class="yes-no-na">
-                                <label><input type="radio" name="adjacent-work-suspended" value="SI"> SI</label>
-                                <label><input type="radio" name="adjacent-work-suspended" value="NO"> NO</label>
-                                <label><input type="radio" name="adjacent-work-suspended" value="N/A"> N/A</label>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>¿Se requiere acordonar el área?</label>
-                            <div class="yes-no-na">
-                                <label><input type="radio" name="area-cordoned" value="SI"> SI</label>
-                                <label><input type="radio" name="area-cordoned" value="NO"> NO</label>
-                                <label><input type="radio" name="area-cordoned" value="N/A"> N/A</label>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>¿Se requiere prueba de gas tóxico/inflamable?</label>
-                            <div class="yes-no-na">
-                                <label><input type="radio" name="gas-test-required" value="SI"> SI</label>
-                                <label><input type="radio" name="gas-test-required" value="NO"> NO</label>
-                                <label><input type="radio" name="gas-test-required" value="N/A"> N/A</label>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>¿El equipo eléctrico se encuentra desenergizado?</label>
-                            <div class="yes-no-na">
-                                <label><input type="radio" name="de-energized" value="SI"> SI</label>
-                                <label><input type="radio" name="de-energized" value="NO"> NO</label>
-                                <label><input type="radio" name="de-energized" value="N/A"> N/A</label>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>¿Se requiere tapar purgas y/o registros de los drenajes?</label>
-                            <div class="yes-no-na">
-                                <label><input type="radio" name="drains-covered" value="SI"> SI</label>
-                                <label><input type="radio" name="drains-covered" value="NO"> NO</label>
-                                <label><input type="radio" name="drains-covered" value="N/A"> N/A</label>
+                            <div class="form-table-options">
+                                <textarea id="background" name="background" rows="3" placeholder="Describa los antecedentes"></textarea>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
 
-                    <!-- Pruebas requeridas -->
-                    <div class="form-section-title">
-                        <i class="ri-flask-line"></i>
-                        <h3>Registro de pruebas requeridas</h3>
+            <!-- Tabla 2: Medidas para administrar los riesgos -->
+            <div class="color-section gray-section">
+            <div class="form-section-title" data-toggle-target="risk-measures">
+                <i class="ri-checkbox-multiple-line toggle-icon"></i>
+                <h3>Medidas para administrar los riesgos</h3>
+            </div>
+            <div class="form-table toggle-section" id="risk-measures">
+            
+            <!-- Encabezado de opciones -->
+            <div class="options-header">
+                <div class="form-table-label"></div>
+                <div class="form-table-options">
+                    <div class="options-labels">
+                        <span class="option-label">SI</span>
+                        <span class="option-label">NO</span>
+                        <span class="option-label">N/A</span>
                     </div>
-
-                    <div class="form-grid compact-grid">
-                        <div class="form-group">
-                            <label for="co2-level">% de CO2</label>
-                            <input type="text" id="co2-level" name="co2-level" class="compact">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="nh3-level">% Amoniaco</label>
-                            <input type="text" id="nh3-level" name="nh3-level" class="compact">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="oxygen-level">% de Oxígeno</label>
-                            <input type="text" id="oxygen-level" name="oxygen-level" class="compact">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="lel-level">% de Explosividad LEL</label>
-                            <input type="text" id="lel-level" name="lel-level" class="compact">
-                        </div>
+                </div>
+            </div>
+            
+                <!-- Fila 1 y 2 unidas -->
+            <div class="form-table-row combined-row">
+                <div class="form-table-label">
+                    <label>¿Se requieren uso de herramientas especiales?</label>
+                </div>
+                <div class="form-table-options combined-options">
+                    <div class="yes-no-na compact">
+                        <label><input type="radio" name="special-tools" value="SI"></label>
+                        <label><input type="radio" name="special-tools" value="NO"></label>
+                        <label><input type="radio" name="special-tools" value="N/A"></label>
                     </div>
-
-                    <!-- Observaciones -->
-                    <div class="form-section-title">
-                        <i class="ri-file-text-line"></i>
-                        <h3>Observaciones</h3>
+                    <div class="combined-input">
+                        <label class="inline-label">¿Cuál?</label>
+                        <input type="text" id="special-tools-type" name="special-tools-type" 
+                            placeholder="Especifique el tipo" class="compact">
                     </div>
+                </div>
+            </div>
+            
+            <!-- Fila 3 -->
+            <div class="form-table-row">
+                <div class="form-table-label">
+                    <label>¿El equipo o herramienta, son los adecuados para el trabajo?</label>
+                </div>
+                <div class="form-table-options">
+                    <div class="yes-no-na compact">
+                        <label><input type="radio" name="adequate-tools" value="SI"></label>
+                        <label><input type="radio" name="adequate-tools" value="NO"></label>
+                        <label><input type="radio" name="adequate-tools" value="N/A"></label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fila 4 -->
+            <div class="form-table-row">
+                <div class="form-table-label">
+                    <label>¿Se requiere verificación previa de las condiciones del trabajo?</label>
+                </div>
+                <div class="form-table-options">
+                    <div class="yes-no-na compact">
+                        <label><input type="radio" name="pre-verification" value="SI"></label>
+                        <label><input type="radio" name="pre-verification" value="NO"></label>
+                        <label><input type="radio" name="pre-verification" value="N/A"></label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fila 5 -->
+            <div class="form-table-row">
+                <div class="form-table-label">
+                    <label>¿Se requiere conocer los riesgos del producto que se va a manejar?</label>
+                </div>
+                <div class="form-table-options">
+                    <div class="yes-no-na compact">
+                        <label><input type="radio" name="risk-knowledge" value="SI"></label>
+                        <label><input type="radio" name="risk-knowledge" value="NO"></label>
+                        <label><input type="radio" name="risk-knowledge" value="N/A"></label>
+                    </div>
+                </div>
+            </div>
 
-                    <div class="form-group">
+            <!-- Fila 6: Observaciones finales -->
+                <div class="form-table-row">
+                    <div class="form-table-label">
+                        <label for="final-observations">Observaciones adicionales</label>
+                    </div>
+                    <div class="form-table-options">
+                        <textarea id="final-observations" name="final-observations" rows="3" placeholder="Ingrese cualquier observación adicional"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+                        
+            <!-- Tabla 3: Requisitos para efectuar el trabajo -->
+            <div class="color-section blue-section">
+            <div class="form-section-title"data-toggle-target="work-requirements">
+                <i class="ri-checkbox-multiple-line toggle-icon"></i>
+                <h3>Requisitos para efectuar el trabajo</h3>
+            </div>
+            <div class="form-table toggle-section" id="work-requirements">
+            
+            <!-- Encabezado de opciones -->
+            <div class="options-header">
+                <div class="form-table-label"></div> <!-- Columna 1 (izquierda) - Vacía -->
+                <div class="form-table-options"> <!-- Columna 2 (derecha) -->
+                    <div class="options-labels">
+                        <span class="option-label">SI</span>
+                        <span class="option-label">NO</span>
+                        <span class="option-label">N/A</span>
+                    </div>
+                </div>
+            </div>
+
+                <!-- Fila 1 -->
+            <div class="form-table-row">
+                <div class="form-table-label">
+                    <label>¿Debe de estar fuera de operación el equipo o línea?</label>
+                </div>
+                <div class="form-table-options">
+                    <div class="yes-no-na compact">
+                        <label><input type="radio" name="out-of-operation" value="SI"></label>
+                        <label><input type="radio" name="out-of-operation" value="NO"></label>
+                        <label><input type="radio" name="out-of-operation" value="N/A"></label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fila 2 -->
+            <div class="form-table-row">
+                <div class="form-table-label">
+                    <label>¿Debe estar despresionado y purgado?</label>
+                </div>
+                <div class="form-table-options">
+                    <div class="yes-no-na compact">
+                        <label><input type="radio" name="depressurized" value="SI"></label>
+                        <label><input type="radio" name="depressurized" value="NO"></label>
+                        <label><input type="radio" name="depressurized" value="N/A"></label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fila 3 -->
+            <div class="form-table-row">
+                <div class="form-table-label">
+                    <label>¿Es necesario aislarlo?</label>
+                </div>
+                <div class="form-table-options">
+                    <div class="yes-no-na compact">
+                        <label><input type="radio" name="isolated" value="SI"></label>
+                        <label><input type="radio" name="isolated" value="NO"></label>
+                        <label><input type="radio" name="isolated" value="N/A"></label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fila 4 -->
+            <div class="form-table-row">
+                <div class="form-table-label">
+                    <label>¿Con válvulas?</label>
+                </div>
+                <div class="form-table-options">
+                    <div class="yes-no-na compact">
+                        <label><input type="radio" name="with-valves" value="SI"></label>
+                        <label><input type="radio" name="with-valves" value="NO"></label>
+                        <label><input type="radio" name="with-valves" value="N/A"></label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fila 5 -->
+            <div class="form-table-row">
+                <div class="form-table-label">
+                    <label>¿Con juntas ciegas?</label>
+                </div>
+                <div class="form-table-options">
+                    <div class="yes-no-na compact">
+                        <label><input type="radio" name="with-blinds" value="SI"></label>
+                        <label><input type="radio" name="with-blinds" value="NO"></label>
+                        <label><input type="radio" name="with-blinds" value="N/A"></label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fila 6 -->
+            <div class="form-table-row">
+                <div class="form-table-label">
+                    <label>¿Pudo quedar producto entrampado?</label>
+                </div>
+                <div class="form-table-options">
+                    <div class="yes-no-na compact">
+                        <label><input type="radio" name="trapped-product" value="SI"></label>
+                        <label><input type="radio" name="trapped-product" value="NO"></label>
+                        <label><input type="radio" name="trapped-product" value="N/A"></label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fila 7 -->
+            <div class="form-table-row">
+                <div class="form-table-label">
+                    <label>¿El equipo y/o línea requiere lavado?</label>
+                </div>
+                <div class="form-table-options">
+                    <div class="yes-no-na compact">
+                        <label><input type="radio" name="requires-washing" value="SI"></label>
+                        <label><input type="radio" name="requires-washing" value="NO"></label>
+                        <label><input type="radio" name="requires-washing" value="N/A"></label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fila 8 -->
+            <div class="form-table-row">
+                <div class="form-table-label">
+                    <label>¿El equipo y/o línea requiere neutralizado?</label>
+                </div>
+                <div class="form-table-options">
+                    <div class="yes-no-na compact">
+                        <label><input type="radio" name="requires-neutralization" value="SI"></label>
+                        <label><input type="radio" name="requires-neutralization" value="NO"></label>
+                        <label><input type="radio" name="requires-neutralization" value="N/A"></label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fila 9 -->
+            <div class="form-table-row">
+                <div class="form-table-label">
+                    <label>¿El equipo y/o línea requiere vaporizado?</label>
+                </div>
+                <div class="form-table-options">
+                    <div class="yes-no-na compact">
+                        <label><input type="radio" name="requires-steaming" value="SI"></label>
+                        <label><input type="radio" name="requires-steaming" value="NO"></label>
+                        <label><input type="radio" name="requires-steaming" value="N/A"></label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fila 10 -->
+            <div class="form-table-row">
+                <div class="form-table-label">
+                    <label>¿Se deben suspender los trabajos adyacentes?</label>
+                </div>
+                <div class="form-table-options">
+                    <div class="yes-no-na compact">
+                        <label><input type="radio" name="adjacent-work-suspended" value="SI"></label>
+                        <label><input type="radio" name="adjacent-work-suspended" value="NO"></label>
+                        <label><input type="radio" name="adjacent-work-suspended" value="N/A"></label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fila 11 -->
+            <div class="form-table-row">
+                <div class="form-table-label">
+                    <label>¿Se requiere acordonar el área?</label>
+                </div>
+                <div class="form-table-options">
+                    <div class="yes-no-na compact">
+                        <label><input type="radio" name="area-cordoned" value="SI"></label>
+                        <label><input type="radio" name="area-cordoned" value="NO"></label>
+                        <label><input type="radio" name="area-cordoned" value="N/A"></label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fila 12 -->
+            <div class="form-table-row">
+                <div class="form-table-label">
+                    <label>¿Se requiere prueba de gas tóxico/inflamable?</label>
+                </div>
+                <div class="form-table-options">
+                    <div class="yes-no-na compact">
+                        <label><input type="radio" name="gas-test-required" value="SI"></label>
+                        <label><input type="radio" name="gas-test-required" value="NO"></label>
+                        <label><input type="radio" name="gas-test-required" value="N/A"></label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fila 13 -->
+            <div class="form-table-row">
+                <div class="form-table-label">
+                    <label>¿El equipo eléctrico se encuentra desenergizado?</label>
+                </div>
+                <div class="form-table-options">
+                    <div class="yes-no-na compact">
+                        <label><input type="radio" name="de-energized" value="SI"></label>
+                        <label><input type="radio" name="de-energized" value="NO"></label>
+                        <label><input type="radio" name="de-energized" value="N/A"></label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fila 14 -->
+            <div class="form-table-row">
+                <div class="form-table-label">
+                    <label>¿Se requiere tapar purgas y/o registros de los drenajes?</label>
+                </div>
+                <div class="form-table-options">
+                    <div class="yes-no-na compact">
+                        <label><input type="radio" name="drains-covered" value="SI"></label>
+                        <label><input type="radio" name="drains-covered" value="NO"></label>
+                        <label><input type="radio" name="drains-covered" value="N/A"></label>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabla 4: Requisitos para Administrar los Riesgos -->
+         <div class="color-section red-section">
+            <div class="form-section-title" data-toggle-target="risk-requirements">
+                <i class="ri-checkbox-multiple-line toggle-icon"></i>
+                <h3>Requisitos para Administrar los Riesgos</h3>
+            </div>
+            <div class="form-table toggle-section" id="risk-requirements">
+            
+            <!-- Encabezado de opciones -->
+            <div class="options-header">
+                <div class="form-table-label"></div>
+                <div class="form-table-options">
+                    <div class="options-labels">
+                        <span class="option-label">SI</span>
+                        <span class="option-label">NO</span>
+                        <span class="option-label">N/A</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fila 1 -->
+            <div class="form-table-row">
+                <div class="form-table-label">
+                    <label>Equipo de proteccion especial recomendado:</label>
+                </div>
+                <div class="form-table-options">
+                    <div class="yes-no-na compact">
+                        <label><input type="radio" name="special-protection" value="SI"></label>
+                        <label><input type="radio" name="special-protection" value="NO"></label>
+                        <label><input type="radio" name="special-protection" value="N/A"></label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fila 2 -->
+            <div class="form-table-row">
+                <div class="form-table-label">
+                    <label>Para piel y cuerpo:</label>
+                </div>
+                <div class="form-table-options">
+                    <div class="yes-no-na compact">
+                        <label><input type="radio" name="skin-protection" value="SI"></label>
+                        <label><input type="radio" name="skin-protection" value="NO"></label>
+                        <label><input type="radio" name="skin-protection" value="N/A"></label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fila 3 -->
+            <div class="form-table-row">
+                <div class="form-table-label">
+                    <label>Protección respiratoria:</label>
+                </div>
+                <div class="form-table-options">
+                    <div class="yes-no-na compact">
+                        <label><input type="radio" name="respiratory-protection" value="SI"></label>
+                        <label><input type="radio" name="respiratory-protection" value="NO"></label>
+                        <label><input type="radio" name="respiratory-protection" value="N/A"></label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fila 4     -->
+             
+
+            <div class="form-table-row">
+                <div class="form-table-label">
+                    <label>Protección ocular :</label>
+                </div>
+                <div class="form-table-options">
+                    <div class="yes-no-na compact">
+                        <label><input type="radio" name="eye-protection" value="SI"></label>
+                        <label><input type="radio" name="eye-protection" value="NO"></label>
+                        <label><input type="radio" name="eye-protection" value="N/A"></label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fila 5 y 6 unidas -->
+            <div class="form-table-row combined-row">
+                <div class="form-table-label">
+                    <label>¿Se requiere protección contraincendio?</label>
+                </div>
+                <div class="form-table-options combined-options">
+                    <div class="yes-no-na compact">
+                        <label><input type="radio" name="fire-protection" value="SI"></label>
+                        <label><input type="radio" name="fire-protection" value="NO"></label>
+                        <label><input type="radio" name="fire-protection" value="N/A"></label>
+                    </div>
+                    <div class="combined-input">
+                        <label class="inline-label">¿Cuál?</label>
+                        <input type="text" id="fire-protection-type" name="fire-protection-type" 
+                            placeholder="Especifique el tipo" class="compact">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fila 7 -->
+            <div class="form-table-row">
+                <div class="form-table-label">
+                    <label>¿Instalación de barreras y/o barricadas?</label>
+                </div>
+                <div class="form-table-options">
+                    <div class="yes-no-na compact">
+                        <label><input type="radio" name="barriers-required" value="SI"></label>
+                        <label><input type="radio" name="barriers-required" value="NO"></label>
+                        <label><input type="radio" name="barriers-required" value="N/A"></label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fila 8: Observaciones -->
+                <div class="form-table-row">
+                    <div class="form-table-label">
+                        <label for="observations">Observaciones adicionales</label>
+                    </div>
+                    <div class="form-table-options">
                         <textarea id="observations" name="observations" rows="3" placeholder="Ingrese cualquier observación adicional"></textarea>
                     </div>
+                </div>
+            </div>
+        </div>
+        
+
+        <!-- Tabla 5: Registro de pruebas requeridas -->
+         <div class="color-section red-section">
+            <div class="form-section-title" data-toggle-target="test-records">
+                <i class="ri-flask-line toggle-icon"></i>
+                <h3>Registro de pruebas requeridas</h3>
+            </div>
+            <div class="form-table compact-table toggle-section" id="test-records">
+            <!-- Fila 1 -->
+            <div class="form-table-row">
+                <div class="form-table-label">
+                    <label for="co2-level">% de CO2</label>
+                </div>
+                <div class="form-table-options">
+                    <input type="text" id="co2-level" name="co2-level" class="compact">
+                </div>
+            </div>
+            
+            <!-- Fila 2 -->
+            <div class="form-table-row">
+                <div class="form-table-label">
+                    <label for="nh3-level">% Amoniaco</label>
+                </div>
+                <div class="form-table-options">
+                    <input type="text" id="nh3-level" name="nh3-level" class="compact">
+                </div>
+            </div>
+            
+            <!-- Fila 3 -->
+            <div class="form-table-row">
+                <div class="form-table-label">
+                    <label for="oxygen-level">% de Oxígeno</label>
+                </div>
+                <div class="form-table-options">
+                    <input type="text" id="oxygen-level" name="oxygen-level" class="compact">
+                </div>
+            </div>
+            
+            <!-- Fila 4 -->
+            <div class="form-table-row">
+                <div class="form-table-label">
+                    <label for="lel-level">% de Explosividad LEL</label>
+                </div>
+                <div class="form-table-options">
+                    <input type="text" id="lel-level" name="lel-level" class="compact">
+                </div>
+            </div>
+        </div>
+    </div>
 
                     <div class="form-actions">
                         <button type="button" class="btn secondary prev-step" data-prev="1">
@@ -464,189 +798,185 @@
                 </div>
             </section>
 
-    <!-- Sección 3: Participantes -->
-    <section class="form-section" data-section="3">
-        <div class="form-container">
-            <div class="form-header">
-                <div class="form-icon" style="background: linear-gradient(135deg, #2196F3 0%, #0D47A1 100%);">
-                    <i class="ri-team-line"></i>
-                </div>
-                <div>
-                    <h2>Personal Participante</h2>
-                    <p>Registre a todas las personas involucradas</p>
-                </div>
-            </div>
 
-            <div class="participants-table">
-                <div class="participants-header">
-                    <div>No.</div>
-                    <div>Nombre</div>
-                    <div>No. Credencial</div>
-                    <div>Cargo</div>
-                    <div>Función</div>
-                    <div>Acciones</div>
-                </div>
 
-                <div class="participant-row" data-index="1">
-                    <div class="participant-number">1</div>
-                    <div class="participant-field">
-                        <input type="text" name="participant-name-1" required>
+
+
+
+                
+
+             <!-- Sección 3: Participantes -->
+             <section class="form-section" data-section="3">
+                <div class="form-container">
+                    <div class="form-header">
+                        <div class="form-icon" style="background: linear-gradient(135deg, #2196F3 0%, #0D47A1 100%);">
+                            <i class="ri-team-line"></i>
+                        </div>
+                        <div>
+                            <h2>Personal Participante</h2>
+                            <p>Registre a todas las personas involucradas</p>
+                        </div>
                     </div>
-                    <div class="participant-field">
-                        <input type="text" name="participant-credential-1">
+
+                    <div class="participants-table">
+                        <div class="participants-header">
+                            <div>No.</div>
+                            <div>Nombre</div>
+                            <div>No. Credencial</div>
+                            <div>Cargo</div>
+                            <div>Función</div>
+                            <div>Acciones</div>
+                        </div>
+
+                        <div class="participant-row" data-index="1">
+                            <div class="participant-number">1</div>
+                            <div class="participant-field">
+                                <input type="text" name="participant-name-1" required>
+                            </div>
+                            <div class="participant-field">
+                                <input type="text" name="participant-credential-1" required>
+                            </div>
+                            <div class="participant-field">
+                                <input type="text" name="participant-position-1" required>
+                            </div>
+                            <div class="participant-field">
+                                <select name="participant-role-1" required>
+                                    <option value="">Seleccione...</option>
+                                    <option value="PARTICIPA">Participa</option>
+                                    <option value="REVISA">Revisa</option>
+                                    <option value="ANALIZA">Analiza</option>
+                                    <option value="AUTORIZA">Autoriza</option>
+                                </select>
+                            </div>
+                            <div class="participant-actions">
+                                <button type="button" class="action-btn remove-participant" title="Eliminar">
+                                    <i class="ri-delete-bin-line"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="participant-field">
-                        <input type="text" name="participant-position-1">
+
+                    <button type="button" class="btn secondary" id="add-participant">
+                        <i class="ri-user-add-line"></i> Añadir Participante
+                    </button>
+
+                    <div class="form-section-title">
+                        <i class="ri-shield-user-line"></i>
+                        <h3>Equipo de Protección Personal</h3>
                     </div>
-                    <div class="participant-field">
-                        <select name="participant-role-1" required>
-                            <option value="">Seleccione...</option>
-                            <option value="PARTICIPA">Participa</option>
-                            <option value="REVISA">Revisa</option>
-                            <option value="ANALIZA">Analiza</option>
-                            <option value="AUTORIZA">Autoriza</option>
-                        </select>
+
+                    <div class="form-group">
+                        <textarea id="ppe-required" name="ppe-required" rows="2" placeholder="Describa el EPP requerido"></textarea>
                     </div>
-                    <div class="participant-actions">
-                        <button type="button" class="action-btn remove-participant" title="Eliminar">
-                            <i class="ri-delete-bin-line"></i>
+
+                    <div class="form-section-title">
+                        <i class="ri-tools-line"></i>
+                        <h3>Maquinaria, Equipo y Herramientas</h3>
+                    </div>
+
+                    <div class="form-group">
+                        <textarea id="equipment-tools" name="equipment-tools" rows="2" placeholder="Liste maquinaria y herramientas a utilizar"></textarea>
+                    </div>
+
+                    <div class="form-section-title">
+                        <i class="ri-box-line"></i>
+                        <h3>Materiales y Accesorios</h3>
+                    </div>
+
+                    <div class="form-group">
+                        <textarea id="materials" name="materials" rows="2" placeholder="Liste materiales y accesorios necesarios"></textarea>
+                    </div>
+                
+                    <div class="form-actions">
+                        <button type="button" class="btn secondary prev-step" data-prev="2">
+                            <i class="ri-arrow-left-line"></i> Anterior
+                        </button>
+                        <button type="button" id="btn-save-participants" class="btn primary next-step" data-next="4">
+                            Siguiente <i class="ri-arrow-right-line"></i>
                         </button>
                     </div>
-                </div>
-            </div>
-
-            <button type="button" class="btn secondary" id="add-participant">
-                <i class="ri-user-add-line"></i> Añadir Participante
-            </button>
-
-            <div class="form-section-title">
-                <i class="ri-shield-user-line"></i>
-                <h3>Equipo de Protección Personal</h3>
-            </div>
-
-            <div class="form-group">
-                <textarea id="ppe-required" name="ppe-required" rows="2" placeholder="Describa el EPP requerido"></textarea>
-            </div>
-
-            <div class="form-section-title">
-                <i class="ri-tools-line"></i>
-                <h3>Maquinaria, Equipo y Herramientas</h3>
-            </div>
-
-            <div class="form-group">
-                <textarea id="equipment-tools" name="equipment-tools" rows="2" placeholder="Liste maquinaria y herramientas a utilizar"></textarea>
-            </div>
-
-            <div class="form-section-title">
-                <i class="ri-box-line"></i>
-                <h3>Materiales y Accesorios</h3>
-            </div>
-
-            <div class="form-group">
-                <textarea id="materials" name="materials" rows="2" placeholder="Liste materiales y accesorios necesarios"></textarea>
-            </div>
-        
-            <div class="form-actions">
-                <button type="button" class="btn secondary prev-step" data-prev="2">
-                    <i class="ri-arrow-left-line"></i> Anterior
-                </button>
-                <button type="button" class="btn primary next-step" data-next="4">
-                    Siguiente <i class="ri-arrow-right-line"></i>
-                </button>
-            </div>
-        
-    </section>
+                
+            </section>
 
 <!-- Sección 4: AST -->
-    <section class="form-section" data-section="4">
-        <div class="form-container">
-            <div class="form-header">
-                <div class="form-icon" style="background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);">
-                    <i class="ri-alert-line"></i>
-                </div>
-                <div>
-                    <h2>Análisis de Seguridad en el Trabajo (AST)</h2>
-                    <p>Describa las actividades y riesgos asociados</p>
-                </div>
-            </div>
+            <section class="form-section" data-section="4">
+                <div class="form-container">
+                    <div class="form-header">
+                        <div class="form-icon" style="background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);">
+                            <i class="ri-alert-line"></i>
+                        </div>
+                        <div>
+                            <h2>Análisis de Seguridad en el Trabajo (AST)</h2>
+                            <p>Describa las actividades y riesgos asociados</p>
+                        </div>
+                    </div>
 
-            <div class="ast-activities extended">
-                <div class="ast-table-header">
-                    <div>No.</div>
-                    <div>Secuencia de la Actividad</div>
-                    <div>Personal Ejecutor</div>
-                    <div>Peligros Potenciales</div>
-                    <div>Acciones Preventivas</div>
-                    <div>Responsable</div>
-                    <div>Acciones</div>
-                </div>
-            
-                <div class="ast-activity" data-index="1">
-                    <div class="ast-activity-number">1</div>
-                    <div class="ast-activity-field">
-                        <textarea name="ast-activity-1" rows="2"></textarea>
+                    <div class="ast-activities extended">
+                        <div class="ast-table-header">
+                            <div>No.</div>
+                            <div>Secuencia de la Actividad</div>
+                            <div>Personal Ejecutor</div>
+                            <div>Peligros Potenciales</div>
+                            <div>Acciones Preventivas</div>
+                            <div>Responsable</div>
+                            <div>Acciones</div>
+                        </div>
+                    
+                        <div class="ast-activity" data-index="1">
+                            <div class="ast-activity-number">1</div>
+                            <div class="ast-activity-field">
+                                <textarea name="ast-activity-1" rows="2"></textarea>
+                            </div>
+                            <div class="ast-activity-field">
+                                <select name="ast-personnel-1" required>
+                                    <option value="">-- Seleccione --</option>
+                                </select>
+                            </div> 
+                            <div class="ast-activity-field">
+                                <textarea name="ast-hazards-1" rows="2" required></textarea>
+                            </div>
+                            <div class="ast-activity-field">
+                                <textarea name="ast-preventions-1" rows="2"></textarea>
+                            </div>
+                            <div class="ast-activity-field">
+                                <select name="ast-responsible-1" required>
+                                    <option value="">-- Seleccione --</option>
+                                </select>
+                            </div>
+                            <div class="ast-activities-actions">
+                                <button type="button" class="action-btn remove-participant" title="Eliminar">
+                                    <i class="ri-delete-bin-line"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
                     </div>
-                    <div class="ast-activity-field">
-                        <select name="ast-personnel-1">
-                            <option value="">-- Seleccione --</option>
-                            <option value="juan">Juan Pérez</option>
-                            <option value="maria">María López</option>
-                            <option value="carlos">Carlos Gómez</option>
-                            <option value="ana">Ana Martínez</option>
-                        </select>
-                    </div>
-                    <div class="ast-activity-field">
-                        <textarea name="ast-hazards-1" rows="2"></textarea>
-                    </div>
-                    <div class="ast-activity-field">
-                        <textarea name="ast-preventions-1" rows="2"></textarea>
-                    </div>
-                    <div class="ast-activity-field">
-                        <select name="ast-personnel-1">
-                            <option value="">-- Seleccione --</option>
-                            <option value="juan">Juan Pérez</option>
-                            <option value="maria">María López</option>
-                            <option value="carlos">Carlos Gómez</option>
-                            <option value="ana">Ana Martínez</option>
-                        </select>
-                    </div>
-                    <div class="ast-activities-actions">
-                        <button type="button" class="action-btn remove-participant" title="Eliminar">
-                            <i class="ri-delete-bin-line"></i>
+                    
+
+                    <button type="button" class="btn secondary" id="add-activity">
+                        <i class="ri-add-line"></i> Añadir Actividad
+                    </button>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn secondary prev-step" data-prev="3">
+                            <i class="ri-arrow-left-line"></i> Anterior
+                        </button>
+                        <button type="submit" class="btn primary">
+                            <i class="ri-save-line"></i> Guardar Permiso Completo
+                        </button>
+                        <button type="button" class="btn tertiary" id="print-complete-btn">
+                            <i class="ri-printer-line"></i> Vista de Impresión
                         </button>
                     </div>
+                    
                 </div>
-                
-            </div>
-            
-
-            <button type="button" class="btn secondary" id="add-activity">
-                <i class="ri-add-line"></i> Añadir Actividad
-            </button>
-
-            <div class="form-actions">
-                <button type="button" class="btn secondary prev-step" data-prev="3">
-                    <i class="ri-arrow-left-line"></i> Anterior
-                </button>
-                <button type="submit" class="btn primary">
-                    <i class="ri-save-line"></i> Guardar Permiso Completo
-                </button>
-                <button type="button" class="btn tertiary" id="print-complete-btn">
-                    <i class="ri-printer-line"></i> Vista de Impresión
-                </button>
-            </div>
-            
-        </div>
-    </section>
+            </section>
 
 
 
-</form>
-</main>
+        </form>
+    </main>
 </div>
-
-
-
 
     <!-- Modal de confirmación -->
     <div class="modal" id="confirmation-modal">
@@ -665,11 +995,12 @@
         </div>
     </div>
 
+     <!-- <script src="/Modules/Fomularios/PT1/PT1.js"></script>-->
     <script src="/Modules/Fomularios/Generales/email.js"></script>
     <script src="/Modules/Fomularios/Generales/seccion1.js"></script>
-    <script src="/Modules/Fomularios/PT2/seccion2.js"></script>
+    <script src="/Modules/Fomularios/PT1/seccion2.js"></script>
     <script src="/Modules/Fomularios/Generales/seccion3.js"></script>
     <script src="/Modules/Fomularios/Generales/seccion4.js"></script>
-    <script src="/Modules/Fomularios/Generales/navegacion.js"></script>
+    <script src="/Modules/Fomularios/Generales/navegacion.js"></script>  
 </body>
 </html>

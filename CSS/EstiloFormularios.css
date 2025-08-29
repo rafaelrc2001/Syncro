@@ -64,16 +64,24 @@ h1, h2, h3, h4, h5, h6 {
     align-items: center;
     margin-bottom: 1rem;
     padding-bottom: 0.75rem;
-    border-bottom: 1px solid var(--plata-industrial);
+}
+/* Solo aplicar el círculo interior a radio-option, no a radio-option-horizontal */
+.radio-option input[type="radio"]:checked + .radio-custom::after {
+    content: '';
+    width: 0.6rem;
+    height: 0.6rem;
+    background-color: var(--azul-petroleo);
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
-.main-header h1 {
-    font-size: 1.25rem;
-    color: var(--azul-petroleo);
-    margin: 0;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+/* Para radio-option-horizontal, solo mostrar el borde y el fondo, sin ::after duplicado */
+.radio-option-horizontal input[type="radio"]:checked + .radio-custom {
+    border-color: var(--primary-color);
+    background: #e3f2fd;
 }
 
 .header-actions {
@@ -812,4 +820,34 @@ h1, h2, h3, h4, h5, h6 {
     padding: 0.5rem;
     align-items: center;
     border-bottom: 1px solid var(--blanco-neutro);
+}
+
+/* Estilos para la tabla de Análisis Previo al Trabajo */
+.pre-work-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+}
+
+.pre-work-table th {
+    /*background: var(--plata-industrial); */
+    color: var(--azul-petroleo);
+    padding: 1rem 0.5rem;
+    text-align: left;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-radius: 0.25rem 0.25rem 0 0;
+}
+
+.pre-work-table td {
+    background: #fff;
+    padding: 1.5rem 0.5rem; /* Más separación vertical */
+    font-size: 0.95rem;
+    color: var(--gris-acero);
+    border-bottom: 1px solid var(--blanco-neutro);
+    vertical-align: middle;
+}
+
+.pre-work-table tr {
+    height: 3.2rem; /* Altura mínima para cada fila */
 }

@@ -266,3 +266,5 @@ INSERT INTO tipos_permisos ( nombre) VALUES
 
 
 
+INSERT INTO jefe (usuario, "contraseña")
+VALUES ('admin', 'admin123');

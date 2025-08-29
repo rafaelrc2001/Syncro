@@ -216,11 +216,72 @@ router.post('/estatus/no_autorizado', async (req, res) => {
   }
 });
 
+// Endpoint para actualizar supervisor y categoría (solo nombres) en autorizaciones
+router.put('/autorizaciones/supervisor-categoria', async (req, res) => {
+  const { id_permiso, supervisor, categoria } = req.body;
 
+  if (!id_permiso || !supervisor || !categoria) {
+    return res.status(400).json({
+      success: false,
+      error: 'id_permiso, supervisor y categoria son requeridos'
+    });
+  }
 
+  try {
+    // Buscar el ID del supervisor por nombre
+    const supResult = await db.query(
+      'SELECT id_supervisor FROM supervisores WHERE nombre = $1 LIMIT 1',
+      [supervisor]
+    );
+    if (supResult.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'Supervisor no encontrado'
+      });
+    }
+    const idSupervisor = supResult.rows[0].id_supervisor;
 
+    // Buscar el ID de la categoría por nombre en categorias_seguridad
+    const catResult = await db.query(
+      'SELECT id_categoria FROM categorias_seguridad WHERE nombre = $1 LIMIT 1',
+      [categoria]
+    );
+    if (catResult.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'Categoría no encontrada'
+      });
+    }
+    const idCategoria = catResult.rows[0].id_categoria;
 
-
+    // Actualizar la tabla autorizaciones con los IDs
+    const result = await db.query(
+      `UPDATE autorizaciones
+       SET id_supervisor = $1, id_categoria = $2
+       WHERE id_permiso = $3
+       RETURNING *`,
+      [idSupervisor, idCategoria, id_permiso]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'No se encontró la autorización para actualizar'
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: 'Supervisor y categoría actualizados exitosamente',
+      data: result.rows[0]
+    });
+  } catch (err) {
+    console.error('Error actualizando supervisor y categoría:', err);
+    res.status(500).json({
+      success: false,
+      error: 'Error al actualizar supervisor y categoría',
+      details: err.message
+    });
+  }
+});
 
 // Dejar solo un module.exports al final
 module.exports = router;

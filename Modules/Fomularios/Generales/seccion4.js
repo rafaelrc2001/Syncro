@@ -212,7 +212,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     id_departamento = Number(usuario.id);
                 }
                 const id_sucursal = parseInt(sessionStorage.getItem('id_sucursal'), 10);
-                const id_tipo_permiso = 1;
+                const id_tipo_permiso = Number(sessionStorage.getItem('id_tipo_permiso'));
+                console.log('[DEBUG] id_tipo_permiso:', id_tipo_permiso);
                 const id_estatus = parseInt(sessionStorage.getItem('id_estatus'), 10);
                 const id_ast = parseInt(sessionStorage.getItem('id_ast'), 10) || 1;
 

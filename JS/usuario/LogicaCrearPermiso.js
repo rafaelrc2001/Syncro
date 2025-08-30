@@ -43,27 +43,33 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Navegar al formulario correspondiente al seleccionar un permiso
+    // Relación entre data-pt y número de permiso
+    const permisoNumeros = {
+        pt1: 1,
+        pt2: 2,
+        pt3: 3,
+        pt4: 4,
+        pt5: 5,
+        pt6: 6,
+        pt7: 7,
+        pt8: 8,
+        pt9: 9,
+        pt10: 10
+    };
+
     btnsSeleccionar.forEach(btn => {
         btn.addEventListener('click', function(e) {
-            e.preventDefault(); // Prevent default action for debugging
-            
-            console.log('Botón clickeado');
+            e.preventDefault();
             const card = this.closest('.permiso-card');
             const ptId = card.getAttribute('data-pt');
-            console.log('Data-pt value:', ptId);
-            
+            const numeroPermiso = permisoNumeros[ptId];
+            console.log('Número de permiso seleccionado:', numeroPermiso);
+
+            // Guardar en sessionStorage
+            sessionStorage.setItem('id_tipo_permiso', numeroPermiso);
+
             const ptUpper = ptId.toUpperCase();
-            // Note: The folder is 'Fomularios' (with one 'r')
             const path = `/Modules/Fomularios/${ptUpper}/${ptUpper}.html`;
-            console.log('Intentando navegar a:', path);
-            
-            // Try with both absolute and relative paths
-            const baseUrl = window.location.origin;
-            const absolutePath = baseUrl + path;
-            console.log('Ruta absoluta:', absolutePath);
-            
-            // Try navigating after a short delay to see the logs
             setTimeout(() => {
                 window.location.href = path;
             }, 1000);

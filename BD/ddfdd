@@ -270,3 +270,71 @@ INSERT INTO tipos_permisos ( nombre) VALUES
 
 INSERT INTO jefe (usuario, "contraseña")
 VALUES ('admin', 'admin123');
+
+
+
+
+
+
+
+CREATE TABLE pt_apertura (
+    id SERIAL PRIMARY KEY,
+    id_permiso INTEGER NOT NULL REFERENCES permisos_trabajo(id_permiso),
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    -- Información General
+    tipo_mantenimiento VARCHAR(50) NOT NULL,
+    otro_tipo_mantenimiento VARCHAR(100),
+    ot_numero VARCHAR(50) NOT NULL,
+    tag VARCHAR(100),
+    hora_inicio TIME NOT NULL,
+    tiene_equipo_intervenir BOOLEAN,
+    descripcion_equipo TEXT,
+    
+    -- Condiciones actuales
+    fluido VARCHAR(100),
+    presion VARCHAR(50),
+    temperatura VARCHAR(50),
+    antecedentes TEXT,
+    
+    -- Medidas para administrar riesgos
+    requiere_herramientas_especiales VARCHAR(10) CHECK (requiere_herramientas_especiales IN ('SI', 'NO', 'N/A')),
+    tipo_herramientas_especiales VARCHAR(255),
+    herramientas_adecuadas VARCHAR(10) CHECK (herramientas_adecuadas IN ('SI', 'NO', 'N/A')),
+    requiere_verificacion_previa VARCHAR(10) CHECK (requiere_verificacion_previa IN ('SI', 'NO', 'N/A')),
+    requiere_conocer_riesgos VARCHAR(10) CHECK (requiere_conocer_riesgos IN ('SI', 'NO', 'N/A')),
+    observaciones_medidas TEXT,
+    
+    -- Requisitos para efectuar el trabajo
+    fuera_operacion VARCHAR(10) CHECK (fuera_operacion IN ('SI', 'NO', 'N/A')),
+    despresurizado_purgado VARCHAR(10) CHECK (despresurizado_purgado IN ('SI', 'NO', 'N/A')),
+    necesita_aislamiento VARCHAR(10) CHECK (necesita_aislamiento IN ('SI', 'NO', 'N/A')),
+    con_valvulas VARCHAR(10) CHECK (con_valvulas IN ('SI', 'NO', 'N/A')),
+    con_juntas_ciegas VARCHAR(10) CHECK (con_juntas_ciegas IN ('SI', 'NO', 'N/A')),
+    producto_entrampado VARCHAR(10) CHECK (producto_entrampado IN ('SI', 'NO', 'N/A')),
+    requiere_lavado VARCHAR(10) CHECK (requiere_lavado IN ('SI', 'NO', 'N/A')),
+    requiere_neutralizado VARCHAR(10) CHECK (requiere_neutralizado IN ('SI', 'NO', 'N/A')),
+    requiere_vaporizado VARCHAR(10) CHECK (requiere_vaporizado IN ('SI', 'NO', 'N/A')),
+    suspender_trabajos_adyacentes VARCHAR(10) CHECK (suspender_trabajos_adyacentes IN ('SI', 'NO', 'N/A')),
+    acordonar_area VARCHAR(10) CHECK (acordonar_area IN ('SI', 'NO', 'N/A')),
+    prueba_gas_toxico_inflamable VARCHAR(10) CHECK (prueba_gas_toxico_inflamable IN ('SI', 'NO', 'N/A')),
+    equipo_electrico_desenergizado VARCHAR(10) CHECK (equipo_electrico_desenergizado IN ('SI', 'NO', 'N/A')),
+    tapar_purgas_drenajes VARCHAR(10) CHECK (tapar_purgas_drenajes IN ('SI', 'NO', 'N/A')),
+    
+    -- Requisitos para administrar riesgos
+    proteccion_especial_recomendada VARCHAR(10) CHECK (proteccion_especial_recomendada IN ('SI', 'NO', 'N/A')),
+    proteccion_piel_cuerpo VARCHAR(10) CHECK (proteccion_piel_cuerpo IN ('SI', 'NO', 'N/A')),
+    proteccion_respiratoria VARCHAR(10) CHECK (proteccion_respiratoria IN ('SI', 'NO', 'N/A')),
+    proteccion_ocular VARCHAR(10) CHECK (proteccion_ocular IN ('SI', 'NO', 'N/A')),
+    proteccion_contraincendio VARCHAR(10) CHECK (proteccion_contraincendio IN ('SI', 'NO', 'N/A')),
+    tipo_proteccion_contraincendio VARCHAR(255),
+    instalacion_barreras VARCHAR(10) CHECK (instalacion_barreras IN ('SI', 'NO', 'N/A')),
+    observaciones_riesgos TEXT,
+    
+    -- Registro de pruebas requeridas
+    co2_nivel VARCHAR(20),
+    nh3_nivel VARCHAR(20),
+    oxigeno_nivel VARCHAR(20),
+    lel_nivel VARCHAR(20)
+);

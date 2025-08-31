@@ -244,55 +244,78 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const id_permiso = permisoResult.data.id_permiso || permisoResult.data.id;
 
-                // 2. Insertar PT no peligroso
-                const nombre_solicitante = document.getElementById('applicant')?.value || null;
-                const descripcion_trabajo = document.getElementById('work-description')?.value || null;
-                let tipo_mantenimiento = document.getElementById('maintenance-type')?.value || null;
-                // Si el tipo es OTRO, tomar el valor del input adicional
-                if (tipo_mantenimiento === 'OTRO') {
-                    const otroInput = document.getElementById('other-maintenance');
-                    if (otroInput && otroInput.value.trim()) {
-                        tipo_mantenimiento = otroInput.value.trim();
+                let exito = false;
+
+                try {
+                    // 1. Insertar permiso de trabajo (esto siempre)
+                    const permisoResult = await insertarPermisoTrabajo();
+                    if (permisoResult.success) exito = true;
+
+                    // Obtener el tipo de formulario desde sessionStorage
+                    const tipoFormulario = Number(sessionStorage.getItem('id_tipo_permiso'));
+                    console.log('[DEBUG] tipoFormulario:', tipoFormulario);
+
+                    // Según el tipo de formulario, insertar en la tabla correspondiente
+                    if (tipoFormulario === 1) {
+                        // Insertar en pt_no_peligroso
+                        const noPeligrosoResult = await insertarPtNoPeligroso();
+                        if (noPeligrosoResult.success) exito = true;
+                    } else if (tipoFormulario === 2) {
+                        // Insertar en pt_Apertura
+                        const aperturaResult = await insertarPtApertura();
+                        if (aperturaResult.success) exito = true;
                     }
+
+                    if (exito) {
+                        mostrarMensajeExito();
+                    } else {
+                        mostrarMensajeError();
+                    }
+                } catch (error) {
+                    mostrarMensajeError();
                 }
-                const ot_no = document.getElementById('work-order')?.value || null;
-                const equipo_intervencion = document.getElementById('equipment')?.value || null;
-                const fecha = document.getElementById('permit-date')?.value || '2025-08-19';
-                const hora = document.getElementById('start-time')?.value || '08:00';
-                const hora_inicio = `${fecha} ${hora}`;
-                const tag = document.getElementById('tag')?.value || null;
-                const fluido = document.getElementById('fluid')?.value || null;
-                const presion = document.getElementById('pressure')?.value || null;
-                const temperatura = document.getElementById('temperature')?.value || null;
-                const empresa = document.getElementById('company')?.value || null;
 
-                // Mostrar en consola los valores que se van a enviar
-                console.log('[DEBUG] Datos a enviar PT No Peligroso:', {
-                    id_permiso,
-                    nombre_solicitante,
-                    descripcion_trabajo,
-                    tipo_mantenimiento,
-                    ot_no,
-                    equipo_intervencion,
-                    hora_inicio,
-                    tag,
-                    fluido,
-                    presion,
-                    temperatura,
-                    empresa,
-                    // Nuevos campos
-                    trabajo_area_riesgo_controlado: document.querySelector('input[name="risk-area"]:checked')?.value || null,
-                    necesita_entrega_fisica: document.querySelector('input[name="physical-delivery"]:checked')?.value || null,
-                    necesita_ppe_adicional: document.querySelector('input[name="additional-ppe"]:checked')?.value || null,
-                    area_circundante_riesgo: document.querySelector('input[name="surrounding-risk"]:checked')?.value || null,
-                    necesita_supervision: document.querySelector('input[name="supervision-needed"]:checked')?.value || null,
-                    observaciones_analisis_previo: document.getElementById('pre-work-observations')?.value || null
-                });
+                // ==============================
+                // INICIO BLOQUE: IF para tipoFormulario
+                // Aquí inicia el condicional para el tipo de formulario
+                // ==============================
+                // Obtener el tipo de formulario desde sessionStorage
+                const tipoFormulario = Number(sessionStorage.getItem('id_tipo_permiso'));
 
-                const ptResponse = await fetch('http://localhost:3000/api/pt-no-peligroso', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
+                // Imprimir el valor antes de entrar al if
+                console.log('[DEBUG] tipoFormulario:', tipoFormulario);
+
+                // Cambiar según el formulario que se esté usando
+                if (tipoFormulario === 1) {
+                    // ==============================
+                    // INICIO BLOQUE: Insertar PT no peligroso
+                    // Este bloque inicia la lógica para insertar el permiso de trabajo no peligroso
+                    // ==============================
+
+                    // 2. Insertar PT no peligroso
+                    const nombre_solicitante = document.getElementById('applicant')?.value || null;
+                    const descripcion_trabajo = document.getElementById('work-description')?.value || null;
+                    let tipo_mantenimiento = document.getElementById('maintenance-type')?.value || null;
+                    // Si el tipo es OTRO, tomar el valor del input adicional
+                    if (tipo_mantenimiento === 'OTRO') {
+                        const otroInput = document.getElementById('other-maintenance');
+                        if (otroInput && otroInput.value.trim()) {
+                            tipo_mantenimiento = otroInput.value.trim();
+                        }
+                    }
+                    const ot_no = document.getElementById('work-order')?.value || null;
+                    const equipo_intervencion = document.getElementById('equipment')?.value || null;
+                    const fecha = document.getElementById('permit-date')?.value || '2025-08-19';
+                    const hora = document.getElementById('start-time')?.value || '08:00';
+                    const hora_inicio = `${fecha} ${hora}`;
+                    const tag = document.getElementById('tag')?.value || null;
+                    const fluido = document.getElementById('fluid')?.value || null;
+                    const presion = document.getElementById('pressure')?.value || null;
+                    const temperatura = document.getElementById('temperature')?.value || null;
+                    const empresa = document.getElementById('company')?.value || null;
+
+                    // Mostrar en consola los valores que se van a enviar
+                    console.log('[DEBUG] Datos a enviar PT No Peligroso:', {
                         id_permiso,
                         nombre_solicitante,
                         descripcion_trabajo,
@@ -305,16 +328,76 @@ document.addEventListener('DOMContentLoaded', () => {
                         presion,
                         temperatura,
                         empresa,
+                        // Nuevos campos
                         trabajo_area_riesgo_controlado: document.querySelector('input[name="risk-area"]:checked')?.value || null,
                         necesita_entrega_fisica: document.querySelector('input[name="physical-delivery"]:checked')?.value || null,
                         necesita_ppe_adicional: document.querySelector('input[name="additional-ppe"]:checked')?.value || null,
                         area_circundante_riesgo: document.querySelector('input[name="surrounding-risk"]:checked')?.value || null,
                         necesita_supervision: document.querySelector('input[name="supervision-needed"]:checked')?.value || null,
                         observaciones_analisis_previo: document.getElementById('pre-work-observations')?.value || null
-                    })
-                });
-                const ptResult = await ptResponse.json();
-                if (!ptResponse.ok || !ptResult.success) throw new Error(ptResult.error || 'Error al guardar PT No Peligroso');
+                    });
+
+                    const ptResponse = await fetch('http://localhost:3000/api/pt-no-peligroso', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            id_permiso,
+                            nombre_solicitante,
+                            descripcion_trabajo,
+                            tipo_mantenimiento,
+                            ot_no,
+                            equipo_intervencion,
+                            hora_inicio,
+                            tag,
+                            fluido,
+                            presion,
+                            temperatura,
+                            empresa,
+                            trabajo_area_riesgo_controlado: document.querySelector('input[name="risk-area"]:checked')?.value || null,
+                            necesita_entrega_fisica: document.querySelector('input[name="physical-delivery"]:checked')?.value || null,
+                            necesita_ppe_adicional: document.querySelector('input[name="additional-ppe"]:checked')?.value || null,
+                            area_circundante_riesgo: document.querySelector('input[name="surrounding-risk"]:checked')?.value || null,
+                            necesita_supervision: document.querySelector('input[name="supervision-needed"]:checked')?.value || null,
+                            observaciones_analisis_previo: document.getElementById('pre-work-observations')?.value || null
+                        })
+                    });
+                    const ptResult = await ptResponse.json();
+                    if (!ptResponse.ok || !ptResult.success) throw new Error(ptResult.error || 'Error al guardar PT No Peligroso');
+
+                    // ==============================
+                    // FIN BLOQUE: Insertar PT no peligroso
+                    // Este bloque termina la lógica para insertar el permiso de trabajo no peligroso
+                    // ==============================
+                } else if (tipoFormulario === 2) {
+                    // ==============================
+                    // INICIO BLOQUE: Insertar otro tipo de PT
+                    // Aquí inicia la lógica para otro tipo de permiso de trabajo
+                    // ==============================
+
+                    // Lógica para otro tipo de PT (ejemplo: PT peligroso)
+                    // Aquí puedes agregar los campos y la lógica necesaria para el otro tipo de permiso
+
+                    // ==============================
+                    // FIN BLOQUE: Insertar otro tipo de PT
+                    // Aquí termina la lógica para otro tipo de permiso de trabajo
+                    // ==============================
+                }
+                // ==============================
+                // FIN BLOQUE: IF para tipoFormulario
+                // Aquí termina el condicional para el tipo de formulario
+                // ==============================
+
+
+
+
+
+
+
+
+
+
+
+
 
                 // 3. Insertar actividades AST
                 const astActivities = [];
@@ -541,3 +624,7 @@ router.post('/api/pt-no-peligroso', async (req, res) => {
         });
     }
 });
+
+const formulariosRouter = require('./formularios');
+app.use('/api', formulariosRouter);
+

@@ -20,6 +20,7 @@ const vertablasRouter = require('./vertablas');
 const targetasRouter = require('./verformularios');
 const verformulariosRouter = require('./loginconsulta');
 const autorizacionesEstatusRouter = require('./autorizaciones_estatus');
+const formulariosRouter = require('./formularios');
 
 const loginconsultaRouter = require('./loginconsulta');
 
@@ -52,6 +53,7 @@ app.use('/api', vertablasRouter); // Monta las rutas de vertablas.js bajo el pre
 app.use('/api', targetasRouter); // Monta las rutas de targetas.js bajo el prefijo /api
 app.use('/api', verformulariosRouter); // Monta las rutas de verformularios.js bajo el prefijo /api
 app.use('/api', autorizacionesEstatusRouter); // Monta las rutas de autorizaciones_estatus.js bajo el prefijo /api
+app.use('/api', formulariosRouter); // Monta las rutas de formularios.js bajo el prefijo /api
 
 // ================= RUTAS DE TABLAS BASE =================
 const tablasBase = require('./tablasbase');

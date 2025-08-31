@@ -11,21 +11,23 @@ const pool = require('./database');
 router.get('/vertablas', async (req, res) => {
     try {
         const result = await pool.query(`
-            SELECT 
-                pt.id_permiso,
-                pt.prefijo,
-                tp.nombre AS tipo_permiso,
-                ptnp.descripcion_trabajo AS descripcion,
-                a.nombre AS area,
-                ptnp.nombre_solicitante AS solicitante,
-                pt.fecha_hora,
-                e.estatus
-            FROM permisos_trabajo pt
-            INNER JOIN tipos_permisos tp ON pt.id_tipo_permiso = tp.id_tipo_permiso
-            INNER JOIN areas a ON pt.id_area = a.id_area
-            INNER JOIN estatus e ON pt.id_estatus = e.id_estatus
-            INNER JOIN pt_no_peligroso ptnp ON pt.id_permiso = ptnp.id_permiso
-            ORDER BY pt.fecha_hora DESC;
+           SELECT 
+    pt.id_permiso,
+    pt.prefijo,
+    tp.nombre AS tipo_permiso,
+    COALESCE(ptnp.descripcion_trabajo, pta.descripcion_trabajo) AS descripcion,
+    a.nombre AS area,
+    COALESCE(ptnp.nombre_solicitante, pta.nombre_solicitante) AS solicitante,
+    pt.fecha_hora,
+    e.estatus
+FROM permisos_trabajo pt
+INNER JOIN tipos_permisos tp ON pt.id_tipo_permiso = tp.id_tipo_permiso
+INNER JOIN areas a ON pt.id_area = a.id_area
+INNER JOIN estatus e ON pt.id_estatus = e.id_estatus
+LEFT JOIN pt_no_peligroso ptnp ON pt.id_permiso = ptnp.id_permiso
+LEFT JOIN pt_apertura pta ON pt.id_permiso = pta.id_permiso
+WHERE ptnp.id_permiso IS NOT NULL OR pta.id_permiso IS NOT NULL
+ORDER BY pt.fecha_hora DESC;
         `);
         res.json(result.rows);
     } catch (error) {
@@ -38,22 +40,24 @@ router.get('/vertablas/:id_departamento', async (req, res) => {
     const { id_departamento } = req.params;
     try {
         const result = await pool.query(`
-            SELECT 
-                pt.id_permiso,
-                pt.prefijo,
-                tp.nombre AS tipo_permiso,
-                ptnp.descripcion_trabajo AS descripcion,
-                a.nombre AS area,
-                ptnp.nombre_solicitante AS solicitante,
-                pt.fecha_hora,
-                e.estatus
-            FROM permisos_trabajo pt
-            INNER JOIN tipos_permisos tp ON pt.id_tipo_permiso = tp.id_tipo_permiso
-            INNER JOIN areas a ON pt.id_area = a.id_area
-            INNER JOIN estatus e ON pt.id_estatus = e.id_estatus
-            INNER JOIN pt_no_peligroso ptnp ON pt.id_permiso = ptnp.id_permiso
-            WHERE pt.id_departamento = $1
-            ORDER BY pt.fecha_hora DESC;
+          SELECT 
+    pt.id_permiso,
+    pt.prefijo,
+    tp.nombre AS tipo_permiso,
+    COALESCE(ptnp.descripcion_trabajo, pta.descripcion_trabajo) AS descripcion,
+    a.nombre AS area,
+    COALESCE(ptnp.nombre_solicitante, pta.nombre_solicitante) AS solicitante,
+    pt.fecha_hora,
+    e.estatus
+FROM permisos_trabajo pt
+INNER JOIN tipos_permisos tp ON pt.id_tipo_permiso = tp.id_tipo_permiso
+INNER JOIN areas a ON pt.id_area = a.id_area
+INNER JOIN estatus e ON pt.id_estatus = e.id_estatus
+LEFT JOIN pt_no_peligroso ptnp ON pt.id_permiso = ptnp.id_permiso
+LEFT JOIN pt_apertura pta ON pt.id_permiso = pta.id_permiso
+WHERE pt.id_departamento = $1
+  AND (ptnp.id_permiso IS NOT NULL OR pta.id_permiso IS NOT NULL)
+ORDER BY pt.fecha_hora DESC;
         `, [id_departamento]);
         res.json(result.rows);
     } catch (error) {
@@ -70,17 +74,19 @@ SELECT
     pt.id_permiso,
     pt.prefijo,
     tp.nombre AS tipo_permiso,
-    ptnp.descripcion_trabajo AS descripcion,
+    COALESCE(ptnp.descripcion_trabajo, pta.descripcion_trabajo) AS descripcion,
     a.nombre AS area,
-    ptnp.nombre_solicitante AS solicitante,
+    COALESCE(ptnp.nombre_solicitante, pta.nombre_solicitante) AS solicitante,
     pt.fecha_hora,
     e.estatus
 FROM permisos_trabajo pt
 INNER JOIN tipos_permisos tp ON pt.id_tipo_permiso = tp.id_tipo_permiso
 INNER JOIN areas a ON pt.id_area = a.id_area
 INNER JOIN estatus e ON pt.id_estatus = e.id_estatus
-INNER JOIN pt_no_peligroso ptnp ON pt.id_permiso = ptnp.id_permiso
+LEFT JOIN pt_no_peligroso ptnp ON pt.id_permiso = ptnp.id_permiso
+LEFT JOIN pt_apertura pta ON pt.id_permiso = pta.id_permiso
 WHERE pt.id_departamento = $1
+  AND (ptnp.id_permiso IS NOT NULL OR pta.id_permiso IS NOT NULL)
 ORDER BY pt.fecha_hora DESC;
     `, [id_departamento]);
         return result.rows;
@@ -95,21 +101,23 @@ router.get('/autorizar/:id_departamento', async (req, res) => {
     try {
         const result = await pool.query(`
             SELECT 
-                pt.id_permiso,
-                pt.prefijo,
-                tp.nombre AS tipo_permiso,
-                ptnp.descripcion_trabajo AS descripcion,
-                a.nombre AS area,
-                ptnp.nombre_solicitante AS solicitante,
-                pt.fecha_hora,
-                e.estatus
-            FROM permisos_trabajo pt
-            INNER JOIN tipos_permisos tp ON pt.id_tipo_permiso = tp.id_tipo_permiso
-            INNER JOIN areas a ON pt.id_area = a.id_area
-            INNER JOIN estatus e ON pt.id_estatus = e.id_estatus
-            INNER JOIN pt_no_peligroso ptnp ON pt.id_permiso = ptnp.id_permiso
-            WHERE a.id_departamento = $1
-            ORDER BY pt.fecha_hora DESC;
+    pt.id_permiso,
+    pt.prefijo,
+    tp.nombre AS tipo_permiso,
+    COALESCE(ptnp.descripcion_trabajo, pta.descripcion_trabajo) AS descripcion,
+    a.nombre AS area,
+    COALESCE(ptnp.nombre_solicitante, pta.nombre_solicitante) AS solicitante,
+    pt.fecha_hora,
+    e.estatus
+FROM permisos_trabajo pt
+INNER JOIN tipos_permisos tp ON pt.id_tipo_permiso = tp.id_tipo_permiso
+INNER JOIN areas a ON pt.id_area = a.id_area
+INNER JOIN estatus e ON pt.id_estatus = e.id_estatus
+LEFT JOIN pt_no_peligroso ptnp ON pt.id_permiso = ptnp.id_permiso
+LEFT JOIN pt_apertura pta ON pt.id_permiso = pta.id_permiso
+WHERE a.id_departamento = $1
+  AND (ptnp.id_permiso IS NOT NULL OR pta.id_permiso IS NOT NULL)
+ORDER BY pt.fecha_hora DESC;
         `, [id_departamento]);
         res.json(result.rows);
     } catch (error) {
@@ -128,20 +136,22 @@ router.get('/autorizar-jefe', async (req, res) => {
     try {
         const result = await pool.query(`
             SELECT 
-                pt.id_permiso,
-                pt.prefijo,
-                tp.nombre AS tipo_permiso,
-                ptnp.descripcion_trabajo AS descripcion,
-                a.nombre AS area,
-                ptnp.nombre_solicitante AS solicitante,
-                pt.fecha_hora,
-                e.estatus
-            FROM permisos_trabajo pt
-            INNER JOIN tipos_permisos tp ON pt.id_tipo_permiso = tp.id_tipo_permiso
-            INNER JOIN areas a ON pt.id_area = a.id_area
-            INNER JOIN estatus e ON pt.id_estatus = e.id_estatus
-            INNER JOIN pt_no_peligroso ptnp ON pt.id_permiso = ptnp.id_permiso
-            ORDER BY pt.fecha_hora DESC;
+    pt.id_permiso,
+    pt.prefijo,
+    tp.nombre AS tipo_permiso,
+    COALESCE(ptnp.descripcion_trabajo, pta.descripcion_trabajo) AS descripcion,
+    a.nombre AS area,
+    COALESCE(ptnp.nombre_solicitante, pta.nombre_solicitante) AS solicitante,
+    pt.fecha_hora,
+    e.estatus
+FROM permisos_trabajo pt
+INNER JOIN tipos_permisos tp ON pt.id_tipo_permiso = tp.id_tipo_permiso
+INNER JOIN areas a ON pt.id_area = a.id_area
+INNER JOIN estatus e ON pt.id_estatus = e.id_estatus
+LEFT JOIN pt_no_peligroso ptnp ON pt.id_permiso = ptnp.id_permiso
+LEFT JOIN pt_apertura pta ON pt.id_permiso = pta.id_permiso
+WHERE ptnp.id_permiso IS NOT NULL OR pta.id_permiso IS NOT NULL
+ORDER BY pt.fecha_hora DESC;
         `);
         res.json(result.rows);
     } catch (error) {

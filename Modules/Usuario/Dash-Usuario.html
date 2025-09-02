@@ -1,69 +1,85 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Syncro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Orbitron:wght@500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
-    <link rel="stylesheet" href="/CSS/EstiloGeneral.css">
-</head>
-<body>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Orbitron:wght@500;700&family=Roboto:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/CSS/EstiloGeneral.css" />
+  </head>
+  <body>
     <div class="app-container">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <h2 class="logo-container">
-                    <i class="ri-refresh-line logo-icon"></i>
-                    <span class="logo-text">Syncro</span>
-                </h2>
-                <button class="collapse-btn">
-                    <i class="ri-menu-line menu-icon"></i>
-                    <i class="ri-arrow-right-s-line collapse-icon"></i>
-                </button>
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <h2 class="logo-container">
+            <i class="ri-refresh-line logo-icon"></i>
+            <span class="logo-text">Syncro</span>
+          </h2>
+          <button class="collapse-btn">
+            <i class="ri-menu-line menu-icon"></i>
+            <i class="ri-arrow-right-s-line collapse-icon"></i>
+          </button>
+        </div>
+        <nav class="sidebar-nav">
+          <ul>
+            <li>
+              <a href="#"
+                ><i class="ri-pie-chart-2-line"></i> <span>Dashboard</span></a
+              >
+            </li>
+            <li>
+              <a href="#"
+                ><i class="ri-clipboard-line"></i>
+                <span>Crear Permisos</span></a
+              >
+            </li>
+            <li>
+              <a href="#"
+                ><i class="ri-shield-user-line"></i>
+                <span>Autorizar Permisos</span></a
+              >
+            </li>
+          </ul>
+        </nav>
+        <div class="sidebar-footer">
+          <div class="user-profile">
+            <div class="avatar">JP</div>
+            <div class="user-info">
+              <span class="name">Juan Pérez</span>
+              <span class="role"></span>
             </div>
-            <nav class="sidebar-nav">
-                    <ul>
-                        <li>
-                            <a href="#"><i class="ri-pie-chart-2-line"></i> <span>Dashboard</span></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="ri-clipboard-line"></i> <span>Crear Permisos</span></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="ri-shield-user-line"></i> <span>Autorizar Permisos</span></a>
-                        </li>
-                    </ul>
-            </nav>
-            <div class="sidebar-footer">
-                <div class="user-profile">
-                    <div class="avatar">JP</div>
-                    <div class="user-info">
-                        <span class="name">Juan Pérez</span>
-                        <span class="role"></span>
-                    </div>
-                </div>
-                <button class="logout-btn"><i class="ri-logout-box-r-line"></i></button>
-            </div>
-        </aside>
+          </div>
+          <button class="logout-btn">
+            <i class="ri-logout-box-r-line"></i>
+          </button>
+        </div>
+      </aside>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <div class="dashboard-frame">
-                <div class="powerbi-fullscreen-container">
-                    <iframe
-                        title="Dashboard de Producción"
-                        src="https://app.powerbi.com/view?r=eyJrIjoiY2Q0NDBmNzktMmEzZC00OWJjLWFhOWYtODg0NTkzYWZiNzFiIiwidCI6IjM4NjliZjNkLTg2YTktNDI3Ni1hYzQzLTAyMTdiNmI5ZmFkOCJ9"
-                        frameborder="0"
-                        allowFullScreen="true">
-                    </iframe>
-                </div>
-            </div>
-        </main>
+      <!-- Main Content -->
+      <main class="main-content">
+        <div class="dashboard-frame">
+          <div class="powerbi-fullscreen-container">
+            <iframe
+              title="Dashboard de Producción"
+              src="https://app.powerbi.com/view?r=eyJrIjoiY2Q0NDBmNzktMmEzZC00OWJjLWFhOWYtODg0NTkzYWZiNzFiIiwidCI6IjM4NjliZjNkLTg2YTktNDI3Ni1hYzQzLTAyMTdiNmI5ZmFkOCJ9"
+              frameborder="0"
+              allowfullscreen="true"
+            >
+            </iframe>
+          </div>
+        </div>
+      </main>
     </div>
 
     <script src="/JS/usuario/Dash-Usuario.js"></script>
     <script src="/JS/usuario/MenuUsuario.js"></script>
-   
-</body>
+  </body>
 </html>

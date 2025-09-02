@@ -378,15 +378,7 @@ const permisoRenderers = {
 function renderApertura(data) {
     return `
         <div class="executive-grid">
-            <div class="executive-item"><label>Fecha:</label><p>${data.fecha ?? 'Sin información'}</p></div>
-            <div class="executive-item"><label>Prefijo:</label><p>${data.prefijo ?? 'Sin información'}</p></div>
-            <div class="executive-item"><label>Tipo de permiso:</label><p>${data.tipo_permiso ?? 'Sin información'}</p></div>
-            <div class="executive-item"><label>Empresa:</label><p>${data.empresa ?? 'Sin información'}</p></div>
-            <div class="executive-item"><label>Sucursal:</label><p>${data.sucursal ?? 'Sin información'}</p></div>
             <div class="executive-item"><label>Área:</label><p>${data.area ?? 'Sin información'}</p></div>
-            <div class="executive-item"><label>Departamento:</label><p>${data.departamento ?? 'Sin información'}</p></div>
-            <div class="executive-item"><label>Solicitante:</label><p>${data.solicitante ?? 'Sin información'}</p></div>
-            <div class="executive-item"><label>Descripción del trabajo:</label><p>${data.descripcion_trabajo ?? 'Sin información'}</p></div>
             <div class="executive-item"><label>Tipo de mantenimiento:</label><p>${data.tipo_mantenimiento ?? 'Sin información'}</p></div>
             <div class="executive-item"><label>OT:</label><p>${data.ot_numero ?? 'Sin información'}</p></div>
             <div class="executive-item"><label>Tag:</label><p>${data.tag ?? 'Sin información'}</p></div>

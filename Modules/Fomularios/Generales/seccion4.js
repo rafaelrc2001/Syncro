@@ -427,7 +427,12 @@ const observaciones_riesgos = document.getElementById('observations')?.value || 
 const co2_nivel = document.getElementById('co2-level')?.value || null;
 const nh3_nivel = document.getElementById('nh3-level')?.value || null;
 const oxigeno_nivel = document.getElementById('oxygen-level')?.value || null;
+
 const lel_nivel = document.getElementById('lel-level')?.value || null;
+// Obtener campos compartidos igual que PT No Peligroso
+const empresa = document.getElementById('company')?.value || null;
+const nombre_solicitante = document.getElementById('applicant')?.value || null;
+const descripcion_trabajo = document.getElementById('work-description')?.value || null;
 
 // Construir el objeto de datos para enviar
                     const datosApertura = {
@@ -474,7 +479,10 @@ const lel_nivel = document.getElementById('lel-level')?.value || null;
                         co2_nivel,
                         nh3_nivel,
                         oxigeno_nivel,
-                        lel_nivel
+                        lel_nivel,
+                        empresa,
+                        nombre_solicitante,
+                        descripcion_trabajo
                     };
 
                     // Enviar los datos al backend

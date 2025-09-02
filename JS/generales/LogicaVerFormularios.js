@@ -3,7 +3,27 @@ function mostrarInformacionGeneral(general) {
     // Ejemplo de llenado de campos generales en el modal
     document.getElementById('modal-tipo-permiso').textContent = general.tipo_permiso || '';
     document.getElementById('modal-prefijo').textContent = general.prefijo || '';
-    // Agrega aquí el llenado de otros campos generales según tu estructura
+        if (document.getElementById('info-fecha')) {
+            document.getElementById('info-fecha').textContent = general.fecha || '';
+        }
+        if (document.getElementById('info-empresa')) {
+            document.getElementById('info-empresa').textContent = general.empresa || '';
+        }
+        if (document.getElementById('info-sucursal')) {
+            document.getElementById('info-sucursal').textContent = general.sucursal || '';
+        }
+        if (document.getElementById('ver-departamento')) {
+            document.getElementById('ver-departamento').textContent = general.departamento || '';
+        }
+        if (document.getElementById('info-solicitante')) {
+            document.getElementById('info-solicitante').textContent = general.solicitante || '';
+        }
+        if (document.getElementById('info-descripcion')) {
+            document.getElementById('info-descripcion').textContent = general.descripcion_trabajo || general.descripcion || '';
+        }
+    // Agrega los demás campos según sus IDs:
+    document.querySelector('.executive-item .highlight').textContent = general.fecha || '';
+    // Y así para empresa, sucursal, solicitante, descripción, etc.
 }
 
 // Lógica reutilizable para ver formularios
@@ -133,17 +153,19 @@ function asignarEventosVer() {
                             ? 'No Peligroso'
                             : data.general.tipo_permiso;
 
+                // Mostrar/ocultar sección para PT No Peligroso
+                const bloqueNoPeligroso = document.getElementById('modal-no-peligroso');
+                if (data.general.tipo_permiso === 'PT No Peligroso') {
+                    bloqueNoPeligroso.style.display = '';
+                } else {
+                    bloqueNoPeligroso.style.display = 'none';
+                }
+
+                // Renderizar apertura si corresponde
                 if (data.general.tipo_permiso === 'PT para Apertura Equipo Línea') {
                     document.getElementById('modal-especifica').innerHTML = renderApertura(data.general);
                 } else {
                     document.getElementById('modal-especifica').innerHTML = '';
-                }
-
-                // Mostrar/ocultar sección para PT No Peligroso
-                if (data.general.tipo_permiso === 'PT No Peligroso') {
-                    document.getElementById('modal-no-peligroso').style.display = '';
-                } else {
-                    document.getElementById('modal-no-peligroso').style.display = 'none';
                 }
 
             } catch (err) {
@@ -205,6 +227,7 @@ function renderApertura(data) {
 function renderNoPeligroso(data) {
     // Si ya tienes el renderizado en mostrarDetallesTecnicos, puedes dejarlo vacío o solo retornar ''
     return '';
+
 }
 
 

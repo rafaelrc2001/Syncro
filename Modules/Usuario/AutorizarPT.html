@@ -196,22 +196,22 @@
                 <div>
                     <div>
                         <div>Planta o lugar de trabajo:</div>
-                        <div>UREA II</div>
+                        <div></div>
                     </div>
                     
                     <div>
                         <div>Nombre de quien solicita:</div>
-                        <div>Ing. Juan Pérez Martínez</div>
+                        <div></div>
                     </div>
                     
                     <div>
                         <div>Tipo de mantenimiento:</div>
-                        <div>PREVENTIVO</div>
+                        <div></div>
                     </div>
                     
                     <div>
                         <div>O.T. No.:</div>
-                        <div>OT-2023-0428</div>
+                        <div></div>
                     </div>
                     
                     <div>
@@ -290,7 +290,7 @@
     </div>
 
 
-      <!-- Modal de ver -->
+         <!-- Modal de ver -->
 <div id="modalVer" class="modal">
     <div class="modal-content executive-view">
         <!-- Header del Modal -->
@@ -304,8 +304,7 @@
 
         <!-- Cuerpo del Modal -->
         <div class="modal-body">
-        
-                <!-- Sección 1: Información General -->
+            <!-- Sección 1: Información General -->
             <div class="executive-section">
                 <div class="section-header">
                     <i class="ri-information-line"></i>
@@ -314,110 +313,65 @@
                 <div class="executive-grid">
                     <div class="executive-item">
                         <label>Fecha:</label>
-                        <p class="highlight">15/07/2023</p>
+                        <p class="highlight" id="info-fecha"></p>
                     </div>
                     <div class="executive-item">
                         <label>Empresa:</label>
-                        <p>PRO-AGROINDUSTRIA</p>
+                        <p id="info-empresa"></p>
                     </div>
                     <div class="executive-item">
                         <label>Sucursal:</label>
-                        <p>Área 6</p>
+                        <p id="info-sucursal"></p>
                     </div>
                     <div class="executive-item">
                         <label>Departamento que creo el PT:</label>
                         <p class="highlight" id="ver-departamento"></p>
                     </div>
-                    
                     <div class="executive-item">
                         <label>Solicitante:</label>
-                        <p>Ing. Luis Torres</p>
-
+                        <p id="info-solicitante"></p>
                     </div>
                     <div class="executive-item full-width">
                         <label>Descripción del trabajo:</label>
-                        <p class="description-box">Mantenimiento preventivo a válvulas de control en línea de producción principal.</p>
+                        <p class="description-box" id="info-descripcion"></p>
                     </div>                  
                     
 
                 </div>
             </div>
 
-            <!-- Sección 2: Detalles Técnicos -->
-            <div class="executive-section">
-                <div class="section-header">
-                    <i class="ri-tools-line"></i>
-                    <h3>Permiso de Trabajo</h3>
-                </div>
-                <div class="executive-grid">
 
-                    <div class="executive-item">
-                        <label>Planta o Lugar de Trabajo</label>
-                        <p id="modal-planta">Urea 1</p>
-                    </div>
-                    <div class="executive-item">
-                        <label>Tipo de actividad:</label>
-                        <p id="modal-tipo-actividad">PREVENTIVO</p>
-                    </div>
-                    <div class="executive-item">
-                        <label>O.T. No.:</label>
-                        <p id="modal-ot">MT-2023-0456</p>
-                    </div>
-                    <div class="executive-item">
-                        <label>Equipo:</label>
-                        <p id="modal-equipo">Válvula FC-205</p>
-                    </div>
-                    <div class="executive-item">
-                        <label>TAG:</label>
-                        <p id="modal-tag">TV-205A</p>
-                    </div>
-                    <div class="executive-item">
-                        <label>Horario:</label>
-                        <p id="modal-horario">08:00 - 16:00 hrs</p>
-                    </div>
-                    <div class="executive-item">
-                        <label>Fluido:</label>
-                        <p id="modal-fluido">8</p>
-                    </div>
-                    <div class="executive-item">
-                        <label>Presion:</label>
-                        <p id="modal-presion">5 kg</p>
-                    </div>
-                    <div class="executive-item">
-                        <label>Temperatura:</label>
-                        <p id="modal-temperatura">16c</p>
-                    </div>
-                        <!-- Nuevos valores de análisis previo -->
-                        <div class="executive-item">
-                            <label>¿Trabajo en área de riesgo controlado?</label>
-                            <p id="modal-trabajo-area-riesgo-controlado"></p>
-                        </div>
-                        <div class="executive-item">
-                            <label>¿Requiere entrega física?</label>
-                            <p id="modal-necesita-entrega-fisica"></p>
-                        </div>
-                        <div class="executive-item">
-                            <label>¿Requiere PPE adicional?</label>
-                            <p id="modal-necesita-ppe-adicional"></p>
-                        </div>
-                        <div class="executive-item">
-                            <label>¿Área circundante con riesgo?</label>
-                            <p id="modal-area-circundante-riesgo"></p>
-                        </div>
-                        <div class="executive-item">
-                            <label>¿Requiere supervisión?</label>
-                            <p id="modal-necesita-supervision"></p>
-                        </div>
-                        <div class="executive-item full-width">
-                            <label>Observaciones del análisis previo:</label>
-                            <p id="modal-observaciones-analisis-previo" class="description-box"></p>
-                        </div>
 
-                </div>
-          
-                
-                
-            </div>
+
+   <!-- Sección 2: Detalles Técnicos -->
+ <div class="executive-section">
+    <div class="section-header">
+        <i class="ri-tools-line"></i>
+        <h3>Permiso de Trabajo</h3>
+        <span id="modal-tipo-especifico" class="tipo-especifico-label"></span>
+    </div>
+    <div id="modal-no-peligroso" class="executive-grid" style="display:none;">
+        <div class="executive-item"><label>Planta:</label><p id="modal-planta"></p></div>
+        <div class="executive-item"><label>Tipo de actividad:</label><p id="modal-tipo-actividad"></p></div>
+        <div class="executive-item"><label>OT:</label><p id="modal-ot"></p></div>
+        <div class="executive-item"><label>Equipo:</label><p id="modal-equipo"></p></div>
+        <div class="executive-item"><label>Tag:</label><p id="modal-tag"></p></div>
+        <div class="executive-item"><label>Horario:</label><p id="modal-horario"></p></div>
+        <div class="executive-item"><label>Fluido:</label><p id="modal-fluido"></p></div>
+        <div class="executive-item"><label>Presión:</label><p id="modal-presion"></p></div>
+        <div class="executive-item"><label>Temperatura:</label><p id="modal-temperatura"></p></div>
+        <div class="executive-item"><label>Trabajo área riesgo controlado:</label><p id="modal-trabajo-area-riesgo-controlado"></p></div>
+        <div class="executive-item"><label>¿Necesita entrega física?:</label><p id="modal-necesita-entrega-fisica"></p></div>
+        <div class="executive-item"><label>¿Necesita PPE adicional?:</label><p id="modal-necesita-ppe-adicional"></p></div>
+        <div class="executive-item"><label>Área circundante riesgo:</label><p id="modal-area-circundante-riesgo"></p></div>
+        <div class="executive-item"><label>¿Necesita supervisión?:</label><p id="modal-necesita-supervision"></p></div>
+        <div class="executive-item"><label>Observaciones análisis previo:</label><p id="modal-observaciones-analisis-previo"></p></div>
+    </div>
+    <!-- Aquí el JS inyecta los campos de apertura -->
+    <div id="modal-especifica"></div>
+ </div>
+
+
 
           <div class="executive-section">
             <div class="section-header">
@@ -484,7 +438,8 @@
             </tbody>
         </table>
     </div>
-        </div>
+</div>
+
 
 <div class="executive-section" style="display: flex; gap: 24px; align-items: flex-end;">
     <div style="flex: 1;">
@@ -576,7 +531,7 @@
 
     <script src="/JS/usuario/MenuUsuario.js"></script>
     <script src="/JS/generales/LogicaVer.js"></script>
-    <script src="/JS/usuario/tabla-autorizar.js"></script>
-   
+   <script type="module" src="/JS/usuario/tabla-autorizar.js"></script>
+
 </body>
 </html>

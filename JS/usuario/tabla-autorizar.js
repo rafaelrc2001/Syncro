@@ -1,3 +1,13 @@
+import {
+  mostrarInformacionGeneral,
+  mostrarDetallesTecnicos,
+  mostrarAST,
+  mostrarActividadesAST,
+  mostrarParticipantesAST
+} from '../generales/LogicaVerFormularios.js';
+import { renderApertura, renderNoPeligroso } from '/JS/generales/LogicaVerFormularios.js';
+
+
 // --- Tarjetas desde autorizar ---
 async function cargarTargetasDesdeAutorizar() {
     try {
@@ -63,8 +73,13 @@ function asignarEventosVer() {
                 console.log('Respuesta de /api/verformularios:', data);
                 // Llenar sección 1: Información General
                 if (data.general) mostrarInformacionGeneral(data.general);
-                // Llenar sección 2: Detalles Técnicos
-                if (typeof mostrarDetallesTecnicos === 'function' && data.detalles) {
+                // Llenar sección 2: Detalles Técnicos solo si es PT No Peligroso
+                if (
+                    typeof mostrarDetallesTecnicos === 'function' &&
+                    data.detalles &&
+                    data.general &&
+                    data.general.tipo_permiso === 'PT No Peligroso'
+                ) {
                     mostrarDetallesTecnicos(data.detalles);
                 }
                 // Llenar AST y Participantes si tienes los datos y funciones
@@ -76,6 +91,19 @@ function asignarEventosVer() {
                 }
                 if (typeof mostrarParticipantesAST === 'function') {
                     mostrarParticipantesAST(data.participantes_ast || []);
+                }
+                // Mostrar/ocultar bloque de No Peligroso
+                const bloqueNoPeligroso = document.getElementById('modal-no-peligroso');
+                if (data.general && data.general.tipo_permiso === 'PT No Peligroso') {
+                    if (bloqueNoPeligroso) bloqueNoPeligroso.style.display = '';
+                    document.getElementById('modal-especifica').innerHTML = '';
+                } else {
+                    if (bloqueNoPeligroso) bloqueNoPeligroso.style.display = 'none';
+                    if (data.general && data.general.tipo_permiso === 'PT para Apertura Equipo Línea') {
+                        document.getElementById('modal-especifica').innerHTML = renderApertura(data.general);
+                    } else {
+                        document.getElementById('modal-especifica').innerHTML = '';
+                    }
                 }
                 // Abrir el modal
                 document.getElementById('modalVer').classList.add('active');
@@ -243,140 +271,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Función para llenar la sección 1 del modal con los datos recibidos del backend
-function mostrarInformacionGeneral(data) {
-    // Asume que data tiene las propiedades: fecha, empresa, sucursal, area, solicitante, descripcion_trabajo, tipo_permiso, prefijo
-    const fecha = document.querySelector('#modalVer .executive-item:nth-child(1) .highlight');
-    if (fecha) fecha.textContent = data.fecha || '';
-    const empresa = document.querySelector('#modalVer .executive-item:nth-child(2) p');
-    if (empresa) empresa.textContent = data.empresa || '';
-    const sucursal = document.querySelector('#modalVer .executive-item:nth-child(3) p');
-    if (sucursal) sucursal.textContent = data.sucursal || '';
-    const area = document.querySelector('#modalVer .executive-item:nth-child(4) .highlight');
-    if (area) area.textContent = data.area || '';
-    const solicitante = document.querySelector('#modalVer .executive-item:nth-child(5) p');
-    if (solicitante) solicitante.textContent = data.solicitante || '';
-    const descBox = document.querySelector('#modalVer .executive-item.full-width .description-box');
-    if (descBox) descBox.textContent = data.descripcion_trabajo || '';
-    // Actualizar departamento
-    const verDepto = document.getElementById('ver-departamento');
-    if (verDepto) verDepto.textContent = data.departamento || '';
-    // Actualizar tipo de permiso y prefijo en el header del modal
-    const tipoPermiso = document.getElementById('modal-tipo-permiso');
-    if (tipoPermiso) tipoPermiso.textContent = data.tipo_permiso || '';
-    const prefijo = document.getElementById('modal-prefijo');
-    if (prefijo) prefijo.textContent = data.prefijo ? `No. ${data.prefijo}` : '';
-}
 
-// Función para llenar la sección 2 del modal con los datos técnicos
-function mostrarDetallesTecnicos(detalles) {
-    document.getElementById('modal-planta').textContent = detalles.planta || '';
-    document.getElementById('modal-tipo-actividad').textContent = detalles.tipo_actividad || '';
-    document.getElementById('modal-ot').textContent = detalles.ot || '';
-    document.getElementById('modal-equipo').textContent = detalles.equipo || '';
-    document.getElementById('modal-tag').textContent = detalles.tag || '';
-    document.getElementById('modal-horario').textContent = detalles.horario || '';
-    document.getElementById('modal-fluido').textContent = detalles.fluido || '';
-    document.getElementById('modal-presion').textContent = detalles.presion || '';
-    document.getElementById('modal-temperatura').textContent = detalles.temperatura || '';
 
-    // Nuevos valores de análisis previo
-    document.getElementById('modal-trabajo-area-riesgo-controlado').textContent = detalles.trabajo_area_riesgo_controlado || '';
-    document.getElementById('modal-necesita-entrega-fisica').textContent = detalles.necesita_entrega_fisica || '';
-    document.getElementById('modal-necesita-ppe-adicional').textContent = detalles.necesita_ppe_adicional || '';
-    document.getElementById('modal-area-circundante-riesgo').textContent = detalles.area_circundante_riesgo || '';
-    document.getElementById('modal-necesita-supervision').textContent = detalles.necesita_supervision || '';
-    document.getElementById('modal-observaciones-analisis-previo').textContent = detalles.observaciones_analisis_previo || '';
-}
 
-// Función para llenar la sección AST (EPP, Maquinaria, Materiales)
-function mostrarAST(ast) {
-    // EPP
-    const eppList = document.getElementById('modal-epp-list');
-    eppList.innerHTML = '';
-    if (ast.epp_requerido) {
-        ast.epp_requerido.split(',').forEach(item => {
-            if (item.trim()) {
-                const li = document.createElement('li');
-                li.textContent = item.trim();
-                eppList.appendChild(li);
-            }
-        });
-    }
-    // Maquinaria y Herramientas
-    const maquinariaList = document.getElementById('modal-maquinaria-list');
-    maquinariaList.innerHTML = '';
-    if (ast.maquinaria_herramientas) {
-        ast.maquinaria_herramientas.split(',').forEach(item => {
-            if (item.trim()) {
-                const li = document.createElement('li');
-                li.textContent = item.trim();
-                maquinariaList.appendChild(li);
-            }
-        });
-    }
-    // Materiales y Accesorios
-    const materialesList = document.getElementById('modal-materiales-list');
-    materialesList.innerHTML = '';
-    if (ast.material_accesorios) {
-        ast.material_accesorios.split(',').forEach(item => {
-            if (item.trim()) {
-                const li = document.createElement('li');
-                li.textContent = item.trim();
-                materialesList.appendChild(li);
-            }
-        });
-    }
-}
-
-// Función para llenar la tabla de actividades AST
-function mostrarActividadesAST(actividades) {
-    const tbody = document.getElementById('modal-ast-actividades-body');
-    tbody.innerHTML = '';
-    if (Array.isArray(actividades)) {
-        actividades.forEach(act => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${act.no || ''}</td>
-                <td>${act.secuencia_actividad || ''}</td>
-                <td>${act.personal_ejecutor || ''}</td>
-                <td>${act.peligros_potenciales || ''}</td>
-                <td>${act.descripcion || ''}</td>
-                <td>${act.responsable || ''}</td>
-            `;
-            tbody.appendChild(tr);
-        });
-    }
-}
-
-// Función para llenar la tabla de participantes AST
-function mostrarParticipantesAST(participantes) {
-    console.log('mostrarParticipantesAST llamada con:', participantes);
-    const tbody = document.getElementById('modal-ast-participantes-body');
-    if (!tbody) {
-        console.warn('No se encontró el tbody de participantes');
-        return;
-    }
-    tbody.innerHTML = '';
-    if (Array.isArray(participantes)) {
-        if (participantes.length === 0) {
-            console.warn('La lista de participantes está vacía');
-        }
-        participantes.forEach(p => {
-            console.log('Agregando participante:', p);
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${p.nombre || ''}</td>
-                <td><span class="role-badge">${p.funcion || ''}</span></td>
-                <td>${p.credencial || ''}</td>
-                <td>${p.cargo || ''}</td>
-            `;
-            tbody.appendChild(tr);
-        });
-    } else {
-        console.warn('participantes no es un array:', participantes);
-    }
-}
 
 
 
@@ -641,6 +538,10 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('modalComentario').classList.remove('active');
             document.getElementById('modalVer').classList.add('active');
         });
+    }
+
+    if (document.getElementById('info-descripcion')) {
+        document.getElementById('info-descripcion').textContent = general.descripcion_trabajo || '';
     }
 });
 

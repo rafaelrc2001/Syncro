@@ -334,6 +334,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Mostrar mensaje de éxito
         alert("Permiso cancelado con éxito");
         console.log("Estatus cancelado actualizado");
+        window.location.reload();
         // Aquí puedes refrescar la tabla si lo necesitas
       } catch (err) {
         alert("Error al cancelar: " + err.message);
@@ -410,6 +411,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Mostrar mensaje de éxito
         alert("Permiso terminado con éxito");
         console.log("Estatus terminado actualizado");
+        window.location.reload();
         // Aquí puedes refrescar la tabla si lo necesitas
       } catch (err) {
         alert("Error al terminar: " + err.message);
@@ -482,6 +484,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         mostrarPermisosFiltrados("En espera del área");
         alert("Estatus actualizado a 'continua'");
+        window.location.reload();
       } catch (err) {
         alert("Error: " + err.message);
       }
@@ -645,6 +648,7 @@ if (btnCancelarEnviar) {
       }
       mostrarPermisosFiltrados("En espera del área");
       alert("Estatus actualizado a 'cancelado'");
+      window.location.reload();
     } catch (err) {
       alert("Error: " + err.message);
     }

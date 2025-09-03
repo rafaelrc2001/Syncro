@@ -381,16 +381,18 @@ document.addEventListener("DOMContentLoaded", function () {
         const resEstatus = await fetch(urlEstatus);
         if (!resEstatus.ok) throw new Error("Error obteniendo id_estatus");
         const dataEstatus = await resEstatus.json();
-        if (!dataEstatus.id_estatus) throw new Error("No se encontró el estatus");
+        if (!dataEstatus.id_estatus)
+          throw new Error("No se encontró el estatus");
         // 2. Actualizar el estatus a 'terminado'
         const urlTerminado = "http://localhost:3000/api/estatus/terminado";
         const resUpdate = await fetch(urlTerminado, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ id_estatus: dataEstatus.id_estatus })
+          body: JSON.stringify({ id_estatus: dataEstatus.id_estatus }),
         });
         const dataUpdate = await resUpdate.json();
-        if (!dataUpdate.success) throw new Error(dataUpdate.error || "Error al actualizar");
+        if (!dataUpdate.success)
+          throw new Error(dataUpdate.error || "Error al actualizar");
         // Cerrar el modal
         modalTerminarEspecial.classList.remove("active");
         // Mostrar mensaje de éxito
@@ -460,8 +462,12 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!dataUpdate.success)
           throw new Error(dataUpdate.error || "Error al actualizar");
         // 3. Refrescar la tabla mostrando solo los permisos con estatus 'En espera del área'
-        document.getElementById("modalComentarioContinuar").style.display =
-          "none";
+        // Cerrar ambos modales: modalComentarioContinuar y modalVer
+        modalComentarioContinuar.classList.remove("active");
+        const modalVer = document.getElementById("modalVer");
+        if (modalVer && modalVer.classList.contains("active")) {
+          modalVer.classList.remove("active");
+        }
         mostrarPermisosFiltrados("En espera del área");
         alert("Estatus actualizado a 'continua'");
       } catch (err) {
@@ -597,6 +603,15 @@ if (btnCancelarEnviar) {
         throw new Error(dataUpdate.error || "Error al actualizar");
       // 3. Refrescar la tabla mostrando solo los permisos con estatus 'En espera del área'
       modalComentarioCancelar.classList.remove("active");
+      const modalVer = document.getElementById("modalVer");
+      if (modalVer) {
+        console.log("modalVer estado:", {
+          classList: [...modalVer.classList],
+          styleDisplay: modalVer.style.display,
+          computedDisplay: window.getComputedStyle(modalVer).display,
+          computedVisibility: window.getComputedStyle(modalVer).visibility,
+        });
+      }
       // Para cerrar el modalComentarioCancelar con el botón cancelar
       const cancelarBtnCancelar = document.querySelector(
         "#modalComentarioCancelar .cancelar-btn"

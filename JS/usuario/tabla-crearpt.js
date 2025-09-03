@@ -192,9 +192,10 @@ document.getElementById('status-filter').addEventListener('change', function() {
     mostrarPermisosFiltrados(this.value);
 });
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function() {
     cargarTargetasDesdePermisos();
     cargarPermisosTabla();
+
     // Búsqueda por folio compatible con paginación
     const searchInput = document.querySelector('.search-bar input');
     if (searchInput) {
@@ -202,6 +203,29 @@ document.addEventListener('DOMContentLoaded', () => {
             filtroBusqueda = searchInput.value.trim().toLowerCase();
             paginaActual = 1;
             mostrarPermisosFiltrados(document.getElementById('status-filter').value);
+        });
+    }
+
+    const btnContinuar = document.getElementById('btn-continuar-pt');
+    if (btnContinuar) {
+        btnContinuar.addEventListener('click', function() {
+            const modal = document.getElementById('modalComentarioContinuar');
+            if (modal) {
+                modal.classList.add('active');
+                console.log('modalComentarioContinuar abierto');
+            }
+        });
+    }
+
+    // Para cerrar el modal con el botón cancelar
+    const cancelarBtn = document.querySelector('#modalComentarioContinuar .cancelar-btn');
+    if (cancelarBtn) {
+        cancelarBtn.addEventListener('click', function() {
+            const modal = document.getElementById('modalComentarioContinuar');
+            if (modal) {
+                modal.classList.remove('active');
+                console.log('modalComentarioContinuar cerrado');
+            }
         });
     }
 });
@@ -215,3 +239,70 @@ const permisoRenderers = {
 
 
 
+
+
+
+
+// Mostrar modal por ID
+function mostrarModalComentarioCancelar() {
+    document.getElementById('modalComentarioCancelar').style.display = 'flex';
+}
+function ocultarModalComentarioCancelar() {
+    document.getElementById('modalComentarioCancelar').style.display = 'none';
+}
+
+function mostrarModalComentarioTerminar() {
+    document.getElementById('modalComentarioTerminar').style.display = 'flex';
+}
+function ocultarModalComentarioTerminar() {
+    document.getElementById('modalComentarioTerminar').style.display = 'none';
+}
+
+function mostrarModalComentarioContinuar() {
+    document.getElementById('modalComentarioContinuar').style.display = 'flex';
+}
+function ocultarModalComentarioContinuar() {
+    document.getElementById('modalComentarioContinuar').style.display = 'none';
+}
+
+
+
+
+// Mostrar el modal al hacer clic en "Continuar"
+document.getElementById('btn-continuar-pt').addEventListener('click', function() {
+    console.log('[DEBUG] Botón Continuar presionado');
+    document.getElementById('modalComentarioContinuar').style.display = 'flex';
+});
+
+// Ocultar el modal al hacer clic en "Cancelar"
+document.querySelector('#modalComentarioContinuar .cancelar-btn').addEventListener('click', function() {
+    document.getElementById('modalComentarioContinuar').style.display = 'none';
+    console.log('[DEBUG] Modal Continuar ocultado');
+});
+
+// Mensaje al hacer clic en "Enviar"
+document.querySelector('#modalComentarioContinuar .enviar-btn').addEventListener('click', function() {
+    const comentario = document.getElementById('comentario-continuar').value;
+    console.log('[DEBUG] Comentario enviado:', comentario);
+    alert('Comentario enviado: ' + comentario);
+    document.getElementById('modalComentarioContinuar').style.display = 'none';
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('btn-continuar-pt').addEventListener('click', function() {
+        console.log('[DEBUG] Botón Continuar presionado');
+        document.getElementById('modalComentarioContinuar').style.display = 'flex';
+    });
+
+    document.querySelector('#modalComentarioContinuar .cancelar-btn').addEventListener('click', function() {
+        document.getElementById('modalComentarioContinuar').style.display = 'none';
+        console.log('[DEBUG] Modal Continuar ocultado');
+    });
+
+    document.querySelector('#modalComentarioContinuar .enviar-btn').addEventListener('click', function() {
+        const comentario = document.getElementById('comentario-continuar').value;
+        console.log('[DEBUG] Comentario enviado:', comentario);
+        alert('Comentario enviado: ' + comentario);
+        document.getElementById('modalComentarioContinuar').style.display = 'none';
+    });
+});

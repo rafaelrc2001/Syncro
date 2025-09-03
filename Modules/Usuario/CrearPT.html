@@ -402,9 +402,20 @@
             <button id="btn-cancelar-pt" class="btn print-btn close-btn">
                 <i class="ri-close-circle-line"></i> Cancelar
             </button>
-            <button id="btn-continuar-pt" class="btn print-btn close-btn">
-                <i class="ri-arrow-right-line"></i> Continuar
-            </button>
+            
+
+
+
+            <!-- En tu HTML -->
+<button id="btn-continuar-pt" class="btn print-btn continue-btn">
+    <i class="ri-arrow-right-circle-line"></i> Continuar
+</button>
+
+
+
+
+
+
             <button id="btn-cerrar-pt" class="btn print-btn close-btn">
                 <i class="ri-check-double-line"></i> Terminar
             </button>
@@ -430,13 +441,17 @@
     </div>
 </div>
 
-     <div id="modalComentarioCancelar" class="modal">
+
+
+
+
+<div id="modalComentarioContinuar" class="modal">
     <div class="modal-content">
         <div class="modal-header">
             <h2>Agregar comentario</h2>
         </div>
         <div class="modal-body">
-            <textarea id="comentario" rows="4" style="width:100%;" placeholder="Escribe tu comentario aquí..."></textarea>
+            <textarea id="comentario-cancelar" rows="4" style="width:100%;" placeholder="Escribe tu comentario aquí..."></textarea>
         </div>
         <div class="modal-footer">
             <button class="btn enviar-btn"><i class="ri-send-plane-line"></i> Enviar</button>
@@ -446,13 +461,13 @@
 </div>
 
 
-     <div id="modalComentarioTerminar" class="modal">
+<div id="modalComentarioCancelar" class="modal">
     <div class="modal-content">
         <div class="modal-header">
             <h2>Agregar comentario</h2>
         </div>
         <div class="modal-body">
-            <textarea id="comentario" rows="4" style="width:100%;" placeholder="Escribe tu comentario aquí..."></textarea>
+            <textarea id="comentario-cancelar" rows="4" style="width:100%;" placeholder="Escribe tu comentario aquí..."></textarea>
         </div>
         <div class="modal-footer">
             <button class="btn enviar-btn"><i class="ri-send-plane-line"></i> Enviar</button>
@@ -461,13 +476,13 @@
     </div>
 </div>
 
-     <div id="modalComentarioContinuar" class="modal">
+<div id="modalComentarioTerminar" class="modal">
     <div class="modal-content">
         <div class="modal-header">
             <h2>Agregar comentario</h2>
         </div>
         <div class="modal-body">
-            <textarea id="comentario" rows="4" style="width:100%;" placeholder="Escribe tu comentario aquí..."></textarea>
+            <textarea id="comentario-terminar" rows="4" style="width:100%;" placeholder="Escribe tu comentario aquí..."></textarea>
         </div>
         <div class="modal-footer">
             <button class="btn enviar-btn"><i class="ri-send-plane-line"></i> Enviar</button>
@@ -475,6 +490,7 @@
         </div>
     </div>
 </div>
+
 
 
 
@@ -494,7 +510,7 @@
     <script src="/JS/usuario/LogicaCrearPermiso.js"></script>
     <script src="/JS/generales/LogicaVer.js"></script>
     <script type="module" src="/JS/usuario/tabla-crearpt.js"></script>
-
+    
     
     
 </body>

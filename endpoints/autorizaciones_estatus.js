@@ -92,6 +92,130 @@ router.post('/estatus/seguridad', async (req, res) => {
 
 
 
+// Nueva ruta para actualizar el estatus a 'continua' usando el id_estatus recibido
+router.post('/estatus/continua', async (req, res) => {
+  const { id_estatus } = req.body;
+  const ESTATUS = 'continua';
+
+  if (!id_estatus) {
+    return res.status(400).json({
+      success: false,
+      error: 'id_estatus es requerido'
+    });
+  }
+
+  try {
+    const result = await db.query(
+      'UPDATE estatus SET estatus = $1 WHERE id_estatus = $2 RETURNING id_estatus as id, estatus',
+      [ESTATUS, id_estatus]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'No se encontró el estatus para actualizar'
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: 'Estatus de continua actualizado exitosamente',
+      data: result.rows[0]
+    });
+  } catch (err) {
+    console.error('Error en la base de datos:', err);
+    res.status(500).json({
+      success: false,
+      error: 'Error al actualizar el estatus de continua',
+      details: err.message
+    });
+  }
+});
+
+
+
+// Nueva ruta para actualizar el estatus a 'cancelado' usando el id_estatus recibido
+router.post('/estatus/cancelado', async (req, res) => {
+  const { id_estatus } = req.body;
+  const ESTATUS = 'cancelado';
+
+  if (!id_estatus) {
+    return res.status(400).json({
+      success: false,
+      error: 'id_estatus es requerido'
+    });
+  }
+
+  try {
+    const result = await db.query(
+      'UPDATE estatus SET estatus = $1 WHERE id_estatus = $2 RETURNING id_estatus as id, estatus',
+      [ESTATUS, id_estatus]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'No se encontró el estatus para actualizar'
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: 'Estatus de cancelado actualizado exitosamente',
+      data: result.rows[0]
+    });
+  } catch (err) {
+    console.error('Error en la base de datos:', err);
+    res.status(500).json({
+      success: false,
+      error: 'Error al actualizar el estatus de cancelado',
+      details: err.message
+    });
+  }
+});
+
+
+
+
+// Nueva ruta para actualizar el estatus a 'terminado' usando el id_estatus recibido
+router.post('/estatus/terminado', async (req, res) => {
+  const { id_estatus } = req.body;
+  const ESTATUS = 'terminado';
+
+  if (!id_estatus) {
+    return res.status(400).json({
+      success: false,
+      error: 'id_estatus es requerido'
+    });
+  }
+
+  try {
+    const result = await db.query(
+      'UPDATE estatus SET estatus = $1 WHERE id_estatus = $2 RETURNING id_estatus as id, estatus',
+      [ESTATUS, id_estatus]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'No se encontró el estatus para actualizar'
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: 'Estatus de terminado actualizado exitosamente',
+      data: result.rows[0]
+    });
+  } catch (err) {
+    console.error('Error en la base de datos:', err);
+    res.status(500).json({
+      success: false,
+      error: 'Error al actualizar el estatus de terminado',
+      details: err.message
+    });
+  }
+});
+
+
+
+
+
+
 
 
 // Ruta para insertar autorizaciones

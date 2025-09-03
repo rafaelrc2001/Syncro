@@ -516,3 +516,112 @@
     gap: 10px;
     border-top: 1px solid #eee;
 }
+
+
+
+/* Puedes poner esto en tu archivo EstiloVer.css o en tu CSS global */
+#modalComentarioCancelar,
+#modalComentarioTerminar,
+#modalComentarioContinuar {
+    display: none;
+}
+
+
+
+
+#modalComentario.modal,
+#modalComentarioContinuar.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+#modalComentario.modal.active,
+#modalComentarioContinuar.modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+#modalComentario .modal-content,
+#modalComentarioContinuar .modal-content {
+    width: 90%;
+    max-width: 400px;
+    margin: auto;
+    max-height: 90vh;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+#modalComentario .modal-header h2,
+#modalComentarioContinuar .modal-header h2 {
+    font-size: 1.2rem;
+    color: var(--azul-petroleo);
+    margin: 0;
+    text-align: center;
+}
+
+#modalComentario .modal-body,
+#modalComentarioContinuar .modal-body {
+    padding: 20px 30px;
+}
+
+#modalComentario .modal-footer,
+#modalComentarioContinuar .modal-footer {
+    padding: 15px 30px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    border-top: 1px solid var(--blanco-neutro);
+    background-color: white;
+}
+
+#modalComentario .btn,
+#modalComentarioContinuar .btn {
+    padding: 8px 20px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#modalComentario .enviar-btn,
+#modalComentarioContinuar .enviar-btn {
+    background-color: var(--azul-petroleo);
+    color: white;
+    border: 1px solid var(--azul-petroleo);
+}
+
+#modalComentario .enviar-btn:hover,
+#modalComentarioContinuar .enviar-btn:hover {
+    background-color: #002b44;
+}
+
+#modalComentario .cancelar-btn,
+#modalComentarioContinuar .cancelar-btn {
+    background-color: white;
+    color: var(--gris-acero);
+    border: 1px solid var(--plata-industrial);
+}
+
+#modalComentario .cancelar-btn:hover,
+#modalComentarioContinuar .cancelar-btn:hover {
+    background-color: var(--blanco-neutro);
+}

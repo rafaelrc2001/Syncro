@@ -262,6 +262,147 @@ document
   });
 
 document.addEventListener("DOMContentLoaded", function () {
+  // Cancelar Especial
+  const btnCancelarEspecial = document.getElementById("btn-cancelar-especial");
+  const modalCancelarEspecial = document.getElementById(
+    "modalComentarioCancelarEspecial"
+  );
+  const cancelarEspecialBtn = document.getElementById(
+    "cancelarEspecial-cancelar-btn"
+  );
+  const enviarCancelarEspecialBtn = document.getElementById(
+    "cancelarEspecial-enviar-btn"
+  );
+
+  if (btnCancelarEspecial && modalCancelarEspecial) {
+    btnCancelarEspecial.addEventListener("click", function () {
+      if (idPermisoSeleccionado) {
+        modalCancelarEspecial.setAttribute(
+          "data-idpermiso",
+          idPermisoSeleccionado
+        );
+        modalCancelarEspecial.classList.add("active");
+        console.log(
+          "modalComentarioCancelarEspecial abierto con id_permiso:",
+          idPermisoSeleccionado
+        );
+      } else {
+        alert("Selecciona un permiso primero");
+      }
+    });
+  }
+  if (cancelarEspecialBtn && modalCancelarEspecial) {
+    cancelarEspecialBtn.addEventListener("click", function () {
+      modalCancelarEspecial.classList.remove("active");
+      console.log("modalComentarioCancelarEspecial cerrado");
+    });
+  }
+  if (enviarCancelarEspecialBtn && modalCancelarEspecial) {
+    enviarCancelarEspecialBtn.addEventListener("click", async function () {
+      try {
+        // 1. Obtener el id_estatus del permiso seleccionado
+        const id_permiso = idPermisoSeleccionado;
+        if (!id_permiso) throw new Error("No hay permiso seleccionado");
+        const urlEstatus = `http://localhost:3000/api/permisos-trabajo/${id_permiso}`;
+        const resEstatus = await fetch(urlEstatus);
+        if (!resEstatus.ok) throw new Error("Error obteniendo id_estatus");
+        const dataEstatus = await resEstatus.json();
+        if (!dataEstatus.id_estatus)
+          throw new Error("No se encontró el estatus");
+        // 2. Actualizar el estatus a 'cancelado'
+        const urlCancelado = "http://localhost:3000/api/estatus/cancelado";
+        const resUpdate = await fetch(urlCancelado, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id_estatus: dataEstatus.id_estatus }),
+        });
+        const dataUpdate = await resUpdate.json();
+        if (!dataUpdate.success)
+          throw new Error(dataUpdate.error || "Error al actualizar");
+        modalCancelarEspecial.classList.remove("active");
+        // Cerrar otros modales relacionados si están abiertos
+        const modalComentario = document.getElementById("modalComentario");
+        if (modalComentario && modalComentario.classList.contains("active")) {
+          modalComentario.classList.remove("active");
+        }
+        // Mostrar mensaje de éxito
+        alert("Permiso cancelado con éxito");
+        console.log("Estatus cancelado actualizado");
+        // Aquí puedes refrescar la tabla si lo necesitas
+      } catch (err) {
+        alert("Error al cancelar: " + err.message);
+        console.error(err);
+      }
+    });
+  }
+
+  // Terminar Especial
+  const btnTerminarEspecial = document.getElementById("btn-terminar-especial");
+  const modalTerminarEspecial = document.getElementById(
+    "modalComentarioTerminarEspecial"
+  );
+  const cancelarTerminarEspecialBtn = modalTerminarEspecial
+    ? modalTerminarEspecial.querySelector(".cancelar-btn")
+    : null;
+  const enviarTerminarEspecialBtn = modalTerminarEspecial
+    ? modalTerminarEspecial.querySelector(".terminar_enviar_especial-btn")
+    : null;
+
+  if (btnTerminarEspecial && modalTerminarEspecial) {
+    btnTerminarEspecial.addEventListener("click", function () {
+      if (idPermisoSeleccionado) {
+        modalTerminarEspecial.setAttribute(
+          "data-idpermiso",
+          idPermisoSeleccionado
+        );
+        modalTerminarEspecial.classList.add("active");
+        console.log(
+          "modalComentarioTerminarEspecial abierto con id_permiso:",
+          idPermisoSeleccionado
+        );
+      } else {
+        alert("Selecciona un permiso primero");
+      }
+    });
+  }
+  if (cancelarTerminarEspecialBtn && modalTerminarEspecial) {
+    cancelarTerminarEspecialBtn.addEventListener("click", function () {
+      modalTerminarEspecial.classList.remove("active");
+      console.log("modalComentarioTerminarEspecial cerrado");
+    });
+  }
+  if (enviarTerminarEspecialBtn && modalTerminarEspecial) {
+    enviarTerminarEspecialBtn.addEventListener("click", async function () {
+      try {
+        // 1. Obtener el id_estatus del permiso seleccionado
+        const id_permiso = idPermisoSeleccionado;
+        if (!id_permiso) throw new Error("No hay permiso seleccionado");
+        const urlEstatus = `http://localhost:3000/api/permisos-trabajo/${id_permiso}`;
+        const resEstatus = await fetch(urlEstatus);
+        if (!resEstatus.ok) throw new Error("Error obteniendo id_estatus");
+        const dataEstatus = await resEstatus.json();
+        if (!dataEstatus.id_estatus) throw new Error("No se encontró el estatus");
+        // 2. Actualizar el estatus a 'terminado'
+        const urlTerminado = "http://localhost:3000/api/estatus/terminado";
+        const resUpdate = await fetch(urlTerminado, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id_estatus: dataEstatus.id_estatus })
+        });
+        const dataUpdate = await resUpdate.json();
+        if (!dataUpdate.success) throw new Error(dataUpdate.error || "Error al actualizar");
+        // Cerrar el modal
+        modalTerminarEspecial.classList.remove("active");
+        // Mostrar mensaje de éxito
+        alert("Permiso terminado con éxito");
+        console.log("Estatus terminado actualizado");
+        // Aquí puedes refrescar la tabla si lo necesitas
+      } catch (err) {
+        alert("Error al terminar: " + err.message);
+        console.error(err);
+      }
+    });
+  }
   // Nueva lógica para el botón 'Enviar Nuevo' con clase encviar_continuar-btn
   const btnEnviarNuevo = document.querySelector(".encviar_continuar-btn");
   console.log("[DEBUG] btnEnviarNuevo:", btnEnviarNuevo);
@@ -316,8 +457,8 @@ document.addEventListener("DOMContentLoaded", function () {
             "La respuesta del servidor no es JSON: " + textUpdate
           );
         }
-        // Nueva lógica para el botón 'Enviar Nuevo' con clase encviar_continuar-btn
-        throw new Error(dataUpdate.error || "Error al actualizar");
+        if (!dataUpdate.success)
+          throw new Error(dataUpdate.error || "Error al actualizar");
         // 3. Refrescar la tabla mostrando solo los permisos con estatus 'En espera del área'
         document.getElementById("modalComentarioContinuar").style.display =
           "none";
@@ -582,3 +723,64 @@ if (permisoSeleccionado && modal) {
 } else {
   alert("Selecciona un permiso primero");
 }
+
+function mostrarModalComentarioCancelarEspecial() {
+  const modal = document.getElementById("modalComentarioCancelarEspecial");
+  if (modal) modal.classList.add("active");
+}
+function ocultarModalComentarioCancelarEspecial() {
+  const modal = document.getElementById("modalComentarioCancelarEspecial");
+  if (modal) modal.classList.remove("active");
+}
+
+// Terminar Especial
+function mostrarModalComentarioTerminarEspecial() {
+  const modal = document.getElementById("modalComentarioTerminarEspecial");
+  if (modal) modal.classList.add("active");
+}
+function ocultarModalComentarioTerminarEspecial() {
+  const modal = document.getElementById("modalComentarioTerminarEspecial");
+  if (modal) modal.classList.remove("active");
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Cancelar Especial
+  const btnCancelarEspecial = document.getElementById("btn-cancelar-especial");
+  const modalCancelarEspecial = document.getElementById(
+    "modalComentarioCancelarEspecial"
+  );
+  const cancelarBtn = document.getElementById("cancelarEspecial-cancelar-btn");
+  const enviarBtn = document.getElementById("cancelarEspecial-enviar-btn");
+
+  if (btnCancelarEspecial && modalCancelarEspecial) {
+    btnCancelarEspecial.addEventListener("click", function () {
+      if (idPermisoSeleccionado) {
+        modalCancelarEspecial.setAttribute(
+          "data-idpermiso",
+          idPermisoSeleccionado
+        );
+        modalCancelarEspecial.classList.add("active");
+        console.log(
+          "modalComentarioCancelarEspecial abierto con id_permiso:",
+          idPermisoSeleccionado
+        );
+      } else {
+        alert("Selecciona un permiso primero");
+      }
+    });
+  }
+  if (cancelarBtn && modalCancelarEspecial) {
+    cancelarBtn.addEventListener("click", function () {
+      modalCancelarEspecial.classList.remove("active");
+      console.log("modalComentarioCancelarEspecial cerrado");
+    });
+  }
+  if (enviarBtn && modalCancelarEspecial) {
+    enviarBtn.addEventListener("click", function () {
+      // Aquí va la lógica de envío
+      modalCancelarEspecial.classList.remove("active");
+      console.log("modalComentarioCancelarEspecial enviado y cerrado");
+    });
+  }
+  // Repite para Terminar Especial si lo necesitas
+});

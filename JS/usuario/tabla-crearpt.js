@@ -320,6 +320,12 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!dataUpdate.success)
           throw new Error(dataUpdate.error || "Error al actualizar");
         modalCancelarEspecial.classList.remove("active");
+        // cerrar modalVer si está abierto
+        const modalVer = document.getElementById("modalVer");
+        if (modalVer && modalVer.classList.contains("active")) {
+          modalVer.classList.remove("active");
+          console.log("[CANCELAR ESPECIAL] modalVer cerrado");
+        }
         // Cerrar otros modales relacionados si están abiertos
         const modalComentario = document.getElementById("modalComentario");
         if (modalComentario && modalComentario.classList.contains("active")) {
@@ -395,6 +401,12 @@ document.addEventListener("DOMContentLoaded", function () {
           throw new Error(dataUpdate.error || "Error al actualizar");
         // Cerrar el modal
         modalTerminarEspecial.classList.remove("active");
+        // cerrar modalVer si está abierto
+        const modalVer = document.getElementById("modalVer");
+        if (modalVer && modalVer.classList.contains("active")) {
+          modalVer.classList.remove("active");
+          console.log("[TERMINAR ESPECIAL] modalVer cerrado");
+        }
         // Mostrar mensaje de éxito
         alert("Permiso terminado con éxito");
         console.log("Estatus terminado actualizado");
@@ -604,6 +616,7 @@ if (btnCancelarEnviar) {
       // 3. Refrescar la tabla mostrando solo los permisos con estatus 'En espera del área'
       modalComentarioCancelar.classList.remove("active");
       const modalVer = document.getElementById("modalVer");
+      console.log("modalVer encontrado:", modalVer);
       if (modalVer) {
         console.log("modalVer estado:", {
           classList: [...modalVer.classList],
@@ -611,6 +624,11 @@ if (btnCancelarEnviar) {
           computedDisplay: window.getComputedStyle(modalVer).display,
           computedVisibility: window.getComputedStyle(modalVer).visibility,
         });
+        // Cerrar el modalVer si está abierto
+        if (modalVer.classList.contains("active")) {
+          modalVer.classList.remove("active");
+          console.log("modalVer cerrado");
+        }
       }
       // Para cerrar el modalComentarioCancelar con el botón cancelar
       const cancelarBtnCancelar = document.querySelector(

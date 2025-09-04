@@ -1,442 +1,539 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Syncro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Orbitron:wght@500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
-    <link rel="stylesheet" href="/CSS/EstiloGeneral.css">
-    <link rel="stylesheet" href="/CSS/EstiloVer.css">
-</head>
-<body>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Orbitron:wght@500;700&family=Roboto:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/CSS/EstiloGeneral.css" />
+    <link rel="stylesheet" href="/CSS/EstiloVer.css" />
+  </head>
+  <body>
     <div class="app-container">
-        
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <h2 class="logo-container">
-                    <i class="ri-refresh-line logo-icon"></i>
-                    <span class="logo-text">Syncro</span>
-                </h2>
-                <button class="collapse-btn">
-                    <i class="ri-menu-line menu-icon"></i>
-                    <i class="ri-arrow-right-s-line collapse-icon"></i>
-                </button>
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <h2 class="logo-container">
+            <i class="ri-refresh-line logo-icon"></i>
+            <span class="logo-text">Syncro</span>
+          </h2>
+          <button class="collapse-btn">
+            <i class="ri-menu-line menu-icon"></i>
+            <i class="ri-arrow-right-s-line collapse-icon"></i>
+          </button>
+        </div>
+        <nav class="sidebar-nav">
+          <ul>
+            <li>
+              <a href="#"
+                ><i class="ri-pie-chart-2-line"></i> <span>Dashboard</span></a
+              >
+            </li>
+            <li>
+              <a href="#"
+                ><i class="ri-shield-user-line"></i>
+                <span>Autorizar Permisos</span></a
+              >
+            </li>
+          </ul>
+        </nav>
+        <div class="sidebar-footer">
+          <div class="user-profile">
+            <div class="avatar">JP</div>
+            <div class="user-info">
+              <span class="name">Juan Pérez</span>
+              <span class="role">Supervisor</span>
             </div>
-            <nav class="sidebar-nav">
-                    <ul>
-                        <li>
-                            <a href="#"><i class="ri-pie-chart-2-line"></i> <span>Dashboard</span></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="ri-shield-user-line"></i> <span>Autorizar Permisos</span></a>
-                        </li>
-                    </ul>
-            </nav>
-            <div class="sidebar-footer">
-                <div class="user-profile">
-                    <div class="avatar">JP</div>
-                    <div class="user-info">
-                        <span class="name">Juan Pérez</span>
-                        <span class="role">Supervisor</span>
-                    </div>
-                </div>
-                <button class="logout-btn"><i class="ri-logout-box-r-line"></i></button>
+          </div>
+          <button class="logout-btn">
+            <i class="ri-logout-box-r-line"></i>
+          </button>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <header class="main-header">
+          <h1>
+            <span style="font-size: 1.5rem">🛡️</span> Autorización de permisos
+          </h1>
+          <div class="header-actions">
+            <div class="search-bar">
+              <input type="text" placeholder="Buscar por folio o nombre..." />
+              <i class="ri-search-line"></i>
             </div>
-        </aside>
+          </div>
+        </header>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <header class="main-header">
-                <h1><span style="font-size: 1.5rem;">🛡️</span> Autorización de permisos</h1>
-                <div class="header-actions">
-                    <div class="search-bar">
-                        <input type="text" placeholder="Buscar por folio o nombre...">
-                        <i class="ri-search-line"></i>
-                    </div>
-                </div>
-            </header>
+        <!-- Cards Section -->
+        <section class="cards-section">
+          <div class="card">
+            <div class="card-icon" style="background-color: #eceff1">
+              <i class="ri-file-list-2-line" style="color: #455a64"></i>
+            </div>
+            <div class="card-content">
+              <h3>Total de Permisos</h3>
+              <p class="count"></p>
+            </div>
+          </div>
 
-             <!-- Cards Section -->
-            <section class="cards-section">
-                <div class="card">
-                    <div class="card-icon" style="background-color: #ECEFF1;">
-                        <i class="ri-file-list-2-line" style="color: #455A64;"></i>
-                    </div>
-                    <div class="card-content">
-                        <h3>Total de Permisos</h3>
-                        <p class="count"></p>
-                    </div>
-                </div>
+          <div class="card">
+            <div class="card-icon" style="background-color: #fff8e1">
+              <i class="ri-alarm-warning-line" style="color: #ff8f00"></i>
+            </div>
+            <div class="card-content">
+              <h3>Por Autorizar</h3>
+              <p class="count"></p>
+            </div>
+          </div>
 
-                <div class="card">
-                    <div class="card-icon" style="background-color: #FFF8E1;">
-                        <i class="ri-alarm-warning-line" style="color: #FF8F00;"></i>
-                    </div>
-                    <div class="card-content">
-                        <h3>Por Autorizar</h3>
-                        <p class="count"></p>
-                    </div>
-                </div>
+          <div class="card">
+            <div class="card-icon" style="background-color: #e8f5e9">
+              <i class="ri-check-line" style="color: #2e7d32"></i>
+            </div>
+            <div class="card-content">
+              <h3>Activos</h3>
+              <p class="count"></p>
+            </div>
+          </div>
 
-                <div class="card">
-                    <div class="card-icon" style="background-color: #E8F5E9;">
-                        <i class="ri-check-line" style="color: #2E7D32;"></i>
-                    </div>
-                    <div class="card-content">
-                        <h3>Activos</h3>
-                        <p class="count"></p>
-                    </div>
-                </div>
+          <div class="card">
+            <div class="card-icon" style="background-color: #e3f2fd">
+              <i class="ri-flag-line" style="color: #1565c0"></i>
+            </div>
+            <div class="card-content">
+              <h3>Permisos Terminados</h3>
+              <p class="count"></p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-icon" style="background-color: #ffebee">
+              <i class="ri-close-circle-line" style="color: #c62828"></i>
+            </div>
+            <div class="card-content">
+              <h3>No Autorizados</h3>
+              <p class="count"></p>
+            </div>
+          </div>
+        </section>
 
-                <div class="card">
-                    <div class="card-icon" style="background-color: #E3F2FD;">
-                        <i class="ri-flag-line" style="color: #1565C0;"></i>
-                    </div>
-                    <div class="card-content">
-                        <h3>Permisos Terminados</h3>
-                        <p class="count"></p>
-                    </div>
-                    </div>
-                <div class="card">
-                <div class="card-icon" style="background-color: #FFEBEE;">
-                 <i class="ri-close-circle-line" style="color: #C62828;"></i>
-                </div>
-                <div class="card-content">
-                <h3>No Autorizados</h3>
-                <p class="count"></p>
-                </div>
-                </div>
-            </section>
+        <!-- Actions Section -->
+        <section class="actions-section">
+          <button class="btn secondary">
+            <i class="ri-download-line"></i> Exportar a Excel
+          </button>
 
-            <!-- Actions Section -->
-            <section class="actions-section">
-                <button class="btn secondary">
-                    <i class="ri-download-line"></i> Exportar a Excel
-                </button>
-                
-                <div class="filter-dropdown">
-                    <select id="status-filter">
-                        <option value="all">Todos</option>
-                        <option value="Activo">Activo</option>
-                        <option value="Terminado">Terminado</option>
-                        <option value="Cancelado">Cancelado</option>
-                        <option value="En espera del área">En espera del área</option>
-                        <option value="Continua">Continua</option>
-                        <option value="Espera seguridad" selected>Espera seguridad</option>
-                        <option value="No autorizado">No autorizado</option>
-                    </select>
-                    <i class="ri-arrow-down-s-line"></i>
-                </div>
-            </section>
+          <div class="filter-dropdown">
+            <select id="status-filter">
+              <option value="all" selected>Todos</option>
+              <option value="Activo">Activo</option>
+              <option value="Terminado">Terminado</option>
+              <option value="Cancelado">Cancelado</option>
+              <option value="En espera del área">En espera del área</option>
+              <option value="Continua">Continua</option>
+              <option value="Espera seguridad">Espera seguridad</option>
+              <option value="No autorizado">No autorizado</option>
+            </select>
+            <i class="ri-arrow-down-s-line"></i>
+          </div>
+        </section>
 
-            <!-- Permits Table -->
-            <section class="permits-table">
-                <div class="table-header">
-                    <h3>Listado de Permisos</h3>
-                </div>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Permiso</th>
-                                <th>Tipo de permiso</th>
-                                <th>Tipo de actividad</th>
-                                <th>Área</th>
-                                <th>Solicitante</th>
-                                <th>Fecha y hora</th>
-                                <th>Estatus</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody id="table-body">
-                            <!-- Aquí se llenarán las filas dinámicamente -->
-                        </tbody>
-                    </table>
-                </div>
-                <div class="table-footer">
-                    <div class="pagination">
-                        <button class="pagination-btn"><i class="ri-arrow-left-s-line"></i></button>
-                        <button class="pagination-btn active">1</button>
-                        <button class="pagination-btn">2</button>
-                        <button class="pagination-btn">3</button>
-                        <button class="pagination-btn"><i class="ri-arrow-right-s-line"></i></button>
-                    </div>
-                     <div class="records-counter">
-                        <span id="records-count">0</span> registros
-                    </div>
-                </div>
-            </section>
-        </main>
+        <!-- Permits Table -->
+        <section class="permits-table">
+          <div class="table-header">
+            <h3>Listado de Permisos</h3>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Permiso</th>
+                  <th>Tipo de permiso</th>
+                  <th>Tipo de actividad</th>
+                  <th>Área</th>
+                  <th>Solicitante</th>
+                  <th>Fecha y hora</th>
+                  <th>Estatus</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="table-body">
+                <!-- Aquí se llenarán las filas dinámicamente -->
+              </tbody>
+            </table>
+          </div>
+          <div class="table-footer">
+            <div class="pagination">
+              <button class="pagination-btn">
+                <i class="ri-arrow-left-s-line"></i>
+              </button>
+              <button class="pagination-btn active">1</button>
+              <button class="pagination-btn">2</button>
+              <button class="pagination-btn">3</button>
+              <button class="pagination-btn">
+                <i class="ri-arrow-right-s-line"></i>
+              </button>
+            </div>
+            <div class="records-counter">
+              <span id="records-count">0</span> registros
+            </div>
+          </div>
+        </section>
+      </main>
     </div>
 
-    
-   
-
-
- 
-     <!-- Modal de ver -->
-<div id="modalVer" class="modal">
-    <div class="modal-content executive-view">
+    <!-- Modal de ver -->
+    <div id="modalVer" class="modal">
+      <div class="modal-content executive-view">
         <!-- Header del Modal -->
         <div class="modal-header">
-            <div class="permit-title">
-                <h2 id="modal-tipo-permiso">PERMISO DE TRABAJO NO PELIGROSO</h2>
-                <div class="permit-number" id="modal-prefijo">No. GSI-SI-FO-002 PERMISO DE TRABAJO NO PELIGROSO</div>
+          <div class="permit-title">
+            <h2 id="modal-tipo-permiso">PERMISO DE TRABAJO NO PELIGROSO</h2>
+            <div class="permit-number" id="modal-prefijo">
+              No. GSI-SI-FO-002 PERMISO DE TRABAJO NO PELIGROSO
             </div>
-            <span class="close-modal">&times;</span>
+          </div>
+          <span class="close-modal">&times;</span>
         </div>
 
         <!-- Cuerpo del Modal -->
         <div class="modal-body">
-            <!-- Sección 1: Información General -->
-            <div class="executive-section">
-                <div class="section-header">
-                    <i class="ri-information-line"></i>
-                    <h3>Información General</h3>
-                </div>
-                <div class="executive-grid">
-                    <div class="executive-item">
-                        <label>Fecha:</label>
-                        <p class="highlight" id="info-fecha"></p>
-                    </div>
-                    <div class="executive-item">
-                        <label>Empresa:</label>
-                        <p id="info-empresa"></p>
-                    </div>
-                    <div class="executive-item">
-                        <label>Sucursal:</label>
-                        <p id="info-sucursal"></p>
-                    </div>
-                    <div class="executive-item">
-                        <label>Departamento que creo el PT:</label>
-                        <p class="highlight" id="ver-departamento"></p>
-                    </div>
-                    <div class="executive-item">
-                        <label>Solicitante:</label>
-                        <p id="info-solicitante"></p>
-                    </div>
-                    <div class="executive-item full-width">
-                        <label>Descripción del trabajo:</label>
-                        <p class="description-box" id="info-descripcion"></p>
-                    </div>                  
-                    
-
-                </div>
+          <!-- Sección 1: Información General -->
+          <div class="executive-section">
+            <div class="section-header">
+              <i class="ri-information-line"></i>
+              <h3>Información General</h3>
             </div>
+            <div class="executive-grid">
+              <div class="executive-item">
+                <label>Fecha:</label>
+                <p class="highlight" id="info-fecha"></p>
+              </div>
+              <div class="executive-item">
+                <label>Empresa:</label>
+                <p id="info-empresa"></p>
+              </div>
+              <div class="executive-item">
+                <label>Sucursal:</label>
+                <p id="info-sucursal"></p>
+              </div>
+              <div class="executive-item">
+                <label>Departamento que creo el PT:</label>
+                <p class="highlight" id="ver-departamento"></p>
+              </div>
+              <div class="executive-item">
+                <label>Solicitante:</label>
+                <p id="info-solicitante"></p>
+              </div>
+              <div class="executive-item full-width">
+                <label>Descripción del trabajo:</label>
+                <p class="description-box" id="info-descripcion"></p>
+              </div>
+            </div>
+          </div>
 
-
-
-
-   <!-- Sección 2: Detalles Técnicos -->
- <div class="executive-section">
-    <div class="section-header">
-        <i class="ri-tools-line"></i>
-        <h3>Permiso de Trabajo</h3>
-        <span id="modal-tipo-especifico" class="tipo-especifico-label"></span>
-    </div>
-    <div id="modal-no-peligroso" class="executive-grid" style="display:none;">
-        <div class="executive-item"><label>Planta:</label><p id="modal-planta"></p></div>
-        <div class="executive-item"><label>Tipo de actividad:</label><p id="modal-tipo-actividad"></p></div>
-        <div class="executive-item"><label>OT:</label><p id="modal-ot"></p></div>
-        <div class="executive-item"><label>Equipo:</label><p id="modal-equipo"></p></div>
-        <div class="executive-item"><label>Tag:</label><p id="modal-tag"></p></div>
-        <div class="executive-item"><label>Horario:</label><p id="modal-horario"></p></div>
-        <div class="executive-item"><label>Fluido:</label><p id="modal-fluido"></p></div>
-        <div class="executive-item"><label>Presión:</label><p id="modal-presion"></p></div>
-        <div class="executive-item"><label>Temperatura:</label><p id="modal-temperatura"></p></div>
-        <div class="executive-item"><label>Trabajo área riesgo controlado:</label><p id="modal-trabajo-area-riesgo-controlado"></p></div>
-        <div class="executive-item"><label>¿Necesita entrega física?:</label><p id="modal-necesita-entrega-fisica"></p></div>
-        <div class="executive-item"><label>¿Necesita PPE adicional?:</label><p id="modal-necesita-ppe-adicional"></p></div>
-        <div class="executive-item"><label>Área circundante riesgo:</label><p id="modal-area-circundante-riesgo"></p></div>
-        <div class="executive-item"><label>¿Necesita supervisión?:</label><p id="modal-necesita-supervision"></p></div>
-        <div class="executive-item"><label>Observaciones análisis previo:</label><p id="modal-observaciones-analisis-previo"></p></div>
-    </div>
-    <!-- Aquí el JS inyecta los campos de apertura -->
-    <div id="modal-especifica"></div>
- </div>
-
-
+          <!-- Sección 2: Detalles Técnicos -->
+          <div class="executive-section">
+            <div class="section-header">
+              <i class="ri-tools-line"></i>
+              <h3>Permiso de Trabajo</h3>
+              <span
+                id="modal-tipo-especifico"
+                class="tipo-especifico-label"
+              ></span>
+            </div>
+            <div
+              id="modal-no-peligroso"
+              class="executive-grid"
+              style="display: none"
+            >
+              <div class="executive-item">
+                <label>Planta:</label>
+                <p id="modal-planta"></p>
+              </div>
+              <div class="executive-item">
+                <label>Tipo de actividad:</label>
+                <p id="modal-tipo-actividad"></p>
+              </div>
+              <div class="executive-item">
+                <label>OT:</label>
+                <p id="modal-ot"></p>
+              </div>
+              <div class="executive-item">
+                <label>Equipo:</label>
+                <p id="modal-equipo"></p>
+              </div>
+              <div class="executive-item">
+                <label>Tag:</label>
+                <p id="modal-tag"></p>
+              </div>
+              <div class="executive-item">
+                <label>Horario:</label>
+                <p id="modal-horario"></p>
+              </div>
+              <div class="executive-item">
+                <label>Fluido:</label>
+                <p id="modal-fluido"></p>
+              </div>
+              <div class="executive-item">
+                <label>Presión:</label>
+                <p id="modal-presion"></p>
+              </div>
+              <div class="executive-item">
+                <label>Temperatura:</label>
+                <p id="modal-temperatura"></p>
+              </div>
+              <div class="executive-item">
+                <label>Trabajo área riesgo controlado:</label>
+                <p id="modal-trabajo-area-riesgo-controlado"></p>
+              </div>
+              <div class="executive-item">
+                <label>¿Necesita entrega física?:</label>
+                <p id="modal-necesita-entrega-fisica"></p>
+              </div>
+              <div class="executive-item">
+                <label>¿Necesita PPE adicional?:</label>
+                <p id="modal-necesita-ppe-adicional"></p>
+              </div>
+              <div class="executive-item">
+                <label>Área circundante riesgo:</label>
+                <p id="modal-area-circundante-riesgo"></p>
+              </div>
+              <div class="executive-item">
+                <label>¿Necesita supervisión?:</label>
+                <p id="modal-necesita-supervision"></p>
+              </div>
+              <div class="executive-item">
+                <label>Observaciones análisis previo:</label>
+                <p id="modal-observaciones-analisis-previo"></p>
+              </div>
+            </div>
+            <!-- Aquí el JS inyecta los campos de apertura -->
+            <div id="modal-especifica"></div>
+          </div>
 
           <div class="executive-section">
             <div class="section-header">
-                <i class="ri-shield-check-line"></i>
-                <h3>AST - Análisis de Seguridad en el Trabajo</h3>
+              <i class="ri-shield-check-line"></i>
+              <h3>AST - Análisis de Seguridad en el Trabajo</h3>
             </div>
             <div class="ast-summary">
-                <table class="ast-table">
-                    <thead>
-                        <tr>
-                            <th>No.</th>
-                            <th>Secuencia de la Actividad</th>
-                            <th>Personal Ejecutor</th>
-                            <th>Peligros Potenciales</th>
-                            <th>Acciones Preventivas</th>
-                            <th>Responsable</th>
-                        </tr>
-                    </thead>
-                    <tbody id="modal-ast-actividades-body">
-                        <!-- Actividades AST dinámicas -->
-                    </tbody>
-                </table>
+              <table class="ast-table">
+                <thead>
+                  <tr>
+                    <th>No.</th>
+                    <th>Secuencia de la Actividad</th>
+                    <th>Personal Ejecutor</th>
+                    <th>Peligros Potenciales</th>
+                    <th>Acciones Preventivas</th>
+                    <th>Responsable</th>
+                  </tr>
+                </thead>
+                <tbody id="modal-ast-actividades-body">
+                  <!-- Actividades AST dinámicas -->
+                </tbody>
+              </table>
             </div>
             <div class="safety-grid">
-                <div class="safety-item">
-                    <h4><i class="ri-shield-user-line"></i> EPP Requerido</h4>
-                    <ul class="safety-list" id="modal-epp-list">
-                        <li>Casco de seguridad</li>
-                    </ul>
-                </div>
-                <div class="safety-item">
-                    <h4><i class="ri-tools-line"></i> Maquinaria y Herramientas</h4>
-                    <ul class="safety-list" id="modal-maquinaria-list">
-                        <li>Llave Stillson</li>
-                    </ul>
-                </div>
-                <div class="safety-item">
-                    <h4><i class="ri-box-line"></i> Materiales y Accesorios</h4>
-                    <ul class="safety-list" id="modal-materiales-list">
-                        <li>Empaques</li>
-                    </ul>
-                </div>
+              <div class="safety-item">
+                <h4><i class="ri-shield-user-line"></i> EPP Requerido</h4>
+                <ul class="safety-list" id="modal-epp-list">
+                  <li>Casco de seguridad</li>
+                </ul>
+              </div>
+              <div class="safety-item">
+                <h4><i class="ri-tools-line"></i> Maquinaria y Herramientas</h4>
+                <ul class="safety-list" id="modal-maquinaria-list">
+                  <li>Llave Stillson</li>
+                </ul>
+              </div>
+              <div class="safety-item">
+                <h4><i class="ri-box-line"></i> Materiales y Accesorios</h4>
+                <ul class="safety-list" id="modal-materiales-list">
+                  <li>Empaques</li>
+                </ul>
+              </div>
             </div>
-        </div>
+          </div>
 
-            <!-- Sección 4: Participantes -->
-           <div class="executive-section">
-    <div class="section-header">
-        <i class="ri-team-line"></i>
-        <h3>Personal Involucrado</h3>
-    </div>
-    <div class="ast-summary">
-        <table class="ast-table">
-            <thead>
-                <tr>
+          <!-- Sección 4: Participantes -->
+          <div class="executive-section">
+            <div class="section-header">
+              <i class="ri-team-line"></i>
+              <h3>Personal Involucrado</h3>
+            </div>
+            <div class="ast-summary">
+              <table class="ast-table">
+                <thead>
+                  <tr>
                     <th>Nombre</th>
                     <th>Función</th>
                     <th>Credencial</th>
                     <th>Cargo</th>
-                </tr>
-            </thead>
-            <tbody id="modal-ast-participantes-body">
-                <!-- Participantes AST dinámicos -->
-            </tbody>
-        </table>
-    </div>
-</div>
+                  </tr>
+                </thead>
+                <tbody id="modal-ast-participantes-body">
+                  <!-- Participantes AST dinámicos -->
+                </tbody>
+              </table>
+            </div>
+          </div>
 
-
-
-
- <div class="executive-section" style="display: flex; gap: 20px;">
-        <div style="flex: 1;">
-            <label for="responsable-aprobador" style="font-weight:600;display:block;margin-bottom:8px;">
+          <div class="executive-section" style="display: flex; gap: 20px">
+            <div style="flex: 1">
+              <label
+                for="responsable-aprobador"
+                style="font-weight: 600; display: block; margin-bottom: 8px"
+              >
                 Seleccionar Supervisor de Seguridad:
-            </label>
-            <select id="responsable-aprobador" 
-                    style="width:100%;padding:8px;border-radius:4px;border:1px solid #ccc;"
-                    onchange="actualizarAprobador(this.value)">
-                <option value="" disabled selected>Seleccione un supervisor...</option>
+              </label>
+              <select
+                id="responsable-aprobador"
+                style="
+                  width: 100%;
+                  padding: 8px;
+                  border-radius: 4px;
+                  border: 1px solid #ccc;
+                "
+                onchange="actualizarAprobador(this.value)"
+              >
+                <option value="" disabled selected>
+                  Seleccione un supervisor...
+                </option>
                 <option value="Juan Pérez Martínez">Juan Pérez Martínez</option>
                 <option value="María García López">María García López</option>
-                <option value="Carlos Rodríguez Sánchez">Carlos Rodríguez Sánchez</option>
-                <option value="Ana Martínez González">Ana Martínez González</option>
-                <option value="Luis Hernández Ramírez">Luis Hernández Ramírez</option>
-                <option value="Patricia Díaz Fernández">Patricia Díaz Fernández</option>
-            </select>
-        </div>
-        <div style="flex: 1;">
-            <label for="responsable-aprobador2" style="font-weight:600;display:block;margin-bottom:8px;">
+                <option value="Carlos Rodríguez Sánchez">
+                  Carlos Rodríguez Sánchez
+                </option>
+                <option value="Ana Martínez González">
+                  Ana Martínez González
+                </option>
+                <option value="Luis Hernández Ramírez">
+                  Luis Hernández Ramírez
+                </option>
+                <option value="Patricia Díaz Fernández">
+                  Patricia Díaz Fernández
+                </option>
+              </select>
+            </div>
+            <div style="flex: 1">
+              <label
+                for="responsable-aprobador2"
+                style="font-weight: 600; display: block; margin-bottom: 8px"
+              >
                 Seleccionar la categoria a la que pertenece:
-            </label>
-            <select id="responsable-aprobador2" 
-                    style="width:100%;padding:8px;border-radius:4px;border:1px solid #ccc;"
-                    onchange="actualizarAprobador2(this.value)">
-                <option value="" disabled selected>Seleccione una categoria...</option>
+              </label>
+              <select
+                id="responsable-aprobador2"
+                style="
+                  width: 100%;
+                  padding: 8px;
+                  border-radius: 4px;
+                  border: 1px solid #ccc;
+                "
+                onchange="actualizarAprobador2(this.value)"
+              >
+                <option value="" disabled selected>
+                  Seleccione una categoria...
+                </option>
                 <option value="Juan Pérez Martínez">SAMP</option>
                 <option value="María García López">APT</option>
                 <option value="Carlos Rodríguez Sánchez">UREA</option>
                 <option value="Ana Martínez González">AREA 6</option>
-            </select>
+              </select>
+            </div>
+          </div>
+
+          <!-- Sección 5: Aprobaciones -->
+          <div class="approval-section">
+            <div class="approval-stamps">
+              <div class="stamp">
+                <div class="stamp-title">Responsable del area:</div>
+                <div class="stamp-placeholder"></div>
+                <div class="stamp-name"></div>
+              </div>
+              <div class="stamp">
+                <div class="stamp-title">Operador del área:</div>
+                <div class="stamp-placeholder"></div>
+                <div class="stamp-name"></div>
+                <div class="stamp-date"></div>
+              </div>
+              <div class="stamp approved">
+                <div class="stamp-title">Supervisor de Seguridad:</div>
+                <div class="stamp-placeholder">
+                  <i class="ri-checkbox-circle-fill"></i>
+                </div>
+                <div class="stamp-name" id="nombre-aprobador">
+                  Seleccione un supervisor
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+
+        <!-- Footer del Modal -->
+        <div class="modal-footer">
+          <button id="btn-autorizar-pt" class="btn print-btn close-btn">
+            <i class="ri-check-line"></i> Aceptar
+          </button>
+          <button id="btn-noautorizar-pt" class="btn close-btn">
+            <i class="ri-close-line"></i> No autorizar
+          </button>
+        </div>
+      </div>
     </div>
 
-
-    
-                    <!-- Sección 5: Aprobaciones -->
-                    <div class="approval-section">
-                        <div class="approval-stamps">
-                            <div class="stamp">
-                                <div class="stamp-title">Responsable del area:</div>
-                                <div class="stamp-placeholder"></div>
-                                <div class="stamp-name"></div>
-                            </div>
-                            <div class="stamp">
-                                <div class="stamp-title">Operador del área:</div>
-                                <div class="stamp-placeholder"></div>
-                                <div class="stamp-name"></div>
-                                <div class="stamp-date"></div>
-                            </div>
-                            <div class="stamp approved">
-                                <div class="stamp-title">Supervisor de Seguridad:</div>
-                                <div class="stamp-placeholder"><i class="ri-checkbox-circle-fill"></i></div>
-                                <div class="stamp-name" id="nombre-aprobador">Seleccione un supervisor</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-    
-                <!-- Footer del Modal -->
-                <div class="modal-footer">
-                    <button id="btn-autorizar-pt" class="btn print-btn close-btn">
-                        <i class="ri-check-line"></i> Aceptar
-                    </button>
-                    <button id="btn-noautorizar-pt" class="btn close-btn">
-                        <i class="ri-close-line"></i> No autorizar
-                    </button>
-                </div>
-            </div>
+    <div id="modalComentario" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Agregar comentario</h2>
         </div>
-    
-    
-        <div id="modalComentario" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>Agregar comentario</h2>
-                </div>
-                <div class="modal-body">
-                    <textarea id="comentario" rows="4" style="width:100%;" placeholder="Escribe tu comentario aquí..."></textarea>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn enviar-btn"><i class="ri-send-plane-line"></i> Enviar</button>
-                    <button class="btn cancelar-btn"><i class="ri-arrow-go-back-line"></i> Cancelar</button>
-                </div>
-            </div>
+        <div class="modal-body">
+          <textarea
+            id="comentario"
+            rows="4"
+            style="width: 100%"
+            placeholder="Escribe tu comentario aquí..."
+          ></textarea>
         </div>
-    
-    
-            <div id="modalAceptado" class="modal" hidden>
-        <div class="modal-content modal-aceptado-content">
-            <div class="modal-header modal-aceptado-header">
-                <i class="ri-checkbox-circle-fill modal-aceptado-icon"></i>
-                <h2 class="modal-aceptado-title">¡Permiso aceptado!</h2>
-            </div>
-            <div class="modal-body modal-aceptado-body">
-                <p class="modal-aceptado-msg">El permiso ha sido autorizado exitosamente.<br><span class="modal-aceptado-folio"></span></p>
-            </div>
-            <div class="modal-footer modal-aceptado-footer">
-                <button class="btn cerrar-btn"><i></i> Cerrar</button>
-            </div>
+        <div class="modal-footer">
+          <button class="btn enviar-btn">
+            <i class="ri-send-plane-line"></i> Enviar
+          </button>
+          <button class="btn cancelar-btn">
+            <i class="ri-arrow-go-back-line"></i> Cancelar
+          </button>
         </div>
+      </div>
     </div>
 
-
-
-
+    <div id="modalAceptado" class="modal" hidden>
+      <div class="modal-content modal-aceptado-content">
+        <div class="modal-header modal-aceptado-header">
+          <i class="ri-checkbox-circle-fill modal-aceptado-icon"></i>
+          <h2 class="modal-aceptado-title">¡Permiso aceptado!</h2>
+        </div>
+        <div class="modal-body modal-aceptado-body">
+          <p class="modal-aceptado-msg">
+            El permiso ha sido autorizado exitosamente.<br /><span
+              class="modal-aceptado-folio"
+            ></span>
+          </p>
+        </div>
+        <div class="modal-footer modal-aceptado-footer">
+          <button class="btn cerrar-btn"><i></i> Cerrar</button>
+        </div>
+      </div>
+    </div>
 
     <script src="/JS/supervisor/MenuSupervisor.js"></script>
     <script src="/JS/generales/LogicaVer.js"></script>
-     <script type="module" src="/JS/supervisor/tabla-supervisor.js"></script>
-    
-</body>
+    <script type="module" src="/JS/supervisor/tabla-supervisor.js"></script>
+  </body>
 </html>

@@ -1047,7 +1047,7 @@ const formulariosRouter = require("./formularios");
 app.use("/api", formulariosRouter);
 
 function mostrarMensajeError() {
-  alert("Ocurrió un error al guardar los datos.");
+  // alert eliminado para no mostrar ventana emergente
 }
 
 function textoABoolean(valor) {

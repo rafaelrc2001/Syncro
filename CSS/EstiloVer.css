@@ -733,4 +733,11 @@
     background-color: var(--blanco-neutro);
 }
 
+.botones-footer {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-top: 24px;
+}
+
 

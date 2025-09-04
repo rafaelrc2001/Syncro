@@ -293,6 +293,159 @@ document
   });
 
 document.addEventListener("DOMContentLoaded", () => {
+  // --- Botón No autorizar ---
+  const btnNoAutorizar = document.getElementById("btn-noautorizar-pt");
+  if (btnNoAutorizar) {
+    btnNoAutorizar.addEventListener("click", async function () {
+      // Validar supervisor y categoría antes de abrir el modal de comentario
+      const supervisorInput = document.getElementById("responsable-aprobador");
+      const categoriaInput = document.getElementById("responsable-aprobador2");
+      const supervisor = supervisorInput ? supervisorInput.value.trim() : "";
+      const categoria = categoriaInput ? categoriaInput.value.trim() : "";
+      if (!supervisor || !categoria) {
+        alert(
+          "Debes seleccionar el supervisor y la categoría antes de continuar."
+        );
+        if (!supervisor && supervisorInput) supervisorInput.focus();
+        if (!categoria && categoriaInput) categoriaInput.focus();
+        return;
+      }
+      // Solo cierra el modal de ver y abre el de comentario
+      document.getElementById("modalVer").classList.remove("active");
+      const modalAceptado = document.getElementById("modalAceptado");
+      if (modalAceptado) {
+        modalAceptado.classList.remove("active");
+        modalAceptado.setAttribute("hidden", "");
+      }
+      const modalComentario = document.getElementById("modalComentario");
+      if (modalComentario) {
+        modalComentario.classList.add("active");
+        modalComentario.removeAttribute("hidden");
+      }
+      // Consulta el id_estatus y lo guarda en variable global
+      const idPermiso = window.idPermisoActual;
+      window.idEstatusNoAutorizado = null;
+      if (idPermiso) {
+        try {
+          const resp = await fetch(
+            `http://localhost:3000/api/permisos-trabajo/${idPermiso}`
+          );
+          if (resp.ok) {
+            const permisoData = await resp.json();
+            window.idEstatusNoAutorizado =
+              permisoData.id_estatus ||
+              (permisoData.data && permisoData.data.id_estatus);
+          }
+        } catch (err) {
+          console.error("Error al consultar id_estatus:", err);
+        }
+      }
+    });
+  }
+
+  // --- Botón Enviar comentario ---
+  const btnEnviarComentario = document.querySelector(
+    "#modalComentario .enviar-btn"
+  );
+  if (btnEnviarComentario) {
+    btnEnviarComentario.addEventListener("click", async function () {
+      const idPermiso = window.idPermisoActual;
+      const idEstatus = window.idEstatusNoAutorizado;
+      const supervisorInput = document.getElementById("responsable-aprobador");
+      const categoriaInput = document.getElementById("responsable-aprobador2");
+      const comentarioInput = document.getElementById("comentario");
+      const supervisor = supervisorInput ? supervisorInput.value.trim() : "";
+      const categoria = categoriaInput ? categoriaInput.value.trim() : "";
+      const comentario = comentarioInput ? comentarioInput.value.trim() : "";
+      if (!idPermiso) {
+        alert(
+          "No se pudo obtener el ID del permiso. Selecciona un permiso válido."
+        );
+        return;
+      }
+      if (!supervisor || !categoria) {
+        alert(
+          "Debes seleccionar el supervisor y la categoría antes de continuar."
+        );
+        if (!supervisor && supervisorInput) supervisorInput.focus();
+        if (!categoria && categoriaInput) categoriaInput.focus();
+        return;
+      }
+      if (!comentario) {
+        alert("Debes agregar un comentario antes de continuar.");
+        if (comentarioInput) comentarioInput.focus();
+        return;
+      }
+      // 1. Actualizar supervisor y categoría en autorizaciones
+      let autorizacionExitosa = false;
+      try {
+        const resp = await fetch(
+          "http://localhost:3000/api/autorizaciones/supervisor-categoria",
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              id_permiso: idPermiso,
+              supervisor,
+              categoria,
+            }),
+          }
+        );
+        if (!resp.ok) {
+          autorizacionExitosa = false;
+          alert("Error al actualizar supervisor y categoría.");
+          return;
+        } else {
+          autorizacionExitosa = true;
+        }
+      } catch (err) {
+        console.error("Error al actualizar supervisor y categoría:", err);
+        autorizacionExitosa = false;
+        alert("Error al actualizar supervisor y categoría.");
+        return;
+      }
+
+      // 2. Actualizar el estatus si se obtuvo el id_estatus
+      if (autorizacionExitosa && idEstatus) {
+        try {
+          await fetch("http://localhost:3000/api/estatus/no_autorizado", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id_estatus: idEstatus }),
+          });
+        } catch (err) {
+          console.error("Error al actualizar estatus de no_autorizado:", err);
+        }
+        // 3. Guardar el comentario en la columna nueva
+        try {
+          await fetch("http://localhost:3000/api/estatus/comentario", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id_estatus: idEstatus, comentario }),
+          });
+        } catch (err) {
+          alert("No se pudo guardar el comentario.");
+          console.error("Error al guardar el comentario:", err);
+        }
+      }
+
+      // Oculta el modalComentario y el modalVer
+      const modalComentario = document.getElementById("modalComentario");
+      if (modalComentario) {
+        modalComentario.classList.remove("active");
+        modalComentario.setAttribute("hidden", "");
+      }
+      const modalVer = document.getElementById("modalVer");
+      if (modalVer) {
+        modalVer.classList.remove("active");
+        modalVer.setAttribute("hidden", "");
+      }
+
+      // Actualiza la tabla y tarjetas
+      cargarPermisosTabla();
+      cargarTargetasDesdeAutorizar();
+    });
+  }
   cargarTargetasDesdeAutorizar();
   cargarPermisosTabla();
   // Búsqueda por folio compatible con paginación

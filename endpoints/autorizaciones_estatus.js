@@ -386,5 +386,31 @@ router.put("/autorizaciones/supervisor-categoria", async (req, res) => {
   }
 });
 
+//comentarios
+
+router.post("/estatus/comentario", async (req, res) => {
+  const { id_estatus, comentario } = req.body;
+  if (!id_estatus || !comentario) {
+    return res.status(400).json({
+      success: false,
+      error: "id_estatus y comentario son requeridos",
+    });
+  }
+  try {
+    await db.query(
+      "UPDATE estatus SET comentarios = $1 WHERE id_estatus = $2",
+      [comentario, id_estatus]
+    );
+    res.json({ success: true });
+  } catch (err) {
+    console.error("Error al guardar comentario:", err);
+    res.status(500).json({
+      success: false,
+      error: "Error al guardar comentario",
+      details: err.message,
+    });
+  }
+});
+
 // Dejar solo un module.exports al final
 module.exports = router;

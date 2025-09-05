@@ -26,6 +26,13 @@ function mostrarInformacionGeneral(general) {
     document.getElementById("info-descripcion").textContent =
       general.descripcion_trabajo || general.descripcion || "";
   }
+  // Mostrar el número de contrato si existe
+  if (document.getElementById("info-contrato")) {
+    document.getElementById("info-contrato").textContent =
+      general.contrato && general.contrato.trim() !== ""
+        ? general.contrato
+        : "sin contrato especial";
+  }
   // Agrega los demás campos según sus IDs:
   document.querySelector(".executive-item .highlight").textContent =
     general.fecha || "";

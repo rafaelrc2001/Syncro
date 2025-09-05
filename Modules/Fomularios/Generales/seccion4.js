@@ -196,6 +196,10 @@ document.addEventListener("DOMContentLoaded", () => {
       submitBtn.innerHTML =
         '<i class="ri-loader-4-line ri-spin"></i> Procesando...';
 
+      // Obtener el valor del número de contrato (opcional)
+      const contrato =
+        document.getElementById("contract-number")?.value || null;
+
       try {
         // === Validar sección 4
         const section4 = document.querySelector(
@@ -312,6 +316,7 @@ document.addEventListener("DOMContentLoaded", () => {
               id_tipo_permiso,
               id_estatus,
               id_ast,
+              contrato, // Siempre enviar el campo contrato
             }),
           }
         );
@@ -675,21 +680,22 @@ document.addEventListener("DOMContentLoaded", () => {
           };
 
           // Enviar los datos al backend
-          const aperturaResponse = await fetch(
-            "http://localhost:3000/api/pt-apertura",
+          const permisoResponse = await fetch(
+            "http://localhost:3000/api/permisos-trabajo",
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(datosApertura),
+              body: JSON.stringify({
+                id_area,
+                id_departamento,
+                id_sucursal,
+                id_tipo_permiso,
+                id_estatus,
+                id_ast,
+                contrato, // Nuevo campo opcional
+              }),
             }
           );
-          const aperturaResult = await aperturaResponse.json();
-          if (!aperturaResponse.ok || !aperturaResult.success)
-            throw new Error(
-              aperturaResult.error || "Error al guardar PT Apertura"
-            );
-
-          // ==============================
           // FIN BLOQUE: Insertar otro tipo de PT
           // Aquí termina la lógica para otro tipo de permiso de trabajo
           // ==============================

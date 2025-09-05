@@ -150,7 +150,7 @@
               <option value="En espera del área" selected>
                 En espera del área
               </option>
-              <option value="Continua">Continua</option>
+
               <option value="Espera seguridad">Espera seguridad</option>
               <option value="No autorizado">No autorizado</option>
             </select>
@@ -369,6 +369,11 @@
                 <label>Solicitante:</label>
                 <p id="info-solicitante"></p>
               </div>
+
+              <div>
+                <label>Número de contrato:</label>
+                <span id="info-contrato"></span>
+              </div>
               <div class="executive-item full-width">
                 <label>Descripción del trabajo:</label>
                 <p class="description-box" id="info-descripcion"></p>
@@ -529,9 +534,6 @@
             <button id="btn-cancelar-especial" class="btn cancel-special-btn">
               <i class="ri-close-line"></i> Cancelar Permiso
             </button>
-            <button id="btn-continuar-pt" class="btn print-btn continue-btn">
-              <i class="ri-arrow-right-circle-line"></i> Continuar
-            </button>
             <button id="btn-terminar-especial" class="btn finish-special-btn">
               <i class="ri-check-line"></i> Permiso Terminado
             </button>
@@ -559,30 +561,6 @@
           </button>
           <button class="btn cancelar-btn">
             <i class="ri-arrow-go-back-line"></i> Cancelar
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <div id="modalComentarioContinuar" class="modal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2>Agregar comentario</h2>
-        </div>
-        <div class="modal-body">
-          <textarea
-            id="comentario-cancelar"
-            rows="4"
-            style="width: 100%"
-            placeholder="Escribe tu comentario aquí..."
-          ></textarea>
-        </div>
-        <div class="modal-footer">
-          <button class="btn cancelar-btn">
-            <i class="ri-arrow-go-back-line"></i> Cancelar
-          </button>
-          <button class="btn encviar_continuar-btn">
-            <i class="ri-send-plane-line"></i> Enviar Nuevo
           </button>
         </div>
       </div>

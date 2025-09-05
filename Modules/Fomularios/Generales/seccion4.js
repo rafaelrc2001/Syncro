@@ -679,23 +679,20 @@ document.addEventListener("DOMContentLoaded", () => {
             descripcion_trabajo,
           };
 
-          // Enviar los datos al backend
-          const permisoResponse = await fetch(
-            "http://localhost:3000/api/permisos-trabajo",
+          // Enviar los datos al backend (PT Apertura)
+          const aperturaResponse = await fetch(
+            "http://localhost:3000/api/pt-apertura",
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                id_area,
-                id_departamento,
-                id_sucursal,
-                id_tipo_permiso,
-                id_estatus,
-                id_ast,
-                contrato, // Nuevo campo opcional
-              }),
+              body: JSON.stringify(datosApertura),
             }
           );
+          const aperturaResult = await aperturaResponse.json();
+          if (!aperturaResponse.ok || !aperturaResult.success)
+            throw new Error(
+              aperturaResult.error || "Error al guardar PT Apertura"
+            );
           // FIN BLOQUE: Insertar otro tipo de PT
           // Aquí termina la lógica para otro tipo de permiso de trabajo
           // ==============================
@@ -959,95 +956,6 @@ router.get("/api/participantes", async (req, res) => {
 });
 
 module.exports = router;
-
-// ==============================
-// ==============================
-// Nueva ruta para insertar PT No Peligroso (COMENTADA)
-// ==============================
-/*
-router.post('/api/pt-no-peligroso', async (req, res) => {
-    const { id_permiso, nombre_solicitante, descripcion_trabajo, tipo_mantenimiento, ot_no, equipo_intervencion, hora_inicio, tag, fluido, presion, temperatura, empresa } = req.body;
-
-    // Validar campos obligatorios
-    if (!id_permiso || !nombre_solicitante || !descripcion_trabajo || !tipo_mantenimiento || !hora_inicio || !empresa) {
-        return res.status(400).json({
-            success: false,
-            error: 'Faltan campos obligatorios para pt_no_peligroso'
-        });
-    }
-
-    const query = `
-        INSERT INTO pt_no_peligroso (id_permiso, nombre_solicitante, descripcion_trabajo, tipo_mantenimiento, ot_no, equipo_intervencion, hora_inicio, tag, fluido, presion, temperatura, empresa)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
-        RETURNING *;
-    `;
-    const values = [id_permiso, nombre_solicitante, descripcion_trabajo, tipo_mantenimiento, ot_no, equipo_intervencion, hora_inicio, tag, fluido, presion, temperatura, empresa];
-
-    try {
-        const result = await pool.query(query, values);
-        const newEntry = result.rows[0];
-        res.status(201).json({
-            success: true,
-            data: newEntry
-        });
-    } catch (error) {
-        console.error('Error al insertar PT No Peligroso:', error);
-        res.status(500).json({
-            success: false,
-            error: 'Error al insertar PT No Peligroso'
-        });
-    }
-});
-*/
-
-// ==============================
-// Nueva ruta para insertar PT Apertura (COMENTADA)
-// ==============================
-/*
-router.post('/api/pt-apertura', async (req, res) => {
-    const { id_permiso, tipo_mantenimiento, otro_tipo_mantenimiento, ot_numero, tag, hora_inicio, tiene_equipo_intervenir, descripcion_equipo, fluido, presion, temperatura, antecedentes, requiere_herramientas_especiales, tipo_herramientas_especiales, herramientas_adecuadas, requiere_verificacion_previa, requiere_conocer_riesgos, observaciones_medidas, fuera_operacion, despresurizado_purgado, necesita_aislamiento, con_valvulas, con_juntas_ciegas, producto_entrampado, requiere_lavado, requiere_neutralizado, requiere_vaporizado, suspender_trabajos_adyacentes, acordonar_area, prueba_gas_toxico_inflamable, equipo_electrico_desenergizado, tapar_purgas_drenajes, proteccion_especial_recomendada, proteccion_piel_cuerpo, proteccion_respiratoria, proteccion_ocular, proteccion_contraincendio, tipo_proteccion_contraincendio, instalacion_barreras, observaciones_riesgos, co2_nivel, nh3_nivel, oxigeno_nivel, lel_nivel } = req.body;
-
- const datosApertura = {
-    id_permiso: idPermisoGenerado, // Debe ser un número válido
-    tipo_mantenimiento: tipo_mantenimiento, // Debe ser un string válido
-    hora_inicio: hora_inicio, // Debe ser un string con fecha y hora
-    // ...todos los demás campos...
-};
-
-    const query = `
-    INSERT INTO pt_apertura (
-        id_permiso, tipo_mantenimiento, otro_tipo_mantenimiento, ot_numero, tag, hora_inicio, tiene_equipo_intervenir, descripcion_equipo,
-        fluido, presion, temperatura, antecedentes, requiere_herramientas_especiales, tipo_herramientas_especiales, herramientas_adecuadas,
-        requiere_verificacion_previa, requiere_conocer_riesgos, observaciones_medidas, fuera_operacion, despresurizado_purgado,
-        necesita_aislamiento, con_valvulas, con_juntas_ciegas, producto_entrampado, requiere_lavado, requiere_neutralizado,
-        requiere_vaporizado, suspender_trabajos_adyacentes, acordonar_area, prueba_gas_toxico_inflamable, equipo_electrico_desenergizado,
-        tapar_purgas_drenajes, proteccion_especial_recomendada, proteccion_piel_cuerpo, proteccion_respiratoria, proteccion_ocular,
-        proteccion_contraincendio, tipo_proteccion_contraincendio, instalacion_barreras, observaciones_riesgos, co2_nivel, nh3_nivel,
-        oxigeno_nivel, lel_nivel
-    )
-    VALUES (
-        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29, $30, $31, $32, $33, $34, $35, $36, $37, $38, $39, $40, $41, $42, $43, $44
-    )
-    RETURNING *;
-`;
-    const values = [id_permiso, tipo_mantenimiento, otro_tipo_mantenimiento, ot_numero, tag, hora_inicio, tiene_equipo_intervenir, descripcion_equipo, fluido, presion, temperatura, antecedentes, requiere_herramientas_especiales, tipo_herramientas_especiales, herramientas_adecuadas, requiere_verificacion_previa, requiere_conocer_riesgos, observaciones_medidas, fuera_operacion, despresurizado_purgado, necesita_aislamiento, con_valvulas, con_juntas_ciegas, producto_entrampado, requiere_lavado, requiere_neutralizado, requiere_vaporizado, suspender_trabajos_adyacentes, acordonar_area, prueba_gas_toxico_inflamable, equipo_electrico_desenergizado, tapar_purgas_drenajes, proteccion_especial_recomendada, proteccion_piel_cuerpo, proteccion_respiratoria, proteccion_ocular, proteccion_contraincendio, tipo_proteccion_contraincendio, instalacion_barreras, observaciones_riesgos, co2_nivel, nh3_nivel, oxigeno_nivel, lel_nivel];
-
-    try {
-        const result = await pool.query(query, values);
-        const newEntry = result.rows[0];
-        res.status(201).json({
-            success: true,
-            data: newEntry
-        });
-    } catch (error) {
-        console.error('Error al insertar PT Apertura:', error);
-        res.status(500).json({
-            success: false,
-            error: 'Error al insertar PT Apertura'
-        });
-    }
-});
-*/
 
 const formulariosRouter = require("./formularios");
 app.use("/api", formulariosRouter);

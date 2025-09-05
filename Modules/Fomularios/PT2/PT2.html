@@ -400,8 +400,20 @@
                 </div>
             </div>
         </div>
-                        
+
+
+
+
+
+
+
+
+
+
+
+        
             <!-- Tabla 3: Requisitos para efectuar el trabajo -->
+             <!-- esto es lo que se va a mostrar en el area -->
             <div class="color-section blue-section">
             <div class="form-section-title"data-toggle-target="work-requirements">
                 <i class="ri-checkbox-multiple-line toggle-icon"></i>
@@ -619,179 +631,15 @@
             </div>
         </div>
 
-        <!-- Tabla 4: Requisitos para Administrar los Riesgos -->
-         <div class="color-section red-section">
-            <div class="form-section-title" data-toggle-target="risk-requirements">
-                <i class="ri-checkbox-multiple-line toggle-icon"></i>
-                <h3>Requisitos para Administrar los Riesgos</h3>
-            </div>
-            <div class="form-table toggle-section" id="risk-requirements">
-            
-            <!-- Encabezado de opciones -->
-            <div class="options-header">
-                <div class="form-table-label"></div>
-                <div class="form-table-options">
-                    <div class="options-labels">
-                        <span class="option-label">SI</span>
-                        <span class="option-label">NO</span>
-                        <span class="option-label">N/A</span>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Fila 1 -->
-            <div class="form-table-row">
-                <div class="form-table-label">
-                    <label>Equipo de proteccion especial recomendado:</label>
-                </div>
-                <div class="form-table-options">
-                    <div class="yes-no-na compact">
-                        <label><input type="radio" name="special-protection" value="SI"></label>
-                        <label><input type="radio" name="special-protection" value="NO"></label>
-                        <label><input type="radio" name="special-protection" value="N/A"></label>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Fila 2 -->
-            <div class="form-table-row">
-                <div class="form-table-label">
-                    <label>Para piel y cuerpo:</label>
-                </div>
-                <div class="form-table-options">
-                    <div class="yes-no-na compact">
-                        <label><input type="radio" name="skin-protection" value="SI"></label>
-                        <label><input type="radio" name="skin-protection" value="NO"></label>
-                        <label><input type="radio" name="skin-protection" value="N/A"></label>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Fila 3 -->
-            <div class="form-table-row">
-                <div class="form-table-label">
-                    <label>Protección respiratoria:</label>
-                </div>
-                <div class="form-table-options">
-                    <div class="yes-no-na compact">
-                        <label><input type="radio" name="respiratory-protection" value="SI"></label>
-                        <label><input type="radio" name="respiratory-protection" value="NO"></label>
-                        <label><input type="radio" name="respiratory-protection" value="N/A"></label>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Fila 4     -->
-             
 
-            <div class="form-table-row">
-                <div class="form-table-label">
-                    <label>Protección ocular :</label>
-                </div>
-                <div class="form-table-options">
-                    <div class="yes-no-na compact">
-                        <label><input type="radio" name="eye-protection" value="SI"></label>
-                        <label><input type="radio" name="eye-protection" value="NO"></label>
-                        <label><input type="radio" name="eye-protection" value="N/A"></label>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Fila 5 y 6 unidas -->
-            <div class="form-table-row combined-row">
-                <div class="form-table-label">
-                    <label>¿Se requiere protección contraincendio?</label>
-                </div>
-                <div class="form-table-options combined-options">
-                    <div class="yes-no-na compact">
-                        <label><input type="radio" name="fire-protection" value="SI"></label>
-                        <label><input type="radio" name="fire-protection" value="NO"></label>
-                        <label><input type="radio" name="fire-protection" value="N/A"></label>
-                    </div>
-                    <div class="combined-input">
-                        <label class="inline-label">¿Cuál?</label>
-                        <input type="text" id="fire-protection-type" name="fire-protection-type" 
-                            placeholder="Especifique el tipo" class="compact">
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Fila 7 -->
-            <div class="form-table-row">
-                <div class="form-table-label">
-                    <label>¿Instalación de barreras y/o barricadas?</label>
-                </div>
-                <div class="form-table-options">
-                    <div class="yes-no-na compact">
-                        <label><input type="radio" name="barriers-required" value="SI"></label>
-                        <label><input type="radio" name="barriers-required" value="NO"></label>
-                        <label><input type="radio" name="barriers-required" value="N/A"></label>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Fila 8: Observaciones -->
-                <div class="form-table-row">
-                    <div class="form-table-label">
-                        <label for="observations">Observaciones adicionales</label>
-                    </div>
-                    <div class="form-table-options">
-                        <textarea id="observations" name="observations" rows="3" placeholder="Ingrese cualquier observación adicional"></textarea>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
 
-        <!-- Tabla 5: Registro de pruebas requeridas -->
-         <div class="color-section red-section">
-            <div class="form-section-title" data-toggle-target="test-records">
-                <i class="ri-flask-line toggle-icon"></i>
-                <h3>Registro de pruebas requeridas</h3>
-            </div>
-            <div class="form-table compact-table toggle-section" id="test-records">
-            <!-- Fila 1 -->
-            <div class="form-table-row">
-                <div class="form-table-label">
-                    <label for="co2-level">% de CO2</label>
-                </div>
-                <div class="form-table-options">
-                    <input type="text" id="co2-level" name="co2-level" class="compact">
-                </div>
-            </div>
-            
-            <!-- Fila 2 -->
-            <div class="form-table-row">
-                <div class="form-table-label">
-                    <label for="nh3-level">% Amoniaco</label>
-                </div>
-                <div class="form-table-options">
-                    <input type="text" id="nh3-level" name="nh3-level" class="compact">
-                </div>
-            </div>
-            
-            <!-- Fila 3 -->
-            <div class="form-table-row">
-                <div class="form-table-label">
-                    <label for="oxygen-level">% de Oxígeno</label>
-                </div>
-                <div class="form-table-options">
-                    <input type="text" id="oxygen-level" name="oxygen-level" class="compact">
-                </div>
-            </div>
-            
-            <!-- Fila 4 -->
-            <div class="form-table-row">
-                <div class="form-table-label">
-                    <label for="lel-level">% de Explosividad LEL</label>
-                </div>
-                <div class="form-table-options">
-                    <input type="text" id="lel-level" name="lel-level" class="compact">
-                </div>
-            </div>
-        </div>
-    </div>
 
+
+
+
+     
+     
                     <div class="form-actions">
                         <button type="button" class="btn secondary prev-step" data-prev="1">
                             <i class="ri-arrow-left-line"></i> Anterior

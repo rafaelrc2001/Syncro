@@ -237,5 +237,152 @@ RETURNING *;
   }
 });
 
+// Ruta para actualizar solo los requisitos de apertura (SI/NO/N/A)
+router.put("/pt-apertura/requisitos_area/:id_permiso", async (req, res) => {
+  const { id_permiso } = req.params;
+  const {
+    fuera_operacion,
+    despresurizado_purgado,
+    necesita_aislamiento,
+    con_valvulas,
+    con_juntas_ciegas,
+    producto_entrampado,
+    requiere_lavado,
+    requiere_neutralizado,
+    requiere_vaporizado,
+    suspender_trabajos_adyacentes,
+    acordonar_area,
+    prueba_gas_toxico_inflamable,
+    equipo_electrico_desenergizado,
+    tapar_purgas_drenajes,
+  } = req.body;
+
+  const query = `
+    UPDATE pt_apertura SET
+      fuera_operacion = $1,
+      despresurizado_purgado = $2,
+      necesita_aislamiento = $3,
+      con_valvulas = $4,
+      con_juntas_ciegas = $5,
+      producto_entrampado = $6,
+      requiere_lavado = $7,
+      requiere_neutralizado = $8,
+      requiere_vaporizado = $9,
+      suspender_trabajos_adyacentes = $10,
+      acordonar_area = $11,
+      prueba_gas_toxico_inflamable = $12,
+      equipo_electrico_desenergizado = $13,
+      tapar_purgas_drenajes = $14
+    WHERE id_permiso = $15
+    RETURNING *;
+  `;
+
+  const values = [
+    fuera_operacion,
+    despresurizado_purgado,
+    necesita_aislamiento,
+    con_valvulas,
+    con_juntas_ciegas,
+    producto_entrampado,
+    requiere_lavado,
+    requiere_neutralizado,
+    requiere_vaporizado,
+    suspender_trabajos_adyacentes,
+    acordonar_area,
+    prueba_gas_toxico_inflamable,
+    equipo_electrico_desenergizado,
+    tapar_purgas_drenajes,
+    id_permiso,
+  ];
+
+  try {
+    const result = await db.query(query, values);
+    if (result.rowCount === 0) {
+      return res
+        .status(404)
+        .json({ success: false, error: "Permiso no encontrado" });
+    }
+    res.json({ success: true, data: result.rows[0] });
+  } catch (error) {
+    console.error("Error al actualizar requisitos de apertura:", error);
+    res.status(500).json({
+      success: false,
+      error: "Error al actualizar requisitos de apertura",
+    });
+  }
+});
+
+// Ruta para actualizar los requisitos de supervisor y pruebas
+router.put(
+  "/pt-apertura/requisitos_supervisor/:id_permiso",
+  async (req, res) => {
+    const { id_permiso } = req.params;
+    const {
+      special_protection,
+      skin_protection,
+      respiratory_protection,
+      eye_protection,
+      fire_protection,
+      fire_protection_type,
+      barriers_required,
+      observations,
+      co2_level,
+      nh3_level,
+      oxygen_level,
+      lel_level,
+    } = req.body;
+
+    const query = `
+    UPDATE pt_apertura SET
+      proteccion_especial_recomendada = $1,
+      proteccion_piel_cuerpo = $2,
+      proteccion_respiratoria = $3,
+      proteccion_ocular = $4,
+      proteccion_contraincendio = $5,
+      tipo_proteccion_contraincendio = $6,
+      instalacion_barreras = $7,
+      observaciones_riesgos = $8,
+      co2_nivel = $9,
+      nh3_nivel = $10,
+      oxigeno_nivel = $11,
+      lel_nivel = $12
+    WHERE id_permiso = $13
+    RETURNING *;
+  `;
+
+    const values = [
+      special_protection,
+      skin_protection,
+      respiratory_protection,
+      eye_protection,
+      fire_protection,
+      fire_protection_type,
+      barriers_required,
+      observations,
+      co2_level,
+      nh3_level,
+      oxygen_level,
+      lel_level,
+      id_permiso,
+    ];
+
+    try {
+      const result = await db.query(query, values);
+      if (result.rowCount === 0) {
+        return res
+          .status(404)
+          .json({ success: false, error: "Permiso no encontrado" });
+      }
+      res.json({ success: true, data: result.rows[0] });
+    } catch (error) {
+      console.error("Error al actualizar requisitos supervisor:", error);
+      res.status(500).json({
+        success: false,
+        error: "Error al actualizar requisitos supervisor",
+      });
+    }
+  }
+);
+
 // ...existing code...
 module.exports = router;

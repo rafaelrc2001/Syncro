@@ -24,7 +24,7 @@ window.n8nFormHandler = async function () {
   console.log("Datos enviados a n8n:", formData);
 
   // Enviar datos a n8n
-  const response = await fetch(
+  /*const response = await fetch(
     "https://xwd4grn8-5678.usw3.devtunnels.ms/webhook/formulario-PT",
     {
       method: "POST",
@@ -33,7 +33,7 @@ window.n8nFormHandler = async function () {
       },
       body: JSON.stringify(formData),
     }
-  );
+  );*/
 
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));

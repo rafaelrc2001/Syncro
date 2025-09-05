@@ -189,8 +189,20 @@ function asignarEventosVer() {
         if (data.general.tipo_permiso === "PT para Apertura Equipo Línea") {
           document.getElementById("modal-especifica").innerHTML =
             renderApertura(data.general);
+          // Renderizar tabla visual de requisitos de apertura
+          if (document.getElementById("modal-apertura-area-visual")) {
+            import("./render_pt_comentarios.js").then((mod) => {
+              document.getElementById("modal-apertura-area-visual").innerHTML =
+                mod.renderAperturaAreaVisual(data.general) +
+                mod.renderAperturaSupervisor(data.general);
+            });
+          }
         } else {
           document.getElementById("modal-especifica").innerHTML = "";
+          if (document.getElementById("modal-apertura-area-visual")) {
+            document.getElementById("modal-apertura-area-visual").innerHTML =
+              "";
+          }
         }
       } catch (err) {
         console.error(
@@ -202,142 +214,13 @@ function asignarEventosVer() {
   });
 }
 
-function renderApertura(data) {
-  return `
-        <div class="executive-grid">
-            <div class="executive-item"><label>Área:</label><p>${
-              data.area ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>Tipo de mantenimiento:</label><p>${
-              data.tipo_mantenimiento ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>OT:</label><p>${
-              data.ot_numero ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>Tag:</label><p>${
-              data.tag ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>Hora inicio:</label><p>${
-              data.hora_inicio ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>Fluido:</label><p>${
-              data.fluido ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>Presión:</label><p>${
-              data.presion ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>Temperatura:</label><p>${
-              data.temperatura ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>Antecedentes:</label><p>${
-              data.antecedentes ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>¿Requiere herramientas especiales?</label><p>${
-              data.requiere_herramientas_especiales ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>Tipo de herramientas especiales:</label><p>${
-              data.tipo_herramientas_especiales ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>Herramientas adecuadas:</label><p>${
-              data.herramientas_adecuadas ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>¿Requiere verificación previa?</label><p>${
-              data.requiere_verificacion_previa ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>¿Requiere conocer riesgos?</label><p>${
-              data.requiere_conocer_riesgos ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>Observaciones medidas:</label><p>${
-              data.observaciones_medidas ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>¿Fuera de operación?</label><p>${
-              data.fuera_operacion ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>¿Despresurizado/purgado?</label><p>${
-              data.despresurizado_purgado ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>¿Necesita aislamiento?</label><p>${
-              data.necesita_aislamiento ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>Con válvulas:</label><p>${
-              data.con_valvulas ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>Con juntas ciegas:</label><p>${
-              data.con_juntas_ciegas ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>Producto entrampado:</label><p>${
-              data.producto_entrampado ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>¿Requiere lavado?</label><p>${
-              data.requiere_lavado ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>¿Requiere neutralizado?</label><p>${
-              data.requiere_neutralizado ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>¿Requiere vaporizado?</label><p>${
-              data.requiere_vaporizado ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>¿Suspender trabajos adyacentes?</label><p>${
-              data.suspender_trabajos_adyacentes ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>¿Acordonar área?</label><p>${
-              data.acordonar_area ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>¿Prueba gas tóxico/inflamable?</label><p>${
-              data.prueba_gas_toxico_inflamable ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>¿Equipo eléctrico desenergizado?</label><p>${
-              data.equipo_electrico_desenergizado ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>¿Tapar purgas/drenajes?</label><p>${
-              data.tapar_purgas_drenajes ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>Protección especial recomendada:</label><p>${
-              data.proteccion_especial_recomendada ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>Protección piel/cuerpo:</label><p>${
-              data.proteccion_piel_cuerpo ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>Protección respiratoria:</label><p>${
-              data.proteccion_respiratoria ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>Protección ocular:</label><p>${
-              data.proteccion_ocular ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>Protección contraincendio:</label><p>${
-              data.proteccion_contraincendio ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>Tipo protección contraincendio:</label><p>${
-              data.tipo_proteccion_contraincendio ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>Instalación barreras:</label><p>${
-              data.instalacion_barreras ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>Observaciones riesgos:</label><p>${
-              data.observaciones_riesgos ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>CO2 nivel:</label><p>${
-              data.co2_nivel ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>NH3 nivel:</label><p>${
-              data.nh3_nivel ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>Oxígeno nivel:</label><p>${
-              data.oxigeno_nivel ?? "Sin información"
-            }</p></div>
-            <div class="executive-item"><label>LEL nivel:</label><p>${
-              data.lel_nivel ?? "Sin información"
-            }</p></div>
-        </div>
-    `;
-}
-
 function renderNoPeligroso(data) {
   // Si ya tienes el renderizado en mostrarDetallesTecnicos, puedes dejarlo vacío o solo retornar ''
   return "";
 }
 
 // ...existing code...
+import { renderApertura } from "./render_pt_comentarios.js";
 export {
   mostrarDetallesTecnicos,
   mostrarAST,

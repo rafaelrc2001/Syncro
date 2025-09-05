@@ -5,10 +5,12 @@ import {
   mostrarActividadesAST,
   mostrarParticipantesAST,
 } from "../generales/LogicaVerFormularios.js";
+
 import {
   renderApertura,
   renderNoPeligroso,
 } from "/JS/generales/LogicaVerFormularios.js";
+import { renderAperturaArea } from "../generales/render_pt_comentarios.js";
 
 // --- Tarjetas desde autorizar ---
 async function cargarTargetasDesdeAutorizar() {
@@ -104,6 +106,7 @@ function asignarEventosVer() {
         if (data.general && data.general.tipo_permiso === "PT No Peligroso") {
           if (bloqueNoPeligroso) bloqueNoPeligroso.style.display = "";
           document.getElementById("modal-especifica").innerHTML = "";
+          document.getElementById("modal-apertura-area").innerHTML = "";
         } else {
           if (bloqueNoPeligroso) bloqueNoPeligroso.style.display = "none";
           if (
@@ -112,8 +115,12 @@ function asignarEventosVer() {
           ) {
             document.getElementById("modal-especifica").innerHTML =
               renderApertura(data.general);
+            // Mostrar tabla de requisitos de apertura en el área correspondiente
+            document.getElementById("modal-apertura-area").innerHTML =
+              renderAperturaArea(data.general);
           } else {
             document.getElementById("modal-especifica").innerHTML = "";
+            document.getElementById("modal-apertura-area").innerHTML = "";
           }
         }
         // Abrir el modal
@@ -339,6 +346,37 @@ document.addEventListener("DOMContentLoaded", () => {
         if (responsableInput) responsableInput.focus();
         return;
       }
+
+      // --- Aquí va el bloque para guardar los requisitos de apertura ---
+      const formApertura = document.getElementById("form-apertura-area");
+      if (formApertura) {
+        const formData = new FormData(formApertura);
+        const requisitos = {};
+        for (let [key, value] of formData.entries()) {
+          requisitos[key] = value;
+        }
+        try {
+          const resp = await fetch(
+            `http://localhost:3000/api/pt-apertura/requisitos_area/${idPermiso}`,
+            {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(requisitos),
+            }
+          );
+          if (!resp.ok) {
+            const data = await resp.json();
+            alert(data.error || "Error al guardar los requisitos de apertura.");
+            return;
+          }
+        } catch (err) {
+          console.error("Error al actualizar requisitos de apertura:", err);
+          alert("Error al actualizar requisitos de apertura.");
+          return;
+        }
+      }
+      // --- Fin del bloque ---
+
       // 1. Insertar autorización de área
       try {
         const resp = await fetch(

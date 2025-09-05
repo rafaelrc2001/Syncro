@@ -1,17 +1,3 @@
-// Datos de ejemplo para el autocompletado de plantas
-const plantSuggestions = [
-  "Planta de Producción Principal",
-  "Planta de Almacenamiento Norte",
-  "Planta de Procesamiento Secundario",
-  "Área de Mantenimiento General",
-  "Sala de Máquinas 1",
-  "Sala de Máquinas 2",
-  "Zona de Almacenamiento de Materiales",
-  "Área de Servicios Generales",
-  "Planta de Tratamiento de Aguas",
-  "Subestación Eléctrica",
-];
-
 document.addEventListener("DOMContentLoaded", function () {
   // Inicialización de componentes
   initBackButton();

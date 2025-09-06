@@ -354,12 +354,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // 1.5 Guardar datos de apertura supervisor si existen
       if (Object.keys(datosSupervisor).length > 0) {
+        // Mapeo de nombres del frontend al backend
+        const datosSupervisorMapped = {
+          special_protection: datosSupervisor["special-protection"],
+          skin_protection: datosSupervisor["skin-protection"],
+          respiratory_protection: datosSupervisor["respiratory-protection"],
+          eye_protection: datosSupervisor["eye-protection"],
+          fire_protection: datosSupervisor["fire-protection"],
+          fire_protection_type: datosSupervisor["fire-protection-type"],
+          barriers_required: datosSupervisor["barriers-required"],
+          observations: datosSupervisor["observations"],
+          co2_level: datosSupervisor["co2-level"],
+          nh3_level: datosSupervisor["nh3-level"],
+          oxygen_level: datosSupervisor["oxygen-level"],
+          lel_level: datosSupervisor["lel-level"],
+        };
+
         try {
-          await fetch("http://localhost:3000/api/apertura-supervisor", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ id_permiso: idPermiso, ...datosSupervisor }),
-          });
+          await fetch(
+            `http://localhost:3000/api/pt-apertura/requisitos_supervisor/${idPermiso}`,
+            {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(datosSupervisorMapped),
+            }
+          );
         } catch (err) {
           console.error("Error al guardar datos de apertura supervisor:", err);
         }

@@ -10,7 +10,7 @@ import {
   renderApertura,
   renderNoPeligroso,
 } from "/JS/generales/LogicaVerFormularios.js";
-import { renderAperturaArea } from "../generales/render_pt_comentarios.js";
+import { renderAperturaArea } from "../generales/render_pt_apertura.js";
 
 // --- Tarjetas desde autorizar ---
 async function cargarTargetasDesdeAutorizar() {

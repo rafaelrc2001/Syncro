@@ -191,7 +191,7 @@ function asignarEventosVer() {
             renderApertura(data.general);
           // Renderizar tabla visual de requisitos de apertura
           if (document.getElementById("modal-apertura-area-visual")) {
-            import("./render_pt_comentarios.js").then((mod) => {
+            import("./render_pt_apertura.js").then((mod) => {
               document.getElementById("modal-apertura-area-visual").innerHTML =
                 mod.renderAperturaAreaVisual(data.general) +
                 mod.renderAperturaSupervisor(data.general);
@@ -220,7 +220,7 @@ function renderNoPeligroso(data) {
 }
 
 // ...existing code...
-import { renderApertura } from "./render_pt_comentarios.js";
+import { renderApertura } from "./render_pt_apertura.js";
 export {
   mostrarDetallesTecnicos,
   mostrarAST,

@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Función para cargar los supervisores desde la API
     async function cargarSupervisores() {
         try {
-            const response = await fetch(`${API_URL}/supervisores`);
+            const response = await fetch(`${API_URL}/supervisores_base`);
             if (!response.ok) throw new Error('Error al cargar los supervisores');
             supervisoresGlobal = await response.json();
             renderizarTablaSupervisores();

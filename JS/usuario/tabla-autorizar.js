@@ -350,6 +350,27 @@ document.addEventListener("DOMContentLoaded", () => {
       // --- Aquí va el bloque para guardar los requisitos de apertura ---
       const formApertura = document.getElementById("form-apertura-area");
       if (formApertura) {
+        // Validar que todos los selectores (select y/o input requeridos) estén llenos
+        const requiredFields = formApertura.querySelectorAll(
+          "select[required], input[required]"
+        );
+        let allFilled = true;
+        requiredFields.forEach((field) => {
+          if (!field.value || field.value.trim() === "") {
+            allFilled = false;
+            field.classList.add("campo-incompleto"); // Opcional: para resaltar el campo
+          } else {
+            field.classList.remove("campo-incompleto");
+          }
+        });
+
+        if (!allFilled) {
+          alert(
+            "Por favor, llena todos los campos obligatorios antes de continuar."
+          );
+          return;
+        }
+
         const formData = new FormData(formApertura);
         const requisitos = {};
         for (let [key, value] of formData.entries()) {

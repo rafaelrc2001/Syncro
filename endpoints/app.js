@@ -86,7 +86,7 @@ app.put('/api/departamentos/:id', tablasBase.updateDepartamento);
 app.delete('/api/departamentos/:id', tablasBase.deleteDepartamento);
 
 // SUPERVISORES
-app.get('/api/supervisores', tablasBase.getSupervisores);
+app.get('/api/supervisores_base', tablasBase.getSupervisores);
 app.get('/api/supervisores/:id', tablasBase.getSupervisorById);
 app.post('/api/supervisores', tablasBase.createSupervisor);
 app.put('/api/supervisores/:id', tablasBase.updateSupervisor);

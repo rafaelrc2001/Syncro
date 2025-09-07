@@ -307,6 +307,68 @@ export function renderAperturaSupervisor(data = {}) {
   `;
 }
 
+export function renderAperturaSupervisorVisual(data = {}) {
+  const requisitos = [
+    { label: "Equipo de protección especial recomendado:", key: "special-protection" },
+    { label: "Para piel y cuerpo:", key: "skin-protection" },
+    { label: "Protección respiratoria:", key: "respiratory-protection" },
+    { label: "Protección ocular:", key: "eye-protection" },
+    { label: "¿Se requiere protección contraincendio?", key: "fire-protection", detalle: "fire-protection-type" },
+    { label: "¿Instalación de barreras y/o barricadas?", key: "barriers-required" },
+  ];
+
+  const filas = requisitos.map(r => `
+    <tr>
+      <td>${r.label}</td>
+      <td><strong>${data[r.key] || "-"}</strong></td>
+      ${r.detalle ? `<td>${data[r.detalle] || ""}</td>` : "<td></td>"}
+    </tr>
+  `).join("");
+
+  return `
+    <div class="executive-section">
+      <div class="section-header">
+        <i class="ri-checkbox-multiple-line"></i>
+        <h3>Requisitos para Administrar los Riesgos</h3>
+      </div>
+      <table class="tabla-requisitos">
+        <thead>
+          <tr>
+            <th>Requisito</th>
+            <th>Respuesta</th>
+            <th>Detalle</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${filas}
+          <tr>
+            <td>Observaciones adicionales</td>
+            <td colspan="2">${data.observations || "-"}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="section-header" style="margin-top:2em;">
+        <i class="ri-flask-line"></i>
+        <h3>Registro de pruebas requeridas</h3>
+      </div>
+      <table class="tabla-requisitos">
+        <thead>
+          <tr>
+            <th>Prueba</th>
+            <th>Valor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>% de CO2</td><td><strong>${data["co2-level"] || "-"}</strong></td></tr>
+          <tr><td>% Amoniaco</td><td><strong>${data["nh3-level"] || "-"}</strong></td></tr>
+          <tr><td>% de Oxígeno</td><td><strong>${data["oxygen-level"] || "-"}</strong></td></tr>
+          <tr><td>% de Explosividad LEL</td><td><strong>${data["lel-level"] || "-"}</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
 function renderRadioRowTable(label, name, value, extra = "") {
   return `
     <tr>

@@ -33,6 +33,7 @@ if (btnTerminarEspecial) {
   });
 }
 import { asignarEventosVer } from "../generales/LogicaVerFormularios.js";
+import { renderApertura, renderAperturaAreaVisual, renderAperturaSupervisorVisual } from "../generales/render_pt_apertura.js";
 
 // funcionesusuario.js
 // Centraliza la lógica de tarjetas y tabla de permisos para el usuario

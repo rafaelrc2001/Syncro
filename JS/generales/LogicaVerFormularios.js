@@ -187,22 +187,21 @@ function asignarEventosVer() {
 
         // Renderizar apertura si corresponde
         if (data.general.tipo_permiso === "PT para Apertura Equipo Línea") {
+          // Render principal
           document.getElementById("modal-especifica").innerHTML =
             renderApertura(data.general);
-          // Renderizar tabla visual de requisitos de apertura
-          if (document.getElementById("modal-apertura-area-visual")) {
-            import("./render_pt_apertura.js").then((mod) => {
-              document.getElementById("modal-apertura-area-visual").innerHTML =
-                mod.renderAperturaAreaVisual(data.general) +
-                mod.renderAperturaSupervisor(data.general);
-            });
-          }
+
+          // Render de apertura área
+          document.getElementById("modal-apertura-area-visual").innerHTML =
+            renderAperturaAreaVisual(data.general);
+
+          // Render de apertura supervisor
+          document.getElementById("contenedor-apertura-supervisor").innerHTML =
+            renderAperturaSupervisorVisual(data.general);
         } else {
           document.getElementById("modal-especifica").innerHTML = "";
-          if (document.getElementById("modal-apertura-area-visual")) {
-            document.getElementById("modal-apertura-area-visual").innerHTML =
-              "";
-          }
+          document.getElementById("modal-apertura-area-visual").innerHTML = "";
+          document.getElementById("contenedor-apertura-supervisor").innerHTML = "";
         }
       } catch (err) {
         console.error(
@@ -219,8 +218,11 @@ function renderNoPeligroso(data) {
   return "";
 }
 
-// ...existing code...
-import { renderApertura } from "./render_pt_apertura.js";
+import {
+  renderApertura,
+  renderAperturaAreaVisual,
+  renderAperturaSupervisorVisual,
+} from "./render_pt_apertura.js";
 export {
   mostrarDetallesTecnicos,
   mostrarAST,

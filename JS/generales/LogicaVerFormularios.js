@@ -163,6 +163,7 @@ function asignarEventosVer() {
         console.log("Datos AST:", data.ast);
         console.log("Actividades AST:", data.actividades_ast);
         console.log("Participantes AST:", data.participantes_ast);
+        console.log("Respuesta completa del backend:", data);
         mostrarInformacionGeneral(data.general);
         mostrarDetallesTecnicos(data.detalles);
         mostrarAST(data.ast);
@@ -197,7 +198,7 @@ function asignarEventosVer() {
 
           // Render de apertura supervisor
           document.getElementById("contenedor-apertura-supervisor").innerHTML =
-            renderAperturaSupervisorVisual(data.general);
+            renderAperturaSupervisorVisual(mapSupervisorFields(data.general));
         } else {
           document.getElementById("modal-especifica").innerHTML = "";
           document.getElementById("modal-apertura-area-visual").innerHTML = "";
@@ -233,3 +234,20 @@ export {
   renderApertura,
   renderNoPeligroso,
 };
+
+function mapSupervisorFields(general) {
+  return {
+    "special-protection": general.proteccion_especial_recomendada,
+    "skin-protection": general.proteccion_piel_cuerpo,
+    "respiratory-protection": general.proteccion_respiratoria,
+    "eye-protection": general.proteccion_ocular,
+    "fire-protection": general.proteccion_contraincendio,
+    "fire-protection-type": general.tipo_proteccion_contraincendio,
+    "barriers-required": general.instalacion_barreras,
+    "observations": general.observaciones_riesgos,
+    "co2-level": general.co2_nivel,
+    "nh3-level": general.nh3_nivel,
+    "oxygen-level": general.oxigeno_nivel,
+    "lel-level": general.lel_nivel,
+  };
+}

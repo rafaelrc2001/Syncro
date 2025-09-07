@@ -125,6 +125,8 @@ function asignarEventosVer() {
         }
         // Abrir el modal
         document.getElementById("modalVer").classList.add("active");
+        // Dentro de asignarEventosVer, después de obtener data.general:
+        window.tipoPermisoActual = data.general.tipo_permiso;
       } catch (err) {
         console.error("Error al obtener datos del permiso:", err);
       }
@@ -324,79 +326,21 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnAceptar = document.getElementById("btn-autorizar-pt");
   if (btnAceptar) {
     btnAceptar.addEventListener("click", async function () {
-      // Obtener el id_permiso del permiso actual desde la variable global
       const idPermiso = window.idPermisoActual;
-      // Obtener responsable_area y operador_area desde los inputs del DOM
+      const tipoPermiso = window.tipoPermisoActual;
       const responsableInput = document.getElementById("responsable-aprobador");
       const operadorInput = document.getElementById("responsable-aprobador2");
-      const responsable_area = responsableInput
-        ? responsableInput.value.trim()
-        : "";
+      const responsable_area = responsableInput ? responsableInput.value.trim() : "";
       const operador_area = operadorInput ? operadorInput.value.trim() : "";
-      if (!idPermiso) {
-        alert(
-          "No se pudo obtener el ID del permiso. Selecciona un permiso válido."
-        );
-        return;
-      }
-      if (!responsable_area) {
-        alert(
-          "Debes ingresar el nombre del responsable del área antes de autorizar."
-        );
-        if (responsableInput) responsableInput.focus();
-        return;
-      }
 
-      // --- Aquí va el bloque para guardar los requisitos de apertura ---
-      const formApertura = document.getElementById("form-apertura-area");
-      if (formApertura) {
-        // Validar que todos los selectores (select y/o input requeridos) estén llenos
-        const requiredFields = formApertura.querySelectorAll(
-          "select[required], input[required]"
-        );
-        let allFilled = true;
-        requiredFields.forEach((field) => {
-          if (!field.value || field.value.trim() === "") {
-            allFilled = false;
-            field.classList.add("campo-incompleto"); // Opcional: para resaltar el campo
-          } else {
-            field.classList.remove("campo-incompleto");
-          }
-        });
+      if (!idPermiso) { alert("No se pudo obtener el ID del permiso."); return; }
+      if (!responsable_area) { alert("Debes ingresar el nombre del responsable."); return; }
 
-        if (!allFilled) {
-          alert(
-            "Por favor, llena todos los campos obligatorios antes de continuar."
-          );
-          return;
-        }
-
-        const formData = new FormData(formApertura);
-        const requisitos = {};
-        for (let [key, value] of formData.entries()) {
-          requisitos[key] = value;
-        }
-        try {
-          const resp = await fetch(
-            `http://localhost:3000/api/pt-apertura/requisitos_area/${idPermiso}`,
-            {
-              method: "PUT",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(requisitos),
-            }
-          );
-          if (!resp.ok) {
-            const data = await resp.json();
-            alert(data.error || "Error al guardar los requisitos de apertura.");
-            return;
-          }
-        } catch (err) {
-          console.error("Error al actualizar requisitos de apertura:", err);
-          alert("Error al actualizar requisitos de apertura.");
-          return;
-        }
+      // --- Escalable: Guardar requisitos según el tipo de permiso ---
+      if (permisoHandlers[tipoPermiso] && permisoHandlers[tipoPermiso].guardarRequisitos) {
+        const ok = await permisoHandlers[tipoPermiso].guardarRequisitos(idPermiso);
+        if (!ok) return;
       }
-      // --- Fin del bloque ---
 
       // 1. Insertar autorización de área
       try {
@@ -661,3 +605,68 @@ document.addEventListener("DOMContentLoaded", () => {
       general.descripcion_trabajo || "";
   }
 });
+
+const permisoHandlers = {
+  "PT para Apertura Equipo Línea": {
+    render: (data) => {
+      document.getElementById("modal-especifica").innerHTML = renderApertura(
+        data.general
+      );
+      document.getElementById("modal-apertura-area").innerHTML = renderAperturaArea(
+        data.general
+      );
+    },
+    guardarRequisitos: async (idPermiso) => {
+      const formApertura = document.getElementById("form-apertura-area");
+      if (formApertura) {
+        const requiredFields = formApertura.querySelectorAll(
+          "select[required], input[required]"
+        );
+        let allFilled = true;
+        requiredFields.forEach((field) => {
+          if (!field.value || field.value.trim() === "") {
+            allFilled = false;
+            field.classList.add("campo-incompleto");
+          } else {
+            field.classList.remove("campo-incompleto");
+          }
+        });
+        if (!allFilled) {
+          alert(
+            "Por favor, llena todos los campos obligatorios antes de continuar."
+          );
+          return false;
+        }
+        const formData = new FormData(formApertura);
+        const requisitos = {};
+        for (let [key, value] of formData.entries()) {
+          requisitos[key] = value;
+        }
+        try {
+          const resp = await fetch(
+            `http://localhost:3000/api/pt-apertura/requisitos_area/${idPermiso}`,
+            {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(requisitos),
+            }
+          );
+          if (!resp.ok) {
+            const data = await resp.json();
+            alert(data.error || "Error al guardar los requisitos de apertura.");
+            return false;
+          }
+        } catch (err) {
+          alert("Error al actualizar requisitos de apertura.");
+          return false;
+        }
+      }
+      return true;
+    },
+  },
+  "PT No Peligroso": {
+    render: (data) => { /* ... */ },
+    guardarRequisitos: async (idPermiso) => { /* ... */ }
+  },
+  // Aquí irán los otros tipos de permisos...
+};

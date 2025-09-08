@@ -8,6 +8,9 @@ import {
   renderApertura,
   renderNoPeligroso,
 } from "../generales/LogicaVerFormularios.js";
+import {
+  renderAperturaSupervisor
+} from "../generales/render_pt_apertura.js";
 
 // --- Tarjetas desde autorizar ---
 async function cargarTargetasDesdeAutorizar() {
@@ -513,5 +516,45 @@ document.addEventListener("DOMContentLoaded", () => {
       cargarPermisosTabla();
       cargarTargetasDesdeAutorizar();
     });
+  }
+
+  document.getElementById("contenedor-apertura-supervisor").innerHTML =
+    renderAperturaSupervisor(mapSupervisorFields(data.general));
+});
+
+// Si no tienes la función de mapeo, agrégala:
+function mapSupervisorFields(general) {
+  return {
+    "special-protection": general.proteccion_especial_recomendada,
+    "skin-protection": general.proteccion_piel_cuerpo,
+    "respiratory-protection": general.proteccion_respiratoria,
+    "eye-protection": general.proteccion_ocular,
+    "fire-protection": general.proteccion_contraincendio,
+    "fire-protection-type": general.tipo_proteccion_contraincendio,
+    "barriers-required": general.instalacion_barreras,
+    "observations": general.observaciones_riesgos,
+    "co2-level": general.co2_nivel,
+    "nh3-level": general.nh3_nivel,
+    "oxygen-level": general.oxigeno_nivel,
+    "lel-level": general.lel_nivel,
+  };
+}
+
+const tbody = document.getElementById("table-body");
+tbody.addEventListener("click", async function (e) {
+  if (e.target.closest(".view")) {
+    const idPermiso = e.target.closest(".view").dataset.idpermiso;
+    const resp = await fetch(`http://localhost:3000/api/verformularios?id=${idPermiso}`);
+    const data = await resp.json();
+
+    // Aquí puedes mostrar el modal y llenar los datos generales, técnicos, etc.
+    // Por ejemplo:
+    mostrarInformacionGeneral(data.general);
+    mostrarDetallesTecnicos(data.detalles);
+    // ...
+
+    // Y aquí el supervisor editable:
+    document.getElementById("contenedor-apertura-supervisor").innerHTML =
+      renderAperturaSupervisor(mapSupervisorFields(data.general));
   }
 });

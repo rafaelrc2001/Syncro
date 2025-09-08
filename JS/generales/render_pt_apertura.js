@@ -1,6 +1,12 @@
 export function renderApertura(data) {
   return `
     <div class="executive-grid">
+
+    <div class="executive-item executive-header-gray" style="grid-column: 1/-1;">
+        <h3>Datos principales.</h3>
+      </div>
+
+
       <div class="executive-item"><label>Tipo de mantenimiento:</label><p>${
         data.tipo_mantenimiento ?? "Sin información"
       }</p></div>
@@ -33,7 +39,7 @@ export function renderApertura(data) {
       }</p></div>
     </div>
     <div class="executive-grid" style="margin-top:2em;">
-      <div class="executive-item" style="grid-column: 1/-1;">
+      <div class="executive-item executive-header-gray" style="grid-column: 1/-1;">
         <h3>Medidas para administrar los riesgos</h3>
       </div>
       <div class="executive-item"><label>¿Se requieren uso de herramientas especiales?</label><p>${
@@ -124,20 +130,20 @@ export function renderAperturaArea(data = {}) {
     .join("");
 
   return `
-    <form id="form-apertura-area">
-      <table class="tabla-requisitos">
-        <thead>
-          <tr>
-            <th>Requisito</th>
-            <th>Respuesta</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${filas}
-        </tbody>
-      </table>
-    </form>
-  `;
+  <form id="form-apertura-area">
+    <table class="tabla-requisitos">
+      <thead class="thead-area">
+        <tr>
+          <th>Requisito</th>
+          <th>Respuesta</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${filas}
+      </tbody>
+    </table>
+  </form>
+`;
 }
 
 export function renderAperturaAreaVisual(data = {}) {
@@ -194,18 +200,18 @@ export function renderAperturaAreaVisual(data = {}) {
     .join("");
 
   return `
-    <table class="tabla-requisitos">
-      <thead>
-        <tr>
-          <th>Requisito</th>
-          <th>Respuesta</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${filas}
-      </tbody>
-    </table>
-  `;
+  <table class="tabla-requisitos">
+    <thead class="thead-area">
+      <tr>
+        <th>Requisito</th>
+        <th>Respuesta</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${filas}
+    </tbody>
+  </table>
+`;
 }
 
 // aca inicia la parte del supervisor
@@ -215,13 +221,13 @@ export function renderAperturaAreaVisual(data = {}) {
 export function renderAperturaSupervisor(data = {}) {
   return `
     <div class="executive-section">
-      <div class="section-header">
+      <div class="section-header section-header-supervisor">
         <i class="ri-checkbox-multiple-line"></i>
         <h3>Requisitos para Administrar los Riesgos</h3>
       </div>
       <form id="form-apertura-supervisor">
         <table class="tabla-requisitos">
-          <thead>
+          <thead class="thead-supervisor">
             <tr>
               <th>Requisito</th>
               <th class="centered">SI</th>
@@ -275,19 +281,19 @@ export function renderAperturaSupervisor(data = {}) {
       </form>
     </div>
     <div class="executive-section">
-      <div class="section-header">
+      <div class="section-header section-header-supervisor" style="margin-top:2em;">
         <i class="ri-flask-line"></i>
         <h3>Registro de pruebas requeridas</h3>
       </div>
       <form id="form-pruebas-supervisor">
         <table class="tabla-requisitos">
-          <thead>
-            <tr>
-              <th>Prueba</th>
-              <th>Valor</th>
-            </tr>
-          </thead>
-          <tbody>
+  <thead class="thead-pruebas-supervisor">
+    <tr>
+      <th>Prueba</th>
+      <th>Valor</th>
+    </tr>
+  </thead>
+  <tbody>
             ${renderInputRowTable("% de CO2", "co2-level", data["co2-level"])}
             ${renderInputRowTable("% Amoniaco", "nh3-level", data["nh3-level"])}
             ${renderInputRowTable(
@@ -327,12 +333,12 @@ export function renderAperturaSupervisorVisual(data = {}) {
 
   return `
     <div class="executive-section">
-      <div class="section-header">
+      <div class="section-header section-header-supervisor">
         <i class="ri-checkbox-multiple-line"></i>
         <h3>Requisitos para Administrar los Riesgos</h3>
       </div>
-      <table class="tabla-requisitos">
-        <thead>
+      <table class="tabla-requisitos tabla-requisitos-supervisor">
+        <thead class="thead-supervisor">
           <tr>
             <th>Requisito</th>
             <th>Respuesta</th>
@@ -347,12 +353,12 @@ export function renderAperturaSupervisorVisual(data = {}) {
           </tr>
         </tbody>
       </table>
-      <div class="section-header" style="margin-top:2em;">
+      <div class="section-header section-header-supervisor" style="margin-top:2em;">
         <i class="ri-flask-line"></i>
         <h3>Registro de pruebas requeridas</h3>
       </div>
-      <table class="tabla-requisitos">
-        <thead>
+      <table class="tabla-requisitos tabla-requisitos-supervisor">
+        <thead class="thead-supervisor">
           <tr>
             <th>Prueba</th>
             <th>Valor</th>

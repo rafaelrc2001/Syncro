@@ -1,3 +1,4 @@
+
 #modalComentarioContinuar .modal-header h2 {
     color: white !important;
 }
@@ -825,4 +826,28 @@
 .comentario-texto {
   margin-top: 6px;
   color: #333;
+}
+
+
+/* Encabezado azul cielo para Permiso No Peligroso */
+.executive-header-nopeligroso {
+    background: #42d4f8 !important; /* Azul cielo */
+    color: #3087ca !important;      /* Azul fuerte para el texto */
+    border-color: #b3e5fc !important;
+    border-radius: 8px;
+    padding: 8px 0;
+    text-align: center;
+    margin-bottom: 18px;
+}
+.executive-header-nopeligroso h3 {
+    color: #3087ca !important;
+    background: transparent !important;
+    margin: 0;
+}
+
+/* Encabezado azul cielo para la tabla de análisis previo No Peligroso */
+.thead-nopeligroso th {
+    background: #42d4f8 !important;
+    color: #3087ca !important;
+    border-color: #b3e5fc !important;
 }

@@ -6,11 +6,12 @@ import {
   mostrarParticipantesAST,
 } from "../generales/LogicaVerFormularios.js";
 
-import {
-  renderApertura,
-  renderNoPeligroso,
-} from "/JS/generales/LogicaVerFormularios.js";
+import { renderApertura } from "/JS/generales/LogicaVerFormularios.js";
 import { renderAperturaArea } from "../generales/render_pt_apertura.js";
+import {
+  renderNoPeligroso,
+  renderNoPeligrosoArea,
+} from "../generales/render_pt_no.js";
 
 // --- Tarjetas desde autorizar ---
 async function cargarTargetasDesdeAutorizar() {
@@ -82,14 +83,18 @@ function asignarEventosVer() {
         console.log("Respuesta de /api/verformularios:", data);
         // Llenar sección 1: Información General
         if (data.general) mostrarInformacionGeneral(data.general);
-        // Llenar sección 2: Detalles Técnicos solo si es PT No Peligroso
-        if (
-          typeof mostrarDetallesTecnicos === "function" &&
-          data.detalles &&
-          data.general &&
-          data.general.tipo_permiso === "PT No Peligroso"
-        ) {
-          mostrarDetallesTecnicos(data.detalles);
+        // Mostrar el render personalizado solo para PT No Peligroso
+        if (data.general && data.general.tipo_permiso === "PT No Peligroso") {
+          permisoHandlers["PT No Peligroso"].render(data);
+        } else {
+          // Limpiar el formulario de No Peligroso si no corresponde
+          const noPeligrosoArea = document.getElementById(
+            "modal-no-peligroso-area"
+          );
+          if (noPeligrosoArea) noPeligrosoArea.innerHTML = "";
+          if (typeof mostrarDetallesTecnicos === "function" && data.detalles) {
+            mostrarDetallesTecnicos(data.detalles);
+          }
         }
         // Llenar AST y Participantes si tienes los datos y funciones
         if (typeof mostrarAST === "function" && data.ast) {
@@ -330,15 +335,28 @@ document.addEventListener("DOMContentLoaded", () => {
       const tipoPermiso = window.tipoPermisoActual;
       const responsableInput = document.getElementById("responsable-aprobador");
       const operadorInput = document.getElementById("responsable-aprobador2");
-      const responsable_area = responsableInput ? responsableInput.value.trim() : "";
+      const responsable_area = responsableInput
+        ? responsableInput.value.trim()
+        : "";
       const operador_area = operadorInput ? operadorInput.value.trim() : "";
 
-      if (!idPermiso) { alert("No se pudo obtener el ID del permiso."); return; }
-      if (!responsable_area) { alert("Debes ingresar el nombre del responsable."); return; }
+      if (!idPermiso) {
+        alert("No se pudo obtener el ID del permiso.");
+        return;
+      }
+      if (!responsable_area) {
+        alert("Debes ingresar el nombre del responsable.");
+        return;
+      }
 
       // --- Escalable: Guardar requisitos según el tipo de permiso ---
-      if (permisoHandlers[tipoPermiso] && permisoHandlers[tipoPermiso].guardarRequisitos) {
-        const ok = await permisoHandlers[tipoPermiso].guardarRequisitos(idPermiso);
+      if (
+        permisoHandlers[tipoPermiso] &&
+        permisoHandlers[tipoPermiso].guardarRequisitos
+      ) {
+        const ok = await permisoHandlers[tipoPermiso].guardarRequisitos(
+          idPermiso
+        );
         if (!ok) return;
       }
 
@@ -599,11 +617,6 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("modalVer").classList.add("active");
     });
   }
-
-  if (document.getElementById("info-descripcion")) {
-    document.getElementById("info-descripcion").textContent =
-      general.descripcion_trabajo || "";
-  }
 });
 
 const permisoHandlers = {
@@ -612,9 +625,8 @@ const permisoHandlers = {
       document.getElementById("modal-especifica").innerHTML = renderApertura(
         data.general
       );
-      document.getElementById("modal-apertura-area").innerHTML = renderAperturaArea(
-        data.general
-      );
+      document.getElementById("modal-apertura-area").innerHTML =
+        renderAperturaArea(data.general);
     },
     guardarRequisitos: async (idPermiso) => {
       const formApertura = document.getElementById("form-apertura-area");
@@ -665,8 +677,18 @@ const permisoHandlers = {
     },
   },
   "PT No Peligroso": {
-    render: (data) => { /* ... */ },
-    guardarRequisitos: async (idPermiso) => { /* ... */ }
+    render: (data) => {
+      // Renderiza el formulario en el nuevo contenedor
+      if (data.general && data.general.tipo_permiso === "PT No Peligroso") {
+        document.getElementById("modal-no-peligroso-area").innerHTML =
+          renderNoPeligrosoArea(data.general);
+      } else {
+        document.getElementById("modal-no-peligroso-area").innerHTML = "";
+      }
+    },
+    guardarRequisitos: async (idPermiso) => {
+      /* ... */
+    },
   },
   // Aquí irán los otros tipos de permisos...
 };

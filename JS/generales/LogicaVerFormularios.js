@@ -49,22 +49,22 @@ function mostrarDetallesTecnicos(detalles) {
   document.getElementById("modal-equipo").textContent = detalles.equipo || "";
   document.getElementById("modal-tag").textContent = detalles.tag || "";
   document.getElementById("modal-horario").textContent = detalles.horario || "";
-  document.getElementById("modal-fluido").textContent = detalles.fluido || "";
-  document.getElementById("modal-presion").textContent = detalles.presion || "";
-  document.getElementById("modal-temperatura").textContent =
-    detalles.temperatura || "";
-  document.getElementById("modal-trabajo-area-riesgo-controlado").textContent =
-    detalles.trabajo_area_riesgo_controlado || "";
-  document.getElementById("modal-necesita-entrega-fisica").textContent =
-    detalles.necesita_entrega_fisica || "";
-  document.getElementById("modal-necesita-ppe-adicional").textContent =
-    detalles.necesita_ppe_adicional || "";
-  document.getElementById("modal-area-circundante-riesgo").textContent =
-    detalles.area_circundante_riesgo || "";
-  document.getElementById("modal-necesita-supervision").textContent =
-    detalles.necesita_supervision || "";
-  document.getElementById("modal-observaciones-analisis-previo").textContent =
-    detalles.observaciones_analisis_previo || "";
+  //  document.getElementById("modal-fluido").textContent = detalles.fluido || "";
+  //  document.getElementById("modal-presion").textContent = detalles.presion || "";
+  // document.getElementById("modal-temperatura").textContent =
+  //detalles.temperatura || "";
+  //  document.getElementById("modal-trabajo-area-riesgo-controlado").textContent =
+  //  detalles.trabajo_area_riesgo_controlado || "";
+  //  document.getElementById("modal-necesita-entrega-fisica").textContent =
+  //  detalles.necesita_entrega_fisica || "";
+  //document.getElementById("modal-necesita-ppe-adicional").textContent =
+  //  detalles.necesita_ppe_adicional || "";
+  // document.getElementById("modal-area-circundante-riesgo").textContent =
+  // detalles.area_circundante_riesgo || "";
+  //document.getElementById("modal-necesita-supervision").textContent =
+  // detalles.necesita_supervision || "";
+  //document.getElementById("modal-observaciones-analisis-previo").textContent =
+  //  detalles.observaciones_analisis_previo || "";
 }
 
 function mostrarAST(ast) {
@@ -165,52 +165,50 @@ function asignarEventosVer() {
         console.log("Participantes AST:", data.participantes_ast);
         console.log("Respuesta completa del backend:", data);
         mostrarInformacionGeneral(data.general);
-        mostrarDetallesTecnicos(data.detalles);
-        mostrarAST(data.ast);
-        mostrarActividadesAST(data.actividades_ast);
-      mostrarParticipantesAST(data.participantes_ast);
-
-        // Agrega el tipo específico en la sección 2 del modal
-        document.getElementById("modal-tipo-especifico").textContent =
-          data.general.tipo_permiso === "PT para Apertura Equipo Línea"
-            ? "Apertura"
-            : data.general.tipo_permiso === "PT No Peligroso"
-            ? "No Peligroso"
-            : data.general.tipo_permiso;
-
-        // Mostrar/ocultar sección para PT No Peligroso
-        const bloqueNoPeligroso = document.getElementById("modal-no-peligroso");
+        // Si es PT No Peligroso, solo mostrar el render personalizado y limpiar detalles
         if (data.general.tipo_permiso === "PT No Peligroso") {
-          bloqueNoPeligroso.style.display = "";
-          } else {
-          bloqueNoPeligroso.style.display = "none";
-        }
-
-        // Renderizar apertura si corresponde
-        if (data.general.tipo_permiso === "PT para Apertura Equipo Línea") {
-          // Render principal
           document.getElementById("modal-especifica").innerHTML =
-            renderApertura(data.general);
-
-          // Render de apertura área
-          document.getElementById("modal-apertura-area-visual").innerHTML =
-            renderAperturaAreaVisual(data.general);
-
-          // Render de apertura supervisor
-          document.getElementById("contenedor-apertura-supervisor").innerHTML =
-            renderAperturaSupervisorVisual(mapSupervisorFields(data.general));
-
+            window.renderNoPeligroso
+              ? window.renderNoPeligroso(data.general)
+              : "";
+          // Limpiar detalles técnicos y otros contenedores si existen
+          if (document.getElementById("modal-apertura-area-visual"))
+            document.getElementById("modal-apertura-area-visual").innerHTML =
+              "";
+          if (document.getElementById("contenedor-apertura-supervisor"))
+            document.getElementById(
+              "contenedor-apertura-supervisor"
+            ).innerHTML = "";
         } else {
-          document.getElementById("modal-especifica").innerHTML = "";
-          document.getElementById("modal-apertura-area-visual").innerHTML = "";
-          document.getElementById("contenedor-apertura-supervisor").innerHTML = "";
+          mostrarDetallesTecnicos(data.detalles);
+          mostrarAST(data.ast);
+          mostrarActividadesAST(data.actividades_ast);
+          mostrarParticipantesAST(data.participantes_ast);
+          // Renderizar apertura si corresponde
+          if (data.general.tipo_permiso === "PT para Apertura Equipo Línea") {
+            document.getElementById("modal-especifica").innerHTML =
+              renderApertura(data.general);
+            document.getElementById("modal-apertura-area-visual").innerHTML =
+              renderAperturaAreaVisual(data.general);
+            document.getElementById(
+              "contenedor-apertura-supervisor"
+            ).innerHTML = renderAperturaSupervisorVisual(
+              mapSupervisorFields(data.general)
+            );
+          } else {
+            document.getElementById("modal-especifica").innerHTML = "";
+            if (document.getElementById("modal-apertura-area-visual"))
+              document.getElementById("modal-apertura-area-visual").innerHTML =
+                "";
+            if (document.getElementById("contenedor-apertura-supervisor"))
+              document.getElementById(
+                "contenedor-apertura-supervisor"
+              ).innerHTML = "";
+          }
         }
-
-              // Render del comentario SIEMPRE, para cualquier tipo de permiso
-  
-       document.getElementById("contenedor-comentario").innerHTML =
-  renderComentario(data.general.comentario);
-       
+        // Render del comentario SIEMPRE, para cualquier tipo de permiso
+        document.getElementById("contenedor-comentario").innerHTML =
+          renderComentario(data.general.comentario);
       } catch (err) {
         console.error(
           "Error al obtener datos de la sección 1, 2, AST, actividades AST y participantes AST:",
@@ -219,11 +217,6 @@ function asignarEventosVer() {
       }
     });
   });
-}
-
-function renderNoPeligroso(data) {
-  // Si ya tienes el renderizado en mostrarDetallesTecnicos, puedes dejarlo vacío o solo retornar ''
-  return "";
 }
 
 import {
@@ -240,7 +233,6 @@ export {
   mostrarInformacionGeneral,
   asignarEventosVer,
   renderApertura,
-  renderNoPeligroso,
 };
 
 function mapSupervisorFields(general) {
@@ -252,7 +244,7 @@ function mapSupervisorFields(general) {
     "fire-protection": general.proteccion_contraincendio,
     "fire-protection-type": general.tipo_proteccion_contraincendio,
     "barriers-required": general.instalacion_barreras,
-    "observations": general.observaciones_riesgos,
+    observations: general.observaciones_riesgos,
     "co2-level": general.co2_nivel,
     "nh3-level": general.nh3_nivel,
     "oxygen-level": general.oxigeno_nivel,

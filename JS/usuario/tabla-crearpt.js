@@ -33,7 +33,11 @@ if (btnTerminarEspecial) {
   });
 }
 import { asignarEventosVer } from "../generales/LogicaVerFormularios.js";
-import { renderApertura, renderAperturaAreaVisual, renderAperturaSupervisorVisual } from "../generales/render_pt_apertura.js";
+import {
+  renderApertura,
+  renderAperturaAreaVisual,
+  renderAperturaSupervisorVisual,
+} from "../generales/render_pt_apertura.js";
 import { renderComentario } from "../generales/render_comentario_firmas.js";
 
 // funcionesusuario.js
@@ -660,7 +664,6 @@ if (btnCancelarEnviar) {
 }
 
 const permisoRenderers = {
-  "PT No Peligroso": renderNoPeligroso,
   "PT para Apertura Equipo Línea": renderApertura,
   // Aquí agregas más tipos en el futuro
 };
@@ -708,50 +711,7 @@ document
 //Lo que hace es enviar el comentario al servidor ya aztualizar el estatus
 
 document;
-/*
 
-document.addEventListener("DOMContentLoaded", function () {
-  cargarTargetasDesdePermisos();
-  cargarPermisosTabla();
-
-  // Búsqueda por folio compatible con paginación
-  const searchInput = document.querySelector(".search-bar input");
-  if (searchInput) {
-    searchInput.addEventListener("input", function () {
-      filtroBusqueda = searchInput.value.trim().toLowerCase();
-      paginaActual = 1;
-      mostrarPermisosFiltrados(document.getElementById("status-filter").value);
-    });
-  }
-
-  const btnContinuar = document.getElementById("btn-continuar-pt");
-  if (btnContinuar) {
-    btnContinuar.addEventListener("click", function () {
-      const modal = document.getElementById("modalComentarioContinuar");
-      if (modal) {
-        modal.classList.add("active");
-        console.log("modalComentarioContinuar abierto");
-      }
-    });
-  }
-
-  // Para cerrar el modal con el botón cancelar
-  const cancelarBtn = document.querySelector(
-    "#modalComentarioContinuar .cancelar-btn"
-  );
-  if (cancelarBtn) {
-    cancelarBtn.addEventListener("click", function () {
-      const modal = document.getElementById("modalComentarioContinuar");
-      if (modal) {
-        modal.classList.remove("active");
-        console.log("modalComentarioContinuar cerrado");
-      }
-    });
-  }
-
-  // ...existing code...
-});
-*/
 const permisoSeleccionado = document.querySelector("tr.selected");
 const modal = document.getElementById("modalComentarioContinuar");
 if (permisoSeleccionado && modal) {

@@ -6,11 +6,8 @@ import {
   mostrarParticipantesAST,
   asignarEventosVer,
   renderApertura,
-  renderNoPeligroso,
 } from "../generales/LogicaVerFormularios.js";
-import {
-  renderAperturaSupervisor
-} from "../generales/render_pt_apertura.js";
+import { renderAperturaSupervisor } from "../generales/render_pt_apertura.js";
 
 // --- Tarjetas desde autorizar ---
 async function cargarTargetasDesdeAutorizar() {
@@ -532,7 +529,7 @@ function mapSupervisorFields(general) {
     "fire-protection": general.proteccion_contraincendio,
     "fire-protection-type": general.tipo_proteccion_contraincendio,
     "barriers-required": general.instalacion_barreras,
-    "observations": general.observaciones_riesgos,
+    observations: general.observaciones_riesgos,
     "co2-level": general.co2_nivel,
     "nh3-level": general.nh3_nivel,
     "oxygen-level": general.oxigeno_nivel,
@@ -544,7 +541,9 @@ const tbody = document.getElementById("table-body");
 tbody.addEventListener("click", async function (e) {
   if (e.target.closest(".view")) {
     const idPermiso = e.target.closest(".view").dataset.idpermiso;
-    const resp = await fetch(`http://localhost:3000/api/verformularios?id=${idPermiso}`);
+    const resp = await fetch(
+      `http://localhost:3000/api/verformularios?id=${idPermiso}`
+    );
     const data = await resp.json();
 
     // Aquí puedes mostrar el modal y llenar los datos generales, técnicos, etc.

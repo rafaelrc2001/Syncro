@@ -25,15 +25,6 @@ export function renderApertura(data) {
       <div class="executive-item"><label>Descripción del equipo:</label><p>${
         data.descripcion_equipo ?? "Sin información"
       }</p></div>
-      <div class="executive-item"><label>Fluido:</label><p>${
-        data.fluido ?? "Sin información"
-      }</p></div>
-      <div class="executive-item"><label>Presión:</label><p>${
-        data.presion ?? "Sin información"
-      }</p></div>
-      <div class="executive-item"><label>Temperatura:</label><p>${
-        data.temperatura ?? "Sin información"
-      }</p></div>
       <div class="executive-item"><label>Descripción de antecedentes:</label><p>${
         data.antecedentes ?? "Sin información"
       }</p></div>
@@ -315,21 +306,35 @@ export function renderAperturaSupervisor(data = {}) {
 
 export function renderAperturaSupervisorVisual(data = {}) {
   const requisitos = [
-    { label: "Equipo de protección especial recomendado:", key: "special-protection" },
+    {
+      label: "Equipo de protección especial recomendado:",
+      key: "special-protection",
+    },
     { label: "Para piel y cuerpo:", key: "skin-protection" },
     { label: "Protección respiratoria:", key: "respiratory-protection" },
     { label: "Protección ocular:", key: "eye-protection" },
-    { label: "¿Se requiere protección contraincendio?", key: "fire-protection", detalle: "fire-protection-type" },
-    { label: "¿Instalación de barreras y/o barricadas?", key: "barriers-required" },
+    {
+      label: "¿Se requiere protección contraincendio?",
+      key: "fire-protection",
+      detalle: "fire-protection-type",
+    },
+    {
+      label: "¿Instalación de barreras y/o barricadas?",
+      key: "barriers-required",
+    },
   ];
 
-  const filas = requisitos.map(r => `
+  const filas = requisitos
+    .map(
+      (r) => `
     <tr>
       <td>${r.label}</td>
       <td><strong>${data[r.key] || "-"}</strong></td>
       ${r.detalle ? `<td>${data[r.detalle] || ""}</td>` : "<td></td>"}
     </tr>
-  `).join("");
+  `
+    )
+    .join("");
 
   return `
     <div class="executive-section">
@@ -365,10 +370,18 @@ export function renderAperturaSupervisorVisual(data = {}) {
           </tr>
         </thead>
         <tbody>
-          <tr><td>% de CO2</td><td><strong>${data["co2-level"] || "-"}</strong></td></tr>
-          <tr><td>% Amoniaco</td><td><strong>${data["nh3-level"] || "-"}</strong></td></tr>
-          <tr><td>% de Oxígeno</td><td><strong>${data["oxygen-level"] || "-"}</strong></td></tr>
-          <tr><td>% de Explosividad LEL</td><td><strong>${data["lel-level"] || "-"}</strong></td></tr>
+          <tr><td>% de CO2</td><td><strong>${
+            data["co2-level"] || "-"
+          }</strong></td></tr>
+          <tr><td>% Amoniaco</td><td><strong>${
+            data["nh3-level"] || "-"
+          }</strong></td></tr>
+          <tr><td>% de Oxígeno</td><td><strong>${
+            data["oxygen-level"] || "-"
+          }</strong></td></tr>
+          <tr><td>% de Explosividad LEL</td><td><strong>${
+            data["lel-level"] || "-"
+          }</strong></td></tr>
         </tbody>
       </table>
     </div>

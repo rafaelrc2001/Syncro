@@ -5,7 +5,6 @@ import {
   mostrarActividadesAST,
   mostrarParticipantesAST,
   renderApertura,
-  renderNoPeligroso,
 } from "../generales/LogicaVerFormularios.js";
 
 // --- Tarjetas desde autorizar ---

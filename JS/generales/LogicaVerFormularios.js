@@ -168,7 +168,7 @@ function asignarEventosVer() {
         mostrarDetallesTecnicos(data.detalles);
         mostrarAST(data.ast);
         mostrarActividadesAST(data.actividades_ast);
-        mostrarParticipantesAST(data.participantes_ast);
+      mostrarParticipantesAST(data.participantes_ast);
 
         // Agrega el tipo específico en la sección 2 del modal
         document.getElementById("modal-tipo-especifico").textContent =
@@ -182,7 +182,7 @@ function asignarEventosVer() {
         const bloqueNoPeligroso = document.getElementById("modal-no-peligroso");
         if (data.general.tipo_permiso === "PT No Peligroso") {
           bloqueNoPeligroso.style.display = "";
-        } else {
+          } else {
           bloqueNoPeligroso.style.display = "none";
         }
 
@@ -199,11 +199,18 @@ function asignarEventosVer() {
           // Render de apertura supervisor
           document.getElementById("contenedor-apertura-supervisor").innerHTML =
             renderAperturaSupervisorVisual(mapSupervisorFields(data.general));
+
         } else {
           document.getElementById("modal-especifica").innerHTML = "";
           document.getElementById("modal-apertura-area-visual").innerHTML = "";
           document.getElementById("contenedor-apertura-supervisor").innerHTML = "";
         }
+
+              // Render del comentario SIEMPRE, para cualquier tipo de permiso
+  
+       document.getElementById("contenedor-comentario").innerHTML =
+  renderComentario(data.general.comentario);
+       
       } catch (err) {
         console.error(
           "Error al obtener datos de la sección 1, 2, AST, actividades AST y participantes AST:",
@@ -224,6 +231,7 @@ import {
   renderAperturaAreaVisual,
   renderAperturaSupervisorVisual,
 } from "./render_pt_apertura.js";
+import { renderComentario } from "./render_comentario_firmas.js";
 export {
   mostrarDetallesTecnicos,
   mostrarAST,

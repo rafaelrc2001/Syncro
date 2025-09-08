@@ -34,6 +34,7 @@ if (btnTerminarEspecial) {
 }
 import { asignarEventosVer } from "../generales/LogicaVerFormularios.js";
 import { renderApertura, renderAperturaAreaVisual, renderAperturaSupervisorVisual } from "../generales/render_pt_apertura.js";
+import { renderComentario } from "../generales/render_comentario_firmas.js";
 
 // funcionesusuario.js
 // Centraliza la lógica de tarjetas y tabla de permisos para el usuario

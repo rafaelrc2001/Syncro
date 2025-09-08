@@ -3,6 +3,40 @@ const router = express.Router();
 const db = require("./database");
 const { pool } = require("./database");
 
+
+
+//ruta para traer el estaus de un permiso por id
+router.get("/estatus/permiso/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await db.query(
+      `SELECT 
+          pt.id_permiso,
+          pt.id_estatus,
+          e.estatus
+        FROM permisos_trabajo pt
+        INNER JOIN estatus e ON pt.id_estatus = e.id_estatus
+        WHERE pt.id_permiso = $1`,
+      [id]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Permiso no encontrado",
+      });
+    }
+    res.json({
+      success: true,
+      data: result.rows[0],
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      error: err.message,
+    });
+  }
+});
+
 // Nueva ruta para actualizar el estatus a 'activo' usando el id_estatus recibido
 router.post("/estatus/activo", async (req, res) => {
   const { id_estatus } = req.body;

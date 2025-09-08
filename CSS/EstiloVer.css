@@ -812,3 +812,17 @@
   color: #fff !important;
   border-color: #b71c1c !important;
 }
+
+
+/*este es el estilo del render del comentario*/
+
+.comentario-render {
+  background: #f5f5f5;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 1em;
+}
+.comentario-texto {
+  margin-top: 6px;
+  color: #333;
+}

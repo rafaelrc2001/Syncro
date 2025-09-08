@@ -100,3 +100,80 @@ function renderRadioRowTableNP(label, name, value) {
     </tr>
   `;
 }
+
+export function renderNoPeligrosoAreaVer(data = {}) {
+  return `
+    <div class="executive-grid pt-no-peligroso">
+      <div class="executive-item executive-header-nopeligroso" style="grid-column: 1/-1;">
+        <h3>Permiso No Peligroso</h3>
+      </div>
+      <div class="executive-item">
+        <label>Fluido</label>
+        <p>${data.fluido || data.fluid || "-"}</p>
+      </div>
+      <div class="executive-item">
+        <label>Presión</label>
+        <p>${data.presion || data.pressure || "-"}</p>
+      </div>
+      <div class="executive-item">
+        <label>Temperatura</label>
+        <p>${data.temperatura || data.temperature || "-"}</p>
+      </div>
+    </div>
+    <div class="executive-grid" style="margin-top:2em;">
+      <div class="executive-item executive-header-nopeligroso" style="grid-column: 1/-1; display: flex; align-items: center; gap: 0.5em;">
+        <i class="ri-checkbox-multiple-line"></i>
+        <h3 style="margin:0;">Análisis Previo al Trabajo</h3>
+      </div>
+      <div class="executive-item" style="grid-column: 1/-1; padding:0;">
+        <table class="tabla-requisitos">
+          <thead class="thead-nopeligroso">
+            <tr>
+              <th>Pregunta</th>
+              <th class="centered">Respuesta</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${renderRowVisual(
+              "¿El trabajo se realizará en un área de riesgo controlado?",
+              data.trabajo_area_riesgo_controlado || data["risk-area"]
+            )}
+            ${renderRowVisual(
+              "¿Se necesita entrega física, para efectuar el trabajo por parte del personal de la planta o departamento?",
+              data.necesita_entrega_fisica || data["physical-delivery"]
+            )}
+            ${renderRowVisual(
+              "¿El personal que va a ejecutar el trabajo, necesita equipo de protección personal adicional al estándar del área donde se desarrollará el trabajo?",
+              data.necesita_ppe_adicional || data["additional-ppe"]
+            )}
+            ${renderRowVisual(
+              "¿En el área circundante se efectuarán trabajos con riesgo?",
+              data.area_circundante_riesgo || data["surrounding-risk"]
+            )}
+            ${renderRowVisual(
+              "¿Necesita supervisión el personal?",
+              data.necesita_supervision || data["supervision-needed"]
+            )}
+          </tbody>
+        </table>
+        <div class="form-group" style="margin-top:1em;">
+          <label>Observaciones adicionales:</label>
+          <div class="description-box">${
+            data.observaciones_analisis_previo ||
+            data["pre-work-observations"] ||
+            "-"
+          }</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+export function renderRowVisual(label, value) {
+  return `
+    <tr>
+      <td>${label}</td>
+      <td class="centered"><strong>${value || "-"}</strong></td>
+    </tr>
+  `;
+}

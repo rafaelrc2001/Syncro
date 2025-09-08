@@ -384,5 +384,70 @@ router.put(
   }
 );
 
+//este es para el pt no peligroso
+//crea un api con el mismo formato que los otros pero para este en especifico
+
+// Ruta para actualizar solo los requisitos de PT No Peligroso (fluido, presión, temperatura, análisis previo, etc)
+router.put("/pt-no-peligroso/requisitos_area/:id_permiso", async (req, res) => {
+  const { id_permiso } = req.params;
+  console.log("ID recibido:", id_permiso);
+  console.log("Body recibido:", req.body);
+  const {
+    fluido,
+    presion,
+    temperatura,
+    trabajo_area_riesgo_controlado,
+    necesita_entrega_fisica,
+    necesita_ppe_adicional,
+    area_circundante_riesgo,
+    necesita_supervision,
+    observaciones_analisis_previo,
+  } = req.body;
+
+  const query = `
+    UPDATE pt_no_peligroso SET
+      fluido = $1,
+      presion = $2,
+      temperatura = $3,
+      trabajo_area_riesgo_controlado = $4,
+      necesita_entrega_fisica = $5,
+      necesita_ppe_adicional = $6,
+      area_circundante_riesgo = $7,
+      necesita_supervision = $8,
+      observaciones_analisis_previo = $9
+    WHERE id_permiso = $10
+    RETURNING *;
+  `;
+
+  const values = [
+    fluido,
+    presion,
+    temperatura,
+    trabajo_area_riesgo_controlado,
+    necesita_entrega_fisica,
+    necesita_ppe_adicional,
+    area_circundante_riesgo,
+    necesita_supervision,
+    observaciones_analisis_previo,
+    id_permiso,
+  ];
+
+  try {
+    const result = await db.query(query, values);
+    if (result.rowCount === 0) {
+      return res
+        .status(404)
+        .json({ success: false, error: "Permiso no encontrado" });
+    }
+    res.json({ success: true, data: result.rows[0] });
+  } catch (error) {
+    console.error("Error al actualizar requisitos PT No Peligroso:", error);
+    res.status(500).json({
+      success: false,
+      error: "Error al actualizar requisitos PT No Peligroso",
+    });
+  }
+});
+
 // ...existing code...
 module.exports = router;

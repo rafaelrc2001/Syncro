@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Permiso No Peligroso</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="/CSS/EstiloFormularios.css">
+</head>
+<body style="background: #f4f6fb; min-height: 100vh; margin: 0; font-family: 'Roboto', Arial, sans-serif;">
+        <div style="display: flex; justify-content: center; align-items: flex-start; min-height: 100vh;">
+            <section class="form-section" data-section="2" style="max-width: 900px; width: 100%; margin: 40px 0; background: #fff; border-radius: 18px; box-shadow: 0 4px 24px rgba(44,62,80,0.10); padding: 2.5rem 2rem;">
+                <div class="form-container">
+            <div class="form-header">
+                <div class="form-icon" style="background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);">
+                    <i class="ri-checkbox-circle-line"></i>
+                </div>
+                <div>
+                    <h2>Permiso de Trabajo No Peligroso</h2>
+                   
+                </div>
+            </div>
+            <div class="form-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+                <div class="form-group">
+                    <label>O.T. No.</label>
+                    <span id="work-order-label" class="data-label">-</span>
+                </div>
+                <div class="form-group">
+                    <label>Hora de inicio</label>
+                    <span id="start-time-label" class="data-label">-</span>
+                </div>
+                <div class="form-group">
+                    <label>Tipo de actividad</label>
+                    <span id="activity-type-label" class="data-label">-</span>
+                </div>
+                <div class="form-group">
+                    <label>Planta o lugar de trabajo</label>
+                    <span id="plant-label" class="data-label">-</span>
+                </div>
+            </div>
+            <div class="form-section-title">
+                <i class="ri-tools-line"></i>
+                <h3>Equipo</h3>
+            </div>
+            <div class="form-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+            
+                                <div class="form-group">
+                                        <label>Equipo a Intervenir</label>
+                                        <span id="equipment-label" class="data-label">-</span>
+                                </div>
+                                <div class="form-group">
+                                        <label>TAG</label>
+                                        <span id="tag-label" class="data-label">-</span>
+                                </div>
+                        </div>
+
+                        <!-- Bloque de condiciones específicas y análisis previo al trabajo -->
+                                    <div style="margin-top:2em; display: flex; gap: 2em; flex-wrap: wrap;">
+                                        <div style="background: #f9fafc; border-radius: 12px; box-shadow: 0 2px 8px rgba(44,62,80,0.07); padding: 1.5em 2em; min-width: 320px; flex: 1 1 320px; max-width: 400px;">
+                                            <h3 style="margin-top:0; color:#2E7D32; font-size:1.2em; display:flex; align-items:center; gap:0.5em;"><i class="ri-flask-line"></i> Condiciones del Proceso</h3>
+                                            <div style="display: flex; flex-direction: column; gap: 1em;">
+                                                <div>
+                                                    <label for="fluid" style="font-weight:500;">Fluido</label>
+                                                      <input type="text" id="fluid" name="fluid" class="compact" value="" style="width:100%; background:#fff; border:1px solid #d0d7de; border-radius:6px; padding:6px 10px;">
+                                                </div>
+                                                <div>
+                                                    <label for="pressure" style="font-weight:500;">Presión</label>
+                                                      <input type="text" id="pressure" name="pressure" class="compact" value="" style="width:100%; background:#fff; border:1px solid #d0d7de; border-radius:6px; padding:6px 10px;">
+                                                </div>
+                                                <div>
+                                                    <label for="temperature" style="font-weight:500;">Temperatura</label>
+                                                      <input type="text" id="temperature" name="temperature" class="compact" value="" style="width:100%; background:#fff; border:1px solid #d0d7de; border-radius:6px; padding:6px 10px;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style="background: #f9fafc; border-radius: 12px; box-shadow: 0 2px 8px rgba(44,62,80,0.07); padding: 1.5em 2em; min-width: 320px; flex: 2 1 480px; max-width: 700px;">
+                                            <div style="display: flex; align-items: center; gap: 0.5em; margin-bottom: 1em;">
+                                                <i class="ri-checkbox-multiple-line" style="font-size:1.3em; color:#2E7D32;"></i>
+                                                <h3 style="margin:0; color:#2E7D32; font-size:1.2em;">Análisis Previo al Trabajo</h3>
+                                            </div>
+                                            <form id="form-no-peligroso-analisis">
+                                                <table class="tabla-requisitos" style="width:100%; background:#fff; border-radius:8px; overflow:hidden;">
+                                                    <thead class="thead-nopeligroso">
+                                                        <tr style="background:#e8f5e9; color:#2E7D32;">
+                                                            <th style="padding:8px 4px;">Pregunta</th>
+                                                            <th class="centered">SI</th>
+                                                            <th class="centered">NO</th>
+                                                            <th class="centered">N/A</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>¿El trabajo se realizará en un área de riesgo controlado?</td>
+                                                            <td class="centered"><input type="radio" name="risk-area" value="si"></td>
+                                                            <td class="centered"><input type="radio" name="risk-area" value="no"></td>
+                                                            <td class="centered"><input type="radio" name="risk-area" value="na"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>¿Se necesita entrega física, para efectuar el trabajo por parte del personal de la planta o departamento?</td>
+                                                            <td class="centered"><input type="radio" name="physical-delivery" value="si"></td>
+                                                            <td class="centered"><input type="radio" name="physical-delivery" value="no"></td>
+                                                            <td class="centered"><input type="radio" name="physical-delivery" value="na"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>¿El personal que va a ejecutar el trabajo, necesita equipo de protección personal adicional al estándar del área donde se desarrollará el trabajo?</td>
+                                                            <td class="centered"><input type="radio" name="additional-ppe" value="si"></td>
+                                                            <td class="centered"><input type="radio" name="additional-ppe" value="no"></td>
+                                                            <td class="centered"><input type="radio" name="additional-ppe" value="na"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>¿En el área circundante se efectuarán trabajos con riesgo?</td>
+                                                            <td class="centered"><input type="radio" name="surrounding-risk" value="si"></td>
+                                                            <td class="centered"><input type="radio" name="surrounding-risk" value="no"></td>
+                                                            <td class="centered"><input type="radio" name="surrounding-risk" value="na"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>¿Necesita supervisión el personal?</td>
+                                                            <td class="centered"><input type="radio" name="supervision-needed" value="si"></td>
+                                                            <td class="centered"><input type="radio" name="supervision-needed" value="no"></td>
+                                                            <td class="centered"><input type="radio" name="supervision-needed" value="na"></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div class="form-group" style="margin-top:1em;">
+                                                    <label for="pre-work-observations" style="font-weight:500;">Observaciones adicionales:</label>
+                                                    <textarea id="pre-work-observations" name="pre-work-observations" rows="2" style="width:100%; background:#fff; border:1px solid #d0d7de; border-radius:6px; padding:6px 10px;" placeholder="Ingrese observaciones adicionales..."></textarea>
+                                                </div>
+                                            </form>
+                                                                <div style="text-align:right; margin-top:1.5em;">
+                                                                    <button type="button" id="btn-guardar-campos" style="background:#2E7D32; color:#fff; border:none; border-radius:6px; padding:10px 28px; font-size:1.1em; cursor:pointer; box-shadow:0 2px 8px rgba(44,62,80,0.07);">Guardar</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+    
+
+
+
+
+
+
+        <button id="btn-regresar" style="margin: 32px auto; display: block; padding: 10px 24px; font-size: 1.1rem; background: #e0e0e0; border: none; border-radius: 6px; cursor: pointer;">
+        <i class="ri-arrow-left-line"></i> Regresar
+    </button>
+    
+    </section>
+        </div>
+
+        
+</body>
+    
+</html>
+
+    <!-- Modal de confirmación -->
+    <div class="modal" id="confirmation-modal">
+        <div class="modal-content">
+            <div class="modal-icon success">
+                <i class="ri-checkbox-circle-line"></i>
+            </div>
+            <h3>Permiso actualizado exitosamente</h3>
+            <p>El permiso de trabajo con AST ha sido registrado en el sistema con el número: <strong id="generated-permit">GSI-SI-FO-002-XXXX</strong></p>
+            <div class="modal-actions">
+                <button class="btn secondary" id="modal-close-btn">Cerrar</button>
+                <button class="btn primary" id="modal-print-btn">
+                    <i class="ri-printer-line"></i> Imprimir
+                </button>
+            </div>
+        </div>
+    </div>
+
+     <!-- <script src="/Modules/Fomularios/PT1/PT1.js"></script>-->
+
+     <script src="/Modules/Fomularios/PT1/seccion2area.js"></script>
+</body>
+</html>

@@ -449,5 +449,26 @@ router.put("/pt-no-peligroso/requisitos_area/:id_permiso", async (req, res) => {
   }
 });
 
-// ...existing code...
+// Ruta para obtener un permiso de apertura por id_permiso
+router.get("/pt-apertura/:id_permiso", async (req, res) => {
+  const { id_permiso } = req.params;
+  try {
+    const result = await db.query(
+      "SELECT * FROM pt_apertura WHERE id_permiso = $1",
+      [id_permiso]
+    );
+    if (result.rows.length === 0) {
+      return res
+        .status(404)
+        .json({ success: false, error: "Permiso no encontrado" });
+    }
+    res.json({ success: true, data: result.rows[0] });
+  } catch (error) {
+    console.error("Error al obtener PT Apertura:", error);
+    res
+      .status(500)
+      .json({ success: false, error: "Error al obtener PT Apertura" });
+  }
+});
+
 module.exports = router;

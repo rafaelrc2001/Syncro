@@ -107,18 +107,33 @@ export function renderNoPeligrosoAreaVer(data = {}) {
       <div class="executive-item executive-header-nopeligroso" style="grid-column: 1/-1;">
         <h3>Permiso No Peligroso</h3>
       </div>
-      <div class="executive-item">
-        <label>Fluido</label>
-        <p>${data.fluido || data.fluid || "-"}</p>
-      </div>
-      <div class="executive-item">
-        <label>Presión</label>
-        <p>${data.presion || data.pressure || "-"}</p>
-      </div>
-      <div class="executive-item">
-        <label>Temperatura</label>
-        <p>${data.temperatura || data.temperature || "-"}</p>
-      </div>
+      <div class="executive-item"><label>Planta</label><p>${
+        data.planta || "-"
+      }</p></div>
+      <div class="executive-item"><label>Tipo de actividad</label><p>${
+        data.tipo_actividad || data.tipoActividad || "-"
+      }</p></div>
+      <div class="executive-item"><label>OT</label><p>${
+        data.ot || "-"
+      }</p></div>
+      <div class="executive-item"><label>Equipo</label><p>${
+        data.equipo || "-"
+      }</p></div>
+      <div class="executive-item"><label>Tag</label><p>${
+        data.tag || "-"
+      }</p></div>
+      <div class="executive-item"><label>Horario</label><p>${
+        data.horario || "-"
+      }</p></div>
+      <div class="executive-item"><label>Fluido</label><p>${
+        data.fluido || data.fluid || "-"
+      }</p></div>
+      <div class="executive-item"><label>Presión</label><p>${
+        data.presion || data.pressure || "-"
+      }</p></div>
+      <div class="executive-item"><label>Temperatura</label><p>${
+        data.temperatura || data.temperature || "-"
+      }</p></div>
     </div>
     <div class="executive-grid" style="margin-top:2em;">
       <div class="executive-item executive-header-nopeligroso" style="grid-column: 1/-1; display: flex; align-items: center; gap: 0.5em;">

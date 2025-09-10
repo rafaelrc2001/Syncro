@@ -7,7 +7,9 @@ import {
   asignarEventosVer,
   renderApertura,
 } from "../generales/LogicaVerFormularios.js";
+
 import { renderAperturaSupervisor } from "../generales/render_pt_apertura.js";
+import { renderNoPeligrosoAreaVer } from "../generales/render_pt_no.js";
 
 // --- Tarjetas desde autorizar ---
 async function cargarTargetasDesdeAutorizar() {
@@ -162,6 +164,7 @@ function mostrarPermisosFiltrados(filtro) {
                   permiso.id_permiso
                 }"><i class="ri-eye-line"></i></button>
                 <button class="action-btn print"><i class="ri-printer-line"></i></button>
+                <button class="action-btn edit"><i class="ri-edit-line"></i></button>
             </td>
         `;
     tbody.appendChild(row);
@@ -519,6 +522,27 @@ document.addEventListener("DOMContentLoaded", () => {
     renderAperturaSupervisor(mapSupervisorFields(data.general));
 });
 
+// Delegación de eventos para los botones editar (edit)
+const tableBody = document.getElementById("table-body");
+if (tableBody) {
+  tableBody.addEventListener("click", function (e) {
+    const editBtn = e.target.closest(".action-btn.edit");
+    if (editBtn) {
+      const row = editBtn.closest("tr");
+      const tipoPermiso = row ? row.children[1].textContent.trim() : "";
+      const viewBtn = row ? row.querySelector(".action-btn.view") : null;
+      const idPermiso = viewBtn ? viewBtn.getAttribute("data-idpermiso") : "";
+      if (tipoPermiso === "PT No Peligroso") {
+        window.location.href = `/Modules/Fomularios/PT1/PT1area.html?id=${idPermiso}`;
+      } else if (tipoPermiso === "PT para Apertura Equipo Línea") {
+        window.location.href = `/Modules/Fomularios/PT2/PT2area.html?id=${idPermiso}`;
+      } else {
+        window.location.href = `/Modules/Fomularios/OTRO/OTROarea.html?id=${idPermiso}`;
+      }
+    }
+  });
+}
+
 // Si no tienes la función de mapeo, agrégala:
 function mapSupervisorFields(general) {
   return {
@@ -540,20 +564,48 @@ function mapSupervisorFields(general) {
 const tbody = document.getElementById("table-body");
 tbody.addEventListener("click", async function (e) {
   if (e.target.closest(".view")) {
-    const idPermiso = e.target.closest(".view").dataset.idpermiso;
-    const resp = await fetch(
-      `http://localhost:3000/api/verformularios?id=${idPermiso}`
-    );
-    const data = await resp.json();
+    const idPermiso = e.target.closest(".view").getAttribute("data-idpermiso");
+    window.idPermisoActual = idPermiso;
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/verformularios?id=${encodeURIComponent(
+          idPermiso
+        )}`
+      );
+      if (!response.ok) throw new Error("Error al obtener datos del permiso");
+      const data = await response.json();
 
-    // Aquí puedes mostrar el modal y llenar los datos generales, técnicos, etc.
-    // Por ejemplo:
-    mostrarInformacionGeneral(data.general);
-    mostrarDetallesTecnicos(data.detalles);
-    // ...
+      // Limpiar ambos contenedores antes de renderizar el que corresponde
+      if (document.getElementById("modal-especifica")) {
+        document.getElementById("modal-especifica").innerHTML = "";
+      }
+      if (document.getElementById("modal-no-peligroso-area")) {
+        document.getElementById("modal-no-peligroso-area").innerHTML = "";
+      }
 
-    // Y aquí el supervisor editable:
-    document.getElementById("contenedor-apertura-supervisor").innerHTML =
-      renderAperturaSupervisor(mapSupervisorFields(data.general));
+      // Renderizar solo el que corresponde
+      if (data.general && data.general.tipo_permiso === "PT No Peligroso") {
+        if (document.getElementById("modal-no-peligroso-area")) {
+          document.getElementById("modal-no-peligroso-area").innerHTML =
+            renderNoPeligrosoAreaVer(data.general);
+        }
+      } else if (
+        data.general &&
+        data.general.tipo_permiso === "PT para Apertura Equipo Línea"
+      ) {
+        if (document.getElementById("modal-especifica")) {
+          document.getElementById("modal-especifica").innerHTML =
+            renderApertura(data.general);
+        }
+      }
+
+      // Abrir el modal de ver
+      document.getElementById("modalVer").classList.add("active");
+      window.tipoPermisoActual = data.general
+        ? data.general.tipo_permiso
+        : null;
+    } catch (err) {
+      console.error("Error al obtener datos del permiso:", err);
+    }
   }
 });

@@ -246,9 +246,28 @@ function mostrarPermisosFiltrados(filtro) {
                   permiso.id_permiso
                 }"><i class="ri-eye-line"></i></button>
                 <button class="action-btn print"><i class="ri-printer-line"></i></button>
+                <button class="action-btn edit"><i class="ri-edit-line"></i></button>
             </td>
         `;
     tbody.appendChild(row);
+  });
+
+  // Asignar evento click a los botones editar después de generar la tabla
+  document.querySelectorAll(".action-btn.edit").forEach((btn) => {
+    btn.addEventListener("click", function () {
+      const row = this.closest("tr");
+      const tipoPermiso = row ? row.children[1].textContent.trim() : "";
+      const idPermiso = row
+        ? row.querySelector(".action-btn.view").getAttribute("data-idpermiso")
+        : "";
+      if (tipoPermiso === "PT No Peligroso") {
+        window.location.href = `/Modules/Fomularios/PT1/PT1area.html?id=${idPermiso}`;
+      } else if (tipoPermiso === "PT para Apertura Equipo Línea") {
+        window.location.href = `/Modules/Fomularios/PT2/PT2area.html?id=${idPermiso}`;
+      } else {
+        window.location.href = `/Modules/Fomularios/OTRO/OTROarea.html?id=${idPermiso}`;
+      }
+    });
   });
 
   const recordsCount = document.getElementById("records-count");

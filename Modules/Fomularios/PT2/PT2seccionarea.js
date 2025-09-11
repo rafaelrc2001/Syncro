@@ -17,6 +17,7 @@ if (idPermiso) {
       console.log("Respuesta de la API:", data);
       if (data && data.success && data.data) {
         const permiso = data.data;
+        console.log("Valores del permiso recibidos:", permiso);
         setText("maintenance-type-label", permiso.tipo_mantenimiento || "-");
         setText("work-order-label", permiso.ot_numero || "-");
         setText("tag-label", permiso.tag || "-");
@@ -151,9 +152,156 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Salir: redirigir a AutorizarPT.html
   const btnSalirNuevo = document.getElementById("btn-salir-nuevo");
-  if (btnSalirNuevo) {
-    btnSalirNuevo.addEventListener("click", function () {
-      window.location.href = "/Modules/Usuario/AutorizarPT.html";
-    });
+
+  // --- FUNCIONES PARA RELLENAR AST Y PARTICIPANTES ---
+  function mostrarAST(ast) {
+    const eppList = document.getElementById("modal-epp-list");
+    if (eppList) {
+      eppList.innerHTML = "";
+      if (ast && ast.epp_requerido) {
+        ast.epp_requerido.split(",").forEach((item) => {
+          const li = document.createElement("li");
+          li.textContent = item.trim();
+          eppList.appendChild(li);
+        });
+      }
+    }
+    const maqList = document.getElementById("modal-maquinaria-list");
+    if (maqList) {
+      maqList.innerHTML = "";
+      if (ast && ast.maquinaria_herramientas) {
+        ast.maquinaria_herramientas.split(",").forEach((item) => {
+          const li = document.createElement("li");
+          li.textContent = item.trim();
+          maqList.appendChild(li);
+        });
+      }
+    }
+    const matList = document.getElementById("modal-materiales-list");
+    if (matList) {
+      matList.innerHTML = "";
+      if (ast && ast.material_accesorios) {
+        ast.material_accesorios.split(",").forEach((item) => {
+          const li = document.createElement("li");
+          li.textContent = item.trim();
+          matList.appendChild(li);
+        });
+      }
+    }
+  }
+
+  function mostrarActividadesAST(actividades) {
+    const tbody = document.getElementById("modal-ast-actividades-body");
+    if (tbody) {
+      tbody.innerHTML = "";
+      if (Array.isArray(actividades)) {
+        actividades.forEach((act) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+                <td>${act.no || ""}</td>
+                <td>${act.secuencia_actividad || ""}</td>
+                <td>${act.personal_ejecutor || ""}</td>
+                <td>${act.peligros_potenciales || ""}</td>
+                <td>${act.descripcion || ""}</td>
+                <td>${act.responsable || ""}</td>
+            `;
+          tbody.appendChild(tr);
+        });
+      }
+    }
+  }
+
+  function mostrarParticipantesAST(participantes) {
+    const tbody = document.getElementById("modal-ast-participantes-body");
+    if (tbody) {
+      tbody.innerHTML = "";
+      if (Array.isArray(participantes)) {
+        participantes.forEach((p) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+                <td>${p.nombre || ""}</td>
+                <td><span class="role-badge">${p.funcion || ""}</span></td>
+                <td>${p.credencial || ""}</td>
+                <td>${p.cargo || ""}</td>
+            `;
+          tbody.appendChild(tr);
+        });
+      }
+    }
+  }
+
+  // Leer el id del permiso de la URL
+  const params2 = new URLSearchParams(window.location.search);
+  const idPermiso2 = params2.get("id");
+  if (idPermiso2) {
+    // Llamar a la API para obtener los datos del permiso
+    fetch(
+      `http://localhost:3000/api/verformularios?id=${encodeURIComponent(
+        idPermiso2
+      )}`
+    )
+      .then((resp) => resp.json())
+      .then((data) => {
+        // Llenar campos generales usando data.data
+        if (data && data.data) {
+          const detalles = data.data;
+          if (document.getElementById("maintenance-type-label"))
+            document.getElementById("maintenance-type-label").textContent =
+              detalles.tipo_mantenimiento || "-";
+          if (document.getElementById("work-order-label"))
+            document.getElementById("work-order-label").textContent =
+              detalles.ot_numero || "-";
+          if (document.getElementById("tag-label"))
+            document.getElementById("tag-label").textContent =
+              detalles.tag || "-";
+          if (document.getElementById("start-time-label"))
+            document.getElementById("start-time-label").textContent =
+              detalles.hora_inicio || "-";
+          if (document.getElementById("equipment-description-label"))
+            document.getElementById("equipment-description-label").textContent =
+              detalles.descripcion_equipo || "-";
+          if (document.getElementById("special-tools-label"))
+            document.getElementById("special-tools-label").textContent =
+              detalles.requiere_herramientas_especiales || "-";
+          if (document.getElementById("special-tools-type-label"))
+            document.getElementById("special-tools-type-label").textContent =
+              detalles.tipo_herramientas_especiales || "-";
+          if (document.getElementById("adequate-tools-label"))
+            document.getElementById("adequate-tools-label").textContent =
+              detalles.herramientas_adecuadas || "-";
+          if (document.getElementById("pre-verification-label"))
+            document.getElementById("pre-verification-label").textContent =
+              detalles.requiere_verificacion_previa || "-";
+          if (document.getElementById("risk-knowledge-label"))
+            document.getElementById("risk-knowledge-label").textContent =
+              detalles.requiere_conocer_riesgos || "-";
+          if (document.getElementById("final-observations-label"))
+            document.getElementById("final-observations-label").textContent =
+              detalles.observaciones_medidas || "-";
+          // ...agrega aquí más campos generales de PT2 si los tienes...
+        }
+        // Rellenar AST y Participantes si existen en la respuesta
+        if (data.ast) {
+          mostrarAST(data.ast);
+        } else {
+          mostrarAST({}); // Limpia listas si no hay datos
+        }
+        if (data.actividades_ast) {
+          mostrarActividadesAST(data.actividades_ast);
+        } else {
+          mostrarActividadesAST([]); // Limpia tabla si no hay datos
+        }
+        if (data.participantes_ast) {
+          mostrarParticipantesAST(data.participantes_ast);
+        } else {
+          mostrarParticipantesAST([]); // Limpia tabla si no hay datos
+        }
+      })
+      .catch((err) => {
+        console.error("Error al obtener datos del permiso:", err);
+        alert(
+          "Error al obtener datos del permiso. Revisa la consola para más detalles."
+        );
+      });
   }
 });

@@ -8,6 +8,83 @@ if (btnSalirNuevo) {
 }
 // Mostrar solo la sección 2 al cargar y ocultar las demás
 document.addEventListener("DOMContentLoaded", function () {
+  // --- FUNCIONES PARA RELLENAR AST Y PARTICIPANTES ---
+  function mostrarAST(ast) {
+    const eppList = document.getElementById("modal-epp-list");
+    if (eppList) {
+      eppList.innerHTML = "";
+      if (ast.epp_requerido) {
+        ast.epp_requerido.split(",").forEach((item) => {
+          const li = document.createElement("li");
+          li.textContent = item.trim();
+          eppList.appendChild(li);
+        });
+      }
+    }
+    const maqList = document.getElementById("modal-maquinaria-list");
+    if (maqList) {
+      maqList.innerHTML = "";
+      if (ast.maquinaria_herramientas) {
+        ast.maquinaria_herramientas.split(",").forEach((item) => {
+          const li = document.createElement("li");
+          li.textContent = item.trim();
+          maqList.appendChild(li);
+        });
+      }
+    }
+    const matList = document.getElementById("modal-materiales-list");
+    if (matList) {
+      matList.innerHTML = "";
+      if (ast.material_accesorios) {
+        ast.material_accesorios.split(",").forEach((item) => {
+          const li = document.createElement("li");
+          li.textContent = item.trim();
+          matList.appendChild(li);
+        });
+      }
+    }
+  }
+
+  function mostrarActividadesAST(actividades) {
+    const tbody = document.getElementById("modal-ast-actividades-body");
+    if (tbody) {
+      tbody.innerHTML = "";
+      if (Array.isArray(actividades)) {
+        actividades.forEach((act) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+                <td>${act.no || ""}</td>
+                <td>${act.secuencia_actividad || ""}</td>
+                <td>${act.personal_ejecutor || ""}</td>
+                <td>${act.peligros_potenciales || ""}</td>
+                <td>${act.descripcion || ""}</td>
+                <td>${act.responsable || ""}</td>
+            `;
+          tbody.appendChild(tr);
+        });
+      }
+    }
+  }
+
+  function mostrarParticipantesAST(participantes) {
+    const tbody = document.getElementById("modal-ast-participantes-body");
+    if (tbody) {
+      tbody.innerHTML = "";
+      if (Array.isArray(participantes)) {
+        participantes.forEach((p) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+                <td>${p.nombre || ""}</td>
+                <td><span class="role-badge">${p.funcion || ""}</span></td>
+                <td>${p.credencial || ""}</td>
+                <td>${p.cargo || ""}</td>
+            `;
+          tbody.appendChild(tr);
+        });
+      }
+    }
+  }
+
   // Guardar datos del análisis previo y condiciones
   const btnGuardar = document.getElementById("btn-guardar-campos");
   if (btnGuardar) {
@@ -135,6 +212,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 ? condiciones.join(" | ")
                 : data.detalles.condiciones_equipo || "-";
           }
+          // Ahora agrega esto para rellenar AST y Participantes:
+          mostrarAST(data.ast);
+          mostrarActividadesAST(data.actividades_ast);
+          mostrarParticipantesAST(data.participantes_ast);
         } else {
           alert(
             "No se encontraron datos para este permiso o el backend no responde con la estructura esperada."

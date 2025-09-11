@@ -1,3 +1,11 @@
+// Nuevo botón salir: vuelve a AutorizarPT.html
+const btnSalirNuevo = document.getElementById("btn-salir-nuevo");
+if (btnSalirNuevo) {
+  btnSalirNuevo.addEventListener("click", function (e) {
+    e.preventDefault();
+    window.location.href = "/Modules/Usuario/AutorizarPT.html";
+  });
+}
 // Mostrar solo la sección 2 al cargar y ocultar las demás
 document.addEventListener("DOMContentLoaded", function () {
   // Guardar datos del análisis previo y condiciones
@@ -72,6 +80,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnRegresar = document.getElementById("btn-regresar");
   if (btnRegresar) {
     btnRegresar.addEventListener("click", function () {
+      window.location.href = "/Modules/Usuario/AutorizarPT.html";
+    });
+  }
+
+  // Botón salir: vuelve a AutorizarPT.html
+  const btnSalir = document.getElementById("btn-salir");
+  if (btnSalir) {
+    btnSalir.addEventListener("click", function () {
       window.location.href = "/Modules/Usuario/AutorizarPT.html";
     });
   }

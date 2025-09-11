@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Permiso No Peligroso</title>
+    <title>Permiso  Apertura Equipo Línea</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
    <!-- <link rel="stylesheet" href="/CSS/EstiloFormularios.css"> -->
@@ -91,152 +91,387 @@
                     <tbody>
                         <tr>
                             <td>¿Debe de estar fuera de operación el equipo o línea?</td>
-                            <td>
-                                <div class="radio-group">
-                                    <label><input type="radio" name="fuera_operacion" value="SI"> SI</label>
-                                    <label><input type="radio" name="fuera_operacion" value="NO"> NO</label>
-                                    <label><input type="radio" name="fuera_operacion" value="NA"> N/A</label>
-                                </div>
-                            </td>
+                            <td class="centered"><span id="resp-fuera-operacion">-</span></td>
                         </tr>
                         <tr>
                             <td>¿Debe estar despresionado y purgado?</td>
-                            <td>
-                                <div class="radio-group">
-                                    <label><input type="radio" name="despresurizado_purgado" value="SI"> SI</label>
-                                    <label><input type="radio" name="despresurizado_purgado" value="NO"> NO</label>
-                                    <label><input type="radio" name="despresurizado_purgado" value="NA"> N/A</label>
-                                </div>
-                            </td>
+                            <td class="centered"><span id="resp-despresurizado-purgado">-</span></td>
                         </tr>
                         <tr>
                             <td>¿Es necesario aislarlo?</td>
-                            <td>
-                                <div class="radio-group">
-                                    <label><input type="radio" name="necesita_aislamiento" value="SI"> SI</label>
-                                    <label><input type="radio" name="necesita_aislamiento" value="NO"> NO</label>
-                                    <label><input type="radio" name="necesita_aislamiento" value="NA"> N/A</label>
-                                </div>
-                            </td>
+                            <td class="centered"><span id="resp-necesita-aislamiento">-</span></td>
                         </tr>
                         <tr>
                             <td>¿Con válvulas?</td>
-                            <td>
-                                <div class="radio-group">
-                                    <label><input type="radio" name="con_valvulas" value="SI"> SI</label>
-                                    <label><input type="radio" name="con_valvulas" value="NO"> NO</label>
-                                    <label><input type="radio" name="con_valvulas" value="NA"> N/A</label>
-                                </div>
-                            </td>
+                            <td class="centered"><span id="resp-con-valvulas">-</span></td>
                         </tr>
                         <tr>
                             <td>¿Con juntas ciegas?</td>
-                            <td>
-                                <div class="radio-group">
-                                    <label><input type="radio" name="con_juntas_ciegas" value="SI"> SI</label>
-                                    <label><input type="radio" name="con_juntas_ciegas" value="NO"> NO</label>
-                                    <label><input type="radio" name="con_juntas_ciegas" value="NA"> N/A</label>
-                                </div>
-                            </td>
+                            <td class="centered"><span id="resp-con-juntas-ciegas">-</span></td>
                         </tr>
                         <tr>
                             <td>¿Pudo quedar producto entrampado?</td>
-                            <td>
-                                <div class="radio-group">
-                                    <label><input type="radio" name="producto_entrampado" value="SI"> SI</label>
-                                    <label><input type="radio" name="producto_entrampado" value="NO"> NO</label>
-                                    <label><input type="radio" name="producto_entrampado" value="NA"> N/A</label>
-                                </div>
-                            </td>
+                            <td class="centered"><span id="resp-producto-entrampado">-</span></td>
                         </tr>
                         <tr>
                             <td>¿El equipo y/o línea requiere lavado?</td>
-                            <td>
-                                <div class="radio-group">
-                                    <label><input type="radio" name="requiere_lavado" value="SI"> SI</label>
-                                    <label><input type="radio" name="requiere_lavado" value="NO"> NO</label>
-                                    <label><input type="radio" name="requiere_lavado" value="NA"> N/A</label>
-                                </div>
-                            </td>
+                            <td class="centered"><span id="resp-requiere-lavado">-</span></td>
                         </tr>
                         <tr>
                             <td>¿El equipo y/o línea requiere neutralizado?</td>
-                            <td>
-                                <div class="radio-group">
-                                    <label><input type="radio" name="requiere_neutralizado" value="SI"> SI</label>
-                                    <label><input type="radio" name="requiere_neutralizado" value="NO"> NO</label>
-                                    <label><input type="radio" name="requiere_neutralizado" value="NA"> N/A</label>
-                                </div>
-                            </td>
+                            <td class="centered"><span id="resp-requiere-neutralizado">-</span></td>
                         </tr>
                         <tr>
                             <td>¿El equipo y/o línea requiere vaporizado?</td>
-                            <td>
-                                <div class="radio-group">
-                                    <label><input type="radio" name="requiere_vaporizado" value="SI"> SI</label>
-                                    <label><input type="radio" name="requiere_vaporizado" value="NO"> NO</label>
-                                    <label><input type="radio" name="requiere_vaporizado" value="NA"> N/A</label>
-                                </div>
-                            </td>
+                            <td class="centered"><span id="resp-requiere-vaporizado">-</span></td>
                         </tr>
                         <tr>
                             <td>¿Se deben suspender los trabajos adyacentes?</td>
-                            <td>
-                                <div class="radio-group">
-                                    <label><input type="radio" name="suspender_trabajos_adyacentes" value="SI"> SI</label>
-                                    <label><input type="radio" name="suspender_trabajos_adyacentes" value="NO"> NO</label>
-                                    <label><input type="radio" name="suspender_trabajos_adyacentes" value="NA"> N/A</label>
-                                </div>
-                            </td>
+                            <td class="centered"><span id="resp-suspender-trabajos-adyacentes">-</span></td>
                         </tr>
                         <tr>
                             <td>¿Se requiere acordonar el área?</td>
-                            <td>
-                                <div class="radio-group">
-                                    <label><input type="radio" name="acordonar_area" value="SI"> SI</label>
-                                    <label><input type="radio" name="acordonar_area" value="NO"> NO</label>
-                                    <label><input type="radio" name="acordonar_area" value="NA"> N/A</label>
-                                </div>
-                            </td>
+                            <td class="centered"><span id="resp-acordonar-area">-</span></td>
                         </tr>
                         <tr>
                             <td>¿Se requiere prueba de gas tóxico/inflamable?</td>
-                            <td>
-                                <div class="radio-group">
-                                    <label><input type="radio" name="prueba_gas_toxico_inflamable" value="SI"> SI</label>
-                                    <label><input type="radio" name="prueba_gas_toxico_inflamable" value="NO"> NO</label>
-                                    <label><input type="radio" name="prueba_gas_toxico_inflamable" value="NA"> N/A</label>
-                                </div>
-                            </td>
+                            <td class="centered"><span id="resp-prueba-gas-toxico-inflamable">-</span></td>
                         </tr>
                         <tr>
                             <td>¿El equipo eléctrico se encuentra desenergizado?</td>
-                            <td>
-                                <div class="radio-group">
-                                    <label><input type="radio" name="equipo_electrico_desenergizado" value="SI"> SI</label>
-                                    <label><input type="radio" name="equipo_electrico_desenergizado" value="NO"> NO</label>
-                                    <label><input type="radio" name="equipo_electrico_desenergizado" value="NA"> N/A</label>
-                                </div>
-                            </td>
+                            <td class="centered"><span id="resp-equipo-electrico-desenergizado">-</span></td>
                         </tr>
                         <tr>
                             <td>¿Se requiere tapar purgas y/o registros de los drenajes?</td>
-                            <td>
-                                <div class="radio-group">
-                                    <label><input type="radio" name="tapar_purgas_drenajes" value="SI"> SI</label>
-                                    <label><input type="radio" name="tapar_purgas_drenajes" value="NO"> NO</label>
-                                    <label><input type="radio" name="tapar_purgas_drenajes" value="NA"> N/A</label>
-                                </div>
-                            </td>
+                            <td class="centered"><span id="resp-tapar-purgas-drenajes">-</span></td>
                         </tr>
                     </tbody>
                 </table>
-                            <div class="button-group" style="display: flex; justify-content: space-between; margin-top: 48px;">
-                  <button class="btn"><i class="ri-logout-box-r-line" style="margin-right: 8px;"></i>Salir</button>  
-                  <button class="btn azul-petroleo"><i class="ri-save-3-line" style="margin-right: 8px;"></i>Guardar</button>
 
-                    
+
+
+
+
+
+                              <div class="executive-section">
+                    <div class="section-header">
+                        <i class="ri-flask-line"></i>
+                        <h3>Condiciones del Proceso</h3>
+                    </div>
+                    <div class="executive-grid">
+                        <div class="executive-item">
+                            <label for="fluid">Fluido</label>
+                            <p id="fluid" class="highlight">-</p>
+                        </div>
+                        <div class="executive-item">
+                            <label for="pressure">Presión</label>
+                            <p id="pressure">-</p>
+                        </div>
+                        <div class="executive-item">
+                            <label for="temperature">Temperatura</label>
+                            <p id="temperature">-</p>
+                        </div>
+                    </div>
                 </div>
+
+
+                    <!-- Requisitos para Administrar los Riesgos (estilo tabla alineada) -->
+                    <div class="executive-section">
+                        <div class="section-header">
+                            <i class="ri-checkbox-multiple-line"></i>
+                            <h3>Requisitos para Administrar los Riesgos</h3>
+                        </div>
+                        <table class="styled-table">
+                            <thead>
+                                <tr>
+                                    <th>Requisito</th>
+                                    <th class="centered">SI</th>
+                                    <th class="centered">NO</th>
+                                    <th class="centered">N/A</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Equipo de protección especial recomendado</td>
+                                    <td class="centered"><input type="radio" name="special-protection" value="SI"></td>
+                                    <td class="centered"><input type="radio" name="special-protection" value="NO"></td>
+                                    <td class="centered"><input type="radio" name="special-protection" value="N/A"></td>
+                                </tr>
+                                <tr>
+                                    <td>Para piel y cuerpo</td>
+                                    <td class="centered"><input type="radio" name="skin-protection" value="SI"></td>
+                                    <td class="centered"><input type="radio" name="skin-protection" value="NO"></td>
+                                    <td class="centered"><input type="radio" name="skin-protection" value="N/A"></td>
+                                </tr>
+                                <tr>
+                                    <td>Protección respiratoria</td>
+                                    <td class="centered"><input type="radio" name="respiratory-protection" value="SI"></td>
+                                    <td class="centered"><input type="radio" name="respiratory-protection" value="NO"></td>
+                                    <td class="centered"><input type="radio" name="respiratory-protection" value="N/A"></td>
+                                </tr>
+                                <tr>
+                                    <td>Protección ocular</td>
+                                    <td class="centered"><input type="radio" name="eye-protection" value="SI"></td>
+                                    <td class="centered"><input type="radio" name="eye-protection" value="NO"></td>
+                                    <td class="centered"><input type="radio" name="eye-protection" value="N/A"></td>
+                                </tr>
+                                <tr>
+                                    <td>¿Se requiere protección contraincendio?</td>
+                                    <td class="centered"><input type="radio" name="fire-protection" value="SI"></td>
+                                    <td class="centered"><input type="radio" name="fire-protection" value="NO"></td>
+                                    <td class="centered"><input type="radio" name="fire-protection" value="N/A"></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right; font-weight: 500;">¿Cuál?</td>
+                                                                            <td colspan="3"><textarea id="fire-protection-type" name="fire-protection-type" placeholder="Especifique el tipo" class="compact" style="width:98%; min-height:80px; resize:vertical; background:#fff; border:1px solid #d0d7de; border-radius:6px; padding:6px 10px;"></textarea></td>
+                                </tr>
+                                <tr>
+                                    <td>¿Instalación de barreras y/o barricadas?</td>
+                                    <td class="centered"><input type="radio" name="barriers-required" value="SI"></td>
+                                    <td class="centered"><input type="radio" name="barriers-required" value="NO"></td>
+                                    <td class="centered"><input type="radio" name="barriers-required" value="N/A"></td>
+                                </tr>
+                                <tr>
+                                    <td>Observaciones adicionales</td>
+                                                                        <td colspan="3"><textarea id="observations" name="observations" rows="8" placeholder="Ingrese cualquier observación adicional" style="width:99%; min-height:140px; resize:vertical; background:#fff; border:1px solid #d0d7de; border-radius:6px; padding:6px 10px;"></textarea></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
+
+
+    <div class="executive-section">
+        <div class="section-header">
+            <i class="ri-checkbox-multiple-line"></i>
+            <h3>REGISTRO DE PRUEBAS REQUERIDAS</h3>
+        </div>
+        <table class="styled-table">
+            <thead>
+                <tr style="background: #e74c3c; color: #fff;">
+                    <th colspan="2">PRUEBA DE GAS</th>
+                    <th colspan="3" style="text-align: center;">¿APROBADO?</th>
+                </tr>
+                <tr>
+                    <th style="width: 220px;">&nbsp;</th>
+                    <th style="width: 180px;">Valor</th>
+                    <th class="centered">SI</th>
+                    <th class="centered">NO</th>
+                    <th class="centered">N/A</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>% de CO2:</td>
+                    <td><input type="text" name="co2" style="width:90%; background:#fff; border:1px solid #d0d7de; border-radius:6px; padding:6px 10px;"></td>
+                    <td class="centered"><input type="radio" name="aprobado_co2" value="SI"></td>
+                    <td class="centered"><input type="radio" name="aprobado_co2" value="NO"></td>
+                    <td class="centered"><input type="radio" name="aprobado_co2" value="NA"></td>
+                </tr>
+                <tr>
+                    <td>% Amoniaco:</td>
+                    <td><input type="text" name="amonico" style="width:90%; background:#fff; border:1px solid #d0d7de; border-radius:6px; padding:6px 10px;"></td>
+                    <td class="centered"><input type="radio" name="aprobado_amonico" value="SI"></td>
+                    <td class="centered"><input type="radio" name="aprobado_amonico" value="NO"></td>
+                    <td class="centered"><input type="radio" name="aprobado_amonico" value="NA"></td>
+                </tr>
+                <tr>
+                    <td>% de Oxigeno:</td>
+                    <td><input type="text" name="oxigeno" style="width:90%; background:#fff; border:1px solid #d0d7de; border-radius:6px; padding:6px 10px;"></td>
+                    <td class="centered"><input type="radio" name="aprobado_oxigeno" value="SI"></td>
+                    <td class="centered"><input type="radio" name="aprobado_oxigeno" value="NO"></td>
+                    <td class="centered"><input type="radio" name="aprobado_oxigeno" value="NA"></td>
+                </tr>
+                <tr>
+                    <td>% de Explosividad LEL:</td>
+                    <td><input type="text" name="lel" style="width:90%; background:#fff; border:1px solid #d0d7de; border-radius:6px; padding:6px 10px;"></td>
+                    <td class="centered"><input type="radio" name="aprobado_lel" value="SI"></td>
+                    <td class="centered"><input type="radio" name="aprobado_lel" value="NO"></td>
+                    <td class="centered"><input type="radio" name="aprobado_lel" value="NA"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+
+                <!-- Sección AST y Participantes -->
+                <div class="executive-section">
+                    <div class="section-header">
+                        <i class="ri-shield-check-line"></i>
+                        <h3>AST - Análisis de Seguridad en el Trabajo</h3>
+                    </div>
+                    <div class="ast-summary">
+                        <table class="ast-table">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Secuencia de la Actividad</th>
+                                    <th>Personal Ejecutor</th>
+                                    <th>Peligros Potenciales</th>
+                                    <th>Acciones Preventivas</th>
+                                    <th>Responsable</th>
+                                </tr>
+                            </thead>
+                            <tbody id="modal-ast-actividades-body">
+                                <!-- Actividades AST dinámicas -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="safety-grid">
+                        <div class="safety-item">
+                            <h4><i class="ri-shield-user-line"></i> EPP Requerido</h4>
+                            <ul class="safety-list" id="modal-epp-list">
+                                <li></li>
+                            </ul>
+                        </div>
+                        <div class="safety-item">
+                            <h4><i class="ri-tools-line"></i> Maquinaria y Herramientas</h4>
+                            <ul class="safety-list" id="modal-maquinaria-list">
+                                <li></li>
+                            </ul>
+                        </div>
+                        <div class="safety-item">
+                            <h4><i class="ri-box-line"></i> Materiales y Accesorios</h4>
+                            <ul class="safety-list" id="modal-materiales-list">
+                                <li></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Sección 4: Participantes -->
+                <div class="executive-section">
+                    <div class="section-header">
+                        <i class="ri-team-line"></i>
+                        <h3>Personal Involucrado</h3>
+                    </div>
+                    <div class="ast-summary">
+                        <table class="ast-table">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Función</th>
+                                    <th>Credencial</th>
+                                    <th>Cargo</th>
+                                </tr>
+                            </thead>
+                            <tbody id="modal-ast-participantes-body">
+                                <!-- Participantes AST dinámicos -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+
+                <div class="executive-section" style="display: flex; gap: 20px">
+            <div style="flex: 1">
+              <label
+                for="responsable-aprobador"
+                style="font-weight: 600; display: block; margin-bottom: 8px"
+              >
+                Seleccionar Supervisor de Seguridad:
+              </label>
+              <select
+                id="responsable-aprobador"
+                style="
+                  width: 100%;
+                  padding: 8px;
+                  border-radius: 4px;
+                  border: 1px solid #ccc;
+                "
+                onchange="actualizarAprobador(this.value)"
+              >
+                <option value="" disabled selected>
+                  Seleccione un supervisor...
+                </option>
+                <option value="Juan Pérez Martínez">Juan Pérez Martínez</option>
+                <option value="María García López">María García López</option>
+                <option value="Carlos Rodríguez Sánchez">
+                  Carlos Rodríguez Sánchez
+                </option>
+                <option value="Ana Martínez González">
+                  Ana Martínez González
+                </option>
+                <option value="Luis Hernández Ramírez">
+                  Luis Hernández Ramírez
+                </option>
+                <option value="Patricia Díaz Fernández">
+                  Patricia Díaz Fernández
+                </option>
+              </select>
+            </div>
+            <div style="flex: 1">
+              <label
+                for="responsable-aprobador2"
+                style="font-weight: 600; display: block; margin-bottom: 8px"
+              >
+                Seleccionar la categoria a la que pertenece:
+              </label>
+              <select
+                id="responsable-aprobador2"
+                style="
+                  width: 100%;
+                  padding: 8px;
+                  border-radius: 4px;
+                  border: 1px solid #ccc;
+                "
+                onchange="actualizarAprobador2(this.value)"
+              >
+                <option value="" disabled selected>
+                  Seleccione una categoria...
+                </option>
+                <option value="Juan Pérez Martínez">SAMP</option>
+                <option value="María García López">APT</option>
+                <option value="Carlos Rodríguez Sánchez">UREA</option>
+                <option value="Ana Martínez González">AREA 6</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Sección 5: Aprobaciones -->
+          <div class="approval-section">
+            <div class="approval-stamps">
+              <div class="stamp">
+                <div class="stamp-title">Responsable del area:</div>
+                <div class="stamp-placeholder"></div>
+                <div class="stamp-name"></div>
+              </div>
+              <div class="stamp">
+                <div class="stamp-title">Operador del área:</div>
+                <div class="stamp-placeholder"></div>
+                <div class="stamp-name"></div>
+                <div class="stamp-date"></div>
+              </div>
+              <div class="stamp approved">
+                <div class="stamp-title">Supervisor de Seguridad:</div>
+                <div class="stamp-placeholder">
+                  <i class="ri-checkbox-circle-fill"></i>
+                </div>
+                <div class="stamp-name" id="nombre-aprobador">
+                  Seleccione un supervisor
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+    
+
+
+
+
+                           
+                          <div class="button-group" style="display: flex; justify-content: space-between; margin-top: 48px; gap: 16px;">
+         <button id="btn-salir-nuevo" class="btn btn-pt1 btn-salir-gris" type="button">
+            <i class="ri-logout-box-r-line" style="margin-right: 8px;"></i>Salir
+        </button>
+
+        <button id="btn-guardar-campos" class="btn btn-pt1 btn-guardar-azulpetroleo" type="button">
+            <i class="ri-save-3-line" style="margin-right: 8px;"></i>Guardar
+        </button>
             </div>
         </section>
     </div>
@@ -248,6 +483,6 @@
 
      <!-- <script src="/Modules/Fomularios/PT1/PT1.js"></script>-->
 
-     <script src="/Modules/Fomularios/PT2/seccion2area.js"></script>
+     <script src="/Modules/Fomularios/PT2/PT2seccionsupervisor.js"></script>
 </body>
 </html>

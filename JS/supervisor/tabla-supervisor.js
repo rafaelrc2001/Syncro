@@ -533,11 +533,11 @@ if (tableBody) {
       const viewBtn = row ? row.querySelector(".action-btn.view") : null;
       const idPermiso = viewBtn ? viewBtn.getAttribute("data-idpermiso") : "";
       if (tipoPermiso === "PT No Peligroso") {
-        window.location.href = `/Modules/Fomularios/PT1/PT1area.html?id=${idPermiso}`;
+        window.location.href = `/Modules/Fomularios/PT1/PT1supervisor.html?id=${idPermiso}`;
       } else if (tipoPermiso === "PT para Apertura Equipo Línea") {
-        window.location.href = `/Modules/Fomularios/PT2/PT2area.html?id=${idPermiso}`;
+        window.location.href = `/Modules/Fomularios/PT2/PT2supervisor.html?id=${idPermiso}`;
       } else {
-        window.location.href = `/Modules/Fomularios/OTRO/OTROarea.html?id=${idPermiso}`;
+        window.location.href = `/Modules/Fomularios/OTRO/OTROsupervisor.html?id=${idPermiso}`;
       }
     }
   });

@@ -68,37 +68,34 @@ function mostrarDetallesTecnicos(detalles) {
 }
 
 function mostrarAST(ast) {
+  // EPP
   const eppList = document.getElementById("modal-epp-list");
   eppList.innerHTML = "";
   if (ast.epp_requerido) {
     ast.epp_requerido.split(",").forEach((item) => {
-      if (item.trim()) {
-        const li = document.createElement("li");
-        li.textContent = item.trim();
-        eppList.appendChild(li);
-      }
+      const li = document.createElement("li");
+      li.textContent = item.trim();
+      eppList.appendChild(li);
     });
   }
-  const maquinariaList = document.getElementById("modal-maquinaria-list");
-  maquinariaList.innerHTML = "";
+  // Maquinaria
+  const maqList = document.getElementById("modal-maquinaria-list");
+  maqList.innerHTML = "";
   if (ast.maquinaria_herramientas) {
     ast.maquinaria_herramientas.split(",").forEach((item) => {
-      if (item.trim()) {
-        const li = document.createElement("li");
-        li.textContent = item.trim();
-        maquinariaList.appendChild(li);
-      }
+      const li = document.createElement("li");
+      li.textContent = item.trim();
+      maqList.appendChild(li);
     });
   }
-  const materialesList = document.getElementById("modal-materiales-list");
-  materialesList.innerHTML = "";
+  // Materiales
+  const matList = document.getElementById("modal-materiales-list");
+  matList.innerHTML = "";
   if (ast.material_accesorios) {
     ast.material_accesorios.split(",").forEach((item) => {
-      if (item.trim()) {
-        const li = document.createElement("li");
-        li.textContent = item.trim();
-        materialesList.appendChild(li);
-      }
+      const li = document.createElement("li");
+      li.textContent = item.trim();
+      matList.appendChild(li);
     });
   }
 }
@@ -181,9 +178,11 @@ function asignarEventosVer() {
             ).innerHTML = "";
         } else {
           mostrarDetallesTecnicos(data.detalles);
-          mostrarAST(data.ast);
-          mostrarActividadesAST(data.actividades_ast);
-          mostrarParticipantesAST(data.participantes_ast);
+          setTimeout(() => {
+            mostrarAST(data.ast);
+            mostrarActividadesAST(data.actividades_ast);
+            mostrarParticipantesAST(data.participantes_ast);
+          }, 100);
           // Renderizar apertura si corresponde
           if (data.general.tipo_permiso === "PT para Apertura Equipo Línea") {
             document.getElementById("modal-especifica").innerHTML =
@@ -251,3 +250,16 @@ function mapSupervisorFields(general) {
     "lel-level": general.lel_nivel,
   };
 }
+
+// Debugging: Verificar elementos del DOM
+console.log("eppList:", document.getElementById("modal-epp-list"));
+console.log("maqList:", document.getElementById("modal-maquinaria-list"));
+console.log("matList:", document.getElementById("modal-materiales-list"));
+console.log(
+  "tbody actividades:",
+  document.getElementById("modal-ast-actividades-body")
+);
+console.log(
+  "tbody participantes:",
+  document.getElementById("modal-ast-participantes-body")
+);

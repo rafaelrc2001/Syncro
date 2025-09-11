@@ -93,6 +93,7 @@ function setText(id, value) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+  // Guardar requisitos
   const btnGuardar = document.getElementById("btn-guardar-requisitos");
   if (btnGuardar) {
     btnGuardar.addEventListener("click", async function () {
@@ -145,6 +146,14 @@ document.addEventListener("DOMContentLoaded", function () {
           "Error al guardar los requisitos. Revisa la consola para más detalles."
         );
       }
+    });
+  }
+
+  // Salir: redirigir a AutorizarPT.html
+  const btnSalirNuevo = document.getElementById("btn-salir-nuevo");
+  if (btnSalirNuevo) {
+    btnSalirNuevo.addEventListener("click", function () {
+      window.location.href = "/Modules/Usuario/AutorizarPT.html";
     });
   }
 });

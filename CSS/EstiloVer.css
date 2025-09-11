@@ -1,3 +1,45 @@
+/* Botones estéticos para formularios de visualización (PT1area, etc.) */
+.btn-pt1,
+.btn-salir-gris,
+.btn-guardar-azulpetroleo {
+    min-width: 110px;
+    padding: 7px 16px !important;
+    border-radius: 6px !important;
+    font-size: 0.97rem !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.01em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    box-shadow: 0 1px 4px rgba(44,62,80,0.07);
+    transition: background 0.18s, color 0.18s, box-shadow 0.18s, transform 0.13s;
+    outline: none;
+    border: none;
+    line-height: 1.1;
+}
+.btn-pt1:active,
+.btn-salir-gris:active,
+.btn-guardar-azulpetroleo:active {
+    transform: scale(0.97);
+    box-shadow: 0 1px 2px rgba(44,62,80,0.10);
+}
+.btn-salir-gris {
+    background: #b0bec5 !important;
+    color: #333 !important;
+}
+.btn-salir-gris:hover, .btn-salir-gris:focus {
+    background: #90a4ae !important;
+    color: #222 !important;
+}
+.btn-guardar-azulpetroleo {
+    background: #003B5C !important;
+    color: #fff !important;
+}
+.btn-guardar-azulpetroleo:hover, .btn-guardar-azulpetroleo:focus {
+    background: #002b44 !important;
+    color: #fff !important;
+}
 
 #modalComentarioContinuar .modal-header h2 {
     color: white !important;
@@ -850,4 +892,52 @@
     background: #42d4f8 !important;
     color: #3087ca !important;
     border-color: #b3e5fc !important;
+}
+
+
+/* Botón Guardar azul petróleo para PT1area.html */
+.btn-guardar-azulpetroleo {
+    background: var(--azul-petroleo) !important;
+    color: #fff !important;
+    border: none !important;
+    box-shadow: 0 2px 8px rgba(0, 59, 92, 0.10);
+}
+.btn-guardar-azulpetroleo:hover, .btn-guardar-azulpetroleo:focus {
+    background: #002b44 !important;
+    color: #fff !important;
+}
+/* Botón Salir gris para PT1area.html */
+.btn-salir-gris {
+    background: #b0bec5 !important;
+    color: #333 !important;
+    border: none !important;
+    box-shadow: 0 2px 8px rgba(176, 190, 197, 0.10);
+}
+.btn-salir-gris:hover, .btn-salir-gris:focus {
+    background: #90a4ae !important;
+    color: #222 !important;
+}
+/* Botones personalizados para PT1area.html */
+.btn-pt1 {
+    position: relative;
+    z-index: 10;
+    pointer-events: auto !important;
+    opacity: 1 !important;
+    background: linear-gradient(90deg, #42d4f8 0%, #3087ca 100%);
+    color: #fff !important;
+    border: none;
+    box-shadow: 0 2px 8px rgba(66, 212, 248, 0.08);
+    font-weight: 600;
+    font-size: 1rem;
+    transition: background 0.2s, box-shadow 0.2s;
+}
+.btn-pt1:hover, .btn-pt1:focus {
+    background: linear-gradient(90deg, #3087ca 0%, #42d4f8 100%);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(66, 212, 248, 0.15);
+    outline: none;
+}
+.btn-pt1:active {
+    background: #3087ca;
+    color: #fff;
 }

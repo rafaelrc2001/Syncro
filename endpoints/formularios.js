@@ -255,6 +255,9 @@ router.put("/pt-apertura/requisitos_area/:id_permiso", async (req, res) => {
     prueba_gas_toxico_inflamable,
     equipo_electrico_desenergizado,
     tapar_purgas_drenajes,
+    fluido,
+    presion,
+    temperatura,
   } = req.body;
 
   const query = `
@@ -272,8 +275,11 @@ router.put("/pt-apertura/requisitos_area/:id_permiso", async (req, res) => {
       acordonar_area = $11,
       prueba_gas_toxico_inflamable = $12,
       equipo_electrico_desenergizado = $13,
-      tapar_purgas_drenajes = $14
-    WHERE id_permiso = $15
+      tapar_purgas_drenajes = $14,
+      fluido = $15,
+      presion = $16,
+      temperatura = $17
+    WHERE id_permiso = $18
     RETURNING *;
   `;
 
@@ -292,6 +298,9 @@ router.put("/pt-apertura/requisitos_area/:id_permiso", async (req, res) => {
     prueba_gas_toxico_inflamable,
     equipo_electrico_desenergizado,
     tapar_purgas_drenajes,
+    fluido,
+    presion,
+    temperatura,
     id_permiso,
   ];
 

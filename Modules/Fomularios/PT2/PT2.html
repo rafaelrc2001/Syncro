@@ -8,6 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="/Modules/Fomularios/Generales/seccion2.css">
        <link rel="stylesheet" href="/CSS/EstiloFormularios.css">
+    <link rel="stylesheet" href="P-ELCSS.css">
 </head>
 <body>
     <div class="app-container">
@@ -151,17 +152,12 @@
                 
 
                  
-                <!-- Sección 2: Permiso No Peligroso -->
-                
    <!-- Sección 2: Permiso para apertura equipo línea -->
                 <section class="form-section" data-section="2">
                     <div class="form-container">
                         <div class="form-header">
-                            <div class="form-icon" style="background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);">
-                                <i class="ri-checkbox-circle-line"></i>
-                            </div>
                             <div>
-                                <h2>Permiso para Apertura de Equipo o Línea</h2>
+                                <h2>⚙️ Permiso para Apertura de Equipo o Línea</h2>
                                 <p>Complete los detalles específicos del permiso</p>
                             </div>
                         </div>
@@ -242,30 +238,20 @@
                     </div>
 
                     <!-- Equipo a Intervenir -->
-                    <div class="form-table-row">
-                        <div class="form-table-label">
-                            <label class="required-field">¿Tiene equipo a intervenir?</label>
-                            <div class="label-description">Si cuenta con equipo, descríbalo por favor</div>
+                    <div class="form-table-row status-indicator" data-required="true">
+                            <div class="form-table-label">
+                                <label for="equipment-description" class="required-field">Equipo a intervenir</label>
+                            <div class="label-description">Describa el equipo que será intervenido</div>
                         </div>
-                        <div class="form-table-options">
-                            <div class="radio-group horizontal" id="equipment-toggle">
-                                <label class="radio-option">
-                                    <input type="radio" name="has-equipment" value="no">
-                                    <span class="radio-custom"></span>
-                                    No
-                                </label>
-                                <label class="radio-option other-option">
-                                    <input type="radio" name="has-equipment" value="si" id="has-equipment-yes">
-                                    <span class="radio-custom"></span>
-                                    Sí
-                                    <input type="text" id="equipment-description" class="other-input" disabled>
-                                </label>
+                            <div class="form-table-options">
+                                <input type="text" id="equipment-description" name="equipment-description" 
+                                placeholder="Ej: Bomba centrífuga, Tanque de almacenamiento, Reactor químico..." 
+                                required class="validable">
                             </div>
-                        </div>
+                        <div class="status-icon" data-status="pending"></div>
                     </div>
                 </div>
-
-         
+            </div>
 
             <!-- Tabla 2: Medidas para administrar los riesgos -->
             <div class="color-section gray-section">
@@ -359,21 +345,8 @@
                 </div>
             </div>
         </div>
+                        
 
-
-
-
-
-
-
-    
-
-
-
-
-
-     
-     
                     <div class="form-actions">
                         <button type="button" class="btn secondary prev-step" data-prev="1">
                             <i class="ri-arrow-left-line"></i> Anterior
@@ -384,8 +357,6 @@
                     </div>
                 </div>
             </section>
-
-
 
 
 

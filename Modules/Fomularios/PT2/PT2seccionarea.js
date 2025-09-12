@@ -1,4 +1,4 @@
-// --- Lógica para el botón "Autorizar" (igual a PT1, usando btn-guardar-campos) ---
+// --- Lógica fusionada para guardar campos y autorizar ---
 const btnGuardarCampos = document.getElementById("btn-guardar-campos");
 if (btnGuardarCampos) {
   btnGuardarCampos.addEventListener("click", async function () {
@@ -22,9 +22,53 @@ if (btnGuardarCampos) {
       return;
     }
 
-    // 3. Insertar autorización de área vía API
+    // 3. Guardar los campos/requisitos primero
+    // Utilidad para leer radios
+    function getRadio(name) {
+      const checked = document.querySelector(`input[name='${name}']:checked`);
+      return checked ? checked.value : null;
+    }
+    // Construir payload
+    const payload = {
+      fuera_operacion: getRadio("fuera_operacion"),
+      despresurizado_purgado: getRadio("despresurizado_purgado"),
+      necesita_aislamiento: getRadio("necesita_aislamiento"),
+      con_valvulas: getRadio("con_valvulas"),
+      con_juntas_ciegas: getRadio("con_juntas_ciegas"),
+      producto_entrampado: getRadio("producto_entrampado"),
+      requiere_lavado: getRadio("requiere_lavado"),
+      requiere_neutralizado: getRadio("requiere_neutralizado"),
+      requiere_vaporizado: getRadio("requiere_vaporizado"),
+      suspender_trabajos_adyacentes: getRadio("suspender_trabajos_adyacentes"),
+      acordonar_area: getRadio("acordonar_area"),
+      prueba_gas_toxico_inflamable: getRadio("prueba_gas_toxico_inflamable"),
+      equipo_electrico_desenergizado: getRadio(
+        "equipo_electrico_desenergizado"
+      ),
+      tapar_purgas_drenajes: getRadio("tapar_purgas_drenajes"),
+      fluido: document.getElementById("fluid").value,
+      presion: document.getElementById("pressure").value,
+      temperatura: document.getElementById("temperature").value,
+      // Puedes agregar más campos aquí si los necesitas
+    };
     try {
-      // --- Consultar el id_estatus desde permisos_trabajo ---
+      const resp = await fetch(
+        `http://localhost:3000/api/pt-apertura/requisitos_area/${idPermiso}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        }
+      );
+      if (!resp.ok) throw new Error("Error al guardar los requisitos");
+    } catch (err) {
+      alert("Error al guardar los campos/requisitos. No se puede autorizar.");
+      console.error("Error al guardar requisitos:", err);
+      return;
+    }
+
+    // 4. Autorizar (igual que PT1)
+    try {
       let idEstatus = null;
       try {
         const respEstatus = await fetch(
@@ -45,14 +89,9 @@ if (btnGuardarCampos) {
         console.error("[DEPURACIÓN] Error al consultar id_estatus:", err);
       }
 
-      // --- Actualizar el estatus si se obtuvo el id_estatus ---
       if (idEstatus) {
         try {
           const payloadEstatus = { id_estatus: idEstatus };
-          console.log(
-            "[DEPURACIÓN] Enviando a /api/estatus/seguridad:",
-            payloadEstatus
-          );
           const respEstatus = await fetch(
             "http://localhost:3000/api/estatus/seguridad",
             {
@@ -61,26 +100,13 @@ if (btnGuardarCampos) {
               body: JSON.stringify(payloadEstatus),
             }
           );
-          console.log(
-            "[DEPURACIÓN] Respuesta HTTP de estatus/seguridad:",
-            respEstatus.status
-          );
           let data = {};
           try {
             data = await respEstatus.json();
-          } catch (e) {
-            console.warn(
-              "[DEPURACIÓN] No se pudo parsear JSON de respuesta de estatus/seguridad"
-            );
-          }
+          } catch (e) {}
           if (!respEstatus.ok) {
             console.error(
               "[DEPURACIÓN] Error en respuesta de estatus/seguridad:",
-              data
-            );
-          } else {
-            console.log(
-              "[DEPURACIÓN] Respuesta exitosa de estatus/seguridad:",
               data
             );
           }
@@ -96,21 +122,20 @@ if (btnGuardarCampos) {
         );
       }
 
-      // --- Insertar autorización de área vía API ---
-      const resp = await fetch(
-        "http://localhost:3000/api/autorizaciones/area",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            id_permiso: idPermiso,
-            responsable_area,
-            encargado_area: operador_area,
-          }),
-        }
-      );
+      await fetch("http://localhost:3000/api/autorizaciones/area", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id_permiso: idPermiso,
+          responsable_area,
+          encargado_area: operador_area,
+        }),
+      });
       window.location.href = "/Modules/Usuario/AutorizarPT.html";
     } catch (err) {
+      alert(
+        "Error al autorizar el permiso. Revisa la consola para más detalles."
+      );
       console.error(
         "[DEPURACIÓN] Error al insertar autorización de área:",
         err

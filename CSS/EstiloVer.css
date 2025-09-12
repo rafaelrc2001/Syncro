@@ -1,3 +1,46 @@
+/* Botón No Autorizar - Rojo */
+.btn-noautorizar-rojo {
+    min-width: 110px;
+    padding: 7px 12px !important;
+    border-radius: 6px !important;
+    font-size: 0.97rem !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.01em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    box-shadow: 0 1px 4px rgba(44,62,80,0.07);
+    transition: background 0.18s, color 0.18s, box-shadow 0.18s, transform 0.13s;
+    outline: none;
+    border: none;
+    line-height: 1.1;
+    background: #c62828 !important;
+    color: #fff !important;
+}
+.btn-noautorizar-rojo:hover, .btn-noautorizar-rojo:focus {
+    background: #a31515 !important;
+    color: #fff !important;
+}
+/* Encabezado azul cielo para secciones de área y análisis previo */
+.section-header-cielo {
+    background: #42d4f8 !important;
+    color: #3087ca !important;
+    border-radius: 8px;
+    padding: 0.5em 1em;
+    margin-bottom: 1em;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+.section-header-cielo h3 {
+    color: #3087ca !important;
+    margin: 0;
+}
+.section-header-cielo i {
+    color: #3087ca !important;
+    font-size: 1.5em;
+}
 /* Botones estéticos para formularios de visualización (PT1area, etc.) */
 .btn-pt1,
 .btn-salir-gris,

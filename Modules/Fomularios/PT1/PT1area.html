@@ -59,7 +59,7 @@
                     </div>
                 </div>
                 <div class="executive-section">
-                    <div class="section-header">
+                    <div class="section-header section-header-cielo">
                         <i class="ri-flask-line"></i>
                         <h3>Condiciones del Proceso</h3>
                     </div>
@@ -79,13 +79,13 @@
                     </div>
                 </div>
                 <div class="executive-section">
-                    <div class="section-header">
+                    <div class="section-header section-header-cielo">
                         <i class="ri-checkbox-multiple-line"></i>
                         <h3>Análisis Previo al Trabajo</h3>
                     </div>
                     <form id="form-no-peligroso-analisis">
                         <table class="styled-table" style="width:100%; background:#fff; border-radius:8px; overflow:hidden;">
-                            <thead>
+                            <thead class="thead-nopeligroso">
                                 <tr>
                                     <th>Pregunta</th>
                                     <th class="centered">SI</th>
@@ -237,13 +237,28 @@
          <button id="btn-salir-nuevo" class="btn btn-pt1 btn-salir-gris" type="button">
             <i class="ri-logout-box-r-line" style="margin-right: 8px;"></i>Salir
         </button>
-
-        <button id="btn-guardar-campos" class="btn btn-pt1 btn-guardar-azulpetroleo" type="button">
-            <i class="ri-save-3-line" style="margin-right: 8px;"></i>Guardar
-        </button>
-  
+        <div style="display: flex; gap: 16px;">
+            
+            <button id="btn-no-autorizar" class="btn btn-pt1 btn-noautorizar-rojo" type="button">
+                <i class="ri-close-circle-line" style="margin-right: 8px;"></i>No Autorizar
+            </button>
+            <button id="btn-guardar-campos" class="btn btn-pt1 btn-guardar-azulpetroleo" type="button">
+                <i class="ri-save-3-line" style="margin-right: 8px;"></i>Autorizar
+            </button>
+        </div>
 </div>
-                    </form>
+                                        </form>
+                                        <!-- Modal para motivo de no autorización -->
+                                        <div id="modalComentario" class="modal-comentario" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(44,62,80,0.25); z-index:1000; justify-content:center; align-items:center;">
+                                            <div style="background:#fff; border-radius:12px; max-width:400px; width:90vw; padding:2em 1.5em; box-shadow:0 4px 24px rgba(44,62,80,0.18); display:flex; flex-direction:column; gap:1em;">
+                                                <h3 style="margin:0 0 0.5em 0; font-size:1.2em; color:#c0392b;"><i class="ri-close-circle-line" style="margin-right:8px;"></i>Motivo de No Autorización</h3>
+                                                <textarea id="comentarioNoAutorizar" rows="4" style="width:100%; border:1px solid #d0d7de; border-radius:6px; padding:8px; resize:vertical;" placeholder="Escribe el motivo del rechazo..."></textarea>
+                                                <div style="display:flex; justify-content:flex-end; gap:10px;">
+                                                    <button id="btnCancelarComentario" type="button" style="background:#eee; color:#333; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Cancelar</button>
+                                                    <button id="btnGuardarComentario" type="button" style="background:#c0392b; color:#fff; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Guardar</button>
+                                                </div>
+                                            </div>
+                                        </div>
                 </div>
             </div>
         

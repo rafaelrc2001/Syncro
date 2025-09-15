@@ -28,6 +28,8 @@ router.post("/pt-confinados", async (req, res) => {
     tiempo_recuperacion_min,
     clase_espacio_confinado,
     observaciones_adicionales,
+    descripcion_trabajo,         // <-- NUEVO
+    nombre_solicitante,
   } = req.body;
 
   // Validar campos obligatorios mínimos (puedes ajustar según tus necesidades)
@@ -38,16 +40,17 @@ router.post("/pt-confinados", async (req, res) => {
     });
   }
 
-  try {
+   try {
     const result = await db.query(
       `INSERT INTO pt_confinados (
-				id_permiso, tipo_mantenimiento, ot_numero, tag, hora_inicio, equipo_intervenir,
-				avisos_trabajos, iluminacion_prueba_explosion, ventilacion_forzada, evaluacion_medica_aptos, cable_vida_trabajadores,
-				vigilancia_exterior, nombre_vigilante, personal_rescatista, nombre_rescatista, instalar_barreras, equipo_especial, tipo_equipo_especial,
-				numero_personas_autorizadas, tiempo_permanencia_min, tiempo_recuperacion_min, clase_espacio_confinado, observaciones_adicionales
-			) VALUES (
-				$1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23
-			) RETURNING *`,
+        id_permiso, tipo_mantenimiento, ot_numero, tag, hora_inicio, equipo_intervenir,
+        avisos_trabajos, iluminacion_prueba_explosion, ventilacion_forzada, evaluacion_medica_aptos, cable_vida_trabajadores,
+        vigilancia_exterior, nombre_vigilante, personal_rescatista, nombre_rescatista, instalar_barreras, equipo_especial, tipo_equipo_especial,
+        numero_personas_autorizadas, tiempo_permanencia_min, tiempo_recuperacion_min, clase_espacio_confinado, observaciones_adicionales,
+        descripcion_trabajo, nombre_solicitante      -- <-- NUEVO
+      ) VALUES (
+        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25
+      ) RETURNING *`,
       [
         id_permiso,
         tipo_mantenimiento,
@@ -72,6 +75,9 @@ router.post("/pt-confinados", async (req, res) => {
         tiempo_recuperacion_min || null,
         clase_espacio_confinado || null,
         observaciones_adicionales || null,
+        descripcion_trabajo || null,      // <-- NUEVO
+        nombre_solicitante || null        // <-- NUEVO
+    
       ]
     );
     res.status(201).json({

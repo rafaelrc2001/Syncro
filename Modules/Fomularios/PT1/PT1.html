@@ -7,8 +7,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="/CSS/EstiloFormularios.css">
-    <link rel="stylesheet" href="P-NPCSS.css">
    <!-- <link rel="stylesheet" href="/Modules/Fomularios/Generales/seccion2.css">-->
+       <link rel="stylesheet" href="P-NPCSS.css">
+
 </head>
 <body>
     <div class="app-container">
@@ -153,108 +154,99 @@
                 
 
                  
-                       <!-- Sección 2: Entrada a Espacios Confinados -->
+                <!-- Sección 2: Permiso No Peligroso -->
                 <section class="form-section" data-section="2">
                     <div class="form-container">
                         <div class="form-header">
+                            <div class="form-icon" style="background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);">
+                                <i class="ri-checkbox-circle-line"></i>
+                            </div>
                             <div>
-                                <h2>🔨 Permiso de Trabajo No Peligroso</h2>
+                                <h2>Permiso de Trabajo No Peligroso</h2>
                                 <p>Complete los detalles específicos del permiso</p>
                             </div>
                         </div>
 
-                <!-- SECCIÓN GRIS: Información General y Condiciones Actuales -->
-                        <div class="color-section gray-section">
-                            <!-- Información General -->
-                            <div class="form-section-title">
-                                <i class="ri-file-text-line"></i>
-                                <h3>Información General</h3>
+
+
+                        <div class="form-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label for="maintenance-type">Tipo de mantenimiento</label>
+                                    <div class="select-wrapper">
+                                        <select id="maintenance-type" name="maintenance-type" required>
+                                            <option value="" disabled selected>Seleccione un tipo</option>
+                                            <option value="PREDICTIVO">PREDICTIVO</option>
+                                            <option value="PREVENTIVO">PREVENTIVO</option>
+                                            <option value="CORRECTIVO">CORRECTIVO</option>
+                                            <option value="APOYO">APOYO</option>
+                                            <option value="OTRO">OTRO</option>
+                                        </select>
+                                        <i class="ri-arrow-down-s-line select-arrow"></i>
+                                    </div>
+                                    <!-- Campo de texto para "OTRO" (oculto inicialmente) -->
+                                    <div id="other-maintenance-container" class="form-group" style="display: none; margin-top: 0.5rem;">
+                                        <input type="text" id="other-maintenance" name="other-maintenance" class="compact" placeholder="Especifique...">
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-table">
-                                <!-- Tipo de mantenimiento -->
-                                <div class="form-table-row">
-                                    <div class="form-table-label">
-                                        <label for="maintenance-type">Tipo de mantenimiento</label>
-                                    </div>
-                                    <div class="form-table-options">
-                                        <div class="radio-group horizontal" id="maintenance-type-toggle">
-                                            <label class="radio-option">
-                                                <input type="radio" name="maintenance-type" value="PREDICTIVO">
-                                                <span class="radio-custom"></span>
-                                                PREDICTIVO
-                                            </label>
-                                            <label class="radio-option">
-                                                <input type="radio" name="maintenance-type" value="PREVENTIVO">
-                                                <span class="radio-custom"></span>
-                                                PREVENTIVO
-                                            </label>
-                                            <label class="radio-option">
-                                                <input type="radio" name="maintenance-type" value="CORRECTIVO">
-                                                <span class="radio-custom"></span>
-                                                CORRECTIVO
-                                            </label>
-                                            <label class="radio-option">
-                                                <input type="radio" name="maintenance-type" value="APOYO">
-                                                <span class="radio-custom"></span>
-                                                APOYO
-                                            </label>
-                                            <label class="radio-option other-option">
-                                                <input type="radio" name="maintenance-type" value="OTRO" id="other-maintenance-radio">
-                                                <span class="radio-custom"></span>
-                                                OTRO:
-                                                <input type="text" id="other-maintenance-type" class="other-input" disabled>
-                                            </label>
-                                        </div>
-                                    </div>
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label for="work-order">O.T. No.</label>
+                                    <input type="text" id="work-order" name="work-order" required class="compact">
                                 </div>
 
-                                <!-- O.T. No. -->
-                                <div class="form-table-row">
-                                    <div class="form-table-label">
-                                        <label for="work-order">O.T. No.</label>
-                                    </div>
-                                    <div class="form-table-options">
-                                        <input type="text" id="work-order" name="work-order" required>
-                                    </div>
-                                </div>
-
-                                <!-- TAG -->
-                                <div class="form-table-row">
-                                    <div class="form-table-label">
-                                        <label for="tag">TAG</label>
-                                    </div>
-                                    <div class="form-table-options">
-                                        <input type="text" id="tag" name="tag">
-                                    </div>
-                                </div>
-
-                                <!-- Hora de inicio -->
-                                <div class="form-table-row">
-                                    <div class="form-table-label">
-                                        <label for="start-time">Hora de inicio</label>
-                                    </div>
-                                    <div class="form-table-options">
-                                        <input type="time" id="start-time" name="start-time" required>
-                                    </div>
-                                </div>
-
-                                <!-- Equipo a Intervenir -->
-                                <div class="form-table-row status-indicator" data-required="true">
-                                    <div class="form-table-label">
-                                        <label for="equipment-description" class="required-field">Equipo a intervenir</label>
-                                        <div class="label-description">Describa el equipo que será intervenido</div>
-                                    </div>
-                                    <div class="form-table-options">
-                                        <input type="text" id="equipment-description" name="equipment-description" 
-                                            placeholder="Ej: Bomba centrífuga, Tanque de almacenamiento, Reactor químico..." 
-                                            required class="validable">
-                                    </div>
-                                    <div class="status-icon" data-status="pending"></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label for="start-time">Hora de inicio</label>
+                                    <input type="time" id="start-time" name="start-time" required class="compact">
                                 </div>
                             </div>
                         </div>
 
-                        
+                        <div class="form-section-title">
+                            <i class="ri-tools-line"></i>
+                            <h3>Equipo</h3>
+                        </div>
+                        <div class="form-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+                            <div class="form-group">
+                                <label>¿Tiene equipo a intervenir?</label>
+                                <div class="radio-group" id="equipment-toggle">
+                                    <label class="radio-option">
+                                        <input type="radio" name="has-equipment" value="si" checked>
+                                        <span class="radio-custom"></span>
+                                        Sí
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="has-equipment" value="no">
+                                        <span class="radio-custom"></span>
+                                        No
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label for="equipment">Equipo a Intervenir</label>
+                                    <input type="text" id="equipment" name="equipment" required class="compact">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label for="tag">TAG</label>
+                                    <input type="text" id="tag" name="tag" class="compact">
+                                </div>
+                            </div>
+                        </div>
+
+
+                    
+                       
+
+
+       
+
+                        </div>
                         <div class="form-actions">
                             <button type="button" class="btn secondary prev-step" data-prev="1">
                                 <i class="ri-arrow-left-line"></i> Anterior
@@ -263,7 +255,8 @@
                                 Siguiente <i class="ri-arrow-right-line"></i>
                             </button>
                         </div>
-                    </div>
+                    
+                        
                 </section>
 
 

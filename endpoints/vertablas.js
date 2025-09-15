@@ -15,9 +15,9 @@ router.get('/vertablas', async (req, res) => {
     pt.id_permiso,
     pt.prefijo,
     tp.nombre AS tipo_permiso,
-    COALESCE(ptnp.descripcion_trabajo, pta.descripcion_trabajo) AS descripcion,
+    COALESCE(ptnp.descripcion_trabajo, pta.descripcion_trabajo, ptc.descripcion_trabajo, ptf.descripcion_trabajo, pte.descripcion_trabajo, ptr.descripcion_trabajo) AS descripcion,
     a.nombre AS area,
-    COALESCE(ptnp.nombre_solicitante, pta.nombre_solicitante) AS solicitante,
+    COALESCE(ptnp.nombre_solicitante, pta.nombre_solicitante, ptc.nombre_solicitante, ptf.nombre_solicitante, pte.nombre_solicitante, ptr.nombre_solicitante) AS solicitante,
     pt.fecha_hora,
     e.estatus
 FROM permisos_trabajo pt
@@ -26,7 +26,11 @@ INNER JOIN areas a ON pt.id_area = a.id_area
 INNER JOIN estatus e ON pt.id_estatus = e.id_estatus
 LEFT JOIN pt_no_peligroso ptnp ON pt.id_permiso = ptnp.id_permiso
 LEFT JOIN pt_apertura pta ON pt.id_permiso = pta.id_permiso
-WHERE ptnp.id_permiso IS NOT NULL OR pta.id_permiso IS NOT NULL
+LEFT JOIN pt_confinados ptc ON pt.id_permiso = ptc.id_permiso
+LEFT JOIN pt_fuego ptf ON pt.id_permiso = ptf.id_permiso
+LEFT JOIN pt_electrico pte ON pt.id_permiso = pte.id_permiso
+LEFT JOIN pt_radiacion ptr ON pt.id_permiso = ptr.id_permiso
+WHERE ptnp.id_permiso IS NOT NULL OR pta.id_permiso IS NOT NULL OR ptc.id_permiso IS NOT NULL OR ptf.id_permiso IS NOT NULL OR pte.id_permiso IS NOT NULL OR ptr.id_permiso IS NOT NULL
 ORDER BY pt.fecha_hora DESC;
         `);
         res.json(result.rows);
@@ -44,9 +48,9 @@ router.get('/vertablas/:id_departamento', async (req, res) => {
     pt.id_permiso,
     pt.prefijo,
     tp.nombre AS tipo_permiso,
-    COALESCE(ptnp.descripcion_trabajo, pta.descripcion_trabajo) AS descripcion,
+    COALESCE(ptnp.descripcion_trabajo, pta.descripcion_trabajo, ptc.descripcion_trabajo, ptf.descripcion_trabajo, pte.descripcion_trabajo, ptr.descripcion_trabajo) AS descripcion,
     a.nombre AS area,
-    COALESCE(ptnp.nombre_solicitante, pta.nombre_solicitante) AS solicitante,
+    COALESCE(ptnp.nombre_solicitante, pta.nombre_solicitante, ptc.nombre_solicitante, ptf.nombre_solicitante, pte.nombre_solicitante, ptr.nombre_solicitante) AS solicitante,
     pt.fecha_hora,
     e.estatus
 FROM permisos_trabajo pt
@@ -55,8 +59,12 @@ INNER JOIN areas a ON pt.id_area = a.id_area
 INNER JOIN estatus e ON pt.id_estatus = e.id_estatus
 LEFT JOIN pt_no_peligroso ptnp ON pt.id_permiso = ptnp.id_permiso
 LEFT JOIN pt_apertura pta ON pt.id_permiso = pta.id_permiso
+LEFT JOIN pt_confinados ptc ON pt.id_permiso = ptc.id_permiso
+LEFT JOIN pt_fuego ptf ON pt.id_permiso = ptf.id_permiso
+LEFT JOIN pt_electrico pte ON pt.id_permiso = pte.id_permiso
+LEFT JOIN pt_radiacion ptr ON pt.id_permiso = ptr.id_permiso
 WHERE pt.id_departamento = $1
-  AND (ptnp.id_permiso IS NOT NULL OR pta.id_permiso IS NOT NULL)
+  AND (ptnp.id_permiso IS NOT NULL OR pta.id_permiso IS NOT NULL OR ptc.id_permiso IS NOT NULL OR ptf.id_permiso IS NOT NULL OR pte.id_permiso IS NOT NULL OR ptr.id_permiso IS NOT NULL)
 ORDER BY pt.fecha_hora DESC;
         `, [id_departamento]);
         res.json(result.rows);
@@ -74,9 +82,9 @@ SELECT
     pt.id_permiso,
     pt.prefijo,
     tp.nombre AS tipo_permiso,
-    COALESCE(ptnp.descripcion_trabajo, pta.descripcion_trabajo) AS descripcion,
+    COALESCE(ptnp.descripcion_trabajo, pta.descripcion_trabajo, ptc.descripcion_trabajo, ptf.descripcion_trabajo, pte.descripcion_trabajo, ptr.descripcion_trabajo) AS descripcion,
     a.nombre AS area,
-    COALESCE(ptnp.nombre_solicitante, pta.nombre_solicitante) AS solicitante,
+    COALESCE(ptnp.nombre_solicitante, pta.nombre_solicitante, ptc.nombre_solicitante, ptf.nombre_solicitante, pte.nombre_solicitante, ptr.nombre_solicitante) AS solicitante,
     pt.fecha_hora,
     e.estatus
 FROM permisos_trabajo pt
@@ -85,8 +93,12 @@ INNER JOIN areas a ON pt.id_area = a.id_area
 INNER JOIN estatus e ON pt.id_estatus = e.id_estatus
 LEFT JOIN pt_no_peligroso ptnp ON pt.id_permiso = ptnp.id_permiso
 LEFT JOIN pt_apertura pta ON pt.id_permiso = pta.id_permiso
+LEFT JOIN pt_confinados ptc ON pt.id_permiso = ptc.id_permiso
+LEFT JOIN pt_fuego ptf ON pt.id_permiso = ptf.id_permiso
+LEFT JOIN pt_electrico pte ON pt.id_permiso = pte.id_permiso
+LEFT JOIN pt_radiacion ptr ON pt.id_permiso = ptr.id_permiso
 WHERE pt.id_departamento = $1
-  AND (ptnp.id_permiso IS NOT NULL OR pta.id_permiso IS NOT NULL)
+  AND (ptnp.id_permiso IS NOT NULL OR pta.id_permiso IS NOT NULL OR ptc.id_permiso IS NOT NULL OR ptf.id_permiso IS NOT NULL OR pte.id_permiso IS NOT NULL OR ptr.id_permiso IS NOT NULL)
 ORDER BY pt.fecha_hora DESC;
     `, [id_departamento]);
         return result.rows;
@@ -104,9 +116,9 @@ router.get('/autorizar/:id_departamento', async (req, res) => {
     pt.id_permiso,
     pt.prefijo,
     tp.nombre AS tipo_permiso,
-    COALESCE(ptnp.descripcion_trabajo, pta.descripcion_trabajo) AS descripcion,
+    COALESCE(ptnp.descripcion_trabajo, pta.descripcion_trabajo, ptc.descripcion_trabajo, ptf.descripcion_trabajo, pte.descripcion_trabajo, ptr.descripcion_trabajo) AS descripcion,
     a.nombre AS area,
-    COALESCE(ptnp.nombre_solicitante, pta.nombre_solicitante) AS solicitante,
+    COALESCE(ptnp.nombre_solicitante, pta.nombre_solicitante, ptc.nombre_solicitante, ptf.nombre_solicitante, pte.nombre_solicitante, ptr.nombre_solicitante) AS solicitante,
     pt.fecha_hora,
     e.estatus
 FROM permisos_trabajo pt
@@ -115,8 +127,12 @@ INNER JOIN areas a ON pt.id_area = a.id_area
 INNER JOIN estatus e ON pt.id_estatus = e.id_estatus
 LEFT JOIN pt_no_peligroso ptnp ON pt.id_permiso = ptnp.id_permiso
 LEFT JOIN pt_apertura pta ON pt.id_permiso = pta.id_permiso
+LEFT JOIN pt_confinados ptc ON pt.id_permiso = ptc.id_permiso
+LEFT JOIN pt_fuego ptf ON pt.id_permiso = ptf.id_permiso
+LEFT JOIN pt_electrico pte ON pt.id_permiso = pte.id_permiso
+LEFT JOIN pt_radiacion ptr ON pt.id_permiso = ptr.id_permiso
 WHERE a.id_departamento = $1
-  AND (ptnp.id_permiso IS NOT NULL OR pta.id_permiso IS NOT NULL)
+  AND (ptnp.id_permiso IS NOT NULL OR pta.id_permiso IS NOT NULL OR ptc.id_permiso IS NOT NULL OR ptf.id_permiso IS NOT NULL OR pte.id_permiso IS NOT NULL OR ptr.id_permiso IS NOT NULL)
 ORDER BY pt.fecha_hora DESC;
         `, [id_departamento]);
         res.json(result.rows);
@@ -139,9 +155,9 @@ router.get('/autorizar-jefe', async (req, res) => {
     pt.id_permiso,
     pt.prefijo,
     tp.nombre AS tipo_permiso,
-    COALESCE(ptnp.descripcion_trabajo, pta.descripcion_trabajo) AS descripcion,
+    COALESCE(ptnp.descripcion_trabajo, pta.descripcion_trabajo, ptc.descripcion_trabajo, ptf.descripcion_trabajo, pte.descripcion_trabajo, ptr.descripcion_trabajo) AS descripcion,
     a.nombre AS area,
-    COALESCE(ptnp.nombre_solicitante, pta.nombre_solicitante) AS solicitante,
+    COALESCE(ptnp.nombre_solicitante, pta.nombre_solicitante, ptc.nombre_solicitante, ptf.nombre_solicitante, pte.nombre_solicitante, ptr.nombre_solicitante) AS solicitante,
     pt.fecha_hora,
     e.estatus
 FROM permisos_trabajo pt
@@ -150,7 +166,11 @@ INNER JOIN areas a ON pt.id_area = a.id_area
 INNER JOIN estatus e ON pt.id_estatus = e.id_estatus
 LEFT JOIN pt_no_peligroso ptnp ON pt.id_permiso = ptnp.id_permiso
 LEFT JOIN pt_apertura pta ON pt.id_permiso = pta.id_permiso
-WHERE ptnp.id_permiso IS NOT NULL OR pta.id_permiso IS NOT NULL
+LEFT JOIN pt_confinados ptc ON pt.id_permiso = ptc.id_permiso
+LEFT JOIN pt_fuego ptf ON pt.id_permiso = ptf.id_permiso
+LEFT JOIN pt_electrico pte ON pt.id_permiso = pte.id_permiso
+LEFT JOIN pt_radiacion ptr ON pt.id_permiso = ptr.id_permiso
+WHERE ptnp.id_permiso IS NOT NULL OR pta.id_permiso IS NOT NULL OR ptc.id_permiso IS NOT NULL OR ptf.id_permiso IS NOT NULL OR pte.id_permiso IS NOT NULL OR ptr.id_permiso IS NOT NULL
 ORDER BY pt.fecha_hora DESC;
         `);
         res.json(result.rows);

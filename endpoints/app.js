@@ -18,6 +18,9 @@ const verformulariosRouter = require("./loginconsulta");
 const autorizacionesEstatusRouter = require("./autorizaciones_estatus");
 const formulariosRouter = require("./formularios");
 const formularioConfinadosRouter = require("./formulariospt3-10/formulario_confinados");
+const formularioFuegoRouter = require("./formulariospt3-10/formulario_fuego"); // <--- AGREGA ESTA LÍNEA
+const formularioElectricoRouter = require("./formulariospt3-10/formulario_electrico"); // <--- AGREGA ESTA LÍNEA
+const formularioRadiacionRouter = require("./formulariospt3-10/formulario_radiactivas"); // <--- AGREGA ESTA LÍNEA
 
 const loginconsultaRouter = require("./loginconsulta");
 
@@ -51,6 +54,9 @@ app.use("/api", verformulariosRouter); // Monta las rutas de verformularios.js b
 app.use("/api", autorizacionesEstatusRouter); // Monta las rutas de autorizaciones_estatus.js bajo el prefijo /api
 app.use("/api", formulariosRouter); // Monta las rutas de formularios.js bajo el prefijo /api
 app.use("/api", formularioConfinadosRouter); // Monta las rutas de formulario_confinados.js bajo el prefijo /api
+app.use("/api", formularioFuegoRouter); // <--- Y ESTA LÍNEA
+app.use("/api", formularioElectricoRouter); // <--- Y ESTA LÍNEA
+app.use("/api", formularioRadiacionRouter); // <--- Y ESTA LÍNEA
 
 // ================= RUTAS DE TABLAS BASE =================
 const tablasBase = require("./tablasbase");

@@ -388,7 +388,6 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("work-description")?.value || null;
           let tipo_mantenimiento =
             document.getElementById("maintenance-type")?.value || null;
-          // Si el tipo es OTRO, tomar el valor del input adicional
           if (tipo_mantenimiento === "OTRO") {
             const otroInput = document.getElementById("other-maintenance");
             if (otroInput && otroInput.value.trim()) {
@@ -409,80 +408,43 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("temperature")?.value || null;
           const empresa = document.getElementById("company")?.value || null;
 
-          // Mostrar en consola los valores que se van a enviar
-          console.log("[DEBUG] Datos a enviar PT No Peligroso:", {
+          // CREA el objeto una sola vez
+          const datosNoPeligroso = {
             id_permiso,
-            nombre_solicitante,
-            descripcion_trabajo,
-            tipo_mantenimiento,
-            ot_no,
-            equipo_intervencion,
-            hora_inicio,
-            tag,
-            fluido,
-            presion,
-            temperatura,
-            empresa,
-            // Nuevos campos
+            nombre_solicitante: nombre_solicitante || "",
+            descripcion_trabajo: descripcion_trabajo || "",
+            tipo_mantenimiento: tipo_mantenimiento || "",
+            ot_no: ot_no || "",
+            equipo_intervencion: equipo_intervencion || "",
+            hora_inicio: hora_inicio || "",
+            tag: tag || "",
+            fluido: fluido || "",
+            presion: presion || "",
+            temperatura: temperatura || "",
+            empresa: empresa || "",
             trabajo_area_riesgo_controlado:
-              document.querySelector('input[name="risk-area"]:checked')
-                ?.value || null,
+              document.querySelector('input[name="risk-area"]:checked')?.value || "",
             necesita_entrega_fisica:
-              document.querySelector('input[name="physical-delivery"]:checked')
-                ?.value || null,
+              document.querySelector('input[name="physical-delivery"]:checked')?.value || "",
             necesita_ppe_adicional:
-              document.querySelector('input[name="additional-ppe"]:checked')
-                ?.value || null,
+              document.querySelector('input[name="additional-ppe"]:checked')?.value || "",
             area_circundante_riesgo:
-              document.querySelector('input[name="surrounding-risk"]:checked')
-                ?.value || null,
+              document.querySelector('input[name="surrounding-risk"]:checked')?.value || "",
             necesita_supervision:
-              document.querySelector('input[name="supervision-needed"]:checked')
-                ?.value || null,
+              document.querySelector('input[name="supervision-needed"]:checked')?.value || "",
             observaciones_analisis_previo:
-              document.getElementById("pre-work-observations")?.value || null,
-          });
+              document.getElementById("pre-work-observations")?.value || "",
+          };
+
+          // Ahora sí puedes imprimir el objeto y enviarlo
+          console.log("[DEBUG] Datos a enviar PT No Peligroso:", datosNoPeligroso);
 
           const ptResponse = await fetch(
             "http://localhost:3000/api/pt-no-peligroso",
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                id_permiso,
-                nombre_solicitante,
-                descripcion_trabajo,
-                tipo_mantenimiento,
-                ot_no,
-                equipo_intervencion,
-                hora_inicio,
-                tag,
-                fluido,
-                presion,
-                temperatura,
-                empresa,
-                trabajo_area_riesgo_controlado:
-                  document.querySelector('input[name="risk-area"]:checked')
-                    ?.value || null,
-                necesita_entrega_fisica:
-                  document.querySelector(
-                    'input[name="physical-delivery"]:checked'
-                  )?.value || null,
-                necesita_ppe_adicional:
-                  document.querySelector('input[name="additional-ppe"]:checked')
-                    ?.value || null,
-                area_circundante_riesgo:
-                  document.querySelector(
-                    'input[name="surrounding-risk"]:checked'
-                  )?.value || null,
-                necesita_supervision:
-                  document.querySelector(
-                    'input[name="supervision-needed"]:checked'
-                  )?.value || null,
-                observaciones_analisis_previo:
-                  document.getElementById("pre-work-observations")?.value ||
-                  null,
-              }),
+              body: JSON.stringify(datosNoPeligroso),
             }
           );
           const ptResult = await ptResponse.json();
@@ -698,14 +660,385 @@ document.addEventListener("DOMContentLoaded", () => {
           // ==============================
         } else if (tipoFormulario === 3) {
           // Lógica para formulario 3
+            // ==============================
+  // INICIO BLOQUE: Insertar PT Entrada a Espacios Confinados
+  // ==============================
+
+  // Información general
+  const tipo_mantenimiento =
+    document.querySelector('input[name="maintenance-type"]:checked')?.value || "";
+  const otro_tipo_mantenimiento =
+    document.getElementById("other-maintenance-type")?.value || "";
+  const ot_numero = document.getElementById("work-order")?.value || "";
+  const tag = document.getElementById("tag")?.value || "";
+  const hora = document.getElementById("start-time")?.value || "";
+  const fecha = document.getElementById("permit-date")?.value || "";
+  const hora_inicio = `${fecha} ${hora}`;
+  const descripcion_equipo =
+    document.getElementById("equipment-description")?.value || "";
+
+  // Medidas/Requisitos para administrar los riesgos
+  const warning_signs =
+    document.querySelector('input[name="warning-signs"]:checked')?.value || "";
+  const explosion_proof_lighting =
+    document.querySelector('input[name="explosion-proof-lighting"]:checked')?.value || "";
+  const forced_ventilation =
+    document.querySelector('input[name="forced-ventilation"]:checked')?.value || "";
+  const medical_evaluation =
+    document.querySelector('input[name="medical-evaluation"]:checked')?.value || "";
+  const lifeline =
+    document.querySelector('input[name="lifeline"]:checked')?.value || "";
+  const external_watch =
+    document.querySelector('input[name="external-watch"]:checked')?.value || "";
+  const external_watch_name =
+    document.querySelector('input[name="external-watch-name"]')?.value || "";
+  const rescue_personnel =
+    document.querySelector('input[name="rescue-personnel"]:checked')?.value || "";
+  const rescue_personnel_name =
+    document.querySelector('input[name="rescue-personnel-name"]')?.value || "";
+  const barriers =
+    document.querySelector('input[name="barriers"]:checked')?.value || "";
+  const special_equipment =
+    document.querySelector('input[name="special-equipment"]:checked')?.value || "";
+  const special_equipment_type =
+    document.querySelector('input[name="special-equipment-type"]')?.value || "";
+
+  // Datos compactos
+  const authorized_personnel =
+    document.getElementById("authorized-personnel")?.value || "";
+  const stay_time =
+    document.getElementById("stay-time")?.value || "";
+  const recovery_time =
+    document.getElementById("recovery-time")?.value || "";
+  const confined_space_type =
+    document.getElementById("confined-space-type")?.value || "";
+
+  // Observaciones
+  const observations =
+    document.getElementById("observations")?.value || "";
+
+  // Puedes agregar aquí los campos generales si los necesitas
+  const empresa = document.getElementById("company")?.value || "";
+  const nombre_solicitante = document.getElementById("applicant")?.value || "";
+  const descripcion_trabajo = document.getElementById("work-description")?.value || "";
+
+  // Construir el objeto de datos para enviar
+  
+    // ...existing code...
+const datosEspacioConfinado = {
+  id_permiso,
+  tipo_mantenimiento,
+  ot_numero,
+  tag,
+  hora_inicio,
+  equipo_intervenir: descripcion_equipo,
+  avisos_trabajos: warning_signs,
+  iluminacion_prueba_explosion: explosion_proof_lighting,
+  ventilacion_forzada: forced_ventilation,
+  evaluacion_medica_aptos: medical_evaluation,
+  cable_vida_trabajadores: lifeline,
+  vigilancia_exterior: external_watch,
+  nombre_vigilante: external_watch_name,
+  personal_rescatista: rescue_personnel,
+  nombre_rescatista: rescue_personnel_name,
+  instalar_barreras: barriers,
+  equipo_especial: special_equipment,
+  tipo_equipo_especial: special_equipment_type,
+  numero_personas_autorizadas: authorized_personnel,
+  tiempo_permanencia_min: stay_time,
+  tiempo_recuperacion_min: recovery_time,
+  clase_espacio_confinado: confined_space_type,
+  observaciones_adicionales: observations,
+   descripcion_trabajo,
+  nombre_solicitante,
+  // Si necesitas enviar empresa, nombre_solicitante, descripcion_trabajo, agrégalos aquí
+};
+// ...existing code...
+
+  // Imprimir en consola lo que se enviará
+  console.log("[DEBUG] Datos a enviar PT Espacios Confinados:", datosEspacioConfinado);
+
+  // Enviar los datos al backend (ajusta la URL según tu endpoint real)
+
+  // ...existing code...
+const espacioConfinadoResponse = await fetch(
+  "http://localhost:3000/api/pt-confinados", // <-- CORRIGE AQUÍ
+  {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(datosEspacioConfinado),
+  }
+);
+// ...existing code...
+  const espacioConfinadoResult = await espacioConfinadoResponse.json();
+  if (!espacioConfinadoResponse.ok || !espacioConfinadoResult.success)
+    throw new Error(
+      espacioConfinadoResult.error || "Error al guardar PT Espacios Confinados"
+    );
+
+  // ==============================
+  // FIN BLOQUE: Insertar PT Entrada a Espacios Confinados
+  // ==============================
         } else if (tipoFormulario === 4) {
           // Lógica para formulario 4
         } else if (tipoFormulario === 5) {
-          // Lógica para formulario 5
+         
+
+
+    // ==============================
+  // INICIO BLOQUE: Insertar PT Fuego Abierto
+  // ==============================
+
+  // Información general
+  const tipo_mantenimiento =
+    document.querySelector('input[name="maintenance-type"]:checked')?.value || "";
+  const tipo_mantenimiento_otro =
+    document.getElementById("other-maintenance-type")?.value || "";
+  const ot_numero = document.getElementById("work-order")?.value || "";
+  const tag = document.getElementById("tag")?.value || "";
+  const hora = document.getElementById("start-time")?.value || "";
+  const fecha = document.getElementById("permit-date")?.value || "";
+  const hora_inicio = hora || null; // En tu tabla es TIME, no TIMESTAMP
+  const equipo_intervenir =
+    document.getElementById("equipment-description")?.value || "";
+  const empresa = document.getElementById("company")?.value || "";
+  const descripcion_trabajo = document.getElementById("work-description")?.value || "";
+const nombre_solicitante = document.getElementById("applicant")?.value || "";
+
+  // Construir el objeto de datos para enviar
+  const datosFuegoAbierto = {
+    id_permiso,
+    tipo_mantenimiento,
+    tipo_mantenimiento_otro,
+    ot_numero,
+    tag,
+    hora_inicio,
+    equipo_intervenir,
+    empresa,
+    descripcion_trabajo,
+    nombre_solicitante, // <-- NUEVO
+  };
+
+  // Imprimir en consola lo que se enviará
+  console.log("[DEBUG] Datos a enviar PT Fuego Abierto:", datosFuegoAbierto);
+
+  // Enviar los datos al backend (ajusta la URL según tu endpoint real)
+  const fuegoAbiertoResponse = await fetch(
+    "http://localhost:3000/api/pt-fuego",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(datosFuegoAbierto),
+    }
+  );
+  const fuegoAbiertoResult = await fuegoAbiertoResponse.json();
+  if (!fuegoAbiertoResponse.ok || !fuegoAbiertoResult.success)
+    throw new Error(
+      fuegoAbiertoResult.error || "Error al guardar PT Fuego Abierto"
+    );
+
+  // ==============================
+  // FIN BLOQUE: Insertar PT Fuego Abierto
+  // ==============================
+
         } else if (tipoFormulario === 6) {
-          // Lógica para formulario 6
+         
+
+
+            // ==============================
+  // INICIO BLOQUE: Insertar PT Energía Eléctrica
+  // ==============================
+
+  // Información general
+  const tipo_mantenimiento =
+    document.querySelector('input[name="maintenance-type"]:checked')?.value || "";
+  const tipo_mantenimiento_otro =
+    document.getElementById("other-maintenance-type")?.value || "";
+  const ot_numero = document.getElementById("work-order")?.value || "";
+  const tag = document.getElementById("tag")?.value || "";
+  const hora = document.getElementById("start-time")?.value || "";
+  const fecha = document.getElementById("permit-date")?.value || "";
+  const hora_inicio = hora || null; // Solo la hora, tu tabla es TIME
+  const equipo_intervenir =
+    document.getElementById("equipment-description")?.value || "";
+  const empresa = document.getElementById("company")?.value || "";
+  const descripcion_trabajo = document.getElementById("work-description")?.value || "";
+  const nombre_solicitante = document.getElementById("applicant")?.value || "";
+
+  // Medidas/Requisitos para administrar los riesgos
+  const equipo_desenergizado =
+    document.querySelector('input[name="barriers"]:checked')?.value || "";
+  const interruptores_abiertos =
+    document.querySelectorAll('input[name="lifeline"]:checked')[0]?.value || "";
+  const verificar_ausencia_voltaje =
+    document.querySelectorAll('input[name="lifeline"]:checked')[1]?.value || "";
+  const candados_equipo =
+    document.querySelectorAll('input[name="barriers"]:checked')[1]?.value || "";
+  const tarjetas_alerta =
+    document.querySelectorAll('input[name="barriers"]:checked')[2]?.value || "";
+  const aviso_personal_area =
+    document.querySelectorAll('input[name="lifeline"]:checked')[2]?.value || "";
+  const tapetes_dielectricos =
+    document.querySelectorAll('input[name="lifeline"]:checked')[3]?.value || "";
+  const herramienta_aislante =
+    document.querySelectorAll('input[name="lifeline"]:checked')[4]?.value || "";
+  const pertiga_telescopica =
+    document.querySelectorAll('input[name="lifeline"]:checked')[5]?.value || "";
+  const equipo_proteccion_especial =
+    document.querySelector('input[name="special-equipment"]:checked')?.value || "";
+  const tipo_equipo_proteccion =
+    document.querySelector('input[name="special-equipment-type"]')?.value || "";
+  const aterrizar_equipo =
+    document.querySelectorAll('input[name="lifeline"]:checked')[6]?.value || "";
+  const barricadas_area =
+    document.querySelector('input[name="barricades"]:checked')?.value || "";
+  const observaciones_adicionales =
+    document.getElementById("observations")?.value || "";
+
+  // Construir el objeto de datos para enviar
+  const datosEnergiaElectrica = {
+    id_permiso,
+    tipo_mantenimiento,
+    tipo_mantenimiento_otro,
+    ot_numero,
+    tag,
+    hora_inicio,
+    equipo_intervenir,
+    empresa,
+    descripcion_trabajo,
+    nombre_solicitante,
+    equipo_desenergizado,
+    interruptores_abiertos,
+    verificar_ausencia_voltaje,
+    candados_equipo,
+    tarjetas_alerta,
+    aviso_personal_area,
+    tapetes_dielectricos,
+    herramienta_aislante,
+    pertiga_telescopica,
+    equipo_proteccion_especial,
+    tipo_equipo_proteccion,
+    aterrizar_equipo,
+    barricadas_area,
+    observaciones_adicionales
+  };
+
+  // Imprimir en consola lo que se enviará
+  console.log("[DEBUG] Datos a enviar PT Energía Eléctrica:", datosEnergiaElectrica);
+
+  // Enviar los datos al backend
+  const energiaElectricaResponse = await fetch(
+    "http://localhost:3000/api/pt-electrico",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(datosEnergiaElectrica),
+    }
+  );
+  const energiaElectricaResult = await energiaElectricaResponse.json();
+  if (!energiaElectricaResponse.ok || !energiaElectricaResult.success)
+    throw new Error(
+      energiaElectricaResult.error || "Error al guardar PT Energía Eléctrica"
+    );
+
+  // ==============================
+  // FIN BLOQUE: Insertar PT Energía Eléctrica
+  // ==============================
+
+
         } else if (tipoFormulario === 7) {
-          // Lógica para formulario 7
+        
+            // ==============================
+  // INICIO BLOQUE: Insertar PT Fuentes Radioactivas
+  // ==============================
+
+  // Información general
+  const tipo_mantenimiento =
+    document.querySelector('input[name="maintenance-type"]:checked')?.value || "";
+  const tipo_mantenimiento_otro =
+    document.getElementById("other-maintenance-type")?.value || "";
+  const ot_numero = document.getElementById("work-order")?.value || "";
+  const tag = document.getElementById("tag")?.value || "";
+  const hora = document.getElementById("start-time")?.value || "";
+  const fecha = document.getElementById("permit-date")?.value || "";
+  const hora_inicio = hora || null; // Solo la hora, tu tabla es TIME
+  const equipo_intervenir =
+    document.getElementById("equipment-description")?.value || "";
+  const empresa = document.getElementById("company")?.value || "";
+  const descripcion_trabajo = document.getElementById("work-description")?.value || "";
+  const nombre_solicitante = document.getElementById("applicant")?.value || "";
+
+  // Campos específicos para fuentes radioactivas
+  const tipo_fuente_radiactiva = document.getElementById("tipo-fuente-radiactiva")?.value || "";
+  const actividad_radiactiva = document.getElementById("actividad-radiactiva")?.value || "";
+  const numero_serial_fuente = document.getElementById("numero-serial-fuente")?.value || "";
+  const distancia_trabajo = document.getElementById("distancia-trabajo")?.value || "";
+  const tiempo_exposicion = document.getElementById("tiempo-exposicion")?.value || "";
+  const dosis_estimada = document.getElementById("dosis-estimada")?.value || "";
+
+  // Medidas de protección radiológica
+  const equipo_proteccion_radiologica = document.querySelector('input[name="equipo-proteccion-radiologica"]:checked')?.value || "";
+  const dosimetros_personales = document.querySelector('input[name="dosimetros-personales"]:checked')?.value || "";
+  const monitores_radiacion_area = document.querySelector('input[name="monitores-radiacion-area"]:checked')?.value || "";
+  const senalizacion_area = document.querySelector('input[name="senalizacion-area"]:checked')?.value || "";
+  const barricadas = document.querySelector('input[name="barricadas"]:checked')?.value || "";
+  const protocolo_emergencia = document.querySelector('input[name="protocolo-emergencia"]:checked')?.value || "";
+  const personal_autorizado = document.querySelector('input[name="personal-autorizado"]:checked')?.value || "";
+
+  // Información adicional
+  const observaciones_radiacion = document.getElementById("observaciones-radiacion")?.value || "";
+
+  // Construir el objeto de datos para enviar
+  const datosFuentesRadioactivas = {
+    id_permiso,
+    tipo_mantenimiento,
+    tipo_mantenimiento_otro,
+    ot_numero,
+    tag,
+    hora_inicio,
+    equipo_intervenir,
+    empresa,
+    descripcion_trabajo,
+    nombre_solicitante,
+    tipo_fuente_radiactiva,
+    actividad_radiactiva,
+    numero_serial_fuente,
+    distancia_trabajo,
+    tiempo_exposicion,
+    dosis_estimada,
+    equipo_proteccion_radiologica,
+    dosimetros_personales,
+    monitores_radiacion_area,
+    senalizacion_area,
+    barricadas,
+    protocolo_emergencia,
+    personal_autorizado,
+    observaciones_radiacion
+  };
+
+  // Imprimir en consola lo que se enviará
+  console.log("[DEBUG] Datos a enviar PT Fuentes Radioactivas:", datosFuentesRadioactivas);
+
+  // Enviar los datos al backend
+  const fuentesRadioactivasResponse = await fetch(
+    "http://localhost:3000/api/pt-radiacion",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(datosFuentesRadioactivas),
+    }
+  );
+  const fuentesRadioactivasResult = await fuentesRadioactivasResponse.json();
+  if (!fuentesRadioactivasResponse.ok || !fuentesRadioactivasResult.success)
+    throw new Error(
+      fuentesRadioactivasResult.error || "Error al guardar PT Fuentes Radioactivas"
+    );
+
+  // ==============================
+  // FIN BLOQUE: Insertar PT Fuentes Radioactivas
+  // ==============================
+
+  
         } else if (tipoFormulario === 8) {
           // Lógica para formulario 8
         } else if (tipoFormulario === 9) {

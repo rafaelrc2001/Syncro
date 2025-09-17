@@ -807,7 +807,129 @@ document.addEventListener("DOMContentLoaded", () => {
           // FIN BLOQUE: Insertar PT Entrada a Espacios Confinados
           // ==============================
         } else if (tipoFormulario === 4) {
-          // Lógica para formulario 4
+          // ==============================
+          // INICIO BLOQUE: Insertar PT Altura
+          // ==============================
+          // Recabar datos de la sección 4 (Permiso de Trabajo en Altura)
+          const tipo_mantenimiento =
+            document.querySelector('input[name="maintenance-type"]:checked')
+              ?.value || "";
+          const ot_numero = document.getElementById("work-order")?.value || "";
+          const tag = document.getElementById("tag")?.value || "";
+          const hora = document.getElementById("start-time")?.value || "";
+          const fecha = document.getElementById("permit-date")?.value || "";
+          const hora_inicio = fecha ? `${fecha} ${hora}` : hora;
+          const equipo_intervenir =
+            document.getElementById("equipment-description")?.value || "";
+          const descripcion_trabajo =
+            document.getElementById("work-description")?.value || "";
+          const nombre_solicitante =
+            document.getElementById("applicant")?.value || "";
+          const empresa = document.getElementById("company")?.value || "";
+
+          // Medidas/Requisitos para Administrar los Riesgos
+          const requiere_escalera =
+            document.querySelector('input[name="warning-signs"]:checked')
+              ?.value || "";
+          const requiere_canastilla_grua =
+            document.querySelector(
+              'input[name="explosion-proof-lighting"]:checked'
+            )?.value || "";
+          const aseguramiento_estrobo =
+            document.querySelector('input[name="forced-ventilation"]:checked')
+              ?.value || "";
+          const requiere_andamio_cama_completa =
+            document.querySelector('input[name="medical-evaluation"]:checked')
+              ?.value || "";
+          const otro_tipo_acceso =
+            document.querySelector('input[name="lifeline"]:checked')?.value ||
+            "";
+
+          // Medidas para administrar los riesgos
+          const acceso_libre_obstaculos =
+            document.querySelector('input[name="barriers"]:checked')?.value ||
+            "";
+          const canastilla_asegurada =
+            document.querySelector('input[name="lifeline2"]:checked')?.value ||
+            "";
+          const andamio_completo =
+            document.querySelector('input[name="lifeline3"]:checked')?.value ||
+            "";
+          const andamio_seguros_zapatas =
+            document.querySelector('input[name="barriers2"]:checked')?.value ||
+            "";
+          const escaleras_buen_estado =
+            document.querySelector('input[name="barriers3"]:checked')?.value ||
+            "";
+          const linea_vida_segura =
+            document.querySelector('input[name="lifeline4"]:checked')?.value ||
+            "";
+          const arnes_completo_buen_estado =
+            document.querySelector('input[name="lifeline5"]:checked')?.value ||
+            "";
+          const suspender_trabajos_adyacentes =
+            document.querySelector('input[name="lifeline6"]:checked')?.value ||
+            "";
+          const numero_personas_autorizadas =
+            document.querySelector('input[name="lifeline7"]:checked')?.value ||
+            "";
+          const trabajadores_aptos_evaluacion =
+            document.querySelector('input[name="lifeline8"]:checked')?.value ||
+            "";
+          const requiere_barreras =
+            document.querySelector('input[name="lifeline9"]:checked')?.value ||
+            "";
+          const observaciones =
+            document.getElementById("observations")?.value || "";
+
+          // Construir el objeto de datos para enviar
+          const datosAltura = {
+            id_permiso,
+            tipo_mantenimiento,
+            ot_numero,
+            tag,
+            hora_inicio,
+            equipo_intervenir,
+            descripcion_trabajo,
+            nombre_solicitante,
+            empresa,
+            requiere_escalera,
+            requiere_canastilla_grua,
+            aseguramiento_estrobo,
+            requiere_andamio_cama_completa,
+            otro_tipo_acceso,
+            acceso_libre_obstaculos,
+            canastilla_asegurada,
+            andamio_completo,
+            andamio_seguros_zapatas,
+            escaleras_buen_estado,
+            linea_vida_segura,
+            arnes_completo_buen_estado,
+            suspender_trabajos_adyacentes,
+            numero_personas_autorizadas,
+            trabajadores_aptos_evaluacion,
+            requiere_barreras,
+            observaciones,
+          };
+
+          // Imprimir en consola lo que se enviará
+          console.log("[DEBUG] Datos a enviar PT Altura:", datosAltura);
+
+          // Enviar los datos al backend
+          const alturaResponse = await fetch(
+            "http://localhost:3000/api/pt_altura",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(datosAltura),
+            }
+          );
+          const alturaResult = await alturaResponse.json();
+          if (!alturaResponse.ok || !alturaResult.success)
+            throw new Error(alturaResult.error || "Error al guardar PT Altura");
+          // ==============================
+          // FIN BLOQUE: Insertar PT Altura
+          // ==============================
         } else if (tipoFormulario === 5) {
           // ==============================
           // INICIO BLOQUE: Insertar PT Fuego Abierto

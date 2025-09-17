@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Permiso Apertura Equipo Línea</title>
+    <title>Permiso Fuentes</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
         <link rel="stylesheet" href="/CSS/EstiloGeneral.css" />
@@ -24,6 +24,10 @@
                     <h3>Datos generales</h3>
                 </div>
                 <div class="executive-grid">
+                    <div class="executive-item">
+                        <label>Descripción del trabajo</label>
+                        <p id="descripcion-trabajo-label">-</p>
+                    </div>
                     <div class="executive-item">
                         <label>Tipo de mantenimiento</label>
                         <p id="maintenance-type-label" class="highlight"></p>
@@ -46,34 +50,11 @@
                     </div>
                 </div>
             </div>
-            <div class="executive-section">
-                <div class="section-header">
-                    <i class="ri-checkbox-multiple-line"></i>
-                    <h3>Medidas para administrar los riesgos</h3>
-                </div>
-                <div class="executive-grid">
-                    <div class="executive-item">
-                        <label>¿Se requieren uso de herramientas especiales?</label>
-                        <p id="special-tools-label"></p>
-                    </div>
-                    <div class="executive-item">
-                        <label>¿El equipo o herramienta, son los adecuados para el trabajo?</label>
-                        <p id="adequate-tools-label"></p>
-                    </div>
-                    <div class="executive-item">
-                        <label>¿Se requiere verificación previa de las condiciones del trabajo?</label>
-                        <p id="pre-verification-label"></p>
-                    </div>
-                    <div class="executive-item">
-                        <label>¿Se requiere conocer los riesgos del producto que se va a manejar?</label>
-                        <p id="risk-knowledge-label"></p>
-                    </div>
-                    <div class="executive-item">
-                        <label>Observaciones adicionales</label>
-                        <p id="final-observations-label"></p>
-                    </div>
-                </div>
-            </div>
+      
+
+
+
+
             <div class="executive-section">
                 <div class="section-header section-header-cielo">
                     <i class="ri-tools-line"></i>
@@ -88,149 +69,81 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>¿Debe de estar fuera de operación el equipo o línea?</td>
-                            <td>
-                                <div class="radio-group">
-                                    <label><input type="radio" name="fuera_operacion" value="SI"> SI</label>
-                                    <label><input type="radio" name="fuera_operacion" value="NO"> NO</label>
-                                    <label><input type="radio" name="fuera_operacion" value="NA"> N/A</label>
-                                </div>
-                            </td>
+                            <td>¿Se requiere otro tipo de permiso?</td>
+                            <td><input type="radio" name="otro_permiso" value="SI"></td>
+                            <td><input type="radio" name="otro_permiso" value="NO"></td>
+                            <td><input type="radio" name="otro_permiso" value="NA"></td>
                         </tr>
                         <tr>
-                            <td>¿Debe estar despresionado y purgado?</td>
-                            <td>
-                                <div class="radio-group">
-                                    <label><input type="radio" name="despresurizado_purgado" value="SI"> SI</label>
-                                    <label><input type="radio" name="despresurizado_purgado" value="NO"> NO</label>
-                                    <label><input type="radio" name="despresurizado_purgado" value="NA"> N/A</label>
-                                </div>
-                            </td>
+                            <td>¿Cual?:</td>
+                            <td colspan="3"><input type="text" name="cual_otro_permiso" style="width:100%; background:#fff; border:1px solid #d0d7de; border-radius:6px; padding:6px 10px;"></td>
                         </tr>
                         <tr>
-                            <td>¿Es necesario aislarlo?</td>
-                            <td>
-                                <div class="radio-group">
-                                    <label><input type="radio" name="necesita_aislamiento" value="SI"> SI</label>
-                                    <label><input type="radio" name="necesita_aislamiento" value="NO"> NO</label>
-                                    <label><input type="radio" name="necesita_aislamiento" value="NA"> N/A</label>
-                                </div>
-                            </td>
+                            <td>¿Instalación de barricadas y señalamientos de área restringida?</td>
+                            <td><input type="radio" name="barricadas_senalamientos" value="SI"></td>
+                            <td><input type="radio" name="barricadas_senalamientos" value="NO"></td>
+                            <td><input type="radio" name="barricadas_senalamientos" value="NA"></td>
                         </tr>
                         <tr>
-                            <td>¿Con válvulas?</td>
-                            <td>
-                                <div class="radio-group">
-                                    <label><input type="radio" name="con_valvulas" value="SI"> SI</label>
-                                    <label><input type="radio" name="con_valvulas" value="NO"> NO</label>
-                                    <label><input type="radio" name="con_valvulas" value="NA"> N/A</label>
-                                </div>
-                            </td>
+                            <td>¿Suspensión de trabajos cercano?</td>
+                            <td><input type="radio" name="suspension_trabajos_cercano" value="SI"></td>
+                            <td><input type="radio" name="suspension_trabajos_cercano" value="NO"></td>
+                            <td><input type="radio" name="suspension_trabajos_cercano" value="NA"></td>
                         </tr>
                         <tr>
-                            <td>¿Con juntas ciegas?</td>
-                            <td>
-                                <div class="radio-group">
-                                    <label><input type="radio" name="con_juntas_ciegas" value="SI"> SI</label>
-                                    <label><input type="radio" name="con_juntas_ciegas" value="NO"> NO</label>
-                                    <label><input type="radio" name="con_juntas_ciegas" value="NA"> N/A</label>
-                                </div>
-                            </td>
+                            <td>¿Retiro de personal ajeno al trabajo?</td>
+                            <td><input type="radio" name="retiro_personal_ajeno" value="SI"></td>
+                            <td><input type="radio" name="retiro_personal_ajeno" value="NO"></td>
+                            <td><input type="radio" name="retiro_personal_ajeno" value="NA"></td>
                         </tr>
                         <tr>
-                            <td>¿Pudo quedar producto entrampado?</td>
-                            <td>
-                                <div class="radio-group">
-                                    <label><input type="radio" name="producto_entrampado" value="SI"> SI</label>
-                                    <label><input type="radio" name="producto_entrampado" value="NO"> NO</label>
-                                    <label><input type="radio" name="producto_entrampado" value="NA"> N/A</label>
-                                </div>
-                            </td>
+                            <td>¿Las personas autorizadas utilizan placa / dosímetro?</td>
+                            <td><input type="radio" name="placa_dosimetro" value="SI"></td>
+                            <td><input type="radio" name="placa_dosimetro" value="NO"></td>
+                            <td><input type="radio" name="placa_dosimetro" value="NA"></td>
                         </tr>
                         <tr>
-                            <td>¿El equipo y/o línea requiere lavado?</td>
-                            <td>
-                                <div class="radio-group">
-                                    <label><input type="radio" name="requiere_lavado" value="SI"> SI</label>
-                                    <label><input type="radio" name="requiere_lavado" value="NO"> NO</label>
-                                    <label><input type="radio" name="requiere_lavado" value="NA"> N/A</label>
-                                </div>
-                            </td>
+                            <td>¿El límite de exposición fuera del área acordonada no rebasa 2 milirems?</td>
+                            <td><input type="radio" name="limite_exposicion" value="SI"></td>
+                            <td><input type="radio" name="limite_exposicion" value="NO"></td>
+                            <td><input type="radio" name="limite_exposicion" value="NA"></td>
                         </tr>
                         <tr>
-                            <td>¿El equipo y/o línea requiere neutralizado?</td>
-                            <td>
-                                <div class="radio-group">
-                                    <label><input type="radio" name="requiere_neutralizado" value="SI"> SI</label>
-                                    <label><input type="radio" name="requiere_neutralizado" value="NO"> NO</label>
-                                    <label><input type="radio" name="requiere_neutralizado" value="NA"> N/A</label>
-                                </div>
-                            </td>
+                            <td>¿Existen suficientes letreros de advertencia?</td>
+                            <td><input type="radio" name="letreros_advertencia" value="SI"></td>
+                            <td><input type="radio" name="letreros_advertencia" value="NO"></td>
+                            <td><input type="radio" name="letreros_advertencia" value="NA"></td>
                         </tr>
                         <tr>
-                            <td>¿El equipo y/o línea requiere vaporizado?</td>
-                            <td>
-                                <div class="radio-group">
-                                    <label><input type="radio" name="requiere_vaporizado" value="SI"> SI</label>
-                                    <label><input type="radio" name="requiere_vaporizado" value="NO"> NO</label>
-                                    <label><input type="radio" name="requiere_vaporizado" value="NA"> N/A</label>
-                                </div>
-                            </td>
+                            <td>¿Se advirtio al personal que labora en el lugar de trabajo, áreas adyacentes y otros?</td>
+                            <td><input type="radio" name="advirtio_personal" value="SI"></td>
+                            <td><input type="radio" name="advirtio_personal" value="NO"></td>
+                            <td><input type="radio" name="advirtio_personal" value="NA"></td>
                         </tr>
                         <tr>
-                            <td>¿Se deben suspender los trabajos adyacentes?</td>
-                            <td>
-                                <div class="radio-group">
-                                    <label><input type="radio" name="suspender_trabajos_adyacentes" value="SI"> SI</label>
-                                    <label><input type="radio" name="suspender_trabajos_adyacentes" value="NO"> NO</label>
-                                    <label><input type="radio" name="suspender_trabajos_adyacentes" value="NA"> N/A</label>
-                                </div>
-                            </td>
+                            <td>¿Lugar exacto de ubicación de la fuente radioactiva?</td>
+                            <td colspan="3"><input type="text" name="ubicacion_fuente_radioactiva" style="width:100%; background:#fff; border:1px solid #d0d7de; border-radius:6px; padding:6px 10px;"></td>
                         </tr>
                         <tr>
-                            <td>¿Se requiere acordonar el área?</td>
-                            <td>
-                                <div class="radio-group">
-                                    <label><input type="radio" name="acordonar_area" value="SI"> SI</label>
-                                    <label><input type="radio" name="acordonar_area" value="NO"> NO</label>
-                                    <label><input type="radio" name="acordonar_area" value="NA"> N/A</label>
-                                </div>
-                            </td>
+                            <td>¿Número de personas autorizadas dentro del lugar de trabajo?</td>
+                            <td colspan="3"><input type="number" name="numero_personas_autorizadas" style="width:100%; background:#fff; border:1px solid #d0d7de; border-radius:6px; padding:6px 10px;"></td>
                         </tr>
                         <tr>
-                            <td>¿Se requiere prueba de gas tóxico/inflamable?</td>
-                            <td>
-                                <div class="radio-group">
-                                    <label><input type="radio" name="prueba_gas_toxico_inflamable" value="SI"> SI</label>
-                                    <label><input type="radio" name="prueba_gas_toxico_inflamable" value="NO"> NO</label>
-                                    <label><input type="radio" name="prueba_gas_toxico_inflamable" value="NA"> N/A</label>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>¿El equipo eléctrico se encuentra desenergizado?</td>
-                            <td>
-                                <div class="radio-group">
-                                    <label><input type="radio" name="equipo_electrico_desenergizado" value="SI"> SI</label>
-                                    <label><input type="radio" name="equipo_electrico_desenergizado" value="NO"> NO</label>
-                                    <label><input type="radio" name="equipo_electrico_desenergizado" value="NA"> N/A</label>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>¿Se requiere tapar purgas y/o registros de los drenajes?</td>
-                            <td>
-                                <div class="radio-group">
-                                    <label><input type="radio" name="tapar_purgas_drenajes" value="SI"> SI</label>
-                                    <label><input type="radio" name="tapar_purgas_drenajes" value="NO"> NO</label>
-                                    <label><input type="radio" name="tapar_purgas_drenajes" value="NA"> N/A</label>
-                                </div>
-                            </td>
+                            <td>¿Tiempo de exposición permisible?</td>
+                            <td colspan="3"><input type="text" name="tiempo_exposicion_permisible" style="width:100%; background:#fff; border:1px solid #d0d7de; border-radius:6px; padding:6px 10px;"></td>
                         </tr>
                     </tbody>
                 </table>
                           
             </div>
+
+
+
+
+
+
+
+
 
 
 

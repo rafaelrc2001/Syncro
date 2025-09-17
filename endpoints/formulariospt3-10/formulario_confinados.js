@@ -28,7 +28,7 @@ router.post("/pt-confinados", async (req, res) => {
     tiempo_recuperacion_min,
     clase_espacio_confinado,
     observaciones_adicionales,
-    descripcion_trabajo,         // <-- NUEVO
+    descripcion_trabajo, // <-- NUEVO
     nombre_solicitante,
   } = req.body;
 
@@ -40,7 +40,7 @@ router.post("/pt-confinados", async (req, res) => {
     });
   }
 
-   try {
+  try {
     const result = await db.query(
       `INSERT INTO pt_confinados (
         id_permiso, tipo_mantenimiento, ot_numero, tag, hora_inicio, equipo_intervenir,
@@ -75,9 +75,8 @@ router.post("/pt-confinados", async (req, res) => {
         tiempo_recuperacion_min || null,
         clase_espacio_confinado || null,
         observaciones_adicionales || null,
-        descripcion_trabajo || null,      // <-- NUEVO
-        nombre_solicitante || null        // <-- NUEVO
-    
+        descripcion_trabajo || null, // <-- NUEVO
+        nombre_solicitante || null, // <-- NUEVO
       ]
     );
     res.status(201).json({
@@ -90,6 +89,34 @@ router.post("/pt-confinados", async (req, res) => {
     res.status(500).json({
       success: false,
       error: "Error al registrar PT Confinados",
+      details: process.env.NODE_ENV === "development" ? err.message : undefined,
+    });
+  }
+});
+
+// Endpoint para consultar  permiso tipo confinados (PT3)
+router.get("/pt-confinado/:id", async (req, res) => {
+  const id_permiso = req.params.id;
+  try {
+    const result = await db.query(
+      `SELECT * FROM pt_confinados WHERE id_permiso = $1 LIMIT 1`,
+      [id_permiso]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No se encontró apertura para este permiso (confinados)",
+      });
+    }
+    res.json({
+      success: true,
+      data: result.rows[0],
+    });
+  } catch (err) {
+    console.error("Error al consultar apertura de PT Confinados:", err);
+    res.status(500).json({
+      success: false,
+      error: "Error al consultar apertura de PT Confinados",
       details: process.env.NODE_ENV === "development" ? err.message : undefined,
     });
   }

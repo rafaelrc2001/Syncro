@@ -28,7 +28,7 @@ router.post("/pt-radiacion", async (req, res) => {
     barricadas,
     protocolo_emergencia,
     personal_autorizado,
-    observaciones_radiacion
+    observaciones_radiacion,
   } = req.body;
 
   try {
@@ -87,13 +87,41 @@ router.post("/pt-radiacion", async (req, res) => {
         barricadas,
         protocolo_emergencia,
         personal_autorizado,
-        observaciones_radiacion
+        observaciones_radiacion,
       ]
     );
     res.json({ success: true, data: result.rows[0] });
   } catch (error) {
     console.error("Error al insertar en pt_radiacion:", error);
     res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Endpoint para consultar permiso de fuentes radioactivas por id
+router.get("/pt-radiacion/:id", async (req, res) => {
+  const id_permiso = req.params.id;
+  try {
+    const result = await db.query(
+      `SELECT * FROM pt_radiacion WHERE id_permiso = $1 LIMIT 1`,
+      [id_permiso]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No se encontró apertura para este permiso (radiación)",
+      });
+    }
+    res.json({
+      success: true,
+      data: result.rows[0],
+    });
+  } catch (err) {
+    console.error("Error al consultar apertura de PT Radiación:", err);
+    res.status(500).json({
+      success: false,
+      error: "Error al consultar apertura de PT Radiación",
+      details: process.env.NODE_ENV === "development" ? err.message : undefined,
+    });
   }
 });
 

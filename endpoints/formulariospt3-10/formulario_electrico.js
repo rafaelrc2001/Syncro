@@ -28,7 +28,7 @@ router.post("/pt-electrico", async (req, res) => {
     tipo_equipo_proteccion,
     aterrizar_equipo,
     barricadas_area,
-    observaciones_adicionales
+    observaciones_adicionales,
   } = req.body;
 
   try {
@@ -87,13 +87,41 @@ router.post("/pt-electrico", async (req, res) => {
         tipo_equipo_proteccion,
         aterrizar_equipo,
         barricadas_area,
-        observaciones_adicionales
+        observaciones_adicionales,
       ]
     );
     res.json({ success: true, data: result.rows[0] });
   } catch (error) {
     console.error("Error al insertar en pt_electrico:", error);
     res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Endpoint para consultar permiso de trabajo eléctrico por id
+router.get("/pt-electrico/:id", async (req, res) => {
+  const id_permiso = req.params.id;
+  try {
+    const result = await db.query(
+      `SELECT * FROM pt_electrico WHERE id_permiso = $1 LIMIT 1`,
+      [id_permiso]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No se encontró apertura para este permiso (eléctrico)",
+      });
+    }
+    res.json({
+      success: true,
+      data: result.rows[0],
+    });
+  } catch (err) {
+    console.error("Error al consultar apertura de PT Eléctrico:", err);
+    res.status(500).json({
+      success: false,
+      error: "Error al consultar apertura de PT Eléctrico",
+      details: process.env.NODE_ENV === "development" ? err.message : undefined,
+    });
   }
 });
 

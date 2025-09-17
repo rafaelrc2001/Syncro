@@ -103,16 +103,51 @@ CREATE TABLE IF NOT EXISTS public.permisos_trabajo
     CONSTRAINT permisos_trabajo_pkey PRIMARY KEY (id_permiso)
 );
 
+CREATE TABLE IF NOT EXISTS public.pt_altura
+(
+    id integer NOT NULL DEFAULT nextval('pt_altura_id_altura_seq'::regclass),
+    id_permiso integer NOT NULL,
+    tipo_mantenimiento character varying(50) COLLATE pg_catalog."default",
+    ot_numero character varying(50) COLLATE pg_catalog."default",
+    tag character varying(100) COLLATE pg_catalog."default",
+    hora_inicio time without time zone,
+    equipo_intervenir character varying(200) COLLATE pg_catalog."default",
+    descripcion_trabajo text COLLATE pg_catalog."default",
+    nombre_solicitante character varying(150) COLLATE pg_catalog."default",
+    empresa character varying(150) COLLATE pg_catalog."default",
+    requiere_escalera character varying(3) COLLATE pg_catalog."default",
+    requiere_canastilla_grua character varying(3) COLLATE pg_catalog."default",
+    aseguramiento_estrobo character varying(3) COLLATE pg_catalog."default",
+    requiere_andamio_cama_completa character varying(3) COLLATE pg_catalog."default",
+    otro_tipo_acceso character varying(3) COLLATE pg_catalog."default",
+    acceso_libre_obstaculos character varying(3) COLLATE pg_catalog."default",
+    canastilla_asegurada character varying(3) COLLATE pg_catalog."default",
+    andamio_completo character varying(3) COLLATE pg_catalog."default",
+    andamio_seguros_zapatas character varying(3) COLLATE pg_catalog."default",
+    escaleras_buen_estado character varying(3) COLLATE pg_catalog."default",
+    linea_vida_segura character varying(3) COLLATE pg_catalog."default",
+    arnes_completo_buen_estado character varying(3) COLLATE pg_catalog."default",
+    suspender_trabajos_adyacentes character varying(3) COLLATE pg_catalog."default",
+    numero_personas_autorizadas character varying(3) COLLATE pg_catalog."default",
+    trabajadores_aptos_evaluacion character varying(3) COLLATE pg_catalog."default",
+    requiere_barreras character varying(3) COLLATE pg_catalog."default",
+    observaciones text COLLATE pg_catalog."default",
+    fecha_creacion timestamp without time zone DEFAULT now(),
+    fecha_actualizacion timestamp without time zone DEFAULT now(),
+    CONSTRAINT pt_altura_pkey PRIMARY KEY (id)
+);
+
 CREATE TABLE IF NOT EXISTS public.pt_apertura
 (
     id serial NOT NULL,
     id_permiso integer NOT NULL,
     fecha_creacion timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
-    tipo_mantenimiento character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    fecha_actualizacion timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    tipo_mantenimiento character varying(50) COLLATE pg_catalog."default",
     otro_tipo_mantenimiento character varying(100) COLLATE pg_catalog."default",
-    ot_numero character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    ot_numero character varying(50) COLLATE pg_catalog."default",
     tag character varying(100) COLLATE pg_catalog."default",
-    hora_inicio time without time zone NOT NULL,
+    hora_inicio time without time zone,
     tiene_equipo_intervenir boolean,
     descripcion_equipo text COLLATE pg_catalog."default",
     fluido character varying(100) COLLATE pg_catalog."default",
@@ -154,7 +189,6 @@ CREATE TABLE IF NOT EXISTS public.pt_apertura
     descripcion_trabajo text COLLATE pg_catalog."default",
     nombre_solicitante character varying(150) COLLATE pg_catalog."default",
     empresa character varying(150) COLLATE pg_catalog."default",
-    fecha_actualizacion timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT pt_apertura_pkey PRIMARY KEY (id)
 );
 
@@ -188,6 +222,34 @@ CREATE TABLE IF NOT EXISTS public.pt_confinados
     fecha_actualizacion timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     descripcion_trabajo character varying(350) COLLATE pg_catalog."default",
     nombre_solicitante character varying(100) COLLATE pg_catalog."default",
+    verificar_explosividad character varying(5) COLLATE pg_catalog."default",
+    verificar_gas_toxico character varying(5) COLLATE pg_catalog."default",
+    verificar_deficiencia_oxigeno character varying(5) COLLATE pg_catalog."default",
+    verificar_enriquecimiento_oxigeno character varying(5) COLLATE pg_catalog."default",
+    verificar_polvo_humos_fibras character varying(5) COLLATE pg_catalog."default",
+    verificar_amoniaco character varying(5) COLLATE pg_catalog."default",
+    verificar_material_piel character varying(5) COLLATE pg_catalog."default",
+    verificar_temperatura character varying(5) COLLATE pg_catalog."default",
+    verificar_lel character varying(5) COLLATE pg_catalog."default",
+    suspender_trabajos_adyacentes character varying(5) COLLATE pg_catalog."default",
+    acordonar_area character varying(5) COLLATE pg_catalog."default",
+    prueba_gas_toxico_inflamable character varying(5) COLLATE pg_catalog."default",
+    porcentaje_lel numeric(5, 2),
+    nh3 numeric(5, 2),
+    porcentaje_oxigeno numeric(5, 2),
+    equipo_despresionado_fuera_operacion character varying(5) COLLATE pg_catalog."default",
+    equipo_aislado character varying(5) COLLATE pg_catalog."default",
+    equipo_aislado_valvula boolean DEFAULT false,
+    equipo_aislado_junta_ciega boolean DEFAULT false,
+    equipo_lavado character varying(5) COLLATE pg_catalog."default",
+    equipo_neutralizado character varying(5) COLLATE pg_catalog."default",
+    equipo_vaporizado character varying(5) COLLATE pg_catalog."default",
+    aislar_purgas_drenaje_venteo character varying(5) COLLATE pg_catalog."default",
+    abrir_registros_necesarios character varying(5) COLLATE pg_catalog."default",
+    observaciones_requisitos text COLLATE pg_catalog."default",
+    fluido character varying(100) COLLATE pg_catalog."default",
+    presion character varying(50) COLLATE pg_catalog."default",
+    temperatura character varying(50) COLLATE pg_catalog."default",
     CONSTRAINT pt_confinados_pkey PRIMARY KEY (id)
 );
 
@@ -245,12 +307,12 @@ CREATE TABLE IF NOT EXISTS public.pt_no_peligroso
 (
     id_ptnp integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
     id_permiso integer NOT NULL,
-    nombre_solicitante character varying(100) COLLATE pg_catalog."default",
-    descripcion_trabajo character varying(350) COLLATE pg_catalog."default",
-    tipo_mantenimiento character varying(50) COLLATE pg_catalog."default",
+    nombre_solicitante character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    descripcion_trabajo character varying(350) COLLATE pg_catalog."default" NOT NULL,
+    tipo_mantenimiento character varying(50) COLLATE pg_catalog."default" NOT NULL,
     ot_no character varying(50) COLLATE pg_catalog."default",
     equipo_intervencion character varying(100) COLLATE pg_catalog."default",
-    hora_inicio timestamp without time zone,
+    hora_inicio timestamp without time zone NOT NULL,
     tag character varying(50) COLLATE pg_catalog."default",
     fluido character varying(50) COLLATE pg_catalog."default",
     presion character varying(20) COLLATE pg_catalog."default",
@@ -397,6 +459,13 @@ ALTER TABLE IF EXISTS public.permisos_trabajo
     REFERENCES public.tipos_permisos (id_tipo_permiso) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
+
+
+ALTER TABLE IF EXISTS public.pt_altura
+    ADD CONSTRAINT fk_permiso_altura FOREIGN KEY (id_permiso)
+    REFERENCES public.permisos_trabajo (id_permiso) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE CASCADE;
 
 
 ALTER TABLE IF EXISTS public.pt_apertura

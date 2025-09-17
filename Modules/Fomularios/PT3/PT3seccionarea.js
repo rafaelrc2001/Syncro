@@ -270,7 +270,7 @@ const params = new URLSearchParams(window.location.search);
 const idPermiso = params.get("id");
 if (idPermiso) {
   console.log("Consultando permiso de apertura con id:", idPermiso);
-  fetch(`http://localhost:3000/api/pt-apertura/${idPermiso}`)
+  fetch(`http://localhost:3000/api/pt-confinado/${idPermiso}`)
     .then((resp) => resp.json())
     .then((data) => {
       console.log("Respuesta de la API:", data);
@@ -391,7 +391,7 @@ document.addEventListener("DOMContentLoaded", function () {
       };
       try {
         const resp = await fetch(
-          `http://localhost:3000/api/pt-apertura/requisitos_area/${idPermiso}`,
+          `http://localhost:3000/api/pt-confinado/requisitos_area/${idPermiso}`,
           {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -411,7 +411,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Salir: redirigir a AutorizarPT.html
   const btnSalirNuevo = document.getElementById("btn-salir-nuevo");
-
+  if (btnSalirNuevo) {
+    btnSalirNuevo.addEventListener("click", function () {
+      window.location.href = "/Modules/Usuario/AutorizarPT.html";
+    });
+  }
   // --- FUNCIONES PARA RELLENAR AST Y PARTICIPANTES ---
   function mostrarAST(ast) {
     const eppList = document.getElementById("modal-epp-list");

@@ -143,6 +143,31 @@ router.get("/verformularios", async (req, res) => {
       console.log("Resultado general apertura:", resultGeneral.rows);
 
       resultDetalles = { rows: [] }; // Si no tienes detalles separados, puedes dejarlo vacío.
+    } else if (tipo_permiso === "PT de Entrada a Espacio Confinado") {
+      // Consulta para pt_confinados
+      const queryGeneralConfinados = `SELECT * FROM pt_confinados WHERE id_permiso = $1`;
+      resultGeneral = await pool.query(queryGeneralConfinados, [id]);
+      resultDetalles = { rows: [] };
+    } else if (tipo_permiso === "PT en Altura") {
+      // Consulta para pt_altura
+      const queryGeneralAltura = `SELECT * FROM pt_altura WHERE id_permiso = $1`;
+      resultGeneral = await pool.query(queryGeneralAltura, [id]);
+      resultDetalles = { rows: [] };
+    } else if (tipo_permiso === "PT de Fuego Abierto") {
+      // Consulta para pt_fuego
+      const queryGeneralFuego = `SELECT * FROM pt_fuego WHERE id_permiso = $1`;
+      resultGeneral = await pool.query(queryGeneralFuego, [id]);
+      resultDetalles = { rows: [] };
+    } else if (tipo_permiso === "PT con Energía Eléctrica") {
+      // Consulta para pt_electrico
+      const queryGeneralElectrico = `SELECT * FROM pt_electrico WHERE id_permiso = $1`;
+      resultGeneral = await pool.query(queryGeneralElectrico, [id]);
+      resultDetalles = { rows: [] };
+    } else if (tipo_permiso === "PT con Fuentes Radioactivas") {
+      // Consulta para pt_radiacion
+      const queryGeneralRadiacion = `SELECT * FROM pt_radiacion WHERE id_permiso = $1`;
+      resultGeneral = await pool.query(queryGeneralRadiacion, [id]);
+      resultDetalles = { rows: [] };
     } else {
       console.log("Tipo de permiso no soportado:", tipo_permiso);
       return res.status(400).json({ error: "Tipo de permiso no soportado" });

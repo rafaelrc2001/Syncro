@@ -1,4 +1,212 @@
 document.addEventListener("DOMContentLoaded", function () {
+  // --- Lógica para el botón "Autorizar" ---
+  const btnAutorizar = document.getElementById("btn-guardar-campos");
+  if (btnAutorizar) {
+    btnAutorizar.addEventListener("click", async function () {
+      const params = new URLSearchParams(window.location.search);
+      const idPermiso = params.get("id") || window.idPermisoActual;
+      const responsableInput = document.getElementById("responsable-aprobador");
+      const operadorInput = document.getElementById("responsable-aprobador2");
+      const supervisor = responsableInput ? responsableInput.value.trim() : "";
+      const categoria = operadorInput ? operadorInput.value.trim() : "";
+      if (!idPermiso) {
+        alert("No se pudo obtener el ID del permiso.");
+        return;
+      }
+      if (!supervisor) {
+        alert("Debes seleccionar el supervisor.");
+        return;
+      }
+      // 1. Actualizar supervisor y categoría en autorizaciones
+      try {
+        await fetch(
+          "http://localhost:3000/api/autorizaciones/supervisor-categoria",
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              id_permiso: idPermiso,
+              supervisor,
+              categoria,
+            }),
+          }
+        );
+      } catch (err) {
+        console.error("Error al actualizar supervisor y categoría:", err);
+      }
+      // 2. Consultar el id_estatus desde permisos_trabajo
+      let idEstatus = null;
+      try {
+        const respEstatus = await fetch(
+          `http://localhost:3000/api/permisos-trabajo/${idPermiso}`
+        );
+        if (respEstatus.ok) {
+          const permisoData = await respEstatus.json();
+          idEstatus =
+            permisoData.id_estatus ||
+            (permisoData.data && permisoData.data.id_estatus);
+        }
+      } catch (err) {
+        console.error("Error al consultar id_estatus:", err);
+      }
+      // 3. Actualizar el estatus a "activo"
+      if (idEstatus) {
+        try {
+          await fetch("http://localhost:3000/api/estatus/activo", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id_estatus: idEstatus }),
+          });
+        } catch (err) {
+          console.error("Error al actualizar estatus activo:", err);
+        }
+      }
+      alert("Permiso autorizado correctamente");
+      window.location.href = "/Modules/Usuario/AutorizarPT.html";
+    });
+  }
+
+  // --- Lógica para el botón "No Autorizar" ---
+  const btnNoAutorizar = document.getElementById("btn-no-autorizar");
+  if (btnNoAutorizar) {
+    btnNoAutorizar.addEventListener("click", async function () {
+      const params = new URLSearchParams(window.location.search);
+      const idPermiso = params.get("id") || window.idPermisoActual;
+      const responsableInput = document.getElementById("responsable-aprobador");
+      const operadorInput = document.getElementById("responsable-aprobador2");
+      const supervisor = responsableInput ? responsableInput.value.trim() : "";
+      const categoria = operadorInput ? operadorInput.value.trim() : "";
+      if (!idPermiso) {
+        alert("No se pudo obtener el ID del permiso.");
+        return;
+      }
+      if (!supervisor) {
+        alert("Debes seleccionar el supervisor antes de rechazar.");
+        return;
+      }
+      // Mostrar el modal para capturar el comentario de rechazo
+      const modal = document.getElementById("modalComentario");
+      if (modal) {
+        modal.style.display = "flex";
+        document.getElementById("comentarioNoAutorizar").value = "";
+      }
+
+      // Lógica para guardar el comentario y actualizar estatus a No Autorizado
+      const btnGuardarComentario = document.getElementById(
+        "btnGuardarComentario"
+      );
+      if (btnGuardarComentario) {
+        btnGuardarComentario.onclick = async function () {
+          const comentario = document
+            .getElementById("comentarioNoAutorizar")
+            .value.trim();
+          if (!comentario) {
+            alert("Debes escribir un motivo de rechazo.");
+            return;
+          }
+          // 1. Actualizar supervisor y categoría en autorizaciones
+          try {
+            await fetch(
+              "http://localhost:3000/api/autorizaciones/supervisor-categoria",
+              {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  id_permiso: idPermiso,
+                  supervisor,
+                  categoria,
+                  comentario_no_autorizar: comentario,
+                }),
+              }
+            );
+          } catch (err) {
+            console.error("Error al actualizar supervisor y categoría:", err);
+          }
+          // 2. Consultar el id_estatus desde permisos_trabajo
+          let idEstatus = null;
+          try {
+            const respEstatus = await fetch(
+              `http://localhost:3000/api/permisos-trabajo/${idPermiso}`
+            );
+            if (respEstatus.ok) {
+              const permisoData = await respEstatus.json();
+              idEstatus =
+                permisoData.id_estatus ||
+                (permisoData.data && permisoData.data.id_estatus);
+            }
+          } catch (err) {
+            console.error("Error al consultar id_estatus:", err);
+          }
+          // 3. Actualizar el estatus a "no autorizado" y guardar el comentario en la tabla estatus
+          if (idEstatus) {
+            try {
+              await fetch("http://localhost:3000/api/estatus/no_autorizado", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id_estatus: idEstatus }),
+              });
+              // Guardar el comentario en la tabla estatus
+              await fetch("http://localhost:3000/api/estatus/comentario", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id_estatus: idEstatus, comentario }),
+              });
+            } catch (err) {
+              console.error("Error al actualizar estatus no autorizado:", err);
+            }
+          }
+          // 4. Cerrar el modal y mostrar mensaje de éxito
+          const modal = document.getElementById("modalComentario");
+          if (modal) modal.style.display = "none";
+          alert("Permiso no autorizado correctamente");
+          window.location.href = "/Modules/SupSeguridad/supseguridad.html";
+        };
+      }
+      // Lógica para cerrar/cancelar el modal
+      const btnCancelarComentario = document.getElementById(
+        "btnCancelarComentario"
+      );
+      if (btnCancelarComentario) {
+        btnCancelarComentario.onclick = function () {
+          const modal = document.getElementById("modalComentario");
+          if (modal) modal.style.display = "none";
+        };
+      }
+    });
+  }
+  // Llenar select de supervisores desde la base de datos
+  fetch("http://localhost:3000/api/supervisores")
+    .then((res) => res.json())
+    .then((data) => {
+      const select = document.getElementById("responsable-aprobador");
+      if (select) {
+        select.innerHTML =
+          '<option value="" disabled selected>Seleccione un supervisor...</option>';
+        data.forEach((sup) => {
+          const option = document.createElement("option");
+          option.value = sup.nombre;
+          option.textContent = sup.nombre;
+          select.appendChild(option);
+        });
+      }
+    });
+
+  // Llenar select de categorías desde la base de datos
+  fetch("http://localhost:3000/api/categorias")
+    .then((res) => res.json())
+    .then((data) => {
+      const select = document.getElementById("responsable-aprobador2");
+      if (select) {
+        select.innerHTML =
+          '<option value="" disabled selected>Seleccione una categoria...</option>';
+        data.forEach((cat) => {
+          const option = document.createElement("option");
+          option.value = cat.nombre;
+          option.textContent = cat.nombre;
+          select.appendChild(option);
+        });
+      }
+    });
   const btnSalir = document.getElementById("btn-salir-nuevo");
   if (btnSalir) {
     btnSalir.addEventListener("click", function () {
@@ -12,7 +220,7 @@ const btnSalirNuevo = document.getElementById("btn-salir-nuevo");
 if (btnSalirNuevo) {
   btnSalirNuevo.addEventListener("click", function (e) {
     e.preventDefault();
-    window.location.href = "/Modules/Usuario/AutorizarPT.html";
+    window.location.href = "/Modules/SupSeguridad/supseguridad.html";
   });
 }
 // Mostrar solo la sección 2 al cargar y ocultar las demás
@@ -108,7 +316,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnRegresar = document.getElementById("btn-regresar");
   if (btnRegresar) {
     btnRegresar.addEventListener("click", function () {
-      window.location.href = "/Modules/Usuario/AutorizarPT.html";
+      window.location.href = "/Modules/SupSeguridad/supseguridad.html";
     });
   }
 
@@ -116,7 +324,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnSalir = document.getElementById("btn-salir");
   if (btnSalir) {
     btnSalir.addEventListener("click", function () {
-      window.location.href = "/Modules/Usuario/AutorizarPT.html";
+      window.location.href = "/Modules/SupSeguridad/supseguridad.html";
     });
   }
 
@@ -133,6 +341,13 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((resp) => resp.json())
       .then((data) => {
         console.log("Datos recibidos para el permiso:", data);
+        // Prefijo en el título y descripción del trabajo
+        if (data && data.general) {
+          document.querySelector(".section-header h3").textContent =
+            data.general.prefijo || "NP-XXXXXX";
+          document.getElementById("descripcion-trabajo-label").textContent =
+            data.general.descripcion_trabajo || "-";
+        }
         if (data && data.detalles) {
           document.getElementById("work-order-label").textContent =
             data.detalles.ot || "-";

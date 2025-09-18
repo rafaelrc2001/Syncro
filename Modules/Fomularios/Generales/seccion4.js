@@ -486,9 +486,14 @@ document.addEventListener("DOMContentLoaded", () => {
           const fecha = document.getElementById("permit-date")?.value || "";
           const hora = document.getElementById("start-time")?.value || "";
           const hora_inicio = `${fecha} ${hora}`;
-          const tiene_equipo_intervenir =
-            document.querySelector('input[name="has-equipment"]:checked')
-              ?.value || null;
+          // Solo agregar tiene_equipo_intervencion si existe en el DOM
+          let tiene_equipo_intervencion = null;
+          const inputEquipoIntervencion = document.querySelector(
+            'input[name="has-equipment"]:checked'
+          );
+          if (inputEquipoIntervencion) {
+            tiene_equipo_intervencion = inputEquipoIntervencion.value;
+          }
           const descripcion_equipo =
             document.getElementById("equipment-description")?.value || null;
           const fluido = document.getElementById("fluid")?.value || null;
@@ -609,7 +614,6 @@ document.addEventListener("DOMContentLoaded", () => {
             ot_numero,
             tag,
             hora_inicio,
-            tiene_equipo_intervencion,
             descripcion_equipo,
             fluido,
             presion,
@@ -651,6 +655,10 @@ document.addEventListener("DOMContentLoaded", () => {
             nombre_solicitante,
             descripcion_trabajo,
           };
+          // Solo agregar tiene_equipo_intervencion si existe
+          if (tiene_equipo_intervencion !== null) {
+            datosApertura.tiene_equipo_intervencion = tiene_equipo_intervencion;
+          }
 
           // Enviar los datos al backend (PT Apertura)
           const aperturaResponse = await fetch(

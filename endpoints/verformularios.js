@@ -145,7 +145,63 @@ router.get("/verformularios", async (req, res) => {
       resultDetalles = { rows: [] }; // Si no tienes detalles separados, puedes dejarlo vacío.
     } else if (tipo_permiso === "PT de Entrada a Espacio Confinado") {
       // Consulta para pt_confinados
-      const queryGeneralConfinados = `SELECT * FROM pt_confinados WHERE id_permiso = $1`;
+
+      const queryGeneralConfinados = `
+        SELECT 
+            pt.id_permiso,
+            TO_CHAR(pt.fecha_hora, 'DD/MM/YYYY') AS fecha,
+            pt.prefijo,
+            tp.nombre AS tipo_permiso,
+            pt.contrato,
+            s.nombre AS sucursal,
+            a.nombre AS area, 
+            d.nombre AS departamento,
+            pc.nombre_solicitante AS solicitante,
+            pc.descripcion_trabajo,
+            pc.tipo_mantenimiento,
+            pc.ot_numero,
+            pc.tag,
+            TO_CHAR(pc.hora_inicio, 'HH24:MI') AS hora_inicio,
+            pc.equipo_intervenir,
+            pc.avisos_trabajos,
+            pc.iluminacion_prueba_explosion,
+            pc.ventilacion_forzada,
+            pc.evaluacion_medica_aptos,
+            pc.cable_vida_trabajadores,
+            pc.vigilancia_exterior,
+            pc.nombre_vigilante,
+            pc.personal_rescatista,
+            pc.nombre_rescatista,
+            pc.instalar_barreras,
+            pc.equipo_especial,
+            pc.tipo_equipo_especial,
+            pc.numero_personas_autorizadas,
+            pc.tiempo_permanencia_min,
+            pc.tiempo_recuperacion_min,
+            pc.clase_espacio_confinado,
+            pc.observaciones_adicionales,
+            pc.fuera_operacion,
+            pc.despresurizado_purgado,
+            pc.necesita_aislamiento,
+            pc.con_valvulas,
+            pc.con_juntas_ciegas,
+            pc.producto_entrampado,
+            pc.requiere_lavado,
+            pc.requiere_neutralizado,
+            pc.requiere_vaporizado,
+            pc.suspender_trabajos_adyacentes,
+            pc.acordonar_area,
+            pc.prueba_gas_toxico_inflamable,
+            pc.equipo_electrico_desenergizado,
+            pc.tapar_purgas_drenajes
+        FROM permisos_trabajo pt
+        INNER JOIN pt_confinados pc ON pt.id_permiso = pc.id_permiso
+        INNER JOIN sucursales s ON pt.id_sucursal = s.id_sucursal
+        INNER JOIN areas a ON pt.id_area = a.id_area
+        INNER JOIN departamentos d ON pt.id_departamento = d.id_departamento
+        INNER JOIN tipos_permisos tp ON pt.id_tipo_permiso = tp.id_tipo_permiso
+        WHERE pt.id_permiso = $1
+      `;
       resultGeneral = await pool.query(queryGeneralConfinados, [id]);
       resultDetalles = { rows: [] };
     } else if (tipo_permiso === "PT en Altura") {

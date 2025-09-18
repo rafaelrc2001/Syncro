@@ -263,6 +263,63 @@ document.addEventListener("DOMContentLoaded", function () {
       } catch (err) {
         console.error("Error al actualizar supervisor y categoría:", err);
       }
+
+      // 1.5 Actualizar requisitos de riesgos y pruebas de gas
+      // Obtener valores del formulario
+      function getRadioValue(name) {
+        const radios = document.getElementsByName(name);
+        for (let r of radios) {
+          if (r.checked) return r.value;
+        }
+        return "";
+      }
+      const special_protection = getRadioValue("special-protection");
+      const skin_protection = getRadioValue("skin-protection");
+      const respiratory_protection = getRadioValue("respiratory-protection");
+      const eye_protection = getRadioValue("eye-protection");
+      const fire_protection = getRadioValue("fire-protection");
+      const fire_protection_type =
+        document.getElementById("fire-protection-type")?.value || "";
+      const barriers_required = getRadioValue("barriers-required");
+      const observations = document.getElementById("observations")?.value || "";
+
+      // Pruebas de gas
+      const co2_level = document.getElementsByName("co2")[0]?.value || "";
+      const nh3_level = document.getElementsByName("amonico")[0]?.value || "";
+      const oxygen_level =
+        document.getElementsByName("oxigeno")[0]?.value || "";
+      const lel_level = document.getElementsByName("lel")[0]?.value || "";
+
+      // Actualizar requisitos de supervisor y pruebas
+      try {
+        await fetch(
+          `http://localhost:3000/api/pt-apertura/requisitos_supervisor/${idPermiso}`,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              special_protection,
+              skin_protection,
+              respiratory_protection,
+              eye_protection,
+              fire_protection,
+              fire_protection_type,
+              barriers_required,
+              observations,
+              co2_level,
+              nh3_level,
+              oxygen_level,
+              lel_level,
+            }),
+          }
+        );
+      } catch (err) {
+        console.error(
+          "Error al actualizar requisitos supervisor y pruebas:",
+          err
+        );
+      }
+
       // 2. Consultar el id_estatus desde permisos_trabajo
       let idEstatus = null;
       try {

@@ -505,6 +505,13 @@ document.addEventListener("DOMContentLoaded", function () {
     )
       .then((resp) => resp.json())
       .then((data) => {
+        // Prefijo en el título y descripción del trabajo
+        if (data && data.general) {
+          document.querySelector(".section-header h3").textContent =
+            data.general.prefijo || "NP-XXXXXX";
+          document.getElementById("descripcion-trabajo-label").textContent =
+            data.general.descripcion_trabajo || "-";
+        }
         // Llenar campos generales usando data.data
         if (data && data.data) {
           const detalles = data.data;

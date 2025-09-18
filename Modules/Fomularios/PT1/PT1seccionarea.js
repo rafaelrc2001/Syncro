@@ -588,6 +588,14 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((resp) => resp.json())
       .then((data) => {
         console.log("Datos recibidos para el permiso:", data);
+        // Prefijo en el título
+        if (data && data.general) {
+          document.querySelector(".section-header h3").textContent =
+            data.general.prefijo || "NP-XXXXXX";
+          // Descripción del trabajo
+          document.getElementById("descripcion-trabajo-label").textContent =
+            data.general.descripcion_trabajo || "-";
+        }
         if (data && data.detalles) {
           document.getElementById("work-order-label").textContent =
             data.detalles.ot || "-";

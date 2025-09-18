@@ -408,6 +408,9 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("temperature")?.value || null;
           const empresa = document.getElementById("company")?.value || null;
 
+          // Obtener el valor de equipo_intervencion para PT1
+          const equipo_intervencion =
+            document.getElementById("equipment-label")?.textContent || "";
           // CREA el objeto una sola vez
           const datosNoPeligroso = {
             id_permiso,

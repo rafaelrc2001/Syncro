@@ -180,21 +180,21 @@
 
 
                     <!-- Requisitos para Administrar los Riesgos (estilo tabla alineada) -->
-                    <div class="executive-section">
-                        <div class="section-header">
-                            <i class="ri-checkbox-multiple-line"></i>
-                            <h3>Requisitos para Administrar los Riesgos</h3>
-                        </div>
-                        <table class="styled-table">
-                            <thead>
-                                <tr>
-                                    <th>Requisito</th>
-                                    <th class="centered">SI</th>
-                                    <th class="centered">NO</th>
-                                    <th class="centered">N/A</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                    <div class="executive-section requisitos-riesgos-section">
+    <div class="section-header requisitos-riesgos-header">
+        <i class="ri-checkbox-multiple-line"></i>
+        <h3 class="requisitos-riesgos-title">Requisitos para Administrar los Riesgos</h3>
+    </div>
+    <table id="tabla-requisitos-riesgos" class="styled-table requisitos-riesgos-table">
+    <thead id="thead-requisitos-riesgos">
+        <tr>
+            <th>Requisito</th>
+            <th class="centered">SI</th>
+            <th class="centered">NO</th>
+            <th class="centered">N/A</th>
+        </tr>
+    </thead>
+    <tbody>
                                 <tr>
                                     <td>Equipo de protección especial recomendado</td>
                                     <td class="centered"><input type="radio" name="special-protection" value="SI"></td>
@@ -247,26 +247,27 @@
 
 
 
-    <div class="executive-section">
-        <div class="section-header">
-            <i class="ri-checkbox-multiple-line"></i>
-            <h3>REGISTRO DE PRUEBAS REQUERIDAS</h3>
-        </div>
-        <table class="styled-table">
-            <thead>
-                <tr style="background: #e74c3c; color: #fff;">
-                    <th colspan="2">PRUEBA DE GAS</th>
-                    <th colspan="3" style="text-align: center;">¿APROBADO?</th>
-                </tr>
-                <tr>
-                    <th style="width: 220px;">&nbsp;</th>
-                    <th style="width: 180px;">Valor</th>
-                    <th class="centered">SI</th>
-                    <th class="centered">NO</th>
-                    <th class="centered">N/A</th>
-                </tr>
-            </thead>
-            <tbody>
+    
+                    <div class="executive-section registro-pruebas-section">
+    <div class="section-header registro-pruebas-header">
+        <i class="ri-checkbox-multiple-line"></i>
+        <h3 class="registro-pruebas-title">REGISTRO DE PRUEBAS REQUERIDAS</h3>
+    </div>
+    <table id="tabla-registro-pruebas" class="styled-table registro-pruebas-table">
+        <thead id="thead-registro-pruebas">
+            <tr>
+                <th colspan="2">PRUEBA DE GAS</th>
+                <th colspan="3" style="text-align: center;">¿APROBADO?</th>
+            </tr>
+            <tr>
+                <th style="width: 220px;">&nbsp;</th>
+                <th style="width: 180px;">Valor</th>
+                <th class="centered">SI</th>
+                <th class="centered">NO</th>
+                <th class="centered">N/A</th>
+            </tr>
+        </thead>
+        <tbody>
                 <tr>
                     <td>% de CO2:</td>
                     <td><input type="text" name="co2" style="width:90%; background:#fff; border:1px solid #d0d7de; border-radius:6px; padding:6px 10px;"></td>

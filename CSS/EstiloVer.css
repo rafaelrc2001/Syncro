@@ -984,3 +984,84 @@
     background: #3087ca;
     color: #fff;
 }
+
+
+/* Estilo rojo especial para la sección de requisitos de riesgos */
+.requisitos-riesgos-header {
+    background: #b71c1c !important;
+    border-radius: 8px;
+    padding: 0.7em 1em;
+    margin-bottom: 1em;
+    display: flex;
+    align-items: center;
+    gap: 0.7em;
+}
+.requisitos-riesgos-header h3,
+.requisitos-riesgos-header i {
+    color: #fff !important;
+    font-weight: 700;
+    font-size: 1.25em;
+    text-shadow: 0 2px 8px rgba(183,28,28,0.10);
+}
+
+.requisitos-riesgos-table thead tr {
+    background: #b71c1c !important;
+    color: #fff !important;
+    font-weight: 600;
+    font-size: 1.08em;
+    letter-spacing: 0.5px;
+}
+.requisitos-riesgos-table th.centered {
+    text-align: center;
+}
+
+.requisitos-riesgos-table thead tr {
+    background: #b71c1c !important;
+    color: #fff !important;
+    font-weight: 600;
+    font-size: 1.08em;
+    letter-spacing: 0.5px;
+}
+.requisitos-riesgos-table th.centered {
+    text-align: center;
+}
+
+
+#tabla-requisitos-riesgos th,
+#thead-requisitos-riesgos tr {
+    background: #c0392b !important;
+    color: #fff !important;
+    font-weight: 700;
+    font-size: 1.08em;
+    letter-spacing: 0.5px;
+}
+
+/* Estilo rojo especial para la sección de registro de pruebas */
+.registro-pruebas-header {
+    background: #b71c1c !important;
+    border-radius: 8px;
+    padding: 0.7em 1em;
+    margin-bottom: 1em;
+    display: flex;
+    align-items: center;
+    gap: 0.7em;
+}
+.registro-pruebas-header h3,
+.registro-pruebas-header i {
+    color: #fff !important;
+    font-weight: 700;
+    font-size: 1.25em;
+    text-shadow: 0 2px 8px rgba(183,28,28,0.10);
+}
+
+#tabla-registro-pruebas th,
+#thead-registro-pruebas tr {
+    background: #c0392b !important;
+    color: #fff !important;
+    font-weight: 700;
+    font-size: 1.08em;
+    letter-spacing: 0.5px;
+}
+#tabla-registro-pruebas th.centered {
+    text-align: center;
+}

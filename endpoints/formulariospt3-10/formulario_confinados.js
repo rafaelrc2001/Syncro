@@ -122,4 +122,80 @@ router.get("/pt-confinado/:id", async (req, res) => {
   }
 });
 
+// Actualiza los requisitos del área para un permiso específico
+router.put("/requisitos_area/:id", async (req, res) => {
+  const id = req.params.id;
+  const datos = req.body;
+  try {
+    // Actualiza los campos necesarios en la tabla pt_confinados
+    await db.query(
+      `UPDATE pt_confinados SET
+        verificar_explosividad = $1,
+        verificar_gas_toxico = $2,
+        verificar_deficiencia_oxigeno = $3,
+        verificar_enriquecimiento_oxigeno = $4,
+        verificar_polvo_humos_fibras = $5,
+        verificar_amoniaco = $6,
+        verificar_material_piel = $7,
+        verificar_temperatura = $8,
+        verificar_lel = $9,
+        suspender_trabajos_adyacentes = $10,
+        acordonar_area = $11,
+        prueba_gas_toxico_inflamable = $12,
+        porcentaje_lel = $13,
+        nh3 = $14,
+        porcentaje_oxigeno = $15,
+        equipo_despresionado_fuera_operacion = $16,
+        equipo_aislado = $17,
+        equipo_aislado_valvula = $18,
+        equipo_aislado_junta_ciega = $19,
+        equipo_lavado = $20,
+        equipo_neutralizado = $21,
+        equipo_vaporizado = $22,
+        aislar_purgas_drenaje_venteo = $23,
+        abrir_registros_necesarios = $24,
+        observaciones_requisitos = $25,
+        fluido = $26,
+        presion = $27,
+        temperatura = $28
+      WHERE id_permiso = $29`,
+      [
+        datos.verificar_explosividad,
+        datos.verificar_gas_toxico,
+        datos.verificar_deficiencia_oxigeno,
+        datos.verificar_enriquecimiento_oxigeno,
+        datos.verificar_polvo_humos_fibras,
+        datos.verificar_amoniaco,
+        datos.verificar_material_piel,
+        datos.verificar_temperatura,
+        datos.verificar_lel,
+        datos.suspender_trabajos_adyacentes,
+        datos.acordonar_area,
+        datos.prueba_gas_toxico_inflamable,
+        datos.porcentaje_lel,
+        datos.nh3,
+        datos.porcentaje_oxigeno,
+        datos.equipo_despresionado_fuera_operacion,
+        datos.equipo_aislado,
+        datos.equipo_aislado_valvula,
+        datos.equipo_aislado_junta_ciega,
+        datos.equipo_lavado,
+        datos.equipo_neutralizado,
+        datos.equipo_vaporizado,
+        datos.aislar_purgas_drenaje_venteo,
+        datos.abrir_registros_necesarios,
+        datos.observaciones_requisitos,
+        datos.fluido,
+        datos.presion,
+        datos.temperatura,
+        id,
+      ]
+    );
+    res.json({ success: true });
+  } catch (error) {
+    console.error("Error al actualizar requisitos:", error);
+    res.status(500).json({ error: "Error al actualizar requisitos" });
+  }
+});
+
 module.exports = router;

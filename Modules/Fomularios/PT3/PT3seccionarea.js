@@ -28,38 +28,61 @@ if (btnGuardarCampos) {
       const checked = document.querySelector(`input[name='${name}']:checked`);
       return checked ? checked.value : null;
     }
-    // Construir payload
+    // Construir payload con todos los campos requeridos por el backend
     const payload = {
-      fuera_operacion: getRadio("fuera_operacion"),
-      despresurizado_purgado: getRadio("despresurizado_purgado"),
-      necesita_aislamiento: getRadio("necesita_aislamiento"),
-      con_valvulas: getRadio("con_valvulas"),
-      con_juntas_ciegas: getRadio("con_juntas_ciegas"),
-      producto_entrampado: getRadio("producto_entrampado"),
-      requiere_lavado: getRadio("requiere_lavado"),
-      requiere_neutralizado: getRadio("requiere_neutralizado"),
-      requiere_vaporizado: getRadio("requiere_vaporizado"),
+      verificar_explosividad: getRadio("verificar_explosividad"),
+      verificar_gas_toxico: getRadio("verificar_gas_toxico"),
+      verificar_deficiencia_oxigeno: getRadio("verificar_deficiencia_oxigeno"),
+      verificar_enriquecimiento_oxigeno: getRadio(
+        "verificar_enriquecimiento_oxigeno"
+      ),
+      verificar_polvo_humos_fibras: getRadio("verificar_polvo_humos_fibras"),
+      verificar_amoniaco: getRadio("verificar_amoniaco"),
+      verificar_material_piel: getRadio("verificar_material_piel"),
+      verificar_temperatura: getRadio("verificar_temperatura"),
+      verificar_lel: getRadio("verificar_lel"),
       suspender_trabajos_adyacentes: getRadio("suspender_trabajos_adyacentes"),
       acordonar_area: getRadio("acordonar_area"),
       prueba_gas_toxico_inflamable: getRadio("prueba_gas_toxico_inflamable"),
-      equipo_electrico_desenergizado: getRadio(
-        "equipo_electrico_desenergizado"
+      porcentaje_lel:
+        document.querySelector("input[name='porcentaje_lel']")?.value || null,
+      nh3: document.querySelector("input[name='nh3']")?.value || null,
+      porcentaje_oxigeno:
+        document.querySelector("input[name='porcentaje_oxigeno']")?.value ||
+        null,
+      equipo_despresionado_fuera_operacion: getRadio(
+        "equipo_despresionado_fuera_operacion"
       ),
-      tapar_purgas_drenajes: getRadio("tapar_purgas_drenajes"),
+      equipo_aislado: getRadio("equipo_aislado"),
+      equipo_aislado_valvula:
+        document.querySelector("input[name='equipo_aislado_valvula']")
+          ?.checked || false,
+      equipo_aislado_junta_ciega:
+        document.querySelector("input[name='equipo_aislado_junta_ciega']")
+          ?.checked || false,
+      equipo_lavado: getRadio("equipo_lavado"),
+      equipo_neutralizado: getRadio("equipo_neutralizado"),
+      equipo_vaporizado: getRadio("equipo_vaporizado"),
+      aislar_purgas_drenaje_venteo: getRadio("aislar_purgas_drenaje_venteo"),
+      abrir_registros_necesarios: getRadio("abrir_registros_necesarios"),
+      observaciones_requisitos:
+        document.querySelector("textarea[name='observaciones_requisitos']")
+          ?.value || null,
       fluido: document.getElementById("fluid").value,
       presion: document.getElementById("pressure").value,
       temperatura: document.getElementById("temperature").value,
-      // Puedes agregar más campos aquí si los necesitas
     };
     try {
       const resp = await fetch(
-        `http://localhost:3000/api/pt-apertura/requisitos_area/${idPermiso}`,
+        `http://localhost:3000/api/requisitos_area/${idPermiso}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         }
       );
+      const respText = await resp.text();
+      console.error("Respuesta del backend:", resp.status, respText);
       if (!resp.ok) throw new Error("Error al guardar los requisitos");
     } catch (err) {
       alert("Error al guardar los campos/requisitos. No se puede autorizar.");
@@ -346,6 +369,59 @@ if (idPermiso) {
     });
 }
 
+// Función para rellenar los campos de "MEDIDAS / REQUISITOS PARA ADMINISTRAR LOS RIESGOS"
+function rellenarMedidasRequisitos(data) {
+  const setText = (id, value) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value || "-";
+  };
+
+  setText("avisos_trabajos", data.avisos_trabajos);
+  setText("iluminacion_prueba_explosion", data.iluminacion_prueba_explosion);
+  setText("ventilacion_forzada", data.ventilacion_forzada);
+  setText("evaluacion_medica_aptos", data.evaluacion_medica_aptos);
+  setText("cable_vida_trabajadores", data.cable_vida_trabajadores);
+  setText("vigilancia_exterior", data.vigilancia_exterior);
+  setText("nombre_vigilante", data.nombre_vigilante);
+  setText("personal_rescatista", data.personal_rescatista);
+  setText("nombre_rescatista", data.nombre_rescatista);
+  setText("instalar_barreras", data.instalar_barreras);
+  setText("equipo_especial", data.equipo_especial);
+  setText("tipo_equipo_especial", data.tipo_equipo_especial);
+  setText("observaciones_adicionales", data.observaciones_adicionales);
+  setText("numero_personas_autorizadas", data.numero_personas_autorizadas);
+  setText("tiempo_permanencia_min", data.tiempo_permanencia_min);
+  setText("tiempo_recuperacion_min", data.tiempo_recuperacion_min);
+  setText("clase_espacio_confinado", data.clase_espacio_confinado);
+}
+
+// Lógica para obtener los datos del permiso y rellenar los campos
+const params2 = new URLSearchParams(window.location.search);
+const idPermiso2 = params2.get("id");
+if (idPermiso2) {
+  fetch(
+    `http://localhost:3000/api/verformularios?id=${encodeURIComponent(
+      idPermiso2
+    )}`
+  )
+    .then((resp) => resp.json())
+    .then((data) => {
+      if (data && data.data) {
+        rellenarMedidasRequisitos(data.data);
+      } else {
+        console.warn(
+          "No se encontraron datos para rellenar las medidas/requisitos."
+        );
+      }
+    })
+    .catch((err) => {
+      console.error("Error al obtener datos del permiso:", err);
+      alert(
+        "Error al obtener datos del permiso. Revisa la consola para más detalles."
+      );
+    });
+}
+
 // Utilidad para asignar texto
 function setText(id, value) {
   const el = document.getElementById(id);
@@ -398,6 +474,8 @@ document.addEventListener("DOMContentLoaded", function () {
             body: JSON.stringify(payload),
           }
         );
+        const respText = await resp.text();
+        console.error("Respuesta del backend:", resp.status, respText);
         if (!resp.ok) throw new Error("Error al guardar los requisitos");
         alert("Requisitos guardados correctamente");
       } catch (err) {
@@ -575,3 +653,127 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  const params = new URLSearchParams(window.location.search);
+  const idPermiso = params.get("id");
+  if (idPermiso) {
+    fetch(`http://localhost:3000/api/pt-confinado/${idPermiso}`)
+      .then((resp) => resp.json())
+      .then((data) => {
+        if (data && data.data) {
+          const d = data.data;
+          // Asigna todos los campos
+          [
+            "avisos_trabajos",
+            "iluminacion_prueba_explosion",
+            "ventilacion_forzada",
+            "evaluacion_medica_aptos",
+            "cable_vida_trabajadores",
+            "vigilancia_exterior",
+            "nombre_vigilante",
+            "personal_rescatista",
+            "nombre_rescatista",
+            "instalar_barreras",
+            "equipo_especial",
+            "tipo_equipo_especial",
+            "observaciones_adicionales",
+            "numero_personas_autorizadas",
+            "tiempo_permanencia_min",
+            "tiempo_recuperacion_min",
+            "clase_espacio_confinado",
+          ].forEach((id) => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = d[id] || "-";
+          });
+        }
+      });
+  }
+});
+
+function rellenarRequisitosTrabajo(permiso) {
+  // Radios
+  [
+    "verificar_explosividad",
+    "verificar_gas_toxico",
+    "verificar_deficiencia_oxigeno",
+    "verificar_enriquecimiento_oxigeno",
+    "verificar_polvo_humos_fibras",
+    "verificar_amoniaco",
+    "verificar_material_piel",
+    "verificar_temperatura",
+    "verificar_lel",
+    "suspender_trabajos_adyacentes",
+    "acordonar_area",
+    "prueba_gas_toxico_inflamable",
+    "equipo_despresionado_fuera_operacion",
+    "equipo_aislado",
+    "equipo_lavado",
+    "equipo_neutralizado",
+    "equipo_vaporizado",
+    "aislar_purgas_drenaje_venteo",
+    "abrir_registros_necesarios",
+  ].forEach((name) => {
+    if (permiso[name]) {
+      const radio = document.querySelector(
+        `input[name='${name}'][value='${permiso[name]}']`
+      );
+      if (radio) radio.checked = true;
+    }
+  });
+
+  // Checkboxes
+  if (typeof permiso.equipo_aislado_valvula !== "undefined") {
+    const cb = document.querySelector("input[name='equipo_aislado_valvula']");
+    if (cb) cb.checked = !!permiso.equipo_aislado_valvula;
+  }
+  if (typeof permiso.equipo_aislado_junta_ciega !== "undefined") {
+    const cb = document.querySelector(
+      "input[name='equipo_aislado_junta_ciega']"
+    );
+    if (cb) cb.checked = !!permiso.equipo_aislado_junta_ciega;
+  }
+
+  // Inputs tipo texto
+  if (permiso.porcentaje_lel !== null) {
+    const input = document.querySelector("input[name='porcentaje_lel']");
+    if (input) input.value = permiso.porcentaje_lel;
+  }
+  if (permiso.nh3 !== null) {
+    const input = document.querySelector("input[name='nh3']");
+    if (input) input.value = permiso.nh3;
+  }
+  if (permiso.porcentaje_oxigeno !== null) {
+    const input = document.querySelector("input[name='porcentaje_oxigeno']");
+    if (input) input.value = permiso.porcentaje_oxigeno;
+  }
+  if (permiso.observaciones_requisitos !== null) {
+    const textarea = document.querySelector(
+      "textarea[name='observaciones_requisitos']"
+    );
+    if (textarea) textarea.value = permiso.observaciones_requisitos;
+  }
+  // Condiciones del proceso
+  if (permiso.fluido !== null) {
+    const input = document.getElementById("fluid");
+    if (input) input.value = permiso.fluido;
+  }
+  if (permiso.presion !== null) {
+    const input = document.getElementById("pressure");
+    if (input) input.value = permiso.presion;
+  }
+  if (permiso.temperatura !== null) {
+    const input = document.getElementById("temperature");
+    if (input) input.value = permiso.temperatura;
+  }
+}
+
+// Cuando recibas el objeto permiso:
+fetch(`http://localhost:3000/api/pt-confinado/${idPermiso}`)
+  .then((resp) => resp.json())
+  .then((data) => {
+    if (data && data.data) {
+      rellenarRequisitosTrabajo(data.data);
+      // ...otros rellenos...
+    }
+  });

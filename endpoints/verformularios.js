@@ -147,81 +147,257 @@ router.get("/verformularios", async (req, res) => {
       // Consulta para pt_confinados
 
       const queryGeneralConfinados = `
-        SELECT 
-            pt.id_permiso,
-            TO_CHAR(pt.fecha_hora, 'DD/MM/YYYY') AS fecha,
-            pt.prefijo,
-            tp.nombre AS tipo_permiso,
-            pt.contrato,
-            s.nombre AS sucursal,
-            a.nombre AS area, 
-            d.nombre AS departamento,
-            pc.nombre_solicitante AS solicitante,
-            pc.descripcion_trabajo,
-            pc.tipo_mantenimiento,
-            pc.ot_numero,
-            pc.tag,
-            TO_CHAR(pc.hora_inicio, 'HH24:MI') AS hora_inicio,
-            pc.equipo_intervenir,
-            pc.avisos_trabajos,
-            pc.iluminacion_prueba_explosion,
-            pc.ventilacion_forzada,
-            pc.evaluacion_medica_aptos,
-            pc.cable_vida_trabajadores,
-            pc.vigilancia_exterior,
-            pc.nombre_vigilante,
-            pc.personal_rescatista,
-            pc.nombre_rescatista,
-            pc.instalar_barreras,
-            pc.equipo_especial,
-            pc.tipo_equipo_especial,
-            pc.numero_personas_autorizadas,
-            pc.tiempo_permanencia_min,
-            pc.tiempo_recuperacion_min,
-            pc.clase_espacio_confinado,
-            pc.observaciones_adicionales,
-            pc.fuera_operacion,
-            pc.despresurizado_purgado,
-            pc.necesita_aislamiento,
-            pc.con_valvulas,
-            pc.con_juntas_ciegas,
-            pc.producto_entrampado,
-            pc.requiere_lavado,
-            pc.requiere_neutralizado,
-            pc.requiere_vaporizado,
-            pc.suspender_trabajos_adyacentes,
-            pc.acordonar_area,
-            pc.prueba_gas_toxico_inflamable,
-            pc.equipo_electrico_desenergizado,
-            pc.tapar_purgas_drenajes
-        FROM permisos_trabajo pt
-        INNER JOIN pt_confinados pc ON pt.id_permiso = pc.id_permiso
-        INNER JOIN sucursales s ON pt.id_sucursal = s.id_sucursal
-        INNER JOIN areas a ON pt.id_area = a.id_area
-        INNER JOIN departamentos d ON pt.id_departamento = d.id_departamento
-        INNER JOIN tipos_permisos tp ON pt.id_tipo_permiso = tp.id_tipo_permiso
-        WHERE pt.id_permiso = $1
+          SELECT 
+              pt.id_permiso,
+              TO_CHAR(pt.fecha_hora, 'DD/MM/YYYY') AS fecha,
+              pt.prefijo,
+              tp.nombre AS tipo_permiso,
+              pt.contrato,
+              pec.empresa,
+              s.nombre AS sucursal,
+              a.nombre AS area, 
+              d.nombre AS departamento,
+              pec.nombre_solicitante AS solicitante,
+              pec.descripcion_trabajo,
+              pec.tipo_mantenimiento,
+              pec.ot_numero,
+              pec.tag,
+              TO_CHAR(pec.hora_inicio, 'HH24:MI') AS hora_inicio,
+              pec.equipo_intervenir,
+              pec.avisos_trabajos,
+              pec.iluminacion_prueba_explosion,
+              pec.ventilacion_forzada,
+              pec.evaluacion_medica_aptos,
+              pec.cable_vida_trabajadores,
+              pec.vigilancia_exterior,
+              pec.nombre_vigilante,
+              pec.personal_rescatista,
+              pec.nombre_rescatista,
+              pec.instalar_barreras,
+              pec.equipo_especial,
+              pec.tipo_equipo_especial,
+              pec.numero_personas_autorizadas,
+              pec.tiempo_permanencia_min,
+              pec.tiempo_recuperacion_min,
+              pec.clase_espacio_confinado,
+              pec.observaciones_adicionales,
+              pec.verificar_explosividad,
+              pec.verificar_gas_toxico,
+              pec.verificar_deficiencia_oxigeno,
+              pec.verificar_enriquecimiento_oxigeno,
+              pec.verificar_polvo_humos_fibras,
+              pec.verificar_amoniaco,
+              pec.verificar_material_piel,
+              pec.verificar_temperatura,
+              pec.verificar_lel,
+              pec.suspender_trabajos_adyacentes,
+              pec.acordonar_area,
+              pec.prueba_gas_toxico_inflamable,
+              pec.porcentaje_lel,
+              pec.nh3,
+              pec.porcentaje_oxigeno,
+              pec.equipo_despresionado_fuera_operacion,
+              pec.equipo_aislado,
+              pec.equipo_aislado_valvula,
+              pec.equipo_aislado_junta_ciega,
+              pec.equipo_lavado,
+              pec.equipo_neutralizado,
+              pec.equipo_vaporizado,
+              pec.aislar_purgas_drenaje_venteo,
+              pec.abrir_registros_necesarios,
+              pec.observaciones_requisitos,
+              pec.fluido,
+              pec.presion,
+              pec.temperatura
+          FROM permisos_trabajo pt
+          INNER JOIN pt_confinados pec ON pt.id_permiso = pec.id_permiso
+          INNER JOIN sucursales s ON pt.id_sucursal = s.id_sucursal
+          INNER JOIN areas a ON pt.id_area = a.id_area
+          INNER JOIN departamentos d ON pt.id_departamento = d.id_departamento
+          INNER JOIN tipos_permisos tp ON pt.id_tipo_permiso = tp.id_tipo_permiso
+          WHERE pt.id_permiso = $1
       `;
+
       resultGeneral = await pool.query(queryGeneralConfinados, [id]);
       resultDetalles = { rows: [] };
     } else if (tipo_permiso === "PT en Altura") {
+      const queryGeneralAltura = `
+    SELECT 
+        pt.id_permiso,
+        TO_CHAR(pt.fecha_hora, 'DD/MM/YYYY') AS fecha,
+        pt.prefijo,
+        tp.nombre AS tipo_permiso,
+        pt.contrato,
+        pa.empresa,
+        s.nombre AS sucursal,
+        a.nombre AS area, 
+        d.nombre AS departamento,
+        pa.nombre_solicitante AS solicitante,
+        pa.descripcion_trabajo,
+        pa.tipo_mantenimiento,
+        pa.ot_numero,
+        pa.tag,
+        TO_CHAR(pa.hora_inicio, 'HH24:MI') AS hora_inicio,
+        pa.equipo_intervenir,
+        pa.requiere_escalera,
+        pa.requiere_canastilla_grua,
+        pa.aseguramiento_estrobo,
+        pa.requiere_andamio_cama_completa,
+        pa.otro_tipo_acceso,
+        pa.acceso_libre_obstaculos,
+        pa.canastilla_asegurada,
+        pa.andamio_completo,
+        pa.andamio_seguros_zapatas,
+        pa.escaleras_buen_estado,
+        pa.linea_vida_segura,
+        pa.arnes_completo_buen_estado,
+        pa.suspender_trabajos_adyacentes,
+        pa.numero_personas_autorizadas,
+        pa.trabajadores_aptos_evaluacion,
+        pa.requiere_barreras,
+        pa.observaciones,
+        TO_CHAR(pa.fecha_creacion, 'DD/MM/YYYY') AS fecha_creacion,
+        TO_CHAR(pa.fecha_actualizacion, 'DD/MM/YYYY') AS fecha_actualizacion
+    FROM permisos_trabajo pt
+    INNER JOIN pt_altura pa ON pt.id_permiso = pa.id_permiso
+    INNER JOIN sucursales s ON pt.id_sucursal = s.id_sucursal
+    INNER JOIN areas a ON pt.id_area = a.id_area
+    INNER JOIN departamentos d ON pt.id_departamento = d.id_departamento
+    INNER JOIN tipos_permisos tp ON pt.id_tipo_permiso = tp.id_tipo_permiso
+    WHERE pt.id_permiso = $1
+`;
+
       // Consulta para pt_altura
-      const queryGeneralAltura = `SELECT * FROM pt_altura WHERE id_permiso = $1`;
       resultGeneral = await pool.query(queryGeneralAltura, [id]);
       resultDetalles = { rows: [] };
     } else if (tipo_permiso === "PT de Fuego Abierto") {
       // Consulta para pt_fuego
-      const queryGeneralFuego = `SELECT * FROM pt_fuego WHERE id_permiso = $1`;
+
+      const queryGeneralFuego = `
+    SELECT 
+        pt.id_permiso,
+        TO_CHAR(pt.fecha_hora, 'DD/MM/YYYY') AS fecha,
+        pt.prefijo,
+        tp.nombre AS tipo_permiso,
+        pt.contrato,
+        pf.empresa,
+        s.nombre AS sucursal,
+        a.nombre AS area, 
+        d.nombre AS departamento,
+        pf.nombre_solicitante AS solicitante,
+        pf.descripcion_trabajo,
+        pf.tipo_mantenimiento,
+        pf.tipo_mantenimiento_otro,
+        pf.ot_numero,
+        pf.tag,
+        TO_CHAR(pf.hora_inicio, 'HH24:MI') AS hora_inicio,
+        pf.equipo_intervenir,
+        TO_CHAR(pf.fecha_creacion, 'DD/MM/YYYY') AS fecha_creacion,
+        TO_CHAR(pf.fecha_actualizacion, 'DD/MM/YYYY') AS fecha_actualizacion
+    FROM permisos_trabajo pt
+    INNER JOIN pt_fuego pf ON pt.id_permiso = pf.id_permiso
+    INNER JOIN sucursales s ON pt.id_sucursal = s.id_sucursal
+    INNER JOIN areas a ON pt.id_area = a.id_area
+    INNER JOIN departamentos d ON pt.id_departamento = d.id_departamento
+    INNER JOIN tipos_permisos tp ON pt.id_tipo_permiso = tp.id_tipo_permiso
+    WHERE pt.id_permiso = $1
+`;
       resultGeneral = await pool.query(queryGeneralFuego, [id]);
       resultDetalles = { rows: [] };
     } else if (tipo_permiso === "PT con Energía Eléctrica") {
       // Consulta para pt_electrico
-      const queryGeneralElectrico = `SELECT * FROM pt_electrico WHERE id_permiso = $1`;
+
+      const queryGeneralElectrico = `
+    SELECT 
+        pt.id_permiso,
+        TO_CHAR(pt.fecha_hora, 'DD/MM/YYYY') AS fecha,
+        pt.prefijo,
+        tp.nombre AS tipo_permiso,
+        pt.contrato,
+        pe.empresa,
+        s.nombre AS sucursal,
+        a.nombre AS area, 
+        d.nombre AS departamento,
+        pe.nombre_solicitante AS solicitante,
+        pe.descripcion_trabajo,
+        pe.tipo_mantenimiento,
+        pe.tipo_mantenimiento_otro,
+        pe.ot_numero,
+        pe.tag,
+        TO_CHAR(pe.hora_inicio, 'HH24:MI') AS hora_inicio,
+        pe.equipo_intervenir,
+        pe.equipo_desenergizado,
+        pe.interruptores_abiertos,
+        pe.verificar_ausencia_voltaje,
+        pe.candados_equipo,
+        pe.tarjetas_alerta,
+        pe.aviso_personal_area,
+        pe.tapetes_dielectricos,
+        pe.herramienta_aislante,
+        pe.pertiga_telescopica,
+        pe.equipo_proteccion_especial,
+        pe.tipo_equipo_proteccion,
+        pe.aterrizar_equipo,
+        pe.barricadas_area,
+        pe.observaciones_adicionales,
+        TO_CHAR(pe.fecha_creacion, 'DD/MM/YYYY') AS fecha_creacion,
+        TO_CHAR(pe.fecha_actualizacion, 'DD/MM/YYYY') AS fecha_actualizacion
+    FROM permisos_trabajo pt
+    INNER JOIN pt_electrico pe ON pt.id_permiso = pe.id_permiso
+    INNER JOIN sucursales s ON pt.id_sucursal = s.id_sucursal
+    INNER JOIN areas a ON pt.id_area = a.id_area
+    INNER JOIN departamentos d ON pt.id_departamento = d.id_departamento
+    INNER JOIN tipos_permisos tp ON pt.id_tipo_permiso = tp.id_tipo_permiso
+    WHERE pt.id_permiso = $1
+`;
       resultGeneral = await pool.query(queryGeneralElectrico, [id]);
       resultDetalles = { rows: [] };
     } else if (tipo_permiso === "PT con Fuentes Radioactivas") {
       // Consulta para pt_radiacion
-      const queryGeneralRadiacion = `SELECT * FROM pt_radiacion WHERE id_permiso = $1`;
+
+      const queryGeneralRadiacion = `
+    SELECT 
+        pt.id_permiso,
+        TO_CHAR(pt.fecha_hora, 'DD/MM/YYYY') AS fecha,
+        pt.prefijo,
+        tp.nombre AS tipo_permiso,
+        pt.contrato,
+        pr.empresa,
+        s.nombre AS sucursal,
+        a.nombre AS area, 
+        d.nombre AS departamento,
+        pr.nombre_solicitante AS solicitante,
+        pr.descripcion_trabajo,
+        pr.tipo_mantenimiento,
+        pr.tipo_mantenimiento_otro,
+        pr.ot_numero,
+        pr.tag,
+        TO_CHAR(pr.hora_inicio, 'HH24:MI') AS hora_inicio,
+        pr.equipo_intervenir,
+        pr.tipo_fuente_radiactiva,
+        pr.actividad_radiactiva,
+        pr.numero_serial_fuente,
+        pr.distancia_trabajo,
+        pr.tiempo_exposicion,
+        pr.dosis_estimada,
+        pr.equipo_proteccion_radiologica,
+        pr.dosimetros_personales,
+        pr.monitores_radiacion_area,
+        pr.senalizacion_area,
+        pr.barricadas,
+        pr.protocolo_emergencia,
+        pr.personal_autorizado,
+        pr.observaciones_radiacion,
+        TO_CHAR(pr.fecha_creacion, 'DD/MM/YYYY') AS fecha_creacion,
+        TO_CHAR(pr.fecha_actualizacion, 'DD/MM/YYYY') AS fecha_actualizacion
+    FROM permisos_trabajo pt
+    INNER JOIN pt_radiacion pr ON pt.id_permiso = pr.id_permiso
+    INNER JOIN sucursales s ON pt.id_sucursal = s.id_sucursal
+    INNER JOIN areas a ON pt.id_area = a.id_area
+    INNER JOIN departamentos d ON pt.id_departamento = d.id_departamento
+    INNER JOIN tipos_permisos tp ON pt.id_tipo_permiso = tp.id_tipo_permiso
+    WHERE pt.id_permiso = $1
+`;
       resultGeneral = await pool.query(queryGeneralRadiacion, [id]);
       resultDetalles = { rows: [] };
     } else {

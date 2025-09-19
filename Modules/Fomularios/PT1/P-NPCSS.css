@@ -1491,3 +1491,12 @@ textarea {
         height: 10px;
     }
 }
+
+/* Mejorar altura y visibilidad del select de tipo de mantenimiento */
+#maintenance-type {
+    min-height: 44px;
+    height: 44px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 1rem;
+}

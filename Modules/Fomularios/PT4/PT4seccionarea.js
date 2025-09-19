@@ -1,12 +1,10 @@
 // --- Lógica fusionada para guardar campos y autorizar ---
-// Declarar una sola vez al inicio
-const params = new URLSearchParams(window.location.search);
-const idPermiso = params.get("id") || window.idPermisoActual;
 const btnGuardarCampos = document.getElementById("btn-guardar-campos");
 if (btnGuardarCampos) {
   btnGuardarCampos.addEventListener("click", async function () {
     // 1. Obtener datos necesarios
-    // params y idPermiso ya están declarados arriba
+    const params = new URLSearchParams(window.location.search);
+    const idPermiso = params.get("id") || window.idPermisoActual;
     const responsableInput = document.getElementById("responsable-aprobador");
     const operadorInput = document.getElementById("responsable-aprobador2");
     const responsable_area = responsableInput
@@ -30,7 +28,7 @@ if (btnGuardarCampos) {
       const checked = document.querySelector(`input[name='${name}']:checked`);
       return checked ? checked.value : null;
     }
-    // Construir payload
+    // Construir payload con todos los campos requeridos por el backend
     const payload = {
       fuera_operacion: getRadio("fuera_operacion"),
       despresurizado_purgado: getRadio("despresurizado_purgado"),
@@ -48,20 +46,28 @@ if (btnGuardarCampos) {
         "equipo_electrico_desenergizado"
       ),
       tapar_purgas_drenajes: getRadio("tapar_purgas_drenajes"),
-      fluido: document.getElementById("fluid").value,
-      presion: document.getElementById("pressure").value,
-      temperatura: document.getElementById("temperature").value,
-      // Puedes agregar más campos aquí si los necesitas
+      requiere_escalera: getRadio("requiere_escalera"),
+      tipo_escalera: document.getElementById("tipo-escalera").value,
+      requiere_canastilla_grua: getRadio("requiere_canastilla_grua"),
+      aseguramiento_estrobo: getRadio("aseguramiento_estrobo"),
+      requiere_andamio_cama_completa: getRadio(
+        "requiere_andamio_cama_completa"
+      ),
+      otro_tipo_acceso: getRadio("otro_tipo_acceso"),
+      cual_acceso: document.getElementById("cual-acceso").value,
+      observaciones: document.getElementById("observaciones").value,
     };
     try {
       const resp = await fetch(
-        `http://localhost:3000/api/pt-apertura/requisitos_area/${idPermiso}`,
+        `http://localhost:3000/api/pt-altura/requisitos_area/${idPermiso}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         }
       );
+      const respText = await resp.text();
+      console.error("Respuesta del backend:", resp.status, respText);
       if (!resp.ok) throw new Error("Error al guardar los requisitos");
     } catch (err) {
       alert("Error al guardar los campos/requisitos. No se puede autorizar.");
@@ -189,7 +195,8 @@ if (btnNoAutorizar) {
         ? responsableInput.value.trim()
         : "";
       const operador_area = operadorInput ? operadorInput.value.trim() : "";
-      // params y idPermiso ya están declarados arriba
+      const params = new URLSearchParams(window.location.search);
+      const idPermiso = params.get("id") || window.idPermisoActual;
       if (!comentario || !idPermiso || !responsable_area) {
         return;
       }
@@ -267,7 +274,50 @@ if (btnRegresar) {
 }
 
 // Obtener el id_permiso de la URL (ejemplo: ?id=123)
-// ...existing code...
+const params = new URLSearchParams(window.location.search);
+const idPermiso = params.get("id");
+if (idPermiso) {
+  console.log("Consultando permiso de altura con id:", idPermiso);
+  fetch(`http://localhost:3000/api/pt-altura/${idPermiso}`)
+    .then((resp) => resp.json())
+    .then((data) => {
+      console.log("Respuesta de la API:", data);
+      if (data && data.success && data.data) {
+        const permiso = data.data;
+        console.log("Datos del permiso recibidos:", permiso);
+        setText("maintenance-type-label", permiso.tipo_mantenimiento || "-");
+        setText("work-order-label", permiso.ot_numero || "-");
+        setText("tag-label", permiso.tag || "-");
+        setText("start-time-label", permiso.hora_inicio || "-");
+        setText(
+          "equipment-description-label",
+          permiso.descripcion_equipo || "-"
+        );
+        setText("requiere-escalera-label", permiso.requiere_escalera || "-");
+        setText("tipo-escalera-label", permiso.tipo_escalera || "-");
+        setText(
+          "requiere-canastilla-label",
+          permiso.requiere_canastilla_grua || "-"
+        );
+        setText(
+          "aseguramiento-estrobo-label",
+          permiso.aseguramiento_estrobo || "-"
+        );
+        setText(
+          "requiere-andamio-label",
+          permiso.requiere_andamio_cama_completa || "-"
+        );
+        setText("requiere-otro-acceso-label", permiso.otro_tipo_acceso || "-");
+        setText("cual-acceso-label", permiso.cual_acceso || "-");
+        setText("observaciones-label", permiso.observaciones || "-");
+      } else {
+        console.warn("Estructura de datos inesperada o datos faltantes:", data);
+      }
+    })
+    .catch((err) => {
+      console.error("Error al consultar la API de permiso de altura:", err);
+    });
+}
 
 // Utilidad para asignar texto
 function setText(id, value) {
@@ -276,83 +326,12 @@ function setText(id, value) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  // idPermiso ya está declarado arriba
-  if (idPermiso) {
-    fetch(`http://localhost:3000/api/pt-altura/${idPermiso}`)
-      .then((resp) => resp.json())
-      .then((data) => {
-        if (data && data.success && data.data) {
-          const permiso = data.data;
-          // ANÁLISIS DE REQUISITOS PARA EFECTUAR EL TRABAJO
-          document.getElementById("requiere-escalera-label").textContent =
-            permiso.requiere_escalera || "-";
-          document.getElementById("tipo-escalera-label").textContent =
-            permiso.tipo_escalera || "-";
-          document.getElementById(
-            "requiere-canastilla-grua-label"
-          ).textContent = permiso.requiere_canastilla_grua || "-";
-          document.getElementById("aseguramiento-estrobo-label").textContent =
-            permiso.aseguramiento_estrobo || "-";
-          document.getElementById("requiere-andamio-cama-label").textContent =
-            permiso.requiere_andamio_cama_completa || "-";
-          document.getElementById("otro-tipo-acceso-label").textContent =
-            permiso.otro_tipo_acceso || "-";
-          document.getElementById("cual-acceso-label").textContent =
-            permiso.cual_acceso || "-";
-
-          // MEDIDAS PARA ADMINISTRAR LOS RIESGOS (SI/NO/N/A)
-          function setRadioLabel(baseId, value) {
-            document.getElementById(`${baseId}-si`).textContent =
-              value === "SI" ? "✔️" : "";
-            document.getElementById(`${baseId}-no`).textContent =
-              value === "NO" ? "✔️" : "";
-            document.getElementById(`${baseId}-na`).textContent =
-              value === "N/A" ? "✔️" : "";
-          }
-          setRadioLabel(
-            "acceso-libre-obstaculos",
-            permiso.acceso_libre_obstaculos
-          );
-          setRadioLabel("canastilla-asegurada", permiso.canastilla_asegurada);
-          setRadioLabel("andamio-completo", permiso.andamio_completo);
-          setRadioLabel(
-            "andamio-seguros-zapatas",
-            permiso.andamio_seguros_zapatas
-          );
-          setRadioLabel("escaleras-buen-estado", permiso.escaleras_buen_estado);
-          setRadioLabel("linea-vida-segura", permiso.linea_vida_segura);
-          setRadioLabel(
-            "arnes-completo-buen-estado",
-            permiso.arnes_completo_buen_estado
-          );
-          setRadioLabel(
-            "suspender-trabajos-adyacentes",
-            permiso.suspender_trabajos_adyacentes
-          );
-          document.getElementById(
-            "numero-personas-autorizadas-label"
-          ).textContent = permiso.numero_personas_autorizadas || "-";
-          setRadioLabel(
-            "trabajadores-aptos-evaluacion",
-            permiso.trabajadores_aptos_evaluacion
-          );
-          setRadioLabel("requiere-barreras", permiso.requiere_barreras);
-          document.getElementById("observaciones-label").textContent =
-            permiso.observaciones || "-";
-        }
-      })
-      .catch((err) => {
-        console.error("Error al obtener datos del permiso:", err);
-        alert(
-          "Error al obtener datos del permiso. Revisa la consola para más detalles."
-        );
-      });
-  }
   // Guardar requisitos
   const btnGuardar = document.getElementById("btn-guardar-requisitos");
   if (btnGuardar) {
     btnGuardar.addEventListener("click", async function () {
-      // params y idPermiso ya están declarados arriba
+      const params = new URLSearchParams(window.location.search);
+      const idPermiso = params.get("id");
       if (!idPermiso) {
         alert("No se encontró el id del permiso en la URL");
         return;
@@ -385,7 +364,7 @@ document.addEventListener("DOMContentLoaded", function () {
       };
       try {
         const resp = await fetch(
-          `http://localhost:3000/api/pt-apertura/requisitos_area/${idPermiso}`,
+          `http://localhost:3000/api/pt-altura/requisitos_area/${idPermiso}`,
           {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -484,8 +463,9 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Leer el id del permiso de la URL
-  // idPermiso ya está declarado arriba
-  if (idPermiso) {
+  const params2 = new URLSearchParams(window.location.search);
+  const idPermiso2 = params2.get("id");
+  if (idPermiso2) {
     // Llamar a la API para obtener los datos del permiso
     fetch(
       `http://localhost:3000/api/verformularios?id=${encodeURIComponent(
@@ -564,7 +544,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Obtener el id_permiso de la URL (ejemplo: ?id=123)
-  // idPermiso ya está declarado arriba
+  const params = new URLSearchParams(window.location.search);
+  const idPermiso = params.get("id");
   if (idPermiso) {
     fetch(
       `http://localhost:3000/api/verformularios?id=${encodeURIComponent(
@@ -573,11 +554,65 @@ document.addEventListener("DOMContentLoaded", function () {
     )
       .then((resp) => resp.json())
       .then((data) => {
-        const d = data.data;
-        const el = document.getElementById("requiere-escalera-label");
-        console.log("Elemento requiere-escalera-label:", el);
-        if (el) el.textContent = d.requiere_escalera || "-";
-        // Repite para los demás elementos
+        if (data && data.data) {
+          const d = data.data;
+
+          // ANÁLISIS DE REQUISITOS PARA EFECTUAR EL TRABAJO
+          document.getElementById("requiere-escalera-label").textContent =
+            d.requiere_escalera || "-";
+          const el = document.getElementById("requiere-escalera-label");
+          console.log("Elemento existe:", el); // Debe mostrar el elemento <p>
+
+          document.getElementById("tipo-escalera-label").textContent =
+            d.tipo_escalera !== undefined ? d.tipo_escalera : "-";
+          document.getElementById(
+            "requiere-canastilla-grua-label"
+          ).textContent = d.requiere_canastilla_grua || "-";
+          document.getElementById("aseguramiento-estrobo-label").textContent =
+            d.aseguramiento_estrobo || "-";
+          document.getElementById("requiere-andamio-cama-label").textContent =
+            d.requiere_andamio_cama_completa || "-";
+          document.getElementById("otro-tipo-acceso-label").textContent =
+            d.otro_tipo_acceso || "-";
+          document.getElementById("cual-acceso-label").textContent =
+            d.cual_acceso !== undefined ? d.cual_acceso : "-";
+
+          // MEDIDAS PARA ADMINISTRAR LOS RIESGOS (SI/NO/N/A)
+          // Utilidad para mostrar SI/NO/N/A
+          function setRadioLabel(baseId, value) {
+            document.getElementById(`${baseId}-si`).textContent =
+              value === "SI" ? "✔️" : "";
+            document.getElementById(`${baseId}-no`).textContent =
+              value === "NO" ? "✔️" : "";
+            document.getElementById(`${baseId}-na`).textContent =
+              value === "N/A" ? "✔️" : "";
+          }
+
+          setRadioLabel("acceso-libre-obstaculos", d.acceso_libre_obstaculos);
+          setRadioLabel("canastilla-asegurada", d.canastilla_asegurada);
+          setRadioLabel("andamio-completo", d.andamio_completo);
+          setRadioLabel("andamio-seguros-zapatas", d.andamio_seguros_zapatas);
+          setRadioLabel("escaleras-buen-estado", d.escaleras_buen_estado);
+          setRadioLabel("linea-vida-segura", d.linea_vida_segura);
+          setRadioLabel(
+            "arnes-completo-buen-estado",
+            d.arnes_completo_buen_estado
+          );
+          setRadioLabel(
+            "suspender-trabajos-adyacentes",
+            d.suspender_trabajos_adyacentes
+          );
+          document.getElementById(
+            "numero-personas-autorizadas-label"
+          ).textContent = d.numero_personas_autorizadas || "-";
+          setRadioLabel(
+            "trabajadores-aptos-evaluacion",
+            d.trabajadores_aptos_evaluacion
+          );
+          setRadioLabel("requiere-barreras", d.requiere_barreras);
+          document.getElementById("observaciones-label").textContent =
+            d.observaciones || "-";
+        }
       })
       .catch((err) => {
         console.error("Error al obtener datos del permiso:", err);
@@ -594,36 +629,4 @@ if (btnSalirNuevo) {
   btnSalirNuevo.addEventListener("click", function () {
     window.location.href = "/Modules/Usuario/AutorizarPT.html";
   });
-}
-
-// idPermiso ya está declarado arriba
-if (idPermiso) {
-  fetch(`http://localhost:3000/api/pt-altura/${idPermiso}`)
-    .then((resp) => resp.json())
-    .then((data) => {
-      if (data && data.success && data.data) {
-        const permiso = data.data;
-        document.getElementById("requiere-escalera-label").textContent =
-          permiso.requiere_escalera || "-";
-        document.getElementById("tipo-escalera-label").textContent =
-          permiso.tipo_escalera || "-";
-        document.getElementById("requiere-canastilla-grua-label").textContent =
-          permiso.requiere_canastilla_grua || "-";
-        document.getElementById("aseguramiento-estrobo-label").textContent =
-          permiso.aseguramiento_estrobo || "-";
-        document.getElementById("requiere-andamio-cama-label").textContent =
-          permiso.requiere_andamio_cama_completa || "-";
-        document.getElementById("otro-tipo-acceso-label").textContent =
-          permiso.otro_tipo_acceso || "-";
-        document.getElementById("cual-acceso-label").textContent =
-          permiso.cual_acceso || "-";
-        // ...rellena los demás campos igual que en PT2/PT3...
-      }
-    })
-    .catch((err) => {
-      console.error("Error al obtener datos del permiso:", err);
-      alert(
-        "Error al obtener datos del permiso. Revisa la consola para más detalles."
-      );
-    });
 }

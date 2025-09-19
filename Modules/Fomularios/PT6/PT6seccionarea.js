@@ -53,7 +53,7 @@ if (btnGuardarCampos) {
     };
     try {
       const resp = await fetch(
-        `http://localhost:3000/api/pt-apertura/requisitos_area/${idPermiso}`,
+        `http://localhost:3000/api/pt-electrico/requisitos_area/${idPermiso}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -269,7 +269,7 @@ if (btnRegresar) {
 const params = new URLSearchParams(window.location.search);
 const idPermiso = params.get("id");
 if (idPermiso) {
-  console.log("Consultando permiso de apertura con id:", idPermiso);
+  console.log("Consultando permiso de electrico con id:", idPermiso);
   fetch(`http://localhost:3000/api/pt-electrico/${idPermiso}`)
     .then((resp) => resp.json())
     .then((data) => {
@@ -391,7 +391,7 @@ document.addEventListener("DOMContentLoaded", function () {
       };
       try {
         const resp = await fetch(
-          `http://localhost:3000/api/pt-apertura/requisitos_area/${idPermiso}`,
+          `http://localhost:3000/api/pt-electrico/requisitos_area/${idPermiso}`,
           {
             method: "PUT",
             headers: { "Content-Type": "application/json" },

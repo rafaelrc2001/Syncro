@@ -29,34 +29,13 @@ if (btnGuardarCampos) {
       return checked ? checked.value : null;
     }
     // Construir payload con todos los campos requeridos por el backend
-    const payload = {
-      fuera_operacion: getRadio("fuera_operacion"),
-      despresurizado_purgado: getRadio("despresurizado_purgado"),
-      necesita_aislamiento: getRadio("necesita_aislamiento"),
-      con_valvulas: getRadio("con_valvulas"),
-      con_juntas_ciegas: getRadio("con_juntas_ciegas"),
-      producto_entrampado: getRadio("producto_entrampado"),
-      requiere_lavado: getRadio("requiere_lavado"),
-      requiere_neutralizado: getRadio("requiere_neutralizado"),
-      requiere_vaporizado: getRadio("requiere_vaporizado"),
-      suspender_trabajos_adyacentes: getRadio("suspender_trabajos_adyacentes"),
-      acordonar_area: getRadio("acordonar_area"),
-      prueba_gas_toxico_inflamable: getRadio("prueba_gas_toxico_inflamable"),
-      equipo_electrico_desenergizado: getRadio(
-        "equipo_electrico_desenergizado"
-      ),
-      tapar_purgas_drenajes: getRadio("tapar_purgas_drenajes"),
-      requiere_escalera: getRadio("requiere_escalera"),
-      tipo_escalera: document.getElementById("tipo-escalera").value,
-      requiere_canastilla_grua: getRadio("requiere_canastilla_grua"),
-      aseguramiento_estrobo: getRadio("aseguramiento_estrobo"),
-      requiere_andamio_cama_completa: getRadio(
-        "requiere_andamio_cama_completa"
-      ),
-      otro_tipo_acceso: getRadio("otro_tipo_acceso"),
-      cual_acceso: document.getElementById("cual-acceso").value,
-      observaciones: document.getElementById("observaciones").value,
-    };
+  // ...dentro del btnGuardarCampos.addEventListener...
+const payload = {
+  fluido: document.getElementById("fluid")?.value || "",
+  presion: document.getElementById("pressure")?.value || "",
+  temperatura: document.getElementById("temperature")?.value || "",
+
+};
     try {
       const resp = await fetch(
         `http://localhost:3000/api/pt-altura/requisitos_area/${idPermiso}`,
@@ -284,6 +263,12 @@ if (idPermiso) {
       if (data && data.success && data.data) {
         const permiso = data.data;
         const map = {
+              "maintenance-type-label": permiso.tipo_mantenimiento,
+      "work-order-label": permiso.ot_numero,
+      "tag-label": permiso.tag,
+      "start-time-label": permiso.hora_inicio,
+      "equipment-description-label": permiso.equipo_intervenir,
+    
           "requiere-escalera-label": permiso.requiere_escalera,
           "tipo-escalera-label": permiso.tipo_escalera || "-",
           "requiere-canastilla-label": permiso.requiere_canastilla_grua,
@@ -342,24 +327,9 @@ document.addEventListener("DOMContentLoaded", function () {
       }
       // Construir payload
       const payload = {
-        fuera_operacion: getRadio("fuera_operacion"),
-        despresurizado_purgado: getRadio("despresurizado_purgado"),
-        necesita_aislamiento: getRadio("necesita_aislamiento"),
-        con_valvulas: getRadio("con_valvulas"),
-        con_juntas_ciegas: getRadio("con_juntas_ciegas"),
-        producto_entrampado: getRadio("producto_entrampado"),
-        requiere_lavado: getRadio("requiere_lavado"),
-        requiere_neutralizado: getRadio("requiere_neutralizado"),
-        requiere_vaporizado: getRadio("requiere_vaporizado"),
-        suspender_trabajos_adyacentes: getRadio(
-          "suspender_trabajos_adyacentes"
-        ),
-        acordonar_area: getRadio("acordonar_area"),
-        prueba_gas_toxico_inflamable: getRadio("prueba_gas_toxico_inflamable"),
-        equipo_electrico_desenergizado: getRadio(
-          "equipo_electrico_desenergizado"
-        ),
-        tapar_purgas_drenajes: getRadio("tapar_purgas_drenajes"),
+        fluido: document.getElementById("fluid")?.value || "",
+        presion: document.getElementById("pressure")?.value || "",
+        temperatura: document.getElementById("temperature")?.value || "",
       };
       try {
         const resp = await fetch(
@@ -563,7 +533,7 @@ document.addEventListener("DOMContentLoaded", function () {
           document.getElementById("start-time-label").textContent =
             d.hora_inicio || "-";
           document.getElementById("equipment-description-label").textContent =
-            d.descripcion_equipo || "-";
+            d.equipo_intervenir || "-";
 
           // ANÁLISIS DE REQUISITOS PARA EFECTUAR EL TRABAJO
           document.getElementById("requiere-escalera-label").textContent =

@@ -132,4 +132,44 @@ router.get("/pt-altura/:id", async (req, res) => {
   }
 });
 
+
+
+
+
+
+
+// Actualiza los requisitos del área para un permiso específico
+router.put("/pt-altura/requisitos_area/:id", async (req, res) => {
+  const id = req.params.id;
+  const datos = req.body;
+  try {
+    // Actualiza los campos necesarios en la tabla pt_altura
+    await db.query(
+      `UPDATE pt_altura SET
+        fluido = $1,
+        presion = $2,
+        temperatura = $3
+      WHERE id_permiso = $4`,
+      [
+        datos.fluido,
+        datos.presion,
+        datos.temperatura,
+        id,
+      ]
+    );
+    res.json({ success: true });
+  } catch (error) {
+    console.error("Error al actualizar requisitos:", error);
+    res.status(500).json({ error: "Error al actualizar requisitos" });
+  }
+});
+
+
+
+
+
+
+
+
+
 module.exports = router;

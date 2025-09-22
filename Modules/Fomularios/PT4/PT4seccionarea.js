@@ -29,34 +29,13 @@ if (btnGuardarCampos) {
       return checked ? checked.value : null;
     }
     // Construir payload con todos los campos requeridos por el backend
-    const payload = {
-      fuera_operacion: getRadio("fuera_operacion"),
-      despresurizado_purgado: getRadio("despresurizado_purgado"),
-      necesita_aislamiento: getRadio("necesita_aislamiento"),
-      con_valvulas: getRadio("con_valvulas"),
-      con_juntas_ciegas: getRadio("con_juntas_ciegas"),
-      producto_entrampado: getRadio("producto_entrampado"),
-      requiere_lavado: getRadio("requiere_lavado"),
-      requiere_neutralizado: getRadio("requiere_neutralizado"),
-      requiere_vaporizado: getRadio("requiere_vaporizado"),
-      suspender_trabajos_adyacentes: getRadio("suspender_trabajos_adyacentes"),
-      acordonar_area: getRadio("acordonar_area"),
-      prueba_gas_toxico_inflamable: getRadio("prueba_gas_toxico_inflamable"),
-      equipo_electrico_desenergizado: getRadio(
-        "equipo_electrico_desenergizado"
-      ),
-      tapar_purgas_drenajes: getRadio("tapar_purgas_drenajes"),
-      requiere_escalera: getRadio("requiere_escalera"),
-      tipo_escalera: document.getElementById("tipo-escalera").value,
-      requiere_canastilla_grua: getRadio("requiere_canastilla_grua"),
-      aseguramiento_estrobo: getRadio("aseguramiento_estrobo"),
-      requiere_andamio_cama_completa: getRadio(
-        "requiere_andamio_cama_completa"
-      ),
-      otro_tipo_acceso: getRadio("otro_tipo_acceso"),
-      cual_acceso: document.getElementById("cual-acceso").value,
-      observaciones: document.getElementById("observaciones").value,
-    };
+  // ...dentro del btnGuardarCampos.addEventListener...
+const payload = {
+  fluido: document.getElementById("fluid")?.value || "",
+  presion: document.getElementById("pressure")?.value || "",
+  temperatura: document.getElementById("temperature")?.value || "",
+
+};
     try {
       const resp = await fetch(
         `http://localhost:3000/api/pt-altura/requisitos_area/${idPermiso}`,
@@ -279,37 +258,42 @@ const idPermiso = params.get("id");
 if (idPermiso) {
   console.log("Consultando permiso de altura con id:", idPermiso);
   fetch(`http://localhost:3000/api/pt-altura/${idPermiso}`)
-    .then((resp) => resp.json())
+    .then((response) => response.json())
     .then((data) => {
-      console.log("Respuesta de la API:", data);
       if (data && data.success && data.data) {
         const permiso = data.data;
-        console.log("Datos del permiso recibidos:", permiso);
-        setText("maintenance-type-label", permiso.tipo_mantenimiento || "-");
-        setText("work-order-label", permiso.ot_numero || "-");
-        setText("tag-label", permiso.tag || "-");
-        setText("start-time-label", permiso.hora_inicio || "-");
-        setText(
-          "equipment-description-label",
-          permiso.descripcion_equipo || "-"
-        );
-        setText("requiere-escalera-label", permiso.requiere_escalera || "-");
-        setText("tipo-escalera-label", permiso.tipo_escalera || "-");
-        setText(
-          "requiere-canastilla-label",
-          permiso.requiere_canastilla_grua || "-"
-        );
-        setText(
-          "aseguramiento-estrobo-label",
-          permiso.aseguramiento_estrobo || "-"
-        );
-        setText(
-          "requiere-andamio-label",
-          permiso.requiere_andamio_cama_completa || "-"
-        );
-        setText("requiere-otro-acceso-label", permiso.otro_tipo_acceso || "-");
-        setText("cual-acceso-label", permiso.cual_acceso || "-");
-        setText("observaciones-label", permiso.observaciones || "-");
+        const map = {
+              "maintenance-type-label": permiso.tipo_mantenimiento,
+      "work-order-label": permiso.ot_numero,
+      "tag-label": permiso.tag,
+      "start-time-label": permiso.hora_inicio,
+      "equipment-description-label": permiso.equipo_intervenir,
+    
+          "requiere-escalera-label": permiso.requiere_escalera,
+          "tipo-escalera-label": permiso.tipo_escalera || "-",
+          "requiere-canastilla-label": permiso.requiere_canastilla_grua,
+          "aseguramiento-estrobo-label": permiso.aseguramiento_estrobo,
+          "requiere-andamio-label": permiso.requiere_andamio_cama_completa,
+          "requiere-otro-acceso-label": permiso.otro_tipo_acceso,
+          "cual-acceso-label": permiso.cual_acceso || "-",
+          "acceso-libre-obstaculos-label": permiso.acceso_libre_obstaculos,
+          "canastilla-asegurada-label": permiso.canastilla_asegurada,
+          "andamio-completo-label": permiso.andamio_completo,
+          "andamio-seguros-zapatas-label": permiso.andamio_seguros_zapatas,
+          "escaleras-buen-estado-label": permiso.escaleras_buen_estado,
+          "linea-vida-segura-label": permiso.linea_vida_segura,
+          "arnes-completo-buen-estado-label": permiso.arnes_completo_buen_estado,
+          "suspender-trabajos-adyacentes-label": permiso.suspender_trabajos_adyacentes,
+          "numero-personas-autorizadas-label": permiso.numero_personas_autorizadas,
+          "trabajadores-aptos-evaluacion-label": permiso.trabajadores_aptos_evaluacion,
+          "requiere-barreras-label": permiso.requiere_barreras,
+          "observaciones-label": permiso.observaciones
+        };
+
+        for (let id in map) {
+          const el = document.getElementById(id);
+          if (el) el.textContent = map[id] || "-";
+        }
       } else {
         console.warn("Estructura de datos inesperada o datos faltantes:", data);
       }
@@ -343,24 +327,9 @@ document.addEventListener("DOMContentLoaded", function () {
       }
       // Construir payload
       const payload = {
-        fuera_operacion: getRadio("fuera_operacion"),
-        despresurizado_purgado: getRadio("despresurizado_purgado"),
-        necesita_aislamiento: getRadio("necesita_aislamiento"),
-        con_valvulas: getRadio("con_valvulas"),
-        con_juntas_ciegas: getRadio("con_juntas_ciegas"),
-        producto_entrampado: getRadio("producto_entrampado"),
-        requiere_lavado: getRadio("requiere_lavado"),
-        requiere_neutralizado: getRadio("requiere_neutralizado"),
-        requiere_vaporizado: getRadio("requiere_vaporizado"),
-        suspender_trabajos_adyacentes: getRadio(
-          "suspender_trabajos_adyacentes"
-        ),
-        acordonar_area: getRadio("acordonar_area"),
-        prueba_gas_toxico_inflamable: getRadio("prueba_gas_toxico_inflamable"),
-        equipo_electrico_desenergizado: getRadio(
-          "equipo_electrico_desenergizado"
-        ),
-        tapar_purgas_drenajes: getRadio("tapar_purgas_drenajes"),
+        fluido: document.getElementById("fluid")?.value || "",
+        presion: document.getElementById("pressure")?.value || "",
+        temperatura: document.getElementById("temperature")?.value || "",
       };
       try {
         const resp = await fetch(
@@ -556,6 +525,15 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((data) => {
         if (data && data.data) {
           const d = data.data;
+          document.getElementById("maintenance-type-label").textContent =
+            d.tipo_mantenimiento || "-";
+          document.getElementById("work-order-label").textContent =
+            d.ot_numero || "-";
+          document.getElementById("tag-label").textContent = d.tag || "-";
+          document.getElementById("start-time-label").textContent =
+            d.hora_inicio || "-";
+          document.getElementById("equipment-description-label").textContent =
+            d.equipo_intervenir || "-";
 
           // ANÁLISIS DE REQUISITOS PARA EFECTUAR EL TRABAJO
           document.getElementById("requiere-escalera-label").textContent =

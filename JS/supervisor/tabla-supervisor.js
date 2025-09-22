@@ -536,6 +536,18 @@ if (tableBody) {
         window.location.href = `/Modules/Fomularios/PT1/PT1supervisor.html?id=${idPermiso}`;
       } else if (tipoPermiso === "PT para Apertura Equipo Línea") {
         window.location.href = `/Modules/Fomularios/PT2/PT2supervisor.html?id=${idPermiso}`;
+      } else if (tipoPermiso === "PT de Entrada a Espacio Confinado") {
+        window.location.href = `/Modules/Fomularios/PT3/PT3supervisor.html?id=${idPermiso}`;
+      } else if (tipoPermiso === "PT en Altura") {
+        window.location.href = `/Modules/Fomularios/PT4/PT4supervisor.html?id=${idPermiso}`;
+      } else if (tipoPermiso === "PT de Fuego Abierto") {
+        window.location.href = `/Modules/Fomularios/PT5/PT5supervisor.html?id=${idPermiso}`;
+      } else if (tipoPermiso === "PT con Energía Eléctrica") {
+        window.location.href = `/Modules/Fomularios/PT6/PT6supervisor.html?id=${idPermiso}`;
+      } else if (tipoPermiso === "PT con Fuentes Radioactivas") {
+        window.location.href = `/Modules/Fomularios/PT7/PT7supervisor.html?id=${idPermiso}`;
+      } else if (tipoPermiso === "PT para Izaje con Hiab con Grúa") {
+        window.location.href = `/Modules/Fomularios/PT8/PT8supervisor.html?id=${idPermiso}`;
       } else {
         window.location.href = `/Modules/Fomularios/OTRO/OTROsupervisor.html?id=${idPermiso}`;
       }

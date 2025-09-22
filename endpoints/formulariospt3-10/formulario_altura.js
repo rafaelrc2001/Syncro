@@ -126,6 +126,7 @@ router.get("/pt-altura/:id", async (req, res) => {
       presion: row.presion || "",
       temperatura: row.temperatura || "",
     };
+    console.log("Datos enviados al frontend:", respuesta);
     res.json({
       success: true,
       data: respuesta,

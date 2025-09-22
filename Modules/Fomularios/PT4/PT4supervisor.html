@@ -140,19 +140,102 @@
                     </div>
                     <div class="executive-grid">
                         <div class="executive-item">
-                            <label for="fluid">Fluido</label>
-                            <input type="text" id="fluid" name="fluid" class="compact" value="" style="width:100%; background:#fff; border:1px solid #d0d7de; border-radius:6px; padding:6px 10px;">
+                            <label for="fluid">Fluido:</label>
+                            <label id="fluid" style="font-weight:500; color:#222; margin-left:8px;"></label>
                         </div>
                         <div class="executive-item">
-                            <label for="pressure">Presión</label>
-                            <input type="text" id="pressure" name="pressure" class="compact" value="" style="width:100%; background:#fff; border:1px solid #d0d7de; border-radius:6px; padding:6px 10px;">
+                            <label for="pressure">Presión:</label>
+                            <label id="pressure" style="font-weight:500; color:#222; margin-left:8px;"></label>
                         </div>
                         <div class="executive-item">
-                            <label for="temperature">Temperatura</label>
-                            <input type="text" id="temperature" name="temperature" class="compact" value="" style="width:100%; background:#fff; border:1px solid #d0d7de; border-radius:6px; padding:6px 10px;">
+                            <label for="temperature">Temperatura:</label>
+                            <label id="temperature" style="font-weight:500; color:#222; margin-left:8px;"></label>
                         </div>
                     </div>
                 </div>
+
+                <!-- Medidas / Requisitos para Administrar los Riesgos -->
+                <div class="executive-section">
+                    <div class="section-header section-header-cielo">
+                        <h3>MEDIDAS / REQUISITOS PARA ADMINISTRAR LOS RIESGOS</h3>
+                    </div>
+                    <div style="overflow-x:auto;">
+                        <table style="width:100%; border-collapse:collapse;">
+                            <thead>
+                                <tr style="background:#e74c3c; color:#fff;">
+                                    <th style="padding:8px;">Pregunta</th>
+                                    <th style="width:40px;">SI</th>
+                                    <th style="width:40px;">NO</th>
+                                    <th style="width:40px;">N/A</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>¿Equipo de protección personal especial? <span style="font-weight:400;">¿Cuál?</span></td>
+                                    <td><input type="checkbox" name="proteccion_especial_si"></td>
+                                    <td><input type="checkbox" name="proteccion_especial_no"></td>
+                                    <td><input type="checkbox" name="proteccion_especial_na"></td>
+                                    <td><input type="text" name="proteccion_especial_cual" placeholder="¿Cuál?" style="width:100px;" /></td>
+                                </tr>
+                                <tr>
+                                    <td>¿Utilizar equipo contra caídas? <span style="font-weight:400;">¿cuál?</span></td>
+                                    <td><input type="checkbox" name="equipo_caidas_si"></td>
+                                    <td><input type="checkbox" name="equipo_caidas_no"></td>
+                                    <td><input type="checkbox" name="equipo_caidas_na"></td>
+                                    <td><input type="text" name="equipo_caidas_cual" placeholder="¿Cuál?" style="width:100px;" /></td>
+                                </tr>
+                                <tr>
+                                    <td>¿Línea de sujeción con amortiguador de impacto?</td>
+                                    <td><input type="checkbox" name="linea_amortiguador_si"></td>
+                                    <td><input type="checkbox" name="linea_amortiguador_no"></td>
+                                    <td><input type="checkbox" name="linea_amortiguador_na"></td>
+                                </tr>
+                                <tr>
+                                    <td>¿Punto fijo?</td>
+                                    <td><input type="checkbox" name="punto_fijo_si"></td>
+                                    <td><input type="checkbox" name="punto_fijo_no"></td>
+                                    <td><input type="checkbox" name="punto_fijo_na"></td>
+                                </tr>
+                                <tr>
+                                    <td>¿Línea de vida?</td>
+                                    <td><input type="checkbox" name="linea_vida_si"></td>
+                                    <td><input type="checkbox" name="linea_vida_no"></td>
+                                    <td><input type="checkbox" name="linea_vida_na"></td>
+                                </tr>
+                                <tr>
+                                    <td>¿El andamio se encuentra completo para realizar la actividad?</td>
+                                    <td><input type="checkbox" name="andamio_completo_si"></td>
+                                    <td><input type="checkbox" name="andamio_completo_no"></td>
+                                    <td><input type="checkbox" name="andamio_completo_na"></td>
+                                </tr>
+                                <tr>
+                                    <td>¿Se colocó tarjeta de andamio seguro?</td>
+                                    <td><input type="checkbox" name="tarjeta_andamio_si"></td>
+                                    <td><input type="checkbox" name="tarjeta_andamio_no"></td>
+                                    <td><input type="checkbox" name="tarjeta_andamio_na"></td>
+                                </tr>
+                                <tr>
+                                    <td>¿La velocidad del viento es la permitida para trabajos en altura?</td>
+                                    <td><input type="checkbox" name="viento_permitido_si"></td>
+                                    <td><input type="checkbox" name="viento_permitido_no"></td>
+                                    <td><input type="checkbox" name="viento_permitido_na"></td>
+                                </tr>
+                                <tr>
+                                    <td>¿La escalera se encuentra en condición para efectuar la actividad?</td>
+                                    <td><input type="checkbox" name="escalera_condicion_si"></td>
+                                    <td><input type="checkbox" name="escalera_condicion_no"></td>
+                                    <td><input type="checkbox" name="escalera_condicion_na"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+ <!-- En esta parte quiero que me agregues los campos de condiciones del proceso -->
+
+
+
 
                 
       <!-- Sección AST y Participantes -->

@@ -154,6 +154,11 @@ function mostrarDatosSupervisor(permiso) {
   );
   setText("requiere-barreras-label", permiso.requiere_barreras);
   setText("observaciones-label", permiso.observaciones);
+
+  // Mapeo de condiciones del proceso
+  setText("fluid", permiso.fluido);
+  setText("pressure", permiso.presion);
+  setText("temperature", permiso.temperatura);
 }
 
 // Al cargar la página, obtener el id y mostrar los datos
@@ -177,6 +182,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         // Rellenar datos generales si existen
         if (data && data.general) {
+          console.log("Datos generales:", data.general);
           mostrarDatosSupervisor(data.general);
         }
         // Rellenar AST y Participantes

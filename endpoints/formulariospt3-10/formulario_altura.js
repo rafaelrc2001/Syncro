@@ -118,9 +118,17 @@ router.get("/pt-altura/:id", async (req, res) => {
         message: "No se encontró apertura para este permiso (altura)",
       });
     }
+    // Asegura que los campos fluido, presion y temperatura siempre estén presentes
+    const row = result.rows[0];
+    const respuesta = {
+      ...row,
+      fluido: row.fluido || "",
+      presion: row.presion || "",
+      temperatura: row.temperatura || "",
+    };
     res.json({
       success: true,
-      data: result.rows[0],
+      data: respuesta,
     });
   } catch (err) {
     console.error("Error al consultar apertura de PT Altura:", err);
@@ -131,12 +139,6 @@ router.get("/pt-altura/:id", async (req, res) => {
     });
   }
 });
-
-
-
-
-
-
 
 // Actualiza los requisitos del área para un permiso específico
 router.put("/pt-altura/requisitos_area/:id", async (req, res) => {
@@ -150,12 +152,7 @@ router.put("/pt-altura/requisitos_area/:id", async (req, res) => {
         presion = $2,
         temperatura = $3
       WHERE id_permiso = $4`,
-      [
-        datos.fluido,
-        datos.presion,
-        datos.temperatura,
-        id,
-      ]
+      [datos.fluido, datos.presion, datos.temperatura, id]
     );
     res.json({ success: true });
   } catch (error) {
@@ -164,12 +161,47 @@ router.put("/pt-altura/requisitos_area/:id", async (req, res) => {
   }
 });
 
-
-
-
-
-
-
-
+// Actualiza los requisitos de riesgos para un permiso específico
+router.put("/requisitos_supervisor/:id_permiso", async (req, res) => {
+  const id = req.params.id;
+  const datos = req.body;
+  try {
+    await db.query(
+      `UPDATE pt_altura SET
+        proteccion_especial = $1,
+        proteccion_especial_cual = $2,
+        equipo_caidas = $3,
+        equipo_caidas_cual = $4,
+        linea_amortiguador = $5,
+        punto_fijo = $6,
+        linea_vida = $7,
+        andamio_completo_opcion = $8,
+        tarjeta_andamio = $9,
+        viento_permitido = $10,
+        escalera_condicion = $11
+      WHERE id_permiso = $12`,
+      [
+        datos.proteccion_especial,
+        datos.proteccion_especial_cual,
+        datos.equipo_caidas,
+        datos.equipo_caidas_cual,
+        datos.linea_amortiguador,
+        datos.punto_fijo,
+        datos.linea_vida,
+        datos.andamio_completo_opcion,
+        datos.tarjeta_andamio,
+        datos.viento_permitido,
+        datos.escalera_condicion,
+        id,
+      ]
+    );
+    res.json({ success: true });
+  } catch (error) {
+    console.error("Error al actualizar requisitos de riesgos:", error);
+    res
+      .status(500)
+      .json({ error: "Error al actualizar requisitos de riesgos" });
+  }
+});
 
 module.exports = router;

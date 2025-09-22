@@ -1,8 +1,9 @@
 const express = require("express");
+console.log("[DEBUG] formulario_confinados.js router cargado");
 const router = express.Router();
 const db = require("../../endpoints/database");
 
-// Ruta para insertar en la tabla pt_confinados
+// ...existing code...
 router.post("/pt-confinados", async (req, res) => {
   const {
     id_permiso,
@@ -195,6 +196,121 @@ router.put("/requisitos_area/:id", async (req, res) => {
   } catch (error) {
     console.error("Error al actualizar requisitos:", error);
     res.status(500).json({ error: "Error al actualizar requisitos" });
+  }
+});
+
+// Ruta PUT para actualizar los requisitos de supervisor y pruebas en pt_confinados
+router.put("/requisitos_supervisor/:id_permiso", async (req, res) => {
+  console.log(
+    `[DEBUG] PUT /requisitos_supervisor/${req.params.id_permiso} llamado`
+  );
+  console.log("[DEBUG] Body recibido:", req.body);
+  const { id_permiso } = req.params;
+  const {
+    proteccion_piel_cuerpo,
+    proteccion_piel_detalle,
+    proteccion_respiratoria,
+    proteccion_respiratoria_detalle,
+    proteccion_ocular,
+    proteccion_ocular_detalle,
+    arnes_seguridad,
+    cable_vida,
+    ventilacion_forzada_opcion,
+    ventilacion_forzada_detalle,
+    iluminacion_explosion,
+    prueba_gas_aprobado,
+    param_co2,
+    valor_co2,
+    param_amoniaco,
+    valor_amoniaco,
+    param_oxigeno,
+    valor_oxigeno,
+    param_explosividad_lel,
+    valor_explosividad_lel,
+    param_otro,
+    param_otro_detalle,
+    valor_otro,
+    observaciones,
+    vigilancia_exterior_opcion,
+  } = req.body;
+
+  const query = `
+    UPDATE pt_confinados SET
+      proteccion_piel_cuerpo = $1,
+      proteccion_piel_detalle = $2,
+      proteccion_respiratoria = $3,
+      proteccion_respiratoria_detalle = $4,
+      proteccion_ocular = $5,
+      proteccion_ocular_detalle = $6,
+      arnes_seguridad = $7,
+      cable_vida = $8,
+      ventilacion_forzada_opcion = $9,
+      ventilacion_forzada_detalle = $10,
+      iluminacion_explosion = $11,
+      prueba_gas_aprobado = $12,
+      param_co2 = $13,
+      valor_co2 = $14,
+      param_amoniaco = $15,
+      valor_amoniaco = $16,
+      param_oxigeno = $17,
+      valor_oxigeno = $18,
+      param_explosividad_lel = $19,
+      valor_explosividad_lel = $20,
+      param_otro = $21,
+      param_otro_detalle = $22,
+      valor_otro = $23,
+      observaciones = $24,
+      vigilancia_exterior_opcion = $25
+    WHERE id_permiso = $26
+    RETURNING *;
+  `;
+
+  const values = [
+    proteccion_piel_cuerpo,
+    proteccion_piel_detalle,
+    proteccion_respiratoria,
+    proteccion_respiratoria_detalle,
+    proteccion_ocular,
+    proteccion_ocular_detalle,
+    arnes_seguridad,
+    cable_vida,
+    ventilacion_forzada_opcion,
+    ventilacion_forzada_detalle,
+    iluminacion_explosion,
+    prueba_gas_aprobado,
+    param_co2,
+    valor_co2,
+    param_amoniaco,
+    valor_amoniaco,
+    param_oxigeno,
+    valor_oxigeno,
+    param_explosividad_lel,
+    valor_explosividad_lel,
+    param_otro,
+    param_otro_detalle,
+    valor_otro,
+    observaciones,
+    vigilancia_exterior_opcion,
+    id_permiso,
+  ];
+
+  try {
+    const result = await db.query(query, values);
+    if (result.rowCount === 0) {
+      return res
+        .status(404)
+        .json({ success: false, error: "Permiso no encontrado" });
+    }
+    res.json({ success: true, data: result.rows[0] });
+  } catch (error) {
+    console.error(
+      "Error al actualizar requisitos supervisor confinados:",
+      error
+    );
+    res.status(500).json({
+      success: false,
+      error: "Error al actualizar requisitos supervisor confinados",
+    });
   }
 });
 

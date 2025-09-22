@@ -1,3 +1,10 @@
+// Funciones para manejar el cambio de supervisor y categoría (evita error de referencia)
+function actualizarAprobador(value) {
+  // Puedes agregar lógica aquí si lo necesitas
+}
+function actualizarAprobador2(value) {
+  // Puedes agregar lógica aquí si lo necesitas
+}
 // Utilidad para asignar texto en un elemento por id
 function setText(id, value) {
   const el = document.getElementById(id);
@@ -6,6 +13,7 @@ function setText(id, value) {
 
 // Rellenar datos generales y medidas/requisitos
 function rellenarDatosGenerales(data) {
+  setText("prefijo-label", data.prefijo);
   setText("descripcion-trabajo-label", data.descripcion_trabajo);
   setText("maintenance-type-label", data.tipo_mantenimiento);
   setText("work-order-label", data.ot_numero);
@@ -195,21 +203,353 @@ function rellenarRequisitosYCondiciones(permiso) {
   setText("temperature", permiso.temperatura);
 }
 
-// Lógica principal para obtener y rellenar todos los datos
+// Lógica para rellenar supervisores y categorías en los select
+function rellenarSupervisoresYCategorias() {
+  // Ejemplo: consulta al backend para obtener supervisores y categorías
+  fetch("http://localhost:3000/api/supervisores")
+    .then((resp) => resp.json())
+    .then((data) => {
+      const selectSupervisor = document.getElementById("responsable-aprobador");
+      if (selectSupervisor) {
+        selectSupervisor.innerHTML =
+          '<option value="" disabled selected>Seleccione un supervisor...</option>';
+        // Si data es un array plano
+        (Array.isArray(data) ? data : data.supervisores).forEach((sup) => {
+          const option = document.createElement("option");
+          option.value = sup.nombre || sup.id;
+          option.textContent = sup.nombre;
+          selectSupervisor.appendChild(option);
+        });
+      }
+    });
+
+  fetch("http://localhost:3000/api/categorias")
+    .then((resp) => resp.json())
+    .then((data) => {
+      const selectCategoria = document.getElementById("responsable-aprobador2");
+      if (selectCategoria) {
+        selectCategoria.innerHTML =
+          '<option value="" disabled selected>Seleccione una categoria...</option>';
+        (Array.isArray(data) ? data : data.categorias).forEach((cat) => {
+          const option = document.createElement("option");
+          option.value = cat.nombre || cat.id;
+          option.textContent = cat.nombre;
+          selectCategoria.appendChild(option);
+        });
+      }
+    });
+}
+
 document.addEventListener("DOMContentLoaded", function () {
+  // --- Lógica para el botón "Autorizar" ---
+  // --- Lógica para el botón "Autorizar" ---
+  // --- Lógica para el botón "Autorizar" ---
+  // --- Lógica para el botón "Autorizar" ---
+  // --- Lógica para el botón "Autorizar" ---
+  const btnAutorizar = document.getElementById("btn-guardar-campos");
+  if (btnAutorizar) {
+    btnAutorizar.addEventListener("click", async function () {
+      const params = new URLSearchParams(window.location.search);
+      const idPermiso = params.get("id") || window.idPermisoActual;
+      const responsableInput = document.getElementById("responsable-aprobador");
+      const operadorInput = document.getElementById("responsable-aprobador2");
+      const supervisor = responsableInput ? responsableInput.value.trim() : "";
+      const categoria = operadorInput ? operadorInput.value.trim() : "";
+      if (!idPermiso) {
+        alert("No se pudo obtener el ID del permiso.");
+        return;
+      }
+      if (!supervisor) {
+        alert("Debes seleccionar el supervisor.");
+        return;
+      }
+      // 1. Actualizar supervisor y categoría en autorizaciones
+      try {
+        await fetch(
+          "http://localhost:3000/api/autorizaciones/supervisor-categoria",
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              id_permiso: idPermiso,
+              supervisor,
+              categoria,
+            }),
+          }
+        );
+      } catch (err) {
+        console.error("Error al actualizar supervisor y categoría:", err);
+      }
+
+      // 1.5 Actualizar requisitos de riesgos y pruebas de gas
+      // Obtener valores del formulario
+
+      // 1.5 Actualizar requisitos de riesgos y pruebas de gas
+      function getRadioValue(name) {
+        const radios = document.getElementsByName(name);
+        for (let r of radios) {
+          if (r.checked) return r.value;
+        }
+        return "";
+      }
+      function getInputValue(name) {
+        return document.querySelector(`[name="${name}"]`)?.value || "";
+      }
+
+      const proteccion_piel_cuerpo = getRadioValue("proteccion_piel_cuerpo");
+      const proteccion_piel_detalle = getInputValue(
+        "detalle_proteccion_piel_cuerpo"
+      );
+
+      const proteccion_respiratoria = getRadioValue("proteccion_respiratoria");
+      const proteccion_respiratoria_detalle = getInputValue(
+        "detalle_proteccion_respiratoria"
+      );
+
+      const proteccion_ocular = getRadioValue("proteccion_ocular");
+      const proteccion_ocular_detalle = getInputValue(
+        "detalle_proteccion_ocular"
+      );
+
+      const arnes_seguridad = getRadioValue("arnes_seguridad");
+      const cable_vida = getRadioValue("cable_vida");
+
+      const ventilacion_forzada_opcion = getRadioValue("ventilacion_forzada");
+      const ventilacion_forzada_detalle = getInputValue(
+        "detalle_ventilacion_forzada"
+      );
+
+      const iluminacion_explosion = getRadioValue("iluminacion_explosion");
+      const vigilancia_exterior_opcion = getRadioValue("vigilancia_exterior");
+
+      // Prueba de gas
+      const prueba_gas_aprobado = ""; // Si tienes un radio general para esto, mapea aquí
+
+      const param_co2 = getRadioValue("co2_aprobado");
+      const valor_co2 = getInputValue("co2_valor");
+
+      const param_amoniaco = getRadioValue("amniaco_aprobado");
+      const valor_amoniaco = getInputValue("amniaco_valor");
+
+      const param_oxigeno = getRadioValue("oxigeno_aprobado");
+      const valor_oxigeno = getInputValue("oxigeno_valor");
+
+      const param_explosividad_lel = getRadioValue("lel_aprobado");
+      const valor_explosividad_lel = getInputValue("lel_valor");
+
+      const param_otro = getRadioValue("otro_aprobado");
+      const param_otro_detalle = ""; // Si tienes un input para detalle de otro parámetro
+      const valor_otro = getInputValue("otro_valor");
+
+      const observaciones = getInputValue("observaciones_gas");
+
+      try {
+        // --- DEBUG: Mostrar payload enviado al backend ---
+        const payloadSupervisor = {
+          proteccion_piel_cuerpo,
+          proteccion_piel_detalle,
+          proteccion_respiratoria,
+          proteccion_respiratoria_detalle,
+          proteccion_ocular,
+          proteccion_ocular_detalle,
+          arnes_seguridad,
+          cable_vida,
+          ventilacion_forzada_opcion,
+          ventilacion_forzada_detalle,
+          iluminacion_explosion,
+          prueba_gas_aprobado,
+          param_co2,
+          valor_co2,
+          param_amoniaco,
+          valor_amoniaco,
+          param_oxigeno,
+          valor_oxigeno,
+          param_explosividad_lel,
+          valor_explosividad_lel,
+          param_otro,
+          param_otro_detalle,
+          valor_otro,
+          observaciones,
+          vigilancia_exterior_opcion,
+        };
+        console.log(
+          "Payload enviado a /pt-confinado/requisitos_supervisor:",
+          payloadSupervisor
+        );
+        await fetch(
+          `http://localhost:3000/api/requisitos_supervisor/${idPermiso}`,
+
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payloadSupervisor),
+          }
+        );
+      } catch (err) {
+        console.error(
+          "Error al actualizar requisitos supervisor y pruebas:",
+          err
+        );
+      }
+
+      // 2. Consultar el id_estatus desde permisos_trabajo
+      let idEstatus = null;
+      try {
+        const respEstatus = await fetch(
+          `http://localhost:3000/api/permisos-trabajo/${idPermiso}`
+        );
+        if (respEstatus.ok) {
+          const permisoData = await respEstatus.json();
+          idEstatus =
+            permisoData.id_estatus ||
+            (permisoData.data && permisoData.data.id_estatus);
+        }
+      } catch (err) {
+        console.error("Error al consultar id_estatus:", err);
+      }
+      // 3. Actualizar el estatus a "activo"
+      if (idEstatus) {
+        try {
+          await fetch("http://localhost:3000/api/estatus/activo", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id_estatus: idEstatus }),
+          });
+        } catch (err) {
+          console.error("Error al actualizar estatus activo:", err);
+        }
+      }
+      alert("Permiso autorizado correctamente");
+      window.location.href = "/Modules/SupSeguridad/supseguridad.html";
+    });
+  }
+
+  //
+  //
+  // ACA TERMINA LA LOGICA DEL BOTON AUTORIZAR
+  //
+  //
+
+  // --- Lógica para el botón "Salir" ---
+  const btnSalir = document.getElementById("btn-salir-nuevo");
+  if (btnSalir) {
+    btnSalir.addEventListener("click", function () {
+      window.location.href = "/Modules/SupSeguridad/supseguridad.html";
+    });
+  }
+  // --- Lógica para el botón "No Autorizar" ---
+  const btnNoAutorizar = document.getElementById("btn-no-autorizar");
+  if (btnNoAutorizar) {
+    btnNoAutorizar.addEventListener("click", async function () {
+      const params = new URLSearchParams(window.location.search);
+      const idPermiso = params.get("id") || window.idPermisoActual;
+      const responsableInput = document.getElementById("responsable-aprobador");
+      const operadorInput = document.getElementById("responsable-aprobador2");
+      const supervisor = responsableInput ? responsableInput.value.trim() : "";
+      const categoria = operadorInput ? operadorInput.value.trim() : "";
+      if (!idPermiso) {
+        alert("No se pudo obtener el ID del permiso.");
+        return;
+      }
+      if (!supervisor) {
+        alert("Debes seleccionar el supervisor antes de rechazar.");
+        return;
+      }
+      // Mostrar el modal para capturar el comentario de rechazo
+      const modal = document.getElementById("modalComentario");
+      if (modal) {
+        modal.style.display = "flex";
+        document.getElementById("comentarioNoAutorizar").value = "";
+      }
+
+      // Lógica para guardar el comentario y actualizar estatus a No Autorizado
+      const btnGuardarComentario = document.getElementById(
+        "btnGuardarComentario"
+      );
+      if (btnGuardarComentario) {
+        btnGuardarComentario.onclick = async function () {
+          const comentario = document
+            .getElementById("comentarioNoAutorizar")
+            .value.trim();
+          if (!comentario) {
+            alert("Debes escribir un motivo de rechazo.");
+            return;
+          }
+          // 1. Actualizar supervisor y categoría en autorizaciones
+          try {
+            await fetch(
+              "http://localhost:3000/api/autorizaciones/supervisor-categoria",
+              {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  id_permiso: idPermiso,
+                  supervisor,
+                  categoria,
+                  comentario_no_autorizar: comentario,
+                }),
+              }
+            );
+          } catch (err) {
+            console.error("Error al actualizar supervisor y categoría:", err);
+          }
+          // 2. Consultar el id_estatus desde permisos_trabajo
+          let idEstatus = null;
+          try {
+            const respEstatus = await fetch(
+              `http://localhost:3000/api/permisos-trabajo/${idPermiso}`
+            );
+            if (respEstatus.ok) {
+              const permisoData = await respEstatus.json();
+              idEstatus =
+                permisoData.id_estatus ||
+                (permisoData.data && permisoData.data.id_estatus);
+            }
+          } catch (err) {
+            console.error("Error al consultar id_estatus:", err);
+          }
+          // 3. Actualizar el estatus a "no autorizado" y guardar el comentario en la tabla estatus
+          if (idEstatus) {
+            try {
+              await fetch("http://localhost:3000/api/estatus/no_autorizado", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id_estatus: idEstatus }),
+              });
+              // Guardar el comentario en la tabla estatus
+              await fetch("http://localhost:3000/api/estatus/comentario", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id_estatus: idEstatus, comentario }),
+              });
+            } catch (err) {
+              console.error("Error al actualizar estatus no autorizado:", err);
+            }
+          }
+          // 4. Cerrar el modal y mostrar mensaje de éxito
+          const modal = document.getElementById("modalComentario");
+          if (modal) modal.style.display = "none";
+          alert("Permiso no autorizado correctamente");
+          window.location.href = "/Modules/SupSeguridad/supseguridad.html";
+        };
+      }
+      // Lógica para cerrar/cancelar el modal
+      const btnCancelarComentario = document.getElementById(
+        "btnCancelarComentario"
+      );
+      if (btnCancelarComentario) {
+        btnCancelarComentario.onclick = function () {
+          const modal = document.getElementById("modalComentario");
+          if (modal) modal.style.display = "none";
+        };
+      }
+    });
+  }
+
   const params = new URLSearchParams(window.location.search);
   const idPermiso = params.get("id");
   if (idPermiso) {
-    fetch(`http://localhost:3000/api/pt-confinado/${idPermiso}`)
-      .then((resp) => resp.json())
-      .then((data) => {
-        if (data && data.data) {
-          rellenarDatosGenerales(data.data);
-          rellenarRequisitosTrabajo(data.data);
-          rellenarRequisitosYCondiciones(data.data);
-        }
-      });
-
+    // Obtener datos generales y prefijo
     fetch(
       `http://localhost:3000/api/verformularios?id=${encodeURIComponent(
         idPermiso
@@ -217,6 +557,16 @@ document.addEventListener("DOMContentLoaded", function () {
     )
       .then((resp) => resp.json())
       .then((data) => {
+        // Prefijo en el título
+        if (data && data.general && document.getElementById("prefijo-label")) {
+          document.getElementById("prefijo-label").textContent =
+            data.general.prefijo || "-";
+        }
+        // Rellenar datos generales si existen
+        if (data && data.general) {
+          rellenarDatosGenerales(data.general);
+        }
+        // Rellenar AST y Participantes
         if (data && data.ast) {
           mostrarAST(data.ast);
         } else {
@@ -233,5 +583,17 @@ document.addEventListener("DOMContentLoaded", function () {
           mostrarParticipantesAST([]);
         }
       });
+
+    // Obtener datos específicos del permiso para otros campos
+    fetch(`http://localhost:3000/api/pt-confinado/${idPermiso}`)
+      .then((resp) => resp.json())
+      .then((data) => {
+        if (data && data.data) {
+          rellenarDatosGenerales(data.data);
+          rellenarRequisitosTrabajo(data.data);
+          rellenarRequisitosYCondiciones(data.data);
+        }
+      });
   }
+  rellenarSupervisoresYCategorias();
 });

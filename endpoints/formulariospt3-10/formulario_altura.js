@@ -163,8 +163,8 @@ router.put("/pt-altura/requisitos_area/:id", async (req, res) => {
 });
 
 // Actualiza los requisitos de riesgos para un permiso específico
-router.put("/requisitos_supervisor/:id_permiso", async (req, res) => {
-  const id = req.params.id;
+router.put("/altura/requisitos_supervisor/:id_permiso", async (req, res) => {
+  const id = req.params.id_permiso;
   const datos = req.body;
   try {
     await db.query(

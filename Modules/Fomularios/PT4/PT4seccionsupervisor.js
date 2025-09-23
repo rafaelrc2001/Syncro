@@ -1,3 +1,24 @@
+// --- Funciones de utilidad ---
+function getRadioValue(name) {
+  const radios = document.getElementsByName(name);
+  for (let r of radios) {
+    if (r.checked) return r.value;
+  }
+  return "";
+}
+
+function getInputValue(name) {
+  return document.querySelector(`[name="${name}"]`)?.value || "";
+}
+
+// Nueva función para manejar checkboxes de SI/NO/NA
+function getCheckboxValue(baseName) {
+  if (document.querySelector(`[name="${baseName}_si"]`)?.checked) return "SI";
+  if (document.querySelector(`[name="${baseName}_no"]`)?.checked) return "NO";
+  if (document.querySelector(`[name="${baseName}_na"]`)?.checked) return "N/A";
+  return "";
+}
+
 // --- AST, Actividades, Participantes, Supervisores y Categorías ---
 function mostrarAST(ast) {
   const eppList = document.getElementById("modal-epp-list");
@@ -340,3 +361,110 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+
+// --- Lógica para el botón "Autorizar" ---
+const btnAutorizar = document.getElementById("btn-guardar-campos");
+if (btnAutorizar) {
+  btnAutorizar.addEventListener("click", async function () {
+    const params = new URLSearchParams(window.location.search);
+    const idPermiso = params.get("id") || window.idPermisoActual;
+    const responsableInput = document.getElementById("responsable-aprobador");
+    const operadorInput = document.getElementById("responsable-aprobador2");
+    const supervisor = responsableInput ? responsableInput.value.trim() : "";
+    const categoria = operadorInput ? operadorInput.value.trim() : "";
+
+    if (!idPermiso) {
+      alert("No se pudo obtener el ID del permiso.");
+      return;
+    }
+    if (!supervisor) {
+      alert("Debes seleccionar el supervisor.");
+      return;
+    }
+
+    // 1. Actualizar supervisor y categoría en autorizaciones
+    try {
+      await fetch(
+        "http://localhost:3000/api/autorizaciones/supervisor-categoria",
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id_permiso: idPermiso,
+            supervisor,
+            categoria,
+          }),
+        }
+      );
+    } catch (err) {
+      console.error("Error al actualizar supervisor y categoría:", err);
+    }
+
+    // 1.5 Actualizar requisitos de riesgos y pruebas específicos para altura
+    const payloadSupervisor = {
+      proteccion_especial: getCheckboxValue("proteccion_especial"),
+      proteccion_especial_cual: getInputValue("proteccion_especial_cual"),
+      equipo_caidas: getCheckboxValue("equipo_caidas"),
+      equipo_caidas_cual: getInputValue("equipo_caidas_cual"),
+      linea_amortiguador: getCheckboxValue("linea_amortiguador"),
+      punto_fijo: getCheckboxValue("punto_fijo"),
+      linea_vida: getCheckboxValue("linea_vida"),
+      andamio_completo_opcion: getCheckboxValue("andamio_completo"),
+      tarjeta_andamio: getCheckboxValue("tarjeta_andamio"),
+      viento_permitido: getCheckboxValue("viento_permitido"),
+      escalera_condicion: getCheckboxValue("escalera_condicion"),
+    };
+
+    try {
+      console.log(
+        "Payload enviado a /requisitos_supervisor para altura:",
+        payloadSupervisor
+      );
+      await fetch(
+        `http://localhost:3000/api/altura/requisitos_supervisor/${idPermiso}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payloadSupervisor),
+        }
+      );
+    } catch (err) {
+      console.error(
+        "Error al actualizar requisitos supervisor y pruebas:",
+        err
+      );
+    }
+
+    // 2. Consultar id_estatus
+    let idEstatus = null;
+    try {
+      const respEstatus = await fetch(
+        `http://localhost:3000/api/permisos-trabajo/${idPermiso}`
+      );
+      if (respEstatus.ok) {
+        const permisoData = await respEstatus.json();
+        idEstatus =
+          permisoData.id_estatus ||
+          (permisoData.data && permisoData.data.id_estatus);
+      }
+    } catch (err) {
+      console.error("Error al consultar id_estatus:", err);
+    }
+
+    // 3. Actualizar estatus a "activo"
+    if (idEstatus) {
+      try {
+        await fetch("http://localhost:3000/api/estatus/activo", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id_estatus: idEstatus }),
+        });
+      } catch (err) {
+        console.error("Error al actualizar estatus activo:", err);
+      }
+    }
+
+    alert("Permiso autorizado correctamente");
+    window.location.href = "/Modules/SupSeguridad/supseguridad.html";
+  });
+}

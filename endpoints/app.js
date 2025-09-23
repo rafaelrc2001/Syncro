@@ -30,7 +30,12 @@ const PORT = process.env.PORT || 3000;
 
 // Configuración de CORS (debe ir antes de cualquier ruta)
 const corsOptions = {
-  origin: ["http://localhost:5500", "http://127.0.0.1:5500"],
+  origin: [
+    "http://localhost:5500",
+    "http://127.0.0.1:5500",
+    "http://localhost:5501",
+    "http://127.0.0.1:5501",
+  ],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],

@@ -544,3 +544,24 @@ el de pt_fuegoALTER TABLE pt_fuego
     ADD COLUMN presion VARCHAR(50),
     ADD COLUMN temperatura VARCHAR(50);
 
+
+
+
+
+-- esta es la de fuego:
+
+
+ALTER TABLE pt_fuego 
+ADD COLUMN explosividad_interior VARCHAR(2) NULL,
+ADD COLUMN explosividad_exterior VARCHAR(2) NULL,
+ADD COLUMN vigia_contraincendio VARCHAR(2) NULL,
+ADD COLUMN manguera_contraincendio VARCHAR(2) NULL,
+ADD COLUMN cortina_agua VARCHAR(2) NULL,
+ADD COLUMN extintor_contraincendio VARCHAR(2) NULL,
+ADD COLUMN cubrieron_drenajes VARCHAR(2) NULL,
+ADD COLUMN co2 VARCHAR(2) NULL,
+ADD COLUMN amoniaco VARCHAR(2) NULL,
+ADD COLUMN oxigeno VARCHAR(2) NULL,
+ADD COLUMN explosividad_lel VARCHAR(2) NULL,
+ADD COLUMN otro_gas_cual VARCHAR(255) NULL,
+ADD COLUMN observaciones_gas TEXT NULL;

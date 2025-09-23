@@ -455,8 +455,22 @@ if (btnAutorizar) {
 
     // 1.5 Actualizar requisitos de riesgos específicos para fuego
     const payloadSupervisor = {
-      // Aquí agregar los campos específicos que el supervisor puede autorizar para PT5 (fuego)
-      // Por ejemplo, si hay campos específicos del supervisor en formularios de fuego
+      // Verificación para administrar los riesgos
+      explosividad_interior: getRadioValue("explosividad_interior"),
+      explosividad_exterior: getRadioValue("explosividad_exterior"),
+      vigia_contraincendio: getRadioValue("vigia_contraincendio"),
+      manguera_contraincendio: getRadioValue("manguera_contraincendio"),
+      cortina_agua: getRadioValue("cortina_agua"),
+      extintor_contraincendio: getRadioValue("extintor_contraincendio"),
+      cubrieron_drenajes: getRadioValue("cubrieron_drenajes"),
+
+      // Prueba de gas
+      co2: getRadioValue("co2"),
+      amoniaco: getRadioValue("amoniaco"),
+      oxigeno: getRadioValue("oxigeno"),
+      explosividad_lel: getRadioValue("explosividad_lel"),
+      otro_gas_cual: getInputValue("otro_gas_cual"),
+      observaciones_gas: getInputValue("observaciones_gas"),
     };
 
     try {

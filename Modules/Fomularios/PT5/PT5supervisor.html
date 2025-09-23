@@ -194,7 +194,127 @@
                     </div>
                 </div>
 
+            <!-- Verificación para administrar los riesgos -->
+            <div class="executive-section">
+                <div class="section-header section-header-cielo">
+                    <i class="ri-shield-check-line"></i>
+                    <h3>Verificación para administrar los riesgos</h3>
+                </div>
+                <table class="styled-table">
+                    <thead class="thead-nopeligroso">
+                        <tr>
+                            <th>Verificación para administrar los riesgos</th>
+                            <th>SI</th>
+                            <th>NO</th>
+                            <th>N/A</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>¿Se realizó prueba de explosividad en el interior?</td>
+                            <td><input type="radio" name="explosividad_interior" value="si" id="explosividad_interior_si"></td>
+                            <td><input type="radio" name="explosividad_interior" value="no" id="explosividad_interior_no"></td>
+                            <td><input type="radio" name="explosividad_interior" value="na" id="explosividad_interior_na"></td>
+                        </tr>
+                        <tr>
+                            <td>¿Se realizó prueba de explosividad en el exterior?</td>
+                            <td><input type="radio" name="explosividad_exterior" value="si" id="explosividad_exterior_si"></td>
+                            <td><input type="radio" name="explosividad_exterior" value="no" id="explosividad_exterior_no"></td>
+                            <td><input type="radio" name="explosividad_exterior" value="na" id="explosividad_exterior_na"></td>
+                        </tr>
+                        <tr>
+                            <td>Vigía contraincendio</td>
+                            <td><input type="radio" name="vigia_contraincendio" value="si" id="vigia_contraincendio_si"></td>
+                            <td><input type="radio" name="vigia_contraincendio" value="no" id="vigia_contraincendio_no"></td>
+                            <td><input type="radio" name="vigia_contraincendio" value="na" id="vigia_contraincendio_na"></td>
+                        </tr>
+                        <tr>
+                            <td>¿Se instaló manguera contraincendio?</td>
+                            <td><input type="radio" name="manguera_contraincendio" value="si" id="manguera_contraincendio_si"></td>
+                            <td><input type="radio" name="manguera_contraincendio" value="no" id="manguera_contraincendio_no"></td>
+                            <td><input type="radio" name="manguera_contraincendio" value="na" id="manguera_contraincendio_na"></td>
+                        </tr>
+                        <tr>
+                            <td>¿Se instaló protección con cortina de agua?</td>
+                            <td><input type="radio" name="cortina_agua" value="si" id="cortina_agua_si"></td>
+                            <td><input type="radio" name="cortina_agua" value="no" id="cortina_agua_no"></td>
+                            <td><input type="radio" name="cortina_agua" value="na" id="cortina_agua_na"></td>
+                        </tr>
+                        <tr>
+                            <td>¿Se instaló extintor contraincendio?</td>
+                            <td><input type="radio" name="extintor_contraincendio" value="si" id="extintor_contraincendio_si"></td>
+                            <td><input type="radio" name="extintor_contraincendio" value="no" id="extintor_contraincendio_no"></td>
+                            <td><input type="radio" name="extintor_contraincendio" value="na" id="extintor_contraincendio_na"></td>
+                        </tr>
+                        <tr>
+                            <td>¿Se cubrieron drenajes y equipo delicados?</td>
+                            <td><input type="radio" name="cubrieron_drenajes" value="si" id="cubrieron_drenajes_si"></td>
+                            <td><input type="radio" name="cubrieron_drenajes" value="no" id="cubrieron_drenajes_no"></td>
+                            <td><input type="radio" name="cubrieron_drenajes" value="na" id="cubrieron_drenajes_na"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Prueba de gas -->
+            <div class="executive-section">
+                <div class="section-header section-header-cielo">
+                    <i class="ri-flask-line"></i>
+                    <h3>Prueba de gas</h3>
+                </div>
                 
+                
+                <table class="styled-table">
+                    <thead class="thead-nopeligroso">
+                        <tr>
+                            <th>Tipo de Gas</th>
+                            <th>SI</th>
+                            <th>NO</th>
+                            <th>N/A</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>% de CO2:</td>
+                            <td><input type="radio" name="co2" value="si" id="co2_si"></td>
+                            <td><input type="radio" name="co2" value="no" id="co2_no"></td>
+                            <td><input type="radio" name="co2" value="na" id="co2_na"></td>
+                        </tr>
+                        <tr>
+                            <td>% Amoniaco:</td>
+                            <td><input type="radio" name="amoniaco" value="si" id="amoniaco_si"></td>
+                            <td><input type="radio" name="amoniaco" value="no" id="amoniaco_no"></td>
+                            <td><input type="radio" name="amoniaco" value="na" id="amoniaco_na"></td>
+                        </tr>
+                        <tr>
+                            <td>% de Oxígeno:</td>
+                            <td><input type="radio" name="oxigeno" value="si" id="oxigeno_si"></td>
+                            <td><input type="radio" name="oxigeno" value="no" id="oxigeno_no"></td>
+                            <td><input type="radio" name="oxigeno" value="na" id="oxigeno_na"></td>
+                        </tr>
+                        <tr>
+                            <td>% de Explosividad LEL:</td>
+                            <td><input type="radio" name="explosividad_lel" value="si" id="explosividad_lel_si"></td>
+                            <td><input type="radio" name="explosividad_lel" value="no" id="explosividad_lel_no"></td>
+                            <td><input type="radio" name="explosividad_lel" value="na" id="explosividad_lel_na"></td>
+                        </tr>
+                        <tr>
+                            <td>otro ¿Cuál?:</td>
+                            <td colspan="3">
+                                <input type="text" id="otro_gas_cual" name="otro_gas_cual" 
+                                       style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-family: inherit;" 
+                                       placeholder="Especifique el tipo de gas...">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="executive-item" style="margin-top: 20px;">
+                    <label for="observaciones_gas">Observaciones:</label>
+                    <textarea id="observaciones_gas" rows="4" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; resize: vertical; font-family: inherit;" placeholder="Escriba sus observaciones aquí..."></textarea>
+                </div>
+            </div>
+
             <!-- Sección AST y Participantes -->
                 <div class="executive-section">
                     <div class="section-header">

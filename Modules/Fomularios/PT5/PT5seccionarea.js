@@ -28,28 +28,33 @@ if (btnGuardarCampos) {
       const checked = document.querySelector(`input[name='${name}']:checked`);
       return checked ? checked.value : null;
     }
-    // Construir payload
+    // Construir payload - solo campos que existen en el HTML
     const payload = {
-      fuera_operacion: getRadio("fuera_operacion"),
-      despresurizado_purgado: getRadio("despresurizado_purgado"),
-      necesita_aislamiento: getRadio("necesita_aislamiento"),
-      con_valvulas: getRadio("con_valvulas"),
-      con_juntas_ciegas: getRadio("con_juntas_ciegas"),
+      fuera_operacion: getRadio("equipo_fuera_operacion"),
+      despresurizado_purgado: getRadio("equipo_despresionado_purgado"),
       producto_entrampado: getRadio("producto_entrampado"),
-      requiere_lavado: getRadio("requiere_lavado"),
-      requiere_neutralizado: getRadio("requiere_neutralizado"),
-      requiere_vaporizado: getRadio("requiere_vaporizado"),
-      suspender_trabajos_adyacentes: getRadio("suspender_trabajos_adyacentes"),
+      necesita_aislamiento: getRadio("equipo_tuberia_fuera_operacion"),
+      con_juntas_ciegas: getRadio("equipo_tuberia_aislado_junta_ciega"),
+      requiere_lavado: getRadio("equipo_tuberia_lavado_vaporizado"),
+      requiere_neutralizado: getRadio("residuos_interior"),
+      requiere_vaporizado: getRadio("prueba_explosividad_interior"),
+      suspender_trabajos_adyacentes: getRadio("prueba_explosividad_exterior"),
+      prueba_gas_toxico_inflamable: getRadio("acumulacion_gases_combustion"),
+      equipo_electrico_desenergizado: getRadio("permisos_trabajos_adicionales"),
       acordonar_area: getRadio("acordonar_area"),
-      prueba_gas_toxico_inflamable: getRadio("prueba_gas_toxico_inflamable"),
-      equipo_electrico_desenergizado: getRadio(
-        "equipo_electrico_desenergizado"
-      ),
-      tapar_purgas_drenajes: getRadio("tapar_purgas_drenajes"),
+      tapar_purgas_drenajes: getRadio("equipo_contraincendio"),
+      // Medidas/requisitos del ejecutor
+      ventilacion_forzada: getRadio("ventilacion_forzada"),
+      limpieza_interior: getRadio("limpieza_interior"),
+      instalo_ventilacion_forzada: getRadio("instalo_ventilacion_forzada"),
+      equipo_conectado_tierra: getRadio("equipo_conectado_tierra"),
+      cables_pasan_drenajes: getRadio("cables_pasan_drenajes"),
+      cables_uniones_intermedias: getRadio("cables_uniones_intermedias"),
+      equipo_proteccion_personal: getRadio("equipo_proteccion_personal"),
+      // Condiciones del proceso
       fluido: document.getElementById("fluid").value,
       presion: document.getElementById("pressure").value,
       temperatura: document.getElementById("temperature").value,
-      // Puedes agregar más campos aquí si los necesitas
     };
     try {
       const resp = await fetch(
@@ -281,10 +286,13 @@ if (idPermiso) {
         setText("work-order-label", permiso.ot_numero || "-");
         setText("tag-label", permiso.tag || "-");
         setText("start-time-label", permiso.hora_inicio || "-");
-        //setText("has-equipment-label", permiso.tiene_equipo_intervenir || "-");
+        setText(
+          "descripcion-trabajo-label",
+          permiso.descripcion_trabajo || "-"
+        );
         setText(
           "equipment-description-label",
-          permiso.descripcion_equipo || "-"
+          permiso.equipo_intervenir || "-"
         );
         setText(
           "special-tools-label",
@@ -307,27 +315,72 @@ if (idPermiso) {
           "final-observations-label",
           permiso.observaciones_medidas || "-"
         );
-        // Radios de requisitos
-        const radios = [
-          "fuera_operacion",
-          "despresurizado_purgado",
-          "necesita_aislamiento",
-          "con_valvulas",
-          "con_juntas_ciegas",
-          "producto_entrampado",
-          "requiere_lavado",
-          "requiere_neutralizado",
-          "requiere_vaporizado",
-          "suspender_trabajos_adyacentes",
-          "acordonar_area",
-          "prueba_gas_toxico_inflamable",
-          "equipo_electrico_desenergizado",
-          "tapar_purgas_drenajes",
+        // Radios de requisitos - mapear desde backend a nombres HTML existentes
+        const radioMappings = [
+          { backend: "fuera_operacion", html: "equipo_fuera_operacion" },
+          {
+            backend: "despresurizado_purgado",
+            html: "equipo_despresionado_purgado",
+          },
+          { backend: "producto_entrampado", html: "producto_entrampado" },
+          {
+            backend: "necesita_aislamiento",
+            html: "equipo_tuberia_fuera_operacion",
+          },
+          {
+            backend: "con_juntas_ciegas",
+            html: "equipo_tuberia_aislado_junta_ciega",
+          },
+          {
+            backend: "requiere_lavado",
+            html: "equipo_tuberia_lavado_vaporizado",
+          },
+          { backend: "requiere_neutralizado", html: "residuos_interior" },
+          {
+            backend: "requiere_vaporizado",
+            html: "prueba_explosividad_interior",
+          },
+          {
+            backend: "suspender_trabajos_adyacentes",
+            html: "prueba_explosividad_exterior",
+          },
+          {
+            backend: "prueba_gas_toxico_inflamable",
+            html: "acumulacion_gases_combustion",
+          },
+          {
+            backend: "equipo_electrico_desenergizado",
+            html: "permisos_trabajos_adicionales",
+          },
+          { backend: "acordonar_area", html: "acordonar_area" },
+          { backend: "tapar_purgas_drenajes", html: "equipo_contraincendio" },
+          // Medidas/requisitos del ejecutor
+          { backend: "ventilacion_forzada", html: "ventilacion_forzada" },
+          { backend: "limpieza_interior", html: "limpieza_interior" },
+          {
+            backend: "instalo_ventilacion_forzada",
+            html: "instalo_ventilacion_forzada",
+          },
+          {
+            backend: "equipo_conectado_tierra",
+            html: "equipo_conectado_tierra",
+          },
+          { backend: "cables_pasan_drenajes", html: "cables_pasan_drenajes" },
+          {
+            backend: "cables_uniones_intermedias",
+            html: "cables_uniones_intermedias",
+          },
+          {
+            backend: "equipo_proteccion_personal",
+            html: "equipo_proteccion_personal",
+          },
         ];
-        radios.forEach((name) => {
-          if (permiso[name]) {
+        radioMappings.forEach((mapping) => {
+          if (permiso[mapping.backend]) {
             const radio = document.querySelector(
-              `input[name='${name}'][value='${permiso[name]}']`
+              `input[name='${mapping.html}'][value='${
+                permiso[mapping.backend]
+              }']`
             );
             if (radio) radio.checked = true;
           }
@@ -368,26 +421,31 @@ document.addEventListener("DOMContentLoaded", function () {
         const checked = document.querySelector(`input[name='${name}']:checked`);
         return checked ? checked.value : null;
       }
-      // Construir payload
+      // Construir payload - solo campos que existen en el HTML
       const payload = {
-        fuera_operacion: getRadio("fuera_operacion"),
-        despresurizado_purgado: getRadio("despresurizado_purgado"),
-        necesita_aislamiento: getRadio("necesita_aislamiento"),
-        con_valvulas: getRadio("con_valvulas"),
-        con_juntas_ciegas: getRadio("con_juntas_ciegas"),
+        fuera_operacion: getRadio("equipo_fuera_operacion"),
+        despresurizado_purgado: getRadio("equipo_despresionado_purgado"),
         producto_entrampado: getRadio("producto_entrampado"),
-        requiere_lavado: getRadio("requiere_lavado"),
-        requiere_neutralizado: getRadio("requiere_neutralizado"),
-        requiere_vaporizado: getRadio("requiere_vaporizado"),
-        suspender_trabajos_adyacentes: getRadio(
-          "suspender_trabajos_adyacentes"
+        necesita_aislamiento: getRadio("equipo_tuberia_fuera_operacion"),
+        con_juntas_ciegas: getRadio("equipo_tuberia_aislado_junta_ciega"),
+        requiere_lavado: getRadio("equipo_tuberia_lavado_vaporizado"),
+        requiere_neutralizado: getRadio("residuos_interior"),
+        requiere_vaporizado: getRadio("prueba_explosividad_interior"),
+        suspender_trabajos_adyacentes: getRadio("prueba_explosividad_exterior"),
+        prueba_gas_toxico_inflamable: getRadio("acumulacion_gases_combustion"),
+        equipo_electrico_desenergizado: getRadio(
+          "permisos_trabajos_adicionales"
         ),
         acordonar_area: getRadio("acordonar_area"),
-        prueba_gas_toxico_inflamable: getRadio("prueba_gas_toxico_inflamable"),
-        equipo_electrico_desenergizado: getRadio(
-          "equipo_electrico_desenergizado"
-        ),
-        tapar_purgas_drenajes: getRadio("tapar_purgas_drenajes"),
+        tapar_purgas_drenajes: getRadio("equipo_contraincendio"),
+        // Medidas/requisitos del ejecutor
+        ventilacion_forzada: getRadio("ventilacion_forzada"),
+        limpieza_interior: getRadio("limpieza_interior"),
+        instalo_ventilacion_forzada: getRadio("instalo_ventilacion_forzada"),
+        equipo_conectado_tierra: getRadio("equipo_conectado_tierra"),
+        cables_pasan_drenajes: getRadio("cables_pasan_drenajes"),
+        cables_uniones_intermedias: getRadio("cables_uniones_intermedias"),
+        equipo_proteccion_personal: getRadio("equipo_proteccion_personal"),
       };
       try {
         const resp = await fetch(
@@ -501,6 +559,17 @@ document.addEventListener("DOMContentLoaded", function () {
     )
       .then((resp) => resp.json())
       .then((data) => {
+        // Prefijo en el título y descripción del trabajo
+        if (data && data.general) {
+          if (document.querySelector(".section-header h3")) {
+            document.querySelector(".section-header h3").textContent =
+              data.general.prefijo || "PT-XXXXXX";
+          }
+          if (document.getElementById("descripcion-trabajo-label")) {
+            document.getElementById("descripcion-trabajo-label").textContent =
+              data.general.descripcion_trabajo || "-";
+          }
+        }
         // Llenar campos generales usando data.data
         if (data && data.data) {
           const detalles = data.data;
@@ -518,7 +587,10 @@ document.addEventListener("DOMContentLoaded", function () {
               detalles.hora_inicio || "-";
           if (document.getElementById("equipment-description-label"))
             document.getElementById("equipment-description-label").textContent =
-              detalles.descripcion_equipo || "-";
+              detalles.equipo_intervenir || "-";
+          if (document.getElementById("descripcion-trabajo-label"))
+            document.getElementById("descripcion-trabajo-label").textContent =
+              detalles.descripcion_trabajo || "-";
           if (document.getElementById("special-tools-label"))
             document.getElementById("special-tools-label").textContent =
               detalles.requiere_herramientas_especiales || "-";

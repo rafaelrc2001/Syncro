@@ -510,3 +510,37 @@ ALTER TABLE IF EXISTS public.pt_radiacion
     ON DELETE NO ACTION;
 
 END;
+
+
+
+el de pt_fuegoALTER TABLE pt_fuego
+    -- Requisitos para efectuar el trabajo
+    ADD COLUMN fuera_operacion VARCHAR(50),
+    ADD COLUMN despresurizado_purgado VARCHAR(50),
+    ADD COLUMN producto_entrampado VARCHAR(50),
+    ADD COLUMN necesita_aislamiento VARCHAR(50),
+    ADD COLUMN con_valvulas VARCHAR(50),
+    ADD COLUMN con_juntas_ciegas VARCHAR(50),
+    ADD COLUMN requiere_lavado VARCHAR(50),
+    ADD COLUMN requiere_neutralizado VARCHAR(50),
+    ADD COLUMN requiere_vaporizado VARCHAR(50),
+    ADD COLUMN suspender_trabajos_adyacentes VARCHAR(50),
+    ADD COLUMN acordonar_area VARCHAR(50),
+    ADD COLUMN prueba_gas_toxico_inflamable VARCHAR(50),
+    ADD COLUMN equipo_electrico_desenergizado VARCHAR(50),
+    ADD COLUMN tapar_purgas_drenajes VARCHAR(50),
+
+    -- Medidas / requisitos del ejecutor
+    ADD COLUMN ventilacion_forzada VARCHAR(50),
+    ADD COLUMN limpieza_interior VARCHAR(50),
+    ADD COLUMN instalo_ventilacion_forzada VARCHAR(50),
+    ADD COLUMN equipo_conectado_tierra VARCHAR(50),
+    ADD COLUMN cables_pasan_drenajes VARCHAR(50),
+    ADD COLUMN cables_uniones_intermedias VARCHAR(50),
+    ADD COLUMN equipo_proteccion_personal VARCHAR(50),
+
+    -- Condiciones del proceso
+    ADD COLUMN fluido VARCHAR(100),
+    ADD COLUMN presion VARCHAR(50),
+    ADD COLUMN temperatura VARCHAR(50);
+

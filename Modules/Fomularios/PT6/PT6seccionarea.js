@@ -28,28 +28,37 @@ if (btnGuardarCampos) {
       const checked = document.querySelector(`input[name='${name}']:checked`);
       return checked ? checked.value : null;
     }
-    // Construir payload
+    // Utilidad para leer checkboxes (devuelve "SI" o "NO")
+    function getCheckbox(name) {
+      const checkbox = document.querySelector(`input[name='${name}']`);
+      return checkbox && checkbox.checked ? "SI" : "NO";
+    }
+    // Utilidad para leer input text
+    function getInputValue(id) {
+      const input = document.getElementById(id);
+      return input ? input.value : null;
+    }
+    // Construir payload con los nombres correctos del backend
     const payload = {
-      fuera_operacion: getRadio("fuera_operacion"),
-      despresurizado_purgado: getRadio("despresurizado_purgado"),
-      necesita_aislamiento: getRadio("necesita_aislamiento"),
-      con_valvulas: getRadio("con_valvulas"),
-      con_juntas_ciegas: getRadio("con_juntas_ciegas"),
-      producto_entrampado: getRadio("producto_entrampado"),
-      requiere_lavado: getRadio("requiere_lavado"),
-      requiere_neutralizado: getRadio("requiere_neutralizado"),
-      requiere_vaporizado: getRadio("requiere_vaporizado"),
-      suspender_trabajos_adyacentes: getRadio("suspender_trabajos_adyacentes"),
-      acordonar_area: getRadio("acordonar_area"),
-      prueba_gas_toxico_inflamable: getRadio("prueba_gas_toxico_inflamable"),
-      equipo_electrico_desenergizado: getRadio(
-        "equipo_electrico_desenergizado"
+      identifico_equipo: getRadio("identifico_equipo"),
+      verifico_identifico_equipo: getCheckbox("verifico_identifico_equipo"),
+      fuera_operacion_desenergizado: getRadio("fuera_operacion_desenergizado"),
+      verifico_fuera_operacion_desenergizado: getCheckbox(
+        "verifico_fuera_operacion_desenergizado"
       ),
-      tapar_purgas_drenajes: getRadio("tapar_purgas_drenajes"),
-      fluido: document.getElementById("fluid").value,
-      presion: document.getElementById("pressure").value,
-      temperatura: document.getElementById("temperature").value,
-      // Puedes agregar más campos aquí si los necesitas
+      candado_etiqueta: getRadio("candado_etiqueta"),
+      verifico_candado_etiqueta: getCheckbox("verifico_candado_etiqueta"),
+      suspender_adyacentes: getRadio("suspender_adyacentes"),
+      verifico_suspender_adyacentes: getCheckbox(
+        "verifico_suspender_adyacentes"
+      ),
+      area_limpia_libre_obstaculos: getRadio("area_limpia_libre_obstaculos"),
+      verifico_area_limpia_libre_obstaculos: getCheckbox(
+        "verifico_area_limpia_libre_obstaculos"
+      ),
+      libranza_electrica: getRadio("libranza_electrica"),
+      verifico_libranza_electrica: getCheckbox("verifico_libranza_electrica"),
+      nivel_tension: getInputValue("nivel_tension"),
     };
     try {
       const resp = await fetch(
@@ -274,18 +283,54 @@ if (idPermiso) {
     .then((resp) => resp.json())
     .then((data) => {
       console.log("Respuesta de la API:", data);
+      // Mapear datos generales correctamente
       if (data && data.success && data.data) {
         const permiso = data.data;
         console.log("Valores del permiso recibidos:", permiso);
+
+        // Datos generales
         setText("maintenance-type-label", permiso.tipo_mantenimiento || "-");
         setText("work-order-label", permiso.ot_numero || "-");
         setText("tag-label", permiso.tag || "-");
         setText("start-time-label", permiso.hora_inicio || "-");
-        //setText("has-equipment-label", permiso.tiene_equipo_intervenir || "-");
+        setText(
+          "descripcion-trabajo-label",
+          permiso.descripcion_trabajo || "-"
+        );
         setText(
           "equipment-description-label",
-          permiso.descripcion_equipo || "-"
+          permiso.equipo_intervenir || "-"
         );
+
+        // Mapear campos de "Medidas para administrar los riesgos"
+        setText("equipo_desenergizado", permiso.equipo_desenergizado || "-");
+        setText(
+          "interruptores_abiertos",
+          permiso.interruptores_abiertos || "-"
+        );
+        setText("ausencia_voltaje", permiso.verificar_ausencia_voltaje || "-");
+        setText("candados_intervencion", permiso.candados_equipo || "-");
+        setText("tarjetas_alerta_notificacion", permiso.tarjetas_alerta || "-");
+        setText("aviso_personal_area", permiso.aviso_personal_area || "-");
+        setText("tapetes_dielelectricos", permiso.tapetes_dielectricos || "-");
+        setText("herramienta_aislante", permiso.herramienta_aislante || "-");
+        setText("pertiga_telescopica", permiso.pertiga_telescopica || "-");
+        setText(
+          "equipo_proteccion_especial",
+          permiso.equipo_proteccion_especial || "-"
+        );
+        setText(
+          "cual_equipo_proteccion",
+          permiso.tipo_equipo_proteccion || "-"
+        );
+        setText("aterrizar_equipo_circuito", permiso.aterrizar_equipo || "-");
+        setText("instalar_barricadas_area", permiso.barricadas_area || "-");
+        setText(
+          "observaciones_medidas",
+          permiso.observaciones_adicionales || "-"
+        );
+
+        // Otros campos específicos del formulario eléctrico
         setText(
           "special-tools-label",
           permiso.requiere_herramientas_especiales || "-"
@@ -306,35 +351,6 @@ if (idPermiso) {
         setText(
           "final-observations-label",
           permiso.observaciones_medidas || "-"
-        );
-        // Radios de requisitos
-        const radios = [
-          "fuera_operacion",
-          "despresurizado_purgado",
-          "necesita_aislamiento",
-          "con_valvulas",
-          "con_juntas_ciegas",
-          "producto_entrampado",
-          "requiere_lavado",
-          "requiere_neutralizado",
-          "requiere_vaporizado",
-          "suspender_trabajos_adyacentes",
-          "acordonar_area",
-          "prueba_gas_toxico_inflamable",
-          "equipo_electrico_desenergizado",
-          "tapar_purgas_drenajes",
-        ];
-        radios.forEach((name) => {
-          if (permiso[name]) {
-            const radio = document.querySelector(
-              `input[name='${name}'][value='${permiso[name]}']`
-            );
-            if (radio) radio.checked = true;
-          }
-        });
-      } else {
-        alert(
-          "No se encontraron datos para este permiso o la API no respondió correctamente."
         );
       }
     })
@@ -368,26 +384,39 @@ document.addEventListener("DOMContentLoaded", function () {
         const checked = document.querySelector(`input[name='${name}']:checked`);
         return checked ? checked.value : null;
       }
-      // Construir payload
+      // Utilidad para leer checkboxes (devuelve "SI" o "NO")
+      function getCheckbox(name) {
+        const checkbox = document.querySelector(`input[name='${name}']`);
+        return checkbox && checkbox.checked ? "SI" : "NO";
+      }
+      // Utilidad para leer input text
+      function getInputValue(id) {
+        const input = document.getElementById(id);
+        return input ? input.value : null;
+      }
+      // Construir payload con los nombres correctos del backend
       const payload = {
-        fuera_operacion: getRadio("fuera_operacion"),
-        despresurizado_purgado: getRadio("despresurizado_purgado"),
-        necesita_aislamiento: getRadio("necesita_aislamiento"),
-        con_valvulas: getRadio("con_valvulas"),
-        con_juntas_ciegas: getRadio("con_juntas_ciegas"),
-        producto_entrampado: getRadio("producto_entrampado"),
-        requiere_lavado: getRadio("requiere_lavado"),
-        requiere_neutralizado: getRadio("requiere_neutralizado"),
-        requiere_vaporizado: getRadio("requiere_vaporizado"),
-        suspender_trabajos_adyacentes: getRadio(
-          "suspender_trabajos_adyacentes"
+        identifico_equipo: getRadio("identifico_equipo"),
+        verifico_identifico_equipo: getCheckbox("verifico_identifico_equipo"),
+        fuera_operacion_desenergizado: getRadio(
+          "fuera_operacion_desenergizado"
         ),
-        acordonar_area: getRadio("acordonar_area"),
-        prueba_gas_toxico_inflamable: getRadio("prueba_gas_toxico_inflamable"),
-        equipo_electrico_desenergizado: getRadio(
-          "equipo_electrico_desenergizado"
+        verifico_fuera_operacion_desenergizado: getCheckbox(
+          "verifico_fuera_operacion_desenergizado"
         ),
-        tapar_purgas_drenajes: getRadio("tapar_purgas_drenajes"),
+        candado_etiqueta: getRadio("candado_etiqueta"),
+        verifico_candado_etiqueta: getCheckbox("verifico_candado_etiqueta"),
+        suspender_adyacentes: getRadio("suspender_adyacentes"),
+        verifico_suspender_adyacentes: getCheckbox(
+          "verifico_suspender_adyacentes"
+        ),
+        area_limpia_libre_obstaculos: getRadio("area_limpia_libre_obstaculos"),
+        verifico_area_limpia_libre_obstaculos: getCheckbox(
+          "verifico_area_limpia_libre_obstaculos"
+        ),
+        libranza_electrica: getRadio("libranza_electrica"),
+        verifico_libranza_electrica: getCheckbox("verifico_libranza_electrica"),
+        nivel_tension: getInputValue("nivel_tension"),
       };
       try {
         const resp = await fetch(
@@ -501,6 +530,17 @@ document.addEventListener("DOMContentLoaded", function () {
     )
       .then((resp) => resp.json())
       .then((data) => {
+        // Prefijo en el título y descripción del trabajo
+        if (data && data.general) {
+          if (document.getElementById("prefijo-label")) {
+            document.getElementById("prefijo-label").textContent =
+              data.general.prefijo || "-";
+          }
+          if (document.getElementById("descripcion-trabajo-label")) {
+            document.getElementById("descripcion-trabajo-label").textContent =
+              data.general.descripcion_trabajo || "-";
+          }
+        }
         // Llenar campos generales usando data.data
         if (data && data.data) {
           const detalles = data.data;
@@ -518,7 +558,7 @@ document.addEventListener("DOMContentLoaded", function () {
               detalles.hora_inicio || "-";
           if (document.getElementById("equipment-description-label"))
             document.getElementById("equipment-description-label").textContent =
-              detalles.descripcion_equipo || "-";
+              detalles.equipo_intervenir || "-";
           if (document.getElementById("special-tools-label"))
             document.getElementById("special-tools-label").textContent =
               detalles.requiere_herramientas_especiales || "-";
@@ -537,7 +577,10 @@ document.addEventListener("DOMContentLoaded", function () {
           if (document.getElementById("final-observations-label"))
             document.getElementById("final-observations-label").textContent =
               detalles.observaciones_medidas || "-";
-          // ...agrega aquí más campos generales de PT2 si los tienes...
+          // También mapear equipo_intervenir correctamente
+          if (document.getElementById("descripcion-trabajo-label"))
+            document.getElementById("descripcion-trabajo-label").textContent =
+              detalles.descripcion_trabajo || "-";
         }
         // Rellenar AST y Participantes si existen en la respuesta
         if (data.ast) {

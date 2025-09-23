@@ -125,4 +125,86 @@ router.get("/pt-electrico/:id", async (req, res) => {
   }
 });
 
+// Endpoint para actualizar requisitos del área en PT eléctrico
+router.put("/pt-electrico/requisitos_area/:id", async (req, res) => {
+  const id_permiso = req.params.id;
+  const {
+    identifico_equipo,
+    verifico_identifico_equipo,
+    fuera_operacion_desenergizado,
+    verifico_fuera_operacion_desenergizado,
+    candado_etiqueta,
+    verifico_candado_etiqueta,
+    suspender_adyacentes,
+    verifico_suspender_adyacentes,
+    area_limpia_libre_obstaculos,
+    verifico_area_limpia_libre_obstaculos,
+    libranza_electrica,
+    verifico_libranza_electrica,
+    nivel_tension,
+  } = req.body;
+
+  try {
+    const result = await db.query(
+      `UPDATE pt_electrico SET
+        identifico_equipo = $1,
+        verifico_identifico_equipo = $2,
+        fuera_operacion_desenergizado = $3,
+        verifico_fuera_operacion_desenergizado = $4,
+        candado_etiqueta = $5,
+        verifico_candado_etiqueta = $6,
+        suspender_adyacentes = $7,
+        verifico_suspender_adyacentes = $8,
+        area_limpia_libre_obstaculos = $9,
+        verifico_area_limpia_libre_obstaculos = $10,
+        libranza_electrica = $11,
+        verifico_libranza_electrica = $12,
+        nivel_tension = $13,
+        fecha_actualizacion = NOW()
+       WHERE id_permiso = $14
+       RETURNING *`,
+      [
+        identifico_equipo,
+        verifico_identifico_equipo,
+        fuera_operacion_desenergizado,
+        verifico_fuera_operacion_desenergizado,
+        candado_etiqueta,
+        verifico_candado_etiqueta,
+        suspender_adyacentes,
+        verifico_suspender_adyacentes,
+        area_limpia_libre_obstaculos,
+        verifico_area_limpia_libre_obstaculos,
+        libranza_electrica,
+        verifico_libranza_electrica,
+        nivel_tension,
+        id_permiso,
+      ]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No se encontró el permiso eléctrico para actualizar",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Requisitos del área actualizados correctamente",
+      data: result.rows[0],
+    });
+  } catch (error) {
+    console.error(
+      "Error al actualizar requisitos del área en pt_electrico:",
+      error
+    );
+    res.status(500).json({
+      success: false,
+      error: "Error al actualizar requisitos del área",
+      details:
+        process.env.NODE_ENV === "development" ? error.message : undefined,
+    });
+  }
+});
+
 module.exports = router;

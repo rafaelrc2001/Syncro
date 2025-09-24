@@ -27,3 +27,9 @@
  {
     background: rgba(2, 200, 250, 0.05) !important;
 }
+
+img {
+    max-width: 100%;
+    height: auto;
+    -webkit-print-color-adjust: exact;
+}

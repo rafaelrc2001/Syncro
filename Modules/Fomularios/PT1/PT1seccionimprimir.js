@@ -40,6 +40,35 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+// Función para aplicar estilos específicos de PT1
+function aplicarEstilosPT1() {
+  // Aplicar clases dinámicas a las respuestas según su valor
+  const respuestas = [
+    "resp-risk-area",
+    "resp-physical-delivery",
+    "resp-additional-ppe",
+    "resp-surrounding-risk",
+    "resp-supervision-needed",
+  ];
+
+  respuestas.forEach((id) => {
+    const elemento = document.getElementById(id);
+    if (elemento && elemento.textContent.trim() !== "-") {
+      const respuesta = elemento.textContent.toLowerCase().trim();
+
+      // Remover clases anteriores
+      elemento.classList.remove("pt1-response-si", "pt1-response-no");
+
+      // Agregar clase según la respuesta
+      if (respuesta === "si" || respuesta === "sí") {
+        elemento.classList.add("pt1-response-si");
+      } else if (respuesta === "no") {
+        elemento.classList.add("pt1-response-no");
+      }
+    }
+  });
+}
+
 // Función para consultar las personas que han autorizado el permiso
 function consultarPersonasAutorizacion(idPermiso) {
   fetch(`http://localhost:3000/api/autorizaciones/personas/${idPermiso}`)
@@ -333,6 +362,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
           // Consultar y rellenar datos de autorización
           consultarPersonasAutorizacion(idPermiso);
+
+          // Aplicar estilos dinámicos PT1
+          aplicarEstilosPT1();
         } else {
           alert(
             "No se encontraron datos para este permiso o el backend no responde con la estructura esperada."

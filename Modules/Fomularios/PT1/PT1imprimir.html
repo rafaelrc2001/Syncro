@@ -8,6 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
         <link rel="stylesheet" href="/CSS/EstiloGeneral.css" />
    <link rel="stylesheet" href="/CSS/EstiloImprimir.css">
+   <link rel="stylesheet" href="/CSS/EstiloImprimir-PT1.css">
 </head>
 <body style="background: #f4f6fb; min-height: 100vh; margin: 0; font-family: 'Roboto', Arial, sans-serif;">
         <div style="display: flex; justify-content: center; align-items: flex-start; min-height: 100vh;">
@@ -18,7 +19,7 @@
                     <h2>Permiso de Trabajo No Peligroso</h2>
                     <h3>NP-XXXXXX</h3>
                 </div>
-                <div class="executive-section">
+                <div class="executive-section pt1-datos-generales">
                     <div class="section-header">
                         <i class="ri-information-line"></i>
                         <h3>Datos generales</h3>
@@ -46,7 +47,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="executive-section">
+                <div class="executive-section pt1-equipo">
                     <div class="section-header">
                         <i class="ri-tools-line"></i>
                         <h3>Equipo</h3>
@@ -62,33 +63,33 @@
                         </div>
                     </div>
                 </div>
-                <div class="executive-section">
+                <div class="executive-section pt1-condiciones-proceso">
                     <div class="section-header">
                         <i class="ri-flask-line"></i>
-                        <h3>Condiciones del Proceso</h3>
+                        <h3 class="pt1-section-title">Condiciones del Proceso</h3>
                     </div>
                     <div class="executive-grid">
-                        <div class="executive-item">
-                            <label for="fluid">Fluido</label>
-                            <p id="fluid" class="highlight">-</p>
+                        <div class="executive-item pt1-hover-effect">
+                            <label for="fluid" class="pt1-label">Fluido</label>
+                            <p id="fluid" class="pt1-fluid-highlight">-</p>
                         </div>
-                        <div class="executive-item">
-                            <label for="pressure">Presión</label>
-                            <p id="pressure">-</p>
+                        <div class="executive-item pt1-hover-effect">
+                            <label for="pressure" class="pt1-label">Presión</label>
+                            <p id="pressure" class="pt1-process-field">-</p>
                         </div>
-                        <div class="executive-item">
-                            <label for="temperature">Temperatura</label>
-                            <p id="temperature">-</p>
+                        <div class="executive-item pt1-hover-effect">
+                            <label for="temperature" class="pt1-label">Temperatura</label>
+                            <p id="temperature" class="pt1-process-field">-</p>
                         </div>
                     </div>
                 </div>
-                <div class="executive-section">
+                <div class="executive-section pt1-analisis-previo">
                     <div class="section-header">
                         <i class="ri-checkbox-multiple-line"></i>
-                        <h3>Análisis Previo al Trabajo</h3>
+                        <h3 class="pt1-section-title">Análisis Previo al Trabajo</h3>
                     </div>
                     <form id="form-no-peligroso-analisis">
-                        <table class="styled-table" style="width:100%; background:#fff; border-radius:8px; overflow:hidden;">
+                        <table class="styled-table pt1-analisis-table" style="width:100%; background:#fff; border-radius:8px; overflow:hidden;">
                             <thead>
                                 <tr>
                                     <th>Pregunta</th>
@@ -98,32 +99,34 @@
                             <tbody>
                                 <tr>
                                     <td>¿El trabajo se realizará en un área de riesgo controlado?</td>
-                                    <td class="centered"><span id="resp-risk-area">-</span></td>
+                                    <td class="centered"><span id="resp-risk-area" class="pt1-response-highlight">-</span></td>
                                 </tr>
                                 <tr>
                                     <td>¿Se necesita entrega física, para efectuar el trabajo por parte del personal de la planta o departamento?</td>
-                                    <td class="centered"><span id="resp-physical-delivery">-</span></td>
+                                    <td class="centered"><span id="resp-physical-delivery" class="pt1-response-highlight">-</span></td>
                                 </tr>
                                 <tr>
                                     <td>¿El personal que va a ejecutar el trabajo, necesita equipo de protección personal adicional al estándar del área donde se desarrollará el trabajo?</td>
-                                    <td class="centered"><span id="resp-additional-ppe">-</span></td>
+                                    <td class="centered"><span id="resp-additional-ppe" class="pt1-response-highlight">-</span></td>
                                 </tr>
                                 <tr>
                                     <td>¿En el área circundante se efectuarán trabajos con riesgo?</td>
-                                    <td class="centered"><span id="resp-surrounding-risk">-</span></td>
+                                    <td class="centered"><span id="resp-surrounding-risk" class="pt1-response-highlight">-</span></td>
                                 </tr>
                                 <tr>
                                     <td>¿Necesita supervisión el personal?</td>
-                                    <td class="centered"><span id="resp-supervision-needed">-</span></td>
+                                    <td class="centered"><span id="resp-supervision-needed" class="pt1-response-highlight">-</span></td>
                                 </tr>
                             </tbody>
                         </table>
                         <div class="executive-item" style="margin-top:1em;">
-                            <label for="pre-work-observations">Observaciones adicionales:</label>
-                            <p id="pre-work-observations" style="width:100%; min-height:38px; background:#fff; border:1px solid #d0d7de; border-radius:6px; padding:6px 10px; margin:0;">-</p>
+                            <label for="pre-work-observations" class="pt1-label">Observaciones adicionales:</label>
+                            <p id="pre-work-observations" class="pt1-observaciones" style="width:100%; min-height:38px; border-radius:6px; padding:6px 10px; margin:0;">-</p>
                         </div>
+                    </form>
+                </div>
                 <!-- Sección AST y Participantes -->
-                <div class="executive-section">
+                <div class="executive-section pt1-ast-seguridad">
                     <div class="section-header">
                         <i class="ri-shield-check-line"></i>
                         <h3>AST - Análisis de Seguridad en el Trabajo</h3>
@@ -167,7 +170,7 @@
                     </div>
                 </div>
                 <!-- Sección 4: Participantes -->
-                <div class="executive-section">
+                <div class="executive-section pt1-personal-involucrado">
                     <div class="section-header">
                         <i class="ri-team-line"></i>
                         <h3>Personal Involucrado</h3>
@@ -189,11 +192,6 @@
                     </div>
                 </div>
                 
-
-        
-           
-          </div>
-
           <!-- Sección 5: Aprobaciones -->
           <div class="approval-section">
             <div class="approval-stamps">
@@ -223,21 +221,22 @@
               </div>
             </div>
           </div>
-        </div>
 
+                <!-- Botones de acción -->
+                <div class="button-group" style="display: flex; justify-content: space-between; margin-top: 48px; gap: 16px;">
+                    <button id="btn-salir-nuevo" class="btn btn-pt1 btn-salir-gris" type="button">
+                        <i class="ri-logout-box-r-line" style="margin-right: 8px;"></i>Salir
+                    </button>
+                    <div style="display: flex; gap: 16px;">
+                        <button id="btn-imprimir-permiso" class="btn btn-pt1 btn-guardar-azulpetroleo" type="button">
+                            <i class="ri-printer-line" style="margin-right: 8px;"></i>Imprimir Permiso
+                        </button>
+                    </div>
+                </div>
 
- <div class="button-group" style="display: flex; justify-content: space-between; margin-top: 48px; gap: 16px;">
-         <button id="btn-salir-nuevo" class="btn btn-pt1 btn-salir-gris" type="button">
-            <i class="ri-logout-box-r-line" style="margin-right: 8px;"></i>Salir
-        </button>
-        <div style="display: flex; gap: 16px;">
-            
-  
-            <button id="btn-imprimir-permiso" class="btn btn-pt1 btn-guardar-azulpetroleo" type="button">
-                <i class="ri-printer-line" style="margin-right: 8px;"></i>Imprimir Permiso
-            </button>
+                </div>
+            </section>
         </div>
-</div>
 
 
 
@@ -251,16 +250,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
-
-
-
-
-                    </form>
-                </div>
-            </div>
-        
-        </div>
 
         
 </body>

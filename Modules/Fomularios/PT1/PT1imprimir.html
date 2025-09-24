@@ -7,7 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
         <link rel="stylesheet" href="/CSS/EstiloGeneral.css" />
- <!--  <link rel="stylesheet" href="/CSS/EstiloVer.css"> -->
    <link rel="stylesheet" href="/CSS/EstiloImprimir.css">
 </head>
 <body style="background: #f4f6fb; min-height: 100vh; margin: 0; font-family: 'Roboto', Arial, sans-serif;">
@@ -45,7 +44,6 @@
                             <label>Descripción del trabajo</label>
                             <p id="descripcion-trabajo-label">-</p>
                         </div>
-                        
                     </div>
                 </div>
                 <div class="executive-section">
@@ -65,76 +63,64 @@
                     </div>
                 </div>
                 <div class="executive-section">
-                    <div class="section-header section-header-cielo">
+                    <div class="section-header">
                         <i class="ri-flask-line"></i>
                         <h3>Condiciones del Proceso</h3>
                     </div>
                     <div class="executive-grid">
                         <div class="executive-item">
                             <label for="fluid">Fluido</label>
-                            <input type="text" id="fluid" name="fluid" class="compact" value="" style="width:100%; background:#fff; border:1px solid #d0d7de; border-radius:6px; padding:6px 10px;">
+                            <p id="fluid" class="highlight">-</p>
                         </div>
                         <div class="executive-item">
                             <label for="pressure">Presión</label>
-                            <input type="text" id="pressure" name="pressure" class="compact" value="" style="width:100%; background:#fff; border:1px solid #d0d7de; border-radius:6px; padding:6px 10px;">
+                            <p id="pressure">-</p>
                         </div>
                         <div class="executive-item">
                             <label for="temperature">Temperatura</label>
-                            <input type="text" id="temperature" name="temperature" class="compact" value="" style="width:100%; background:#fff; border:1px solid #d0d7de; border-radius:6px; padding:6px 10px;">
+                            <p id="temperature">-</p>
                         </div>
                     </div>
                 </div>
                 <div class="executive-section">
-                    <div class="section-header section-header-cielo">
+                    <div class="section-header">
                         <i class="ri-checkbox-multiple-line"></i>
                         <h3>Análisis Previo al Trabajo</h3>
                     </div>
                     <form id="form-no-peligroso-analisis">
                         <table class="styled-table" style="width:100%; background:#fff; border-radius:8px; overflow:hidden;">
-                            <thead class="thead-nopeligroso">
+                            <thead>
                                 <tr>
                                     <th>Pregunta</th>
-                                    <th class="centered">SI</th>
-                                    <th class="centered">NO</th>
-                                    <th class="centered">N/A</th>
+                                    <th class="centered">Respuesta</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>¿El trabajo se realizará en un área de riesgo controlado?</td>
-                                    <td class="centered"><input type="radio" name="risk-area" value="si"></td>
-                                    <td class="centered"><input type="radio" name="risk-area" value="no"></td>
-                                    <td class="centered"><input type="radio" name="risk-area" value="na"></td>
+                                    <td class="centered"><span id="resp-risk-area">-</span></td>
                                 </tr>
                                 <tr>
                                     <td>¿Se necesita entrega física, para efectuar el trabajo por parte del personal de la planta o departamento?</td>
-                                    <td class="centered"><input type="radio" name="physical-delivery" value="si"></td>
-                                    <td class="centered"><input type="radio" name="physical-delivery" value="no"></td>
-                                    <td class="centered"><input type="radio" name="physical-delivery" value="na"></td>
+                                    <td class="centered"><span id="resp-physical-delivery">-</span></td>
                                 </tr>
                                 <tr>
                                     <td>¿El personal que va a ejecutar el trabajo, necesita equipo de protección personal adicional al estándar del área donde se desarrollará el trabajo?</td>
-                                    <td class="centered"><input type="radio" name="additional-ppe" value="si"></td>
-                                    <td class="centered"><input type="radio" name="additional-ppe" value="no"></td>
-                                    <td class="centered"><input type="radio" name="additional-ppe" value="na"></td>
+                                    <td class="centered"><span id="resp-additional-ppe">-</span></td>
                                 </tr>
                                 <tr>
                                     <td>¿En el área circundante se efectuarán trabajos con riesgo?</td>
-                                    <td class="centered"><input type="radio" name="surrounding-risk" value="si"></td>
-                                    <td class="centered"><input type="radio" name="surrounding-risk" value="no"></td>
-                                    <td class="centered"><input type="radio" name="surrounding-risk" value="na"></td>
+                                    <td class="centered"><span id="resp-surrounding-risk">-</span></td>
                                 </tr>
                                 <tr>
                                     <td>¿Necesita supervisión el personal?</td>
-                                    <td class="centered"><input type="radio" name="supervision-needed" value="si"></td>
-                                    <td class="centered"><input type="radio" name="supervision-needed" value="no"></td>
-                                    <td class="centered"><input type="radio" name="supervision-needed" value="na"></td>
+                                    <td class="centered"><span id="resp-supervision-needed">-</span></td>
                                 </tr>
                             </tbody>
                         </table>
                         <div class="executive-item" style="margin-top:1em;">
                             <label for="pre-work-observations">Observaciones adicionales:</label>
-                            <textarea id="pre-work-observations" name="pre-work-observations" rows="2" style="width:100%; background:#fff; border:1px solid #d0d7de; border-radius:6px; padding:6px 10px;" placeholder="Ingrese observaciones adicionales..."></textarea>
+                            <p id="pre-work-observations" style="width:100%; min-height:38px; background:#fff; border:1px solid #d0d7de; border-radius:6px; padding:6px 10px; margin:0;">-</p>
                         </div>
                 <!-- Sección AST y Participantes -->
                 <div class="executive-section">
@@ -202,60 +188,60 @@
                         </table>
                     </div>
                 </div>
-                <div class="executive-section" style="display: flex; gap: 24px; align-items: flex-end">
-                    <div style="flex: 1">
-                        <label for="responsable-aprobador" style="font-weight: 600; display: block; margin-bottom: 8px">
-                            Agregar nombre del responsable del área:
-                        </label>
-                        <input type="text" id="responsable-aprobador" placeholder="Nombre del responsable del área" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;" />
-                    </div>
-                    <div style="flex: 1">
-                        <label for="responsable-aprobador2" style="font-weight: 600; display: block; margin-bottom: 8px">
-                            Agregar nombre del operador del área:
-                        </label>
-                        <input type="text" id="responsable-aprobador2" placeholder="Nombre del operador del área" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;" />
-                    </div>
-                </div>
-
                 
-                <!-- Sección 5: Aprobaciones -->
-             <!--    <div class="approval-section">
-                    <div class="approval-stamps">
-                        <div class="stamp">
-                            <div class="stamp-title">Responsable del area:</div>
-                            <div class="stamp-placeholder"></div>
-                            <div class="stamp-name" id="stamp-aprobador"></div>
-                        </div>
-                        <div class="stamp">
-                            <div class="stamp-title">Operador del área:</div>
-                            <div class="stamp-placeholder"></div>
-                            <div class="stamp-name" id="stamp-encargado"></div>
-                            <div class="stamp-date"></div>
-                        </div>
-                        <div class="stamp approved">
-                            <div class="stamp-title">Pendiente por aprobar:</div>
-                            <div class="stamp-placeholder"></div>
-                            <div class="stamp-name">Pendiente</div>
-                        </div>
-                    </div>
-                </div>-->
-                          <div class="button-group" style="display: flex; justify-content: space-between; margin-top: 48px; gap: 16px;">
+
+        
+           
+          </div>
+
+          <!-- Sección 5: Aprobaciones -->
+          <div class="approval-section">
+            <div class="approval-stamps">
+              <div class="stamp">
+                <div class="stamp-title">Responsable del area:</div>
+                <div class="stamp-placeholder signature-space">
+                  &nbsp;
+                </div>
+                <div class="stamp-name" id="responsable-area-nombre">-</div>
+              </div>
+              <div class="stamp">
+                <div class="stamp-title">Operador del área:</div>
+                <div class="stamp-placeholder signature-space">
+                  &nbsp;
+                </div>
+                <div class="stamp-name" id="operador-area-nombre">-</div>
+                <div class="stamp-date"></div>
+              </div>
+              <div class="stamp approved">
+                <div class="stamp-title">Supervisor de Seguridad:</div>
+                <div class="stamp-placeholder signature-space">
+                  &nbsp;
+                </div>
+                <div class="stamp-name" id="supervisor-nombre">
+                  -
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+ <div class="button-group" style="display: flex; justify-content: space-between; margin-top: 48px; gap: 16px;">
          <button id="btn-salir-nuevo" class="btn btn-pt1 btn-salir-gris" type="button">
             <i class="ri-logout-box-r-line" style="margin-right: 8px;"></i>Salir
         </button>
         <div style="display: flex; gap: 16px;">
             
-            <button id="btn-no-autorizar" class="btn btn-pt1 btn-noautorizar-rojo" type="button">
-                <i class="ri-close-circle-line" style="margin-right: 8px;"></i>No Autorizar
-            </button>
-            <button id="btn-guardar-campos" class="btn btn-pt1 btn-guardar-azulpetroleo" type="button">
-                <i class="ri-save-3-line" style="margin-right: 8px;"></i>Autorizar
+  
+            <button id="btn-imprimir-permiso" class="btn btn-pt1 btn-guardar-azulpetroleo" type="button">
+                <i class="ri-printer-line" style="margin-right: 8px;"></i>Imprimir Permiso
             </button>
         </div>
 </div>
-                                        </form>
-                                        <!-- Modal para motivo de no autorización -->
-                                        <div id="modalComentario" class="modal-comentario" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(44,62,80,0.25); z-index:1000; justify-content:center; align-items:center;">
+
+
+
+  <div id="modalComentario" class="modal-comentario" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(44,62,80,0.25); z-index:1000; justify-content:center; align-items:center;">
                                             <div style="background:#fff; border-radius:12px; max-width:400px; width:90vw; padding:2em 1.5em; box-shadow:0 4px 24px rgba(44,62,80,0.18); display:flex; flex-direction:column; gap:1em;">
                                                 <h3 style="margin:0 0 0.5em 0; font-size:1.2em; color:#c0392b;"><i class="ri-close-circle-line" style="margin-right:8px;"></i>Motivo de No Autorización</h3>
                                                 <textarea id="comentarioNoAutorizar" rows="4" style="width:100%; border:1px solid #d0d7de; border-radius:6px; padding:8px; resize:vertical;" placeholder="Escribe el motivo del rechazo..."></textarea>
@@ -265,6 +251,12 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        
+
+
+
+
+                    </form>
                 </div>
             </div>
         
@@ -279,6 +271,6 @@
 
      <!-- <script src="/Modules/Fomularios/PT1/PT1.js"></script>-->
 
-     <script src="/Modules/Fomularios/PT1/PT1seccionarea.js"></script>
+     <script src="/Modules/Fomularios/PT1/PT1seccionimprimir.js"></script>
 </body>
 </html>

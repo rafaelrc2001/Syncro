@@ -253,35 +253,66 @@ function mostrarPermisosFiltrados(filtro) {
   });
 
   // Asignar evento click a los botones editar después de generar la tabla
- document.querySelectorAll(".action-btn.edit").forEach((btn) => {
-  btn.addEventListener("click", function () {
-    const row = this.closest("tr");
-    const tipoPermiso = row ? row.children[1].textContent.trim() : "";
-    const idPermiso = row
-      ? row.querySelector(".action-btn.view").getAttribute("data-idpermiso")
-      : "";
+  document.querySelectorAll(".action-btn.edit").forEach((btn) => {
+    btn.addEventListener("click", function () {
+      const row = this.closest("tr");
+      const tipoPermiso = row ? row.children[1].textContent.trim() : "";
+      const idPermiso = row
+        ? row.querySelector(".action-btn.view").getAttribute("data-idpermiso")
+        : "";
 
-    if (tipoPermiso === "PT No Peligroso") {
-      window.location.href = `/Modules/Fomularios/PT1/PT1area.html?id=${idPermiso}`;
-    } else if (tipoPermiso === "PT para Apertura Equipo Línea") {
-      window.location.href = `/Modules/Fomularios/PT2/PT2area.html?id=${idPermiso}`;
-    } else if (tipoPermiso === "PT de Entrada a Espacio Confinado") {
-      window.location.href = `/Modules/Fomularios/PT3/PT3area.html?id=${idPermiso}`;
-    } else if (tipoPermiso === "PT en Altura") {
-      window.location.href = `/Modules/Fomularios/PT4/PT4area.html?id=${idPermiso}`;
-    } else if (tipoPermiso === "PT de Fuego Abierto") {
-      window.location.href = `/Modules/Fomularios/PT5/PT5area.html?id=${idPermiso}`;
-    } else if (tipoPermiso === "PT con Energía Eléctrica") {
-      window.location.href = `/Modules/Fomularios/PT6/PT6area.html?id=${idPermiso}`;
-    } else if (tipoPermiso === "PT con Fuentes Radioactivas") {
-      window.location.href = `/Modules/Fomularios/PT7/PT7area.html?id=${idPermiso}`;
-    } else if (tipoPermiso === "PT para Izaje con Hiab con Grúa") {
-      window.location.href = `/Modules/Fomularios/PT8/PT8area.html?id=${idPermiso}`;
-    } else {
-      window.location.href = `/Modules/Fomularios/OTRO/OTROarea.html?id=${idPermiso}`;
-    }
+      if (tipoPermiso === "PT No Peligroso") {
+        window.location.href = `/Modules/Fomularios/PT1/PT1area.html?id=${idPermiso}`;
+      } else if (tipoPermiso === "PT para Apertura Equipo Línea") {
+        window.location.href = `/Modules/Fomularios/PT2/PT2area.html?id=${idPermiso}`;
+      } else if (tipoPermiso === "PT de Entrada a Espacio Confinado") {
+        window.location.href = `/Modules/Fomularios/PT3/PT3area.html?id=${idPermiso}`;
+      } else if (tipoPermiso === "PT en Altura") {
+        window.location.href = `/Modules/Fomularios/PT4/PT4area.html?id=${idPermiso}`;
+      } else if (tipoPermiso === "PT de Fuego Abierto") {
+        window.location.href = `/Modules/Fomularios/PT5/PT5area.html?id=${idPermiso}`;
+      } else if (tipoPermiso === "PT con Energía Eléctrica") {
+        window.location.href = `/Modules/Fomularios/PT6/PT6area.html?id=${idPermiso}`;
+      } else if (tipoPermiso === "PT con Fuentes Radioactivas") {
+        window.location.href = `/Modules/Fomularios/PT7/PT7area.html?id=${idPermiso}`;
+      } else if (tipoPermiso === "PT para Izaje con Hiab con Grúa") {
+        window.location.href = `/Modules/Fomularios/PT8/PT8area.html?id=${idPermiso}`;
+      } else {
+        window.location.href = `/Modules/Fomularios/OTRO/OTROarea.html?id=${idPermiso}`;
+      }
+    });
   });
-});
+
+  // Asignar evento click a los botones imprimir después de generar la tabla
+  document.querySelectorAll(".action-btn.print").forEach((btn) => {
+    btn.addEventListener("click", function () {
+      const row = this.closest("tr");
+      const tipoPermiso = row ? row.children[1].textContent.trim() : "";
+      const idPermiso = row
+        ? row.querySelector(".action-btn.view").getAttribute("data-idpermiso")
+        : "";
+
+      if (tipoPermiso === "PT No Peligroso") {
+        window.location.href = `/Modules/Fomularios/PT1/PT1imprimir.html?tipo=PT1&id=${idPermiso}`;
+      } else if (tipoPermiso === "PT para Apertura Equipo Línea") {
+        window.location.href = `/JS/usuario/LogicaImprimir.html?tipo=PT2&id=${idPermiso}`;
+      } else if (tipoPermiso === "PT de Entrada a Espacio Confinado") {
+        window.location.href = `/JS/usuario/LogicaImprimir.html?tipo=PT3&id=${idPermiso}`;
+      } else if (tipoPermiso === "PT en Altura") {
+        window.location.href = `/JS/usuario/LogicaImprimir.html?tipo=PT4&id=${idPermiso}`;
+      } else if (tipoPermiso === "PT de Fuego Abierto") {
+        window.location.href = `/JS/usuario/LogicaImprimir.html?tipo=PT5&id=${idPermiso}`;
+      } else if (tipoPermiso === "PT con Energía Eléctrica") {
+        window.location.href = `/JS/usuario/LogicaImprimir.html?tipo=PT6&id=${idPermiso}`;
+      } else if (tipoPermiso === "PT con Fuentes Radioactivas") {
+        window.location.href = `/JS/usuario/LogicaImprimir.html?tipo=PT7&id=${idPermiso}`;
+      } else if (tipoPermiso === "PT para Izaje con Hiab con Grúa") {
+        window.location.href = `/JS/usuario/LogicaImprimir.html?tipo=PT8&id=${idPermiso}`;
+      } else {
+        window.location.href = `/JS/usuario/LogicaImprimir.html?tipo=OTRO&id=${idPermiso}`;
+      }
+    });
+  });
 
   const recordsCount = document.getElementById("records-count");
   if (recordsCount) {

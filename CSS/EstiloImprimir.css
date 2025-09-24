@@ -85,7 +85,27 @@ body {
     font-size: 24px;
     color: var(--azul-petroleo);
 }
- 
+
+/* Encabezado principal centrado */
+.form-container > .section-header {
+    justify-content: center !important;
+    text-align: center !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+}
+
+.form-container > .section-header h2 {
+    font-size: 28px !important;
+    margin: 0 !important;
+}
+
+.form-container > .section-header h3 {
+    font-size: 20px !important;
+    margin: 0 !important;
+    opacity: 0.8;
+}
+
+
 /* ============================
    Grid de datos
    ============================ */

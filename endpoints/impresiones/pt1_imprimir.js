@@ -1,5 +1,8 @@
-// En tu app.js
-app.get("/imprimir-pt1/:id", async (req, res) => {
+const express = require("express");
+const puppeteer = require("puppeteer");
+const router = express.Router();
+
+router.get("/imprimir-pt1/:id", async (req, res) => {
   try {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
@@ -33,3 +36,5 @@ app.get("/imprimir-pt1/:id", async (req, res) => {
     res.status(500).send("Error generando PDF");
   }
 });
+
+module.exports = router;

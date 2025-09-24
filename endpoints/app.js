@@ -22,6 +22,7 @@ const formularioFuegoRouter = require("./formulariospt3-10/formulario_fuego"); /
 const formularioElectricoRouter = require("./formulariospt3-10/formulario_electrico"); // <--- AGREGA ESTA LÍNEA
 const formularioRadiacionRouter = require("./formulariospt3-10/formulario_radiactivas"); // <--- AGREGA ESTA LÍNEA
 const formularioAlturaRouter = require("./formulariospt3-10/formulario_altura");
+const pt1ImprimirRouter = require("./impresiones/pt1_imprimir");
 
 const loginconsultaRouter = require("./loginconsulta");
 
@@ -64,6 +65,7 @@ app.use("/api", formularioFuegoRouter); // <--- Y ESTA LÍNEA
 app.use("/api", formularioElectricoRouter); // <--- Y ESTA LÍNEA
 app.use("/api", formularioRadiacionRouter); // <--- Y ESTA LÍNEA
 app.use("/api", formularioAlturaRouter); // Monta las rutas de formulario_altura.js bajo el prefijo /api
+app.use("/api", pt1ImprimirRouter); // Monta las rutas de impresión PT1 bajo el prefijo /api
 
 // ================= RUTAS DE TABLAS BASE =================
 const tablasBase = require("./tablasbase");

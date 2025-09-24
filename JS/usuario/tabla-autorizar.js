@@ -295,19 +295,19 @@ function mostrarPermisosFiltrados(filtro) {
       if (tipoPermiso === "PT No Peligroso") {
         window.location.href = `/Modules/Fomularios/PT1/PT1imprimir.html?tipo=PT1&id=${idPermiso}`;
       } else if (tipoPermiso === "PT para Apertura Equipo Línea") {
-        window.location.href = `/JS/usuario/LogicaImprimir.html?tipo=PT2&id=${idPermiso}`;
+        window.location.href = `/Modules/Fomularios/PT2/PT2imprimir.html?tipo=PT2&id=${idPermiso}`;
       } else if (tipoPermiso === "PT de Entrada a Espacio Confinado") {
-        window.location.href = `/JS/usuario/LogicaImprimir.html?tipo=PT3&id=${idPermiso}`;
+        window.location.href = `/Modules/Fomularios/PT3/PT3imprimir.html?tipo=PT3&id=${idPermiso}`;
       } else if (tipoPermiso === "PT en Altura") {
-        window.location.href = `/JS/usuario/LogicaImprimir.html?tipo=PT4&id=${idPermiso}`;
+        window.location.href = `/Modules/Fomularios/PT4/PT4imprimir.html?tipo=PT4&id=${idPermiso}`;
       } else if (tipoPermiso === "PT de Fuego Abierto") {
-        window.location.href = `/JS/usuario/LogicaImprimir.html?tipo=PT5&id=${idPermiso}`;
+        window.location.href = `/Modules/Fomularios/PT5/PT5imprimir.html?tipo=PT5&id=${idPermiso}`;
       } else if (tipoPermiso === "PT con Energía Eléctrica") {
-        window.location.href = `/JS/usuario/LogicaImprimir.html?tipo=PT6&id=${idPermiso}`;
+        window.location.href = `/Modules/Fomularios/PT6/PT6imprimir.html?tipo=PT6&id=${idPermiso}`;
       } else if (tipoPermiso === "PT con Fuentes Radioactivas") {
-        window.location.href = `/JS/usuario/LogicaImprimir.html?tipo=PT7&id=${idPermiso}`;
+        window.location.href = `/Modules/Fomularios/PT7/PT7imprimir.html?tipo=PT7&id=${idPermiso}`;
       } else if (tipoPermiso === "PT para Izaje con Hiab con Grúa") {
-        window.location.href = `/JS/usuario/LogicaImprimir.html?tipo=PT8&id=${idPermiso}`;
+        window.location.href = `/Modules/Fomularios/PT8/PT8imprimir.html?tipo=PT8&id=${idPermiso}`;
       } else {
         window.location.href = `/JS/usuario/LogicaImprimir.html?tipo=OTRO&id=${idPermiso}`;
       }

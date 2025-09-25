@@ -48,4 +48,487 @@ img {
     -webkit-print-color-adjust: exact;
 }
 
+/* ============================
+   ESTILOS COMPACTOS PARA IMPRESIÓN PT2 - BLANCO Y NEGRO
+   ============================ */
+@media print {
+    /* Configuración de página compacta */
+    @page {
+        size: A4;
+        margin: 10mm 8mm;
+    }
+    
+    /* Reset para impresión B&N */
+    * {
+        -webkit-print-color-adjust: economy !important;
+        print-color-adjust: economy !important;
+    }
+    
+    body {
+        background: white !important;
+        font-family: Arial, sans-serif !important;
+        font-size: 8pt !important;
+        line-height: 1.2 !important;
+        color: #000 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        max-width: none !important;
+    }
+    
+    /* REMOVER RESTRICCIONES DE CONTENEDORES FLEX */
+    div[style*="justify-content: center"] {
+        justify-content: flex-start !important;
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    /* Ocultar elementos no imprimibles */
+    .button-group,
+    .btn,
+    #modalComentario,
+    .no-print {
+        display: none !important;
+    }
+    
+    /* CONTENEDOR PRINCIPAL - REMOVER LIMITACIONES DE ANCHO */
+    .executive-section {
+        background: white !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        max-width: none !important;
+        width: 100% !important;
+        page-break-inside: avoid !important;
+    }
+    
+    /* CONTENEDOR FLEX PADRE */
+    body > div {
+        max-width: none !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    /* REMOVER ESTILOS INLINE QUE LIMITAN ANCHO */
+    section[style*="max-width"] {
+        max-width: none !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    /* CONTENEDORES ESPECÍFICOS DE TABLAS */
+    .requisitos-riesgos-section,
+    .registro-pruebas-section,
+    .pt2-requisitos-apertura {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    /* ENCABEZADO PRINCIPAL DEL FORMULARIO */
+    .executive-section > .section-header:first-child {
+        background: #000 !important;
+        color: white !important;
+        text-align: center !important;
+        padding: 8pt !important;
+        margin-bottom: 8pt !important;
+        border: 2pt solid #000 !important;
+        display: block !important;
+    }
+    
+    .executive-section > .section-header:first-child h2 {
+        color: white !important;
+        font-size: 12pt !important;
+        font-weight: bold !important;
+        margin: 0 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5pt !important;
+        display: block !important;
+    }
+    
+    .executive-section > .section-header:first-child h3,
+    .executive-section > .section-header:first-child i {
+        display: none !important;
+    }
+    
+    /* EXCLUIR ENCABEZADO PRINCIPAL DE REGLAS GENERALES */
+    .executive-section > .section-header:first-child {
+        background: #000 !important;
+        color: white !important;
+        border: 2pt solid #000 !important;
+    }
+    
+    /* REGLA UNIVERSAL PARA TODOS LOS ENCABEZADOS */
+    div.section-header {
+        background: white !important;
+        border: 1pt solid #000 !important;
+        padding: 3pt !important;
+        margin: 4pt 0 2pt 0 !important;
+        text-align: center !important;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        height: auto !important;
+        overflow: visible !important;
+        page-break-after: avoid !important;
+    }
+    
+    /* TODOS LOS H3 DENTRO DE ENCABEZADOS */
+    div.section-header h3,
+    .section-header h3 {
+        color: #000 !important;
+        font-size: 7pt !important;
+        font-weight: bold !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        text-transform: uppercase !important;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        line-height: 1.1 !important;
+    }
+    
+    /* OCULTAR SOLO ICONOS */
+    div.section-header i,
+    .section-header i {
+        display: none !important;
+    }
+    
+    /* REGLAS ESPECÍFICAS POR SECCIÓN COMO RESPALDO */
+    .pt2-datos-generales .section-header::after {
+        content: "DATOS GENERALES" !important;
+        color: #000 !important;
+        font-weight: bold !important;
+        font-size: 7pt !important;
+        display: block !important;
+    }
+    
+    .pt2-medidas-riesgos .section-header::after {
+        content: "MEDIDAS PARA ADMINISTRAR LOS RIESGOS" !important;
+        color: #000 !important;
+        font-weight: bold !important;
+        font-size: 7pt !important;
+        display: block !important;
+    }
+    
+    .pt2-requisitos-apertura .section-header::after {
+        content: "REQUISITOS DE APERTURA DE ÁREA" !important;
+        color: #000 !important;
+        font-weight: bold !important;
+        font-size: 7pt !important;
+        display: block !important;
+    }
+    
+    .pt2-condiciones-proceso .section-header::after {
+        content: "CONDICIONES DEL PROCESO" !important;
+        color: #000 !important;
+        font-weight: bold !important;
+        font-size: 7pt !important;
+        display: block !important;
+    }
+    
+    .requisitos-riesgos-section .section-header::after {
+        content: "REQUISITOS PARA ADMINISTRAR LOS RIESGOS" !important;
+        color: #000 !important;
+        font-weight: bold !important;
+        font-size: 7pt !important;
+        display: block !important;
+    }
+    
+    .registro-pruebas-section .section-header::after {
+        content: "REGISTRO DE PRUEBAS REQUERIDAS" !important;
+        color: #000 !important;
+        font-weight: bold !important;
+        font-size: 7pt !important;
+        display: block !important;
+    }
+    
+    /* GRIDS ESTILO FORMULARIO */
+    .executive-grid {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr 1fr !important;
+        gap: 2pt !important;
+        margin-bottom: 4pt !important;
+        page-break-inside: avoid !important;
+    }
+    
+    .executive-item {
+        border: 1pt solid #000 !important;
+        padding: 2pt !important;
+        background: white !important;
+        min-height: 15pt !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+    
+    .executive-item label {
+        font-weight: bold !important;
+        font-size: 5pt !important;
+        color: #000 !important;
+        margin-bottom: 1pt !important;
+        text-transform: uppercase !important;
+        line-height: 1 !important;
+    }
+    
+    .executive-item p {
+        font-size: 7pt !important;
+        margin: 0 !important;
+        color: #000 !important;
+        line-height: 1.1 !important;
+        flex-grow: 1 !important;
+        display: flex !important;
+        align-items: center !important;
+        font-weight: bold !important;
+    }
+    
+    .executive-item .highlight {
+        background: white !important;
+        font-weight: bold !important;
+        color: #000 !important;
+    }
+    
+    /* TABLAS ESTILO FORMULARIO OFICIAL */
+    .styled-table {
+        width: 100% !important;
+        border-collapse: collapse !important;
+        margin: 4pt auto !important;
+        font-size: 7pt !important;
+        page-break-inside: auto !important;
+        border: 2pt solid #000 !important;
+        table-layout: fixed !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+    
+    .styled-table th {
+        background: #d0d0d0 !important;
+        color: #000 !important;
+        font-weight: bold !important;
+        text-align: center !important;
+        padding: 4pt 6pt !important;
+        border: 1pt solid #000 !important;
+        font-size: 7pt !important;
+        text-transform: uppercase !important;
+        line-height: 1.2 !important;
+    }
+    
+    /* PRIMERA COLUMNA MÁS ANCHA */
+    .styled-table th:first-child,
+    .styled-table td:first-child {
+        width: 70% !important;
+        padding: 4pt 8pt !important;
+        text-align: left !important;
+        word-wrap: break-word !important;
+    }
+    
+    /* SEGUNDA COLUMNA MÁS ESTRECHA */
+    .styled-table th:nth-child(2),
+    .styled-table td:nth-child(2) {
+        width: 30% !important;
+        text-align: center !important;
+        font-weight: bold !important;
+        padding: 4pt !important;
+    }
+    
+    .styled-table td {
+        border: 1pt solid #000 !important;
+        padding: 4pt 6pt !important;
+        text-align: left !important;
+        vertical-align: middle !important;
+        background: white !important;
+        line-height: 1.3 !important;
+        font-size: 7pt !important;
+        min-height: 14pt !important;
+    }
+    
+    .styled-table .centered {
+        text-align: center !important;
+        font-weight: bold !important;
+    }
+    
+    /* TABLA DE REGISTRO DE PRUEBAS (3 COLUMNAS) */
+    .registro-pruebas-table {
+        width: 100% !important;
+        margin: 0 !important;
+    }
+    
+    .registro-pruebas-table th:first-child,
+    .registro-pruebas-table td:first-child {
+        width: 45% !important;
+        text-align: left !important;
+        padding: 4pt 8pt !important;
+    }
+    
+    .registro-pruebas-table th:nth-child(2),
+    .registro-pruebas-table td:nth-child(2) {
+        width: 30% !important;
+        text-align: center !important;
+        padding: 4pt !important;
+    }
+    
+    .registro-pruebas-table th:nth-child(3),
+    .registro-pruebas-table td:nth-child(3) {
+        width: 25% !important;
+        text-align: center !important;
+        font-weight: bold !important;
+        padding: 4pt !important;
+    }
+    
+    /* AST TABLE ULTRA COMPACTA */
+    .ast-table {
+        font-size: 5pt !important;
+        page-break-inside: auto !important;
+    }
+    
+    .ast-table th {
+        font-size: 5pt !important;
+        padding: 1pt 2pt !important;
+        line-height: 1 !important;
+    }
+    
+    .ast-table td {
+        padding: 1pt 2pt !important;
+        font-size: 5pt !important;
+        line-height: 1.1 !important;
+    }
+    
+    /* SAFETY GRID HORIZONTAL COMPACTO */
+    .safety-grid {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 4pt !important;
+        margin-top: 4pt !important;
+        page-break-inside: avoid !important;
+    }
+    
+    .safety-item {
+        border: 0.5pt solid #000 !important;
+        padding: 3pt !important;
+        background: white !important;
+        flex: 1 !important;
+    }
+    
+    .safety-item h4 {
+        font-size: 6pt !important;
+        margin-bottom: 2pt !important;
+        color: #000 !important;
+        font-weight: bold !important;
+        text-transform: uppercase !important;
+        border-bottom: 0.5pt solid #000 !important;
+        padding-bottom: 1pt !important;
+    }
+    
+    .safety-list {
+        list-style: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    
+    .safety-list li {
+        font-size: 5pt !important;
+        padding: 1pt 0 !important;
+        line-height: 1.1 !important;
+        color: #000 !important;
+    }
+    
+    .safety-list li:before {
+        content: "• " !important;
+        color: #000 !important;
+        font-weight: bold !important;
+        margin-right: 2pt !important;
+    }
+    
+    /* SECCIÓN DE APROBACIONES COMPACTA */
+    .approval-section {
+        margin-top: 8pt !important;
+        page-break-inside: avoid !important;
+        border-top: 1pt solid #000 !important;
+        padding-top: 4pt !important;
+    }
+    
+    .approval-stamps {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 4pt !important;
+    }
+    
+    .stamp {
+        border: 1pt solid #000 !important;
+        padding: 4pt !important;
+        text-align: center !important;
+        background: white !important;
+        flex: 1 !important;
+    }
+    
+    .stamp-title {
+        font-weight: bold !important;
+        font-size: 6pt !important;
+        margin-bottom: 4pt !important;
+        color: #000 !important;
+        text-transform: uppercase !important;
+    }
+    
+    .signature-space {
+        height: 15pt !important;
+        border-bottom: 1pt solid #000 !important;
+        margin-bottom: 3pt !important;
+        background: white !important;
+    }
+    
+    .stamp-name {
+        font-size: 5pt !important;
+        font-weight: bold !important;
+        color: #000 !important;
+        text-transform: uppercase !important;
+    }
+    
+    /* CONTROL DE SALTOS DE PÁGINA OPTIMIZADO */
+    .pt2-datos-generales,
+    .pt2-medidas-riesgos,
+    .pt2-condiciones-proceso {
+        page-break-after: avoid !important;
+        margin-bottom: 3pt !important;
+    }
+    
+    .pt2-requisitos-apertura {
+        page-break-before: avoid !important;
+        margin-bottom: 3pt !important;
+    }
+    
+    .pt1-ast-seguridad {
+        page-break-before: avoid !important;
+    }
+    
+    .approval-section {
+        page-break-before: avoid !important;
+    }
+    
+    /* OPTIMIZACIONES ADICIONALES */
+    p, span {
+        orphans: 2 !important;
+        widows: 2 !important;
+    }
+    
+    /* Reducir espacios innecesarios */
+    .executive-section {
+        margin-bottom: 2pt !important;
+    }
+    
+    /* Asegurar contraste en B&N */
+    #maintenance-type-label,
+    #work-order-label,
+    #tag-label {
+        font-weight: bold !important;
+        color: #000 !important;
+    }
+    
+    /* Códigos de formato eliminados */
+}
+
 

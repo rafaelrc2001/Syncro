@@ -302,4 +302,361 @@ document.addEventListener("DOMContentLoaded", function () {
       window.location.href = "../../supseguridad/supseguridad.html";
     });
   }
+
+  // ============================
+  // FUNCIONALIDAD DE PDF PROFESIONAL
+  // ============================
+
+  /**
+   * Función para recolectar todos los datos del formulario PT2
+   */
+  function recolectarDatosPT2() {
+    // Datos generales
+    const datos = {
+      maintenance_type:
+        document.getElementById("maintenance-type-label")?.textContent || "-",
+      work_order:
+        document.getElementById("work-order-label")?.textContent || "-",
+      tag: document.getElementById("tag-label")?.textContent || "-",
+      start_time:
+        document.getElementById("start-time-label")?.textContent || "-",
+      equipment_description:
+        document.getElementById("equipment-description-label")?.textContent ||
+        "-",
+      work_description:
+        document.getElementById("descripcion-trabajo-label")?.textContent ||
+        "-",
+
+      // Medidas para administrar riesgos
+      special_tools:
+        document.getElementById("special-tools-label")?.textContent || "-",
+      adequate_tools:
+        document.getElementById("adequate-tools-label")?.textContent || "-",
+      pre_verification:
+        document.getElementById("pre-verification-label")?.textContent || "-",
+      risk_knowledge:
+        document.getElementById("risk-knowledge-label")?.textContent || "-",
+      final_observations:
+        document.getElementById("final-observations-label")?.textContent || "-",
+
+      // Requisitos de apertura
+      fuera_operacion:
+        document.getElementById("resp-fuera-operacion")?.textContent || "-",
+      despresurizado_purgado:
+        document.getElementById("resp-despresurizado-purgado")?.textContent ||
+        "-",
+      necesita_aislamiento:
+        document.getElementById("resp-necesita-aislamiento")?.textContent ||
+        "-",
+      con_valvulas:
+        document.getElementById("resp-con-valvulas")?.textContent || "-",
+      con_juntas_ciegas:
+        document.getElementById("resp-con-juntas-ciegas")?.textContent || "-",
+      producto_entrampado:
+        document.getElementById("resp-producto-entrampado")?.textContent || "-",
+      requiere_lavado:
+        document.getElementById("resp-requiere-lavado")?.textContent || "-",
+      requiere_neutralizado:
+        document.getElementById("resp-requiere-neutralizado")?.textContent ||
+        "-",
+      requiere_vaporizado:
+        document.getElementById("resp-requiere-vaporizado")?.textContent || "-",
+      suspender_trabajos_adyacentes:
+        document.getElementById("resp-suspender-trabajos-adyacentes")
+          ?.textContent || "-",
+      acordonar_area:
+        document.getElementById("resp-acordonar-area")?.textContent || "-",
+      prueba_gas_toxico_inflamable:
+        document.getElementById("resp-prueba-gas-toxico-inflamable")
+          ?.textContent || "-",
+      equipo_electrico_desenergizado:
+        document.getElementById("resp-equipo-electrico-desenergizado")
+          ?.textContent || "-",
+      tapar_purgas_drenajes:
+        document.getElementById("resp-tapar-purgas-drenajes")?.textContent ||
+        "-",
+
+      // Condiciones del proceso
+      fluid: document.getElementById("fluid")?.textContent || "-",
+      pressure: document.getElementById("pressure")?.textContent || "-",
+      temperature: document.getElementById("temperature")?.textContent || "-",
+
+      // Requisitos para administrar riesgos
+      special_protection:
+        document.getElementById("resp-special-protection")?.textContent || "-",
+      skin_protection:
+        document.getElementById("resp-skin-protection")?.textContent || "-",
+      respiratory_protection:
+        document.getElementById("resp-respiratory-protection")?.textContent ||
+        "-",
+      eye_protection:
+        document.getElementById("resp-eye-protection")?.textContent || "-",
+      fire_protection:
+        document.getElementById("resp-fire-protection")?.textContent || "-",
+      fire_protection_type:
+        document.getElementById("fire-protection-type")?.textContent || "-",
+      barriers_required:
+        document.getElementById("resp-barriers-required")?.textContent || "-",
+      observations: document.getElementById("observations")?.textContent || "-",
+
+      // Registro de pruebas
+      valor_co2: document.getElementById("valor-co2")?.textContent || "-",
+      aprobado_co2: document.getElementById("aprobado-co2")?.textContent || "-",
+      valor_amonico:
+        document.getElementById("valor-amonico")?.textContent || "-",
+      aprobado_amonico:
+        document.getElementById("aprobado-amonico")?.textContent || "-",
+      valor_oxigeno:
+        document.getElementById("valor-oxigeno")?.textContent || "-",
+      aprobado_oxigeno:
+        document.getElementById("aprobado-oxigeno")?.textContent || "-",
+      valor_lel: document.getElementById("valor-lel")?.textContent || "-",
+      aprobado_lel: document.getElementById("aprobado-lel")?.textContent || "-",
+
+      // Aprobaciones
+      responsable_area_nombre:
+        document.getElementById("responsable-area-nombre")?.textContent || "-",
+      operador_area_nombre:
+        document.getElementById("operador-area-nombre")?.textContent || "-",
+      supervisor_nombre:
+        document.getElementById("supervisor-nombre")?.textContent || "-",
+
+      // AST y Personal (se llenarán desde las variables globales si están disponibles)
+      ast_activities: window.astActivities || [],
+      personal_involucrado: window.personalInvolucrado || [],
+      epp_requerido: window.astData?.epp_requerido || "-",
+      maquinaria_herramientas: window.astData?.maquinaria_herramientas || "-",
+      material_accesorios: window.astData?.material_accesorios || "-",
+    };
+
+    return datos;
+  }
+
+  /**
+   * Función para generar PDF profesional
+   */
+  async function generarPDFProfesional() {
+    try {
+      // Mostrar mensaje de carga
+      const mensajeCarga = mostrarMensajeCarga("Generando PDF profesional...");
+
+      // Recolectar datos del formulario
+      const datosPT2 = recolectarDatosPT2();
+
+      // Hacer petición al servidor para generar PDF
+      const response = await fetch("/api/pt2/generate-pdf", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(datosPT2),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error del servidor: ${response.status}`);
+      }
+
+      // Obtener el PDF como blob
+      const pdfBlob = await response.blob();
+
+      // Crear URL para descargar
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+
+      // Obtener nombre del archivo desde headers o usar por defecto
+      const contentDisposition = response.headers.get("Content-Disposition");
+      let filename = "PT2_Apertura_Equipo.pdf";
+
+      if (contentDisposition) {
+        const filenameMatch = contentDisposition.match(/filename="(.+)"/);
+        if (filenameMatch) {
+          filename = filenameMatch[1];
+        }
+      }
+
+      // Crear enlace temporal para descargar
+      const link = document.createElement("a");
+      link.href = pdfUrl;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      // Limpiar URL temporal
+      URL.revokeObjectURL(pdfUrl);
+
+      // Remover mensaje de carga
+      removerMensajeCarga(mensajeCarga);
+
+      // Mostrar mensaje de éxito
+      mostrarMensajeExito("PDF generado y descargado exitosamente");
+    } catch (error) {
+      console.error("Error al generar PDF:", error);
+
+      // Remover mensaje de carga si existe
+      const mensajeCarga = document.getElementById("mensaje-carga");
+      if (mensajeCarga) {
+        removerMensajeCarga(mensajeCarga);
+      }
+
+      // Mostrar error al usuario
+      mostrarMensajeError(
+        "Error al generar el PDF. Intentando con impresión tradicional..."
+      );
+
+      // Fallback a impresión tradicional
+      setTimeout(() => {
+        imprimirPermisoTradicional();
+      }, 2000);
+    }
+  }
+
+  /**
+   * Función de impresión tradicional (fallback)
+   */
+  function imprimirPermisoTradicional() {
+    try {
+      // Ejecutar impresión tradicional del navegador
+      window.print();
+    } catch (error) {
+      console.error("Error al imprimir:", error);
+      alert(
+        "Ocurrió un error al preparar la impresión. Por favor, inténtalo nuevamente."
+      );
+    }
+  }
+
+  /**
+   * Función principal de impresión (directo sin ventanas emergentes)
+   */
+  function imprimirPermiso() {
+    // Ir directo a impresión tradicional sin ventanas emergentes
+    imprimirPermisoTradicional();
+  }
+
+  /**
+   * Funciones auxiliares para mensajes
+   */
+  function mostrarMensajeCarga(mensaje) {
+    const mensajeCarga = document.createElement("div");
+    mensajeCarga.id = "mensaje-carga";
+    mensajeCarga.style.cssText = `
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #003B5C;
+      color: white;
+      padding: 20px 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      z-index: 10000;
+      font-family: 'Roboto', sans-serif;
+      text-align: center;
+    `;
+    mensajeCarga.innerHTML = `
+      <i class="ri-file-pdf-line" style="font-size: 24px; margin-bottom: 10px; display: block;"></i>
+      ${mensaje}
+      <div style="margin-top: 10px;">
+        <div style="width: 30px; height: 30px; border: 3px solid rgba(255,255,255,0.3); border-top: 3px solid white; border-radius: 50%; margin: 0 auto; animation: spin 1s linear infinite;"></div>
+      </div>
+      <style>
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      </style>
+    `;
+
+    document.body.appendChild(mensajeCarga);
+    return mensajeCarga;
+  }
+
+  function removerMensajeCarga(mensaje) {
+    if (mensaje && mensaje.parentNode) {
+      mensaje.parentNode.removeChild(mensaje);
+    }
+  }
+
+  function mostrarMensajeExito(mensaje) {
+    const mensajeExito = document.createElement("div");
+    mensajeExito.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #28a745;
+      color: white;
+      padding: 15px 20px;
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      z-index: 10001;
+      font-family: 'Roboto', sans-serif;
+      animation: slideIn 0.3s ease-out;
+    `;
+    mensajeExito.innerHTML = `
+      <i class="ri-check-line" style="margin-right: 8px;"></i>
+      ${mensaje}
+    `;
+
+    document.body.appendChild(mensajeExito);
+
+    setTimeout(() => {
+      if (mensajeExito.parentNode) {
+        mensajeExito.parentNode.removeChild(mensajeExito);
+      }
+    }, 3000);
+  }
+
+  function mostrarMensajeError(mensaje) {
+    const mensajeError = document.createElement("div");
+    mensajeError.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #dc3545;
+      color: white;
+      padding: 15px 20px;
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      z-index: 10001;
+      font-family: 'Roboto', sans-serif;
+      animation: slideIn 0.3s ease-out;
+    `;
+    mensajeError.innerHTML = `
+      <i class="ri-error-warning-line" style="margin-right: 8px;"></i>
+      ${mensaje}
+    `;
+
+    document.body.appendChild(mensajeError);
+
+    setTimeout(() => {
+      if (mensajeError.parentNode) {
+        mensajeError.parentNode.removeChild(mensajeError);
+      }
+    }, 5000);
+  }
+
+  // Event listener para el botón de imprimir
+  const btnImprimir = document.getElementById("btn-imprimir-permiso");
+  if (btnImprimir) {
+    btnImprimir.addEventListener("click", function (e) {
+      e.preventDefault();
+
+      // Imprimir directamente sin confirmaciones
+      imprimirPermiso();
+    });
+
+    // Agregar indicador visual al botón
+    btnImprimir.style.transition = "all 0.3s ease";
+    btnImprimir.addEventListener("mouseenter", function () {
+      this.style.transform = "translateY(-2px)";
+      this.style.boxShadow = "0 6px 20px rgba(0,59,92,0.3)";
+    });
+
+    btnImprimir.addEventListener("mouseleave", function () {
+      this.style.transform = "translateY(0)";
+      this.style.boxShadow = "";
+    });
+  }
+
+  console.log("Funcionalidad de PDF PT2 inicializada correctamente");
 });

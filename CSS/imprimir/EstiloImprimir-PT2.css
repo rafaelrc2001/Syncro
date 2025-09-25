@@ -8,7 +8,7 @@
 {
    background: rgba(13, 97, 34, 0.08) !important;
    border: 2px solid rgba(13, 97, 34, 0.3) !important;
-   border-radius: 8px !important;
+   border-radius: 4px !important;
    padding: 12px 16px !important;
    justify-content: center !important;
    text-align: center !important;
@@ -16,11 +16,13 @@
 
 /* Fondo azul con marco para headers de proceso */
 .pt2-requisitos-apertura .section-header,
-.pt2-condiciones-proceso .section-header
+.pt2-condiciones-proceso .section-header,
+.pt1-ast-seguridad .section-header,
+.pt1-personal-involucrado .section-header
  {
     background: rgba(2, 200, 250, 0.08) !important;
     border: 2px solid rgba(2, 200, 250, 0.3) !important;
-    border-radius: 8px !important;
+    border-radius: 4px !important;
     padding: 12px 16px !important;
     justify-content: center !important;
     text-align: center !important;
@@ -32,7 +34,7 @@
  {
     background: rgba(92, 0, 3, 0.08) !important;
     border: 2px solid rgba(92, 0, 3, 0.3) !important;
-    border-radius: 8px !important;
+    border-radius: 4px !important;
     padding: 12px 16px !important;
     justify-content: center !important;
     text-align: center !important;
@@ -47,10 +49,3 @@ img {
 }
 
 
-/* Centrar encabezados de AST y Personal Involucrado */
-.pt1-ast-seguridad .section-header,
-.pt1-personal-involucrado .section-header {
-    justify-content: center !important;
-    text-align: center !important;
-}
- 

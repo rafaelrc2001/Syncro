@@ -1,360 +1,40 @@
 /*============================
    Fondo PT2 - Estilos de Sección
-============================ */
+============================*/
+
+/* Estilos base para section-header */
+.section-header {
+    border-radius: 4px !important;
+    padding: 12px 16px !important;
+    justify-content: center !important;
+    text-align: center !important;
+    margin-bottom: 16px !important;
+}
 
 /* Fondo verde con marco para el header de Datos generales y Medidas */
 .pt2-datos-generales .section-header,
-.pt2-medidas-riesgos .section-header
-{
-   background: rgba(13, 97, 34, 0.08) !important;
-   border: 2px solid rgba(13, 97, 34, 0.3) !important;
-   border-radius: 4px !important;
-   padding: 12px 16px !important;    /* SPANS DENTRO DE CELDAS DE VALOR */
-    .registro-pruebas-table td span {
-        background: transparent !important;
-        padding: 2pt 4pt !important;
-        border: none !important;
-        border-radius: 0 !important;
-        display: inline !important;
-        min-width: auto !important;
-        font-weight: bold !important;
-    }
-    
-    /* TABLA ESPECÍFICA: REQUISITOS PARA ADMINISTRAR LOS RIESGOS */
-    .requisitos-riesgos-section table.styled-table.requisitos-riesgos-table th:first-child,
-    .requisitos-riesgos-section table.styled-table.requisitos-riesgos-table td:first-child {
-        width: 48% !important;
-        text-align: left !important;
-        padding: 6pt 25pt !important;
-        font-size: 9pt !important;
-        line-height: 1.3 !important;
-    }
-    
-    .requisitos-riesgos-section table.styled-table.requisitos-riesgos-table th:first-child {
-        text-align: center !important;
-        font-size: 8pt !important;
-    }
-    
-    .requisitos-riesgos-section table.styled-table.requisitos-riesgos-table th:nth-child(2),
-    .requisitos-riesgos-section table.styled-table.requisitos-riesgos-table td:nth-child(2) {
-        width: 52% !important;
-        text-align: center !important;
-        font-weight: bold !important;
-        padding: 6pt 25pt !important;
-        font-size: 10pt !important;
-    }
-    
-
-
-    /* =================== TABLA REGISTRO DE PRUEBAS - OPTIMIZADA =================== */
-    
-    /* CONTENEDOR PRINCIPAL - ULTRA COMPACTO */
-    .executive-section.registro-pruebas-section {
-        width: 100% !important;
-        max-width: 600px !important;
-        margin: 2px auto !important;
-        padding: 2px !important;
-        box-sizing: border-box !important;
-        position: relative !important;
-        text-align: center !important;
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        background: white !important;
-        border-radius: 2px !important;
-        box-shadow: none !important;
-    }
-    
-    /* ANULAR RESTRICCIONES DE SECTIONS-ROW COMPLETAMENTE */
-    .sections-row > .executive-section.registro-pruebas-section,
-    .sections-row .registro-pruebas-section {
-        width: 100% !important;
-        max-width: 100% !important;
-        flex: 1 1 100% !important;
-        margin: 25px 0 !important;
-        padding: 0 !important;
-        display: block !important;
-        order: 999 !important;
-    }
-    
-    /* ENCABEZADO ULTRA COMPACTO */
-    .registro-pruebas-section .section-header {
-        background: none !important;
-        border: none !important;
-        padding: 0 !important;
-        margin-bottom: 4px !important;
-        text-align: center !important;
-        border-radius: 0 !important;
-        display: block !important;
-        width: 100% !important;
-        max-width: none !important;
-    }
-    
-    .registro-pruebas-section .section-header h3 {
-        font-size: 8px !important;
-        font-weight: 700 !important;
-        color: #2c3e50 !important;
-        text-transform: uppercase !important;
-        letter-spacing: 0.5px !important;
-        margin: 0 !important;
-        display: inline-block !important;
-        background: #333 !important;
-        color: white !important;
-        padding: 2px 8px !important;
-        border-radius: 3px !important;
-        box-shadow: none !important;
-        border: none !important;
-        position: relative !important;
-    }
-    
-    .registro-pruebas-section .section-header h3::before {
-        display: none !important;
-    }
-    
-    .registro-pruebas-section .section-header i {
-        display: none !important;
-    }
-    
-    /* TABLA - DISEÑO ULTRA COMPACTO */
-    .registro-pruebas-section table {
-        width: 95% !important;
-        max-width: 600px !important;
-        min-width: 400px !important;
-        table-layout: fixed !important;
-        border-collapse: collapse !important;
-        border-spacing: 0 !important;
-        border: 1px solid #2c3e50 !important;
-        background: white !important;
-        font-family: 'Segoe UI', Arial, sans-serif !important;
-        margin: 0 auto !important;
-        box-shadow: none !important;
-        border-radius: 3px !important;
-        overflow: hidden !important;
-        font-size: 8px !important;
-    }
-    
-    /* ENCABEZADOS - MÍNIMOS */
-    .registro-pruebas-section table thead th {
-        background: #2c3e50 !important;
-        color: white !important;
-        padding: 1px 2px !important;
-        text-align: center !important;
-        font-weight: 700 !important;
-        font-size: 4px !important;
-        text-transform: uppercase !important;
-        letter-spacing: 0.1px !important;
-        border: 0.5px solid #2c3e50 !important;
-        position: relative !important;
-        line-height: 1.0 !important;
-    }
-    
-    .registro-pruebas-section table thead th::after {
-        content: "" !important;
-        position: absolute !important;
-        bottom: 0 !important;
-        left: 0 !important;
-        width: 100% !important;
-        height: 3px !important;
-        background: linear-gradient(90deg, #3498db, #2980b9) !important;
-    }
-    
-    /* DISTRIBUCIÓN DE COLUMNAS EQUILIBRADA */
-    .registro-pruebas-section table thead th:first-child {
-        width: 50% !important;
-        text-align: left !important;
-        padding-left: 30px !important;
-    }
-    
-    .registro-pruebas-section table thead th:nth-child(2) {
-        width: 25% !important;
-    }
-    
-    .registro-pruebas-section table thead th:nth-child(3) {
-        width: 25% !important;
-    }
-    
-    /* FILAS DEL CUERPO - MÍNIMAS */
-    .registro-pruebas-section table tbody tr {
-        height: 12px !important;
-        min-height: 12px !important;
-        transition: none !important;
-    }
-    
-    .registro-pruebas-section table tbody tr:nth-child(even) {
-        background: #fafafa !important;
-    }
-    
-    .registro-pruebas-section table tbody tr:nth-child(odd) {
-        background: white !important;
-    }
-    
-    /* CELDAS DEL CUERPO - MÍNIMAS */
-    .registro-pruebas-section table tbody td {
-        padding: 1px !important;
-        border: 0.5px solid #bdc3c7 !important;
-        vertical-align: middle !important;
-        font-size: 4px !important;
-        color: #2c3e50 !important;
-        line-height: 1.0 !important;
-    }
-    
-    /* PRIMERA COLUMNA - MÍNIMA */
-    .registro-pruebas-section table tbody td:first-child {
-        text-align: left !important;
-        padding-left: 2px !important;
-        font-weight: 600 !important;
-        font-size: 4px !important;
-        color: #2c3e50 !important;
-        position: relative !important;
-    }
-    
-    .registro-pruebas-section table tbody td:first-child::before {
-        content: "•" !important;
-        margin-right: 1px !important;
-        font-size: 5px !important;
-        color: #3498db !important;
-    }
-    
-    /* SEGUNDA COLUMNA - VALORES DESTACADOS */
-    .registro-pruebas-section table tbody td:nth-child(2) {
-        text-align: center !important;
-    }
-    
-    .registro-pruebas-section table tbody td:nth-child(2) span {
-        display: inline-block !important;
-        background: #3498db !important;
-        color: white !important;
-        padding: 1px 4px !important;
-        border-radius: 3px !important;
-        font-weight: 700 !important;
-        font-size: 6px !important;
-        min-width: 20px !important;
-        text-align: center !important;
-        border: none !important;
-        box-shadow: none !important;
-        transform: none !important;
-    }
-    
-    /* TERCERA COLUMNA - ESTADO APROBADO */
-    .registro-pruebas-section table tbody td:nth-child(3) {
-        text-align: center !important;
-    }
-    
-    .registro-pruebas-section table tbody td:nth-child(3) span {
-        display: inline-block !important;
-        background: linear-gradient(135deg, #27ae60, #2ecc71) !important;
-        color: white !important;
-        padding: 12px 20px !important;
-        border-radius: 20px !important;
-        font-weight: 700 !important;
-        font-size: 16px !important;
-        min-width: 80px !important;
-        text-align: center !important;
-        border: none !important;
-        box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3) !important;
-        transform: translateY(-1px) !important;
-    }
-    
-    /* INPUTS PARA VERSIÓN SUPERVISOR */
-    .registro-pruebas-section table tbody td input[type="text"] {
-        width: 80% !important;
-        padding: 8px 12px !important;
-        border: 1px solid #007bff !important;
-        border-radius: 4px !important;
-        text-align: center !important;
-        font-size: 14px !important;
-        font-weight: 500 !important;
-        color: #495057 !important;
-        background: white !important;
-    }
-    
-    .registro-pruebas-section table tbody td input[type="text"]:focus {
-        outline: none !important;
-        border-color: #0056b3 !important;
-        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25) !important;
-    }
-    
-    .registro-pruebas-section table tbody td input[type="radio"] {
-        transform: scale(1.4) !important;
-        margin: 0 5px !important;
-        accent-color: #28a745 !important;
-    }
-    
-    /* OVERRIDE ABSOLUTO - FORZAR ANCHO COMPLETO SIN EXCEPCIONES */
-    .registro-pruebas-section,
-    .registro-pruebas-section *,
-    .executive-section.registro-pruebas-section,
-    .sections-row .registro-pruebas-section,
-    div.registro-pruebas-section {
-        max-width: none !important;
-    }
-    
-    /* CENTRADO Y RESPONSIVE */
-    .registro-pruebas-section {
-        overflow-x: auto !important;
-        display: flex !important;
-        justify-content: center !important;
-    }
-    
-    /* RESPONSIVE - AJUSTAR ANCHO SEGÚN PANTALLA */
-    @media screen and (max-width: 768px) {
-        .registro-pruebas-section table {
-            width: 95% !important;
-            min-width: 500px !important;
-        }
-    }
-    
-    @media screen and (min-width: 768px) {
-        .registro-pruebas-section table {
-            width: 75% !important;
-            max-width: 800px !important;
-        }
-    }
-    
-    /* PRINT STYLES - ANCHO COMPLETO AL IMPRIMIR */
-    @media print {
-        .executive-section.registro-pruebas-section {
-            width: 100% !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            page-break-inside: avoid !important;
-        }
-        
-        .registro-pruebas-section table {
-            width: 100% !important;
-            max-width: none !important;
-        }
-    }
-    
-    /* CONTENEDORES DE TABLAS - FUERZA ANCHO COMPLETO */content: center !important;
-   text-align: center !important;
+.pt2-medidas-riesgos .section-header {
+    background: rgba(13, 97, 34, 0.08) !important;
+    border: 2px solid rgba(13, 97, 34, 0.3) !important;
 }
 
 /* Fondo azul con marco para headers de proceso */
 .pt2-requisitos-apertura .section-header,
 .pt2-condiciones-proceso .section-header,
 .pt1-ast-seguridad .section-header,
-.pt1-personal-involucrado .section-header
- {
+.pt1-personal-involucrado .section-header {
     background: rgba(2, 200, 250, 0.08) !important;
     border: 2px solid rgba(2, 200, 250, 0.3) !important;
-    border-radius: 4px !important;
-    padding: 12px 16px !important;
-    justify-content: center !important;
-    text-align: center !important;
 }
 
-/* Fondo rojo oscuro con marco para headers de riesgos y pruebas */
+/* Fondo rojo oscuro con headers de riesgos y pruebas */
 .requisitos-riesgos-section .section-header,
-.registro-pruebas-section .section-header
- {
+.registro-pruebas-section .section-header {
     background: rgba(92, 0, 3, 0.08) !important;
     border: 2px solid rgba(92, 0, 3, 0.3) !important;
-    border-radius: 4px !important;
-    padding: 12px 16px !important;
 }
 
-/* CONTENEDOR FLEX PARA SECCIONES LADO A LADO - MITAD Y MITAD */
+/* CONTENEDOR FLEX PARA SECCIONES LADO A LADO */
 .sections-row {
     display: flex !important;
     gap: 24px !important;
@@ -369,15 +49,11 @@
     max-width: 50% !important;
     min-width: 0 !important;
     margin: 0 !important;
+    min-height: 400px !important;
 }
 
 /* FORZAR ANCHO ESPECÍFICO PARA TABLAS EN SECTIONS-ROW */
-.sections-row .pt2-requisitos-apertura {
-    flex: 0 0 48% !important;
-    width: 48% !important;
-    max-width: 48% !important;
-}
-
+.sections-row .pt2-requisitos-apertura,
 .sections-row .requisitos-riesgos-section {
     flex: 0 0 48% !important;
     width: 48% !important;
@@ -395,6 +71,119 @@
     word-wrap: break-word !important;
     overflow-wrap: break-word !important;
     hyphens: auto !important;
+}
+
+/* ESTILOS ESPECÍFICOS PARA EQUILIBRAR LAS TABLAS EN SECTIONS-ROW */
+.sections-row .pt2-requisitos-apertura table.styled-table th:first-child,
+.sections-row .pt2-requisitos-apertura table.styled-table td:first-child,
+.sections-row .requisitos-riesgos-section table.styled-table th:first-child,
+.sections-row .requisitos-riesgos-section table.styled-table td:first-child {
+    width: 70% !important;
+    font-size: 11px !important;
+    padding: 8px 12px !important;
+}
+
+.sections-row .pt2-requisitos-apertura table.styled-table th:nth-child(2),
+.sections-row .pt2-requisitos-apertura table.styled-table td:nth-child(2),
+.sections-row .requisitos-riesgos-section table.styled-table th:nth-child(2),
+.sections-row .requisitos-riesgos-section table.styled-table td:nth-child(2) {
+    width: 30% !important;
+    text-align: center !important;
+    font-size: 11px !important;
+    padding: 8px 12px !important;
+}
+
+/* REGISTRO DE PRUEBAS CON ESTILO CONSISTENTE */
+.registro-pruebas-section {
+    background: white !important;
+    border-radius: 8px !important;
+    padding: 24px !important;
+    margin: 24px 0 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    border: 1px solid #e9ecef !important;
+}
+
+.registro-pruebas-section .section-header {
+    margin-bottom: 20px !important;
+    box-shadow: none !important;
+}
+
+.registro-pruebas-section .section-header h3 {
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    margin: 0 !important;
+    color: #2c3e50 !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+}
+
+.registro-pruebas-section .section-header i {
+    font-size: 18px !important;
+    margin-right: 8px !important;
+    color: #2c3e50 !important;
+}
+
+/* ESPACIADO MEJORADO PARA TABLA DE PRUEBAS */
+.registro-pruebas-section table.styled-table.registro-pruebas-table {
+    border-spacing: 0 8px !important;
+    border-collapse: separate !important;
+}
+
+.registro-pruebas-section table.styled-table.registro-pruebas-table tbody tr {
+    border-radius: 8px !important;
+    overflow: hidden !important;
+}
+
+.registro-pruebas-section table.styled-table.registro-pruebas-table tbody td {
+    border-top: 1px solid #e9ecef !important;
+    border-bottom: 1px solid #e9ecef !important;
+}
+
+.registro-pruebas-section table.styled-table.registro-pruebas-table tbody td:first-child {
+    border-left: 1px solid #e9ecef !important;
+    border-top-left-radius: 8px !important;
+    border-bottom-left-radius: 8px !important;
+}
+
+.registro-pruebas-section table.styled-table.registro-pruebas-table tbody td:last-child {
+    border-right: 1px solid #e9ecef !important;
+    border-top-right-radius: 8px !important;
+    border-bottom-right-radius: 8px !important;
+}
+
+/* TABLA ESPECÍFICA: REQUISITOS PARA ADMINISTRAR LOS RIESGOS */
+.requisitos-riesgos-section table.styled-table.requisitos-riesgos-table th:first-child,
+.requisitos-riesgos-section table.styled-table.requisitos-riesgos-table td:first-child {
+    width: 48% !important;
+    text-align: left !important;
+    padding: 6pt 25pt !important;
+    font-size: 9pt !important;
+    line-height: 1.3 !important;
+}
+
+.requisitos-riesgos-section table.styled-table.requisitos-riesgos-table th:first-child {
+    text-align: center !important;
+    font-size: 8pt !important;
+}
+
+.requisitos-riesgos-section table.styled-table.requisitos-riesgos-table th:nth-child(2),
+.requisitos-riesgos-section table.styled-table.requisitos-riesgos-table td:nth-child(2) {
+    width: 52% !important;
+    text-align: center !important;
+    font-weight: bold !important;
+    padding: 6pt 25pt !important;
+    font-size: 10pt !important;
+}
+
+/* SPANS DENTRO DE CELDAS DE VALOR */
+.registro-pruebas-table td span {
+    background: transparent !important;
+    padding: 2pt 4pt !important;
+    border: none !important;
+    border-radius: 0 !important;
+    display: inline !important;
+    min-width: auto !important;
+    font-weight: bold !important;
 }
 
 /* RESPONSIVE PARA SECTIONS-ROW */
@@ -425,112 +214,8 @@ img {
     print-color-adjust: exact;
 }
 
-/* ESTILOS ESPECÍFICOS PARA EQUILIBRAR LAS TABLAS EN SECTIONS-ROW */
-.sections-row .pt2-requisitos-apertura table.styled-table th:first-child,
-.sections-row .pt2-requisitos-apertura table.styled-table td:first-child {
-    width: 70% !important;
-    font-size: 11px !important;
-    padding: 8px 12px !important;
-}
-
-.sections-row .pt2-requisitos-apertura table.styled-table th:nth-child(2),
-.sections-row .pt2-requisitos-apertura table.styled-table td:nth-child(2) {
-    width: 30% !important;
-    text-align: center !important;
-    font-size: 11px !important;
-    padding: 8px 12px !important;
-}
-
-.sections-row .requisitos-riesgos-section table.styled-table th:first-child,
-.sections-row .requisitos-riesgos-section table.styled-table td:first-child {
-    width: 60% !important;
-    font-size: 11px !important;
-    padding: 8px 12px !important;
-}
-
-.sections-row .requisitos-riesgos-section table.styled-table th:nth-child(2),
-.sections-row .requisitos-riesgos-section table.styled-table td:nth-child(2) {
-    width: 40% !important;
-    text-align: center !important;
-    font-size: 11px !important;
-    padding: 8px 12px !important;
-}
-
-/* ALTURA MÍNIMA PARA SECCIONES EN SECTIONS-ROW */
-.sections-row > .executive-section {
-    min-height: 400px !important;
-}
-
-.sections-row .section-header {
-    margin-bottom: 16px !important;
-}
-
-/* REGISTRO DE PRUEBAS CON ESTILO CONSISTENTE - IGUAL A OTRAS SECCIONES */
-.registro-pruebas-section {
-    background: white !important;
-    border-radius: 8px !important;
-    padding: 24px !important;
-    margin: 24px 0 !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
-    border: 1px solid #e9ecef !important;
-}
-
-.registro-pruebas-section .section-header {
-    background: rgba(92, 0, 3, 0.08) !important;
-    border: 2px solid rgba(92, 0, 3, 0.3) !important;
-    border-radius: 4px !important;
-    padding: 12px 16px !important;
-    justify-content: center !important;
-    text-align: center !important;
-    margin-bottom: 20px !important;
-    box-shadow: none !important;
-}
-
-.registro-pruebas-section .section-header h3 {
-    font-size: 16px !important;
-    font-weight: 600 !important;
-    margin: 0 !important;
-    color: #2c3e50 !important;
-    text-transform: none !important;
-    letter-spacing: normal !important;
-}
-
-.registro-pruebas-section .section-header i {
-    font-size: 18px !important;
-    margin-right: 8px !important;
-    color: #2c3e50 !important;
-}
-
-/* ESPACIADO MEJORADO PARA TODA LA TABLA */
-.registro-pruebas-section table.styled-table.registro-pruebas-table {
-    border-spacing: 0 8px !important;
-    border-collapse: separate !important;
-}
-
-.registro-pruebas-section table.styled-table.registro-pruebas-table tbody tr {
-    border-radius: 8px !important;
-    overflow: hidden !important;
-}
-
-.registro-pruebas-section table.styled-table.registro-pruebas-table tbody td {
-    border-top: 1px solid #e9ecef !important;
-    border-bottom: 1px solid #e9ecef !important;
-}
-
-.registro-pruebas-section table.styled-table.registro-pruebas-table tbody td:first-child {
-    border-left: 1px solid #e9ecef !important;
-    border-top-left-radius: 8px !important;
-    border-bottom-left-radius: 8px !important;
-}
-
-.registro-pruebas-section table.styled-table.registro-pruebas-table tbody td:last-child {
-    border-right: 1px solid #e9ecef !important;
-    border-top-right-radius: 8px !important;
-    border-bottom-right-radius: 8px !important;
-}
-
 /* ============================
-   ESTILOS COMPACTOS PARA IMPRESIÓN PT2 - BLANCO Y NEGRO
+   ESTILOS COMPACTOS PARA IMPRESIÓN PT2
    ============================ */
 @media print {
     /* Configuración de página compacta */
@@ -539,7 +224,7 @@ img {
         margin: 10mm 8mm;
     }
     
-    /* Reset para impresión B&N */
+    /* Reset para impresión */
     * {
         -webkit-print-color-adjust: economy !important;
         print-color-adjust: economy !important;
@@ -554,31 +239,9 @@ img {
         margin: 0 !important;
         padding: 0 !important;
         width: 100% !important;
-        max-width: none !important;
     }
     
-    /* ELIMINAR ESPACIOS INNECESARIOS DE CONTENEDORES PRINCIPALES */
-    body * {
-        box-sizing: border-box !important;
-    }
-    
-    /* OPTIMIZACIÓN ESPECIAL PARA CONTENEDORES CON ESTILO INLINE */
-    div[style*="max-width"],
-    div[style*="width"] {
-        max-width: none !important;
-        width: 100% !important;
-    }
-    
-    /* LAYOUT EN DOS COLUMNAS ELEGANTE */
-    .executive-section {
-        width: 100% !important;
-        max-width: 100% !important;
-        margin: 2pt 0 !important;
-        padding: 0 !important;
-        box-sizing: border-box !important;
-    }
-    
-    /* CONTENEDOR FLEX ELEGANTE PARA SECCIONES LADO A LADO */
+    /* LAYOUT EN DOS COLUMNAS */
     .sections-row {
         display: flex !important;
         width: 100% !important;
@@ -587,115 +250,71 @@ img {
         align-items: flex-start !important;
     }
     
-    /* SECCIONES EN COLUMNAS CON ESTILO MODERNO */
     .pt2-requisitos-apertura,
     .pt2-condiciones-proceso {
         flex: 1 !important;
         width: 46% !important;
         margin: 0 !important;
         padding: 0 !important;
-        box-sizing: border-box !important;
-        background: transparent !important;
-        border-radius: 8pt !important;
-        overflow: hidden !important;
     }
     
-    /* SECCIONES DE ANCHO COMPLETO CON MISMO ESTILO QUE LAS DE ARRIBA */
+    /* SECCIONES DE ANCHO COMPLETO */
     .requisitos-riesgos-section,
     .registro-pruebas-section {
         width: 100% !important;
-        max-width: 100% !important;
         margin: 8pt 0 !important;
         padding: 0 !important;
-        box-sizing: border-box !important;
-        border-radius: 8pt !important;
-        overflow: hidden !important;
-        box-shadow: 0 4pt 12pt rgba(0,0,0,0.08) !important;
     }
     
-    /* EFECTOS ADICIONALES PARA MEJOR PRESENTACIÓN */
-    .sections-row::before {
-        content: '' !important;
-        position: absolute !important;
-        top: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        height: 2pt !important;
-        background: linear-gradient(90deg, transparent, #e9ecef, transparent) !important;
-        margin-bottom: 4pt !important;
-    }
-    
-    /* ESPACIADO Y SEPARADORES ELEGANTES */
-    .executive-section + .executive-section {
-        margin-top: 6pt !important;
-        position: relative !important;
-    }
-    
-    .executive-section + .executive-section::before {
-        content: '' !important;
-        position: absolute !important;
-        top: -3pt !important;
-        left: 20% !important;
-        right: 20% !important;
-        height: 1pt !important;
-        background: linear-gradient(90deg, transparent, #dee2e6, transparent) !important;
-    }
-    
-    /* TABLAS ULTRA COMPACTAS */
+    /* TABLAS COMPACTAS */
     table.styled-table {
         width: 100% !important;
-        max-width: 100% !important;
-        margin: 0 !important;
         border-collapse: collapse !important;
         table-layout: fixed !important;
-        box-sizing: border-box !important;
-        border-spacing: 0 !important;
-        line-height: 1.0 !important;
+        margin: 0 !important;
+        font-size: 8pt !important;
+        page-break-inside: avoid !important;
+        border: 1pt solid #000 !important;
     }
     
-    /* FORZAR ALTURA MÍNIMA EN TODAS LAS FILAS */
-    table.styled-table tr {
-        height: 10px !important;
-        min-height: 10px !important;
-    }
-    
-    /* COMPRIMIR TODAS LAS CELDAS AL MÁXIMO */
     table.styled-table th,
     table.styled-table td {
         padding: 1px 2px !important;
         margin: 0 !important;
-        border-width: 0.5px !important;
+        border: 0.5pt solid #000 !important;
         line-height: 1.0 !important;
+        font-size: 7pt !important;
     }
     
-    /* ELIMINAR TODOS LOS ESPACIOS ENTRE SECCIONES */
-    .executive-section + .executive-section {
-        margin-top: 0 !important;
-        margin-bottom: 0 !important;
+    table.styled-table th {
+        background: #f0f0f0 !important;
+        font-weight: 600 !important;
+        text-align: center !important;
+        font-size: 6pt !important;
     }
     
-    .executive-section {
+    /* ENCABEZADOS DE IMPRESIÓN */
+    div.section-header {
+        background: #000 !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 0 !important;
+        padding: 8pt 12pt !important;
         margin: 0 !important;
-        padding: 1px !important;
+        text-align: center !important;
+        page-break-after: avoid !important;
     }
     
-    /* ELIMINAR ESPACIOS DE CONTENEDORES DE TABLA */
-    .sections-row {
+    div.section-header h3,
+    .section-header h3 {
+        color: white !important;
+        font-size: 10pt !important;
+        font-weight: 600 !important;
         margin: 0 !important;
-        padding: 0 !important;
-        gap: 1px !important;
+        text-transform: uppercase !important;
     }
     
-    /* REMOVER RESTRICCIONES DE CONTENEDORES FLEX */
-    div[style*="justify-content: center"] {
-        justify-content: flex-start !important;
-        width: 100% !important;
-        max-width: none !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-    
-    /* Ocultar elementos no imprimibles */
+    /* OCULTAR ELEMENTOS NO IMPRIMIBLES */
     .button-group,
     .btn,
     #modalComentario,
@@ -703,1004 +322,7 @@ img {
         display: none !important;
     }
     
-    /* CONTENEDOR PRINCIPAL - FORZAR ANCHO TOTAL */
-    .executive-section {
-        background: white !important;
-        box-shadow: none !important;
-        border-radius: 0 !important;
-        border: none !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        max-width: none !important;
-        width: 100% !important;
-        page-break-inside: avoid !important;
-        display: block !important;
-    }
-    
-    /* CONTENEDOR FLEX PADRE */
-    body > div {
-        max-width: none !important;
-        width: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-    
-    /* REMOVER ESTILOS INLINE QUE LIMITAN ANCHO */
-    section[style*="max-width"] {
-        max-width: none !important;
-        width: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-    
-    /* CONTENEDORES ESPECÍFICOS DE TABLAS */
-    .requisitos-riesgos-section,
-    .registro-pruebas-section,
-    .pt2-requisitos-apertura {
-        width: 100% !important;
-        max-width: none !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-    
-    /* ENCABEZADO PRINCIPAL DEL FORMULARIO */
-    .executive-section > .section-header:first-child {
-        background: #000 !important;
-        color: white !important;
-        text-align: center !important;
-        padding: 8pt !important;
-        margin-bottom: 8pt !important;
-        border: 2pt solid #000 !important;
-        display: block !important;
-    }
-    
-    .executive-section > .section-header:first-child h2 {
-        color: white !important;
-        font-size: 12pt !important;
-        font-weight: bold !important;
-        margin: 0 !important;
-        text-transform: uppercase !important;
-        letter-spacing: 0.5pt !important;
-        display: block !important;
-    }
-    
-    .executive-section > .section-header:first-child h3,
-    .executive-section > .section-header:first-child i {
-        display: none !important;
-    }
-    
-    /* EXCLUIR ENCABEZADO PRINCIPAL DE REGLAS GENERALES */
-    .executive-section > .section-header:first-child {
-        background: #000 !important;
-        color: white !important;
-        border: 2pt solid #000 !important;
-    }
-    
-    /* ENCABEZADOS ELEGANTES Y MODERNOS */
-    div.section-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-        color: white !important;
-        border: none !important;
-        border-radius: 8pt 8pt 0 0 !important;
-        padding: 8pt 12pt !important;
-        margin: 0 !important;
-        text-align: center !important;
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        height: auto !important;
-        overflow: visible !important;
-        page-break-after: avoid !important;
-        width: 100% !important;
-        box-sizing: border-box !important;
-        font-weight: bold !important;
-        box-shadow: 0 2pt 8pt rgba(0,0,0,0.15) !important;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
-    }
-    
-    /* TÍTULOS ELEGANTES CON TIPOGRAFÍA MODERNA */
-    div.section-header h3,
-    .section-header h3 {
-        color: white !important;
-        font-size: 10pt !important;
-        font-weight: 600 !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        text-transform: uppercase !important;
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        line-height: 1.3 !important;
-        letter-spacing: 1pt !important;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
-        text-shadow: 0 1pt 3pt rgba(0,0,0,0.3) !important;
-    }
-    
-    /* TÍTULOS ESPECÍFICOS CON ESTILO CONSISTENTE */
-    .registro-pruebas-section .section-header h3 {
-        color: white !important;
-        text-shadow: 0 1pt 3pt rgba(0,0,0,0.3) !important;
-    }
-    
-    /* OCULTAR SOLO ICONOS */
-    div.section-header i,
-    .section-header i {
-        display: none !important;
-    }
-    
-    /* TÍTULOS DE SECCIÓN PEGADOS - RESPALDO */
-    .pt2-datos-generales .section-header::after {
-        content: "DATOS GENERALES" !important;
-        color: white !important;
-        font-weight: bold !important;
-        font-size: 9pt !important;
-        display: block !important;
-    }
-    
-    .pt2-medidas-riesgos .section-header::after {
-        content: "MEDIDAS PARA ADMINISTRAR LOS RIESGOS" !important;
-        color: white !important;
-        font-weight: bold !important;
-        font-size: 9pt !important;
-        display: block !important;
-    }
-    
-    .pt2-requisitos-apertura .section-header::after {
-        content: "REQUISITOS DE APERTURA DE ÁREA" !important;
-        color: white !important;
-        font-weight: bold !important;
-        font-size: 9pt !important;
-        display: block !important;
-    }
-    
-    .pt2-condiciones-proceso .section-header::after {
-        content: "CONDICIONES DEL PROCESO" !important;
-        color: white !important;
-        font-weight: bold !important;
-        font-size: 9pt !important;
-        display: block !important;
-    }
-    
-    .requisitos-riesgos-section .section-header::after {
-        content: "REQUISITOS PARA ADMINISTRAR LOS RIESGOS" !important;
-        color: white !important;
-        font-weight: bold !important;
-        font-size: 9pt !important;
-        display: block !important;
-    }
-    
-    .registro-pruebas-section .section-header::after {
-        content: "REGISTRO DE PRUEBAS REQUERIDAS" !important;
-        color: white !important;
-        font-weight: 600 !important;
-        font-size: 10pt !important;
-        display: block !important;
-        text-shadow: 0 1pt 3pt rgba(0,0,0,0.3) !important;
-        letter-spacing: 1pt !important;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
-    }
-    
-    /* ENCABEZADOS ESPECÍFICOS CON GRADIENTES ÚNICOS - TODOS CON MISMO ESTILO */
-    .pt2-requisitos-apertura .section-header {
-        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%) !important;
-        color: white !important;
-        border-bottom: none !important;
-        border-radius: 8pt 8pt 0 0 !important;
-        padding: 8pt 12pt !important;
-        box-shadow: 0 2pt 8pt rgba(0,0,0,0.15) !important;
-    }
-    
-    .pt2-condiciones-proceso .section-header {
-        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%) !important;
-        color: white !important;
-        border-bottom: none !important;
-        border-radius: 8pt 8pt 0 0 !important;
-        padding: 8pt 12pt !important;
-        box-shadow: 0 2pt 8pt rgba(0,0,0,0.15) !important;
-    }
-    
-    .requisitos-riesgos-section .section-header {
-        background: linear-gradient(135deg, #fa709a 0%, #fee140 100%) !important;
-        color: white !important;
-        border-bottom: none !important;
-        border-radius: 8pt 8pt 0 0 !important;
-        padding: 8pt 12pt !important;
-        box-shadow: 0 2pt 8pt rgba(0,0,0,0.15) !important;
-    }
-    
-    .registro-pruebas-section .section-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-        color: white !important;
-        border-bottom: none !important;
-        border-radius: 8pt 8pt 0 0 !important;
-        padding: 8pt 12pt !important;
-        box-shadow: 0 2pt 8pt rgba(0,0,0,0.15) !important;
-    }
-    
-    /* GRIDS ESTILO FORMULARIO - COMPACTO PARA COLUMNAS */
-    .executive-grid {
-        display: grid !important;
-        grid-template-columns: 1fr 1fr 1fr !important;
-        gap: 0.5pt !important;
-        margin: 1pt 0 !important;
-        padding: 0 !important;
-        width: 100% !important;
-        page-break-inside: avoid !important;
-        box-sizing: border-box !important;
-    }
-    
-    /* GRID ESPECIAL PARA SECCIONES EN COLUMNAS */
-    .pt2-condiciones-proceso .executive-grid {
-        grid-template-columns: 1fr 1fr 1fr !important;
-        gap: 0.5pt !important;
-        font-size: 6pt !important;
-    }
-    
-    .executive-item {
-        border: 1pt solid #dee2e6 !important;
-        border-radius: 6pt !important;
-        padding: 4pt 6pt !important;
-        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%) !important;
-        min-height: 16pt !important;
-        display: flex !important;
-        flex-direction: column !important;
-        width: 100% !important;
-        box-sizing: border-box !important;
-        box-shadow: 0 1pt 3pt rgba(0,0,0,0.1) !important;
-        transition: transform 0.2s ease !important;
-    }
-    
-    /* ITEMS COMPACTOS PARA SECCIONES EN COLUMNAS */
-    .pt2-condiciones-proceso .executive-item {
-        padding: 3pt 4pt !important;
-        min-height: 14pt !important;
-        border-radius: 4pt !important;
-    }
-    
-    /* HOVER EFFECT PARA ITEMS */
-    .executive-item:hover {
-        transform: translateY(-1pt) !important;
-        box-shadow: 0 2pt 6pt rgba(0,0,0,0.15) !important;
-    }
-    
-    .executive-item label {
-        font-weight: 600 !important;
-        font-size: 5pt !important;
-        color: #6c757d !important;
-        margin-bottom: 1pt !important;
-        text-transform: uppercase !important;
-        line-height: 1 !important;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
-        letter-spacing: 0.3pt !important;
-    }
-    
-    /* LABELS COMPACTOS PARA SECCIONES EN COLUMNAS */
-    .pt2-condiciones-proceso .executive-item label {
-        font-size: 4pt !important;
-        margin-bottom: 0.5pt !important;
-        color: #28a745 !important;
-    }
-    
-    .executive-item p {
-        font-size: 8pt !important;
-        margin: 0 !important;
-        color: #343a40 !important;
-        line-height: 1.2 !important;
-        flex-grow: 1 !important;
-        display: flex !important;
-        align-items: center !important;
-        font-weight: 600 !important;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
-    }
-    
-    /* PÁRRAFOS COMPACTOS PARA SECCIONES EN COLUMNAS */
-    .pt2-condiciones-proceso .executive-item p {
-        font-size: 7pt !important;
-        line-height: 1.1 !important;
-        color: #495057 !important;
-    }
-    
-    .executive-item .highlight {
-        background: white !important;
-        font-weight: bold !important;
-        color: #000 !important;
-    }
-    
-    /* TABLAS ELEGANTES CON DISEÑO MODERNO */
-    table.styled-table {
-        width: 100% !important;
-        max-width: 100% !important;
-        border-collapse: collapse !important;
-        margin: 0 !important;
-        font-size: 8pt !important;
-        page-break-inside: avoid !important;
-        border: 1pt solid #e0e6ed !important;
-        border-top: none !important;
-        border-radius: 0 0 8pt 8pt !important;
-        table-layout: fixed !important;
-        box-sizing: border-box !important;
-        box-shadow: 0 4pt 12pt rgba(0,0,0,0.1) !important;
-        overflow: hidden !important;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
-    }
-    
-    /* ENCABEZADOS DE TABLA ULTRA COMPACTOS */
-    table.styled-table th {
-        background: #f8f9fa !important;
-        color: #495057 !important;
-        font-weight: 600 !important;
-        text-align: center !important;
-        padding: 2pt 3pt !important;
-        border: 0.5pt solid #dee2e6 !important;
-        border-bottom: 1pt solid #6c757d !important;
-        font-size: 5pt !important;
-        text-transform: uppercase !important;
-        line-height: 1.0 !important;
-        vertical-align: middle !important;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
-        letter-spacing: 0.2pt !important;
-    }
-    
-    /* CELDAS ULTRA COMPACTAS */
-    table.styled-table td {
-        border: 0.5pt solid #dee2e6 !important;
-        background: white !important;
-        padding: 1pt 2pt !important;
-        vertical-align: middle !important;
-        font-size: 5pt !important;
-        line-height: 1.0 !important;
-        word-wrap: break-word !important;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
-        color: #495057 !important;
-    }
-    
-    /* FILAS ALTERNADAS MÍNIMAS */
-    table.styled-table tr:nth-child(even) td {
-        background: #fafafa !important;
-    }
-    
-    .styled-table .centered {
-        text-align: center !important;
-        font-weight: bold !important;
-    }
-    
-    /* ESTILOS ELEGANTES PARA RESPUESTAS SI/NO */
-    .styled-table td span {
-        padding: 2pt 6pt !important;
-        border-radius: 12pt !important;
-        font-weight: 600 !important;
-        font-size: 6pt !important;
-        text-transform: uppercase !important;
-        letter-spacing: 0.3pt !important;
-        display: inline-block !important;
-        min-width: 20pt !important;
-        text-align: center !important;
-    }
-    
-    /* COLORES ESPECÍFICOS PARA RESPUESTAS */
-    .styled-table td span[id*="resp-"]:contains("SI"),
-    .styled-table td span:contains("SI") {
-        background: linear-gradient(135deg, #28a745, #20c997) !important;
-        color: white !important;
-        text-shadow: 0 1pt 2pt rgba(0,0,0,0.2) !important;
-    }
-    
-    .styled-table td span[id*="resp-"]:contains("NO"),
-    .styled-table td span:contains("NO") {
-        background: linear-gradient(135deg, #dc3545, #fd7e14) !important;
-        color: white !important;
-        text-shadow: 0 1pt 2pt rgba(0,0,0,0.2) !important;
-    }
-    
-    .styled-table td span[id*="resp-"]:contains("N/A"),
-    .styled-table td span:contains("N/A") {
-        background: linear-gradient(135deg, #6c757d, #adb5bd) !important;
-        color: white !important;
-        text-shadow: 0 1pt 2pt rgba(0,0,0,0.2) !important;
-    }
-    
-    /* TABLAS DE 2 COLUMNAS - AJUSTADAS PARA LAYOUT EN COLUMNAS */
-    .pt2-requisitos-apertura table.styled-table th:first-child,
-    .pt2-requisitos-apertura table.styled-table td:first-child {
-        width: 75% !important;
-        text-align: left !important;
-        padding: 3pt 6pt !important;
-        font-size: 6pt !important;
-        line-height: 1.1 !important;
-        word-wrap: break-word !important;
-        vertical-align: middle !important;
-    }
-    
-    .requisitos-riesgos-section table.styled-table th:first-child,
-    .requisitos-riesgos-section table.styled-table td:first-child {
-        width: 75% !important;
-        text-align: left !important;
-        padding: 4pt 8pt !important;
-        font-size: 7pt !important;
-        line-height: 1.2 !important;
-        word-wrap: break-word !important;
-        vertical-align: middle !important;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
-        color: #495057 !important;
-    }
-    
-    .pt2-requisitos-apertura table.styled-table th:first-child,
-    .requisitos-riesgos-section table.styled-table th:first-child {
-        text-align: center !important;
-        font-size: 8pt !important;
-    }
-    
-    .pt2-requisitos-apertura table.styled-table th:nth-child(2),
-    .pt2-requisitos-apertura table.styled-table td:nth-child(2) {
-        width: 25% !important;
-        text-align: center !important;
-        font-weight: bold !important;
-        padding: 3pt 4pt !important;
-        font-size: 6pt !important;
-        vertical-align: middle !important;
-    }
-    
-    .requisitos-riesgos-section table.styled-table th:nth-child(2),
-    .requisitos-riesgos-section table.styled-table td:nth-child(2) {
-        width: 25% !important;
-        text-align: center !important;
-        font-weight: 600 !important;
-        padding: 4pt 8pt !important;
-        font-size: 7pt !important;
-        vertical-align: middle !important;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
-    }
-    
-    /* CONTENEDORES DE TABLAS - ESTILO FORMATO ORIGINAL */
-    .pt2-requisitos-apertura,
-    .requisitos-riesgos-section,
-    .registro-pruebas-section,
-    .pt2-condiciones-proceso,
-    .pt2-datos-generales,
-    .pt2-medidas-riesgos {
-        width: 100% !important;
-        max-width: 100% !important;
-        margin: 1pt 0 !important;
-        padding: 0 !important;
-        box-sizing: border-box !important;
-        overflow: visible !important;
-        border: none !important;
-        background: transparent !important;
-    }
-    
-    /* FORZAR ANCHO EN TODOS LOS CONTENEDORES PADRE */
-    .executive-section {
-        background: white !important;
-        box-shadow: none !important;
-        border-radius: 0 !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        max-width: none !important;
-        width: 100% !important;
-        page-break-inside: avoid !important;
-    }
-    
-    /* AJUSTE ESPECIAL PARA CONTENEDORES DE CONDICIONES DEL PROCESO */
-    .pt2-condiciones-proceso .executive-grid {
-        margin: 1pt 0 !important;
-        gap: 0.5pt !important;
-    }
-    
-    /* OPTIMIZACIÓN ESPECIAL PARA CAMPOS DE CONDICIONES DEL PROCESO */
-    .pt2-condiciones-proceso .executive-item label {
-        font-size: 5pt !important;
-        margin-bottom: 0.5pt !important;
-        line-height: 1 !important;
-    }
-    
-    .pt2-condiciones-proceso .executive-item p {
-        font-size: 8pt !important;
-        line-height: 1.1 !important;
-        padding: 2pt !important;
-    }
-    
-    /* REDUCIR ESPACIO ENTRE SECCIONES */
-    .executive-section + .executive-section {
-        margin-top: 1pt !important;
-    }
-    
-    /* TABLA DE 3 COLUMNAS - MÁXIMA ESPECIFICIDAD */
-    .registro-pruebas-section table.styled-table.registro-pruebas-table {
-        width: 100% !important;
-        max-width: 100% !important;
-        table-layout: fixed !important;
-        margin: 4pt 0 !important;
-    }
-    
-    /* TABLA DE PRUEBAS - COLUMNA 1 CON MISMO ESTILO ELEGANTE */
-    .registro-pruebas-section table.styled-table.registro-pruebas-table th:first-child,
-    .registro-pruebas-section table.styled-table.registro-pruebas-table td:first-child {
-        width: 45% !important;
-        text-align: left !important;
-        padding: 4pt 8pt !important;
-        font-size: 7pt !important;
-        line-height: 1.2 !important;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
-        color: #495057 !important;
-        vertical-align: middle !important;
-    }
-    
-    .registro-pruebas-section table.styled-table.registro-pruebas-table th:first-child {
-        text-align: center !important;
-        font-weight: bold !important;
-        font-size: 8pt !important;
-    }
-    
-    /* TABLA DE PRUEBAS - COLUMNA 2 CON ESTILO ELEGANTE */
-    .registro-pruebas-section table.styled-table.registro-pruebas-table th:nth-child(2),
-    .registro-pruebas-section table.styled-table.registro-pruebas-table td:nth-child(2) {
-        width: 27.5% !important;
-        text-align: center !important;
-        font-weight: 600 !important;
-        padding: 4pt 8pt !important;
-        font-size: 7pt !important;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
-        vertical-align: middle !important;
-    }
-    
-    /* TABLA DE PRUEBAS - COLUMNA 3 CON ESTILO ELEGANTE */
-    .registro-pruebas-section table.styled-table.registro-pruebas-table th:nth-child(3),
-    .registro-pruebas-section table.styled-table.registro-pruebas-table td:nth-child(3) {
-        width: 27.5% !important;
-        text-align: center !important;
-        font-weight: 600 !important;
-        padding: 4pt 8pt !important;
-        font-size: 7pt !important;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
-        vertical-align: middle !important;
-    }
-    
-    /* SPANS DENTRO DE CELDAS DE VALOR */
-    .registro-pruebas-table td span {
-        background: transparent !important;
-        padding: 2pt 4pt !important;
-        border: none !important;
-        border-radius: 0 !important;
-        display: inline !important;
-        min-width: auto !important;
-        font-weight: bold !important;
-    }
-    
-    /* AST TABLE ELEGANTE Y MODERNA */
-    .ast-summary {
-        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%) !important;
-        border-radius: 12px !important;
-        padding: 24px !important;
-        margin-bottom: 32px !important;
-        box-shadow: 0 4px 16px rgba(44, 62, 80, 0.08) !important;
-        border: 2px solid #ecf0f1 !important;
-    }
-    
-    .ast-table {
-        font-size: 13px !important;
-        page-break-inside: auto !important;
-        width: 100% !important;
-        border-collapse: separate !important;
-        border-spacing: 0 !important;
-        border-radius: 8px !important;
-        overflow: hidden !important;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
-        background: white !important;
-    }
-    
-    .ast-table thead {
-        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%) !important;
-    }
-    
-    .ast-table th {
-        font-size: 14px !important;
-        padding: 16px 12px !important;
-        line-height: 1.4 !important;
-        color: white !important;
-        font-weight: 600 !important;
-        text-align: center !important;
-        border-bottom: none !important;
-        font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif !important;
-        text-transform: uppercase !important;
-        letter-spacing: 0.5px !important;
-    }
-    
-    .ast-table th:first-child {
-        width: 8% !important;
-    }
-    
-    .ast-table th:nth-child(2) {
-        width: 25% !important;
-    }
-    
-    .ast-table th:nth-child(3) {
-        width: 15% !important;
-    }
-    
-    .ast-table th:nth-child(4) {
-        width: 22% !important;
-    }
-    
-    .ast-table th:nth-child(5) {
-        width: 22% !important;
-    }
-    
-    .ast-table th:nth-child(6) {
-        width: 8% !important;
-    }
-    
-    .ast-table td {
-        padding: 14px 12px !important;
-        font-size: 12px !important;
-        line-height: 1.5 !important;
-        border-bottom: 1px solid #ecf0f1 !important;
-        vertical-align: top !important;
-        background: white !important;
-        font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif !important;
-    }
-    
-    .ast-table tbody tr:nth-child(even) td {
-        background: #f8f9fa !important;
-    }
-    
-    .ast-table tbody tr:hover td {
-        background: #e3f2fd !important;
-        transition: background-color 0.3s ease !important;
-    }
-    
-    .ast-table td:first-child {
-        text-align: center !important;
-        font-weight: 600 !important;
-        color: #2c3e50 !important;
-    }
-    
-    /* SAFETY GRID ELEGANTE Y MODERNO */
-    .safety-grid {
-        display: flex !important;
-        flex-direction: row !important;
-        gap: 1px !important;
-        margin-top: 1px !important;
-        page-break-inside: avoid !important;
-        justify-content: space-between !important;
-    }
-    
-    .safety-item {
-        border: 1px solid #3498db !important;
-        padding: 1px !important;
-        background: #f8f9fa !important;
-        flex: 1 !important;
-        border-radius: 1px !important;
-        box-shadow: none !important;
-        transition: none !important;
-        position: relative !important;
-        min-height: 30px !important;
-        overflow: hidden !important;
-        font-size: 4px !important;
-    }
-    
-    .safety-item:nth-child(1) {
-        border-color: #e74c3c !important;
-        box-shadow: none !important;
-    }
-
-    .safety-item:nth-child(2) {
-        border-color: #f39c12 !important;
-        box-shadow: none !important;
-    }
-
-    .safety-item:nth-child(3) {
-        border-color: #27ae60 !important;
-        box-shadow: none !important;
-    }    .safety-item:hover {
-        transform: translateY(-4px) !important;
-        box-shadow: 0 12px 32px rgba(52, 152, 219, 0.2) !important;
-    }
-    
-    .safety-item:nth-child(1):hover {
-        box-shadow: 0 12px 32px rgba(231, 76, 60, 0.2) !important;
-    }
-    
-    .safety-item:nth-child(2):hover {
-        box-shadow: 0 12px 32px rgba(243, 156, 18, 0.2) !important;
-    }
-    
-    .safety-item:nth-child(3):hover {
-        box-shadow: 0 12px 32px rgba(39, 174, 96, 0.2) !important;
-    }
-    
-    .safety-item::before {
-        content: '' !important;
-        position: absolute !important;
-        top: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        height: 4px !important;
-        background: linear-gradient(90deg, #3498db, #2980b9) !important;
-    }
-    
-    .safety-item:nth-child(1)::before {
-        background: linear-gradient(90deg, #e74c3c, #c0392b) !important;
-    }
-    
-    .safety-item:nth-child(2)::before {
-        background: linear-gradient(90deg, #f39c12, #e67e22) !important;
-    }
-    
-    .safety-item:nth-child(3)::before {
-        background: linear-gradient(90deg, #27ae60, #229954) !important;
-    }
-    
-    .safety-item h4 {
-        font-size: 4px !important;
-        margin-bottom: 0px !important;
-        color: #2c3e50 !important;
-        font-weight: 700 !important;
-        text-transform: uppercase !important;
-        padding-bottom: 0px !important;
-        font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif !important;
-        letter-spacing: 0.1px !important;
-        display: block !important;
-        text-align: center !important;
-        border-bottom: 0.5px solid #ecf0f1 !important;
-        line-height: 1.0 !important;
-    }
-    
-    .safety-item h4 i {
-        font-size: 8px !important;
-        opacity: 0.8 !important;
-    }
-    
-    .safety-list {
-        list-style: none !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 1px !important;
-    }
-    
-    .safety-list li {
-        font-size: 5px !important;
-        padding: 1px 2px !important;
-        line-height: 1.1 !important;
-        color: #34495e !important;
-        background: white !important;
-        border-radius: 1px !important;
-        border-left: 1px solid #3498db !important;
-        font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif !important;
-        transition: all 0.2s ease !important;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
-    }
-    
-    .safety-item:nth-child(1) .safety-list li {
-        border-left-color: #e74c3c !important;
-    }
-    
-    .safety-item:nth-child(2) .safety-list li {
-        border-left-color: #f39c12 !important;
-    }
-    
-    .safety-item:nth-child(3) .safety-list li {
-        border-left-color: #27ae60 !important;
-    }
-    
-    .safety-list li:hover {
-        background: rgba(255, 255, 255, 1) !important;
-        transform: translateX(4px) !important;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
-    }
-    
-    .safety-list li:before {
-        content: "▸" !important;
-        color: #3498db !important;
-        font-weight: bold !important;
-        margin-right: 8px !important;
-        font-size: 14px !important;
-    }
-    
-    .safety-item:nth-child(1) .safety-list li:before {
-        color: #e74c3c !important;
-    }
-    
-    .safety-item:nth-child(2) .safety-list li:before {
-        color: #f39c12 !important;
-    }
-    
-    .safety-item:nth-child(3) .safety-list li:before {
-        color: #27ae60 !important;
-    }
-    
-    /* RESPONSIVE DESIGN PARA SAFETY GRID */
-    @media screen and (max-width: 768px) {
-        .safety-grid {
-            flex-direction: column !important;
-            gap: 20px !important;
-        }
-        
-        .safety-item {
-            min-height: 100px !important;
-        }
-        
-        /* ESPACIADO COMPACTO PARA IMPRIMIR */
-        .sections-row {
-            margin: 2pt 0 !important;
-        }
-        
-        .executive-section {
-            margin: 1pt 0 !important;
-        }
-        
-        body, * {
-            line-height: 1.2 !important;
-        }
-    }
-    
-    /* SECCIÓN DE APROBACIONES ELEGANTE Y MODERNA */
-    .approval-section {
-        margin-top: 3px !important;
-        page-break-inside: avoid !important;
-        border-top: 1px solid #2c3e50 !important;
-        padding-top: 2px !important;
-        background: #f8f9fa !important;
-        border-radius: 2px !important;
-        box-shadow: none !important;
-        padding: 3px 2px !important;
-        margin-bottom: 2px !important;
-    }
-    
-    .approval-stamps {
-        display: flex !important;
-        flex-direction: row !important;
-        gap: 3px !important;
-        justify-content: space-between !important;
-        align-items: flex-start !important;
-    }
-    
-    .stamp {
-        border: 1px solid #34495e !important;
-        padding: 3px 2px !important;
-        text-align: center !important;
-        background: #ffffff !important;
-        flex: 1 !important;
-        border-radius: 2px !important;
-        box-shadow: none !important;
-        transition: none !important;
-        min-height: 45px !important;
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: space-between !important;
-        position: relative !important;
-        max-width: 150px !important;
-    }
-    
-    .stamp:hover {
-        transform: translateY(-2px) !important;
-        box-shadow: 0 8px 24px rgba(52, 73, 94, 0.15) !important;
-    }
-    
-    .stamp.approved {
-        border-color: #27ae60 !important;
-        background: linear-gradient(145deg, #f8fff9 0%, #e8f5e8 100%) !important;
-    }
-    
-    .stamp.approved::before {
-        content: "✓" !important;
-        position: absolute !important;
-        top: 8px !important;
-        right: 12px !important;
-        color: #27ae60 !important;
-        font-size: 18px !important;
-        font-weight: bold !important;
-    }
-    
-    .stamp-title {
-        font-weight: 700 !important;
-        font-size: 6px !important;
-        margin-bottom: 1px !important;
-        color: #2c3e50 !important;
-        text-transform: uppercase !important;
-        letter-spacing: 0.1px !important;
-        font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif !important;
-        line-height: 1.0 !important;
-        background: none !important;
-        -webkit-background-clip: initial !important;
-        -webkit-text-fill-color: initial !important;
-        background-clip: initial !important;
-    }
-    
-    .signature-space {
-        height: 18px !important;
-        border: 1px dashed #bdc3c7 !important;
-        border-radius: 2px !important;
-        margin: 1px 0 !important;
-        background: #ffffff !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        position: relative !important;
-    }
-    
-    .signature-space::before {
-        content: "Firma" !important;
-        color: #95a5a6 !important;
-        font-size: 5px !important;
-        font-style: italic !important;
-        opacity: 0.6 !important;
-    }
-    
-    .stamp-name {
-        font-size: 5px !important;
-        font-weight: 600 !important;
-        color: #34495e !important;
-        text-transform: none !important;
-        margin-top: 1px !important;
-        padding: 1px 1px !important;
-        background: rgba(52, 73, 94, 0.05) !important;
-        border-radius: 4px !important;
-        border: 1px solid rgba(52, 73, 94, 0.1) !important;
-        font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif !important;
-        min-height: 24px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-    }
-    
-    .stamp-date {
-        font-size: 5px !important;
-        color: #7f8c8d !important;
-        margin-top: 1px !important;
-        font-style: italic !important;
-    }
-    
-    /* ESTILOS ADICIONALES PARA FIRMAS ELEGANTES */
-    @media screen {
-        .approval-section::before {
-            content: "📋 Firmas y Autorizaciones" !important;
-            display: block !important;
-            text-align: center !important;
-            font-size: 18px !important;
-            font-weight: 700 !important;
-            color: #2c3e50 !important;
-            margin-bottom: 24px !important;
-            padding-bottom: 12px !important;
-            border-bottom: 2px solid #ecf0f1 !important;
-        }
-        
-        .stamp:nth-child(1) .stamp-title {
-            background: linear-gradient(135deg, #e74c3c, #c0392b) !important;
-            -webkit-background-clip: text !important;
-            -webkit-text-fill-color: transparent !important;
-            background-clip: text !important;
-        }
-        
-        .stamp:nth-child(2) .stamp-title {
-            background: linear-gradient(135deg, #f39c12, #e67e22) !important;
-            -webkit-background-clip: text !important;
-            -webkit-text-fill-color: transparent !important;
-            background-clip: text !important;
-        }
-        
-        .stamp:nth-child(3) .stamp-title {
-            background: linear-gradient(135deg, #27ae60, #229954) !important;
-            -webkit-background-clip: text !important;
-            -webkit-text-fill-color: transparent !important;
-            background-clip: text !important;
-        }
-    }
-    
-    /* RESPONSIVE DESIGN PARA FIRMAS */
-    @media screen and (max-width: 768px) {
-        .approval-stamps {
-            flex-direction: column !important;
-            gap: 16px !important;
-        }
-        
-        .stamp {
-            min-height: 160px !important;
-        }
-    }
-    
-    /* CONTROL DE SALTOS DE PÁGINA OPTIMIZADO */
+    /* CONTROL DE SALTOS DE PÁGINA */
     .pt2-datos-generales,
     .pt2-medidas-riesgos,
     .pt2-condiciones-proceso {
@@ -1713,255 +335,41 @@ img {
         margin-bottom: 3pt !important;
     }
     
-    .pt1-ast-seguridad {
-        page-break-before: avoid !important;
-    }
-    
     .approval-section {
         page-break-before: avoid !important;
     }
     
-    /* ESTILOS ESPECIALES PARA LA SECCIÓN AST */
-    .pt1-ast-seguridad {
-        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%) !important;
-        border-radius: 16px !important;
-        padding: 32px !important;
-        margin: 32px 0 !important;
-        box-shadow: 0 8px 24px rgba(44, 62, 80, 0.08) !important;
-        border: 2px solid #ecf0f1 !important;
-        position: relative !important;
-        overflow: hidden !important;
+    /* ELIMINAR DECORACIONES */
+    .executive-section,
+    .sections-row,
+    .container {
+        background: white !important;
+        border: none !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        padding: 0 !important;
+        margin: 2pt 0 !important;
     }
     
-    .pt1-ast-seguridad::before {
-        content: '' !important;
-        position: absolute !important;
-        top: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        height: 6px !important;
-        background: linear-gradient(90deg, #3498db, #2980b9, #27ae60, #f39c12, #e74c3c) !important;
-    }
-    
-    .pt1-ast-seguridad .section-header {
-        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%) !important;
-        color: white !important;
-        padding: 20px 24px !important;
-        border-radius: 12px !important;
-        margin-bottom: 32px !important;
-        box-shadow: 0 4px 12px rgba(44, 62, 80, 0.2) !important;
-        text-align: center !important;
-    }
-    
-    .pt1-ast-seguridad .section-header i {
-        font-size: 24px !important;
-        margin-right: 12px !important;
-        color: #3498db !important;
-    }
-    
-    .pt1-ast-seguridad .section-header h3 {
-        font-size: 20px !important;
-        font-weight: 700 !important;
-        margin: 0 !important;
-        letter-spacing: 1px !important;
-        text-transform: uppercase !important;
-        font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif !important;
-    }
-    
-    /* ESTILOS PARA PERSONAL INVOLUCRADO */
-    .pt1-personal-involucrado {
-        background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%) !important;
-        border-radius: 16px !important;
-        padding: 32px !important;
-        margin: 32px 0 !important;
-        box-shadow: 0 8px 24px rgba(231, 76, 60, 0.08) !important;
-        border: 2px solid #ffeaea !important;
-    }
-    
-    .pt1-personal-involucrado .section-header {
-        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%) !important;
-        color: white !important;
-        padding: 20px 24px !important;
-        border-radius: 12px !important;
-        margin-bottom: 32px !important;
-        box-shadow: 0 4px 12px rgba(231, 76, 60, 0.2) !important;
-        text-align: center !important;
-    }
-    
-    .pt1-personal-involucrado .section-header i {
-        font-size: 24px !important;
-        margin-right: 12px !important;
-        color: #fff !important;
-    }
-    
-    .pt1-personal-involucrado .section-header h3 {
-        font-size: 20px !important;
-        font-weight: 700 !important;
-        margin: 0 !important;
-        letter-spacing: 1px !important;
-        text-transform: uppercase !important;
-        font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif !important;
-    }
-    
-    /* ESTILOS ESPECIALES PARA IMPRESIÓN */
-    @media print {
-        .pt1-ast-seguridad,
-        .pt1-personal-involucrado {
-            box-shadow: none !important;
-            background: white !important;
-            border: 2px solid #000 !important;
-            page-break-inside: avoid !important;
-        }
-        
-        .pt1-ast-seguridad::before {
-            display: none !important;
-        }
-        
-        .safety-item {
-            box-shadow: none !important;
-            background: white !important;
-            border: 1.5pt solid #000 !important;
-            min-height: 80pt !important;
-        }
-        
-        .safety-item::before {
-            display: none !important;
-        }
-        
-        .safety-item h4 {
-            color: #000 !important;
-            font-size: 10pt !important;
-        }
-        
-        .safety-list li {
-            background: white !important;
-            border-left: 2pt solid #000 !important;
-            font-size: 8pt !important;
-            padding: 4pt 8pt !important;
-            box-shadow: none !important;
-        }
-        
-        .safety-list li:before {
-            color: #000 !important;
-        }
-        
-        .ast-table {
-            box-shadow: none !important;
-            border: 1pt solid #000 !important;
-        }
-        
-        .ast-table th {
-            background: #f0f0f0 !important;
-            color: #000 !important;
-            font-size: 8pt !important;
-            padding: 6pt 4pt !important;
-        }
-        
-        .ast-table td {
-            font-size: 7pt !important;
-            padding: 4pt !important;
-            border-bottom: 0.5pt solid #000 !important;
-        }
-        
-        .ast-summary {
-            box-shadow: none !important;
-            background: white !important;
-            border: 1pt solid #000 !important;
-        }
-    }
-    
-    /* ESTILOS ESPECIALES PARA IMPRESIÓN DE FIRMAS */
-    @media print {
-        .approval-section {
-            box-shadow: none !important;
-            background: white !important;
-            border: 2px solid #000 !important;
-            margin-top: 20pt !important;
-            padding: 16pt !important;
-        }
-        
-        .stamp {
-            box-shadow: none !important;
-            background: white !important;
-            border: 1.5pt solid #000 !important;
-            min-height: 120pt !important;
-        }
-        
-        .stamp-title {
-            background: none !important;
-            -webkit-background-clip: initial !important;
-            -webkit-text-fill-color: initial !important;
-            background-clip: initial !important;
-            color: #000 !important;
-            font-size: 10pt !important;
-        }
-        
-        .signature-space {
-            border: 1pt solid #000 !important;
-            background: white !important;
-            height: 40pt !important;
-        }
-        
-        .signature-space::before {
-            display: none !important;
-        }
-        
-        .stamp-name {
-            background: white !important;
-            border: 1pt solid #000 !important;
-            color: #000 !important;
-        }
-        
-        .stamp::before {
-            display: none !important;
-        }
-        
-        .approval-section::before {
-            color: #000 !important;
-            font-size: 12pt !important;
-        }
-    }
-    
-    /* OPTIMIZACIONES ADICIONALES */
-    p, span {
-        orphans: 2 !important;
-        widows: 2 !important;
-    }
-    
-    /* Reducir espacios innecesarios */
-    .executive-section {
-        margin-bottom: 2pt !important;
-    }
-    
-    /* Asegurar contraste en B&N */
-    #maintenance-type-label,
-    #work-order-label,
-    #tag-label {
-        font-weight: bold !important;
-        color: #000 !important;
-    }
-    
-    /* Códigos de formato eliminados */
-
-    /* === Versión compacta y elegante de EPP / Maquinaria / Materiales === */
+    /* ESTILOS COMPACTOS PARA SAFETY GRID */
     .safety-grid {
         display: flex !important;
         flex-direction: row !important;
-        gap: 4pt !important;           /* menos separación */
+        gap: 4pt !important;
         margin: 2pt 0 !important;
         justify-content: space-between !important;
     }
-
+    
     .safety-item {
         flex: 1 !important;
-        border: 0.8pt solid #000 !important;   /* borde fino negro */
-        padding: 3pt 4pt !important;           /* menos relleno */
+        border: 0.8pt solid #000 !important;
+        padding: 3pt 4pt !important;
         background: #fff !important;
-        border-radius: 3pt !important;
+        border-radius: 0 !important;
         min-height: auto !important;
         box-shadow: none !important;
     }
-
+    
     .safety-item h4 {
         font-size: 7pt !important;
         margin: 0 0 2pt 0 !important;
@@ -1970,13 +378,13 @@ img {
         border-bottom: 0.5pt solid #ccc !important;
         padding-bottom: 2pt !important;
     }
-
+    
     .safety-list {
         list-style: none !important;
         margin: 0 !important;
         padding: 0 !important;
     }
-
+    
     .safety-list li {
         font-size: 6pt !important;
         line-height: 1.1 !important;
@@ -1984,100 +392,188 @@ img {
         border-left: 1pt solid #000 !important;
         margin-bottom: 1pt !important;
     }
-
+    
     .safety-list li:before {
         content: "▸ " !important;
         color: #000 !important;
         font-size: 6pt !important;
         margin-right: 2pt !important;
     }
+    
+    /* FIRMAS COMPACTAS */
+    .approval-section {
+        border-top: 1pt solid #333 !important;
+        padding-top: 2pt !important;
+        margin-top: 3pt !important;
+    }
+    
+    .stamp {
+        min-height: 35pt !important;
+        border: 1pt solid #333 !important;
+    }
 
-    /* === ELIMINAR CONTENEDORES Y BORDES EXTERNOS === */
-    /* Eliminar todos los bordes y fondos de contenedores principales */
-    .executive-section,
-    .sections-row,
-    .container,
-    .form-container {
-        background: none !important;
-        border: none !important;
-        box-shadow: none !important;
+    /* === ELIMINAR MARCOS EXTERNOS SOLO AL IMPRIMIR === */
+    /* Neutralizar estilos inline del HTML solo en impresión */
+    section[style*="max-width"],
+    section[style*="border-radius"],
+    section[style*="box-shadow"],
+    div[style*="border-radius"],
+    div[style*="box-shadow"] {
+        max-width: none !important;
+        width: 100% !important;
+        margin: 0 !important;
+        background: white !important;
         border-radius: 0 !important;
+        box-shadow: none !important;
         padding: 0 !important;
-        margin: 2pt 0 !important;
-    }
-
-    /* Eliminar bordes redondeados y decoraciones de las secciones */
-    .executive-section::before,
-    .executive-section::after,
-    .sections-row::before,
-    .sections-row::after {
-        display: none !important;
-    }
-
-    /* Hacer que las secciones se vean como tablas simples */
-    .pt2-requisitos-apertura,
-    .requisitos-riesgos-section,
-    .registro-pruebas-section {
-        background: none !important;
         border: none !important;
-        box-shadow: none !important;
+    }
+
+    /* Neutralizar contenedores flex solo en impresión */
+    div[style*="justify-content: center"],
+    div[style*="align-items"],
+    div[style*="min-height: 100vh"] {
+        justify-content: flex-start !important;
+        align-items: flex-start !important;
+        min-height: auto !important;
+        background: white !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    /* Eliminar decoraciones de contenedores en impresión */
+    .executive-section,
+    .sections-row {
         border-radius: 0 !important;
+        box-shadow: none !important;
+        background: white !important;
+        border: none !important;
+        margin: 2pt 0 !important;
+        padding: 0 !important;
+    }
+
+    /* === HACER DATOS GENERALES MÁS COMPACTO === */
+    /* Reducir espacios en la sección de datos generales */
+    .pt2-datos-generales {
         margin: 1pt 0 !important;
         padding: 0 !important;
     }
 
-    /* Eliminar separadores y líneas decorativas */
-    .section-divider,
-    .separator,
-    hr {
+    .pt2-datos-generales .section-header {
+        margin-bottom: 2pt !important;
+        padding: 3pt 6pt !important;
+        font-size: 8pt !important;
+        border: 1pt solid #ccc !important;
+        background: #f5f5f5 !important;
+    }
+
+    .pt2-datos-generales .section-header h3 {
+        font-size: 7pt !important;
+        margin: 0 !important;
+    }
+
+    /* Grid más compacto para datos generales */
+    .executive-grid {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr 1fr !important;
+        gap: 3pt !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .executive-item {
+        margin: 0 !important;
+        padding: 2pt !important;
+        border: 0.5pt solid #ddd !important;
+        background: white !important;
+    }
+
+    .executive-item label {
+        font-size: 6pt !important;
+        font-weight: 600 !important;
+        margin-bottom: 1pt !important;
+        display: block !important;
+        color: #333 !important;
+    }
+
+    .executive-item p {
+        font-size: 7pt !important;
+        margin: 0 !important;
+        padding: 1pt 0 !important;
+        color: #000 !important;
+        line-height: 1.1 !important;
+    }
+
+    /* Hacer más compactas todas las secciones */
+    .pt2-medidas-riesgos,
+    .pt2-condiciones-proceso {
+        margin: 1pt 0 !important;
+        padding: 0 !important;
+    }
+
+    .pt2-medidas-riesgos .section-header,
+    .pt2-condiciones-proceso .section-header {
+        margin-bottom: 2pt !important;
+        padding: 3pt 6pt !important;
+        font-size: 7pt !important;
+    }
+
+    /* === OCULTAR TODOS LOS ICONOS EN IMPRESIÓN === */
+    /* Ocultar iconos de RemixIcon */
+    .ri-checkbox-circle-line,
+    .ri-information-line,
+    .ri-checkbox-multiple-line,
+    .ri-flask-line,
+    .ri-tools-line,
+    .ri-shield-check-line,
+    .ri-team-line,
+    .ri-shield-user-line,
+    .ri-box-line,
+    [class*="ri-"] {
         display: none !important;
     }
 
-    /* === ELIMINAR BORDES REDONDEADOS DE TODAS LAS TABLAS === */
-    /* Eliminar el borde redondeado de la tabla principal */
-    table.styled-table,
-    .styled-table,
-    .registro-pruebas-table,
-    .requisitos-riesgos-table {
-        border: 1pt solid #000 !important;
-        border-radius: 0 !important;
-        border-collapse: collapse !important;
+    /* Ocultar iconos en general (i elements) */
+    .section-header i,
+    h2 i,
+    h3 i,
+    h4 i {
+        display: none !important;
     }
 
-    /* Eliminar cualquier elemento contenedor con bordes redondeados */
-    .table-container,
-    .form-section,
-    .data-table {
-        border: none !important;
-        border-radius: 0 !important;
-        background: none !important;
-        box-shadow: none !important;
+    /* Limpiar espacios donde estaban los iconos */
+    .section-header {
+        text-align: center !important;
     }
 
-    /* === ELIMINAR TODOS LOS CONTENEDORES CON BORDES REDONDEADOS === */
-    /* Eliminar absolutamente todos los divs, secciones y contenedores externos */
-    div, section, article, main, aside, header, footer, nav {
-        border: none !important;
-        border-radius: 0 !important;
-        background: transparent !important;
-        box-shadow: none !important;
-        outline: none !important;
-    }
-
-    /* Forzar que solo la tabla tenga borde, nada más */
-    * {
-        border-radius: 0 !important;
-        box-shadow: none !important;
-    }
-
-    /* Específicamente para elementos que podrían estar envolviendo la tabla */
-    .wrapper, .container, .content, .main, .section, .panel {
-        border: none !important;
-        border-radius: 0 !important;
-        background: none !important;
+    .section-header h2,
+    .section-header h3 {
+        margin: 0 !important;
         padding: 0 !important;
+    }
+
+    /* Específicamente para el título principal */
+    .executive-section > .section-header:first-child h2 {
+        text-align: center !important;
         margin: 0 !important;
     }
 }
 
-
+/* RESPONSIVE GENERAL */
+@media screen and (max-width: 768px) {
+    .sections-row {
+        flex-direction: column !important;
+        gap: 20px !important;
+    }
+    
+    .sections-row > .executive-section {
+        flex: 1 1 100% !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    
+    .safety-grid {
+        flex-direction: column !important;
+        gap: 20px !important;
+    }
+}

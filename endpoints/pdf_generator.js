@@ -631,7 +631,7 @@ class PT2PDFGenerator {
           bottom: "1.5cm",
           left: "1.5cm",
         },
-        displayHeaderFooter: true,
+        //displayHeaderFooter: false,
         headerTemplate: `
                     <div style="font-size: 8pt; width: 100%; text-align: center; color: #666;">
                         PT2 - Permiso de Trabajo para Apertura Equipo Línea

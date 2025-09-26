@@ -726,5 +726,64 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // --- CONFIGURACIÓN DEFINITIVA PARA ELIMINAR ENCABEZADOS ---
+
+  // Función que muestra las instrucciones exactas para eliminar encabezados
+  function mostrarInstruccionesImpresion() {
+    const mensaje = `🖨️ PARA ELIMINAR ENCABEZADOS Y PIES DE PÁGINA:
+
+📌 CHROME/EDGE:
+1. Presiona Ctrl+P
+2. Busca "Más configuraciones" y haz clic
+3. DESMARCA la casilla "Encabezados y pies de página"
+4. Haz clic en "Imprimir"
+
+📌 FIREFOX:
+1. Presiona Ctrl+P  
+2. Haz clic en "Configurar página"
+3. En "Encabezados y pies", selecciona "Vacío" en TODOS
+4. Haz clic en "Imprimir"
+
+⚠️ Esta configuración se debe hacer UNA SOLA VEZ por navegador.
+¿Quieres que te abra el diálogo de impresión ahora?`;
+
+    if (confirm(mensaje)) {
+      // Limpiar título antes de imprimir
+      const originalTitle = document.title;
+      document.title = "";
+
+      // Abrir diálogo de impresión
+      window.print();
+
+      // Restaurar título después
+      setTimeout(() => {
+        document.title = originalTitle;
+      }, 1000);
+    }
+  }
+
+  // Interceptar Ctrl+P para mostrar instrucciones
+  document.addEventListener("keydown", function (e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === "p") {
+      e.preventDefault();
+      mostrarInstruccionesImpresion();
+    }
+  });
+
+  // Modificar el botón de imprimir existente para mostrar instrucciones
+  const botonImprimir = document.getElementById("btn-imprimir-permiso");
+  if (botonImprimir) {
+    // Agregar event listener adicional que mostrará las instrucciones
+    botonImprimir.addEventListener(
+      "click",
+      function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        mostrarInstruccionesImpresion();
+      },
+      true
+    ); // true para capturar el evento antes que otros listeners
+  }
+
   console.log("Funcionalidad de PDF PT2 inicializada correctamente");
 });

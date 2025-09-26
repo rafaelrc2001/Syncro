@@ -8,6 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
         <link rel="stylesheet" href="/CSS/EstiloGeneral.css" />
    <link rel="stylesheet" href="/CSS/EstiloImprimir.css">
+     <link rel="stylesheet" href="/CSS/Imprimir/EstiloImprimir-PT3.css">
 
 </head>
 <body style="background: #f4f6fb; min-height: 100vh; margin: 0; font-family: 'Roboto', Arial, sans-serif;">
@@ -55,10 +56,13 @@ Permiso de Trabajo Espacio Confinado</h2>
                     </div>
                 </div>
             </div>
-         
-<div id="pt3-medidas-riesgos" class="form-section-title">
-    <i class="ri-shield-check-line"></i>
-    <h3>MEDIDAS / REQUISITOS PARA ADMINISTRAR LOS RIESGOS</h3>
+
+           
+<div id="pt3-medidas-requisitos" class="executive-section">
+    <div class="section-header">
+        <i class="ri-shield-check-line"></i>
+        <h3>Medidas / Requisitos para Administrar los Riesgos</h3>
+    </div>
 </div>
 
 <table>
@@ -140,12 +144,31 @@ Permiso de Trabajo Espacio Confinado</h2>
 
 
 
-
+               <div class="executive-section">
+                    <div class="section-header section-header-cielo">
+                        <i class="ri-flask-line"></i>
+                        <h3>Condiciones del Proceso</h3>
+                    </div>
+                    <div class="executive-grid">
+                        <div class="executive-item">
+                            <label>Fluido</label>
+                            <p id="fluid">-</p>
+                        </div>
+                        <div class="executive-item">
+                            <label>Presión</label>
+                            <p id="pressure">-</p>
+                        </div>
+                        <div class="executive-item">
+                            <label>Temperatura</label>
+                            <p id="temperature">-</p>
+                        </div>
+                    </div>
+                </div>
 
             <div class="executive-section">
                 <div class="section-header section-header-cielo">
                     <i class="ri-tools-line"></i>
-                    <h3>ANÁLISIS DE REQUISITOS PARA EFECTUAR EL TRABAJO</h3>
+                    <h3>Análisis de Requisitos para Efectuar el Trabajo</h3>
                 </div>
                 <table class="styled-table">
                     <thead class="thead-nopeligroso">
@@ -264,31 +287,12 @@ Permiso de Trabajo Espacio Confinado</h2>
             
 
               
-               <div class="executive-section">
-                    <div class="section-header section-header-cielo">
-                        <i class="ri-flask-line"></i>
-                        <h3>Condiciones del Proceso</h3>
-                    </div>
-                    <div class="executive-grid">
-                        <div class="executive-item">
-                            <label>Fluido</label>
-                            <p id="fluid">-</p>
-                        </div>
-                        <div class="executive-item">
-                            <label>Presión</label>
-                            <p id="pressure">-</p>
-                        </div>
-                        <div class="executive-item">
-                            <label>Temperatura</label>
-                            <p id="temperature">-</p>
-                        </div>
-                    </div>
-                </div>
+
 
     <div id="pt3-requisitos-administrar-riesgos" class="executive-section">
-        <div class="section-header section-header-cielo">
+        <div  class="section-header ">
             <i class="ri-shield-check-line"></i>
-            <h3>REQUISITOS PARA ADMINISTRAR LOS RIESGOS</h3>
+            <h3>Requisitos Para Administrar los Riesgos</h3>
          </div>
          <form id="form-requisitos-riesgos">
             <table class="styled-table">
@@ -360,7 +364,7 @@ Permiso de Trabajo Espacio Confinado</h2>
                     </tr>
                 </tbody>
             </table>
-            <div id="pt3-prueba-gas-aprobado" class="section-header section-header-cielo">
+            <div class="section-header section-header-cielo">
             <i class="ri-shield-check-line"></i>
                 <h3 >PRUEBA DE GAS ¿APROBADO?</h3>
                 </div>
@@ -496,80 +500,8 @@ Permiso de Trabajo Espacio Confinado</h2>
                 </div>
                 
 
-                <div class="executive-section" style="display: flex; gap: 20px">
-            <div style="flex: 1">
-              <label
-                for="responsable-aprobador"
-                style="font-weight: 600; display: block; margin-bottom: 8px"
-              >
-                Seleccionar Supervisor de Seguridad:
-              </label>
-              <select
-                id="responsable-aprobador"
-                style="
-                  width: 100%;
-                  padding: 8px;
-                  border-radius: 4px;
-                  border: 1px solid #ccc;
-                "
-                onchange="actualizarAprobador(this.value)"
-              >
-                <option value="" disabled selected>
-                  Seleccione un supervisor...
-                </option>
-          
-              </select>
-            </div>
-            <div style="flex: 1">
-              <label
-                for="responsable-aprobador2"
-                style="font-weight: 600; display: block; margin-bottom: 8px"
-              >
-                Seleccionar la categoria a la que pertenece:
-              </label>
-              <select
-                id="responsable-aprobador2"
-                style="
-                  width: 100%;
-                  padding: 8px;
-                  border-radius: 4px;
-                  border: 1px solid #ccc;
-                "
-                onchange="actualizarAprobador2(this.value)"
-              >
-                <option value="" disabled selected>
-                  Seleccione una categoria...
-                </option>
-                
-              </select>
-            </div>
-          </div>
-
-          <!-- Sección 5: Aprobaciones -->
-          <div class="approval-section">
-            <div class="approval-stamps">
-              <div class="stamp">
-                <div class="stamp-title">Responsable del area:</div>
-                <div class="stamp-placeholder"></div>
-                <div class="stamp-name"></div>
-              </div>
-              <div class="stamp">
-                <div class="stamp-title">Operador del área:</div>
-                <div class="stamp-placeholder"></div>
-                <div class="stamp-name"></div>
-                <div class="stamp-date"></div>
-              </div>
-              <div class="stamp approved">
-                <div class="stamp-title">Supervisor de Seguridad:</div>
-                <div class="stamp-placeholder">
-                  <i class="ri-checkbox-circle-fill"></i>
-                </div>
-                <div class="stamp-name" id="nombre-aprobador">
-                  Seleccione un supervisor
-                </div>
-              </div>
-            </div>
-          </div>
+        
+     
         </div>
 
 

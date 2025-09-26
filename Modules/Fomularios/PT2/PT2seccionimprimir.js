@@ -1,4 +1,26 @@
 document.addEventListener("DOMContentLoaded", function () {
+  // --- INICIALIZACIÓN DE LOGOS ---
+  function inicializarLogos() {
+    const companyHeader = document.querySelector(".company-header");
+    if (companyHeader) {
+      const imagenes = companyHeader.querySelectorAll("img");
+      imagenes.forEach((img) => {
+        // Agregar event listeners para debugging
+        img.addEventListener("load", () => {
+          console.log(`Logo cargado correctamente: ${img.src}`);
+        });
+        img.addEventListener("error", () => {
+          console.warn(`Error al cargar logo: ${img.src}`);
+          // Ocultar imagen si no se puede cargar
+          img.style.display = "none";
+        });
+      });
+    }
+  }
+
+  // Ejecutar inicialización de logos
+  inicializarLogos();
+
   // --- FUNCIONES PARA RELLENAR AST Y PARTICIPANTES ---
   function mostrarAST(ast) {
     const eppList = document.getElementById("modal-epp-list");
@@ -512,10 +534,55 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   /**
+   * Función para asegurar que todas las imágenes estén cargadas
+   */
+  function esperarImagenes() {
+    return new Promise((resolve) => {
+      const imagenes = document.querySelectorAll(".company-header img");
+      if (imagenes.length === 0) {
+        resolve();
+        return;
+      }
+
+      let imagenesRestantes = imagenes.length;
+
+      imagenes.forEach((img) => {
+        if (img.complete && img.naturalHeight !== 0) {
+          imagenesRestantes--;
+          if (imagenesRestantes === 0) {
+            resolve();
+          }
+        } else {
+          img.onload = () => {
+            imagenesRestantes--;
+            if (imagenesRestantes === 0) {
+              resolve();
+            }
+          };
+          img.onerror = () => {
+            imagenesRestantes--;
+            if (imagenesRestantes === 0) {
+              resolve();
+            }
+          };
+        }
+      });
+
+      // Timeout de seguridad en caso de que las imágenes no carguen
+      setTimeout(() => {
+        resolve();
+      }, 3000);
+    });
+  }
+
+  /**
    * Función de impresión tradicional (fallback)
    */
-  function imprimirPermisoTradicional() {
+  async function imprimirPermisoTradicional() {
     try {
+      // Esperar a que las imágenes se carguen completamente
+      await esperarImagenes();
+
       // Ejecutar impresión tradicional del navegador
       window.print();
     } catch (error) {

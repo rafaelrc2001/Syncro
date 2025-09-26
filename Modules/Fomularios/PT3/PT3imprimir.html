@@ -14,6 +14,23 @@
 <body style="background: #f4f6fb; min-height: 100vh; margin: 0; font-family: 'Roboto', Arial, sans-serif;">
     <div style="display: flex; justify-content: center; align-items: flex-start; min-height: 100vh;">
         <section class="executive-section" style="max-width: 900px; width: 100%; margin: 40px 0; background: #fff; border-radius: 18px; box-shadow: 0 4px 24px rgba(44,62,80,0.10); padding: 2.5rem 2rem;">
+            
+            
+            <!-- Encabezado con logos de la empresa -->
+            <div class="company-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid #e3e6ea;">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <img src="/img/proagro.png" alt="Logo ProAgro" style="height: 60px; width: auto;">
+                </div>
+                <div style="text-align: center; flex-grow: 1;">
+                    <h1 style="margin: 0; color: #2c3e50; font-size: 1.5rem; font-weight: 600;">SISTEMA DE PERMISOS DE TRABAJO</h1>
+                    <p style="margin: 0.5rem 0 0 0; color: #7f8c8d; font-size: 0.9rem;">Gestión Integral de Seguridad Laboral</p>
+                </div>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                    <img src="/img/pemex.png" alt="Logo PEMEX" style="height: 60px; width: auto;">
+                </div>
+         
+            </div>
+            
             <div class="form-container">
 
              <div class="section-header">
@@ -290,81 +307,62 @@ Permiso de Trabajo Espacio Confinado</h2>
 
 
     <div id="pt3-requisitos-administrar-riesgos" class="executive-section">
-        <div  class="section-header ">
+         <div  class="section-header ">
             <i class="ri-shield-check-line"></i>
             <h3>Requisitos Para Administrar los Riesgos</h3>
          </div>
-         <form id="form-requisitos-riesgos">
+         <div id="datos-requisitos-riesgos">
             <table class="styled-table">
                 <thead>
                     <tr>
                         <th>Requisito</th>
-                        <th>SI</th>
-                        <th>NO</th>
-                        <th>N/A</th>
+                        <th>Respuesta</th>
                         <th>Detalle</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>¿Equipo de protección para la piel y cuerpo?</td>
-                        <td><input type="radio" name="proteccion_piel_cuerpo" value="SI"></td>
-                        <td><input type="radio" name="proteccion_piel_cuerpo" value="NO"></td>
-                        <td><input type="radio" name="proteccion_piel_cuerpo" value="NA"></td>
-                        <td><input type="text" name="detalle_proteccion_piel_cuerpo" placeholder="¿Cuál?" style="width:100%"></td>
+                        <td><span id="proteccion_piel_cuerpo">-</span></td>
+                        <td><span id="detalle_proteccion_piel_cuerpo">-</span></td>
                     </tr>
                     <tr>
                         <td>¿Equipo de protección respiratoria?</td>
-                        <td><input type="radio" name="proteccion_respiratoria" value="SI"></td>
-                        <td><input type="radio" name="proteccion_respiratoria" value="NO"></td>
-                        <td><input type="radio" name="proteccion_respiratoria" value="NA"></td>
-                        <td><input type="text" name="detalle_proteccion_respiratoria" placeholder="¿Cuál?" style="width:100%"></td>
+                        <td><span id="proteccion_respiratoria">-</span></td>
+                        <td><span id="detalle_proteccion_respiratoria">-</span></td>
                     </tr>
                     <tr>
                         <td>¿Se requiere protección ocular?</td>
-                        <td><input type="radio" name="proteccion_ocular" value="SI"></td>
-                        <td><input type="radio" name="proteccion_ocular" value="NO"></td>
-                        <td><input type="radio" name="proteccion_ocular" value="NA"></td>
-                        <td><input type="text" name="detalle_proteccion_ocular" placeholder="¿Cuál?" style="width:100%"></td>
+                        <td><span id="proteccion_ocular">-</span></td>
+                        <td><span id="detalle_proteccion_ocular">-</span></td>
                     </tr>
                     <tr>
                         <td>¿Arnés de seguridad y cable de sujeción?</td>
-                        <td><input type="radio" name="arnes_seguridad" value="SI"></td>
-                        <td><input type="radio" name="arnes_seguridad" value="NO"></td>
-                        <td><input type="radio" name="arnes_seguridad" value="NA"></td>
-                        <td></td>
+                        <td><span id="arnes_seguridad">-</span></td>
+                        <td>-</td>
                     </tr>
                     <tr>
                         <td>¿Cable de vida?</td>
-                        <td><input type="radio" name="cable_vida" value="SI"></td>
-                        <td><input type="radio" name="cable_vida" value="NO"></td>
-                        <td><input type="radio" name="cable_vida" value="NA"></td>
-                        <td></td>
+                        <td><span id="cable_vida">-</span></td>
+                        <td>-</td>
                     </tr>
                     <tr>
                         <td>¿Equipo de ventilación forzada?</td>
-                        <td><input type="radio" name="ventilacion_forzada" value="SI"></td>
-                        <td><input type="radio" name="ventilacion_forzada" value="NO"></td>
-                        <td><input type="radio" name="ventilacion_forzada" value="NA"></td>
-                        <td><input type="text" name="detalle_ventilacion_forzada" placeholder="¿Cuál?" style="width:100%"></td>
+                        <td><span id="ventilacion_forzada">-</span></td>
+                        <td><span id="detalle_ventilacion_forzada">-</span></td>
                     </tr>
                     <tr>
                         <td>¿Iluminación a prueba de explosión?</td>
-                        <td><input type="radio" name="iluminacion_explosion" value="SI"></td>
-                        <td><input type="radio" name="iluminacion_explosion" value="NO"></td>
-                        <td><input type="radio" name="iluminacion_explosion" value="NA"></td>
-                        <td></td>
+                        <td><span id="iluminacion_explosion">-</span></td>
+                        <td>-</td>
                     </tr>
                     <tr>
                         <td>¿Vigilancia exterior?</td>
-                        <td><input type="radio" name="vigilancia_exterior" value="SI"></td>
-                        <td><input type="radio" name="vigilancia_exterior" value="NO"></td>
-                        <td><input type="radio" name="vigilancia_exterior" value="NA"></td>
-                        <td></td>
+                        <td><span id="vigilancia_exterior">-</span></td>
+                        <td>-</td>
                     </tr>
                 </tbody>
-            </table>
-            <div class="section-header section-header-cielo">
+            </table>            <div class="section-header section-header-cielo">
             <i class="ri-shield-check-line"></i>
                 <h3 >PRUEBA DE GAS ¿APROBADO?</h3>
                 </div>
@@ -372,51 +370,39 @@ Permiso de Trabajo Espacio Confinado</h2>
                     <thead>
                         <tr>
                             <th>Parámetro</th>
-                            <th>SI</th>
-                            <th>NO</th>
-                            <th>N/A</th>
+                            <th>Aprobado</th>
                             <th>Valor</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>% de CO2</td>
-                            <td><input type="radio" name="co2_aprobado" value="SI"></td>
-                            <td><input type="radio" name="co2_aprobado" value="NO"></td>
-                            <td><input type="radio" name="co2_aprobado" value="NA"></td>
-                            <td><input type="text" name="co2_valor" style="width:100%"></td>
+                            <td><span id="co2_aprobado">-</span></td>
+                            <td><span id="co2_valor">-</span></td>
                         </tr>
                         <tr>
                             <td>% Amniaco</td>
-                            <td><input type="radio" name="amniaco_aprobado" value="SI"></td>
-                            <td><input type="radio" name="amniaco_aprobado" value="NO"></td>
-                            <td><input type="radio" name="amniaco_aprobado" value="NA"></td>
-                            <td><input type="text" name="amniaco_valor" style="width:100%"></td>
+                            <td><span id="amniaco_aprobado">-</span></td>
+                            <td><span id="amniaco_valor">-</span></td>
                         </tr>
                         <tr>
                             <td>% de Oxígeno</td>
-                            <td><input type="radio" name="oxigeno_aprobado" value="SI"></td>
-                            <td><input type="radio" name="oxigeno_aprobado" value="NO"></td>
-                            <td><input type="radio" name="oxigeno_aprobado" value="NA"></td>
-                            <td><input type="text" name="oxigeno_valor" style="width:100%"></td>
+                            <td><span id="oxigeno_aprobado">-</span></td>
+                            <td><span id="oxigeno_valor">-</span></td>
                         </tr>
                         <tr>
                             <td>% de Explosividad LEL</td>
-                            <td><input type="radio" name="lel_aprobado" value="SI"></td>
-                            <td><input type="radio" name="lel_aprobado" value="NO"></td>
-                            <td><input type="radio" name="lel_aprobado" value="NA"></td>
-                            <td><input type="text" name="lel_valor" style="width:100%"></td>
+                            <td><span id="lel_aprobado">-</span></td>
+                            <td><span id="lel_valor">-</span></td>
                         </tr>
                         <tr>
-                            <td>Otro ¿Cuál?</td>
-                            <td><input type="radio" name="otro_aprobado" value="SI"></td>
-                            <td><input type="radio" name="otro_aprobado" value="NO"></td>
-                            <td><input type="radio" name="otro_aprobado" value="NA"></td>
-                            <td><input type="text" name="otro_valor" style="width:100%"></td>
+                            <td>Otro</td>
+                            <td><span id="otro_aprobado">-</span></td>
+                            <td><span id="otro_valor">-</span></td>
                         </tr>
                         <tr>
                             <td>Observaciones</td>
-                            <td colspan="4"><input type="text" name="observaciones_gas" style="width:100%"></td>
+                            <td colspan="2"><span id="observaciones_gas">-</span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -505,20 +491,18 @@ Permiso de Trabajo Espacio Confinado</h2>
         </div>
 
 
- <div class="button-group" style="display: flex; justify-content: space-between; margin-top: 48px; gap: 16px;">
-         <button id="btn-salir-nuevo" class="btn btn-pt1 btn-salir-gris" type="button">
-            <i class="ri-logout-box-r-line" style="margin-right: 8px;"></i>Salir
-        </button>
-        <div style="display: flex; gap: 16px;">
-            
-            <button id="btn-no-autorizar" class="btn btn-pt1 btn-noautorizar-rojo" type="button">
-                <i class="ri-close-circle-line" style="margin-right: 8px;"></i>No Autorizar
-            </button>
-            <button id="btn-guardar-campos" class="btn btn-pt1 btn-guardar-azulpetroleo" type="button">
-                <i class="ri-save-3-line" style="margin-right: 8px;"></i>Autorizar
-            </button>
-        </div>
-</div>
+  <!-- Botones de acción -->
+                <div class="button-group" style="display: flex; justify-content: space-between; margin-top: 48px; gap: 16px;">
+                    <button id="btn-salir-nuevo" class="btn btn-pt1 btn-salir-gris" type="button">
+                        <i class="ri-logout-box-r-line" style="margin-right: 8px;"></i>Salir
+                    </button>
+                    <div style="display: flex; gap: 16px;">
+                        <button id="btn-imprimir-permiso" class="btn btn-pt1 btn-guardar-azulpetroleo" type="button">
+                            <i class="ri-printer-line" style="margin-right: 8px;"></i>Imprimir Permiso
+                        </button>
+                    </div>
+                </div>
+
             </div>
         </section>
         </div>
@@ -545,6 +529,6 @@ Permiso de Trabajo Espacio Confinado</h2>
 
      <!-- <script src="/Modules/Fomularios/PT1/PT1.js"></script>-->
 
-     <script src="/Modules/Fomularios/PT3/PT3seccionsupervisor.js"></script>
+     <script src="/Modules/Fomularios/PT3/PT3seccionimprimir.js"></script>
 </body>
 </html>

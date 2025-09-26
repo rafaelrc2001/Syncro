@@ -5,21 +5,26 @@ function actualizarAprobador(value) {
 function actualizarAprobador2(value) {
   // Puedes agregar lógica aquí si lo necesitas
 }
-// Utilidad para asignar texto en un elemento por id
+
+// Utilidad para asignar texto
 function setText(id, value) {
   const el = document.getElementById(id);
-  if (el) el.textContent = value || "-";
+  console.log(`setText: id="${id}", value="${value}", element found:`, !!el);
+  if (el) {
+    el.textContent = value || "-";
+    console.log(`setText: Asignado "${value || "-"}" a elemento "${id}"`);
+  } else {
+    console.warn(`setText: No se encontró elemento con ID "${id}"`);
+  }
 }
 
-// Rellenar datos generales y medidas/requisitos
-function rellenarDatosGenerales(data) {
-  setText("prefijo-label", data.prefijo);
-  setText("descripcion-trabajo-label", data.descripcion_trabajo);
-  setText("maintenance-type-label", data.tipo_mantenimiento);
-  setText("work-order-label", data.ot_numero);
-  setText("tag-label", data.tag);
-  setText("start-time-label", data.hora_inicio);
-  setText("equipment-description-label", data.descripcion_equipo);
+// Función para rellenar los campos de "MEDIDAS / REQUISITOS PARA ADMINISTRAR LOS RIESGOS"
+function rellenarMedidasRequisitos(data) {
+  const setText = (id, value) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value || "-";
+  };
+
   setText("avisos_trabajos", data.avisos_trabajos);
   setText("iluminacion_prueba_explosion", data.iluminacion_prueba_explosion);
   setText("ventilacion_forzada", data.ventilacion_forzada);
@@ -39,50 +44,100 @@ function rellenarDatosGenerales(data) {
   setText("clase_espacio_confinado", data.clase_espacio_confinado);
 }
 
-// Rellenar requisitos de trabajo (tabla de análisis de requisitos)
+// Función para rellenar requisitos de trabajo con radios, checkboxes e inputs
 function rellenarRequisitosTrabajo(permiso) {
-  setText("verificar_explosividad", permiso.verificar_explosividad);
-  setText("verificar_gas_toxico", permiso.verificar_gas_toxico);
-  setText(
+  // Radios
+  [
+    "verificar_explosividad",
+    "verificar_gas_toxico",
     "verificar_deficiencia_oxigeno",
-    permiso.verificar_deficiencia_oxigeno
-  );
-  setText(
     "verificar_enriquecimiento_oxigeno",
-    permiso.verificar_enriquecimiento_oxigeno
-  );
-  setText("verificar_polvo_humos_fibras", permiso.verificar_polvo_humos_fibras);
-  setText("verificar_amoniaco", permiso.verificar_amoniaco);
-  setText("verificar_material_piel", permiso.verificar_material_piel);
-  setText("verificar_temperatura", permiso.verificar_temperatura);
-  setText("verificar_lel", permiso.verificar_lel);
-  setText(
+    "verificar_polvo_humos_fibras",
+    "verificar_amoniaco",
+    "verificar_material_piel",
+    "verificar_temperatura",
+    "verificar_lel",
     "suspender_trabajos_adyacentes",
-    permiso.suspender_trabajos_adyacentes
-  );
-  setText("acordonar_area", permiso.acordonar_area);
-  setText("prueba_gas_toxico_inflamable", permiso.prueba_gas_toxico_inflamable);
-  setText("porcentaje_lel", permiso.porcentaje_lel);
-  setText("nh3", permiso.nh3);
-  setText("porcentaje_oxigeno", permiso.porcentaje_oxigeno);
-  setText(
+    "acordonar_area",
+    "prueba_gas_toxico_inflamable",
     "equipo_despresionado_fuera_operacion",
-    permiso.equipo_despresionado_fuera_operacion
-  );
-  setText("equipo_aislado", permiso.equipo_aislado);
-  setText("equipo_lavado", permiso.equipo_lavado);
-  setText("equipo_neutralizado", permiso.equipo_neutralizado);
-  setText("equipo_vaporizado", permiso.equipo_vaporizado);
-  setText("aislar_purgas_drenaje_venteo", permiso.aislar_purgas_drenaje_venteo);
-  setText("abrir_registros_necesarios", permiso.abrir_registros_necesarios);
-  setText("observaciones_requisitos", permiso.observaciones_requisitos);
+    "equipo_aislado",
+    "equipo_lavado",
+    "equipo_neutralizado",
+    "equipo_vaporizado",
+    "aislar_purgas_drenaje_venteo",
+    "abrir_registros_necesarios",
+  ].forEach((name) => {
+    if (permiso[name]) {
+      // Primero llenar los spans de solo lectura
+      const span = document.getElementById(name);
+      if (span) span.textContent = permiso[name] || "-";
+
+      // Luego marcar los radios si existen
+      const radio = document.querySelector(
+        `input[name='${name}'][value='${permiso[name]}']`
+      );
+      if (radio) {
+        radio.checked = true;
+        console.log(`Radio ${name} marcado con valor: ${permiso[name]}`);
+      }
+    }
+  });
+
+  // Checkboxes
+  if (typeof permiso.equipo_aislado_valvula !== "undefined") {
+    const cb = document.querySelector("input[name='equipo_aislado_valvula']");
+    if (cb) cb.checked = !!permiso.equipo_aislado_valvula;
+  }
+  if (typeof permiso.equipo_aislado_junta_ciega !== "undefined") {
+    const cb = document.querySelector(
+      "input[name='equipo_aislado_junta_ciega']"
+    );
+    if (cb) cb.checked = !!permiso.equipo_aislado_junta_ciega;
+  }
+
+  // Inputs tipo texto y spans de solo lectura
+  if (permiso.porcentaje_lel !== null) {
+    setText("porcentaje_lel", permiso.porcentaje_lel);
+    const input = document.querySelector("input[name='porcentaje_lel']");
+    if (input) input.value = permiso.porcentaje_lel;
+  }
+  if (permiso.nh3 !== null) {
+    setText("nh3", permiso.nh3);
+    const input = document.querySelector("input[name='nh3']");
+    if (input) input.value = permiso.nh3;
+  }
+  if (permiso.porcentaje_oxigeno !== null) {
+    setText("porcentaje_oxigeno", permiso.porcentaje_oxigeno);
+    const input = document.querySelector("input[name='porcentaje_oxigeno']");
+    if (input) input.value = permiso.porcentaje_oxigeno;
+  }
+  if (permiso.observaciones_requisitos !== null) {
+    setText("observaciones_requisitos", permiso.observaciones_requisitos);
+    const textarea = document.querySelector(
+      "textarea[name='observaciones_requisitos']"
+    );
+    if (textarea) textarea.value = permiso.observaciones_requisitos;
+  }
   // Condiciones del proceso
-  setText("fluid", permiso.fluido);
-  setText("pressure", permiso.presion);
-  setText("temperature", permiso.temperatura);
+  if (permiso.fluido !== null) {
+    setText("fluid", permiso.fluido);
+    const input = document.getElementById("fluid");
+    if (input) input.value = permiso.fluido;
+  }
+  if (permiso.presion !== null) {
+    setText("pressure", permiso.presion);
+    const input = document.getElementById("pressure");
+    if (input) input.value = permiso.presion;
+  }
+  if (permiso.temperatura !== null) {
+    setText("temperature", permiso.temperatura);
+    const input = document.getElementById("temperature");
+    if (input) input.value = permiso.temperatura;
+  }
 }
 
-// Rellenar AST (Análisis de Seguridad en el Trabajo)
+// FUNCIONES PARA RELLENAR AST Y PARTICIPANTES
 function mostrarAST(ast) {
   const eppList = document.getElementById("modal-epp-list");
   if (eppList) {
@@ -119,7 +174,6 @@ function mostrarAST(ast) {
   }
 }
 
-// Rellenar actividades AST
 function mostrarActividadesAST(actividades) {
   const tbody = document.getElementById("modal-ast-actividades-body");
   if (tbody) {
@@ -141,7 +195,6 @@ function mostrarActividadesAST(actividades) {
   }
 }
 
-// Rellenar participantes AST
 function mostrarParticipantesAST(participantes) {
   const tbody = document.getElementById("modal-ast-participantes-body");
   if (tbody) {
@@ -159,48 +212,6 @@ function mostrarParticipantesAST(participantes) {
       });
     }
   }
-}
-
-// Rellenar requisitos y condiciones del proceso
-function rellenarRequisitosYCondiciones(permiso) {
-  setText("verificar_explosividad", permiso.verificar_explosividad);
-  setText("verificar_gas_toxico", permiso.verificar_gas_toxico);
-  setText(
-    "verificar_deficiencia_oxigeno",
-    permiso.verificar_deficiencia_oxigeno
-  );
-  setText(
-    "verificar_enriquecimiento_oxigeno",
-    permiso.verificar_enriquecimiento_oxigeno
-  );
-  setText("verificar_polvo_humos_fibras", permiso.verificar_polvo_humos_fibras);
-  setText("verificar_amoniaco", permiso.verificar_amoniaco);
-  setText("verificar_material_piel", permiso.verificar_material_piel);
-  setText("verificar_temperatura", permiso.verificar_temperatura);
-  setText("verificar_lel", permiso.verificar_lel);
-  setText(
-    "suspender_trabajos_adyacentes",
-    permiso.suspender_trabajos_adyacentes
-  );
-  setText("acordonar_area", permiso.acordonar_area);
-  setText("prueba_gas_toxico_inflamable", permiso.prueba_gas_toxico_inflamable);
-  setText("porcentaje_lel", permiso.porcentaje_lel);
-  setText("nh3", permiso.nh3);
-  setText("porcentaje_oxigeno", permiso.porcentaje_oxigeno);
-  setText(
-    "equipo_despresionado_fuera_operacion",
-    permiso.equipo_despresionado_fuera_operacion
-  );
-  setText("equipo_aislado", permiso.equipo_aislado);
-  setText("equipo_lavado", permiso.equipo_lavado);
-  setText("equipo_neutralizado", permiso.equipo_neutralizado);
-  setText("equipo_vaporizado", permiso.equipo_vaporizado);
-  setText("aislar_purgas_drenaje_venteo", permiso.aislar_purgas_drenaje_venteo);
-  setText("abrir_registros_necesarios", permiso.abrir_registros_necesarios);
-  setText("observaciones_requisitos", permiso.observaciones_requisitos);
-  setText("fluid", permiso.fluido);
-  setText("pressure", permiso.presion);
-  setText("temperature", permiso.temperatura);
 }
 
 // Lógica para rellenar supervisores y categorías en los select
@@ -241,10 +252,8 @@ function rellenarSupervisoresYCategorias() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  // --- Lógica para el botón "Autorizar" ---
-  // --- Lógica para el botón "Autorizar" ---
-  // --- Lógica para el botón "Autorizar" ---
-  // --- Lógica para el botón "Autorizar" ---
+  console.log("🚀 DOMContentLoaded - Iniciando script PT3seccionsupervisor.js");
+
   // --- Lógica para el botón "Autorizar" ---
   const btnAutorizar = document.getElementById("btn-guardar-campos");
   if (btnAutorizar) {
@@ -548,8 +557,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const params = new URLSearchParams(window.location.search);
   const idPermiso = params.get("id");
+
+  console.log("URL actual:", window.location.href);
+  console.log("Parámetros de URL:", window.location.search);
+  console.log("ID extraído:", idPermiso);
+
   if (idPermiso) {
-    // Obtener datos generales y prefijo
+    console.log("Consultando permiso con ID:", idPermiso);
+
+    // Obtener datos generales del permiso
     fetch(
       `http://localhost:3000/api/verformularios?id=${encodeURIComponent(
         idPermiso
@@ -557,15 +573,38 @@ document.addEventListener("DOMContentLoaded", function () {
     )
       .then((resp) => resp.json())
       .then((data) => {
+        console.log("Respuesta de verformularios:", data);
+
         // Prefijo en el título
         if (data && data.general && document.getElementById("prefijo-label")) {
           document.getElementById("prefijo-label").textContent =
             data.general.prefijo || "-";
         }
+
         // Rellenar datos generales si existen
         if (data && data.general) {
-          rellenarDatosGenerales(data.general);
+          console.log("📊 Rellenando datos generales:", data.general);
+          setText(
+            "descripcion-trabajo-label",
+            data.general.descripcion_trabajo
+          );
+          setText("maintenance-type-label", data.general.tipo_mantenimiento);
+          setText("work-order-label", data.general.ot_numero);
+          setText("tag-label", data.general.tag);
+          setText("start-time-label", data.general.hora_inicio);
+          setText(
+            "equipment-description-label",
+            data.general.descripcion_equipo
+          );
+        } else {
+          console.warn("⚠️ No se encontraron datos generales en la respuesta");
         }
+
+        // Rellenar medidas/requisitos usando data.data
+        if (data && data.data) {
+          rellenarMedidasRequisitos(data.data);
+        }
+
         // Rellenar AST y Participantes
         if (data && data.ast) {
           mostrarAST(data.ast);
@@ -582,17 +621,56 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
           mostrarParticipantesAST([]);
         }
+      })
+      .catch((err) => {
+        console.error(
+          "Error al obtener datos del permiso verformularios:",
+          err
+        );
       });
 
-    // Obtener datos específicos del permiso para otros campos
+    // Obtener datos específicos del PT3 confinado
     fetch(`http://localhost:3000/api/pt-confinado/${idPermiso}`)
       .then((resp) => resp.json())
       .then((data) => {
+        console.log("Respuesta de pt-confinado:", data);
         if (data && data.data) {
-          rellenarDatosGenerales(data.data);
-          rellenarRequisitosTrabajo(data.data);
-          rellenarRequisitosYCondiciones(data.data);
+          const permiso = data.data;
+          console.log("Datos del permiso PT3:", permiso);
+
+          // Rellenar todos los campos de requisitos de trabajo
+          rellenarRequisitosTrabajo(permiso);
+
+          // Rellenar todos los campos específicos de medidas/requisitos
+          const campos = [
+            "avisos_trabajos",
+            "iluminacion_prueba_explosion",
+            "ventilacion_forzada",
+            "evaluacion_medica_aptos",
+            "cable_vida_trabajadores",
+            "vigilancia_exterior",
+            "nombre_vigilante",
+            "personal_rescatista",
+            "nombre_rescatista",
+            "instalar_barreras",
+            "equipo_especial",
+            "tipo_equipo_especial",
+            "observaciones_adicionales",
+            "numero_personas_autorizadas",
+            "tiempo_permanencia_min",
+            "tiempo_recuperacion_min",
+            "clase_espacio_confinado",
+          ];
+
+          campos.forEach((campo) => {
+            setText(campo, permiso[campo]);
+          });
+
+          console.log("Todos los campos han sido rellenados correctamente");
         }
+      })
+      .catch((err) => {
+        console.error("Error al obtener datos del permiso pt-confinado:", err);
       });
   }
   rellenarSupervisoresYCategorias();

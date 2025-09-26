@@ -60,6 +60,11 @@
     max-width: 48% !important;
 }
 
+/* MOVER LA TABLA DE ADMINISTRAR RIESGOS MÁS A LA DERECHA */
+.sections-row .requisitos-riesgos-section {
+    margin-left: 20px !important;
+}
+
 /* AJUSTAR TABLAS PARA QUE RESPETEN EL CONTENEDOR */
 .sections-row table {
     width: 100% !important;
@@ -264,6 +269,11 @@ img {
         width: 100% !important;
         margin: 8pt 0 !important;
         padding: 0 !important;
+    }
+    
+    /* MOVER LA TABLA DE ADMINISTRAR RIESGOS MÁS A LA DERECHA EN IMPRESIÓN */
+    .sections-row .requisitos-riesgos-section {
+        margin-left: 10pt !important;
     }
     
     /* TABLAS COMPACTAS CON BORDES RECTOS */

@@ -23,7 +23,7 @@ const formularioElectricoRouter = require("./formulariospt3-10/formulario_electr
 const formularioRadiacionRouter = require("./formulariospt3-10/formulario_radiactivas"); // <--- AGREGA ESTA LÍNEA
 const formularioAlturaRouter = require("./formulariospt3-10/formulario_altura");
 const pt1ImprimirRouter = require("./impresiones/pt1_imprimir");
-const pt2PDFRouter = require("./pt2_pdf_routes"); // Nuevo router para PDF PT2
+const pt2PDFRouter = require("./impresiones/pt2_pdf_routes"); // Nuevo router para PDF PT2
 
 const loginconsultaRouter = require("./loginconsulta");
 

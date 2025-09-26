@@ -1,5 +1,5 @@
 const express = require("express");
-const PT2PDFGenerator = require("./pdf_generator");
+const PT2PDFGenerator = require("../pdf_generator");
 const path = require("path");
 
 const router = express.Router();

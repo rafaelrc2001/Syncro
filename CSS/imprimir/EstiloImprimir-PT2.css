@@ -287,17 +287,18 @@ img {
     }
     
     table.styled-table th {
-        background: #f0f0f0 !important;
+        background: #d9d9d9 !important;
+        color: #000 !important;
         font-weight: 600 !important;
         text-align: center !important;
         font-size: 6pt !important;
     }
     
-    /* ENCABEZADOS DE IMPRESIÓN */
+    /* ENCABEZADOS DE IMPRESIÓN - BLANCO Y NEGRO */
     div.section-header {
         background: #000 !important;
         color: white !important;
-        border: none !important;
+        border: 1pt solid #000 !important;
         border-radius: 0 !important;
         padding: 8pt 12pt !important;
         margin: 0 !important;
@@ -351,7 +352,7 @@ img {
         margin: 2pt 0 !important;
     }
     
-    /* ESTILOS COMPACTOS PARA SAFETY GRID */
+    /* ESTILOS COMPACTOS PARA SAFETY GRID - DISPOSICIÓN HORIZONTAL */
     .safety-grid {
         display: flex !important;
         flex-direction: row !important;
@@ -375,8 +376,10 @@ img {
         margin: 0 0 2pt 0 !important;
         font-weight: 600 !important;
         text-align: center !important;
-        border-bottom: 0.5pt solid #ccc !important;
+        border-bottom: 0.5pt solid #000 !important;
         padding-bottom: 2pt !important;
+        color: #000 !important;
+        background: #e6e6e6 !important;
     }
     
     .safety-list {
@@ -400,16 +403,49 @@ img {
         margin-right: 2pt !important;
     }
     
-    /* FIRMAS COMPACTAS */
+    /* FIRMAS COMPACTAS - BLANCO Y NEGRO */
     .approval-section {
-        border-top: 1pt solid #333 !important;
+        border-top: 1pt solid #000 !important;
         padding-top: 2pt !important;
         margin-top: 3pt !important;
+        background: white !important;
     }
     
     .stamp {
         min-height: 35pt !important;
-        border: 1pt solid #333 !important;
+        border: 1pt solid #000 !important;
+        background: white !important;
+        color: #000 !important;
+    }
+    
+    .stamp-title {
+        color: #000 !important;
+        font-weight: 600 !important;
+    }
+    
+    .stamp-name {
+        color: #000 !important;
+        background: #f0f0f0 !important;
+    }
+    
+    .signature-space {
+        border: 1pt dashed #000 !important;
+        background: white !important;
+    }
+
+    /* === ASEGURAR QUE LAS FIRMAS ESTÉN LADO A LADO === */
+    .approval-stamps {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 4pt !important;
+        justify-content: space-between !important;
+        align-items: flex-start !important;
+    }
+
+    .approval-stamps .stamp {
+        flex: 1 !important;
+        max-width: 33% !important;
+        min-width: 0 !important;
     }
 
     /* === ELIMINAR MARCOS EXTERNOS SOLO AL IMPRIMIR === */
@@ -463,8 +499,9 @@ img {
         margin-bottom: 2pt !important;
         padding: 3pt 6pt !important;
         font-size: 8pt !important;
-        border: 1pt solid #ccc !important;
-        background: #f5f5f5 !important;
+        border: 1pt solid #000 !important;
+        background: #e6e6e6 !important;
+        color: #000 !important;
     }
 
     .pt2-datos-generales .section-header h3 {
@@ -484,19 +521,17 @@ img {
     .executive-item {
         margin: 0 !important;
         padding: 2pt !important;
-        border: 0.5pt solid #ddd !important;
+        border: 0.5pt solid #000 !important;
         background: white !important;
     }
-
+    
     .executive-item label {
         font-size: 6pt !important;
         font-weight: 600 !important;
         margin-bottom: 1pt !important;
         display: block !important;
-        color: #333 !important;
-    }
-
-    .executive-item p {
+        color: #000 !important;
+    }    .executive-item p {
         font-size: 7pt !important;
         margin: 0 !important;
         padding: 1pt 0 !important;
@@ -516,6 +551,9 @@ img {
         margin-bottom: 2pt !important;
         padding: 3pt 6pt !important;
         font-size: 7pt !important;
+        border: 1pt solid #000 !important;
+        background: #e6e6e6 !important;
+        color: #000 !important;
     }
 
     /* === OCULTAR TODOS LOS ICONOS EN IMPRESIÓN === */

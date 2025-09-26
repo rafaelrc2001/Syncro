@@ -202,7 +202,7 @@ document.addEventListener("DOMContentLoaded", function () {
     setText("arnes_seguridad", data.arnes_seguridad);
     setText("cable_vida", data.cable_vida);
     setText(
-      "ventilacion_forzada",
+      "ventilacion_forzada_opcion",
       data.ventilacion_forzada_opcion || data.ventilacion_forzada
     );
     setText(
@@ -211,21 +211,27 @@ document.addEventListener("DOMContentLoaded", function () {
     );
     setText("iluminacion_explosion", data.iluminacion_explosion);
     setText(
-      "vigilancia_exterior",
+      "vigilancia_exterior_opcion",
       data.vigilancia_exterior_opcion || data.vigilancia_exterior
     );
 
-    // Prueba de gas - PT3 específico
-    setText("co2_aprobado", data.param_co2 || data.co2_aprobado);
-    setText("co2_valor", data.valor_co2 || data.co2_valor);
-    setText("amniaco_aprobado", data.param_amoniaco || data.amniaco_aprobado);
-    setText("amniaco_valor", data.valor_amoniaco || data.amniaco_valor);
-    setText("oxigeno_aprobado", data.param_oxigeno || data.oxigeno_aprobado);
-    setText("oxigeno_valor", data.valor_oxigeno || data.oxigeno_valor);
-    setText("lel_aprobado", data.param_explosividad_lel || data.lel_aprobado);
-    setText("lel_valor", data.valor_explosividad_lel || data.lel_valor);
-    setText("otro_aprobado", data.param_otro || data.otro_aprobado);
-    setText("otro_valor", data.valor_otro || data.otro_valor);
+    // Prueba de gas - PT3 específico (usando los nuevos IDs del HTML)
+    setText("param_co2", data.param_co2 || data.co2_aprobado);
+    setText("valor_co2", data.valor_co2 || data.co2_valor);
+    setText("param_amoniaco", data.param_amoniaco || data.amniaco_aprobado);
+    setText("valor_amoniaco", data.valor_amoniaco || data.amniaco_valor);
+    setText("param_oxigeno", data.param_oxigeno || data.oxigeno_aprobado);
+    setText("valor_oxigeno", data.valor_oxigeno || data.oxigeno_valor);
+    setText(
+      "param_explosividad_lel",
+      data.param_explosividad_lel || data.lel_aprobado
+    );
+    setText(
+      "valor_explosividad_lel",
+      data.valor_explosividad_lel || data.lel_valor
+    );
+    setText("param_otro", data.param_otro || data.otro_aprobado);
+    setText("valor_otro", data.valor_otro || data.otro_valor);
     setText("observaciones_gas", data.observaciones || data.observaciones_gas);
   }
 

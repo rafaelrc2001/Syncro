@@ -69,6 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <td><span class="role-badge">${p.funcion || ""}</span></td>
                 <td>${p.credencial || ""}</td>
                 <td>${p.cargo || ""}</td>
+                <td>    </td>
             `;
           tbody.appendChild(tr);
         });

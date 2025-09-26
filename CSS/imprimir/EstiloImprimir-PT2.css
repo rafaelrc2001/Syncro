@@ -30,8 +30,8 @@
 /* Fondo rojo oscuro con headers de riesgos y pruebas */
 .requisitos-riesgos-section .section-header,
 .registro-pruebas-section .section-header {
-    background: rgba(92, 0, 3, 0.08) !important;
-    border: 2px solid rgba(92, 0, 3, 0.3) !important;
+    background: rgba(252, 12, 12, 0.1) !important;
+    border: 2px solid rgba(126, 21, 24, 0.5) !important;
 }
 
 /* CONTENEDOR FLEX PARA SECCIONES LADO A LADO */
@@ -266,7 +266,7 @@ img {
         padding: 0 !important;
     }
     
-    /* TABLAS COMPACTAS */
+    /* TABLAS COMPACTAS CON BORDES RECTOS */
     table.styled-table {
         width: 100% !important;
         border-collapse: collapse !important;
@@ -275,6 +275,7 @@ img {
         font-size: 8pt !important;
         page-break-inside: avoid !important;
         border: 1pt solid #000 !important;
+        border-radius: 0 !important; /* Bordes rectos */
     }
     
     table.styled-table th,
@@ -282,6 +283,7 @@ img {
         padding: 1px 2px !important;
         margin: 0 !important;
         border: 0.5pt solid #000 !important;
+        border-radius: 0 !important; /* Bordes rectos */
         line-height: 1.0 !important;
         font-size: 7pt !important;
     }
@@ -292,6 +294,113 @@ img {
         font-weight: 600 !important;
         text-align: center !important;
         font-size: 6pt !important;
+        border-radius: 0 !important; /* Bordes rectos */
+    }
+    
+    /* TODAS LAS TABLAS CON BORDES RECTOS EN IMPRESIÓN */
+    table,
+    tbody,
+    thead,
+    tr,
+    th,
+    td {
+        border-radius: 0 !important; /* Forzar bordes rectos en todas las tablas */
+    }
+    
+    /* ESTILOS ESPECÍFICOS PARA TABLAS AST CON BORDES */
+    #modal-ast-actividades-body,
+    #modal-ast-participantes-body,
+    .ast-table,
+    table[id*="ast"],
+    table[class*="ast"] {
+        border-collapse: collapse !important;
+        border: 1pt solid #000 !important;
+    }
+    
+    /* TABLA DE PERSONAL INVOLUCRADO - MÁS ESPACIO */
+    #modal-ast-participantes-body,
+    table[id*="participantes"],
+    .personal-involucrado-table {
+        width: 100% !important;
+        table-layout: fixed !important;
+        min-height: 40pt !important;
+    }
+    
+    /* CONTENEDOR DE PERSONAL INVOLUCRADO */
+    .pt1-personal-involucrado {
+        width: 100% !important;
+        margin: 8pt 0 !important;
+    }
+    
+    #modal-ast-actividades-body tr,
+    #modal-ast-participantes-body tr,
+    .ast-table tr,
+    table[id*="ast"] tr,
+    table[class*="ast"] tr {
+        border: 0.5pt solid #000 !important;
+    }
+    
+    #modal-ast-actividades-body td,
+    #modal-ast-participantes-body td,
+    .ast-table td,
+    table[id*="ast"] td,
+    table[class*="ast"] td {
+        border: 0.5pt solid #000 !important;
+        padding: 2pt 4pt !important;
+    }
+    
+    /* CELDAS DE PERSONAL INVOLUCRADO CON MÁS ESPACIO */
+    #modal-ast-participantes-body td {
+        padding: 6pt 8pt !important;
+        min-height: 20pt !important;
+        vertical-align: middle !important;
+    }
+    
+    #modal-ast-actividades-body th,
+    #modal-ast-participantes-body th,
+    .ast-table th,
+    table[id*="ast"] th,
+    table[class*="ast"] th {
+        border: 0.5pt solid #000 !important;
+        background: #d9d9d9 !important;
+        color: #000 !important;
+        padding: 2pt 4pt !important;
+        font-weight: 600 !important;
+    }
+    
+    /* ENCABEZADOS DE PERSONAL INVOLUCRADO CON MÁS ESPACIO */
+    #modal-ast-participantes-body th {
+        padding: 8pt 8pt !important;
+        min-height: 15pt !important;
+        text-align: center !important;
+        vertical-align: middle !important;
+    }
+    
+    /* DISTRIBUCIÓN DE COLUMNAS PARA PERSONAL INVOLUCRADO */
+    #modal-ast-participantes-body td:nth-child(1), /* NOMBRE */
+    #modal-ast-participantes-body th:nth-child(1) {
+        width: 20% !important;
+    }
+    
+    #modal-ast-participantes-body td:nth-child(2), /* FUNCIÓN */
+    #modal-ast-participantes-body th:nth-child(2) {
+        width: 15% !important;
+    }
+    
+    #modal-ast-participantes-body td:nth-child(3), /* CREDENCIAL */
+    #modal-ast-participantes-body th:nth-child(3) {
+        width: 12% !important;
+    }
+    
+    #modal-ast-participantes-body td:nth-child(4), /* CARGO */
+    #modal-ast-participantes-body th:nth-child(4) {
+        width: 18% !important;
+    }
+    
+    #modal-ast-participantes-body td:nth-child(5), /* FIRMA */
+    #modal-ast-participantes-body th:nth-child(5) {
+        width: 35% !important;
+        min-height: 25pt !important; /* Espacio para firma */
     }
     
     /* ENCABEZADOS DE IMPRESIÓN - BLANCO Y NEGRO */

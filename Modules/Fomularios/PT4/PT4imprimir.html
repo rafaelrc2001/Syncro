@@ -99,47 +99,48 @@
                         <p id="cual-acceso-label"></p>
                     </div>
                 </div>
+
                 <div class="executive-section" style="margin-top:2em;">
                     <div class="section-header">
                         <h3 style="margin-bottom:0.5em;">MEDIDAS PARA ADMINISTRAR LOS RIESGOS</h3>
                     </div>
                     <div class="executive-grid" style="display: grid; grid-template-columns: 1fr 2fr; gap: 1rem;">
-        <div><strong>¿El acceso al lugar de trabajo está libre de obstáculos?</strong></div>
-        <div id="acceso-libre-obstaculos-label"></div>
+                        <div><strong>¿El acceso al lugar de trabajo está libre de obstáculos?</strong></div>
+                        <div id="acceso-libre-obstaculos-label"></div>
 
-        <div><strong>¿La canastilla está debidamente asegurada?</strong></div>
-        <div id="canastilla-asegurada-label"></div>
+                        <div><strong>¿La canastilla está debidamente asegurada?</strong></div>
+                        <div id="canastilla-asegurada-label"></div>
 
-        <div><strong>¿El andamio tiene rodapié, barandal plataforma completa, escaleras y contravientos?</strong></div>
-        <div id="andamio-completo-label"></div>
+                        <div><strong>¿El andamio tiene rodapié, barandal plataforma completa, escaleras y contravientos?</strong></div>
+                        <div id="andamio-completo-label"></div>
 
-        <div><strong>¿El andamio tiene seguros y zapatas para frenos?</strong></div>
-        <div id="andamio-seguros-zapatas-label"></div>
+                        <div><strong>¿El andamio tiene seguros y zapatas para frenos?</strong></div>
+                        <div id="andamio-seguros-zapatas-label"></div>
 
-        <div><strong>¿Las escaleras tienen peldaños en buen estado, zapatas o gomas de apoyo y están bien sujetas?</strong></div>
-        <div id="escaleras-buen-estado-label"></div>
+                        <div><strong>¿Las escaleras tienen peldaños en buen estado, zapatas o gomas de apoyo y están bien sujetas?</strong></div>
+                        <div id="escaleras-buen-estado-label"></div>
 
-        <div><strong>¿La línea de vida o el punto de amarre es eficaz para asegurar el cable de sujeción del arnés de seguridad?</strong></div>
-        <div id="linea-vida-segura-label"></div>
+                        <div><strong>¿La línea de vida o el punto de amarre es eficaz para asegurar el cable de sujeción del arnés de seguridad?</strong></div>
+                        <div id="linea-vida-segura-label"></div>
 
-        <div><strong>¿El arnés de seguridad y cable de sujeción están completos y en buen estado?</strong></div>
-        <div id="arnes-completo-buen-estado-label"></div>
+                        <div><strong>¿El arnés de seguridad y cable de sujeción están completos y en buen estado?</strong></div>
+                        <div id="arnes-completo-buen-estado-label"></div>
 
-        <div><strong>¿Es necesario suspender los trabajos adyacentes?</strong></div>
-        <div id="suspender-trabajos-adyacentes-label"></div>
+                        <div><strong>¿Es necesario suspender los trabajos adyacentes?</strong></div>
+                        <div id="suspender-trabajos-adyacentes-label"></div>
 
-        <div><strong>¿Número de personas autorizadas? ¿Cuántas?</strong></div>
-        <div id="numero-personas-autorizadas-label"></div>
+                        <div><strong>¿Número de personas autorizadas? ¿Cuántas?</strong></div>
+                        <div id="numero-personas-autorizadas-label"></div>
 
-        <div><strong>¿Los trabajadores resultaron aptos en la evaluación médica?</strong></div>
-        <div id="trabajadores-aptos-evaluacion-label"></div>
+                        <div><strong>¿Los trabajadores resultaron aptos en la evaluación médica?</strong></div>
+                        <div id="trabajadores-aptos-evaluacion-label"></div>
 
-        <div><strong>¿Se requiere la instalación de barreras y/o barricadas?</strong></div>
-        <div id="requiere-barreras-label"></div>
+                        <div><strong>¿Se requiere la instalación de barreras y/o barricadas?</strong></div>
+                        <div id="requiere-barreras-label"></div>
 
-        <div><strong>Observaciones:</strong></div>
-        <div id="observaciones-label"></div>
-    </div>
+                        <div><strong>Observaciones:</strong></div>
+                        <div id="observaciones-label"></div>
+                    </div>
                 </div>
             </div>
            
@@ -179,72 +180,60 @@
                             <thead>
                                 <tr style="background:#e74c3c; color:#fff;">
                                     <th style="padding:8px;">Pregunta</th>
-                                    <th style="width:40px;">SI</th>
-                                    <th style="width:40px;">NO</th>
-                                    <th style="width:40px;">N/A</th>
+                                    <th style="width:40px;">Respuesta</th>
+                                    <th style="width:120px;">Detalle</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>¿Equipo de protección personal especial? <span style="font-weight:400;">¿Cuál?</span></td>
-                                    <td><input type="checkbox" name="proteccion_especial_si"></td>
-                                    <td><input type="checkbox" name="proteccion_especial_no"></td>
-                                    <td><input type="checkbox" name="proteccion_especial_na"></td>
-                                    <td><input type="text" name="proteccion_especial_cual" placeholder="¿Cuál?" style="width:100px;" /></td>
+                                    <td id="proteccion_especial_respuesta"></td>
+                                    <td id="proteccion_especial_cual"></td>
                                 </tr>
                                 <tr>
                                     <td>¿Utilizar equipo contra caídas? <span style="font-weight:400;">¿cuál?</span></td>
-                                    <td><input type="checkbox" name="equipo_caidas_si"></td>
-                                    <td><input type="checkbox" name="equipo_caidas_no"></td>
-                                    <td><input type="checkbox" name="equipo_caidas_na"></td>
-                                    <td><input type="text" name="equipo_caidas_cual" placeholder="¿Cuál?" style="width:100px;" /></td>
+                                    <td id="equipo_caidas_respuesta"></td>
+                                    <td id="equipo_caidas_cual"></td>
                                 </tr>
                                 <tr>
                                     <td>¿Línea de sujeción con amortiguador de impacto?</td>
-                                    <td><input type="checkbox" name="linea_amortiguador_si"></td>
-                                    <td><input type="checkbox" name="linea_amortiguador_no"></td>
-                                    <td><input type="checkbox" name="linea_amortiguador_na"></td>
+                                    <td id="linea_amortiguador_respuesta"></td>
+                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>¿Punto fijo?</td>
-                                    <td><input type="checkbox" name="punto_fijo_si"></td>
-                                    <td><input type="checkbox" name="punto_fijo_no"></td>
-                                    <td><input type="checkbox" name="punto_fijo_na"></td>
+                                    <td id="punto_fijo_respuesta"></td>
+                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>¿Línea de vida?</td>
-                                    <td><input type="checkbox" name="linea_vida_si"></td>
-                                    <td><input type="checkbox" name="linea_vida_no"></td>
-                                    <td><input type="checkbox" name="linea_vida_na"></td>
+                                    <td id="linea_vida_respuesta"></td>
+                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>¿El andamio se encuentra completo para realizar la actividad?</td>
-                                    <td><input type="checkbox" name="andamio_completo_si"></td>
-                                    <td><input type="checkbox" name="andamio_completo_no"></td>
-                                    <td><input type="checkbox" name="andamio_completo_na"></td>
+                                    <td id="andamio_completo_respuesta"></td>
+                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>¿Se colocó tarjeta de andamio seguro?</td>
-                                    <td><input type="checkbox" name="tarjeta_andamio_si"></td>
-                                    <td><input type="checkbox" name="tarjeta_andamio_no"></td>
-                                    <td><input type="checkbox" name="tarjeta_andamio_na"></td>
+                                    <td id="tarjeta_andamio_respuesta"></td>
+                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>¿La velocidad del viento es la permitida para trabajos en altura?</td>
-                                    <td><input type="checkbox" name="viento_permitido_si"></td>
-                                    <td><input type="checkbox" name="viento_permitido_no"></td>
-                                    <td><input type="checkbox" name="viento_permitido_na"></td>
+                                    <td id="viento_permitido_respuesta"></td>
+                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>¿La escalera se encuentra en condición para efectuar la actividad?</td>
-                                    <td><input type="checkbox" name="escalera_condicion_si"></td>
-                                    <td><input type="checkbox" name="escalera_condicion_no"></td>
-                                    <td><input type="checkbox" name="escalera_condicion_na"></td>
+                                    <td id="escalera_condicion_respuesta"></td>
+                                    <td></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                </div>
+                </div
 
 
  <!-- En esta parte quiero que me agregues los campos de condiciones del proceso -->

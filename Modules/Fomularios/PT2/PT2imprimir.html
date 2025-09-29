@@ -9,6 +9,7 @@
    <!-- <link rel="stylesheet" href="/CSS/EstiloFormularios.css"> -->
     <link rel="stylesheet" href="/CSS/EstiloGeneral.css" />
     <link rel="stylesheet" href="/CSS/EstiloImprimir.css">
+    <link rel="stylesheet" href="/CSS/Imprimir/EstiloImprimir-Base.css">
     <link rel="stylesheet" href="/CSS/Imprimir/EstiloImprimir-PT2.css">
     
     <style>
@@ -64,7 +65,7 @@ Esta configuración se guardará para futuras impresiones.`);
                 <h2>Permiso de Trabajo para Apertura Equipo Línea </h2>
                 <h3>-</h3>
             </div>
-            <div class="executive-section pt2-datos-generales">
+            <div class="executive-section usuario">
                 <div class="section-header">
                     <i class="ri-information-line"></i>
                     <h3>Datos generales</h3>
@@ -96,7 +97,7 @@ Esta configuración se guardará para futuras impresiones.`);
                         </div>
                 </div>
             </div>
-            <div class="executive-section pt2-medidas-riesgos">
+            <div class="executive-section usuario">
                 <div class="section-header">
                     <i class="ri-checkbox-multiple-line"></i>
                     <h3>Medidas para administrar los riesgos</h3>
@@ -126,7 +127,7 @@ Esta configuración se guardará para futuras impresiones.`);
             </div>
             
             <!-- Sección Condiciones del Proceso independiente -->
-            <div class="executive-section pt2-condiciones-proceso">
+            <div class="executive-section area">
                 <div class="section-header section-header-cielo">
                     <i class="ri-flask-line"></i>
                     <h3>Condiciones del Proceso</h3>
@@ -153,7 +154,7 @@ Esta configuración se guardará para futuras impresiones.`);
                     <!-- Contenedor flex para Requisitos de Apertura y Requisitos para Administrar Riesgos -->
                     <div class="sections-row">
                         <!-- Requisitos de Apertura de Área -->
-                        <div class="executive-section pt2-requisitos-apertura">
+                        <div class="executive-section area">
                             <div class="section-header section-header-cielo">
                                 <i class="ri-tools-line"></i>
                                 <h3>Requisitos de apertura de área</h3>
@@ -227,7 +228,7 @@ Esta configuración se guardará para futuras impresiones.`);
                         </div>
 
                         <!-- Requisitos para Administrar los Riesgos (solo lectura) -->
-                        <div class="executive-section requisitos-riesgos-section">
+                        <div class="executive-section supervisor">
         <div class="section-header requisitos-riesgos-header">
             <i class="ri-checkbox-multiple-line"></i>
             <h3 class="requisitos-riesgos-title">Administrar los Riesgos</h3>
@@ -278,7 +279,7 @@ Esta configuración se guardará para futuras impresiones.`);
                     </div>
 
             <!-- Sección Registro de Pruebas independiente -->
-            <div class="executive-section registro-pruebas-section">
+            <div class="executive-section supervisor">
                 <div class="section-header registro-pruebas-header">
                     <i class="ri-checkbox-multiple-line"></i>
                     <h3 class="registro-pruebas-title"> Registro de Pruebas Requeridas</h3>
@@ -320,7 +321,7 @@ Esta configuración se guardará para futuras impresiones.`);
 
 
                  <!-- Sección AST y Participantes -->
-                <div class="executive-section pt1-ast-seguridad">
+                <div class="executive-section usuario">
                     <div class="section-header">
                         <i class="ri-shield-check-line"></i>
                         <h3>AST - Análisis de Seguridad en el Trabajo</h3>
@@ -364,7 +365,7 @@ Esta configuración se guardará para futuras impresiones.`);
                     </div>
                 </div>
                 <!-- Sección 4: Participantes -->
-                <div class="executive-section pt1-personal-involucrado">
+                <div class="executive-section usuario">
                     <div class="section-header">
                         <i class="ri-team-line"></i>
                         <h3>Personal Involucrado</h3>
@@ -377,7 +378,7 @@ Esta configuración se guardará para futuras impresiones.`);
                                     <th>Función</th>
                                     <th>Credencial</th>
                                     <th>Cargo</th>
-                                    <th>    Firma    </th>
+                                    <th>Firma</th>
                                 </tr>
                             </thead>
                             <tbody id="modal-ast-participantes-body">

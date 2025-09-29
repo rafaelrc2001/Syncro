@@ -306,99 +306,25 @@
                 </div>
                 
 
-                <div class="executive-section" style="display: flex; gap: 20px">
-            <div style="flex: 1">
-              <label
-                for="responsable-aprobador"
-                style="font-weight: 600; display: block; margin-bottom: 8px"
-              >
-                Seleccionar Supervisor de Seguridad:
-              </label>
-              <select
-                id="responsable-aprobador"
-                style="
-                  width: 100%;
-                  padding: 8px;
-                  border-radius: 4px;
-                  border: 1px solid #ccc;
-                "
-                onchange="actualizarAprobador(this.value)"
-              >
-                <option value="" disabled selected>
-                  Seleccione un supervisor...
-                </option>
-          
-              </select>
-            </div>
-            <div style="flex: 1">
-              <label
-                for="responsable-aprobador2"
-                style="font-weight: 600; display: block; margin-bottom: 8px"
-              >
-                Seleccionar la categoria a la que pertenece:
-              </label>
-              <select
-                id="responsable-aprobador2"
-                style="
-                  width: 100%;
-                  padding: 8px;
-                  border-radius: 4px;
-                  border: 1px solid #ccc;
-                "
-                onchange="actualizarAprobador2(this.value)"
-              >
-                <option value="" disabled selected>
-                  Seleccione una categoria...
-                </option>
-                
-              </select>
-            </div>
-          </div>
+              
 
           <!-- Sección 5: Aprobaciones -->
-          <div class="approval-section">
-            <div class="approval-stamps">
-              <div class="stamp">
-                <div class="stamp-title">Responsable del area:</div>
-                <div class="stamp-placeholder"></div>
-                <div class="stamp-name"></div>
-              </div>
-              <div class="stamp">
-                <div class="stamp-title">Operador del área:</div>
-                <div class="stamp-placeholder"></div>
-                <div class="stamp-name"></div>
-                <div class="stamp-date"></div>
-              </div>
-              <div class="stamp approved">
-                <div class="stamp-title">Supervisor de Seguridad:</div>
-                <div class="stamp-placeholder">
-                  <i class="ri-checkbox-circle-fill"></i>
+          
+
+
+
+
+
+               <div class="button-group" style="display: flex; justify-content: space-between; margin-top: 48px; gap: 16px;">
+                    <button id="btn-salir-nuevo" class="btn btn-pt1 btn-salir-gris" type="button">
+                        <i class="ri-logout-box-r-line" style="margin-right: 8px;"></i>Salir
+                    </button>
+                    <div style="display: flex; gap: 16px;">
+                        <button id="btn-imprimir-permiso" class="btn btn-pt1 btn-guardar-azulpetroleo" type="button">
+                            <i class="ri-printer-line" style="margin-right: 8px;"></i>Imprimir Permiso
+                        </button>
+                    </div>
                 </div>
-                <div class="stamp-name" id="nombre-aprobador">
-                  Seleccione un supervisor
-                </div>
-              </div>
-            </div>
-          </div>
-
-
-
-
-
-                  <div class="button-group" style="display: flex; justify-content: space-between; margin-top: 48px; gap: 16px;">
-         <button id="btn-salir-nuevo" class="btn btn-pt1 btn-salir-gris" type="button">
-            <i class="ri-logout-box-r-line" style="margin-right: 8px;"></i>Salir
-        </button>
-        <div style="display: flex; gap: 16px;">
-            
-            <button id="btn-no-autorizar" class="btn btn-pt1 btn-noautorizar-rojo" type="button">
-                <i class="ri-close-circle-line" style="margin-right: 8px;"></i>No Autorizar
-            </button>
-            <button id="btn-guardar-campos" class="btn btn-pt1 btn-guardar-azulpetroleo" type="button">
-                <i class="ri-save-3-line" style="margin-right: 8px;"></i>Autorizar
-            </button>
-        </div>
-</div>
 
 
 
@@ -435,6 +361,6 @@
 
      <!-- <script src="/Modules/Fomularios/PT1/PT1.js"></script>-->
 
-     <script src="/Modules/Fomularios/PT4/PT4seccionsupervisor.js"></script>
+     <script src="/Modules/Fomularios/PT4/PT4seccionimprimir.js"></script>
 </body>
 </html>

@@ -200,16 +200,7 @@ router.put("/pt-fuego/requisitos_area/:id", async (req, res) => {
 router.put("/fuego/requisitos_supervisor/:id_permiso", async (req, res) => {
   const id_permiso = req.params.id_permiso;
   const {
-    // Campos existentes
-    ventilacion_forzada,
-    limpieza_interior,
-    instalo_ventilacion_forzada,
-    equipo_conectado_tierra,
-    cables_pasan_drenajes,
-    cables_uniones_intermedias,
-    equipo_proteccion_personal,
-
-    // Nuevos campos - Verificación para administrar los riesgos
+    // Solo campos exclusivos del supervisor
     explosividad_interior,
     explosividad_exterior,
     vigia_contraincendio,
@@ -217,8 +208,6 @@ router.put("/fuego/requisitos_supervisor/:id_permiso", async (req, res) => {
     cortina_agua,
     extintor_contraincendio,
     cubrieron_drenajes,
-
-    // Nuevos campos - Prueba de gas
     co2,
     amoniaco,
     oxigeno,
@@ -227,39 +216,46 @@ router.put("/fuego/requisitos_supervisor/:id_permiso", async (req, res) => {
     observaciones_gas,
   } = req.body;
 
+  // Mostrar en consola de Node los datos recibidos
+  console.log(
+    "[PT5 fuego] Datos recibidos para actualizar requisitos supervisor:",
+    {
+      explosividad_interior,
+      explosividad_exterior,
+      vigia_contraincendio,
+      manguera_contraincendio,
+      cortina_agua,
+      extintor_contraincendio,
+      cubrieron_drenajes,
+      co2,
+      amoniaco,
+      oxigeno,
+      explosividad_lel,
+      otro_gas_cual,
+      observaciones_gas,
+      id_permiso,
+    }
+  );
+
   try {
     const result = await db.query(
       `UPDATE pt_fuego SET 
-        ventilacion_forzada = $1,
-        limpieza_interior = $2,
-        instalo_ventilacion_forzada = $3,
-        equipo_conectado_tierra = $4,
-        cables_pasan_drenajes = $5,
-        cables_uniones_intermedias = $6,
-        equipo_proteccion_personal = $7,
-        explosividad_interior = $8,
-        explosividad_exterior = $9,
-        vigia_contraincendio = $10,
-        manguera_contraincendio = $11,
-        cortina_agua = $12,
-        extintor_contraincendio = $13,
-        cubrieron_drenajes = $14,
-        co2 = $15,
-        amoniaco = $16,
-        oxigeno = $17,
-        explosividad_lel = $18,
-        otro_gas_cual = $19,
-        observaciones_gas = $20
-      WHERE id_permiso = $21
+        explosividad_interior = $1,
+        explosividad_exterior = $2,
+        vigia_contraincendio = $3,
+        manguera_contraincendio = $4,
+        cortina_agua = $5,
+        extintor_contraincendio = $6,
+        cubrieron_drenajes = $7,
+        co2 = $8,
+        amoniaco = $9,
+        oxigeno = $10,
+        explosividad_lel = $11,
+        otro_gas_cual = $12,
+        observaciones_gas = $13
+      WHERE id_permiso = $14
       RETURNING *`,
       [
-        ventilacion_forzada,
-        limpieza_interior,
-        instalo_ventilacion_forzada,
-        equipo_conectado_tierra,
-        cables_pasan_drenajes,
-        cables_uniones_intermedias,
-        equipo_proteccion_personal,
         explosividad_interior,
         explosividad_exterior,
         vigia_contraincendio,

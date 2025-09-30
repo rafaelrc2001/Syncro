@@ -89,6 +89,7 @@ function mostrarParticipantesAST(participantes) {
           <td><span class="role-badge">${p.funcion || ""}</span></td>
           <td>${p.credencial || ""}</td>
           <td>${p.cargo || ""}</td>
+          <td></td>
         `;
         tbody.appendChild(tr);
       });
@@ -137,7 +138,11 @@ function setText(id, value) {
 
 // Lógica para mostrar los datos en las etiquetas (igual que sección área)
 function mostrarDatosSupervisor(permiso) {
-  setText("prefijo-label", permiso.prefijo); // Nuevo: mapeo prefijo
+  // Mostrar el id_permiso en el encabezado si no hay prefijo
+  setText(
+    "prefijo-label",
+    permiso.prefijo || permiso.id_permiso || permiso.id || "-"
+  );
   setText("descripcion-trabajo-label", permiso.descripcion_trabajo); // Nuevo: mapeo descripcion
   setText("maintenance-type-label", permiso.tipo_mantenimiento);
   setText("work-order-label", permiso.ot_numero);
@@ -184,6 +189,19 @@ function mostrarDatosSupervisor(permiso) {
   );
   setText("pressure", permiso.presion);
   setText("temperature", permiso.temperatura);
+
+  // --- Medidas / Requisitos para Administrar los Riesgos ---
+  setText("proteccion_especial_respuesta", permiso.proteccion_especial);
+  setText("proteccion_especial_cual", permiso.proteccion_especial_cual);
+  setText("equipo_caidas_respuesta", permiso.equipo_caidas);
+  setText("equipo_caidas_cual", permiso.equipo_caidas_cual);
+  setText("linea_amortiguador_respuesta", permiso.linea_amortiguador);
+  setText("punto_fijo_respuesta", permiso.punto_fijo);
+  setText("linea_vida_respuesta", permiso.linea_vida);
+  setText("andamio_completo_respuesta", permiso.andamio_completo_opcion);
+  setText("tarjeta_andamio_respuesta", permiso.tarjeta_andamio);
+  setText("viento_permitido_respuesta", permiso.viento_permitido);
+  setText("escalera_condicion_respuesta", permiso.escalera_condicion);
 }
 
 // Al cargar la página, obtener el id y mostrar los datos
@@ -239,6 +257,7 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((response) => response.json())
       .then((data) => {
         if (data && data.success && data.data) {
+          console.log("permiso:", data.data); // <-- Depuración
           mostrarDatosSupervisor(data.data);
         } else {
           console.warn(
@@ -293,7 +312,9 @@ async function imprimirPermisoTradicional() {
     window.print();
   } catch (error) {
     console.error("Error al imprimir:", error);
-    alert("Ocurrió un error al preparar la impresión. Por favor, inténtalo nuevamente.");
+    alert(
+      "Ocurrió un error al preparar la impresión. Por favor, inténtalo nuevamente."
+    );
   }
 }
 

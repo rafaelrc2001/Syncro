@@ -9,18 +9,34 @@
       <link rel="stylesheet" href="/CSS/EstiloGeneral.css" />
     <link rel="stylesheet" href="/CSS/EstiloImprimir.css">
     <link rel="stylesheet" href="/CSS/imprimir/EstiloImprimir-Base.css">
-    <link rel="stylesheet" href="/CSS/Imprimir/EstiloImprimir-PT4.css">
+    <link rel="stylesheet" href="/CSS/Imprimir/EstiloImprimir-PT5.css">
 
 </head>
 <body style="background: #f4f6fb; min-height: 100vh; margin: 0; font-family: 'Roboto', Arial, sans-serif;">
     <div style="display: flex; justify-content: center; align-items: flex-start; min-height: 100vh;">
         <section class="executive-section" style="max-width: 900px; width: 100%; margin: 40px 0; background: #fff; border-radius: 18px; box-shadow: 0 4px 24px rgba(44,62,80,0.10); padding: 2.5rem 2rem;">
+            
+             <div class="company-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid #e3e6ea;">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <img src="/img/proagro.png" alt="Logo ProAgro" style="height: 60px; width: auto;">
+                </div>
+                <div style="text-align: center; flex-grow: 1;">
+                    <h1 style="margin: 0; color: #2c3e50; font-size: 1.5rem; font-weight: 600;">SISTEMA DE PERMISOS DE TRABAJO</h1>
+                    <p style="margin: 0.5rem 0 0 0; color: #7f8c8d; font-size: 0.9rem;">Gestión Integral de Seguridad Laboral</p>
+                </div>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                    <img src="/img/pemex.png" alt="Logo PEMEX" style="height: 60px; width: auto;">
+                </div>
+         
+            </div>
+            
+            
             <div class="section-header">
                 <i class="ri-checkbox-circle-line"></i>
                 <h2>Permiso de Trabajo para Fuego </h2>
                 <h3 id="prefijo-label">-</h3>
             </div>
-            <div class="executive-section">
+            <div class="executive-section usuario">
                 <div class="section-header">
                     <i class="ri-information-line"></i>
                     <h3>Datos generales</h3>
@@ -53,7 +69,7 @@
                 </div>
             </div>
            
-            <div class="executive-section">
+            <div class="executive-section area">
                 <div class="section-header section-header-cielo">
                     <i class="ri-tools-line"></i>
                     <h3>Análisis de requisitos para efectuar el trabajo</h3>
@@ -128,7 +144,7 @@
             </div>
 
 
-                    <div class="executive-section">
+                    <div class="executive-section area">
                         <div class="section-header section-header-cielo">
                             <h3>Medidas/Requisitos para administrar los riesgos por parte del ejecutor de la actividad</h3>
                         </div>
@@ -175,7 +191,7 @@
 
             
 
-               <div class="executive-section">
+               <div class="executive-section area">
                     <div class="section-header section-header-cielo">
                         <i class="ri-flask-line"></i>
                         <h3>Condiciones del Proceso</h3>
@@ -197,7 +213,8 @@
                 </div>
 
             <!-- Verificación para administrar los riesgos -->
-            <div class="executive-section">
+
+            <div class="executive-section supervisor">
                 <div class="section-header section-header-cielo">
                     <i class="ri-shield-check-line"></i>
                     <h3>Verificación para administrar los riesgos</h3>
@@ -206,119 +223,87 @@
                     <thead class="thead-nopeligroso">
                         <tr>
                             <th>Verificación para administrar los riesgos</th>
-                            <th>SI</th>
-                            <th>NO</th>
-                            <th>N/A</th>
+                            <th>Respuesta</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>¿Se realizó prueba de explosividad en el interior?</td>
-                            <td><input type="radio" name="explosividad_interior" value="si" id="explosividad_interior_si"></td>
-                            <td><input type="radio" name="explosividad_interior" value="no" id="explosividad_interior_no"></td>
-                            <td><input type="radio" name="explosividad_interior" value="na" id="explosividad_interior_na"></td>
+                            <td><span id="explosividad_interior-label">-</span></td>
                         </tr>
                         <tr>
                             <td>¿Se realizó prueba de explosividad en el exterior?</td>
-                            <td><input type="radio" name="explosividad_exterior" value="si" id="explosividad_exterior_si"></td>
-                            <td><input type="radio" name="explosividad_exterior" value="no" id="explosividad_exterior_no"></td>
-                            <td><input type="radio" name="explosividad_exterior" value="na" id="explosividad_exterior_na"></td>
+                            <td><span id="explosividad_exterior-label">-</span></td>
                         </tr>
                         <tr>
                             <td>Vigía contraincendio</td>
-                            <td><input type="radio" name="vigia_contraincendio" value="si" id="vigia_contraincendio_si"></td>
-                            <td><input type="radio" name="vigia_contraincendio" value="no" id="vigia_contraincendio_no"></td>
-                            <td><input type="radio" name="vigia_contraincendio" value="na" id="vigia_contraincendio_na"></td>
+                            <td><span id="vigia_contraincendio-label">-</span></td>
                         </tr>
                         <tr>
                             <td>¿Se instaló manguera contraincendio?</td>
-                            <td><input type="radio" name="manguera_contraincendio" value="si" id="manguera_contraincendio_si"></td>
-                            <td><input type="radio" name="manguera_contraincendio" value="no" id="manguera_contraincendio_no"></td>
-                            <td><input type="radio" name="manguera_contraincendio" value="na" id="manguera_contraincendio_na"></td>
+                            <td><span id="manguera_contraincendio-label">-</span></td>
                         </tr>
                         <tr>
                             <td>¿Se instaló protección con cortina de agua?</td>
-                            <td><input type="radio" name="cortina_agua" value="si" id="cortina_agua_si"></td>
-                            <td><input type="radio" name="cortina_agua" value="no" id="cortina_agua_no"></td>
-                            <td><input type="radio" name="cortina_agua" value="na" id="cortina_agua_na"></td>
+                            <td><span id="cortina_agua-label">-</span></td>
                         </tr>
                         <tr>
                             <td>¿Se instaló extintor contraincendio?</td>
-                            <td><input type="radio" name="extintor_contraincendio" value="si" id="extintor_contraincendio_si"></td>
-                            <td><input type="radio" name="extintor_contraincendio" value="no" id="extintor_contraincendio_no"></td>
-                            <td><input type="radio" name="extintor_contraincendio" value="na" id="extintor_contraincendio_na"></td>
+                            <td><span id="extintor_contraincendio-label">-</span></td>
                         </tr>
                         <tr>
                             <td>¿Se cubrieron drenajes y equipo delicados?</td>
-                            <td><input type="radio" name="cubrieron_drenajes" value="si" id="cubrieron_drenajes_si"></td>
-                            <td><input type="radio" name="cubrieron_drenajes" value="no" id="cubrieron_drenajes_no"></td>
-                            <td><input type="radio" name="cubrieron_drenajes" value="na" id="cubrieron_drenajes_na"></td>
+                            <td><span id="cubrieron_drenajes-label">-</span></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
             <!-- Prueba de gas -->
-            <div class="executive-section">
+
+            <div class="executive-section supervisor">
                 <div class="section-header section-header-cielo">
                     <i class="ri-flask-line"></i>
                     <h3>Prueba de gas</h3>
                 </div>
-                
-                
                 <table class="styled-table">
                     <thead class="thead-nopeligroso">
                         <tr>
                             <th>Tipo de Gas</th>
-                            <th>SI</th>
-                            <th>NO</th>
-                            <th>N/A</th>
+                            <th>Respuesta</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>% de CO2:</td>
-                            <td><input type="radio" name="co2" value="si" id="co2_si"></td>
-                            <td><input type="radio" name="co2" value="no" id="co2_no"></td>
-                            <td><input type="radio" name="co2" value="na" id="co2_na"></td>
+                            <td><span id="co2-label">-</span></td>
                         </tr>
                         <tr>
                             <td>% Amoniaco:</td>
-                            <td><input type="radio" name="amoniaco" value="si" id="amoniaco_si"></td>
-                            <td><input type="radio" name="amoniaco" value="no" id="amoniaco_no"></td>
-                            <td><input type="radio" name="amoniaco" value="na" id="amoniaco_na"></td>
+                            <td><span id="amoniaco-label">-</span></td>
                         </tr>
                         <tr>
                             <td>% de Oxígeno:</td>
-                            <td><input type="radio" name="oxigeno" value="si" id="oxigeno_si"></td>
-                            <td><input type="radio" name="oxigeno" value="no" id="oxigeno_no"></td>
-                            <td><input type="radio" name="oxigeno" value="na" id="oxigeno_na"></td>
+                            <td><span id="oxigeno-label">-</span></td>
                         </tr>
                         <tr>
                             <td>% de Explosividad LEL:</td>
-                            <td><input type="radio" name="explosividad_lel" value="si" id="explosividad_lel_si"></td>
-                            <td><input type="radio" name="explosividad_lel" value="no" id="explosividad_lel_no"></td>
-                            <td><input type="radio" name="explosividad_lel" value="na" id="explosividad_lel_na"></td>
+                            <td><span id="explosividad_lel-label">-</span></td>
                         </tr>
                         <tr>
                             <td>otro ¿Cuál?:</td>
-                            <td colspan="3">
-                                <input type="text" id="otro_gas_cual" name="otro_gas_cual" 
-                                       style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-family: inherit;" 
-                                       placeholder="Especifique el tipo de gas...">
-                            </td>
+                            <td><span id="otro_gas_cual-label">-</span></td>
                         </tr>
                     </tbody>
                 </table>
-                
                 <div class="executive-item" style="margin-top: 20px;">
-                    <label for="observaciones_gas">Observaciones:</label>
-                    <textarea id="observaciones_gas" rows="4" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; resize: vertical; font-family: inherit;" placeholder="Escriba sus observaciones aquí..."></textarea>
+                    <label>Observaciones:</label>
+                    <span id="observaciones_gas-label">-</span>
                 </div>
             </div>
 
             <!-- Sección AST y Participantes -->
-                <div class="executive-section">
+                <div class="executive-section usuario">
                     <div class="section-header">
                         <i class="ri-shield-check-line"></i>
                         <h3>AST - Análisis de Seguridad en el Trabajo</h3>
@@ -362,7 +347,7 @@
                     </div>
                 </div>
                  <!-- Sección 4: Participantes -->
-                <div class="executive-section">
+                <div class="executive-section usuario">
                     <div class="section-header">
                         <i class="ri-team-line"></i>
                         <h3>Personal Involucrado</h3>
@@ -375,6 +360,7 @@
                                     <th>Función</th>
                                     <th>Credencial</th>
                                     <th>Cargo</th>
+                                    <th>Firma</th>
                                 </tr>
                             </thead>
                             <tbody id="modal-ast-participantes-body">
@@ -383,79 +369,20 @@
                         </table>
                     </div>
                 </div>
-                <div class="executive-section" style="display: flex; gap: 24px; align-items: flex-end">
-                    <div style="flex: 1">
-                        <label for="responsable-aprobador" style="font-weight: 600; display: block; margin-bottom: 8px">
-                            Seleccionar supervisor:
-                        </label>
-                        <select id="responsable-aprobador" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
-                            <option value="" disabled selected>Seleccione un supervisor...</option>
-                        </select>
-                    </div>
-                    <div style="flex: 1">
-                        <label for="responsable-aprobador2" style="font-weight: 600; display: block; margin-bottom: 8px">
-                            Seleccionar categoría:
-                        </label>
-                        <select id="responsable-aprobador2" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
-                            <option value="" disabled selected>Seleccione una categoría...</option>
-                        </select>
+              
+
+              <div class="button-group" style="display: flex; justify-content: space-between; margin-top: 48px; gap: 16px;">
+                    <button id="btn-salir-nuevo" class="btn btn-pt1 btn-salir-gris" type="button">
+                        <i class="ri-logout-box-r-line" style="margin-right: 8px;"></i>Salir
+                    </button>
+                    <div style="display: flex; gap: 16px;">
+                        <button id="btn-imprimir-permiso" class="btn btn-pt1 btn-guardar-azulpetroleo" type="button">
+                            <i class="ri-printer-line" style="margin-right: 8px;"></i>Imprimir Permiso
+                        </button>
                     </div>
                 </div>
-                <!-- Sección 5: Aprobaciones -->
-                <div class="approval-section">
-                    <div class="approval-stamps">
-                        <div class="stamp">
-                            <div class="stamp-title">Supervisor:</div>
-                            <div class="stamp-placeholder"></div>
-                            <div class="stamp-name" id="stamp-aprobador"></div>
-                        </div>
-                        <div class="stamp">
-                            <div class="stamp-title">Categoría:</div>
-                            <div class="stamp-placeholder"></div>
-                            <div class="stamp-name" id="stamp-encargado"></div>
-                            <div class="stamp-date"></div>
-                        </div>
-                        <div class="stamp approved">
-                            <div class="stamp-title">Pendiente por aprobar:</div>
-                            <div class="stamp-placeholder"></div>
-                            <div class="stamp-name">Pendiente</div>
-                        </div>
-                    </div>
-                </div>
-
-
-
-                <div class="button-group" style="display: flex; justify-content: space-between; margin-top: 48px; gap: 16px;">
-         <button id="btn-salir-nuevo" class="btn btn-pt1 btn-salir-gris" type="button">
-            <i class="ri-logout-box-r-line" style="margin-right: 8px;"></i>Salir
-        </button>
-        <div style="display: flex; gap: 16px;">
-            
-            <button id="btn-no-autorizar" class="btn btn-pt1 btn-noautorizar-rojo" type="button">
-                <i class="ri-close-circle-line" style="margin-right: 8px;"></i>No Autorizar
-            </button>
-            <button id="btn-guardar-campos" class="btn btn-pt1 btn-guardar-azulpetroleo" type="button">
-                <i class="ri-save-3-line" style="margin-right: 8px;"></i>Autorizar
-            </button>
-        </div>
-</div>
-
                 
         </section>
-
-
-        <!-- Modal para motivo de no autorización -->
-                                        <div id="modalComentario" class="modal-comentario" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(44,62,80,0.25); z-index:1000; justify-content:center; align-items:center;">
-                                            <div style="background:#fff; border-radius:12px; max-width:400px; width:90vw; padding:2em 1.5em; box-shadow:0 4px 24px rgba(44,62,80,0.18); display:flex; flex-direction:column; gap:1em;">
-                                                <h3 style="margin:0 0 0.5em 0; font-size:1.2em; color:#c0392b;"><i class="ri-close-circle-line" style="margin-right:8px;"></i>Motivo de No Autorización</h3>
-                                                <textarea id="comentarioNoAutorizar" rows="4" style="width:100%; border:1px solid #d0d7de; border-radius:6px; padding:8px; resize:vertical;" placeholder="Escribe el motivo del rechazo..."></textarea>
-                                                <div style="display:flex; justify-content:flex-end; gap:10px;">
-                                                    <button id="btnCancelarComentario" type="button" style="background:#eee; color:#333; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Cancelar</button>
-                                                    <button id="btnGuardarComentario" type="button" style="background:#c0392b; color:#fff; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Guardar</button>
-                                                </div>
-                                            </div>
-                                        </div>
-
 
     </div>
 </body>

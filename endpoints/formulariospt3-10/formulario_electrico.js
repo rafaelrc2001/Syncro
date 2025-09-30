@@ -207,4 +207,55 @@ router.put("/pt-electrico/requisitos_area/:id", async (req, res) => {
   }
 });
 
+// Endpoint para actualizar medidas/requisitos del supervisor en permiso eléctrico
+router.put("/electrico/requisitos_supervisor/:id_permiso", async (req, res) => {
+  const id_permiso = req.params.id_permiso;
+  const {
+    equipo_proteccion_especial_supervisor,
+    cual_equipo_proteccion,
+    observaciones_medidas,
+  } = req.body;
+
+  try {
+    const result = await db.query(
+      `UPDATE pt_electrico SET 
+        equipo_proteccion_especial_supervisor = $1,
+        cual_equipo_proteccion = $2,
+        observaciones_medidas = $3
+      WHERE id_permiso = $4
+      RETURNING *`,
+      [
+        equipo_proteccion_especial_supervisor,
+        cual_equipo_proteccion,
+        observaciones_medidas,
+        id_permiso,
+      ]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No se encontró el permiso eléctrico para actualizar",
+      });
+    }
+
+    res.json({
+      success: true,
+      data: result.rows[0],
+      message: "Medidas del supervisor actualizadas correctamente",
+    });
+  } catch (error) {
+    console.error(
+      "Error al actualizar medidas del supervisor en pt_electrico:",
+      error
+    );
+    res.status(500).json({
+      success: false,
+      error: "Error al actualizar medidas del supervisor",
+      details:
+        process.env.NODE_ENV === "development" ? error.message : undefined,
+    });
+  }
+});
+
 module.exports = router;

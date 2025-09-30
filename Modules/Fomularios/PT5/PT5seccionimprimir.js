@@ -1,3 +1,105 @@
+/**
+ * Función para asegurar que todas las imágenes estén cargadas
+ */
+function esperarImagenes() {
+  return new Promise((resolve) => {
+    const imagenes = document.querySelectorAll(".company-header img");
+    if (imagenes.length === 0) {
+      resolve();
+      return;
+    }
+    let imagenesRestantes = imagenes.length;
+    imagenes.forEach((img) => {
+      if (img.complete && img.naturalHeight !== 0) {
+        imagenesRestantes--;
+        if (imagenesRestantes === 0) resolve();
+      } else {
+        img.onload = () => {
+          imagenesRestantes--;
+          if (imagenesRestantes === 0) resolve();
+        };
+        img.onerror = () => {
+          imagenesRestantes--;
+          if (imagenesRestantes === 0) resolve();
+        };
+      }
+    });
+    setTimeout(() => resolve(), 3000); // Timeout de seguridad
+  });
+}
+
+/**
+ * Función de impresión tradicional (fallback)
+ */
+async function imprimirPermisoTradicional() {
+  try {
+    await esperarImagenes();
+    window.print();
+  } catch (error) {
+    console.error("Error al imprimir:", error);
+    alert(
+      "Ocurrió un error al preparar la impresión. Por favor, inténtalo nuevamente."
+    );
+  }
+}
+
+/**
+ * Función que muestra las instrucciones exactas para eliminar encabezados
+ */
+function mostrarInstruccionesImpresion() {
+  const mensaje = `🖨️ PARA ELIMINAR ENCABEZADOS Y PIES DE PÁGINA:
+
+📌 CHROME/EDGE:
+1. Presiona Ctrl+P
+2. Busca "Más configuraciones" y haz clic
+3. DESMARCA la casilla "Encabezados y pies de página"
+4. Haz clic en "Imprimir"
+
+📌 FIREFOX:
+1. Presiona Ctrl+P  
+2. Haz clic en "Configurar página"
+3. En "Encabezados y pies", selecciona "Vacío" en TODOS
+4. Haz clic en "Imprimir"
+
+⚠️ Esta configuración se debe hacer UNA SOLA VEZ por navegador.
+¿Quieres que te abra el diálogo de impresión ahora?`;
+
+  if (confirm(mensaje)) {
+    const originalTitle = document.title;
+    document.title = "";
+    window.print();
+    setTimeout(() => {
+      document.title = originalTitle;
+    }, 1000);
+  }
+}
+
+// Event listener para el botón de imprimir
+const btnImprimir = document.getElementById("btn-imprimir-permiso");
+if (btnImprimir) {
+  btnImprimir.addEventListener("click", function (e) {
+    e.preventDefault();
+    mostrarInstruccionesImpresion();
+  });
+
+  btnImprimir.style.transition = "all 0.3s ease";
+  btnImprimir.addEventListener("mouseenter", function () {
+    this.style.transform = "translateY(-2px)";
+    this.style.boxShadow = "0 6px 20px rgba(0,59,92,0.3)";
+  });
+  btnImprimir.addEventListener("mouseleave", function () {
+    this.style.transform = "translateY(0)";
+    this.style.boxShadow = "";
+  });
+}
+
+// Interceptar Ctrl+P para mostrar instrucciones
+document.addEventListener("keydown", function (e) {
+  if ((e.ctrlKey || e.metaKey) && e.key === "p") {
+    e.preventDefault();
+    mostrarInstruccionesImpresion();
+  }
+});
 // --- Funciones de utilidad ---
 function getRadioValue(name) {
   const radios = document.getElementsByName(name);
@@ -89,6 +191,7 @@ function mostrarParticipantesAST(participantes) {
           <td><span class="role-badge">${p.funcion || ""}</span></td>
           <td>${p.credencial || ""}</td>
           <td>${p.cargo || ""}</td>
+          <td></td>
         `;
         tbody.appendChild(tr);
       });
@@ -138,7 +241,52 @@ function setText(id, value) {
 
 // Lógica para mostrar los datos en las etiquetas
 function mostrarDatosSupervisor(permiso) {
-  setText("prefijo-label", permiso.prefijo);
+  // --- Medidas/Requisitos para administrar los riesgos por parte del ejecutor de la actividad ---
+
+  setText(
+    "prefijo-label",
+    permiso.prefijo || permiso.id_permiso || permiso.id || "-"
+  );
+
+  setText("ventilacion_forzada-label", permiso.ventilacion_forzada);
+  setText("limpieza_interior-label", permiso.limpieza_interior);
+  setText(
+    "instalo_ventilacion_forzada-label",
+    permiso.instalo_ventilacion_forzada
+  );
+  setText("equipo_conectado_tierra-label", permiso.equipo_conectado_tierra);
+  setText("cables_pasan_drenajes-label", permiso.cables_pasan_drenajes);
+  setText(
+    "cables_uniones_intermedias-label",
+    permiso.cables_uniones_intermedias
+  );
+  setText(
+    "equipo_proteccion_personal-label",
+    permiso.equipo_proteccion_personal
+  );
+
+  // --- Verificación para administrar los riesgos ---
+  setText("explosividad_interior-label", permiso.explosividad_interior);
+  setText("explosividad_exterior-label", permiso.explosividad_exterior);
+  setText("vigia_contraincendio-label", permiso.vigia_contraincendio);
+  setText("manguera_contraincendio-label", permiso.manguera_contraincendio);
+  setText("cortina_agua-label", permiso.cortina_agua);
+  setText("extintor_contraincendio-label", permiso.extintor_contraincendio);
+  setText("cubrieron_drenajes-label", permiso.cubrieron_drenajes);
+
+  // --- Prueba de gas ---
+  setText("co2-label", permiso.co2);
+  setText("amoniaco-label", permiso.amoniaco);
+  setText("oxigeno-label", permiso.oxigeno);
+  setText("explosividad_lel-label", permiso.explosividad_lel);
+  setText("otro_gas_cual-label", permiso.otro_gas_cual);
+  setText("observaciones_gas-label", permiso.observaciones_gas);
+  // Depuración: ver los datos reales que llegan
+  console.log("permiso fuego:", permiso);
+  setText(
+    "prefijo-label",
+    permiso.prefijo || permiso.id_permiso || permiso.id || "-"
+  );
   setText("descripcion-trabajo-label", permiso.descripcion_trabajo);
   setText("maintenance-type-label", permiso.tipo_mantenimiento);
   setText("work-order-label", permiso.ot_numero);
@@ -182,22 +330,37 @@ function mostrarDatosSupervisor(permiso) {
   );
   setText("tapar_purgas_drenajes-label", permiso.tapar_purgas_drenajes);
 
-  // Mapeo de medidas/requisitos para administrar riesgos
-  setText("ventilacion_forzada-label", permiso.ventilacion_forzada);
-  setText("limpieza_interior-label", permiso.limpieza_interior);
+  // Mapeo de medidas/requisitos para administrar riesgos por parte del ejecutor de la actividad
+  setText(
+    "ventilacion_forzada-label",
+    permiso.ventilacion_forzada || permiso.medida_ventilacion_forzada
+  );
+  setText(
+    "limpieza_interior-label",
+    permiso.limpieza_interior || permiso.medida_limpieza_interior
+  );
   setText(
     "instalo_ventilacion_forzada-label",
-    permiso.instalo_ventilacion_forzada
+    permiso.instalo_ventilacion_forzada ||
+      permiso.medida_instalo_ventilacion_forzada
   );
-  setText("equipo_conectado_tierra-label", permiso.equipo_conectado_tierra);
-  setText("cables_pasan_drenajes-label", permiso.cables_pasan_drenajes);
+  setText(
+    "equipo_conectado_tierra-label",
+    permiso.equipo_conectado_tierra || permiso.medida_equipo_conectado_tierra
+  );
+  setText(
+    "cables_pasan_drenajes-label",
+    permiso.cables_pasan_drenajes || permiso.medida_cables_pasan_drenajes
+  );
   setText(
     "cables_uniones_intermedias-label",
-    permiso.cables_uniones_intermedias
+    permiso.cables_uniones_intermedias ||
+      permiso.medida_cables_uniones_intermedias
   );
   setText(
     "equipo_proteccion_personal-label",
-    permiso.equipo_proteccion_personal
+    permiso.equipo_proteccion_personal ||
+      permiso.medida_equipo_proteccion_personal
   );
 }
 
@@ -207,7 +370,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnSalir = document.getElementById("btn-salir-nuevo");
   if (btnSalir) {
     btnSalir.addEventListener("click", function () {
-      window.location.href = "/Modules/SupSeguridad/supseguridad.html";
+      window.location.href = "/Modules/Usuario/AutorizarPT.html";
     });
   }
 
@@ -297,229 +460,4 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   rellenarSupervisoresYCategorias();
-
-  // Lógica para el botón "No Autorizar"
-  const btnNoAutorizar = document.getElementById("btn-no-autorizar");
-  if (btnNoAutorizar) {
-    btnNoAutorizar.addEventListener("click", async function () {
-      const params = new URLSearchParams(window.location.search);
-      const idPermiso = params.get("id") || window.idPermisoActual;
-      const responsableInput = document.getElementById("responsable-aprobador");
-      const operadorInput = document.getElementById("responsable-aprobador2");
-      const supervisor = responsableInput ? responsableInput.value.trim() : "";
-      const categoria = operadorInput ? operadorInput.value.trim() : "";
-
-      if (!idPermiso) {
-        alert("No se pudo obtener el ID del permiso.");
-        return;
-      }
-      if (!supervisor) {
-        alert("Debes seleccionar el supervisor antes de rechazar.");
-        return;
-      }
-
-      // Mostrar el modal para capturar el comentario de rechazo
-      const modal = document.getElementById("modalComentario");
-      if (modal) {
-        modal.style.display = "flex";
-        document.getElementById("comentarioNoAutorizar").value = "";
-      }
-
-      // Lógica para guardar el comentario y actualizar estatus a No Autorizado
-      const btnGuardarComentario = document.getElementById(
-        "btnGuardarComentario"
-      );
-      if (btnGuardarComentario) {
-        btnGuardarComentario.onclick = async function () {
-          const comentario = document
-            .getElementById("comentarioNoAutorizar")
-            .value.trim();
-          if (!comentario) {
-            alert("Debes escribir un motivo de rechazo.");
-            return;
-          }
-
-          // 1. Actualizar supervisor y categoría en autorizaciones
-          try {
-            await fetch(
-              "http://localhost:3000/api/autorizaciones/supervisor-categoria",
-              {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  id_permiso: idPermiso,
-                  supervisor,
-                  categoria,
-                  comentario_no_autorizar: comentario,
-                }),
-              }
-            );
-          } catch (err) {
-            console.error("Error al actualizar supervisor y categoría:", err);
-          }
-
-          // 2. Consultar el id_estatus desde permisos_trabajo
-          let idEstatus = null;
-          try {
-            const respEstatus = await fetch(
-              `http://localhost:3000/api/permisos-trabajo/${idPermiso}`
-            );
-            if (respEstatus.ok) {
-              const permisoData = await respEstatus.json();
-              idEstatus =
-                permisoData.id_estatus ||
-                (permisoData.data && permisoData.data.id_estatus);
-            }
-          } catch (err) {
-            console.error("Error al consultar id_estatus:", err);
-          }
-
-          // 3. Actualizar el estatus a "no autorizado" y guardar el comentario en la tabla estatus
-          if (idEstatus) {
-            try {
-              await fetch("http://localhost:3000/api/estatus/no_autorizado", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ id_estatus: idEstatus }),
-              });
-              // Guardar el comentario en la tabla estatus
-              await fetch("http://localhost:3000/api/estatus/comentario", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ id_estatus: idEstatus, comentario }),
-              });
-            } catch (err) {
-              console.error("Error al actualizar estatus no autorizado:", err);
-            }
-          }
-
-          // 4. Cerrar el modal y mostrar mensaje de éxito
-          const modal = document.getElementById("modalComentario");
-          if (modal) modal.style.display = "none";
-          alert("Permiso no autorizado correctamente");
-          window.location.href = "/Modules/SupSeguridad/supseguridad.html";
-        };
-      }
-
-      // Lógica para cerrar/cancelar el modal
-      const btnCancelarComentario = document.getElementById(
-        "btnCancelarComentario"
-      );
-      if (btnCancelarComentario) {
-        btnCancelarComentario.onclick = function () {
-          const modal = document.getElementById("modalComentario");
-          if (modal) modal.style.display = "none";
-        };
-      }
-    });
-  }
 });
-
-// --- Lógica para el botón "Autorizar" ---
-const btnAutorizar = document.getElementById("btn-guardar-campos");
-if (btnAutorizar) {
-  btnAutorizar.addEventListener("click", async function () {
-    const params = new URLSearchParams(window.location.search);
-    const idPermiso = params.get("id") || window.idPermisoActual;
-    const responsableInput = document.getElementById("responsable-aprobador");
-    const operadorInput = document.getElementById("responsable-aprobador2");
-    const supervisor = responsableInput ? responsableInput.value.trim() : "";
-    const categoria = operadorInput ? operadorInput.value.trim() : "";
-
-    if (!idPermiso) {
-      alert("No se pudo obtener el ID del permiso.");
-      return;
-    }
-    if (!supervisor) {
-      alert("Debes seleccionar el supervisor.");
-      return;
-    }
-
-    // 1. Actualizar supervisor y categoría en autorizaciones
-    try {
-      await fetch(
-        "http://localhost:3000/api/autorizaciones/supervisor-categoria",
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            id_permiso: idPermiso,
-            supervisor,
-            categoria,
-          }),
-        }
-      );
-    } catch (err) {
-      console.error("Error al actualizar supervisor y categoría:", err);
-    }
-
-    // 1.5 Actualizar requisitos de riesgos específicos para fuego
-    const payloadSupervisor = {
-      // Verificación para administrar los riesgos
-      explosividad_interior: getRadioValue("explosividad_interior"),
-      explosividad_exterior: getRadioValue("explosividad_exterior"),
-      vigia_contraincendio: getRadioValue("vigia_contraincendio"),
-      manguera_contraincendio: getRadioValue("manguera_contraincendio"),
-      cortina_agua: getRadioValue("cortina_agua"),
-      extintor_contraincendio: getRadioValue("extintor_contraincendio"),
-      cubrieron_drenajes: getRadioValue("cubrieron_drenajes"),
-
-      // Prueba de gas
-      co2: getRadioValue("co2"),
-      amoniaco: getRadioValue("amoniaco"),
-      oxigeno: getRadioValue("oxigeno"),
-      explosividad_lel: getRadioValue("explosividad_lel"),
-      otro_gas_cual: getInputValue("otro_gas_cual"),
-      observaciones_gas: getInputValue("observaciones_gas"),
-    };
-
-    try {
-      console.log(
-        "Payload enviado a /requisitos_supervisor para fuego:",
-        payloadSupervisor
-      );
-      await fetch(
-        `http://localhost:3000/api/fuego/requisitos_supervisor/${idPermiso}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payloadSupervisor),
-        }
-      );
-    } catch (err) {
-      console.error("Error al actualizar requisitos supervisor:", err);
-    }
-
-    // 2. Consultar id_estatus
-    let idEstatus = null;
-    try {
-      const respEstatus = await fetch(
-        `http://localhost:3000/api/permisos-trabajo/${idPermiso}`
-      );
-      if (respEstatus.ok) {
-        const permisoData = await respEstatus.json();
-        idEstatus =
-          permisoData.id_estatus ||
-          (permisoData.data && permisoData.data.id_estatus);
-      }
-    } catch (err) {
-      console.error("Error al consultar id_estatus:", err);
-    }
-
-    // 3. Actualizar estatus a "activo"
-    if (idEstatus) {
-      try {
-        await fetch("http://localhost:3000/api/estatus/activo", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ id_estatus: idEstatus }),
-        });
-      } catch (err) {
-        console.error("Error al actualizar estatus activo:", err);
-      }
-    }
-
-    alert("Permiso autorizado correctamente");
-    window.location.href = "/Modules/SupSeguridad/supseguridad.html";
-  });
-}

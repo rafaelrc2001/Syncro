@@ -7,19 +7,35 @@
     <title>Permiso Energia Electrica</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
-        <link rel="stylesheet" href="/CSS/EstiloGeneral.css" />
-   <link rel="stylesheet" href="/CSS/EstiloVer.css">
-
+       <link rel="stylesheet" href="/CSS/EstiloGeneral.css" />
+    <link rel="stylesheet" href="/CSS/EstiloImprimir.css">
+    <link rel="stylesheet" href="/CSS/imprimir/EstiloImprimir-Base.css">
+    <link rel="stylesheet" href="/CSS/Imprimir/EstiloImprimir-PT6.css">
 </head>
 <body style="background: #f4f6fb; min-height: 100vh; margin: 0; font-family: 'Roboto', Arial, sans-serif;">
     <div style="display: flex; justify-content: center; align-items: flex-start; min-height: 100vh;">
         <section class="executive-section" style="max-width: 900px; width: 100%; margin: 40px 0; background: #fff; border-radius: 18px; box-shadow: 0 4px 24px rgba(44,62,80,0.10); padding: 2.5rem 2rem;">
+            
+             <div class="company-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid #e3e6ea;">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <img src="/img/proagro.png" alt="Logo ProAgro" style="height: 60px; width: auto;">
+                </div>
+                <div style="text-align: center; flex-grow: 1;">
+                    <h1 style="margin: 0; color: #2c3e50; font-size: 1.5rem; font-weight: 600;">SISTEMA DE PERMISOS DE TRABAJO</h1>
+                    <p style="margin: 0.5rem 0 0 0; color: #7f8c8d; font-size: 0.9rem;">Gestión Integral de Seguridad Laboral</p>
+                </div>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                    <img src="/img/pemex.png" alt="Logo PEMEX" style="height: 60px; width: auto;">
+                </div>
+         
+            </div>
+
             <div class="section-header">
                 <i class="ri-checkbox-circle-line"></i>
                 <h2>Permiso de Trabajo para Electrico </h2>
                 <h3 id="prefijo-label">-</h3>
             </div>
-            <div class="executive-section">
+            <div class="executive-section usuario">
                 <div class="section-header">
                     <i class="ri-information-line"></i>
                     <h3>Datos generales</h3>
@@ -52,7 +68,7 @@
                 </div>
             </div>
             <!-- Medidas para administrar los riesgos por parte del ejecutor de la actividad -->
-<div class="executive-section">
+<div class="executive-section usuario">
     <div class="section-header">
         <i class="ri-checkbox-multiple-line"></i>
         <h3>Medidas para administrar los riesgos por parte del ejecutor de la actividad</h3>
@@ -126,7 +142,7 @@
 </div>
 
 <!-- ANÁLISIS DE REQUISITOS PARA EFECTUAR EL TRABAJO -->
-<div class="executive-section">
+<div class="executive-section area">
     <div class="section-header section-header-cielo">
         <i class="ri-tools-line"></i>
         <h3>ANÁLISIS DE REQUISITOS PARA EFECTUAR EL TRABAJO.</h3>
@@ -175,7 +191,7 @@
 </div>
 
 <!-- CONDICIONES ACTUALES DEL EQUIPO -->
-<div class="executive-section">
+<div class="executive-section area">
     <div class="section-header section-header-cielo">
         <i class="ri-tools-line"></i>
         <h3>CONDICIONES ACTUALES DEL EQUIPO.</h3>
@@ -193,45 +209,49 @@
 
 
  <!-- Aca vas a crear el nuevo formulario -->
-  <div class="executive-section">
+  <div class="executive-section supervisor">
              <!-- FORMULARIO: MEDIDAS / REQUISITOS PARA ADMINISTRAR LOS RIESGOS -->
             <div class="section-header section-header-cielo">
         <i class="ri-tools-line"></i>
         <h3>MEDIDAS / REQUISITOS PARA ADMINISTRAR LOS RIESGOS.</h3>
-    </div>
+       </div>
              <form id="form-medidas-riesgos" style="margin-top:32px;">
                 <table class="styled-table" style="width:100%;">
                     <thead>
                         <tr style="background:#e53935; color:#fff;">
                             <th colspan="4" style="text-align:left;">MEDIDAS / REQUISITOS PARA ADMINISTRAR LOS RIESGOS</th>
-                            <th style="width:40px;">SI</th>
-                            <th style="width:40px;">NO</th>
-                            <th style="width:40px;">N/A</th>
+                            <th style="width:120px;">Respuesta</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td colspan="4">¿Equipo de protección especial?</td>
-                            <td style="text-align:center;"><input type="radio" name="equipo_proteccion_especial" value="SI"></td>
-                            <td style="text-align:center;"><input type="radio" name="equipo_proteccion_especial" value="NO"></td>
-                            <td style="text-align:center;"><input type="radio" name="equipo_proteccion_especial" value="NA"></td>
+                            <td style="text-align:center;">
+                                <span id="equipo_proteccion_especial_respuesta"></span>
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="4">¿Cuál? :</td>
-                            <td colspan="3"><input type="text" name="cual_equipo_proteccion" style="width:100%;"></td>
+                            <td style="text-align:center;">
+                                <span id="cual_equipo_proteccion_mostrar"></span>
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="4">Observaciones:</td>
-                            <td colspan="3"><textarea name="observaciones_medidas" rows="2" style="width:100%;"></textarea></td>
+                            <td style="text-align:center;">
+                                <span id="observaciones_medidas_mostrar"></span>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
             </form>
-        </div>
+    </div>
+
+
 
 
                 <!-- Sección AST y Participantes -->
-                <div class="executive-section">
+                <div class="executive-section usuario">
                     <div class="section-header">
                         <i class="ri-shield-check-line"></i>
                         <h3>AST - Análisis de Seguridad en el Trabajo</h3>
@@ -275,7 +295,7 @@
                     </div>
                 </div>
                <!-- Sección 4: Participantes -->
-                <div class="executive-section">
+                <div class="executive-section usuario">
                     <div class="section-header">
                         <i class="ri-team-line"></i>
                         <h3>Personal Involucrado</h3>
@@ -296,62 +316,19 @@
                         </table>
                     </div>
                 </div>
-                <div class="executive-section" style="display: flex; gap: 24px; align-items: flex-end">
-                    <div style="flex: 1">
-                        <label for="responsable-aprobador" style="font-weight: 600; display: block; margin-bottom: 8px">
-                            Seleccionar supervisor:
-                        </label>
-                        <select id="responsable-aprobador" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
-                            <option value="" disabled selected>Seleccione un supervisor...</option>
-                        </select>
-                    </div>
-                    <div style="flex: 1">
-                        <label for="responsable-aprobador2" style="font-weight: 600; display: block; margin-bottom: 8px">
-                            Seleccionar categoría:
-                        </label>
-                        <select id="responsable-aprobador2" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
-                            <option value="" disabled selected>Seleccione una categoría...</option>
-                        </select>
+                
+
+
+                  <div class="button-group" style="display: flex; justify-content: space-between; margin-top: 48px; gap: 16px;">
+                    <button id="btn-salir-nuevo" class="btn btn-pt1 btn-salir-gris" type="button">
+                        <i class="ri-logout-box-r-line" style="margin-right: 8px;"></i>Salir
+                    </button>
+                    <div style="display: flex; gap: 16px;">
+                        <button id="btn-imprimir-permiso" class="btn btn-pt1 btn-guardar-azulpetroleo" type="button">
+                            <i class="ri-printer-line" style="margin-right: 8px;"></i>Imprimir Permiso
+                        </button>
                     </div>
                 </div>
-                <!-- Sección 5: Aprobaciones -->
-                <div class="approval-section">
-                    <div class="approval-stamps">
-                        <div class="stamp">
-                            <div class="stamp-title">Supervisor:</div>
-                            <div class="stamp-placeholder"></div>
-                            <div class="stamp-name" id="stamp-aprobador"></div>
-                        </div>
-                        <div class="stamp">
-                            <div class="stamp-title">Categoría:</div>
-                            <div class="stamp-placeholder"></div>
-                            <div class="stamp-name" id="stamp-encargado"></div>
-                            <div class="stamp-date"></div>
-                        </div>
-                        <div class="stamp approved">
-                            <div class="stamp-title">Pendiente por aprobar:</div>
-                            <div class="stamp-placeholder"></div>
-                            <div class="stamp-name">Pendiente</div>
-                        </div>
-                    </div>
-                </div>
-
-
-
-                <div class="button-group" style="display: flex; justify-content: space-between; margin-top: 48px; gap: 16px;">
-         <button id="btn-salir-nuevo" class="btn btn-pt1 btn-salir-gris" type="button">
-            <i class="ri-logout-box-r-line" style="margin-right: 8px;"></i>Salir
-        </button>
-        <div style="display: flex; gap: 16px;">
-            
-            <button id="btn-no-autorizar" class="btn btn-pt1 btn-noautorizar-rojo" type="button">
-                <i class="ri-close-circle-line" style="margin-right: 8px;"></i>No Autorizar
-            </button>
-            <button id="btn-guardar-campos" class="btn btn-pt1 btn-guardar-azulpetroleo" type="button">
-                <i class="ri-save-3-line" style="margin-right: 8px;"></i>Autorizar
-            </button>
-        </div>
-</div>
 
                 
         </section>
@@ -375,6 +352,6 @@
     
 </html>
 
-<script src="/Modules/Fomularios/PT6/PT6seccionsupervisor.js"></script>
+<script src="/Modules/Fomularios/PT6/PT6seccionimprimir.js"></script>
 </body>
 </html>

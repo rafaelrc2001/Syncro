@@ -1,262 +1,82 @@
-// --- Lógica fusionada para guardar campos y autorizar ---
-const btnGuardarCampos = document.getElementById("btn-guardar-campos");
-if (btnGuardarCampos) {
-  btnGuardarCampos.addEventListener("click", async function () {
-    // 1. Obtener datos necesarios
-    const params = new URLSearchParams(window.location.search);
-    const idPermiso = params.get("id") || window.idPermisoActual;
-    const responsableInput = document.getElementById("responsable-aprobador");
-    const operadorInput = document.getElementById("responsable-aprobador2");
-    const responsable_area = responsableInput
-      ? responsableInput.value.trim()
-      : "";
-    const operador_area = operadorInput ? operadorInput.value.trim() : "";
-
-    // 2. Validaciones básicas
-    if (!idPermiso) {
-      alert("No se pudo obtener el ID del permiso.");
+// --- Funciones de impresión (traídas de PT5) ---
+function esperarImagenes() {
+  return new Promise((resolve) => {
+    const imagenes = document.querySelectorAll(".company-header img");
+    if (imagenes.length === 0) {
+      resolve();
       return;
     }
-    if (!responsable_area) {
-      alert("Debes ingresar el nombre del responsable.");
-      return;
-    }
-
-    // 3. Guardar los campos/requisitos primero
-    // Utilidad para leer radios
-    function getRadio(name) {
-      const checked = document.querySelector(`input[name='${name}']:checked`);
-      return checked ? checked.value : null;
-    }
-    // Utilidad para leer checkboxes (devuelve "SI" o "NO")
-    function getCheckbox(name) {
-      const checkbox = document.querySelector(`input[name='${name}']`);
-      return checkbox && checkbox.checked ? "SI" : "NO";
-    }
-    // Utilidad para leer input text
-    function getInputValue(id) {
-      const input = document.getElementById(id);
-      return input ? input.value : null;
-    }
-    // Construir payload con los nombres correctos del backend
-    const payload = {
-      identifico_equipo: getRadio("identifico_equipo"),
-      verifico_identifico_equipo: getCheckbox("verifico_identifico_equipo"),
-      fuera_operacion_desenergizado: getRadio("fuera_operacion_desenergizado"),
-      verifico_fuera_operacion_desenergizado: getCheckbox(
-        "verifico_fuera_operacion_desenergizado"
-      ),
-      candado_etiqueta: getRadio("candado_etiqueta"),
-      verifico_candado_etiqueta: getCheckbox("verifico_candado_etiqueta"),
-      suspender_adyacentes: getRadio("suspender_adyacentes"),
-      verifico_suspender_adyacentes: getCheckbox(
-        "verifico_suspender_adyacentes"
-      ),
-      area_limpia_libre_obstaculos: getRadio("area_limpia_libre_obstaculos"),
-      verifico_area_limpia_libre_obstaculos: getCheckbox(
-        "verifico_area_limpia_libre_obstaculos"
-      ),
-      libranza_electrica: getRadio("libranza_electrica"),
-      verifico_libranza_electrica: getCheckbox("verifico_libranza_electrica"),
-      nivel_tension: getInputValue("nivel_tension"),
-    };
-    // Guardar medidas/requisitos del supervisor (nuevo formulario)
-    const formMedidas = document.getElementById("form-medidas-riesgos");
-    let payloadMedidas = {};
-    if (formMedidas) {
-      payloadMedidas = {
-        equipo_proteccion_especial_supervisor: getRadio(
-          "equipo_proteccion_especial"
-        ),
-        cual_equipo_proteccion:
-          formMedidas.elements["cual_equipo_proteccion"]?.value || "",
-        observaciones_medidas:
-          formMedidas.elements["observaciones_medidas"]?.value || "",
-      };
-    }
-    try {
-      // Guardar requisitos generales
-      const resp = await fetch(
-        `http://localhost:3000/api/pt-electrico/requisitos_area/${idPermiso}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        }
-      );
-      if (!resp.ok) throw new Error("Error al guardar los requisitos");
-
-      // Guardar medidas/requisitos del supervisor
-      const respMedidas = await fetch(
-        `http://localhost:3000/api/electrico/requisitos_supervisor/${idPermiso}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payloadMedidas),
-        }
-      );
-      if (!respMedidas.ok)
-        throw new Error("Error al guardar las medidas del supervisor");
-    } catch (err) {
-      alert("Error al guardar los campos/requisitos. No se puede autorizar.");
-      console.error("Error al guardar requisitos:", err);
-      return;
-    }
-
-    // 4. Autorizar (igual que PT1)
-    try {
-      // 1. Actualizar supervisor y categoría en autorizaciones (igual que PT3)
-      await fetch(
-        "http://localhost:3000/api/autorizaciones/supervisor-categoria",
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            id_permiso: idPermiso,
-            supervisor: responsable_area,
-            categoria: operador_area,
-          }),
-        }
-      );
-
-      // 2. Consultar id_estatus
-      let idEstatus = null;
-      try {
-        const respEstatus = await fetch(
-          `http://localhost:3000/api/permisos-trabajo/${idPermiso}`
-        );
-        if (respEstatus.ok) {
-          const permisoData = await respEstatus.json();
-          idEstatus =
-            permisoData.id_estatus ||
-            (permisoData.data && permisoData.data.id_estatus);
-        }
-      } catch (err) {
-        console.error("Error al consultar id_estatus:", err);
+    let imagenesRestantes = imagenes.length;
+    imagenes.forEach((img) => {
+      if (img.complete && img.naturalHeight !== 0) {
+        imagenesRestantes--;
+        if (imagenesRestantes === 0) resolve();
+      } else {
+        img.onload = () => {
+          imagenesRestantes--;
+          if (imagenesRestantes === 0) resolve();
+        };
+        img.onerror = () => {
+          imagenesRestantes--;
+          if (imagenesRestantes === 0) resolve();
+        };
       }
-
-      // 3. Actualizar estatus a "activo" (igual que PT3)
-      if (idEstatus) {
-        try {
-          await fetch("http://localhost:3000/api/estatus/activo", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ id_estatus: idEstatus }),
-          });
-        } catch (err) {
-          console.error("Error al actualizar estatus activo:", err);
-        }
-      }
-
-      window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
-    } catch (err) {
-      alert(
-        "Error al autorizar el permiso. Revisa la consola para más detalles."
-      );
-      console.error("[DEPURACIÓN] Error al autorizar el permiso:", err);
-    }
+    });
+    setTimeout(() => resolve(), 3000); // Timeout de seguridad
   });
 }
 
-// --- Lógica para el botón "No Autorizar" (abrir modal) ---
-const btnNoAutorizar = document.getElementById("btn-no-autorizar");
-if (btnNoAutorizar) {
-  btnNoAutorizar.addEventListener("click", function () {
-    const responsableInput = document.getElementById("responsable-aprobador");
-    const responsable_area = responsableInput
-      ? responsableInput.value.trim()
-      : "";
-    if (!responsable_area) {
-      alert("Debes ingresar el nombre del responsable antes de rechazar.");
-      return;
-    }
-    const modal = document.getElementById("modalComentario");
-    if (modal) {
-      modal.style.display = "flex";
-      document.getElementById("comentarioNoAutorizar").value = "";
-    }
-  });
-
-  // Lógica para cerrar/cancelar el modal
-  const btnCancelarComentario = document.getElementById(
-    "btnCancelarComentario"
-  );
-  if (btnCancelarComentario) {
-    btnCancelarComentario.addEventListener("click", function () {
-      const modal = document.getElementById("modalComentario");
-      if (modal) modal.style.display = "none";
-    });
-  }
-
-  // Lógica para guardar el comentario y actualizar estatus a No Autorizado
-  const btnGuardarComentario = document.getElementById("btnGuardarComentario");
-  if (btnGuardarComentario) {
-    btnGuardarComentario.addEventListener("click", async function () {
-      const comentario = document
-        .getElementById("comentarioNoAutorizar")
-        .value.trim();
-      const responsableInput = document.getElementById("responsable-aprobador");
-      const operadorInput = document.getElementById("responsable-aprobador2");
-      const responsable_area = responsableInput
-        ? responsableInput.value.trim()
-        : "";
-      const operador_area = operadorInput ? operadorInput.value.trim() : "";
-      const params = new URLSearchParams(window.location.search);
-      const idPermiso = params.get("id") || window.idPermisoActual;
-      if (!comentario || !idPermiso || !responsable_area) {
-        return;
-      }
-      try {
-        // Guardar comentario y responsable en la tabla de autorizaciones
-        await fetch("http://localhost:3000/api/autorizaciones/area", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            id_permiso: idPermiso,
-            responsable_area,
-            encargado_area: operador_area,
-            comentario_no_autorizar: comentario,
-          }),
-        });
-        // Consultar el id_estatus desde permisos_trabajo
-        let idEstatus = null;
-        try {
-          const respEstatus = await fetch(
-            `http://localhost:3000/api/permisos-trabajo/${idPermiso}`
-          );
-          if (respEstatus.ok) {
-            const permisoData = await respEstatus.json();
-            idEstatus =
-              permisoData.id_estatus ||
-              (permisoData.data && permisoData.data.id_estatus);
-          }
-        } catch (err) {}
-        // Actualizar el estatus a 'no autorizado' y guardar el comentario en la tabla estatus
-        if (idEstatus) {
-          try {
-            const payloadEstatus = { id_estatus: idEstatus };
-            await fetch("http://localhost:3000/api/estatus/no_autorizado", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(payloadEstatus),
-            });
-            // Guardar el comentario en la tabla estatus
-            await fetch("http://localhost:3000/api/estatus/comentario", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ id_estatus: idEstatus, comentario }),
-            });
-          } catch (err) {}
-        }
-        // Cerrar el modal y redirigir
-        const modal = document.getElementById("modalComentario");
-        if (modal) modal.style.display = "none";
-        window.location.href = "SupSeguridad/SupSeguridad.html";
-      } catch (err) {}
-    });
+async function imprimirPermisoTradicional() {
+  try {
+    await esperarImagenes();
+    window.print();
+  } catch (error) {
+    console.error("Error al imprimir:", error);
+    alert(
+      "Ocurrió un error al preparar la impresión. Por favor, inténtalo nuevamente."
+    );
   }
 }
 
+function mostrarInstruccionesImpresion() {
+  const mensaje = `🖨️ PARA ELIMINAR ENCABEZADOS Y PIES DE PÁGINA:\n\n📌 CHROME/EDGE:\n1. Presiona Ctrl+P\n2. Busca \"Más configuraciones\" y haz clic\n3. DESMARCA la casilla \"Encabezados y pies de página\"\n4. Haz clic en \"Imprimir\"\n\n📌 FIREFOX:\n1. Presiona Ctrl+P  \n2. Haz clic en \"Configurar página\"\n3. En \"Encabezados y pies\", selecciona \"Vacío\" en TODOS\n4. Haz clic en \"Imprimir\"\n\n⚠️ Esta configuración se debe hacer UNA SOLA VEZ por navegador.\n¿Quieres que te abra el diálogo de impresión ahora?`;
+
+  if (confirm(mensaje)) {
+    const originalTitle = document.title;
+    document.title = "";
+    window.print();
+    setTimeout(() => {
+      document.title = originalTitle;
+    }, 1000);
+  }
+}
+
+// Event listener para el botón de imprimir
+const btnImprimir = document.getElementById("btn-imprimir-permiso");
+if (btnImprimir) {
+  btnImprimir.addEventListener("click", function (e) {
+    e.preventDefault();
+    mostrarInstruccionesImpresion();
+  });
+
+  btnImprimir.style.transition = "all 0.3s ease";
+  btnImprimir.addEventListener("mouseenter", function () {
+    this.style.transform = "translateY(-2px)";
+    this.style.boxShadow = "0 6px 20px rgba(0,59,92,0.3)";
+  });
+  btnImprimir.addEventListener("mouseleave", function () {
+    this.style.transform = "translateY(0)";
+    this.style.boxShadow = "";
+  });
+}
+
+// Interceptar Ctrl+P para mostrar instrucciones
+document.addEventListener("keydown", function (e) {
+  if ((e.ctrlKey || e.metaKey) && e.key === "p") {
+    e.preventDefault();
+    mostrarInstruccionesImpresion();
+  }
+});
 // --- Plantilla para agregar personas en el área (ajusta el endpoint y campos según tu backend) ---
 async function agregarPersonaEnArea(idPermiso, persona) {
   // persona = { nombre, funcion, credencial, cargo }
@@ -333,6 +153,20 @@ if (idPermiso) {
         setText(
           "observaciones_medidas",
           permiso.observaciones_adicionales || "-"
+        );
+
+        // Mapear campos de MEDIDAS / REQUISITOS PARA ADMINISTRAR LOS RIESGOS (SUPERVISOR)
+        setText(
+          "equipo_proteccion_especial_respuesta",
+          permiso.equipo_proteccion_especial_supervisor || "-"
+        );
+        setText(
+          "cual_equipo_proteccion_mostrar",
+          permiso.cual_equipo_proteccion || "-"
+        );
+        setText(
+          "observaciones_medidas_mostrar",
+          permiso.observaciones_medidas || "-"
         );
 
         // Otros campos específicos del formulario eléctrico
@@ -674,49 +508,13 @@ document.addEventListener("DOMContentLoaded", function () {
           "Error al obtener datos del permiso. Revisa la consola para más detalles."
         );
       });
-    // Llenar selects de supervisor y categoría
-    rellenarSupervisoresYCategorias();
   }
 });
 
-function rellenarSupervisoresYCategorias() {
-  fetch("http://localhost:3000/api/supervisores")
-    .then((resp) => resp.json())
-    .then((data) => {
-      const selectSupervisor = document.getElementById("responsable-aprobador");
-      if (selectSupervisor) {
-        selectSupervisor.innerHTML =
-          '<option value="" disabled selected>Seleccione un supervisor...</option>';
-        (Array.isArray(data) ? data : data.supervisores).forEach((sup) => {
-          const option = document.createElement("option");
-          option.value = sup.nombre || sup.id;
-          option.textContent = sup.nombre;
-          selectSupervisor.appendChild(option);
-        });
-      }
-    });
-
-  fetch("http://localhost:3000/api/categorias")
-    .then((resp) => resp.json())
-    .then((data) => {
-      const selectCategoria = document.getElementById("responsable-aprobador2");
-      if (selectCategoria) {
-        selectCategoria.innerHTML =
-          '<option value="" disabled selected>Seleccione una categoria...</option>';
-        (Array.isArray(data) ? data : data.categorias).forEach((cat) => {
-          const option = document.createElement("option");
-          option.value = cat.nombre || cat.id;
-          option.textContent = cat.nombre;
-          selectCategoria.appendChild(option);
-        });
-      }
-    });
-}
-
-// Salir: redirigir a AutorizarPT.html
+// --- Botón Salir (igual que PT5) ---
 const btnSalirNuevo = document.getElementById("btn-salir-nuevo");
 if (btnSalirNuevo) {
   btnSalirNuevo.addEventListener("click", function () {
-    window.location.href = "SupSeguridad/SupSeguridad.html";
+    window.location.href = "/Modules/Usuario/AutorizarPT.html";
   });
 }

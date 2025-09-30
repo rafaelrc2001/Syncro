@@ -1,152 +1,4 @@
 // --- Lógica fusionada para guardar campos y autorizar ---
-const btnGuardarCampos = document.getElementById("btn-guardar-campos");
-if (btnGuardarCampos) {
-  btnGuardarCampos.addEventListener("click", async function () {
-    // 1. Obtener datos necesarios
-    const params = new URLSearchParams(window.location.search);
-    const idPermiso = params.get("id") || window.idPermisoActual;
-    const responsableInput = document.getElementById("responsable-aprobador");
-    const operadorInput = document.getElementById("responsable-aprobador2");
-    const responsable_area = responsableInput
-      ? responsableInput.value.trim()
-      : "";
-    const operador_area = operadorInput ? operadorInput.value.trim() : "";
-
-    // 2. Validaciones básicas
-    if (!idPermiso) {
-      alert("No se pudo obtener el ID del permiso.");
-      return;
-    }
-    if (!responsable_area) {
-      alert("Debes ingresar el nombre del responsable.");
-      return;
-    }
-
-    // 3. Guardar los campos/requisitos primero
-    // Utilidad para leer radios
-    function getRadio(name) {
-      const checked = document.querySelector(`input[name='${name}']:checked`);
-      return checked ? checked.value : null;
-    }
-    // Utilidad para leer inputs de texto/number
-    function getInput(name) {
-      const el = document.querySelector(`[name='${name}']`);
-      return el ? el.value : null;
-    }
-
-    // Construir payload con los campos que espera el backend
-    const payload = {
-      tipo_fuente_radiactiva: getRadio("otro_permiso"), // Ajusta si tienes un campo específico
-      actividad_radiactiva: getInput("cual_otro_permiso"), // Ajusta si tienes un campo específico
-      numero_serial_fuente: getRadio("barricadas_senalamientos"), // Ajusta si tienes un campo específico
-      distancia_trabajo: getRadio("suspension_trabajos_cercano"), // Ajusta si tienes un campo específico
-      tiempo_exposicion: getRadio("retiro_personal_ajeno"), // Ajusta si tienes un campo específico
-      dosis_estimada: getRadio("placa_dosimetro"), // Ajusta si tienes un campo específico
-      equipo_proteccion_radiologica: getRadio("limite_exposicion"), // Ajusta si tienes un campo específico
-      dosimetros_personales: getRadio("letreros_advertencia"), // Ajusta si tienes un campo específico
-      monitores_radiacion_area: getRadio("advirtio_personal"), // Ajusta si tienes un campo específico
-      senalizacion_area: getInput("ubicacion_fuente_radioactiva"),
-      barricadas: getInput("numero_personas_autorizadas"),
-      protocolo_emergencia: getInput("tiempo_exposicion_permisible"),
-      personal_autorizado: "", // Si tienes un campo para esto, cámbialo
-      observaciones_radiacion: "", // Si tienes un campo para esto, cámbialo
-      fluido: document.getElementById("fluid").value,
-      presion: document.getElementById("pressure").value,
-      temperatura: document.getElementById("temperature").value,
-    };
-
-    try {
-      const resp = await fetch(
-        `http://localhost:3000/api/pt-radiacion/requisitos_area/${idPermiso}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        }
-      );
-      if (!resp.ok) throw new Error("Error al guardar los requisitos");
-    } catch (err) {
-      alert("Error al guardar los campos/requisitos. No se puede autorizar.");
-      console.error("Error al guardar requisitos:", err);
-      return;
-    }
-
-    // 4. Autorizar (igual que PT1)
-    try {
-      let idEstatus = null;
-      try {
-        const respEstatus = await fetch(
-          `http://localhost:3000/api/permisos-trabajo/${idPermiso}`
-        );
-        if (respEstatus.ok) {
-          const permisoData = await respEstatus.json();
-          idEstatus =
-            permisoData.id_estatus ||
-            (permisoData.data && permisoData.data.id_estatus);
-        } else {
-          console.error(
-            "[DEPURACIÓN] Error al obtener id_estatus. Status:",
-            respEstatus.status
-          );
-        }
-      } catch (err) {
-        console.error("[DEPURACIÓN] Error al consultar id_estatus:", err);
-      }
-
-      if (idEstatus) {
-        try {
-          const payloadEstatus = { id_estatus: idEstatus };
-          const respEstatus = await fetch(
-            "http://localhost:3000/api/estatus/seguridad",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(payloadEstatus),
-            }
-          );
-          let data = {};
-          try {
-            data = await respEstatus.json();
-          } catch (e) {}
-          if (!respEstatus.ok) {
-            console.error(
-              "[DEPURACIÓN] Error en respuesta de estatus/seguridad:",
-              data
-            );
-          }
-        } catch (err) {
-          console.error(
-            "[DEPURACIÓN] Excepción al actualizar estatus de seguridad:",
-            err
-          );
-        }
-      } else {
-        console.warn(
-          "[DEPURACIÓN] No se obtuvo id_estatus para actualizar estatus."
-        );
-      }
-
-      await fetch("http://localhost:3000/api/autorizaciones/area", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          id_permiso: idPermiso,
-          responsable_area,
-          encargado_area: operador_area,
-        }),
-      });
-      window.location.href = "/Modules/Usuario/AutorizarPT.html";
-    } catch (err) {
-      alert(
-        "Error al autorizar el permiso. Revisa la consola para más detalles."
-      );
-      console.error(
-        "[DEPURACIÓN] Error al insertar autorización de área:",
-        err
-      );
-    }
-  });
-}
 
 // --- Lógica para el botón "No Autorizar" (abrir modal) ---
 const btnNoAutorizar = document.getElementById("btn-no-autorizar");
@@ -311,6 +163,48 @@ if (idPermiso) {
           "final-observations-label",
           permiso.observaciones_medidas || "-"
         );
+        // Mostrar valores de requisitos de apertura de área (solo lectura)
+        setText("otro_permiso-label", permiso.tipo_fuente_radiactiva || "-");
+        setText("cual_otro_permiso-label", permiso.actividad_radiactiva || "-");
+        setText(
+          "barricadas_senalamientos-label",
+          permiso.numero_serial_fuente || "-"
+        );
+        setText(
+          "suspension_trabajos_cercano-label",
+          permiso.distancia_trabajo || "-"
+        );
+        setText(
+          "retiro_personal_ajeno-label",
+          permiso.tiempo_exposicion || "-"
+        );
+        setText("placa_dosimetro-label", permiso.dosis_estimada || "-");
+        setText(
+          "limite_exposicion-label",
+          permiso.equipo_proteccion_radiologica || "-"
+        );
+        setText(
+          "letreros_advertencia-label",
+          permiso.dosimetros_personales || "-"
+        );
+        setText(
+          "advirtio_personal-label",
+          permiso.monitores_radiacion_area || "-"
+        );
+        setText(
+          "ubicacion_fuente_radioactiva-label",
+          permiso.senalizacion_area || "-"
+        );
+        setText("numero_personas_autorizadas-label", permiso.barricadas || "-");
+        setText(
+          "tiempo_exposicion_permisible-label",
+          permiso.protocolo_emergencia || "-"
+        );
+
+        // Mostrar valores de condiciones del proceso (solo lectura)
+        setText("fluid-label", permiso.fluido || "-");
+        setText("pressure-label", permiso.presion || "-");
+        setText("temperature-label", permiso.temperatura || "-");
         // Radios de requisitos
         const radios = [
           "fuera_operacion",
@@ -508,6 +402,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Llenar campos generales usando data.data
         if (data && data.data) {
           const detalles = data.data;
+
           if (document.getElementById("maintenance-type-label"))
             document.getElementById("maintenance-type-label").textContent =
               detalles.tipo_mantenimiento || "-";
@@ -559,6 +454,12 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
           mostrarParticipantesAST([]); // Limpia tabla si no hay datos
         }
+        let prefijo =
+          (data.general && data.general.prefijo) ||
+          (data.data && data.data.prefijo) ||
+          data.prefijo ||
+          "-";
+        document.getElementById("prefijo-label").textContent = prefijo;
       })
       .catch((err) => {
         console.error("Error al obtener datos del permiso:", err);

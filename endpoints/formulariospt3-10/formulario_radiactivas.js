@@ -125,4 +125,98 @@ router.get("/pt-radiacion/:id", async (req, res) => {
   }
 });
 
+// Endpoint para actualizar requisitos del área en PT radiactivo
+router.put("/pt-radiacion/requisitos_area/:id", async (req, res) => {
+  const id_permiso = req.params.id;
+  const {
+    tipo_fuente_radiactiva,
+    actividad_radiactiva,
+    numero_serial_fuente,
+    distancia_trabajo,
+    tiempo_exposicion,
+    dosis_estimada,
+    equipo_proteccion_radiologica,
+    dosimetros_personales,
+    monitores_radiacion_area,
+    senalizacion_area,
+    barricadas,
+    protocolo_emergencia,
+    personal_autorizado,
+    observaciones_radiacion,
+    fluido,
+    presion,
+    temperatura,
+  } = req.body;
+
+  try {
+    const result = await db.query(
+      `UPDATE pt_radiacion SET
+        tipo_fuente_radiactiva = $1,
+        actividad_radiactiva = $2,
+        numero_serial_fuente = $3,
+        distancia_trabajo = $4,
+        tiempo_exposicion = $5,
+        dosis_estimada = $6,
+        equipo_proteccion_radiologica = $7,
+        dosimetros_personales = $8,
+        monitores_radiacion_area = $9,
+        senalizacion_area = $10,
+        barricadas = $11,
+        protocolo_emergencia = $12,
+        personal_autorizado = $13,
+        observaciones_radiacion = $14,
+        fluido = $15,
+        presion = $16,
+        temperatura = $17,
+        fecha_actualizacion = NOW()
+      WHERE id_permiso = $18
+      RETURNING *`,
+      [
+        tipo_fuente_radiactiva,
+        actividad_radiactiva,
+        numero_serial_fuente,
+        distancia_trabajo,
+        tiempo_exposicion,
+        dosis_estimada,
+        equipo_proteccion_radiologica,
+        dosimetros_personales,
+        monitores_radiacion_area,
+        senalizacion_area,
+        barricadas,
+        protocolo_emergencia,
+        personal_autorizado,
+        observaciones_radiacion,
+        fluido,
+        presion,
+        temperatura,
+        id_permiso,
+      ]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No se encontró el permiso radiactivo para actualizar",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Requisitos del área actualizados correctamente",
+      data: result.rows[0],
+    });
+  } catch (error) {
+    console.error(
+      "Error al actualizar requisitos del área en pt_radiacion:",
+      error
+    );
+    res.status(500).json({
+      success: false,
+      error: "Error al actualizar requisitos del área",
+      details:
+        process.env.NODE_ENV === "development" ? error.message : undefined,
+    });
+  }
+});
+
 module.exports = router;

@@ -335,6 +335,9 @@ CREATE TABLE IF NOT EXISTS public.pt_electrico
     libranza_electrica character varying(5) COLLATE pg_catalog."default",
     verifico_libranza_electrica character varying(5) COLLATE pg_catalog."default",
     nivel_tension character varying(100) COLLATE pg_catalog."default",
+    equipo_proteccion_especial_supervisor character varying(10) COLLATE pg_catalog."default",
+    cual_equipo_proteccion text COLLATE pg_catalog."default",
+    observaciones_medidas text COLLATE pg_catalog."default",
     CONSTRAINT pt_electrico_pkey PRIMARY KEY (id)
 );
 
@@ -446,6 +449,20 @@ CREATE TABLE IF NOT EXISTS public.pt_radiacion
     observaciones_radiacion text COLLATE pg_catalog."default",
     fecha_creacion timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     fecha_actualizacion timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    fluido character varying(10) COLLATE pg_catalog."default",
+    presion character varying(10) COLLATE pg_catalog."default",
+    temperatura character varying(10) COLLATE pg_catalog."default",
+    marca_modelo text COLLATE pg_catalog."default",
+    marca_modelo_check character varying(3) COLLATE pg_catalog."default",
+    tipo_isotopo text COLLATE pg_catalog."default",
+    tipo_isotopo_check character varying(3) COLLATE pg_catalog."default",
+    numero_fuente text COLLATE pg_catalog."default",
+    numero_fuente_check character varying(3) COLLATE pg_catalog."default",
+    actividad_fuente text COLLATE pg_catalog."default",
+    actividad_fuente_check character varying(3) COLLATE pg_catalog."default",
+    fecha_dia character varying(3) COLLATE pg_catalog."default",
+    fecha_mes character varying(3) COLLATE pg_catalog."default",
+    fecha_anio character varying(3) COLLATE pg_catalog."default",
     CONSTRAINT pt_radiacion_pkey PRIMARY KEY (id)
 );
 
@@ -600,57 +617,3 @@ ALTER TABLE IF EXISTS public.pt_radiacion
     ON DELETE NO ACTION;
 
 END;
-
-
-el de pt_fuegoALTER TABLE pt_fuego
-    -- Requisitos para efectuar el trabajo
-    ADD COLUMN fuera_operacion VARCHAR(50),
-    ADD COLUMN despresurizado_purgado VARCHAR(50),
-    ADD COLUMN producto_entrampado VARCHAR(50),
-    ADD COLUMN necesita_aislamiento VARCHAR(50),
-    ADD COLUMN con_valvulas VARCHAR(50),
-    ADD COLUMN con_juntas_ciegas VARCHAR(50),
-    ADD COLUMN requiere_lavado VARCHAR(50),
-    ADD COLUMN requiere_neutralizado VARCHAR(50),
-    ADD COLUMN requiere_vaporizado VARCHAR(50),
-    ADD COLUMN suspender_trabajos_adyacentes VARCHAR(50),
-    ADD COLUMN acordonar_area VARCHAR(50),
-    ADD COLUMN prueba_gas_toxico_inflamable VARCHAR(50),
-    ADD COLUMN equipo_electrico_desenergizado VARCHAR(50),
-    ADD COLUMN tapar_purgas_drenajes VARCHAR(50),
-
-    -- Medidas / requisitos del ejecutor
-    ADD COLUMN ventilacion_forzada VARCHAR(50),
-    ADD COLUMN limpieza_interior VARCHAR(50),
-    ADD COLUMN instalo_ventilacion_forzada VARCHAR(50),
-    ADD COLUMN equipo_conectado_tierra VARCHAR(50),
-    ADD COLUMN cables_pasan_drenajes VARCHAR(50),
-    ADD COLUMN cables_uniones_intermedias VARCHAR(50),
-    ADD COLUMN equipo_proteccion_personal VARCHAR(50),
-
-    -- Condiciones del proceso
-    ADD COLUMN fluido VARCHAR(100),
-    ADD COLUMN presion VARCHAR(50),
-    ADD COLUMN temperatura VARCHAR(50);
-
-
-
-
-
--- esta es la de fuego:
-
-
-ALTER TABLE pt_fuego 
-ADD COLUMN explosividad_interior VARCHAR(2) NULL,
-ADD COLUMN explosividad_exterior VARCHAR(2) NULL,
-ADD COLUMN vigia_contraincendio VARCHAR(2) NULL,
-ADD COLUMN manguera_contraincendio VARCHAR(2) NULL,
-ADD COLUMN cortina_agua VARCHAR(2) NULL,
-ADD COLUMN extintor_contraincendio VARCHAR(2) NULL,
-ADD COLUMN cubrieron_drenajes VARCHAR(2) NULL,
-ADD COLUMN co2 VARCHAR(2) NULL,
-ADD COLUMN amoniaco VARCHAR(2) NULL,
-ADD COLUMN oxigeno VARCHAR(2) NULL,
-ADD COLUMN explosividad_lel VARCHAR(2) NULL,
-ADD COLUMN otro_gas_cual VARCHAR(255) NULL,
-ADD COLUMN observaciones_gas TEXT NULL;

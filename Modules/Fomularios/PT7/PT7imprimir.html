@@ -1,22 +1,21 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Permiso Energia Electrica</title>
+    <title>Permiso Fuentes</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
-       <link rel="stylesheet" href="/CSS/EstiloGeneral.css" />
+            <link rel="stylesheet" href="/CSS/EstiloGeneral.css" />
     <link rel="stylesheet" href="/CSS/EstiloImprimir.css">
     <link rel="stylesheet" href="/CSS/imprimir/EstiloImprimir-Base.css">
-    <link rel="stylesheet" href="/CSS/Imprimir/EstiloImprimir-PT6.css">
+    <link rel="stylesheet" href="/CSS/Imprimir/EstiloImprimir-PT7.css">
+
 </head>
 <body style="background: #f4f6fb; min-height: 100vh; margin: 0; font-family: 'Roboto', Arial, sans-serif;">
     <div style="display: flex; justify-content: center; align-items: flex-start; min-height: 100vh;">
         <section class="executive-section" style="max-width: 900px; width: 100%; margin: 40px 0; background: #fff; border-radius: 18px; box-shadow: 0 4px 24px rgba(44,62,80,0.10); padding: 2.5rem 2rem;">
-            
-             <div class="company-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid #e3e6ea;">
+            <div class="company-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid #e3e6ea;">
                 <div style="display: flex; align-items: center; gap: 1rem;">
                     <img src="/img/proagro.png" alt="Logo ProAgro" style="height: 60px; width: auto;">
                 </div>
@@ -32,10 +31,10 @@
 
             <div class="section-header">
                 <i class="ri-checkbox-circle-line"></i>
-                <h2>Permiso de Trabajo para Electrico </h2>
-                <h3 id="prefijo-label">-</h3>
+                <h2>Permiso de Trabajo para Fuentes Radiactivas</h2>
+                 <h3 id="prefijo-label">-</h3>
             </div>
-            <div class="executive-section usuario">
+            <div class="executive-section">
                 <div class="section-header">
                     <i class="ri-information-line"></i>
                     <h3>Datos generales</h3>
@@ -67,191 +66,167 @@
                     </div>
                 </div>
             </div>
-            <!-- Medidas para administrar los riesgos por parte del ejecutor de la actividad -->
-<div class="executive-section usuario">
-    <div class="section-header">
-        <i class="ri-checkbox-multiple-line"></i>
-        <h3>Medidas para administrar los riesgos por parte del ejecutor de la actividad</h3>
-    </div>
-    <table class="styled-table">
-        <thead style="background: #e0e0e0; color: #222;">
-            <tr>
-                <th>Medida/Requisito</th>
-                <th>Respuesta</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>¿El equipo debe estar desenergizado?</td>
-                <td><span id="equipo_desenergizado"></span></td>
-            </tr>
-            <tr>
-                <td>¿Los interruptores deben estar abiertos?</td>
-                <td><span id="interruptores_abiertos"></span></td>
-            </tr>
-            <tr>
-                <td>¿Se requiere verificar la ausencia de voltaje?</td>
-                <td><span id="ausencia_voltaje"></span></td>
-            </tr>
-            <tr>
-                <td>¿Se requiere de candados para intervenir el equipo?</td>
-                <td><span id="candados_intervencion"></span></td>
-            </tr>
-            <tr>
-                <td>¿Se requiere colocar tarjetas de alerta y notificación?</td>
-                <td><span id="tarjetas_alerta_notificacion"></span></td>
-            </tr>
-            <tr>
-                <td>¿Se requiere dar aviso al personal de área?</td>
-                <td><span id="aviso_personal_area"></span></td>
-            </tr>
-            <tr>
-                <td>¿Se requiere tapetes dieléctricos?</td>
-                <td><span id="tapetes_dielelectricos"></span></td>
-            </tr>
-            <tr>
-                <td>¿Se requiere herramienta aislante?</td>
-                <td><span id="herramienta_aislante"></span></td>
-            </tr>
-            <tr>
-                <td>¿Se requiere utilizar pértiga telescopica?</td>
-                <td><span id="pertiga_telescopica"></span></td>
-            </tr>
-            <tr>
-                <td>¿Se requiere equipo de proteccion especial?</td>
-                <td><span id="equipo_proteccion_especial"></span></td>
-            </tr>
-            <tr>
-                <td>¿Cuál?:</td>
-                <td><span id="cual_equipo_proteccion"></span></td>
-            </tr>
-            <tr>
-                <td>¿Se requiere aterrizar el equipo y/o circuito?</td>
-                <td><span id="aterrizar_equipo_circuito"></span></td>
-            </tr>
-            <tr>
-                <td>¿Se requiere instalar barricadas en el área?</td>
-                <td><span id="instalar_barricadas_area"></span></td>
-            </tr>
-            <tr>
-                <td>Observaciones:</td>
-                <td><span id="observaciones_medidas"></span></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-
-<!-- ANÁLISIS DE REQUISITOS PARA EFECTUAR EL TRABAJO -->
-<div class="executive-section area">
-    <div class="section-header section-header-cielo">
-        <i class="ri-tools-line"></i>
-        <h3>ANÁLISIS DE REQUISITOS PARA EFECTUAR EL TRABAJO.</h3>
-    </div>
-    <table class="styled-table">
-        <thead class="thead-nopeligroso">
-            <tr>
-                <th style="min-width:320px;">ANÁLISIS DE REQUISITOS PARA EFECTUAR EL TRABAJO.</th>
-                <th style="width:100px;">Respuesta</th>
-                <th style="min-width:180px;">VERIFICÓ CADA PUNTO FÍSICAMENTE EN CAMPO.</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>¿Se identificó el equipo que se intervendrá?</td>
-                <td><span id="identifico_equipo_respuesta"></span></td>
-                <td><span id="verifico_identifico_equipo"></span></td>
-            </tr>
-            <tr>
-                <td>¿Quedó fuera de operación y desenergizado el equipo?</td>
-                <td><span id="fuera_operacion_desenergizado_respuesta"></span></td>
-                <td><span id="verifico_fuera_operacion_desenergizado"></span></td>
-            </tr>
-            <tr>
-                <td>¿Se instaló el candado y etiquetó el equipo?</td>
-                <td><span id="candado_etiqueta_respuesta"></span></td>
-                <td><span id="verifico_candado_etiqueta"></span></td>
-            </tr>
-            <tr>
-                <td>¿Se requiere suspender trabajos adyacentes?</td>
-                <td><span id="suspender_adyacentes_respuesta"></span></td>
-                <td><span id="verifico_suspender_adyacentes"></span></td>
-            </tr>
-            <tr>
-                <td>¿El área se encuentra limpia y libre de obstaculos?</td>
-                <td><span id="area_limpia_libre_obstaculos_respuesta"></span></td>
-                <td><span id="verifico_area_limpia_libre_obstaculos"></span></td>
-            </tr>
-            <tr>
-                <td>¿Se requiere libranza eléctrica?</td>
-                <td><span id="libranza_electrica_respuesta"></span></td>
-                <td><span id="verifico_libranza_electrica"></span></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-
-<!-- CONDICIONES ACTUALES DEL EQUIPO -->
-<div class="executive-section area">
-    <div class="section-header section-header-cielo">
-        <i class="ri-tools-line"></i>
-        <h3>CONDICIONES ACTUALES DEL EQUIPO.</h3>
-    </div>
-    <table class="styled-table" style="width:100%; border-collapse:collapse;">
-        <tbody>
-            <tr>
-                <td style="width:180px;">Nivel de tensión:</td>
-                <td><span id="nivel_tension"></span></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+      
 
 
 
- <!-- Aca vas a crear el nuevo formulario -->
-  <div class="executive-section supervisor">
-             <!-- FORMULARIO: MEDIDAS / REQUISITOS PARA ADMINISTRAR LOS RIESGOS -->
-            <div class="section-header section-header-cielo">
-        <i class="ri-tools-line"></i>
-        <h3>MEDIDAS / REQUISITOS PARA ADMINISTRAR LOS RIESGOS.</h3>
-       </div>
-             <form id="form-medidas-riesgos" style="margin-top:32px;">
-                <table class="styled-table" style="width:100%;">
+
+            <div class="executive-section">
+                <div class="section-header section-header-cielo">
+                    <i class="ri-tools-line"></i>
+                    <h3>Requisitos de apertura de área</h3>
+                </div>
+                <table class="styled-table">
+                    <thead class="thead-nopeligroso">
+  <tr>
+    <th>Requisito</th>
+    <th colspan="3">Respuesta</th>
+  </tr>
+</thead>
+                    <tbody>
+                        <tr>
+                            <td>¿Se requiere otro tipo de permiso?</td>
+                            <td colspan="3"><span id="otro_permiso-label">-</span></td>
+                        </tr>
+                        <tr>
+                            <td>¿Cual?:</td>
+                            <td colspan="3"><span id="cual_otro_permiso-label">-</span></td>
+                        </tr>
+                        <tr>
+                            <td>¿Instalación de barricadas y señalamientos de área restringida?</td>
+                            <td colspan="3"><span id="barricadas_senalamientos-label">-</span></td>
+                        </tr>
+                        <tr>
+                            <td>¿Suspensión de trabajos cercano?</td>
+                            <td colspan="3"><span id="suspension_trabajos_cercano-label">-</span></td>
+                        </tr>
+                        <tr>
+                            <td>¿Retiro de personal ajeno al trabajo?</td>
+                            <td colspan="3"><span id="retiro_personal_ajeno-label">-</span></td>
+                        </tr>
+                        <tr>
+                            <td>¿Las personas autorizadas utilizan placa / dosímetro?</td>
+                            <td colspan="3"><span id="placa_dosimetro-label">-</span></td>
+                        </tr>
+                        <tr>
+                            <td>¿El límite de exposición fuera del área acordonada no rebasa 2 milirems?</td>
+                            <td colspan="3"><span id="limite_exposicion-label">-</span></td>
+                        </tr>
+                        <tr>
+                            <td>¿Existen suficientes letreros de advertencia?</td>
+                            <td colspan="3"><span id="letreros_advertencia-label">-</span></td>
+                        </tr>
+                        <tr>
+                            <td>¿Se advirtio al personal que labora en el lugar de trabajo, áreas adyacentes y otros?</td>
+                            <td colspan="3"><span id="advirtio_personal-label">-</span></td>
+                        </tr>
+                        <tr>
+                            <td>¿Lugar exacto de ubicación de la fuente radioactiva?</td>
+                            <td colspan="3"><span id="ubicacion_fuente_radioactiva-label">-</span></td>
+                        </tr>
+                        <tr>
+                            <td>¿Número de personas autorizadas dentro del lugar de trabajo?</td>
+                            <td colspan="3"><span id="numero_personas_autorizadas-label">-</span></td>
+                        </tr>
+                        <tr>
+                            <td>¿Tiempo de exposición permisible?</td>
+                            <td colspan="3"><span id="tiempo_exposicion_permisible-label">-</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                          
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+            
+
+               <div class="executive-section">
+                    <div class="section-header section-header-cielo">
+                        <i class="ri-flask-line"></i>
+                        <h3>Condiciones del Proceso</h3>
+                    </div>
+                    <div class="executive-grid">
+                        <div class="executive-item">
+                            <label>Fluido</label>
+                            <span id="fluid-label">-</span>
+                        </div>
+                        <div class="executive-item">
+                            <label>Presión</label>
+                            <span id="pressure-label">-</span>
+                        </div>
+                        <div class="executive-item">
+                            <label>Temperatura</label>
+                            <span id="temperature-label">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                
+
+
+  <!-- Seccion supervisores -->
+            <!-- Identificación de la fuente -->
+            <div class="executive-section">
+                <div class="section-header" style="background: #ffe600; color: #222; border-radius: 6px 6px 0 0; padding: 8px 16px;">
+                    <h3 style="margin: 0; font-size: 1.1em; font-weight: bold; letter-spacing: 1px;">IDENTIFICACIÓN DE LA FUENTE</h3>
+                </div>
+                <table class="styled-table" style="margin-bottom: 0;">
                     <thead>
-                        <tr style="background:#e53935; color:#fff;">
-                            <th colspan="4" style="text-align:left;">MEDIDAS / REQUISITOS PARA ADMINISTRAR LOS RIESGOS</th>
-                            <th style="width:120px;">Respuesta</th>
+                        <tr>
+                            <th style="width: 30%;"></th>
+                            <th style="width: 50%;"></th>
+                            <th style="width: 20%;" colspan="3">Respuesta</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td colspan="4">¿Equipo de protección especial?</td>
-                            <td style="text-align:center;">
-                                <span id="equipo_proteccion_especial_respuesta"></span>
-                            </td>
+                            <td>Marca y modelo:</td>
+                            <td><span id="marca_modelo-label">-</span></td>
+                            <td colspan="3"><span id="marca_modelo_check-label">-</span></td>
                         </tr>
                         <tr>
-                            <td colspan="4">¿Cuál? :</td>
-                            <td style="text-align:center;">
-                                <span id="cual_equipo_proteccion_mostrar"></span>
-                            </td>
+                            <td>Tipo de isótopo:</td>
+                            <td><span id="tipo_isotopo-label">-</span></td>
+                            <td colspan="3"><span id="tipo_isotopo_check-label">-</span></td>
                         </tr>
                         <tr>
-                            <td colspan="4">Observaciones:</td>
-                            <td style="text-align:center;">
-                                <span id="observaciones_medidas_mostrar"></span>
+                            <td>Número de fuente sellada:</td>
+                            <td><span id="numero_fuente-label">-</span></td>
+                            <td colspan="3"><span id="numero_fuente_check-label">-</span></td>
+                        </tr>
+                        <tr>
+                            <td>Actividad de la fuente al día:</td>
+                            <td><span id="actividad_fuente-label">-</span></td>
+                            <td colspan="3"><span id="actividad_fuente_check-label">-</span></td>
+                        </tr>
+                        <tr>
+                            <td>Fecha en que fue medida la actividad:</td>
+                            <td colspan="4">
+                                <span id="fecha_dia-label">-</span> / <span id="fecha_mes-label">-</span> / <span id="fecha_anio-label">-</span>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-            </form>
-    </div>
+            </div>
 
 
 
 
-                <!-- Sección AST y Participantes -->
-                <div class="executive-section usuario">
+
+
+
+                       <!-- Sección AST y Participantes -->
+                <div class="executive-section">
                     <div class="section-header">
                         <i class="ri-shield-check-line"></i>
                         <h3>AST - Análisis de Seguridad en el Trabajo</h3>
@@ -295,7 +270,7 @@
                     </div>
                 </div>
                <!-- Sección 4: Participantes -->
-                <div class="executive-section usuario">
+                <div class="executive-section">
                     <div class="section-header">
                         <i class="ri-team-line"></i>
                         <h3>Personal Involucrado</h3>
@@ -319,7 +294,7 @@
                 
 
 
-                <div class="button-group" style="display: flex; justify-content: space-between; margin-top: 48px; gap: 16px;">
+                  <div class="button-group" style="display: flex; justify-content: space-between; margin-top: 48px; gap: 16px;">
                     <button id="btn-salir-nuevo" class="btn btn-pt1 btn-salir-gris" type="button">
                         <i class="ri-logout-box-r-line" style="margin-right: 8px;"></i>Salir
                     </button>
@@ -329,7 +304,6 @@
                         </button>
                     </div>
                 </div>
-
                 
         </section>
 
@@ -352,6 +326,6 @@
     
 </html>
 
-<script src="/Modules/Fomularios/PT6/PT6seccionimprimir.js"></script>
+<script src="/Modules/Fomularios/PT7/PT7seccionimprimir.js"></script>
 </body>
 </html>

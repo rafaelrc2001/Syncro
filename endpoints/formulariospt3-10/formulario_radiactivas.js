@@ -219,4 +219,101 @@ router.put("/pt-radiacion/requisitos_area/:id", async (req, res) => {
   }
 });
 
+// Endpoint para actualizar identificación de la fuente en permiso de radiactivas
+router.put(
+  "/radiactivas/identificacion_fuente/:id_permiso",
+  async (req, res) => {
+    const id_permiso = req.params.id_permiso;
+    const {
+      marca_modelo,
+      marca_modelo_check,
+      tipo_isotopo,
+      tipo_isotopo_check,
+      numero_fuente,
+      numero_fuente_check,
+      actividad_fuente,
+      actividad_fuente_check,
+      fecha_dia,
+      fecha_mes,
+      fecha_anio,
+    } = req.body;
+
+    // Mostrar en consola los datos recibidos
+    console.log(
+      "[PT7 radiactivas] Datos recibidos para identificación de la fuente:",
+      {
+        marca_modelo,
+        marca_modelo_check,
+        tipo_isotopo,
+        tipo_isotopo_check,
+        numero_fuente,
+        numero_fuente_check,
+        actividad_fuente,
+        actividad_fuente_check,
+        fecha_dia,
+        fecha_mes,
+        fecha_anio,
+        id_permiso,
+      }
+    );
+
+    try {
+      const result = await db.query(
+        `UPDATE pt_radiacion SET
+        marca_modelo = $1,
+        marca_modelo_check = $2,
+        tipo_isotopo = $3,
+        tipo_isotopo_check = $4,
+        numero_fuente = $5,
+        numero_fuente_check = $6,
+        actividad_fuente = $7,
+        actividad_fuente_check = $8,
+        fecha_dia = $9,
+        fecha_mes = $10,
+        fecha_anio = $11
+      WHERE id_permiso = $12
+      RETURNING *`,
+        [
+          marca_modelo,
+          marca_modelo_check,
+          tipo_isotopo,
+          tipo_isotopo_check,
+          numero_fuente,
+          numero_fuente_check,
+          actividad_fuente,
+          actividad_fuente_check,
+          fecha_dia,
+          fecha_mes,
+          fecha_anio,
+          id_permiso,
+        ]
+      );
+
+      if (result.rows.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "No se encontró el permiso de radiactivas para actualizar",
+        });
+      }
+
+      res.json({
+        success: true,
+        data: result.rows[0],
+        message: "Identificación de la fuente actualizada correctamente",
+      });
+    } catch (error) {
+      console.error(
+        "Error al actualizar identificación de la fuente en pt_radiacion:",
+        error
+      );
+      res.status(500).json({
+        success: false,
+        error: "Error al actualizar identificación de la fuente",
+        details:
+          process.env.NODE_ENV === "development" ? error.message : undefined,
+      });
+    }
+  }
+);
+
 module.exports = router;

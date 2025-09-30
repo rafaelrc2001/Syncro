@@ -50,168 +50,159 @@
                     </div>
                 </div>
             </div>
-            <div class="executive-section">
-                <div class="section-header">
-                    <i class="ri-checkbox-multiple-line"></i>
-                    <h3>Medidas para administrar los riesgos por parte del ejecutor de la actividad</h3>
-                </div>
-                <table class="styled-table">
-                    <thead style="background: #e0e0e0; color: #222;">
-                        <tr>
-                            <th>Medida/Requisito</th>
-                            <th>Respuesta</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>¿El equipo debe estar desenergizado?</td>
-                            <td><span id="equipo_desenergizado"></span></td>
-                        </tr>
-                        <tr>
-                            <td>¿Los interruptores deben estar abiertos?</td>
-                            <td><span id="interruptores_abiertos"></span></td>
-                        </tr>
-                        <tr>
-                            <td>¿Se requiere verificar la ausencia de voltaje?</td>
-                            <td><span id="ausencia_voltaje"></span></td>
-                        </tr>
-                        <tr>
-                            <td>¿Se requiere de candados para intervenir el equipo?</td>
-                            <td><span id="candados_intervencion"></span></td>
-                        </tr>
-                        <tr>
-                            <td>¿Se requiere colocar tarjetas de alerta y notificación?</td>
-                            <td><span id="tarjetas_alerta_notificacion"></span></td>
-                        </tr>
-                        <tr>
-                            <td>¿Se requiere dar aviso al personal de área?</td>
-                            <td><span id="aviso_personal_area"></span></td>
-                        </tr>
-                        <tr>
-                            <td>¿Se requiere tapetes dieléctricos?</td>
-                            <td><span id="tapetes_dielelectricos"></span></td>
-                        </tr>
-                        <tr>
-                            <td>¿Se requiere herramienta aislante?</td>
-                            <td><span id="herramienta_aislante"></span></td>
-                        </tr>
-                        <tr>
-                            <td>¿Se requiere utilizar pértiga telescopica?</td>
-                            <td><span id="pertiga_telescopica"></span></td>
-                        </tr>
-                        <tr>
-                            <td>¿Se requiere equipo de proteccion especial?</td>
-                            <td><span id="equipo_proteccion_especial"></span></td>
-                        </tr>
-                        <tr>
-                            <td>¿Cuál?:</td>
-                            <td><span id="cual_equipo_proteccion"></span></td>
-                        </tr>
-                        <tr>
-                            <td>¿Se requiere aterrizar el equipo y/o circuito?</td>
-                            <td><span id="aterrizar_equipo_circuito"></span></td>
-                        </tr>
-                        <tr>
-                            <td>¿Se requiere instalar barricadas en el área?</td>
-                            <td><span id="instalar_barricadas_area"></span></td>
-                        </tr>
-                        <tr>
-                            <td>Observaciones:</td>
-                            <td><span id="observaciones_medidas"></span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            
-            
-            
-            <div class="executive-section">
-                <div class="section-header section-header-cielo">
-                    <i class="ri-tools-line"></i>
-                    <h3>ANÁLISIS DE REQUISITOS PARA EFECTUAR EL TRABAJO.</h3>
-                </div>
-                <table class="styled-table">
-                        <thead class="thead-nopeligroso">
-                            <tr>
-                                <th style="min-width:320px;">ANÁLISIS DE REQUISITOS PARA EFECTUAR EL TRABAJO.</th>
-                                <th style="width:40px;">SI</th>
-                                <th style="width:40px;">NO</th>
-                                <th style="width:40px;">N/A</th>
-                                <th style="min-width:180px;">VERIFICÓ CADA PUNTO FÍSICAMENTE EN CAMPO.</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>¿Se identificó el equipo que se intervendrá?</td>
-                                <td><input type="radio" name="identifico_equipo" value="SI"></td>
-                                <td><input type="radio" name="identifico_equipo" value="NO"></td>
-                                <td><input type="radio" name="identifico_equipo" value="NA"></td>
-                                <td><input type="checkbox" name="verifico_identifico_equipo"></td>
-                            </tr>
-                            <tr>
-                                <td>¿Quedó fuera de operación y desenergizado el equipo?</td>
-                                <td><input type="radio" name="fuera_operacion_desenergizado" value="SI"></td>
-                                <td><input type="radio" name="fuera_operacion_desenergizado" value="NO"></td>
-                                <td><input type="radio" name="fuera_operacion_desenergizado" value="NA"></td>
-                                <td><input type="checkbox" name="verifico_fuera_operacion_desenergizado"></td>
-                            </tr>
-                            <tr>
-                                <td>¿Se instaló el candado y etiquetó el equipo?</td>
-                                <td><input type="radio" name="candado_etiqueta" value="SI"></td>
-                                <td><input type="radio" name="candado_etiqueta" value="NO"></td>
-                                <td><input type="radio" name="candado_etiqueta" value="NA"></td>
-                                <td><input type="checkbox" name="verifico_candado_etiqueta"></td>
-                            </tr>
-                            <tr>
-                                <td>¿Se requiere suspender trabajos adyacentes?</td>
-                                <td><input type="radio" name="suspender_adyacentes" value="SI"></td>
-                                <td><input type="radio" name="suspender_adyacentes" value="NO"></td>
-                                <td><input type="radio" name="suspender_adyacentes" value="NA"></td>
-                                <td><input type="checkbox" name="verifico_suspender_adyacentes"></td>
-                            </tr>
-                            <tr>
-                                <td>¿El área se encuentra limpia y libre de obstaculos?</td>
-                                <td><input type="radio" name="area_limpia_libre_obstaculos" value="SI"></td>
-                                <td><input type="radio" name="area_limpia_libre_obstaculos" value="NO"></td>
-                                <td><input type="radio" name="area_limpia_libre_obstaculos" value="NA"></td>
-                                <td><input type="checkbox" name="verifico_area_limpia_libre_obstaculos"></td>
-                            </tr>
-                            <tr>
-                                <td>¿Se requiere libranza eléctrica?</td>
-                                <td><input type="radio" name="libranza_electrica" value="SI"></td>
-                                <td><input type="radio" name="libranza_electrica" value="NO"></td>
-                                <td><input type="radio" name="libranza_electrica" value="NA"></td>
-                                <td><input type="checkbox" name="verifico_libranza_electrica"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                          
-            </div>
+            <!-- Medidas para administrar los riesgos por parte del ejecutor de la actividad -->
+<div class="executive-section">
+    <div class="section-header">
+        <i class="ri-checkbox-multiple-line"></i>
+        <h3>Medidas para administrar los riesgos por parte del ejecutor de la actividad</h3>
+    </div>
+    <table class="styled-table">
+        <thead style="background: #e0e0e0; color: #222;">
+            <tr>
+                <th>Medida/Requisito</th>
+                <th>Respuesta</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>¿El equipo debe estar desenergizado?</td>
+                <td><span id="equipo_desenergizado"></span></td>
+            </tr>
+            <tr>
+                <td>¿Los interruptores deben estar abiertos?</td>
+                <td><span id="interruptores_abiertos"></span></td>
+            </tr>
+            <tr>
+                <td>¿Se requiere verificar la ausencia de voltaje?</td>
+                <td><span id="ausencia_voltaje"></span></td>
+            </tr>
+            <tr>
+                <td>¿Se requiere de candados para intervenir el equipo?</td>
+                <td><span id="candados_intervencion"></span></td>
+            </tr>
+            <tr>
+                <td>¿Se requiere colocar tarjetas de alerta y notificación?</td>
+                <td><span id="tarjetas_alerta_notificacion"></span></td>
+            </tr>
+            <tr>
+                <td>¿Se requiere dar aviso al personal de área?</td>
+                <td><span id="aviso_personal_area"></span></td>
+            </tr>
+            <tr>
+                <td>¿Se requiere tapetes dieléctricos?</td>
+                <td><span id="tapetes_dielelectricos"></span></td>
+            </tr>
+            <tr>
+                <td>¿Se requiere herramienta aislante?</td>
+                <td><span id="herramienta_aislante"></span></td>
+            </tr>
+            <tr>
+                <td>¿Se requiere utilizar pértiga telescopica?</td>
+                <td><span id="pertiga_telescopica"></span></td>
+            </tr>
+            <tr>
+                <td>¿Se requiere equipo de proteccion especial?</td>
+                <td><span id="equipo_proteccion_especial"></span></td>
+            </tr>
+            <tr>
+                <td>¿Cuál?:</td>
+                <td><span id="cual_equipo_proteccion"></span></td>
+            </tr>
+            <tr>
+                <td>¿Se requiere aterrizar el equipo y/o circuito?</td>
+                <td><span id="aterrizar_equipo_circuito"></span></td>
+            </tr>
+            <tr>
+                <td>¿Se requiere instalar barricadas en el área?</td>
+                <td><span id="instalar_barricadas_area"></span></td>
+            </tr>
+            <tr>
+                <td>Observaciones:</td>
+                <td><span id="observaciones_medidas"></span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
+<!-- ANÁLISIS DE REQUISITOS PARA EFECTUAR EL TRABAJO -->
+<div class="executive-section">
+    <div class="section-header section-header-cielo">
+        <i class="ri-tools-line"></i>
+        <h3>ANÁLISIS DE REQUISITOS PARA EFECTUAR EL TRABAJO.</h3>
+    </div>
+    <table class="styled-table">
+        <thead class="thead-nopeligroso">
+            <tr>
+                <th style="min-width:320px;">ANÁLISIS DE REQUISITOS PARA EFECTUAR EL TRABAJO.</th>
+                <th style="width:40px;">SI</th>
+                <th style="width:40px;">NO</th>
+                <th style="width:40px;">N/A</th>
+                <th style="min-width:180px;">VERIFICÓ CADA PUNTO FÍSICAMENTE EN CAMPO.</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>¿Se identificó el equipo que se intervendrá?</td>
+                <td><span id="identifico_equipo_si"></span></td>
+                <td><span id="identifico_equipo_no"></span></td>
+                <td><span id="identifico_equipo_na"></span></td>
+                <td><span id="verifico_identifico_equipo"></span></td>
+            </tr>
+            <tr>
+                <td>¿Quedó fuera de operación y desenergizado el equipo?</td>
+                <td><span id="fuera_operacion_desenergizado_si"></span></td>
+                <td><span id="fuera_operacion_desenergizado_no"></span></td>
+                <td><span id="fuera_operacion_desenergizado_na"></span></td>
+                <td><span id="verifico_fuera_operacion_desenergizado"></span></td>
+            </tr>
+            <tr>
+                <td>¿Se instaló el candado y etiquetó el equipo?</td>
+                <td><span id="candado_etiqueta_si"></span></td>
+                <td><span id="candado_etiqueta_no"></span></td>
+                <td><span id="candado_etiqueta_na"></span></td>
+                <td><span id="verifico_candado_etiqueta"></span></td>
+            </tr>
+            <tr>
+                <td>¿Se requiere suspender trabajos adyacentes?</td>
+                <td><span id="suspender_adyacentes_si"></span></td>
+                <td><span id="suspender_adyacentes_no"></span></td>
+                <td><span id="suspender_adyacentes_na"></span></td>
+                <td><span id="verifico_suspender_adyacentes"></span></td>
+            </tr>
+            <tr>
+                <td>¿El área se encuentra limpia y libre de obstaculos?</td>
+                <td><span id="area_limpia_libre_obstaculos_si"></span></td>
+                <td><span id="area_limpia_libre_obstaculos_no"></span></td>
+                <td><span id="area_limpia_libre_obstaculos_na"></span></td>
+                <td><span id="verifico_area_limpia_libre_obstaculos"></span></td>
+            </tr>
+            <tr>
+                <td>¿Se requiere libranza eléctrica?</td>
+                <td><span id="libranza_electrica_si"></span></td>
+                <td><span id="libranza_electrica_no"></span></td>
+                <td><span id="libranza_electrica_na"></span></td>
+                <td><span id="verifico_libranza_electrica"></span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
-
-
-            
-
-               <div class="executive-section">
-                    <div class="section-header section-header-cielo">
-                        <i class="ri-tools-line"></i>
-                        <h3>CONDICIONES ACTUALES DEL EQUIPO.</h3>
-                    </div>
-                    <table class="styled-table" style="width:100%; border-collapse:collapse;">
-            
-                        <tbody>
-                            <tr>
-                                <td style="width:180px;">Nivel de tensión:</td>
-                                <td><input type="text" name="nivel_tension" style="width:100%; background:#fff; border:1px solid #d0d7de; border-radius:6px; padding:6px 10px;"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                
-            <!-- Sección AST y Participantes -->
+<!-- CONDICIONES ACTUALES DEL EQUIPO -->
+<div class="executive-section">
+    <div class="section-header section-header-cielo">
+        <i class="ri-tools-line"></i>
+        <h3>CONDICIONES ACTUALES DEL EQUIPO.</h3>
+    </div>
+    <table class="styled-table" style="width:100%; border-collapse:collapse;">
+        <tbody>
+            <tr>
+                <td style="width:180px;">Nivel de tensión:</td>
+                <td><span id="nivel_tension"></span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+                <!-- Sección AST y Participantes -->
                 <div class="executive-section">
                     <div class="section-header">
                         <i class="ri-shield-check-line"></i>
@@ -255,7 +246,7 @@
                         </div>
                     </div>
                 </div>
-                 <!-- Sección 4: Participantes -->
+               <!-- Sección 4: Participantes -->
                 <div class="executive-section">
                     <div class="section-header">
                         <i class="ri-team-line"></i>
@@ -280,27 +271,31 @@
                 <div class="executive-section" style="display: flex; gap: 24px; align-items: flex-end">
                     <div style="flex: 1">
                         <label for="responsable-aprobador" style="font-weight: 600; display: block; margin-bottom: 8px">
-                            Agregar nombre del responsable del área:
+                            Seleccionar supervisor:
                         </label>
-                        <input type="text" id="responsable-aprobador" placeholder="Nombre del responsable del área" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;" />
+                        <select id="responsable-aprobador" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+                            <option value="" disabled selected>Seleccione un supervisor...</option>
+                        </select>
                     </div>
                     <div style="flex: 1">
                         <label for="responsable-aprobador2" style="font-weight: 600; display: block; margin-bottom: 8px">
-                            Agregar nombre del operador del área:
+                            Seleccionar categoría:
                         </label>
-                        <input type="text" id="responsable-aprobador2" placeholder="Nombre del operador del área" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;" />
+                        <select id="responsable-aprobador2" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+                            <option value="" disabled selected>Seleccione una categoría...</option>
+                        </select>
                     </div>
                 </div>
                 <!-- Sección 5: Aprobaciones -->
                 <div class="approval-section">
                     <div class="approval-stamps">
                         <div class="stamp">
-                            <div class="stamp-title">Responsable del area:</div>
+                            <div class="stamp-title">Supervisor:</div>
                             <div class="stamp-placeholder"></div>
                             <div class="stamp-name" id="stamp-aprobador"></div>
                         </div>
                         <div class="stamp">
-                            <div class="stamp-title">Operador del área:</div>
+                            <div class="stamp-title">Categoría:</div>
                             <div class="stamp-placeholder"></div>
                             <div class="stamp-name" id="stamp-encargado"></div>
                             <div class="stamp-date"></div>
@@ -352,6 +347,6 @@
     
 </html>
 
-<script src="/Modules/Fomularios/PT6/PT6seccionarea.js"></script>
+<script src="/Modules/Fomularios/PT6/PT6seccionsupervisor.js"></script>
 </body>
 </html>

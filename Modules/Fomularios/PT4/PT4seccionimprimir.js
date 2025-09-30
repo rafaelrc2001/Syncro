@@ -254,4 +254,105 @@ document.addEventListener("DOMContentLoaded", function () {
   rellenarSupervisoresYCategorias();
 });
 
+/**
+ * Función para asegurar que todas las imágenes estén cargadas
+ */
+function esperarImagenes() {
+  return new Promise((resolve) => {
+    const imagenes = document.querySelectorAll(".company-header img");
+    if (imagenes.length === 0) {
+      resolve();
+      return;
+    }
+    let imagenesRestantes = imagenes.length;
+    imagenes.forEach((img) => {
+      if (img.complete && img.naturalHeight !== 0) {
+        imagenesRestantes--;
+        if (imagenesRestantes === 0) resolve();
+      } else {
+        img.onload = () => {
+          imagenesRestantes--;
+          if (imagenesRestantes === 0) resolve();
+        };
+        img.onerror = () => {
+          imagenesRestantes--;
+          if (imagenesRestantes === 0) resolve();
+        };
+      }
+    });
+    setTimeout(() => resolve(), 3000); // Timeout de seguridad
+  });
+}
+
+/**
+ * Función de impresión tradicional (fallback)
+ */
+async function imprimirPermisoTradicional() {
+  try {
+    await esperarImagenes();
+    window.print();
+  } catch (error) {
+    console.error("Error al imprimir:", error);
+    alert("Ocurrió un error al preparar la impresión. Por favor, inténtalo nuevamente.");
+  }
+}
+
+/**
+ * Función que muestra las instrucciones exactas para eliminar encabezados
+ */
+function mostrarInstruccionesImpresion() {
+  const mensaje = `🖨️ PARA ELIMINAR ENCABEZADOS Y PIES DE PÁGINA:
+
+📌 CHROME/EDGE:
+1. Presiona Ctrl+P
+2. Busca "Más configuraciones" y haz clic
+3. DESMARCA la casilla "Encabezados y pies de página"
+4. Haz clic en "Imprimir"
+
+📌 FIREFOX:
+1. Presiona Ctrl+P  
+2. Haz clic en "Configurar página"
+3. En "Encabezados y pies", selecciona "Vacío" en TODOS
+4. Haz clic en "Imprimir"
+
+⚠️ Esta configuración se debe hacer UNA SOLA VEZ por navegador.
+¿Quieres que te abra el diálogo de impresión ahora?`;
+
+  if (confirm(mensaje)) {
+    const originalTitle = document.title;
+    document.title = "";
+    window.print();
+    setTimeout(() => {
+      document.title = originalTitle;
+    }, 1000);
+  }
+}
+
+// Event listener para el botón de imprimir
+const btnImprimir = document.getElementById("btn-imprimir-permiso");
+if (btnImprimir) {
+  btnImprimir.addEventListener("click", function (e) {
+    e.preventDefault();
+    mostrarInstruccionesImpresion();
+  });
+
+  btnImprimir.style.transition = "all 0.3s ease";
+  btnImprimir.addEventListener("mouseenter", function () {
+    this.style.transform = "translateY(-2px)";
+    this.style.boxShadow = "0 6px 20px rgba(0,59,92,0.3)";
+  });
+  btnImprimir.addEventListener("mouseleave", function () {
+    this.style.transform = "translateY(0)";
+    this.style.boxShadow = "";
+  });
+}
+
+// Interceptar Ctrl+P para mostrar instrucciones
+document.addEventListener("keydown", function (e) {
+  if ((e.ctrlKey || e.metaKey) && e.key === "p") {
+    e.preventDefault();
+    mostrarInstruccionesImpresion();
+  }
+});
+
 // --- Lógica para el botón "Autorizar" ---

@@ -1,9 +1,9 @@
 /*============================
-   FORMATO DE IMPRESIÓN PT1
+   FORMATO DE IMPRESIÓN PT4
    Basado en PT2 y PT3
 ============================*/
 
-/* === ESTILOS COMPACTOS PARA IMPRESIÓN PT1 === */
+/* === ESTILOS COMPACTOS PARA IMPRESIÓN PT4 === */
 @media print {
     @page {
         size: A4;

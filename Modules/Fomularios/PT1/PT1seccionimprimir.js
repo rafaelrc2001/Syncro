@@ -379,3 +379,95 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 });
+
+/**
+ * Función de impresión tradicional (fallback)
+ */
+async function imprimirPermisoTradicional() {
+  try {
+    // Esperar a que las imágenes se carguen completamente (si tienes logos)
+    // Si no tienes logos, puedes omitir esta parte
+    // await esperarImagenes();
+
+    // Ejecutar impresión tradicional del navegador
+    window.print();
+  } catch (error) {
+    console.error("Error al imprimir:", error);
+    alert(
+      "Ocurrió un error al preparar la impresión. Por favor, inténtalo nuevamente."
+    );
+  }
+}
+
+/**
+ * Función que muestra las instrucciones exactas para eliminar encabezados
+ */
+function mostrarInstruccionesImpresion() {
+  const mensaje = `🖨️ PARA ELIMINAR ENCABEZADOS Y PIES DE PÁGINA:
+
+📌 CHROME/EDGE:
+1. Presiona Ctrl+P
+2. Busca "Más configuraciones" y haz clic
+3. DESMARCA la casilla "Encabezados y pies de página"
+4. Haz clic en "Imprimir"
+
+📌 FIREFOX:
+1. Presiona Ctrl+P  
+2. Haz clic en "Configurar página"
+3. En "Encabezados y pies", selecciona "Vacío" en TODOS
+4. Haz clic en "Imprimir"
+
+⚠️ Esta configuración se debe hacer UNA SOLA VEZ por navegador.
+¿Quieres que te abra el diálogo de impresión ahora?`;
+
+  if (confirm(mensaje)) {
+    // Limpiar título antes de imprimir
+    const originalTitle = document.title;
+    document.title = "";
+
+    // Abrir diálogo de impresión
+    window.print();
+
+    // Restaurar título después
+    setTimeout(() => {
+      document.title = originalTitle;
+    }, 1000);
+  }
+}
+
+// Interceptar Ctrl+P para mostrar instrucciones
+document.addEventListener("keydown", function (e) {
+  if ((e.ctrlKey || e.metaKey) && e.key === "p") {
+    e.preventDefault();
+    mostrarInstruccionesImpresion();
+  }
+});
+
+// Modificar el botón de imprimir existente para mostrar instrucciones
+const botonImprimir = document.getElementById("btn-imprimir-permiso");
+if (botonImprimir) {
+  // Agregar event listener adicional que mostrará las instrucciones
+  botonImprimir.addEventListener(
+    "click",
+    function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      mostrarInstruccionesImpresion();
+    },
+    true
+  ); // true para capturar el evento antes que otros listeners
+
+  // Indicador visual al botón
+  botonImprimir.style.transition = "all 0.3s ease";
+  botonImprimir.addEventListener("mouseenter", function () {
+    this.style.transform = "translateY(-2px)";
+    this.style.boxShadow = "0 6px 20px rgba(0,59,92,0.3)";
+  });
+
+  botonImprimir.addEventListener("mouseleave", function () {
+    this.style.transform = "translateY(0)";
+    this.style.boxShadow = "";
+  });
+}
+
+console.log("Funcionalidad de impresión PT1 inicializada correctamente");

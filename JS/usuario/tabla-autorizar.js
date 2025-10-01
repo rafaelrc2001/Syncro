@@ -67,7 +67,7 @@ let filtroBusqueda = "";
 
 // --- Tabla de permisos ---
 function asignarEventosVer() {
-  document.querySelectorAll(".action-btn.view").forEach((btn) => {
+  document.querySelectorAll(".action-btn.print").forEach((btn) => {
     btn.addEventListener("click", async function () {
       const idPermiso = this.getAttribute("data-idpermiso");
       window.idPermisoActual = idPermiso; // Guardar el ID globalmente
@@ -231,24 +231,22 @@ function mostrarPermisosFiltrados(filtro) {
       default:
         badgeClass = "";
     }
+   
     row.innerHTML = `
-            <td>${permiso.prefijo}</td>
-            <td>${permiso.tipo_permiso}</td>
-            <td>${permiso.descripcion}</td>
-            <td>${permiso.area}</td>
-            <td>${permiso.solicitante}</td>
-            <td>${permiso.fecha_hora}</td>
-            <td><span class="status-badge${
-              badgeClass ? " " + badgeClass : ""
-            }">${permiso.estatus}</span></td>
-            <td>
-                <button class="action-btn view" data-idpermiso="${
-                  permiso.id_permiso
-                }"><i class="ri-eye-line"></i></button>
-                <button class="action-btn print"><i class="ri-printer-line"></i></button>
-                <button class="action-btn edit"><i class="ri-edit-line"></i></button>
-            </td>
-        `;
+    <td>${permiso.prefijo}</td>
+    <td>${permiso.tipo_permiso}</td>
+    <td>${permiso.descripcion}</td>
+    <td>${permiso.area}</td>
+    <td>${permiso.solicitante}</td>
+    <td>${permiso.fecha_hora}</td>
+    <td><span class="status-badge${badgeClass ? " " + badgeClass : ""}">${permiso.estatus}</span></td>
+    <td>
+        <button class="action-btn print" data-idpermiso="${
+          permiso.id_permiso
+        }"><i class="ri-eye-line"></i></button>
+        <button class="action-btn edit"><i class="ri-edit-line"></i></button>
+     </td>
+`;
     tbody.appendChild(row);
   });
 
@@ -258,7 +256,7 @@ function mostrarPermisosFiltrados(filtro) {
       const row = this.closest("tr");
       const tipoPermiso = row ? row.children[1].textContent.trim() : "";
       const idPermiso = row
-        ? row.querySelector(".action-btn.view").getAttribute("data-idpermiso")
+        ? row.querySelector(".action-btn.print").getAttribute("data-idpermiso")
         : "";
 
       if (tipoPermiso === "PT No Peligroso") {
@@ -289,7 +287,7 @@ function mostrarPermisosFiltrados(filtro) {
       const row = this.closest("tr");
       const tipoPermiso = row ? row.children[1].textContent.trim() : "";
       const idPermiso = row
-        ? row.querySelector(".action-btn.view").getAttribute("data-idpermiso")
+        ? row.querySelector(".action-btn.print").getAttribute("data-idpermiso")
         : "";
 
       if (tipoPermiso === "PT No Peligroso") {

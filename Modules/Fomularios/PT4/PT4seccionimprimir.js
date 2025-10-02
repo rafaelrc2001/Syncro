@@ -138,8 +138,7 @@ function setText(id, value) {
 
 // Lógica para mostrar los datos en las etiquetas (igual que sección área)
 function mostrarDatosSupervisor(permiso) {
-  setText("prefijo-label", permiso.prefijo || permiso.id_permiso || permiso.id || "-");
-  document.title = `Permiso Apertura Altura ${permiso.prefijo || permiso.id_permiso || permiso.id || "-"}`;
+  // No sobreescribir el prefijo ni el título aquí, ya se llenaron en el primer fetch
 
   setText("descripcion-trabajo-label", permiso.descripcion_trabajo); // Nuevo: mapeo descripcion
   setText("maintenance-type-label", permiso.tipo_mantenimiento);
@@ -226,9 +225,12 @@ document.addEventListener("DOMContentLoaded", function () {
         // Prefijo en el título
         if (data && data.general && document.getElementById("prefijo-label")) {
           // Mostrar el prefijo en el encabezado
-          document.getElementById("prefijo-label").textContent = data.general.prefijo || "-";
+          document.getElementById("prefijo-label").textContent =
+            data.general.prefijo || "-";
           // Mostrar el prefijo en el título de la pestaña
-          document.title = `Permiso Apertura Altura ${data.general.prefijo || "-"}`;
+          document.title = `Permiso Apertura Altura ${
+            data.general.prefijo || "-"
+          }`;
         }
         // Rellenar datos generales si existen
         if (data && data.general) {
@@ -270,7 +272,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Error al consultar la API de permiso de altura:", err);
       });
 
-         // === AGREGA ESTA LÍNEA AQUÍ ===
+    // === AGREGA ESTA LÍNEA AQUÍ ===
     llenarTablaResponsables(idPermiso);
   }
   rellenarSupervisoresYCategorias();
@@ -340,10 +342,6 @@ if (btnImprimir) {
   });
 }
 
-
-
-
-
 function llenarTablaResponsables(idPermiso) {
   fetch(`http://localhost:3000/api/autorizaciones/personas/${idPermiso}`)
     .then((response) => response.json())
@@ -358,11 +356,11 @@ function llenarTablaResponsables(idPermiso) {
         const filas = [
           { nombre: data.responsable_area, cargo: "Responsable de área" },
           { nombre: data.operador_area, cargo: "Operador del área" },
-          { nombre: data.nombre_supervisor, cargo: "Supervisor" }
+          { nombre: data.nombre_supervisor, cargo: "Supervisor" },
         ];
 
         let hayResponsables = false;
-        filas.forEach(fila => {
+        filas.forEach((fila) => {
           if (fila.nombre && fila.nombre.trim() !== "") {
             hayResponsables = true;
             const tr = document.createElement("tr");
@@ -376,7 +374,7 @@ function llenarTablaResponsables(idPermiso) {
         });
 
         // Si alguna fila no tiene nombre, igual la mostramos con N/A
-        filas.forEach(fila => {
+        filas.forEach((fila) => {
           if (!fila.nombre || fila.nombre.trim() === "") {
             const tr = document.createElement("tr");
             tr.innerHTML = `
@@ -405,8 +403,6 @@ function llenarTablaResponsables(idPermiso) {
       console.error("Error al consultar personas de autorización:", err);
     });
 }
-
-
 
 // Elimina o comenta el listener de Ctrl+P para instrucciones
 // document.addEventListener("keydown", function (e) {

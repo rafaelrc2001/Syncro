@@ -1,3 +1,23 @@
+// Mostrar nombres de responsable y operador del área en la sección de aprobaciones
+document.addEventListener("DOMContentLoaded", function () {
+  const params = new URLSearchParams(window.location.search);
+  const idPermiso = params.get("id");
+  if (!idPermiso) return;
+  fetch(`http://localhost:3000/api/autorizaciones/personas/${idPermiso}`)
+    .then((res) => res.json())
+    .then((data) => {
+      if (data && data.success && data.data) {
+        const responsable = document.getElementById("nombre-responsable-area");
+        const operador = document.getElementById("nombre-operador-area");
+        if (responsable)
+          responsable.textContent = data.data.responsable_area || "-";
+        if (operador) operador.textContent = data.data.operador_area || "-";
+      }
+    })
+    .catch((err) => {
+      console.error("Error al obtener responsables de área:", err);
+    });
+});
 document.addEventListener("DOMContentLoaded", function () {
   // --- Lógica para el botón "Autorizar" ---
   const btnAutorizar = document.getElementById("btn-guardar-campos");

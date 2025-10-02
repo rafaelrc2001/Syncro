@@ -1,6 +1,22 @@
 // Función para manejar el envío del formulario a n8n
 window.n8nFormHandler = async function () {
   // Recopilar datos del formulario
+  // Mapa de ids a nombres de permisos
+  const mapaPermisos = {
+    1: "PT No Peligroso",
+    2: "PT Apertura Equipo Línea",
+    3: "PT Espacio Confinado",
+    4: "PT Altura",
+    5: "PT Fuego",
+    6: "PT Electrico",
+    7: "PT Radiactivas",
+    // Agrega más si tienes más tipos
+  };
+
+  // Obtener el id del tipo de permiso desde sessionStorage (seleccionado en la tabla)
+  const idPermiso = sessionStorage.getItem("id_tipo_permiso");
+  const nombrePermiso = mapaPermisos[idPermiso] || "";
+
   const formData = {
     numeroPermiso:
       window.permitNumber || document.getElementById("permit-number")?.value,
@@ -14,7 +30,8 @@ window.n8nFormHandler = async function () {
     descripcionTrabajo: document.getElementById("work-description")?.value,
     fechaSolicitud: new Date().toISOString(),
     mantenimiento: document.getElementById("maintenance-type")?.value,
-    tipopermiso: document.getElementById("PermisoNP")?.value,
+    tipopermiso: nombrePermiso,
+    // nombrePermiso: nombrePermiso, // puedes eliminar esta línea si no la necesitas duplicada
     correo:
       window.correoDepartamento || document.getElementById("correo")?.value,
     //correo: window.correoDepartamento ? window.correoDepartamento : '',
@@ -25,7 +42,7 @@ window.n8nFormHandler = async function () {
 
   // Enviar datos a n8n
   const response = await fetch(
-    "https://7mhxkntt-5678.usw3.devtunnels.ms/webhook-test/formulario-PT",
+    "https://7mhxkntt-5678.usw3.devtunnels.ms/webhook/formulario-PT",
     {
       method: "POST",
       headers: {

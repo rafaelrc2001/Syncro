@@ -346,6 +346,73 @@
 	* {
 		color: #000 !important;
 	}
+
+	 /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
+      /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
+       /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
+        /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
+         /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
+          /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
+           /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
+    /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
+    .ast-table-responsables th:nth-child(1),
+    .ast-table-responsables td:nth-child(1) {
+        width: 47% !important;
+        min-width: 144px !important;
+        max-width: 360px !important;
+    }
+    .ast-table-responsables th:nth-child(2),
+    .ast-table-responsables td:nth-child(2) {
+        width: 53% !important;
+        min-width: 144px !important;
+        max-width: 420px !important;
+    }
+    .ast-table-responsables th:nth-child(3),
+    .ast-table-responsables td:nth-child(3) {
+        width: 45% !important;
+        min-width: 144px !important;
+        max-width: 285px !important;
+    }
+
+    /* === REGLAS ESPECÍFICAS PARA TABLA DE PARTICIPANTES === */
+     /* === REGLAS ESPECÍFICAS PARA TABLA DE PARTICIPANTES === */
+      /* === REGLAS ESPECÍFICAS PARA TABLA DE PARTICIPANTES === */
+       /* === REGLAS ESPECÍFICAS PARA TABLA DE PARTICIPANTES === */
+        /* === REGLAS ESPECÍFICAS PARA TABLA DE PARTICIPANTES === */
+         /* === REGLAS ESPECÍFICAS PARA TABLA DE PARTICIPANTES === */
+          /* === REGLAS ESPECÍFICAS PARA TABLA DE PARTICIPANTES === */
+          
+    .ast-table-participantes th:nth-child(1),
+    .ast-table-participantes td:nth-child(1) {
+        width: 32% !important;
+        min-width: 140px !important;
+        max-width: 320px !important;
+    }
+    .ast-table-participantes th:nth-child(2),
+    .ast-table-participantes td:nth-child(2) {
+        width: 20% !important;
+        min-width: 80px !important;
+        max-width: 160px !important;
+    }
+    .ast-table-participantes th:nth-child(3),
+    .ast-table-participantes td:nth-child(3) {
+        width: 20% !important;
+        min-width: 80px !important;
+        max-width: 160px !important;
+    }
+    .ast-table-participantes th:nth-child(4),
+    .ast-table-participantes td:nth-child(4) {
+        width: 24% !important;
+        min-width: 100px !important;
+        max-width: 220px !important;
+    }
+    .ast-table-participantes th:nth-child(5),
+    .ast-table-participantes td:nth-child(5) {
+        width: 24% !important;
+        min-width: 100px !important;
+        max-width: 220px !important;
+}
+ 
 }
 
 /* === ESTILOS PARA PANTALLA (NO MODIFICAN EL DISEÑO EXISTENTE) === */

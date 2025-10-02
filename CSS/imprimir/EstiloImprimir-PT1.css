@@ -78,15 +78,21 @@
     }
     .personal-involucrado-table th:nth-child(1),
     .personal-involucrado-table td:nth-child(1) {
-        width: 40% !important;
-        min-width: 200px !important;
-        max-width: none !important;
+        width: 28% !important;
+        min-width: 140px !important;
+        max-width: 300px !important;
     }
     .personal-involucrado-table th:nth-child(n+2),
     .personal-involucrado-table td:nth-child(n+2) {
         width: 15% !important;
         min-width: 120px !important;
         max-width: none !important;
+    }
+    .personal-involucrado-table th:nth-child(5),
+    .personal-involucrado-table td:nth-child(5) {
+        width: 30% !important;
+        min-width: 190px !important;
+        max-width: 220px !important;
     }
 
     /* AST TABLE */
@@ -119,6 +125,12 @@
         width: 100px !important;
         min-width: 100px !important;
         max-width: 140px !important;
+    }
+    .ast-table th:last-child,
+    .ast-table td:last-child {
+        width: 140px !important;   /* O el valor que prefieras */
+        min-width: 120px !important;
+        max-width: 200px !important;
     }
 
     /* REQUISITOS PARA ADMINISTRAR LOS RIESGOS */
@@ -352,6 +364,79 @@
     /* FORZAR TEXTO EN NEGRO */
     * {
         color: #000 !important;
+    }
+
+    .styled-table th:last-child,
+    .styled-table td:last-child {
+        width: 120px !important; /* O el valor que prefieras */
+        min-width: 150px !important;
+        max-width: 200px !important;
+    }
+
+     /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
+      /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
+       /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
+        /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
+         /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
+          /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
+           /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
+    /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
+    .ast-table-responsables th:nth-child(1),
+    .ast-table-responsables td:nth-child(1) {
+        width: 47% !important;
+        min-width: 144px !important;
+        max-width: 360px !important;
+    }
+    .ast-table-responsables th:nth-child(2),
+    .ast-table-responsables td:nth-child(2) {
+        width: 53% !important;
+        min-width: 144px !important;
+        max-width: 420px !important;
+    }
+    .ast-table-responsables th:nth-child(3),
+    .ast-table-responsables td:nth-child(3) {
+        width: 45% !important;
+        min-width: 144px !important;
+        max-width: 285px !important;
+    }
+
+    /* === REGLAS ESPECÍFICAS PARA TABLA DE PARTICIPANTES === */
+     /* === REGLAS ESPECÍFICAS PARA TABLA DE PARTICIPANTES === */
+      /* === REGLAS ESPECÍFICAS PARA TABLA DE PARTICIPANTES === */
+       /* === REGLAS ESPECÍFICAS PARA TABLA DE PARTICIPANTES === */
+        /* === REGLAS ESPECÍFICAS PARA TABLA DE PARTICIPANTES === */
+         /* === REGLAS ESPECÍFICAS PARA TABLA DE PARTICIPANTES === */
+          /* === REGLAS ESPECÍFICAS PARA TABLA DE PARTICIPANTES === */
+          
+    .ast-table-participantes th:nth-child(1),
+    .ast-table-participantes td:nth-child(1) {
+        width: 32% !important;
+        min-width: 140px !important;
+        max-width: 320px !important;
+    }
+    .ast-table-participantes th:nth-child(2),
+    .ast-table-participantes td:nth-child(2) {
+        width: 20% !important;
+        min-width: 80px !important;
+        max-width: 160px !important;
+    }
+    .ast-table-participantes th:nth-child(3),
+    .ast-table-participantes td:nth-child(3) {
+        width: 20% !important;
+        min-width: 80px !important;
+        max-width: 160px !important;
+    }
+    .ast-table-participantes th:nth-child(4),
+    .ast-table-participantes td:nth-child(4) {
+        width: 24% !important;
+        min-width: 100px !important;
+        max-width: 220px !important;
+    }
+    .ast-table-participantes th:nth-child(5),
+    .ast-table-participantes td:nth-child(5) {
+        width: 24% !important;
+        min-width: 100px !important;
+        max-width: 220px !important;
     }
 }
 

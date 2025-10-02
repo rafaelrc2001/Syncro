@@ -1,3 +1,25 @@
+// Cambia el título de la pestaña para incluir el prefijo dinámicamente
+document.addEventListener("DOMContentLoaded", function () {
+  var prefijo = document.getElementById("prefijo-label");
+  var title = document.getElementById("dynamic-title");
+  if (prefijo && title) {
+    // Si el prefijo aún no está, espera a que se actualice
+    var observer = new MutationObserver(function () {
+      var valor = prefijo.textContent || prefijo.innerText || "-";
+      title.textContent = "Permiso Fuego " + valor;
+      document.title = title.textContent;
+    });
+    observer.observe(prefijo, {
+      childList: true,
+      subtree: true,
+      characterData: true,
+    });
+    // Inicializa el título si ya hay valor
+    var valor = prefijo.textContent || prefijo.innerText || "-";
+    title.textContent = "Permiso Fuego " + valor;
+    document.title = title.textContent;
+  }
+});
 /**
  * Función para asegurar que todas las imágenes estén cargadas
  */
@@ -425,14 +447,11 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Error al consultar la API de permiso de fuego:", err);
       });
 
-       llenarTablaResponsables(idPermiso);
+    llenarTablaResponsables(idPermiso);
   }
 
   rellenarSupervisoresYCategorias();
 });
-
-
-
 
 function llenarTablaResponsables(idPermiso) {
   fetch(`http://localhost:3000/api/autorizaciones/personas/${idPermiso}`)
@@ -448,11 +467,11 @@ function llenarTablaResponsables(idPermiso) {
         const filas = [
           { nombre: data.responsable_area, cargo: "Responsable de área" },
           { nombre: data.operador_area, cargo: "Operador del área" },
-          { nombre: data.nombre_supervisor, cargo: "Supervisor" }
+          { nombre: data.nombre_supervisor, cargo: "Supervisor" },
         ];
 
         let hayResponsables = false;
-        filas.forEach(fila => {
+        filas.forEach((fila) => {
           if (fila.nombre && fila.nombre.trim() !== "") {
             hayResponsables = true;
             const tr = document.createElement("tr");
@@ -466,7 +485,7 @@ function llenarTablaResponsables(idPermiso) {
         });
 
         // Si alguna fila no tiene nombre, igual la mostramos con N/A
-        filas.forEach(fila => {
+        filas.forEach((fila) => {
           if (!fila.nombre || fila.nombre.trim() === "") {
             const tr = document.createElement("tr");
             tr.innerHTML = `

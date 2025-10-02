@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Permiso Energia Electrica</title>
+    <title id="dynamic-title">Permiso Energia Electrica</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
        <link rel="stylesheet" href="/CSS/EstiloGeneral.css" />
@@ -295,19 +295,21 @@
                     </div>
                 </div>
                <!-- Sección 4: Participantes -->
+                      <!-- Sección 4: Participantes -->
                 <div class="executive-section usuario">
                     <div class="section-header">
                         <i class="ri-team-line"></i>
                         <h3>Personal Involucrado</h3>
                     </div>
                     <div class="ast-summary">
-                        <table class="ast-table">
+                        <table class="ast-table ast-table-participantes" id="tabla-participantes">
                             <thead>
                                 <tr>
                                     <th>Nombre</th>
                                     <th>Función</th>
                                     <th>Credencial</th>
                                     <th>Cargo</th>
+                                    <th>Firma</th>
                                 </tr>
                             </thead>
                             <tbody id="modal-ast-participantes-body">
@@ -316,7 +318,8 @@
                         </table>
                     </div>
                 </div>
-                
+              
+
 
                 <!-- Sección 5: Aprobaciones -->
            <div class="executive-section usuario">
@@ -325,7 +328,7 @@
                         <h3>Responsables</h3>
                     </div>
                     <div class="ast-summary">
-                        <table class="ast-table">
+                         <table class="ast-table ast-table-responsables">
                             <thead>
                                 <tr>
                                     <th>Nombre</th>

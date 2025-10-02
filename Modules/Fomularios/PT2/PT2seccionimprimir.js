@@ -115,6 +115,9 @@ document.addEventListener("DOMContentLoaded", function () {
         if (data && data.general) {
           document.querySelector(".section-header h3").textContent =
             data.general.prefijo || "NP-XXXXXX";
+          document.title =
+            "Permiso  Apertura Equipo Línea" +
+            (data.general.prefijo ? " - " + data.general.prefijo : "");
           if (document.getElementById("descripcion-trabajo-label"))
             document.getElementById("descripcion-trabajo-label").textContent =
               data.general.descripcion_trabajo || "-";
@@ -319,7 +322,7 @@ document.addEventListener("DOMContentLoaded", function () {
         );
       });
 
-       // === AGREGA ESTA LÍNEA PARA LLENAR LA TABLA DE RESPONSABLES ===
+    // === AGREGA ESTA LÍNEA PARA LLENAR LA TABLA DE RESPONSABLES ===
     llenarTablaResponsables(idPermiso);
   }
   const btnSalir = document.getElementById("btn-salir-nuevo");
@@ -707,7 +710,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Event listener para el botón de imprimir
-// --- CONFIGURACIÓN DEFINITIVA PARA ELIMINAR ENCABEZADOS ---
+  // --- CONFIGURACIÓN DEFINITIVA PARA ELIMINAR ENCABEZADOS ---
 
   // Función que muestra las instrucciones exactas para eliminar encabezados
   function mostrarInstruccionesImpresion() {
@@ -742,7 +745,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }, 1000);
     }
   }
-  
 
   // Interceptar Ctrl+P para mostrar instrucciones
   // Elimina o comenta este bloque para que Ctrl+P funcione normal
@@ -776,8 +778,6 @@ document.addEventListener("DOMContentLoaded", function () {
   console.log("Funcionalidad de PDF PT2 inicializada correctamente");
 });
 
-
-
 function llenarTablaResponsables(idPermiso) {
   fetch(`http://localhost:3000/api/autorizaciones/personas/${idPermiso}`)
     .then((response) => response.json())
@@ -792,12 +792,13 @@ function llenarTablaResponsables(idPermiso) {
         const filas = [
           { nombre: data.responsable_area, cargo: "Responsable de área" },
           { nombre: data.operador_area, cargo: "Operador del área" },
-          { nombre: data.nombre_supervisor, cargo: "Supervisor" }
+          { nombre: data.nombre_supervisor, cargo: "Supervisor" },
         ];
 
         let hayAlMenosUno = false;
-        filas.forEach(fila => {
-          const nombre = (fila.nombre && fila.nombre.trim() !== "") ? fila.nombre : "N/A";
+        filas.forEach((fila) => {
+          const nombre =
+            fila.nombre && fila.nombre.trim() !== "" ? fila.nombre : "N/A";
           if (nombre !== "N/A") hayAlMenosUno = true;
           const tr = document.createElement("tr");
           tr.innerHTML = `
@@ -819,4 +820,3 @@ function llenarTablaResponsables(idPermiso) {
       console.error("Error al consultar personas de autorización:", err);
     });
 }
-

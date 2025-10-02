@@ -104,6 +104,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const element = document.getElementById(id);
     if (element) {
       element.textContent = value || "-";
+      // Si es el prefijo, actualiza el título de la pestaña
+      if (id === "prefijo-label") {
+        document.title =
+          "Permiso Espacio Confinado" + (value ? " - " + value : "");
+      }
     } else {
       console.warn(`Elemento con ID '${id}' no encontrado`);
     }
@@ -316,10 +321,8 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Error al obtener datos generales del permiso:", err);
       });
 
-
-        // === AGREGA ESTA LÍNEA PARA LLENAR LA TABLA DE RESPONSABLES ===
+    // === AGREGA ESTA LÍNEA PARA LLENAR LA TABLA DE RESPONSABLES ===
     llenarTablaResponsables(idPermiso);
-    
   } else {
     console.error("No se encontró ID de permiso en la URL");
     alert("No se pudo obtener el ID del permiso desde la URL");
@@ -410,9 +413,6 @@ document.addEventListener("DOMContentLoaded", function () {
   console.log("Funcionalidad de PT3 Impresión inicializada correctamente");
 });
 
-
-
-
 function llenarTablaResponsables(idPermiso) {
   fetch(`http://localhost:3000/api/autorizaciones/personas/${idPermiso}`)
     .then((response) => response.json())
@@ -427,12 +427,13 @@ function llenarTablaResponsables(idPermiso) {
         const filas = [
           { nombre: data.responsable_area, cargo: "Responsable de área" },
           { nombre: data.operador_area, cargo: "Operador del área" },
-          { nombre: data.nombre_supervisor, cargo: "Supervisor" }
+          { nombre: data.nombre_supervisor, cargo: "Supervisor" },
         ];
 
         let hayAlMenosUno = false;
-        filas.forEach(fila => {
-          const nombre = (fila.nombre && fila.nombre.trim() !== "") ? fila.nombre : "N/A";
+        filas.forEach((fila) => {
+          const nombre =
+            fila.nombre && fila.nombre.trim() !== "" ? fila.nombre : "N/A";
           if (nombre !== "N/A") hayAlMenosUno = true;
           const tr = document.createElement("tr");
           tr.innerHTML = `
@@ -454,4 +455,3 @@ function llenarTablaResponsables(idPermiso) {
       console.error("Error al consultar personas de autorización:", err);
     });
 }
-

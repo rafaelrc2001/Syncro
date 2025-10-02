@@ -5,6 +5,10 @@
 
 /* === ESTILOS COMPACTOS PARA IMPRESIÓN PT4 === */
 @media print {
+
+
+    
+
     @page {
         size: A4;
         margin: 10mm 8mm;
@@ -116,9 +120,9 @@
         max-width: 180px !important;
     }
     .ast-table th:nth-child(6), .ast-table td:nth-child(6) {
-        width: 100px !important;
-        min-width: 100px !important;
-        max-width: 140px !important;
+        width: 150px !important;
+        min-width: 120px !important;
+        max-width: 200px !important;
     }
 
     /* REQUISITOS PARA ADMINISTRAR LOS RIESGOS */
@@ -155,12 +159,19 @@
         max-width: 500px !important;
     }
 
-    /* MEDIDAS/REQUISITOS TABLA */
-    .tabla-medidas th:nth-child(3),
-    .tabla-medidas td:nth-child(3) {
-        width: 220px !important;
-        min-width: 140px !important;
-        max-width: 260px !important;
+    /* MEDIDAS/REQUISITOS TABLA (ajuste para tabla de 2 columnas) */
+    #tabla-medidas-riesgos th.medidas-pregunta,
+    #tabla-medidas-riesgos td.medidas-pregunta {
+        width: 70% !important;
+        min-width: 515px !important;
+        max-width: 1800px !important;
+    }
+    #tabla-medidas-riesgos th.medidas-respuesta,
+    #tabla-medidas-riesgos td.medidas-respuesta {
+        width: 30% !important;
+        min-width: 180px !important;
+        max-width: 600px !important;
+        text-align: center !important;
     }
 
     /* ENCABEZADOS DE IMPRESIÓN - BLANCO Y NEGRO */
@@ -352,6 +363,92 @@
     /* FORZAR TEXTO EN NEGRO */
     * {
         color: #000 !important;
+    }
+
+
+
+        /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
+      /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
+       /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
+        /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
+         /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
+          /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
+           /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
+    /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
+    .ast-table-responsables th:nth-child(1),
+    .ast-table-responsables td:nth-child(1) {
+        width: 47% !important;
+        min-width: 144px !important;
+        max-width: 360px !important;
+    }
+    .ast-table-responsables th:nth-child(2),
+    .ast-table-responsables td:nth-child(2) {
+        width: 53% !important;
+        min-width: 144px !important;
+        max-width: 420px !important;
+    }
+    .ast-table-responsables th:nth-child(3),
+    .ast-table-responsables td:nth-child(3) {
+        width: 45% !important;
+        min-width: 144px !important;
+        max-width: 285px !important;
+    }
+
+    /* === REGLAS ESPECÍFICAS PARA TABLA DE PARTICIPANTES === */
+     /* === REGLAS ESPECÍFICAS PARA TABLA DE PARTICIPANTES === */
+      /* === REGLAS ESPECÍFICAS PARA TABLA DE PARTICIPANTES === */
+       /* === REGLAS ESPECÍFICAS PARA TABLA DE PARTICIPANTES === */
+        /* === REGLAS ESPECÍFICAS PARA TABLA DE PARTICIPANTES === */
+         /* === REGLAS ESPECÍFICAS PARA TABLA DE PARTICIPANTES === */
+          /* === REGLAS ESPECÍFICAS PARA TABLA DE PARTICIPANTES === */
+          
+    .ast-table-participantes th:nth-child(1),
+    .ast-table-participantes td:nth-child(1) {
+        width: 32% !important;
+        min-width: 140px !important;
+        max-width: 320px !important;
+    }
+    .ast-table-participantes th:nth-child(2),
+    .ast-table-participantes td:nth-child(2) {
+        width: 20% !important;
+        min-width: 80px !important;
+        max-width: 160px !important;
+    }
+    .ast-table-participantes th:nth-child(3),
+    .ast-table-participantes td:nth-child(3) {
+        width: 20% !important;
+        min-width: 80px !important;
+        max-width: 160px !important;
+    }
+    .ast-table-participantes th:nth-child(4),
+    .ast-table-participantes td:nth-child(4) {
+        width: 24% !important;
+        min-width: 100px !important;
+        max-width: 220px !important;
+    }
+    .ast-table-participantes th:nth-child(5),
+    .ast-table-participantes td:nth-child(5) {
+        width: 24% !important;
+        min-width: 100px !important;
+        max-width: 220px !important;
+    }
+
+        /* === TABLA MEDIDAS/REQUISITOS PARA ADMINISTRAR LOS RIESGOS === */
+    th.medidas-pregunta, td.medidas-pregunta {
+        width: 420px !important;
+        min-width: 260px !important;
+        max-width: 700px !important;
+    }
+    th.medidas-respuesta, td.medidas-respuesta {
+        width: 130px !important;
+        min-width: 80px !important;
+        max-width: 200px !important;
+        text-align: center !important;
+    }
+    th.medidas-detalle, td.medidas-detalle {
+        width: 180px !important;
+        min-width: 120px !important;
+        max-width: 260px !important;
     }
 }
 

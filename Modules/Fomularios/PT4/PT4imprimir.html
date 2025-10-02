@@ -106,42 +106,65 @@
                     <div class="section-header">
                         <h3 style="margin-bottom:0.5em;">MEDIDAS PARA ADMINISTRAR LOS RIESGOS</h3>
                     </div>
-                    <div class="executive-grid" style="display: grid; grid-template-columns: 1fr 2fr; gap: 1rem;">
-                        <div><strong>¿El acceso al lugar de trabajo está libre de obstáculos?</strong></div>
-                        <div id="acceso-libre-obstaculos-label"></div>
-
-                        <div><strong>¿La canastilla está debidamente asegurada?</strong></div>
-                        <div id="canastilla-asegurada-label"></div>
-
-                        <div><strong>¿El andamio tiene rodapié, barandal plataforma completa, escaleras y contravientos?</strong></div>
-                        <div id="andamio-completo-label"></div>
-
-                        <div><strong>¿El andamio tiene seguros y zapatas para frenos?</strong></div>
-                        <div id="andamio-seguros-zapatas-label"></div>
-
-                        <div><strong>¿Las escaleras tienen peldaños en buen estado, zapatas o gomas de apoyo y están bien sujetas?</strong></div>
-                        <div id="escaleras-buen-estado-label"></div>
-
-                        <div><strong>¿La línea de vida o el punto de amarre es eficaz para asegurar el cable de sujeción del arnés de seguridad?</strong></div>
-                        <div id="linea-vida-segura-label"></div>
-
-                        <div><strong>¿El arnés de seguridad y cable de sujeción están completos y en buen estado?</strong></div>
-                        <div id="arnes-completo-buen-estado-label"></div>
-
-                        <div><strong>¿Es necesario suspender los trabajos adyacentes?</strong></div>
-                        <div id="suspender-trabajos-adyacentes-label"></div>
-
-                        <div><strong>¿Número de personas autorizadas? ¿Cuántas?</strong></div>
-                        <div id="numero-personas-autorizadas-label"></div>
-
-                        <div><strong>¿Los trabajadores resultaron aptos en la evaluación médica?</strong></div>
-                        <div id="trabajadores-aptos-evaluacion-label"></div>
-
-                        <div><strong>¿Se requiere la instalación de barreras y/o barricadas?</strong></div>
-                        <div id="requiere-barreras-label"></div>
-
-                        <div><strong>Observaciones:</strong></div>
-                        <div id="observaciones-label"></div>
+                    <div style="overflow-x:auto;">
+                        <table id="tabla-medidas-riesgos" class="styled-table tabla-medidas" style="width:100%; border-collapse:collapse;">
+                            <thead>
+                                <tr>
+                                    <th class="medidas-pregunta">Pregunta</th>
+                                    <th class="medidas-respuesta">Respuesta</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="medidas-pregunta">¿El acceso al lugar de trabajo está libre de obstáculos?</td>
+                                    <td class="medidas-respuesta" id="acceso-libre-obstaculos-label"></td>
+                                </tr>
+                                <tr>
+                                    <td class="medidas-pregunta">¿La canastilla está debidamente asegurada?</td>
+                                    <td class="medidas-respuesta" id="canastilla-asegurada-label"></td>
+                                </tr>
+                                <tr>
+                                    <td class="medidas-pregunta">¿El andamio tiene rodapié, barandal plataforma completa, escaleras y contravientos?</td>
+                                    <td class="medidas-respuesta" id="andamio-completo-label"></td>
+                                </tr>
+                                <tr>
+                                    <td class="medidas-pregunta">¿El andamio tiene seguros y zapatas para frenos?</td>
+                                    <td class="medidas-respuesta" id="andamio-seguros-zapatas-label"></td>
+                                </tr>
+                                <tr>
+                                    <td class="medidas-pregunta">¿Las escaleras tienen peldaños en buen estado, zapatas o gomas de apoyo y están bien sujetas?</td>
+                                    <td class="medidas-respuesta" id="escaleras-buen-estado-label"></td>
+                                </tr>
+                                <tr>
+                                    <td class="medidas-pregunta">¿La línea de vida o el punto de amarre es eficaz para asegurar el cable de sujeción del arnés de seguridad?</td>
+                                    <td class="medidas-respuesta" id="linea-vida-segura-label"></td>
+                                </tr>
+                                <tr>
+                                    <td class="medidas-pregunta">¿El arnés de seguridad y cable de sujeción están completos y en buen estado?</td>
+                                    <td class="medidas-respuesta" id="arnes-completo-buen-estado-label"></td>
+                                </tr>
+                                <tr>
+                                    <td class="medidas-pregunta">¿Es necesario suspender los trabajos adyacentes?</td>
+                                    <td class="medidas-respuesta" id="suspender-trabajos-adyacentes-label"></td>
+                                </tr>
+                                <tr>
+                                    <td class="medidas-pregunta">¿Número de personas autorizadas? ¿Cuántas?</td>
+                                    <td class="medidas-respuesta" id="numero-personas-autorizadas-label"></td>
+                                </tr>
+                                <tr>
+                                    <td class="medidas-pregunta">¿Los trabajadores resultaron aptos en la evaluación médica?</td>
+                                    <td class="medidas-respuesta" id="trabajadores-aptos-evaluacion-label"></td>
+                                </tr>
+                                <tr>
+                                    <td class="medidas-pregunta">¿Se requiere la instalación de barreras y/o barricadas?</td>
+                                    <td class="medidas-respuesta" id="requiere-barreras-label"></td>
+                                </tr>
+                                <tr>
+                                    <td class="medidas-pregunta">Observaciones:</td>
+                                    <td class="medidas-respuesta" id="observaciones-label"></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -181,61 +204,61 @@
                         <table style="width:100%; border-collapse:collapse;">
                             <thead>
                                 <tr style="background:#e74c3c; color:#fff;">
-                                    <th style="padding:8px;">Pregunta</th>
-                                    <th style="width:40px;">Respuesta</th>
-                                    <th style="width:120px;">Detalle</th>
+                                    <th class="medidas-pregunta" style="padding:8px;">Pregunta</th>
+                                    <th class="medidas-respuesta" style="width:40px;">Respuesta</th>
+                                    <th class="medidas-detalle" style="width:120px;">Detalle</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>¿Equipo de protección personal especial? <span style="font-weight:400;">¿Cuál?</span></td>
-                                    <td id="proteccion_especial_respuesta"></td>
-                                    <td id="proteccion_especial_cual"></td>
+                                    <td class="medidas-pregunta">¿Equipo de protección personal especial? <span style="font-weight:400;">¿Cuál?</span></td>
+                                    <td class="medidas-respuesta" id="proteccion_especial_respuesta"></td>
+                                    <td class="medidas-detalle" id="proteccion_especial_cual"></td>
                                 </tr>
                                 <tr>
-                                    <td>¿Utilizar equipo contra caídas? <span style="font-weight:400;">¿cuál?</span></td>
-                                    <td id="equipo_caidas_respuesta"></td>
-                                    <td id="equipo_caidas_cual"></td>
+                                    <td class="medidas-pregunta">¿Utilizar equipo contra caídas? <span style="font-weight:400;">¿cuál?</span></td>
+                                    <td class="medidas-respuesta" id="equipo_caidas_respuesta"></td>
+                                    <td class="medidas-detalle" id="equipo_caidas_cual"></td>
                                 </tr>
                                 <tr>
-                                    <td>¿Línea de sujeción con amortiguador de impacto?</td>
-                                    <td id="linea_amortiguador_respuesta"></td>
-                                    <td></td>
+                                    <td class="medidas-pregunta">¿Línea de sujeción con amortiguador de impacto?</td>
+                                    <td class="medidas-respuesta" id="linea_amortiguador_respuesta"></td>
+                                    <td class="medidas-detalle"></td>
                                 </tr>
                                 <tr>
-                                    <td>¿Punto fijo?</td>
-                                    <td id="punto_fijo_respuesta"></td>
-                                    <td></td>
+                                    <td class="medidas-pregunta">¿Punto fijo?</td>
+                                    <td class="medidas-respuesta" id="punto_fijo_respuesta"></td>
+                                    <td class="medidas-detalle"></td>
                                 </tr>
                                 <tr>
-                                    <td>¿Línea de vida?</td>
-                                    <td id="linea_vida_respuesta"></td>
-                                    <td></td>
+                                    <td class="medidas-pregunta">¿Línea de vida?</td>
+                                    <td class="medidas-respuesta" id="linea_vida_respuesta"></td>
+                                    <td class="medidas-detalle"></td>
                                 </tr>
                                 <tr>
-                                    <td>¿El andamio se encuentra completo para realizar la actividad?</td>
-                                    <td id="andamio_completo_respuesta"></td>
-                                    <td></td>
+                                    <td class="medidas-pregunta">¿El andamio se encuentra completo para realizar la actividad?</td>
+                                    <td class="medidas-respuesta" id="andamio_completo_respuesta"></td>
+                                    <td class="medidas-detalle"></td>
                                 </tr>
                                 <tr>
-                                    <td>¿Se colocó tarjeta de andamio seguro?</td>
-                                    <td id="tarjeta_andamio_respuesta"></td>
-                                    <td></td>
+                                    <td class="medidas-pregunta">¿Se colocó tarjeta de andamio seguro?</td>
+                                    <td class="medidas-respuesta" id="tarjeta_andamio_respuesta"></td>
+                                    <td class="medidas-detalle"></td>
                                 </tr>
                                 <tr>
-                                    <td>¿La velocidad del viento es la permitida para trabajos en altura?</td>
-                                    <td id="viento_permitido_respuesta"></td>
-                                    <td></td>
+                                    <td class="medidas-pregunta">¿La velocidad del viento es la permitida para trabajos en altura?</td>
+                                    <td class="medidas-respuesta" id="viento_permitido_respuesta"></td>
+                                    <td class="medidas-detalle"></td>
                                 </tr>
                                 <tr>
-                                    <td>¿La escalera se encuentra en condición para efectuar la actividad?</td>
-                                    <td id="escalera_condicion_respuesta"></td>
-                                    <td></td>
+                                    <td class="medidas-pregunta">¿La escalera se encuentra en condición para efectuar la actividad?</td>
+                                    <td class="medidas-respuesta" id="escalera_condicion_respuesta"></td>
+                                    <td class="medidas-detalle"></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                </div
+                </div>
 
 
  <!-- En esta parte quiero que me agregues los campos de condiciones del proceso -->
@@ -295,7 +318,7 @@
                         <h3>Personal Involucrado</h3>
                     </div>
                     <div class="ast-summary">
-                        <table class="ast-table">
+                        <table class="ast-table ast-table-participantes" id="tabla-participantes">
                             <thead>
                                 <tr>
                                     <th>Nombre</th>
@@ -323,7 +346,7 @@
                         <h3>Responsables</h3>
                     </div>
                     <div class="ast-summary">
-                        <table class="ast-table">
+                         <table class="ast-table ast-table-responsables">
                             <thead>
                                 <tr>
                                     <th>Nombre</th>

@@ -1,3 +1,4 @@
+
 /*============================
 	 FORMATO DE IMPRESIÓN PT6
 	 Basado en PT5, PT4 y PT3
@@ -426,6 +427,58 @@
         min-width: 100px !important;
         max-width: 220px !important;
 }
+
+
+
+
+
+/* === ESTILOS PARA PANTALLA (NO MODIFICAN EL DISEÑO EXISTENTE) === */
+/* === ESTILOS PARA PANTALLA (NO MODIFICAN EL DISEÑO EXISTENTE) === */
+/* === ESTILOS PARA PANTALLA (NO MODIFICAN EL DISEÑO EXISTENTE) === */
+
+ .executive-section.usuario .styled-table th:nth-child(1),
+  .executive-section.usuario .styled-table td:nth-child(1) {
+    width: 85% !important;
+    min-width: 500px !important;
+    max-width: 1400px !important;
+  }
+  .executive-section.usuario .styled-table th:nth-child(2),
+  .executive-section.usuario .styled-table td:nth-child(2) {
+    width: 15% !important;
+    min-width: 80px !important;
+    max-width: 300px !important;
+    text-align: center !important;
+  }
+
+  	/* Forzar ancho de la columna RESPUESTA en la tabla de medidas/requisitos del ejecutor */
+	.executive-section.usuario .styled-table th:nth-child(2),
+	.executive-section.usuario .styled-table td:nth-child(2) {
+		width: 40% !important;
+		min-width: 220px !important;
+		max-width: 600px !important;
+		text-align: center !important;
+	}
+
+
+
+
+
+	/* Esto es lo que voy a modificar */
+
+
+			.executive-section.supervisor #form-medidas-riesgos .styled-table th:last-child,
+			.executive-section.supervisor #form-medidas-riesgos .styled-table td:last-child {
+				width: 65% !important;
+				min-width: 400px !important;
+				max-width: 1200px !important;
+				text-align: center !important;
+			}
+	.executive-section.supervisor #form-medidas-riesgos .styled-table th[colspan],
+	.executive-section.supervisor #form-medidas-riesgos .styled-table td[colspan] {
+		width: auto !important;
+		min-width: 0 !important;
+		max-width: none !important;
+	}
  
 }
 

@@ -1,3 +1,18 @@
+@media print {
+    .executive-section.area .styled-table th:first-child,
+    .executive-section.area .styled-table td:first-child {
+        width: 75% !important;
+        min-width: 400px !important;
+        max-width: 1200px !important;
+    }
+    .executive-section.area .styled-table th:last-child,
+    .executive-section.area .styled-table td:last-child {
+        width: 25% !important;
+        min-width: 60px !important;
+        max-width: 200px !important;
+        text-align: center !important;
+    }
+}
 /* ============================
    Variables de colores y base
    ============================ */

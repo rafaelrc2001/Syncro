@@ -4,6 +4,20 @@
 ============================*/
 
 @media print {
+	/* Hacer ambas columnas de la tabla de medidas/requisitos más anchas */
+	.executive-section.usuario .styled-table th:nth-child(1),
+	.executive-section.usuario .styled-table td:nth-child(1) {
+		width: 70% !important;
+		min-width: 400px !important;
+		max-width: 1200px !important;
+	}
+	.executive-section.usuario .styled-table th:nth-child(2),
+	.executive-section.usuario .styled-table td:nth-child(2) {
+		width: 30% !important;
+		min-width: 180px !important;
+		max-width: 600px !important;
+		text-align: center !important;
+	}
 	@page {
 		size: A4;
 		margin: 10mm 8mm;

@@ -191,6 +191,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <td><span class="role-badge">${p.funcion || ""}</span></td>
                 <td>${p.credencial || ""}</td>
                 <td>${p.cargo || ""}</td>
+                <td> </td>
             `;
           tbody.appendChild(tr);
         });
@@ -238,12 +239,14 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((data) => {
         console.log("Datos recibidos para el permiso:", data);
         // Prefijo en el título y descripción del trabajo
-        if (data && data.general) {
-          document.querySelector(".section-header h3").textContent =
-            data.general.prefijo || "NP-XXXXXX";
-          document.getElementById("descripcion-trabajo-label").textContent =
-            data.general.descripcion_trabajo || "-";
-        }
+      if (data && data.general) {
+  document.querySelector(".section-header h3").textContent =
+    data.general.prefijo || "NP-XXXXXX";
+  // Aquí actualizas el título de la pestaña
+  document.title = `Permiso No Peligroso ${data.general.prefijo || "NP-XXXXXX"}`;
+  document.getElementById("descripcion-trabajo-label").textContent =
+    data.general.descripcion_trabajo || "-";
+}
         if (data && data.detalles) {
           document.getElementById("work-order-label").textContent =
             data.detalles.ot || "-";
@@ -362,6 +365,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
           // Consultar y rellenar datos de autorización
           consultarPersonasAutorizacion(idPermiso);
+          llenarTablaResponsables(idPermiso); // <-- AGREGA ESTA LÍNEA
 
           // Aplicar estilos dinámicos PT1
           aplicarEstilosPT1();
@@ -379,6 +383,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 });
+
 
 /**
  * Función de impresión tradicional (fallback)
@@ -399,60 +404,22 @@ async function imprimirPermisoTradicional() {
   }
 }
 
-/**
- * Función que muestra las instrucciones exactas para eliminar encabezados
- */
-function mostrarInstruccionesImpresion() {
-  const mensaje = `🖨️ PARA ELIMINAR ENCABEZADOS Y PIES DE PÁGINA:
-
-📌 CHROME/EDGE:
-1. Presiona Ctrl+P
-2. Busca "Más configuraciones" y haz clic
-3. DESMARCA la casilla "Encabezados y pies de página"
-4. Haz clic en "Imprimir"
-
-📌 FIREFOX:
-1. Presiona Ctrl+P  
-2. Haz clic en "Configurar página"
-3. En "Encabezados y pies", selecciona "Vacío" en TODOS
-4. Haz clic en "Imprimir"
-
-⚠️ Esta configuración se debe hacer UNA SOLA VEZ por navegador.
-¿Quieres que te abra el diálogo de impresión ahora?`;
-
-  if (confirm(mensaje)) {
-    // Limpiar título antes de imprimir
-    const originalTitle = document.title;
-    document.title = "";
-
-    // Abrir diálogo de impresión
-    window.print();
-
-    // Restaurar título después
-    setTimeout(() => {
-      document.title = originalTitle;
-    }, 1000);
-  }
-}
-
 // Interceptar Ctrl+P para mostrar instrucciones
-document.addEventListener("keydown", function (e) {
-  if ((e.ctrlKey || e.metaKey) && e.key === "p") {
-    e.preventDefault();
-    mostrarInstruccionesImpresion();
-  }
-});
+// document.addEventListener("keydown", function (e) {
+//   if ((e.ctrlKey || e.metaKey) && e.key === "p") {
+//     e.preventDefault();
+//     mostrarInstruccionesImpresion();
+//   }
+// });
 
-// Modificar el botón de imprimir existente para mostrar instrucciones
 const botonImprimir = document.getElementById("btn-imprimir-permiso");
 if (botonImprimir) {
-  // Agregar event listener adicional que mostrará las instrucciones
   botonImprimir.addEventListener(
     "click",
     function (e) {
       e.preventDefault();
       e.stopPropagation();
-      mostrarInstruccionesImpresion();
+      window.print(); // Imprime directamente sin mostrar instrucciones
     },
     true
   ); // true para capturar el evento antes que otros listeners
@@ -471,3 +438,65 @@ if (botonImprimir) {
 }
 
 console.log("Funcionalidad de impresión PT1 inicializada correctamente");
+
+function llenarTablaResponsables(idPermiso) {
+  fetch(`http://localhost:3000/api/autorizaciones/personas/${idPermiso}`)
+    .then((response) => response.json())
+    .then((result) => {
+      const tbody = document.getElementById("modal-ast-responsable-body");
+      if (!tbody) return;
+
+      tbody.innerHTML = ""; // Limpia la tabla antes de llenarla
+
+      if (result.success && result.data) {
+        const data = result.data;
+        const filas = [
+          { nombre: data.responsable_area, cargo: "Responsable de área" },
+          { nombre: data.operador_area, cargo: "Operador del área" },
+          { nombre: data.nombre_supervisor, cargo: "Supervisor" }
+        ];
+
+        let hayResponsables = false;
+        filas.forEach(fila => {
+          if (fila.nombre && fila.nombre.trim() !== "") {
+            hayResponsables = true;
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+              <td>${fila.nombre}</td>
+              <td>${fila.cargo}</td>
+              <td></td>
+            `;
+            tbody.appendChild(tr);
+          }
+        });
+
+        // Si alguna fila no tiene nombre, igual la mostramos con N/A
+        filas.forEach(fila => {
+          if (!fila.nombre || fila.nombre.trim() === "") {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+              <td>N/A</td>
+              <td>${fila.cargo}</td>
+              <td></td>
+            `;
+            tbody.appendChild(tr);
+          }
+        });
+
+        // Si no hay responsables, muestra mensaje
+        if (!hayResponsables) {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `<td colspan="3">Sin responsables registrados</td>`;
+          tbody.appendChild(tr);
+        }
+      } else {
+        // Si no hay datos, muestra mensaje
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td colspan="3">Sin responsables registrados</td>`;
+        tbody.appendChild(tr);
+      }
+    })
+    .catch((err) => {
+      console.error("Error al consultar personas de autorización:", err);
+    });
+}

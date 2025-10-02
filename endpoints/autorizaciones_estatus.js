@@ -457,15 +457,15 @@ router.get("/autorizaciones/personas/:id_permiso", async (req, res) => {
 
   try {
     const result = await db.query(
-      `SELECT 
-        s.nombre as nombre_supervisor,
-        a.operador_area,
-        a.responsable_area
-      FROM autorizaciones a
-      INNER JOIN supervisores s ON a.id_supervisor = s.id_supervisor
-      WHERE a.id_permiso = $1`,
-      [id_permiso]
-    );
+  `SELECT 
+    s.nombre as nombre_supervisor,
+    a.operador_area,
+    a.responsable_area
+  FROM autorizaciones a
+  LEFT JOIN supervisores s ON a.id_supervisor = s.id_supervisor
+  WHERE a.id_permiso = $1`,
+  [id_permiso]
+);
 
     if (result.rows.length === 0) {
       return res.status(404).json({

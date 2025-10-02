@@ -1,4 +1,4 @@
-// --- Funciones de impresión (traídas de PT5) ---
+// --- Funciones de impresión (ajustadas para impresión directa) ---
 function esperarImagenes() {
   return new Promise((resolve) => {
     const imagenes = document.querySelectorAll(".company-header img");
@@ -32,22 +32,7 @@ async function imprimirPermisoTradicional() {
     window.print();
   } catch (error) {
     console.error("Error al imprimir:", error);
-    alert(
-      "Ocurrió un error al preparar la impresión. Por favor, inténtalo nuevamente."
-    );
-  }
-}
-
-function mostrarInstruccionesImpresion() {
-  const mensaje = `🖨️ PARA ELIMINAR ENCABEZADOS Y PIES DE PÁGINA:\n\n📌 CHROME/EDGE:\n1. Presiona Ctrl+P\n2. Busca \"Más configuraciones\" y haz clic\n3. DESMARCA la casilla \"Encabezados y pies de página\"\n4. Haz clic en \"Imprimir\"\n\n📌 FIREFOX:\n1. Presiona Ctrl+P  \n2. Haz clic en \"Configurar página\"\n3. En \"Encabezados y pies\", selecciona \"Vacío\" en TODOS\n4. Haz clic en \"Imprimir\"\n\n⚠️ Esta configuración se debe hacer UNA SOLA VEZ por navegador.\n¿Quieres que te abra el diálogo de impresión ahora?`;
-
-  if (confirm(mensaje)) {
-    const originalTitle = document.title;
-    document.title = "";
-    window.print();
-    setTimeout(() => {
-      document.title = originalTitle;
-    }, 1000);
+    // No mostrar alert ni confirm, solo log
   }
 }
 
@@ -56,7 +41,7 @@ const btnImprimir = document.getElementById("btn-imprimir-permiso");
 if (btnImprimir) {
   btnImprimir.addEventListener("click", function (e) {
     e.preventDefault();
-    mostrarInstruccionesImpresion();
+    imprimirPermisoTradicional(); // Imprime directo, sin confirmación ni instrucciones
   });
 
   btnImprimir.style.transition = "all 0.3s ease";
@@ -70,13 +55,15 @@ if (btnImprimir) {
   });
 }
 
-// Interceptar Ctrl+P para mostrar instrucciones
-document.addEventListener("keydown", function (e) {
-  if ((e.ctrlKey || e.metaKey) && e.key === "p") {
-    e.preventDefault();
-    mostrarInstruccionesImpresion();
-  }
-});
+// Elimina o comenta el listener de Ctrl+P para instrucciones
+// document.addEventListener("keydown", function (e) {
+//   if ((e.ctrlKey || e.metaKey) && e.key === "p") {
+//     e.preventDefault();
+//     mostrarInstruccionesImpresion();
+//   }
+// });
+
+// Elimina o comenta la función mostrarInstruccionesImpresion si no la usas en otro lado
 // --- Plantilla para agregar personas en el área (ajusta el endpoint y campos según tu backend) ---
 async function agregarPersonaEnArea(idPermiso, persona) {
   // persona = { nombre, funcion, credencial, cargo }
@@ -508,6 +495,10 @@ document.addEventListener("DOMContentLoaded", function () {
           "Error al obtener datos del permiso. Revisa la consola para más detalles."
         );
       });
+
+      
+    // === AGREGA ESTA LÍNEA AQUÍ ===
+    llenarTablaResponsables(idPermiso2);
   }
 });
 
@@ -517,4 +508,68 @@ if (btnSalirNuevo) {
   btnSalirNuevo.addEventListener("click", function () {
     window.location.href = "/Modules/Usuario/AutorizarPT.html";
   });
+}
+
+
+
+function llenarTablaResponsables(idPermiso) {
+  fetch(`http://localhost:3000/api/autorizaciones/personas/${idPermiso}`)
+    .then((response) => response.json())
+    .then((result) => {
+      const tbody = document.getElementById("modal-ast-responsable-body");
+      if (!tbody) return;
+
+      tbody.innerHTML = ""; // Limpia la tabla antes de llenarla
+
+      if (result.success && result.data) {
+        const data = result.data;
+        const filas = [
+          { nombre: data.responsable_area, cargo: "Responsable de área" },
+          { nombre: data.operador_area, cargo: "Operador del área" },
+          { nombre: data.nombre_supervisor, cargo: "Supervisor" }
+        ];
+
+        let hayResponsables = false;
+        filas.forEach(fila => {
+          if (fila.nombre && fila.nombre.trim() !== "") {
+            hayResponsables = true;
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+              <td>${fila.nombre}</td>
+              <td>${fila.cargo}</td>
+              <td></td>
+            `;
+            tbody.appendChild(tr);
+          }
+        });
+
+        // Si alguna fila no tiene nombre, igual la mostramos con N/A
+        filas.forEach(fila => {
+          if (!fila.nombre || fila.nombre.trim() === "") {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+              <td>N/A</td>
+              <td>${fila.cargo}</td>
+              <td></td>
+            `;
+            tbody.appendChild(tr);
+          }
+        });
+
+        // Si no hay responsables, muestra mensaje
+        if (!hayResponsables) {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `<td colspan="3">Sin responsables registrados</td>`;
+          tbody.appendChild(tr);
+        }
+      } else {
+        // Si no hay datos, muestra mensaje
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td colspan="3">Sin responsables registrados</td>`;
+        tbody.appendChild(tr);
+      }
+    })
+    .catch((err) => {
+      console.error("Error al consultar personas de autorización:", err);
+    });
 }

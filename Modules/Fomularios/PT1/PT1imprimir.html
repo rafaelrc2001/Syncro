@@ -32,9 +32,9 @@
                 <div class="section-header">
                     
                     <h2>Permiso de Trabajo No Peligroso</h2>
-                    <h3>NP-XXXXXX</h3>
+                    <h3>-</h3>
                 </div>
-                <div class="executive-section pt1-datos-generales">
+                <div class="executive-section usuario">
                     <div class="section-header">
                         <i class="ri-information-line"></i>
                         <h3>Datos generales</h3>
@@ -78,7 +78,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="executive-section pt1-condiciones-proceso">
+                <div class="executive-section usuario">
                     <div class="section-header">
                         <i class="ri-flask-line"></i>
                         <h3 class="pt1-section-title">Condiciones del Proceso</h3>
@@ -98,7 +98,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="executive-section pt1-analisis-previo">
+                <div class="executive-section area">
                     <div class="section-header">
                         <i class="ri-checkbox-multiple-line"></i>
                         <h3 class="pt1-section-title">Análisis Previo al Trabajo</h3>
@@ -141,7 +141,7 @@
                     </form>
                 </div>
                 <!-- Sección AST y Participantes -->
-                <div class="executive-section pt1-ast-seguridad">
+                <div class="executive-section usuario">
                     <div class="section-header">
                         <i class="ri-shield-check-line"></i>
                         <h3>AST - Análisis de Seguridad en el Trabajo</h3>
@@ -185,7 +185,7 @@
                     </div>
                 </div>
                 <!-- Sección 4: Participantes -->
-                <div class="executive-section pt1-personal-involucrado">
+                <div class="executive-section usuario">
                     <div class="section-header">
                         <i class="ri-team-line"></i>
                         <h3>Personal Involucrado</h3>
@@ -198,6 +198,7 @@
                                     <th>Función</th>
                                     <th>Credencial</th>
                                     <th>Cargo</th>
+                                    <th>Firma</th>
                                 </tr>
                             </thead>
                             <tbody id="modal-ast-participantes-body">
@@ -208,34 +209,27 @@
                 </div>
                 
           <!-- Sección 5: Aprobaciones -->
-          <div class="approval-section">
-            <div class="approval-stamps">
-              <div class="stamp">
-                <div class="stamp-title">Responsable del area:</div>
-                <div class="stamp-placeholder signature-space">
-                  &nbsp;
+           <div class="executive-section usuario">
+                    <div class="section-header">
+                        <i class="ri-team-line"></i>
+                        <h3>Responsables</h3>
+                    </div>
+                    <div class="ast-summary">
+                        <table class="ast-table">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Cargo</th>
+                                    <th>Firma</th>                                
+                                </tr>
+                            </thead>
+                            <tbody id="modal-ast-responsable-body">
+                                <!-- Participantes AST dinámicos -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <div class="stamp-name" id="responsable-area-nombre">-</div>
-              </div>
-              <div class="stamp">
-                <div class="stamp-title">Operador del área:</div>
-                <div class="stamp-placeholder signature-space">
-                  &nbsp;
-                </div>
-                <div class="stamp-name" id="operador-area-nombre">-</div>
-                <div class="stamp-date"></div>
-              </div>
-              <div class="stamp approved">
-                <div class="stamp-title">Supervisor de Seguridad:</div>
-                <div class="stamp-placeholder signature-space">
-                  &nbsp;
-                </div>
-                <div class="stamp-name" id="supervisor-nombre">
-                  -
-                </div>
-              </div>
-            </div>
-          </div>
+                
 
                 <!-- Botones de acción -->
                 <div class="button-group" style="display: flex; justify-content: space-between; margin-top: 48px; gap: 16px;">

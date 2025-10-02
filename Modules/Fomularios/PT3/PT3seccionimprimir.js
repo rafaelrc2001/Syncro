@@ -315,6 +315,11 @@ document.addEventListener("DOMContentLoaded", function () {
       .catch((err) => {
         console.error("Error al obtener datos generales del permiso:", err);
       });
+
+
+        // === AGREGA ESTA LÍNEA PARA LLENAR LA TABLA DE RESPONSABLES ===
+    llenarTablaResponsables(idPermiso);
+    
   } else {
     console.error("No se encontró ID de permiso en la URL");
     alert("No se pudo obtener el ID del permiso desde la URL");
@@ -329,9 +334,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // --- FUNCIONALIDAD DE IMPRESIÓN ---
-  /**
-   * Función para asegurar que todas las imágenes estén cargadas
-   */
+  // Función para asegurar que todas las imágenes estén cargadas
   function esperarImagenes() {
     return new Promise((resolve) => {
       const imagenes = document.querySelectorAll(".company-header img");
@@ -339,9 +342,7 @@ document.addEventListener("DOMContentLoaded", function () {
         resolve();
         return;
       }
-
       let imagenesRestantes = imagenes.length;
-
       imagenes.forEach((img) => {
         if (img.complete && img.naturalHeight !== 0) {
           imagenesRestantes--;
@@ -363,7 +364,6 @@ document.addEventListener("DOMContentLoaded", function () {
           };
         }
       });
-
       // Timeout de seguridad en caso de que las imágenes no carguen
       setTimeout(() => {
         resolve();
@@ -371,64 +371,20 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  /**
-   * Función de impresión tradicional (fallback)
-   */
+  // Función de impresión tradicional (sin alertas ni confirm)
   async function imprimirPermisoTradicional() {
     try {
-      // Esperar a que las imágenes se carguen completamente
       await esperarImagenes();
-
-      // Ejecutar impresión tradicional del navegador
       window.print();
     } catch (error) {
       console.error("Error al imprimir:", error);
-      alert(
-        "Ocurrió un error al preparar la impresión. Por favor, inténtalo nuevamente."
-      );
+      // No mostrar alert ni confirm, solo log
     }
   }
 
-  /**
-   * Función principal de impresión (directo sin ventanas emergentes)
-   */
+  // Función principal de impresión (directo sin ventanas emergentes)
   function imprimirPermiso() {
-    // Ir directo a impresión tradicional sin ventanas emergentes
     imprimirPermisoTradicional();
-  }
-
-  // Función que muestra las instrucciones exactas para eliminar encabezados
-  function mostrarInstruccionesImpresion() {
-    const mensaje = `🖨️ PARA ELIMINAR ENCABEZADOS Y PIES DE PÁGINA:
-
-📌 CHROME/EDGE:
-1. Presiona Ctrl+P
-2. Busca "Más configuraciones" y haz clic
-3. DESMARCA la casilla "Encabezados y pies de página"
-4. Haz clic en "Imprimir"
-
-📌 FIREFOX:
-1. Presiona Ctrl+P  
-2. Haz clic en "Configurar página"
-3. En "Encabezados y pies", selecciona "Vacío" en TODOS
-4. Haz clic en "Imprimir"
-
-⚠️ Esta configuración se debe hacer UNA SOLA VEZ por navegador.
-¿Quieres que te abra el diálogo de impresión ahora?`;
-
-    if (confirm(mensaje)) {
-      // Limpiar título antes de imprimir
-      const originalTitle = document.title;
-      document.title = "";
-
-      // Abrir diálogo de impresión
-      window.print();
-
-      // Restaurar título después
-      setTimeout(() => {
-        document.title = originalTitle;
-      }, 1000);
-    }
   }
 
   // Event listener para el botón de imprimir
@@ -436,12 +392,9 @@ document.addEventListener("DOMContentLoaded", function () {
   if (btnImprimir) {
     btnImprimir.addEventListener("click", function (e) {
       e.preventDefault();
-
-      // Imprimir directamente con instrucciones
-      mostrarInstruccionesImpresion();
+      imprimirPermiso(); // Imprime directo, sin confirmación ni instrucciones
     });
 
-    // Agregar indicador visual al botón
     btnImprimir.style.transition = "all 0.3s ease";
     btnImprimir.addEventListener("mouseenter", function () {
       this.style.transform = "translateY(-2px)";
@@ -454,13 +407,51 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Interceptar Ctrl+P para mostrar instrucciones
-  document.addEventListener("keydown", function (e) {
-    if ((e.ctrlKey || e.metaKey) && e.key === "p") {
-      e.preventDefault();
-      mostrarInstruccionesImpresion();
-    }
-  });
-
   console.log("Funcionalidad de PT3 Impresión inicializada correctamente");
 });
+
+
+
+
+function llenarTablaResponsables(idPermiso) {
+  fetch(`http://localhost:3000/api/autorizaciones/personas/${idPermiso}`)
+    .then((response) => response.json())
+    .then((result) => {
+      const tbody = document.getElementById("modal-ast-responsable-body");
+      if (!tbody) return;
+
+      tbody.innerHTML = ""; // Limpia la tabla antes de llenarla
+
+      if (result.success && result.data) {
+        const data = result.data;
+        const filas = [
+          { nombre: data.responsable_area, cargo: "Responsable de área" },
+          { nombre: data.operador_area, cargo: "Operador del área" },
+          { nombre: data.nombre_supervisor, cargo: "Supervisor" }
+        ];
+
+        let hayAlMenosUno = false;
+        filas.forEach(fila => {
+          const nombre = (fila.nombre && fila.nombre.trim() !== "") ? fila.nombre : "N/A";
+          if (nombre !== "N/A") hayAlMenosUno = true;
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${nombre}</td>
+            <td>${fila.cargo}</td>
+            <td></td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+        if (!hayAlMenosUno) {
+          tbody.innerHTML = `<tr><td colspan="3">Sin responsables registrados</td></tr>`;
+        }
+      } else {
+        tbody.innerHTML = `<tr><td colspan="3">Sin responsables registrados</td></tr>`;
+      }
+    })
+    .catch((err) => {
+      console.error("Error al consultar personas de autorización:", err);
+    });
+}
+

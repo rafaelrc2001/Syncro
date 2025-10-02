@@ -318,6 +318,9 @@ document.addEventListener("DOMContentLoaded", function () {
           "Error al obtener datos del permiso. Revisa la consola para más detalles."
         );
       });
+
+       // === AGREGA ESTA LÍNEA PARA LLENAR LA TABLA DE RESPONSABLES ===
+    llenarTablaResponsables(idPermiso);
   }
   const btnSalir = document.getElementById("btn-salir-nuevo");
   if (btnSalir) {
@@ -704,29 +707,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Event listener para el botón de imprimir
-  const btnImprimir = document.getElementById("btn-imprimir-permiso");
-  if (btnImprimir) {
-    btnImprimir.addEventListener("click", function (e) {
-      e.preventDefault();
-
-      // Imprimir directamente sin confirmaciones
-      imprimirPermiso();
-    });
-
-    // Agregar indicador visual al botón
-    btnImprimir.style.transition = "all 0.3s ease";
-    btnImprimir.addEventListener("mouseenter", function () {
-      this.style.transform = "translateY(-2px)";
-      this.style.boxShadow = "0 6px 20px rgba(0,59,92,0.3)";
-    });
-
-    btnImprimir.addEventListener("mouseleave", function () {
-      this.style.transform = "translateY(0)";
-      this.style.boxShadow = "";
-    });
-  }
-
-  // --- CONFIGURACIÓN DEFINITIVA PARA ELIMINAR ENCABEZADOS ---
+// --- CONFIGURACIÓN DEFINITIVA PARA ELIMINAR ENCABEZADOS ---
 
   // Función que muestra las instrucciones exactas para eliminar encabezados
   function mostrarInstruccionesImpresion() {
@@ -761,29 +742,81 @@ document.addEventListener("DOMContentLoaded", function () {
       }, 1000);
     }
   }
+  
 
   // Interceptar Ctrl+P para mostrar instrucciones
-  document.addEventListener("keydown", function (e) {
-    if ((e.ctrlKey || e.metaKey) && e.key === "p") {
-      e.preventDefault();
-      mostrarInstruccionesImpresion();
-    }
-  });
+  // Elimina o comenta este bloque para que Ctrl+P funcione normal
+  // document.addEventListener("keydown", function (e) {
+  //   if ((e.ctrlKey || e.metaKey) && e.key === "p") {
+  //     e.preventDefault();
+  //     mostrarInstruccionesImpresion();
+  //   }
+  // });
 
-  // Modificar el botón de imprimir existente para mostrar instrucciones
-  const botonImprimir = document.getElementById("btn-imprimir-permiso");
-  if (botonImprimir) {
-    // Agregar event listener adicional que mostrará las instrucciones
-    botonImprimir.addEventListener(
-      "click",
-      function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        mostrarInstruccionesImpresion();
-      },
-      true
-    ); // true para capturar el evento antes que otros listeners
+  // Modifica el botón de imprimir para que imprima directo sin instrucciones
+  const btnImprimir = document.getElementById("btn-imprimir-permiso");
+  if (btnImprimir) {
+    btnImprimir.addEventListener("click", function (e) {
+      e.preventDefault();
+      imprimirPermiso(); // Imprime directo, sin confirmación ni instrucciones
+    });
+
+    btnImprimir.style.transition = "all 0.3s ease";
+    btnImprimir.addEventListener("mouseenter", function () {
+      this.style.transform = "translateY(-2px)";
+      this.style.boxShadow = "0 6px 20px rgba(0,59,92,0.3)";
+    });
+
+    btnImprimir.addEventListener("mouseleave", function () {
+      this.style.transform = "translateY(0)";
+      this.style.boxShadow = "";
+    });
   }
 
   console.log("Funcionalidad de PDF PT2 inicializada correctamente");
 });
+
+
+
+function llenarTablaResponsables(idPermiso) {
+  fetch(`http://localhost:3000/api/autorizaciones/personas/${idPermiso}`)
+    .then((response) => response.json())
+    .then((result) => {
+      const tbody = document.getElementById("modal-ast-responsable-body");
+      if (!tbody) return;
+
+      tbody.innerHTML = ""; // Limpia la tabla antes de llenarla
+
+      if (result.success && result.data) {
+        const data = result.data;
+        const filas = [
+          { nombre: data.responsable_area, cargo: "Responsable de área" },
+          { nombre: data.operador_area, cargo: "Operador del área" },
+          { nombre: data.nombre_supervisor, cargo: "Supervisor" }
+        ];
+
+        let hayAlMenosUno = false;
+        filas.forEach(fila => {
+          const nombre = (fila.nombre && fila.nombre.trim() !== "") ? fila.nombre : "N/A";
+          if (nombre !== "N/A") hayAlMenosUno = true;
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${nombre}</td>
+            <td>${fila.cargo}</td>
+            <td></td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+        if (!hayAlMenosUno) {
+          tbody.innerHTML = `<tr><td colspan="3">Sin responsables registrados</td></tr>`;
+        }
+      } else {
+        tbody.innerHTML = `<tr><td colspan="3">Sin responsables registrados</td></tr>`;
+      }
+    })
+    .catch((err) => {
+      console.error("Error al consultar personas de autorización:", err);
+    });
+}
+

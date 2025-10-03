@@ -153,210 +153,200 @@
                 
 
                  
-   <!-- Sección 2: Permiso para apertura equipo línea -->
-                <section class="form-section" data-section="2">
-                    <div class="form-container">
-                        <div class="form-header">
-                            <div>
-                                <h2>⚙️ Permiso para Apertura de Equipo o Línea</h2>
-                                <p>Complete los detalles específicos del permiso</p>
-                            </div>
-                        </div>
-            <!-- SECCIÓN GRIS: Información General y Condiciones Actuales -->
-            <div class="color-section gray-section">
 
-                        <!-- Información General -->
-                <div class="form-section-title">
-                    <i class="ri-file-text-line"></i>
-                    <h3>Información General</h3>
+    <!-- Sección 2: Permiso No Peligroso -->
+    <section class="form-section" data-section="2" id="permiso-np-section">
+        <div class="form-container" id="permiso-np-container">
+            <div class="form-header" id="permiso-np-header">
+                <div class="form-icon" id="permiso-np-icon">
+                    <i class="ri-survey-line"></i>
                 </div>
-                <div class="form-table">
-                    <!-- Tipo de mantenimiento -->
-                    <div class="form-table-row">
-                        <div class="form-table-label">
-                            <label for="maintenance-type">Tipo de mantenimiento</label>
-                        </div>
-                        <div class="form-table-options">
-                            <div class="radio-group horizontal" id="maintenance-type-toggle">
-                                <label class="radio-option">
-                                    <input type="radio" name="maintenance-type" value="PREDICTIVO">
-                                    <span class="radio-custom"></span>
-                                    PREDICTIVO
-                                </label>
-                                <label class="radio-option">
-                                    <input type="radio" name="maintenance-type" value="PREVENTIVO">
-                                    <span class="radio-custom"></span>
-                                    PREVENTIVO
-                                </label>
-                                <label class="radio-option">
-                                    <input type="radio" name="maintenance-type" value="CORRECTIVO">
-                                    <span class="radio-custom"></span>
-                                    CORRECTIVO
-                                </label>
-                                <label class="radio-option">
-                                    <input type="radio" name="maintenance-type" value="CORRECTIVO">
-                                    <span class="radio-custom"></span>
-                                    APOYO
-                                </label>
-                                <label class="radio-option other-option">
-                                    <input type="radio" name="maintenance-type" value="OTRO" id="other-maintenance-radio">
-                                    <span class="radio-custom"></span>
-                                    OTRO:
-                                    <input type="text" id="other-maintenance-type" class="other-input" disabled>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
+                <div id="permiso-np-header-text">
+                    <h2>Formulario</h2>
+                    <p>Complete los datos básicos del permiso</p>
+                </div>
+            </div>
+            <div id="permiso-np-header-divider"></div>
 
-                    <!-- O.T. No. -->
-                    <div class="form-table-row">
-                        <div class="form-table-label">
-                            <label for="work-order">O.T. No.</label>
-                        </div>
-                        <div class="form-table-options">
-                            <input type="text" id="work-order" name="work-order" required>
-                        </div>
+            
+        <div class="color-section gray-section">
+            <div class="form-grid" id="permiso-np-grid1">
+                <div class="form-group">
+                    <div class="form-group">
+                        <label for="maintenance-type">Tipo de mantenimiento</label>
+                        <select id="maintenance-type" name="maintenance-type" required>
+                            <option value="" disabled selected>Seleccione un tipo</option>
+                            <option value="PREDICTIVO">PREDICTIVO</option>
+                            <option value="PREVENTIVO">PREVENTIVO</option>
+                            <option value="CORRECTIVO">CORRECTIVO</option>
+                            <option value="APOYO">APOYO</option>
+                            <option value="OTRO">OTRO</option>
+                        </select>
                     </div>
-
-                    <!-- TAG -->
-                    <div class="form-table-row">
-                        <div class="form-table-label">
-                            <label for="tag">TAG</label>
-                        </div>
-                        <div class="form-table-options">
-                            <input type="text" id="tag" name="tag">
-                        </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-group">
+                        <label for="work-order">O.T. No.</label>
+                        <input type="text" id="work-order" name="work-order" required class="compact">
                     </div>
-
-                    <!-- Hora de inicio -->
-                    <div class="form-table-row">
-                        <div class="form-table-label">
-                            <label for="start-time">Hora de inicio</label>
-                        </div>
-                        <div class="form-table-options">
-                            <input type="time" id="start-time" name="start-time" required>
-                        </div>
-                    </div>
-
-                    <!-- Equipo a Intervenir -->
-                    <div class="form-table-row status-indicator" data-required="true">
-                            <div class="form-table-label">
-                                <label for="equipment-description" class="required-field">Equipo a intervenir</label>
-                            <div class="label-description">Describa el equipo que será intervenido</div>
-                        </div>
-                            <div class="form-table-options">
-                                <input type="text" id="equipment-description" name="equipment-description" 
-                                placeholder="Ej: Bomba centrífuga, Tanque de almacenamiento, Reactor químico..." 
-                                required class="validable">
-                            </div>
-                        <div class="status-icon" data-status="pending"></div>
+                </div>
+                <div class="form-group">
+                    <div class="form-group">
+                        <label for="start-time">Hora de inicio</label>
+                        <input type="time" id="start-time" name="start-time" required class="compact">
                     </div>
                 </div>
             </div>
+
+
+
+
+
+            <div id="permiso-np-header-divider"></div>
+
+            <div class="form-section-title" id="permiso-np-equipo-title">
+                <i class="ri-tools-line"></i>
+                <h3>Equipo</h3>
+            </div>
+            <div class="form-grid" id="permiso-np-grid2">
+                <div class="form-group">
+                    <label>¿Tiene equipo a intervenir?</label>
+                    <div class="radio-group" id="equipment-toggle">
+                        <label class="radio-option">
+                            <input type="radio" name="has-equipment" value="si" checked>
+                            <span class="radio-custom"></span>
+                            Sí
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="has-equipment" value="no">
+                            <span class="radio-custom"></span>
+                            No
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-group">
+                        <label for="equipment">Equipo a Intervenir</label>
+                        <input type="text" id="equipment" name="equipment" required class="compact">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-group">
+                        <label for="tag">TAG</label>
+                        <input type="text" id="tag" name="tag" class="compact">
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
             <!-- Tabla 2: Medidas para administrar los riesgos -->
-            <div class="color-section gray-section">
-            <div class="form-section-title" data-toggle-target="risk-measures">
+          <div class="color-section gray-section">
+               <div class="form-section-title" data-toggle-target="risk-measures">
                 <i class="ri-checkbox-multiple-line toggle-icon"></i>
                 <h3>Medidas para administrar los riesgos</h3>
-            </div>
-            <div class="form-table toggle-section" id="risk-measures">
+               </div>
+               <div class="form-table toggle-section" id="risk-measures">
             
-            <!-- Encabezado de opciones -->
-            <div class="options-header">
-                <div class="form-table-label"></div>
-                <div class="form-table-options">
-                    <div class="options-labels">
-                        <span class="option-label">SI</span>
-                        <span class="option-label">NO</span>
-                        <span class="option-label">N/A</span>
+                <!-- Encabezado de opciones -->
+                <div class="options-header">
+                    <div class="form-table-label"></div>
+                    <div class="form-table-options">
+                        <div class="options-labels">
+                            <span class="option-label">SI</span>
+                            <span class="option-label">NO</span>
+                            <span class="option-label">N/A</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-                <!-- Fila 1 y 2 unidas -->
-            <div class="form-table-row combined-row">
-                <div class="form-table-label">
-                    <label>¿Se requieren uso de herramientas especiales?</label>
-                </div>
-                <div class="form-table-options combined-options">
-                    <div class="yes-no-na compact">
-                        <label><input type="radio" name="special-tools" value="SI"></label>
-                        <label><input type="radio" name="special-tools" value="NO"></label>
-                        <label><input type="radio" name="special-tools" value="N/A"></label>
+                
+                    <!-- Fila 1 y 2 unidas -->
+                <div class="form-table-row combined-row">
+                    <div class="form-table-label">
+                        <label>¿Se requieren uso de herramientas especiales?</label>
                     </div>
-                    <div class="combined-input">
-                        <label class="inline-label">¿Cuál?</label>
-                        <input type="text" id="special-tools-type" name="special-tools-type" 
-                            placeholder="Especifique el tipo" class="compact">
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Fila 3 -->
-            <div class="form-table-row">
-                <div class="form-table-label">
-                    <label>¿El equipo o herramienta, son los adecuados para el trabajo?</label>
-                </div>
-                <div class="form-table-options">
-                    <div class="yes-no-na compact">
-                        <label><input type="radio" name="adequate-tools" value="SI"></label>
-                        <label><input type="radio" name="adequate-tools" value="NO"></label>
-                        <label><input type="radio" name="adequate-tools" value="N/A"></label>
+                    <div class="form-table-options combined-options">
+                        <div class="yes-no-na compact">
+                            <label><input type="radio" name="special-tools" value="SI"></label>
+                            <label><input type="radio" name="special-tools" value="NO"></label>
+                            <label><input type="radio" name="special-tools" value="N/A"></label>
+                        </div>
+                        <div class="combined-input">
+                            <label class="inline-label">¿Cuál?</label>
+                            <input type="text" id="special-tools-type" name="special-tools-type" 
+                                placeholder="Especifique el tipo" class="compact">
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-            <!-- Fila 4 -->
-            <div class="form-table-row">
-                <div class="form-table-label">
-                    <label>¿Se requiere verificación previa de las condiciones del trabajo?</label>
-                </div>
-                <div class="form-table-options">
-                    <div class="yes-no-na compact">
-                        <label><input type="radio" name="pre-verification" value="SI"></label>
-                        <label><input type="radio" name="pre-verification" value="NO"></label>
-                        <label><input type="radio" name="pre-verification" value="N/A"></label>
+                
+                <!-- Fila 3 -->
+                <div class="form-table-row">
+                    <div class="form-table-label">
+                        <label>¿El equipo o herramienta, son los adecuados para el trabajo?</label>
+                    </div>
+                    <div class="form-table-options">
+                        <div class="yes-no-na compact">
+                            <label><input type="radio" name="adequate-tools" value="SI"></label>
+                            <label><input type="radio" name="adequate-tools" value="NO"></label>
+                            <label><input type="radio" name="adequate-tools" value="N/A"></label>
+                        </div>
                     </div>
                 </div>
-            </div>
+                
+                <!-- Fila 4 -->
+                <div class="form-table-row">
+                    <div class="form-table-label">
+                        <label>¿Se requiere verificación previa de las condiciones del trabajo?</label>
+                    </div>
+                    <div class="form-table-options">
+                        <div class="yes-no-na compact">
+                            <label><input type="radio" name="pre-verification" value="SI"></label>
+                            <label><input type="radio" name="pre-verification" value="NO"></label>
+                            <label><input type="radio" name="pre-verification" value="N/A"></label>
+                        </div>
+                    </div>
+                </div>
             
-            <!-- Fila 5 -->
-            <div class="form-table-row">
-                <div class="form-table-label">
+               <!-- Fila 5 -->
+                     <div class="form-table-row">
+                  <div class="form-table-label">
                     <label>¿Se requiere conocer los riesgos del producto que se va a manejar?</label>
-                </div>
-                <div class="form-table-options">
+                  </div>
+                  <div class="form-table-options">
                     <div class="yes-no-na compact">
                         <label><input type="radio" name="risk-knowledge" value="SI"></label>
                         <label><input type="radio" name="risk-knowledge" value="NO"></label>
                         <label><input type="radio" name="risk-knowledge" value="N/A"></label>
                     </div>
-                </div>
-            </div>
+                  </div>
+                  </div>
 
-            <!-- Fila 6: Observaciones finales -->
-                <div class="form-table-row">
+                    <!-- Fila 6: Observaciones finales -->
+                  <div class="form-table-row">
                     <div class="form-table-label">
                         <label for="final-observations">Observaciones adicionales</label>
                     </div>
                     <div class="form-table-options">
                         <textarea id="final-observations" name="final-observations" rows="3" placeholder="Ingrese cualquier observación adicional"></textarea>
                     </div>
-                </div>
-            </div>
-        </div>
-                        
+                  </div>
+                   </div>
 
-                    <div class="form-actions">
-                        <button type="button" class="btn secondary prev-step" data-prev="1">
-                            <i class="ri-arrow-left-line"></i> Anterior
-                        </button>
-                        <button type="button" class="btn primary next-step" data-next="3">
-                            Siguiente <i class="ri-arrow-right-line"></i>
-                        </button>
-                    </div>
-                </div>
+
+                   </div>
+
+                  <div class="form-actions" id="permiso-np-actions">
+                            <button type="button" class="btn secondary prev-step" data-prev="1">
+                                <i class="ri-arrow-left-line"></i> Anterior
+                            </button>
+                            <button type="button" class="btn primary next-step" data-next="3">
+                                Siguiente <i class="ri-arrow-right-line"></i>
+                            </button>
+                           </div>    
+
+
+
+                
             </section>
 
 
@@ -523,9 +513,7 @@
                         <button type="submit" class="btn primary">
                             <i class="ri-save-line"></i> Guardar Permiso Completo
                         </button>
-                        <button type="button" class="btn tertiary" id="print-complete-btn">
-                            <i class="ri-printer-line"></i> Vista de Impresión
-                        </button>
+                       
                     </div>
                     
                 </div>

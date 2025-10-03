@@ -643,3 +643,16 @@ function initTableToggles() {
     }
   });
 }
+
+// Campos del toggle
+function initEquipmentToggle() {
+  const equipmentRadios = document.querySelectorAll(
+    'input[name="has-equipment"]'
+  );
+  const equipmentFields = [
+    document.getElementById("equipment").closest(".form-group"),
+    document.getElementById("tag").closest(".form-group"),
+    document.getElementById("equipment-conditions-title"),
+    document.getElementById("equipment-conditions-grid"),
+  ];
+}

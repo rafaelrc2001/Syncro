@@ -1,4 +1,3 @@
-
 /* Estilos mínimos solo para la sección 2 del formulario (cabecera y grid principal) */
 
 :root {
@@ -173,55 +172,4 @@ select:focus {
 
 .form-section-title i {
     font-size: 1rem;
-}
-
-
-
-
-/* Estilos específicos para la sección 2 (Permiso No Peligroso) usando IDs */
-/* Estilos específicos para la sección 2 (Permiso No Peligroso) usando IDs */
-/* Estilos específicos para la sección 2 (Permiso No Peligroso) usando IDs */
-/* Estilos específicos para la sección 2 (Permiso No Peligroso) usando IDs */
-/* Estilos específicos para la sección 2 (Permiso No Peligroso) usando IDs */
-
-#permiso-np-header {
-    border-bottom: none;
-    border-radius: 0.5rem;
-    padding: 1rem 1.5rem;
-    margin-bottom: 1.5rem;
-    align-items: center;
-    gap: 1rem;
-    border-top: none;
-    background: none;
-    box-shadow: none;
-    display: flex;
-}
-#permiso-np-icon {
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 0.5rem;
-    background: linear-gradient(135deg, #43cea2 0%, #0a6640 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 1.3rem;
-    flex-shrink: 0;
-}
-#permiso-np-header-text h2 {
-    margin-bottom: 0.15rem;
-}
-#permiso-np-header-text p {
-    margin: 0;
-}
-#permiso-np-grid1,
-#permiso-np-grid2 {
-    grid-template-columns: 1fr 1fr 1fr !important;
-}
-
-#permiso-np-header-divider {
-    width: 100%;
-    height: 1px;
-    background: #e0e0e0;
-    margin-bottom: 1.0rem;
 }

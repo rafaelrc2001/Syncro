@@ -156,21 +156,22 @@
 
                  
                 <!-- Sección 2: Permiso No Peligroso -->
-                <section class="form-section" data-section="2">
-                    <div class="form-container">
-                        <div class="form-header">
-                            <div class="form-icon" style="background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);">
-                                <i class="ri-checkbox-circle-line"></i>
+                <section class="form-section" data-section="2" id="permiso-np-section">
+                    <div class="form-container" id="permiso-np-container">
+                        <div class="form-header" id="permiso-np-header">
+                            <div class="form-icon" id="permiso-np-icon">
+                                <i class="ri-survey-line"></i>
                             </div>
-                            <div>
-                                <h2>Permiso de Trabajo No Peligroso</h2>
-                                <p>Complete los detalles específicos del permiso</p>
+                            <div id="permiso-np-header-text">
+                                <h2>Formulario</h2>
+                                <p>Complete los datos básicos del permiso</p>
                             </div>
                         </div>
+                        <div id="permiso-np-header-divider"></div>
 
+             
 
-
-                        <div class="form-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+                        <div class="form-grid" id="permiso-np-grid1">
                             <div class="form-group">
                                 <div class="form-group">
                                     <label for="maintenance-type">Tipo de mantenimiento</label>
@@ -199,11 +200,14 @@
                             </div>
                         </div>
 
-                        <div class="form-section-title">
+
+                           <div id="permiso-np-header-divider"></div>
+
+                        <div class="form-section-title" id="permiso-np-equipo-title">
                             <i class="ri-tools-line"></i>
                             <h3>Equipo</h3>
                         </div>
-                        <div class="form-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+                        <div class="form-grid" id="permiso-np-grid2">
                             <div class="form-group">
                                 <label>¿Tiene equipo a intervenir?</label>
                                 <div class="radio-group" id="equipment-toggle">
@@ -235,20 +239,16 @@
 
 
                     
-                       
-
-
-       
-
-                        </div>
-                        <div class="form-actions">
+                           <div class="form-actions" id="permiso-np-actions">
                             <button type="button" class="btn secondary prev-step" data-prev="1">
                                 <i class="ri-arrow-left-line"></i> Anterior
                             </button>
                             <button type="button" class="btn primary next-step" data-next="3">
                                 Siguiente <i class="ri-arrow-right-line"></i>
                             </button>
+                           </div>
                         </div>
+                       
                     
                         
                 </section>
@@ -416,9 +416,7 @@
                         <button type="submit" class="btn primary">
                             <i class="ri-save-line"></i> Guardar Permiso Completo
                         </button>
-                        <button type="button" class="btn tertiary" id="print-complete-btn">
-                            <i class="ri-printer-line"></i> Vista de Impresión
-                        </button>
+                    
                     </div>
                     
                 </div>

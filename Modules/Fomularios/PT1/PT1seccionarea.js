@@ -599,6 +599,16 @@ document.addEventListener("DOMContentLoaded", function () {
         if (data && data.detalles) {
           document.getElementById("work-order-label").textContent =
             data.detalles.ot || "-";
+          // Mapear fecha si existe
+          if (data.general && data.general.fecha) {
+            document.getElementById("fecha-label").textContent =
+              data.general.fecha;
+          } else if (data.detalles.fecha) {
+            document.getElementById("fecha-label").textContent =
+              data.detalles.fecha;
+          } else {
+            document.getElementById("fecha-label").textContent = "-";
+          }
           // Usar 'horario' para Hora de inicio si existe, si no, hora_inicio
           document.getElementById("start-time-label").textContent =
             data.detalles.horario || data.detalles.hora_inicio || "-";
@@ -606,12 +616,36 @@ document.addEventListener("DOMContentLoaded", function () {
             data.detalles.tipo_actividad || "-";
           document.getElementById("plant-label").textContent =
             data.detalles.planta || "-";
+          // Nuevos campos mapeados
+          document.getElementById("empresa-label").textContent =
+            data.general && data.general.empresa
+              ? data.general.empresa
+              : data.detalles.empresa || "-";
+          document.getElementById("nombre-solicitante-label").textContent =
+            data.general && data.general.solicitante
+              ? data.general.solicitante
+              : data.detalles.solicitante || "-";
+          document.getElementById("sucursal-label").textContent =
+            data.general && data.general.sucursal
+              ? data.general.sucursal
+              : data.detalles.sucursal || "-";
+          document.getElementById("contrato-label").textContent =
+            data.general && data.general.contrato
+              ? data.general.contrato
+              : data.detalles.contrato || "-";
           //Equipo a Intervenir
           document.getElementById("equipment-label").textContent =
             data.detalles.equipo || "-";
           // TAG
           document.getElementById("tag-label").textContent =
             data.detalles.tag || "-";
+          // ¿Tiene equipo a intervenir?
+          document.getElementById("equipment-intervene-label").textContent =
+            typeof data.detalles.tiene_equipo !== "undefined"
+              ? data.detalles.tiene_equipo
+                ? "Sí"
+                : "No"
+              : "-";
           // Condiciones actuales del equipo: mostrar fluido, presion, temperatura si existen
           let condiciones = [];
           if (data.detalles.fluido)
@@ -644,3 +678,5 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 });
+
+// --- FUNCIONES DE LA VISTA ---

@@ -177,47 +177,37 @@ function mostrarPermisosFiltrados(filtro) {
   }
   asignarEventosVer();
   actualizarPaginacion(totalPaginas, filtro);
-}
 
-function actualizarPaginacion(totalPaginas, filtro) {
-  const pagContainer = document.querySelector(".pagination");
-  if (!pagContainer) return;
-  pagContainer.innerHTML = "";
-  // Botón anterior
-  const btnPrev = document.createElement("button");
-  btnPrev.className = "pagination-btn";
-  btnPrev.innerHTML = '<i class="ri-arrow-left-s-line"></i>';
-  btnPrev.disabled = paginaActual === 1;
-  btnPrev.onclick = () => {
-    if (paginaActual > 1) {
-      paginaActual--;
-      mostrarPermisosFiltrados(document.getElementById("status-filter").value);
-    }
-  };
-  pagContainer.appendChild(btnPrev);
-  // Botones de página
-  for (let i = 1; i <= totalPaginas; i++) {
-    const btn = document.createElement("button");
-    btn.className = "pagination-btn" + (i === paginaActual ? " active" : "");
-    btn.textContent = i;
-    btn.onclick = () => {
-      paginaActual = i;
-      mostrarPermisosFiltrados(document.getElementById("status-filter").value);
-    };
-    pagContainer.appendChild(btn);
-  }
-  // Botón siguiente
-  const btnNext = document.createElement("button");
-  btnNext.className = "pagination-btn";
-  btnNext.innerHTML = '<i class="ri-arrow-right-s-line"></i>';
-  btnNext.disabled = paginaActual === totalPaginas || totalPaginas === 0;
-  btnNext.onclick = () => {
-    if (paginaActual < totalPaginas) {
-      paginaActual++;
-      mostrarPermisosFiltrados(document.getElementById("status-filter").value);
-    }
-  };
-  pagContainer.appendChild(btnNext);
+  // Botón imprimir y ver: ambos redirigen a imprimir
+  document.querySelectorAll(".action-btn.print, .action-btn.view").forEach((btn) => {
+    btn.addEventListener("click", function () {
+      const row = this.closest("tr");
+      const tipoPermiso = row ? row.children[1].textContent.trim() : "";
+      const idPermiso = row
+        ? row.querySelector(".action-btn.view, .action-btn.print").getAttribute("data-idpermiso")
+        : "";
+
+      if (tipoPermiso === "PT No Peligroso") {
+        window.location.href = `/Modules/Fomularios/PT1/PT1imprimir.html?tipo=PT1&id=${idPermiso}`;
+      } else if (tipoPermiso === "PT para Apertura Equipo Línea") {
+        window.location.href = `/Modules/Fomularios/PT2/PT2imprimir.html?tipo=PT2&id=${idPermiso}`;
+      } else if (tipoPermiso === "PT de Entrada a Espacio Confinado") {
+        window.location.href = `/Modules/Fomularios/PT3/PT3imprimir.html?tipo=PT3&id=${idPermiso}`;
+      } else if (tipoPermiso === "PT en Altura") {
+        window.location.href = `/Modules/Fomularios/PT4/PT4imprimir.html?tipo=PT4&id=${idPermiso}`;
+      } else if (tipoPermiso === "PT de Fuego Abierto") {
+        window.location.href = `/Modules/Fomularios/PT5/PT5imprimir.html?tipo=PT5&id=${idPermiso}`;
+      } else if (tipoPermiso === "PT con Energía Eléctrica") {
+        window.location.href = `/Modules/Fomularios/PT6/PT6imprimir.html?tipo=PT6&id=${idPermiso}`;
+      } else if (tipoPermiso === "PT con Fuentes Radioactivas") {
+        window.location.href = `/Modules/Fomularios/PT7/PT7imprimir.html?tipo=PT7&id=${idPermiso}`;
+      } else if (tipoPermiso === "PT para Izaje con Hiab con Grúa") {
+        window.location.href = `/Modules/Fomularios/PT8/PT8imprimir.html?tipo=PT8&id=${idPermiso}`;
+      } else {
+        window.location.href = `/JS/usuario/LogicaImprimir.html?tipo=OTRO&id=${idPermiso}`;
+      }
+    });
+  });
 }
 
 // Evento del select
@@ -526,6 +516,7 @@ document.addEventListener("DOMContentLoaded", () => {
 const tableBody = document.getElementById("table-body");
 if (tableBody) {
   tableBody.addEventListener("click", function (e) {
+    // Editar
     const editBtn = e.target.closest(".action-btn.edit");
     if (editBtn) {
       const row = editBtn.closest("tr");
@@ -552,6 +543,36 @@ if (tableBody) {
         window.location.href = `/Modules/Fomularios/OTRO/OTROsupervisor.html?id=${idPermiso}`;
       }
     }
+
+    // Ver/Imprimir
+    const printOrViewBtn = e.target.closest(".action-btn.print, .action-btn.view");
+    if (printOrViewBtn) {
+      const row = printOrViewBtn.closest("tr");
+      const tipoPermiso = row ? row.children[1].textContent.trim() : "";
+      const idPermiso = row
+        ? row.querySelector(".action-btn.view").getAttribute("data-idpermiso")
+        : "";
+
+      if (tipoPermiso === "PT No Peligroso") {
+        window.location.href = `/Modules/Fomularios/PT1/PT1imprimirseg.html?tipo=PT1&id=${idPermiso}`;
+      } else if (tipoPermiso === "PT para Apertura Equipo Línea") {
+        window.location.href = `/Modules/Fomularios/PT2/PT2imprimirseg.html?tipo=PT2&id=${idPermiso}`;
+      } else if (tipoPermiso === "PT de Entrada a Espacio Confinado") {
+        window.location.href = `/Modules/Fomularios/PT3/PT3imprimirseg.html?tipo=PT3&id=${idPermiso}`;
+      } else if (tipoPermiso === "PT en Altura") {
+        window.location.href = `/Modules/Fomularios/PT4/PT4imprimirseg.html?tipo=PT4&id=${idPermiso}`;
+      } else if (tipoPermiso === "PT de Fuego Abierto") {
+        window.location.href = `/Modules/Fomularios/PT5/PT5imprimirseg.html?tipo=PT5&id=${idPermiso}`;
+      } else if (tipoPermiso === "PT con Energía Eléctrica") {
+        window.location.href = `/Modules/Fomularios/PT6/PT6imprimirseg.html?tipo=PT6&id=${idPermiso}`;
+      } else if (tipoPermiso === "PT con Fuentes Radioactivas") {
+        window.location.href = `/Modules/Fomularios/PT7/PT7imprimirseg.html?tipo=PT7&id=${idPermiso}`;
+      } else if (tipoPermiso === "PT para Izaje con Hiab con Grúa") {
+        window.location.href = `/Modules/Fomularios/PT8/PT8imprimirseg.html?tipo=PT8&id=${idPermiso}`;
+      } else {
+        window.location.href = `/JS/usuario/LogicaImprimir.html?tipo=OTRO&id=${idPermiso}`;
+      }
+    }
   });
 }
 
@@ -573,51 +594,12 @@ function mapSupervisorFields(general) {
   };
 }
 
+// Elimina o comenta este bloque para que el botón "ver" ya no abra el modal de ver
+/*
 const tbody = document.getElementById("table-body");
 tbody.addEventListener("click", async function (e) {
   if (e.target.closest(".view")) {
-    const idPermiso = e.target.closest(".view").getAttribute("data-idpermiso");
-    window.idPermisoActual = idPermiso;
-    try {
-      const response = await fetch(
-        `http://localhost:3000/api/verformularios?id=${encodeURIComponent(
-          idPermiso
-        )}`
-      );
-      if (!response.ok) throw new Error("Error al obtener datos del permiso");
-      const data = await response.json();
-
-      // Limpiar ambos contenedores antes de renderizar el que corresponde
-      if (document.getElementById("modal-especifica")) {
-        document.getElementById("modal-especifica").innerHTML = "";
-      }
-      if (document.getElementById("modal-no-peligroso-area")) {
-        document.getElementById("modal-no-peligroso-area").innerHTML = "";
-      }
-
-      // Renderizar solo el que corresponde
-      if (data.general && data.general.tipo_permiso === "PT No Peligroso") {
-        if (document.getElementById("modal-no-peligroso-area")) {
-          document.getElementById("modal-no-peligroso-area").innerHTML =
-            renderNoPeligrosoAreaVer(data.general);
-        }
-      } else if (
-        data.general &&
-        data.general.tipo_permiso === "PT para Apertura Equipo Línea"
-      ) {
-        if (document.getElementById("modal-especifica")) {
-          document.getElementById("modal-especifica").innerHTML =
-            renderApertura(data.general);
-        }
-      }
-
-      // Abrir el modal de ver
-      document.getElementById("modalVer").classList.add("active");
-      window.tipoPermisoActual = data.general
-        ? data.general.tipo_permiso
-        : null;
-    } catch (err) {
-      console.error("Error al obtener datos del permiso:", err);
-    }
+    // ... abre modal ...
   }
 });
+*/

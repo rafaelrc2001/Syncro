@@ -1,221 +1,91 @@
-// --- Lógica fusionada para guardar campos y autorizar ---
-// --- Lógica para el botón Autorizar (guardar identificación de la fuente y autorizar) ---
-const btnGuardarCampos = document.getElementById("btn-guardar-campos");
-if (btnGuardarCampos) {
-  btnGuardarCampos.addEventListener("click", async function () {
-    // 1. Obtener datos necesarios
-    const params = new URLSearchParams(window.location.search);
-    const idPermiso = params.get("id") || window.idPermisoActual;
-    const supervisorInput = document.getElementById("responsable-aprobador");
-    const categoriaInput = document.getElementById("responsable-aprobador2");
-    const supervisor = supervisorInput ? supervisorInput.value.trim() : "";
-    const categoria = categoriaInput ? categoriaInput.value.trim() : "";
+// --- Funciones de impresión (estilo PT6) ---
 
-    // 2. Validaciones básicas
-    if (!idPermiso) {
-      alert("No se pudo obtener el ID del permiso.");
+// Cambia el título de la pestaña para incluir el prefijo dinámicamente
+document.addEventListener("DOMContentLoaded", function () {
+  var prefijo = document.getElementById("prefijo-label");
+  var title = document.getElementById("dynamic-title");
+  if (prefijo && title) {
+    var observer = new MutationObserver(function () {
+      var valor = prefijo.textContent || prefijo.innerText || "-";
+      title.textContent = "Permiso Energia Electrica " + valor;
+      document.title = title.textContent;
+    });
+    observer.observe(prefijo, {
+      childList: true,
+      subtree: true,
+      characterData: true,
+    });
+    var valor = prefijo.textContent || prefijo.innerText || "-";
+    title.textContent = "Permiso Energia Electrica " + valor;
+    document.title = title.textContent;
+  }
+});
+
+function esperarImagenes() {
+  return new Promise((resolve) => {
+    const imagenes = document.querySelectorAll(".company-header img");
+    if (imagenes.length === 0) {
+      resolve();
       return;
     }
-    if (!supervisor) {
-      alert("Debes seleccionar el nombre del supervisor.");
-      return;
-    }
-
-    // 3. Guardar identificación de la fuente
-    function getRadio(name) {
-      const checked = document.querySelector(`input[name='${name}']:checked`);
-      return checked ? checked.value : null;
-    }
-    function getInputValue(id) {
-      const input = document.getElementById(id);
-      return input ? input.value : null;
-    }
-    const payloadIdentificacion = {
-      marca_modelo: getInputValue("marca_modelo"),
-      marca_modelo_check: getRadio("marca_modelo_check"),
-      tipo_isotopo: getInputValue("tipo_isotopo"),
-      tipo_isotopo_check: getRadio("tipo_isotopo_check"),
-      numero_fuente: getInputValue("numero_fuente"),
-      numero_fuente_check: getRadio("numero_fuente_check"),
-      actividad_fuente: getInputValue("actividad_fuente"),
-      actividad_fuente_check: getRadio("actividad_fuente_check"),
-      fecha_dia: getInputValue("fecha_dia"),
-      fecha_mes: getInputValue("fecha_mes"),
-      fecha_anio: getInputValue("fecha_anio"),
-    };
-    try {
-      const resp = await fetch(
-        `http://localhost:3000/api/radiactivas/identificacion_fuente/${idPermiso}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payloadIdentificacion),
-        }
-      );
-      if (!resp.ok)
-        throw new Error("Error al guardar la identificación de la fuente");
-    } catch (err) {
-      alert(
-        "Error al guardar la identificación de la fuente. No se puede autorizar."
-      );
-      console.error("Error al guardar identificación de la fuente:", err);
-      return;
-    }
-
-    // 4. Autorizar: actualizar supervisor/categoría y estatus
-    try {
-      // Actualizar supervisor y categoría
-      await fetch(
-        "http://localhost:3000/api/autorizaciones/supervisor-categoria",
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            id_permiso: idPermiso,
-            supervisor,
-            categoria,
-          }),
-        }
-      );
-
-      // Consultar id_estatus
-      let idEstatus = null;
-      try {
-        const respEstatus = await fetch(
-          `http://localhost:3000/api/permisos-trabajo/${idPermiso}`
-        );
-        if (respEstatus.ok) {
-          const permisoData = await respEstatus.json();
-          idEstatus =
-            permisoData.id_estatus ||
-            (permisoData.data && permisoData.data.id_estatus);
-        }
-      } catch (err) {
-        console.error("Error al consultar id_estatus:", err);
+    let imagenesRestantes = imagenes.length;
+    imagenes.forEach((img) => {
+      if (img.complete && img.naturalHeight !== 0) {
+        imagenesRestantes--;
+        if (imagenesRestantes === 0) resolve();
+      } else {
+        img.onload = () => {
+          imagenesRestantes--;
+          if (imagenesRestantes === 0) resolve();
+        };
+        img.onerror = () => {
+          imagenesRestantes--;
+          if (imagenesRestantes === 0) resolve();
+        };
       }
-
-      // Actualizar estatus a "activo"
-      if (idEstatus) {
-        try {
-          await fetch("http://localhost:3000/api/estatus/activo", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ id_estatus: idEstatus }),
-          });
-        } catch (err) {
-          console.error("Error al actualizar estatus activo:", err);
-        }
-      }
-
-      window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
-    } catch (err) {
-      alert(
-        "Error al autorizar el permiso. Revisa la consola para más detalles."
-      );
-      console.error("[DEPURACIÓN] Error al autorizar el permiso:", err);
-    }
+    });
+    setTimeout(() => resolve(), 3000); // Timeout de seguridad
   });
 }
 
-// --- Lógica para el botón "No Autorizar" (abrir modal) ---
-const btnNoAutorizar = document.getElementById("btn-no-autorizar");
-if (btnNoAutorizar) {
-  btnNoAutorizar.addEventListener("click", function () {
-    const responsableInput = document.getElementById("responsable-aprobador");
-    const responsable_area = responsableInput
-      ? responsableInput.value.trim()
-      : "";
-    if (!responsable_area) {
-      alert("Debes ingresar el nombre del responsable antes de rechazar.");
-      return;
-    }
-    const modal = document.getElementById("modalComentario");
-    if (modal) {
-      modal.style.display = "flex";
-      document.getElementById("comentarioNoAutorizar").value = "";
-    }
-  });
-
-  // Lógica para cerrar/cancelar el modal
-  const btnCancelarComentario = document.getElementById(
-    "btnCancelarComentario"
-  );
-  if (btnCancelarComentario) {
-    btnCancelarComentario.addEventListener("click", function () {
-      const modal = document.getElementById("modalComentario");
-      if (modal) modal.style.display = "none";
-    });
-  }
-
-  // Lógica para guardar el comentario y actualizar estatus a No Autorizado
-  const btnGuardarComentario = document.getElementById("btnGuardarComentario");
-  if (btnGuardarComentario) {
-    btnGuardarComentario.addEventListener("click", async function () {
-      const comentario = document
-        .getElementById("comentarioNoAutorizar")
-        .value.trim();
-      const responsableInput = document.getElementById("responsable-aprobador");
-      const operadorInput = document.getElementById("responsable-aprobador2");
-      const responsable_area = responsableInput
-        ? responsableInput.value.trim()
-        : "";
-      const operador_area = operadorInput ? operadorInput.value.trim() : "";
-      const params = new URLSearchParams(window.location.search);
-      const idPermiso = params.get("id") || window.idPermisoActual;
-      if (!comentario || !idPermiso || !responsable_area) {
-        return;
-      }
-      try {
-        // Guardar comentario y responsable en la tabla de autorizaciones
-        await fetch("http://localhost:3000/api/autorizaciones/area", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            id_permiso: idPermiso,
-            responsable_area,
-            encargado_area: operador_area,
-            comentario_no_autorizar: comentario,
-          }),
-        });
-        // Consultar el id_estatus desde permisos_trabajo
-        let idEstatus = null;
-        try {
-          const respEstatus = await fetch(
-            `http://localhost:3000/api/permisos-trabajo/${idPermiso}`
-          );
-          if (respEstatus.ok) {
-            const permisoData = await respEstatus.json();
-            idEstatus =
-              permisoData.id_estatus ||
-              (permisoData.data && permisoData.data.id_estatus);
-          }
-        } catch (err) {}
-        // Actualizar el estatus a 'no autorizado' y guardar el comentario en la tabla estatus
-        if (idEstatus) {
-          try {
-            const payloadEstatus = { id_estatus: idEstatus };
-            await fetch("http://localhost:3000/api/estatus/no_autorizado", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(payloadEstatus),
-            });
-            // Guardar el comentario en la tabla estatus
-            await fetch("http://localhost:3000/api/estatus/comentario", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ id_estatus: idEstatus, comentario }),
-            });
-          } catch (err) {}
-        }
-        // Cerrar el modal y redirigir
-        const modal = document.getElementById("modalComentario");
-        if (modal) modal.style.display = "none";
-        window.location.href = "/Modules/Usuario/AutorizarPT.html";
-      } catch (err) {}
-    });
+async function imprimirPermisoTradicional() {
+  try {
+    await esperarImagenes();
+    window.print();
+  } catch (error) {
+    console.error("Error al imprimir:", error);
+    // No mostrar alert ni confirm, solo log
   }
 }
 
+// Event listener para el botón de imprimir
+const btnImprimir = document.getElementById("btn-imprimir-permiso");
+if (btnImprimir) {
+  btnImprimir.addEventListener("click", function (e) {
+    e.preventDefault();
+    imprimirPermisoTradicional(); // Imprime directo, sin confirmación ni instrucciones
+  });
+
+  btnImprimir.style.transition = "all 0.3s ease";
+  btnImprimir.addEventListener("mouseenter", function () {
+    this.style.transform = "translateY(-2px)";
+    this.style.boxShadow = "0 6px 20px rgba(0,59,92,0.3)";
+  });
+  btnImprimir.addEventListener("mouseleave", function () {
+    this.style.transform = "translateY(0)";
+    this.style.boxShadow = "";
+  });
+}
+
+// Elimina o comenta el listener de Ctrl+P para instrucciones
+// document.addEventListener("keydown", function (e) {
+//   if ((e.ctrlKey || e.metaKey) && e.key === "p") {
+//     e.preventDefault();
+//     mostrarInstruccionesImpresion();
+//   }
+// });
+
+// Elimina o comenta la función mostrarInstruccionesImpresion si no la usas en otro lado
 // --- Plantilla para agregar personas en el área (ajusta el endpoint y campos según tu backend) ---
 async function agregarPersonaEnArea(idPermiso, persona) {
   // persona = { nombre, funcion, credencial, cargo }
@@ -347,6 +217,25 @@ if (idPermiso) {
             if (radio) radio.checked = true;
           }
         });
+
+        // --- Mostrar Identificación de la fuente (solo lectura) ---
+        setText("marca_modelo-label", permiso.marca_modelo || "-");
+        setText("marca_modelo_check-label", permiso.marca_modelo_check || "-");
+        setText("tipo_isotopo-label", permiso.tipo_isotopo || "-");
+        setText("tipo_isotopo_check-label", permiso.tipo_isotopo_check || "-");
+        setText("numero_fuente-label", permiso.numero_fuente || "-");
+        setText(
+          "numero_fuente_check-label",
+          permiso.numero_fuente_check || "-"
+        );
+        setText("actividad_fuente-label", permiso.actividad_fuente || "-");
+        setText(
+          "actividad_fuente_check-label",
+          permiso.actividad_fuente_check || "-"
+        );
+        setText("fecha_dia-label", permiso.fecha_dia || "-");
+        setText("fecha_mes-label", permiso.fecha_mes || "-");
+        setText("fecha_anio-label", permiso.fecha_anio || "-");
       } else {
         alert(
           "No se encontraron datos para este permiso o la API no respondió correctamente."
@@ -368,46 +257,6 @@ function setText(id, value) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  // Llenar selects de supervisor y categoría
-  rellenarSupervisoresYCategorias();
-
-  function rellenarSupervisoresYCategorias() {
-    fetch("http://localhost:3000/api/supervisores")
-      .then((resp) => resp.json())
-      .then((data) => {
-        const selectSupervisor = document.getElementById(
-          "responsable-aprobador"
-        );
-        if (selectSupervisor) {
-          selectSupervisor.innerHTML =
-            '<option value="" disabled selected>Seleccione un supervisor...</option>';
-          (Array.isArray(data) ? data : data.supervisores).forEach((sup) => {
-            const option = document.createElement("option");
-            option.value = sup.nombre || sup.id;
-            option.textContent = sup.nombre;
-            selectSupervisor.appendChild(option);
-          });
-        }
-      });
-
-    fetch("http://localhost:3000/api/categorias")
-      .then((resp) => resp.json())
-      .then((data) => {
-        const selectCategoria = document.getElementById(
-          "responsable-aprobador2"
-        );
-        if (selectCategoria) {
-          selectCategoria.innerHTML =
-            '<option value="" disabled selected>Seleccione una categoría...</option>';
-          (Array.isArray(data) ? data : data.categorias).forEach((cat) => {
-            const option = document.createElement("option");
-            option.value = cat.nombre || cat.id;
-            option.textContent = cat.nombre;
-            selectCategoria.appendChild(option);
-          });
-        }
-      });
-  }
   // Guardar requisitos
   const btnGuardar = document.getElementById("btn-guardar-requisitos");
   if (btnGuardar) {
@@ -624,6 +473,7 @@ document.addEventListener("DOMContentLoaded", function () {
           "Error al obtener datos del permiso. Revisa la consola para más detalles."
         );
       });
+    llenarTablaResponsables(idPermiso2);
   }
 });
 
@@ -631,6 +481,68 @@ document.addEventListener("DOMContentLoaded", function () {
 const btnSalirNuevo = document.getElementById("btn-salir-nuevo");
 if (btnSalirNuevo) {
   btnSalirNuevo.addEventListener("click", function () {
-   window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
+    window.location.href = "/Modules/SupSeguridad/supseguridad.html";
   });
+}
+
+function llenarTablaResponsables(idPermiso) {
+  fetch(`http://localhost:3000/api/autorizaciones/personas/${idPermiso}`)
+    .then((response) => response.json())
+    .then((result) => {
+      const tbody = document.getElementById("modal-ast-responsable-body");
+      if (!tbody) return;
+
+      tbody.innerHTML = ""; // Limpia la tabla antes de llenarla
+
+      if (result.success && result.data) {
+        const data = result.data;
+        const filas = [
+          { nombre: data.responsable_area, cargo: "Responsable de área" },
+          { nombre: data.operador_area, cargo: "Operador del área" },
+          { nombre: data.nombre_supervisor, cargo: "Supervisor" },
+        ];
+
+        let hayResponsables = false;
+        filas.forEach((fila) => {
+          if (fila.nombre && fila.nombre.trim() !== "") {
+            hayResponsables = true;
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+              <td>${fila.nombre}</td>
+              <td>${fila.cargo}</td>
+              <td></td>
+            `;
+            tbody.appendChild(tr);
+          }
+        });
+
+        // Si alguna fila no tiene nombre, igual la mostramos con N/A
+        filas.forEach((fila) => {
+          if (!fila.nombre || fila.nombre.trim() === "") {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+              <td>N/A</td>
+              <td>${fila.cargo}</td>
+              <td></td>
+            `;
+            tbody.appendChild(tr);
+          }
+        });
+
+        // Si no hay responsables, muestra mensaje
+        if (!hayResponsables) {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `<td colspan="3">Sin responsables registrados</td>`;
+          tbody.appendChild(tr);
+        }
+      } else {
+        // Si no hay datos, muestra mensaje
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td colspan="3">Sin responsables registrados</td>`;
+        tbody.appendChild(tr);
+      }
+    })
+    .catch((err) => {
+      console.error("Error al consultar personas de autorización:", err);
+    });
 }

@@ -464,7 +464,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnSalir = document.getElementById("btn-salir-nuevo");
   if (btnSalir) {
     btnSalir.addEventListener("click", function () {
-      window.location.href = "/Modules/SupSeguridad/supseguridad.html";
+    window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
     });
   }
   // --- Lógica para el botón "No Autorizar" ---

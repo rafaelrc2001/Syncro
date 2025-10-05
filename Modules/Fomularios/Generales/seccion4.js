@@ -410,7 +410,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           // Obtener el valor de equipo_intervencion para PT1
           const equipo_intervencion =
-            document.getElementById("equipment-label")?.textContent || "";
+  document.getElementById("equipment")?.value || "";
           // CREA el objeto una sola vez
           const datosNoPeligroso = {
             id_permiso,
@@ -475,11 +475,15 @@ document.addEventListener("DOMContentLoaded", () => {
           // ==============================
 
           // Obtener valores del formulario PT2.html
-          const tipo_mantenimiento =
-            document.querySelector('input[name="maintenance-type"]:checked')
-              ?.value || null;
-          const otro_tipo_mantenimiento =
-            document.getElementById("other-maintenance-type")?.value || null;
+let tipo_mantenimiento = document.getElementById("maintenance-type")?.value || null;
+if (tipo_mantenimiento === "OTRO") {
+  const otroInput = document.getElementById("other-maintenance");
+  if (otroInput && otroInput.value.trim()) {
+    tipo_mantenimiento = otroInput.value.trim();
+  }
+}
+let otro_tipo_mantenimiento = null; // Ya no se usa
+
           const ot_numero =
             document.getElementById("work-order")?.value || null;
           const tag = document.getElementById("tag")?.value || null;
@@ -487,15 +491,12 @@ document.addEventListener("DOMContentLoaded", () => {
           const hora = document.getElementById("start-time")?.value || "";
           const hora_inicio = `${fecha} ${hora}`;
           // Solo agregar tiene_equipo_intervencion si existe en el DOM
-          let tiene_equipo_intervencion = null;
-          const inputEquipoIntervencion = document.querySelector(
-            'input[name="has-equipment"]:checked'
-          );
-          if (inputEquipoIntervencion) {
-            tiene_equipo_intervencion = inputEquipoIntervencion.value;
-          }
-          const descripcion_equipo =
-            document.getElementById("equipment-description")?.value || null;
+          const inputEquipoIntervencion = document.querySelector('input[name="has-equipment"]:checked');
+let tiene_equipo_intervencion = null;
+if (inputEquipoIntervencion) {
+  tiene_equipo_intervencion = inputEquipoIntervencion.value;
+}
+        const descripcion_equipo = document.getElementById("equipment")?.value || null;
           const fluido = document.getElementById("fluid")?.value || null;
           const presion = document.getElementById("pressure")?.value || null;
           const temperatura =

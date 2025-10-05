@@ -45,10 +45,18 @@ document.addEventListener("DOMContentLoaded", () => {
   // Campo "OTRO"
   const maintenanceSelect = document.getElementById("maintenance-type");
   const otherContainer = document.getElementById("other-maintenance-container");
+  const otherInput = document.getElementById("other-maintenance");
 
   if (maintenanceSelect && otherContainer) {
     maintenanceSelect.addEventListener("change", function () {
-      otherContainer.style.display = this.value === "OTRO" ? "block" : "none";
+      if (this.value === "OTRO") {
+        otherContainer.style.display = "block";
+        otherInput.required = true;
+      } else {
+        otherContainer.style.display = "none";
+        otherInput.required = false;
+        otherInput.value = "";
+      }
     });
   }
 });

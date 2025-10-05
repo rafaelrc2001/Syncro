@@ -32,95 +32,14 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       }
     });
+
   const btnSalir = document.getElementById("btn-salir-nuevo");
   if (btnSalir) {
     btnSalir.addEventListener("click", function () {
       window.location.href = "../../usuario/autorizarPT.html";
     });
   }
-});
 
-// Función para aplicar estilos específicos de PT1
-function aplicarEstilosPT1() {
-  // Aplicar clases dinámicas a las respuestas según su valor
-  const respuestas = [
-    "resp-risk-area",
-    "resp-physical-delivery",
-    "resp-additional-ppe",
-    "resp-surrounding-risk",
-    "resp-supervision-needed",
-  ];
-
-  respuestas.forEach((id) => {
-    const elemento = document.getElementById(id);
-    if (elemento && elemento.textContent.trim() !== "-") {
-      const respuesta = elemento.textContent.toLowerCase().trim();
-
-      // Remover clases anteriores
-      elemento.classList.remove("pt1-response-si", "pt1-response-no");
-
-      // Agregar clase según la respuesta
-      if (respuesta === "si" || respuesta === "sí") {
-        elemento.classList.add("pt1-response-si");
-      } else if (respuesta === "no") {
-        elemento.classList.add("pt1-response-no");
-      }
-    }
-  });
-}
-
-// Función para consultar las personas que han autorizado el permiso
-function consultarPersonasAutorizacion(idPermiso) {
-  fetch(`http://localhost:3000/api/autorizaciones/personas/${idPermiso}`)
-    .then((response) => response.json())
-    .then((result) => {
-      if (result.success && result.data) {
-        const data = result.data;
-
-        // Rellenar responsable del área
-        const responsableAreaElement = document.getElementById(
-          "responsable-area-nombre"
-        );
-        if (responsableAreaElement) {
-          responsableAreaElement.textContent = data.responsable_area || "-";
-        }
-
-        // Rellenar operador del área
-        const operadorAreaElement = document.getElementById(
-          "operador-area-nombre"
-        );
-        if (operadorAreaElement) {
-          operadorAreaElement.textContent = data.operador_area || "-";
-        }
-
-        // Rellenar supervisor de seguridad
-        const supervisorElement = document.getElementById("supervisor-nombre");
-        if (supervisorElement) {
-          supervisorElement.textContent = data.nombre_supervisor || "-";
-        }
-
-        console.log("Datos de autorización cargados:", data);
-      } else {
-        console.log("No se encontraron autorizaciones para este permiso");
-        // Los elementos ya tienen "-" por defecto, no necesitamos cambiar nada
-      }
-    })
-    .catch((err) => {
-      console.error("Error al consultar personas de autorización:", err);
-      // Los elementos ya tienen "-" por defecto en caso de error
-    });
-}
-
-// Nuevo botón salir: vuelve a AutorizarPT.html
-const btnSalirNuevo = document.getElementById("btn-salir-nuevo");
-if (btnSalirNuevo) {
-  btnSalirNuevo.addEventListener("click", function (e) {
-    e.preventDefault();
-    window.location.href = "/Modules/SupSeguridad/supseguridad.html";
-  });
-}
-// Mostrar solo la sección 2 al cargar y ocultar las demás
-document.addEventListener("DOMContentLoaded", function () {
   // --- FUNCIONES PARA RELLENAR AST Y PARTICIPANTES ---
   function mostrarAST(ast) {
     const eppList = document.getElementById("modal-epp-list");
@@ -218,9 +137,9 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Botón salir: vuelve a AutorizarPT.html
-  const btnSalir = document.getElementById("btn-salir");
-  if (btnSalir) {
-    btnSalir.addEventListener("click", function () {
+  const btnSalir2 = document.getElementById("btn-salir");
+  if (btnSalir2) {
+    btnSalir2.addEventListener("click", function () {
       window.location.href = "/Modules/SupSeguridad/supseguridad.html";
     });
   }
@@ -229,24 +148,17 @@ document.addEventListener("DOMContentLoaded", function () {
   const params = new URLSearchParams(window.location.search);
   const idPermiso = params.get("id");
   if (idPermiso) {
-    // Llamar a la API para obtener los datos del permiso
     fetch(
-      `http://localhost:3000/api/verformularios?id=${encodeURIComponent(
-        idPermiso
-      )}`
+      `http://localhost:3000/api/verformularios?id=${encodeURIComponent(idPermiso)}`
     )
       .then((resp) => resp.json())
       .then((data) => {
         console.log("Datos recibidos para el permiso:", data);
-        // Prefijo en el título y descripción del trabajo
-      if (data && data.general) {
-  document.querySelector(".section-header h3").textContent =
-    data.general.prefijo || "NP-XXXXXX";
-  // Aquí actualizas el título de la pestaña
-  document.title = `Permiso No Peligroso ${data.general.prefijo || "NP-XXXXXX"}`;
-  document.getElementById("descripcion-trabajo-label").textContent =
-    data.general.descripcion_trabajo || "-";
-}
+
+        function fallback(detalles, general, campo) {
+          return (detalles && detalles[campo]) || (general && general[campo]) || "-";
+        }
+
         if (data && (data.detalles || data.general)) {
           const detalles = data.detalles || {};
           const general = data.general || {};
@@ -276,32 +188,47 @@ document.addEventListener("DOMContentLoaded", function () {
           document.getElementById("tag-label").textContent =
             detalles.tag || general.tag || "-";
 
+          // Condiciones actuales del equipo: mostrar fluido, presion, temperatura si existen
+          let condiciones = [];
+          if (detalles.fluido || general.fluido)
+            condiciones.push(`Fluido: ${detalles.fluido || general.fluido}`);
+          if (detalles.presion || general.presion)
+            condiciones.push(`Presión: ${detalles.presion || general.presion}`);
+          if (detalles.temperatura || general.temperatura)
+            condiciones.push(`Temperatura: ${detalles.temperatura || general.temperatura}`);
+          if (document.getElementById("equipment-conditions-label")) {
+            document.getElementById("equipment-conditions-label").textContent =
+              condiciones.length > 0
+                ? condiciones.join(" | ")
+                : detalles.condiciones_equipo || general.condiciones_equipo || "-";
+          }
+
           // Rellenar Condiciones del Proceso (inputs y <p> para vista solo lectura)
           if (document.getElementById("fluid")) {
             if (document.getElementById("fluid").tagName === "INPUT") {
               document.getElementById("fluid").value =
-                data.detalles.fluido || "";
+                detalles.fluido || general.fluido || "";
             } else {
               document.getElementById("fluid").textContent =
-                data.detalles.fluido || "-";
+                detalles.fluido || general.fluido || "-";
             }
           }
           if (document.getElementById("pressure")) {
             if (document.getElementById("pressure").tagName === "INPUT") {
               document.getElementById("pressure").value =
-                data.detalles.presion || "";
+                detalles.presion || general.presion || "";
             } else {
               document.getElementById("pressure").textContent =
-                data.detalles.presion || "-";
+                detalles.presion || general.presion || "-";
             }
           }
           if (document.getElementById("temperature")) {
             if (document.getElementById("temperature").tagName === "INPUT") {
               document.getElementById("temperature").value =
-                data.detalles.temperatura || "";
+                detalles.temperatura || general.temperatura || "";
             } else {
               document.getElementById("temperature").textContent =
-                data.detalles.temperatura || "-";
+                detalles.temperatura || general.temperatura || "-";
             }
           }
 
@@ -315,49 +242,48 @@ document.addEventListener("DOMContentLoaded", function () {
           }
           marcarRadio(
             "risk-area",
-            data.detalles.trabajo_area_riesgo_controlado
+            detalles.trabajo_area_riesgo_controlado || general.trabajo_area_riesgo_controlado
           );
           marcarRadio(
             "physical-delivery",
-            data.detalles.necesita_entrega_fisica
+            detalles.necesita_entrega_fisica || general.necesita_entrega_fisica
           );
-          marcarRadio("additional-ppe", data.detalles.necesita_ppe_adicional);
+          marcarRadio("additional-ppe", detalles.necesita_ppe_adicional || general.necesita_ppe_adicional);
           marcarRadio(
             "surrounding-risk",
-            data.detalles.area_circundante_riesgo
+            detalles.area_circundante_riesgo || general.area_circundante_riesgo
           );
-          marcarRadio("supervision-needed", data.detalles.necesita_supervision);
+          marcarRadio("supervision-needed", detalles.necesita_supervision || general.necesita_supervision);
           if (
             document.getElementById("pre-work-observations") &&
-            document.getElementById("pre-work-observations").tagName ===
-              "TEXTAREA"
+            document.getElementById("pre-work-observations").tagName === "TEXTAREA"
           ) {
             document.getElementById("pre-work-observations").value =
-              data.detalles.observaciones_analisis_previo || "";
+              detalles.observaciones_analisis_previo || general.observaciones_analisis_previo || "";
           }
 
           // Rellenar campos de solo lectura (modo vista)
           if (document.getElementById("resp-risk-area"))
             document.getElementById("resp-risk-area").textContent =
-              data.detalles.trabajo_area_riesgo_controlado || "-";
+              detalles.trabajo_area_riesgo_controlado || general.trabajo_area_riesgo_controlado || "-";
           if (document.getElementById("resp-physical-delivery"))
             document.getElementById("resp-physical-delivery").textContent =
-              data.detalles.necesita_entrega_fisica || "-";
+              detalles.necesita_entrega_fisica || general.necesita_entrega_fisica || "-";
           if (document.getElementById("resp-additional-ppe"))
             document.getElementById("resp-additional-ppe").textContent =
-              data.detalles.necesita_ppe_adicional || "-";
+              detalles.necesita_ppe_adicional || general.necesita_ppe_adicional || "-";
           if (document.getElementById("resp-surrounding-risk"))
             document.getElementById("resp-surrounding-risk").textContent =
-              data.detalles.area_circundante_riesgo || "-";
+              detalles.area_circundante_riesgo || general.area_circundante_riesgo || "-";
           if (document.getElementById("resp-supervision-needed"))
             document.getElementById("resp-supervision-needed").textContent =
-              data.detalles.necesita_supervision || "-";
+              detalles.necesita_supervision || general.necesita_supervision || "-";
           if (
             document.getElementById("pre-work-observations") &&
             document.getElementById("pre-work-observations").tagName === "P"
           )
             document.getElementById("pre-work-observations").textContent =
-              data.detalles.observaciones_analisis_previo || "-";
+              detalles.observaciones_analisis_previo || general.observaciones_analisis_previo || "-";
 
           // Rellenar AST y Participantes
           mostrarAST(data.ast);
@@ -366,7 +292,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
           // Consultar y rellenar datos de autorización
           consultarPersonasAutorizacion(idPermiso);
-          llenarTablaResponsables(idPermiso); // <-- AGREGA ESTA LÍNEA
+          llenarTablaResponsables(idPermiso);
 
           // Aplicar estilos dinámicos PT1
           aplicarEstilosPT1();
@@ -385,7 +311,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-
+// ...el resto de tus funciones (aplicarEstilosPT1, consultarPersonasAutorizacion, llenarTablaResponsables, etc.) igual que ya tienes...
 /**
  * Función de impresión tradicional (fallback)
  */
@@ -495,6 +421,41 @@ function llenarTablaResponsables(idPermiso) {
         const tr = document.createElement("tr");
         tr.innerHTML = `<td colspan="3">Sin responsables registrados</td>`;
         tbody.appendChild(tr);
+      }
+    })
+    .catch((err) => {
+      console.error("Error al consultar personas de autorización:", err);
+    });
+}
+
+function consultarPersonasAutorizacion(idPermiso) {
+  fetch(`http://localhost:3000/api/autorizaciones/personas/${idPermiso}`)
+    .then((response) => response.json())
+    .then((result) => {
+      if (result.success && result.data) {
+        const data = result.data;
+
+        // Rellenar responsable del área
+        const responsableAreaElement = document.getElementById("responsable-area-nombre");
+        if (responsableAreaElement) {
+          responsableAreaElement.textContent = data.responsable_area || "-";
+        }
+
+        // Rellenar operador del área
+        const operadorAreaElement = document.getElementById("operador-area-nombre");
+        if (operadorAreaElement) {
+          operadorAreaElement.textContent = data.operador_area || "-";
+        }
+
+        // Rellenar supervisor de seguridad
+        const supervisorElement = document.getElementById("supervisor-nombre");
+        if (supervisorElement) {
+          supervisorElement.textContent = data.nombre_supervisor || "-";
+        }
+
+        console.log("Datos de autorización cargados:", data);
+      } else {
+        console.log("No se encontraron autorizaciones para este permiso");
       }
     })
     .catch((err) => {

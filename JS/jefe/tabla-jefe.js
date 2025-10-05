@@ -219,7 +219,7 @@ function mostrarPermisosFiltrados(filtro) {
             <td>${permiso.descripcion}</td>
             <td>${permiso.area}</td>
             <td>${permiso.solicitante}</td>
-            <td>${permiso.fecha_hora}</td>
+           <td>${formatearFecha(permiso.fecha_hora)}</td>
             <td><span class="status-badge${
               badgeClass ? " " + badgeClass : ""
             }">${permiso.estatus}</span></td>
@@ -676,3 +676,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+
+function formatearFecha(fechaISO) {
+  if (!fechaISO) return "-";
+  const fecha = new Date(fechaISO);
+  return fecha.toLocaleString("es-MX", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}

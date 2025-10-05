@@ -640,12 +640,47 @@ document.addEventListener("DOMContentLoaded", function () {
           document.getElementById("tag-label").textContent =
             data.detalles.tag || "-";
           // ¿Tiene equipo a intervenir?
-          document.getElementById("equipment-intervene-label").textContent =
-            typeof data.detalles.tiene_equipo !== "undefined"
-              ? data.detalles.tiene_equipo
-                ? "Sí"
-                : "No"
-              : "-";
+          const equipo = data.detalles.equipo;
+          const tieneEquipo = equipo && equipo.trim() !== "";
+
+          // Mostrar "Sí" o "No"
+          document.getElementById("equipment-intervene-label").textContent = tieneEquipo ? "Sí" : "No";
+
+          // Campos de condiciones del proceso
+          const fluidInput = document.getElementById("fluid");
+          const pressureInput = document.getElementById("pressure");
+          const temperatureInput = document.getElementById("temperature");
+
+          if (!tieneEquipo) {
+              // Si NO hay equipo, deshabilita y muestra "-"
+              if (fluidInput) {
+                  fluidInput.value = "-";
+                  fluidInput.disabled = true;
+              }
+              if (pressureInput) {
+                  pressureInput.value = "-";
+                  pressureInput.disabled = true;
+              }
+              if (temperatureInput) {
+                  temperatureInput.value = "-";
+                  temperatureInput.disabled = true;
+              }
+          } else {
+              // Si hay equipo, habilita y muestra los valores reales
+              if (fluidInput) {
+                  fluidInput.value = data.detalles.fluido || "";
+                  fluidInput.disabled = false;
+              }
+              if (pressureInput) {
+                  pressureInput.value = data.detalles.presion || "";
+                  pressureInput.disabled = false;
+              }
+              if (temperatureInput) {
+                  temperatureInput.value = data.detalles.temperatura || "";
+                  temperatureInput.disabled = false;
+              }
+          }
+
           // Condiciones actuales del equipo: mostrar fluido, presion, temperatura si existen
           let condiciones = [];
           if (data.detalles.fluido)

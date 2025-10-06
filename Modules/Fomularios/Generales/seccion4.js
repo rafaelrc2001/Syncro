@@ -619,7 +619,8 @@ document.addEventListener("DOMContentLoaded", () => {
             ot_numero,
             tag,
             hora_inicio,
-            descripcion_equipo,
+            equipo_a_intervenir: descripcion_equipo, // Este campo se insertará en la columna correspondiente
+            tiene_equipo_intervenir: descripcion_equipo, // Insertar el texto del input directamente en la columna
             fluido,
             presion,
             temperatura,
@@ -660,10 +661,6 @@ document.addEventListener("DOMContentLoaded", () => {
             nombre_solicitante,
             descripcion_trabajo,
           };
-          // Solo agregar tiene_equipo_intervencion si existe
-          if (tiene_equipo_intervencion !== null) {
-            datosApertura.tiene_equipo_intervencion = tiene_equipo_intervencion;
-          }
 
           // Enviar los datos al backend (PT Apertura)
           const aperturaResponse = await fetch(

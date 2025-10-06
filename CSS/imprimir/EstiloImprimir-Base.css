@@ -181,3 +181,86 @@
     text-align: center !important;
     margin: 0 auto !important;
 }
+
+
+
+
+
+
+/* Modal de confirmación de autorización */
+/* Modal de confirmación de autorización */
+/* Modal de confirmación de autorización */
+/* Modal de confirmación de autorización */
+/* Modal de confirmación de autorización */
+/* Modal de confirmación de autorización */
+/* Modal de confirmación de autorización */
+/* Modal de confirmación de autorización */
+#confirmation-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(44,62,80,0.25);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+#confirmation-modal.show {
+    display: flex;
+}
+
+#confirmation-modal .modal-content {
+    background: #fff;
+    border-radius: 14px;
+    max-width: 400px;
+    width: 90vw;
+    padding: 2em 1.5em;
+    box-shadow: 0 4px 24px rgba(44,62,80,0.18);
+    display: flex;
+    flex-direction: column;
+    gap: 1.2em;
+    align-items: center;
+}
+
+#confirmation-modal .modal-icon.success {
+    color: #0d6122;
+    font-size: 2.5em;
+    margin-bottom: 0.5em;
+}
+
+#confirmation-modal h3 {
+    margin: 0 0 0.2em 0;
+    font-size: 1.3em;
+    color: #222;
+    text-align: center;
+}
+
+#confirmation-modal p {
+    margin: 0 0 1em 0;
+    color: #333;
+    text-align: center;
+}
+
+#confirmation-modal .modal-actions {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+#confirmation-modal .btn.secondary {
+    background: #00bfae;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 28px;
+    font-weight: 600;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+#confirmation-modal .btn.secondary:hover {
+    background: #009e8e;
+}

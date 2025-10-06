@@ -1,3 +1,17 @@
+// Valida que ambos campos estén seleccionados antes de autorizar
+function validarSupervisorYCategoria() {
+  const supervisorInput = document.getElementById("responsable-aprobador");
+  const categoriaInput = document.getElementById("responsable-aprobador2");
+  const supervisor = supervisorInput ? supervisorInput.value.trim() : "";
+  const categoria = categoriaInput ? categoriaInput.value.trim() : "";
+  if (!supervisor || !categoria) {
+    alert("Debes seleccionar el supervisor y la categoría antes de autorizar.");
+    if (!supervisor && supervisorInput) supervisorInput.focus();
+    else if (!categoria && categoriaInput) categoriaInput.focus();
+    return false;
+  }
+  return true;
+}
 // Mostrar nombres de responsable y operador del área en la sección de aprobaciones
 document.addEventListener("DOMContentLoaded", function () {
   const params = new URLSearchParams(window.location.search);
@@ -23,6 +37,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnAutorizar = document.getElementById("btn-guardar-campos");
   if (btnAutorizar) {
     btnAutorizar.addEventListener("click", async function () {
+      // Validar ambos campos antes de continuar
+      if (!validarSupervisorYCategoria()) {
+        return;
+      }
       const params = new URLSearchParams(window.location.search);
       const idPermiso = params.get("id") || window.idPermisoActual;
       const responsableInput = document.getElementById("responsable-aprobador");
@@ -31,10 +49,6 @@ document.addEventListener("DOMContentLoaded", function () {
       const categoria = operadorInput ? operadorInput.value.trim() : "";
       if (!idPermiso) {
         alert("No se pudo obtener el ID del permiso.");
-        return;
-      }
-      if (!supervisor) {
-        alert("Debes seleccionar el supervisor.");
         return;
       }
       // 1. Actualizar supervisor y categoría en autorizaciones
@@ -81,8 +95,48 @@ document.addEventListener("DOMContentLoaded", function () {
           console.error("Error al actualizar estatus activo:", err);
         }
       }
-      alert("Permiso autorizado correctamente");
-      window.location.href = "/Modules/SupSeguridad/supseguridad.html";
+      // Mostrar modal de confirmación en vez de redirigir inmediatamente
+      let confirmationModal = document.getElementById("confirmation-modal");
+      if (!confirmationModal) {
+        // Si no existe el modal, lo creamos dinámicamente
+        confirmationModal = document.createElement("div");
+        confirmationModal.id = "confirmation-modal";
+        confirmationModal.style.display = "flex";
+        confirmationModal.style.position = "fixed";
+        confirmationModal.style.top = 0;
+        confirmationModal.style.left = 0;
+        confirmationModal.style.width = "100vw";
+        confirmationModal.style.height = "100vh";
+        confirmationModal.style.background = "rgba(44,62,80,0.25)";
+        confirmationModal.style.zIndex = 1000;
+        confirmationModal.style.justifyContent = "center";
+        confirmationModal.style.alignItems = "center";
+        confirmationModal.innerHTML = `
+          <div style="background:#fff; border-radius:12px; max-width:400px; width:90vw; padding:2em 1.5em; box-shadow:0 4px 24px rgba(44,62,80,0.18); display:flex; flex-direction:column; gap:1em; align-items:center;">
+            <h3 style="margin:0 0 0.5em 0; font-size:1.2em; color:#27ae60;"><i class="ri-checkbox-circle-line" style="margin-right:8px;"></i>Permiso autorizado correctamente</h3>
+            <div style="font-size:1em; color:#2c3e50; margin-bottom:1em;">El permiso de trabajo es el número: <span id="generated-permit">-</span></div>
+            <button id="modal-close-btn" style="background:#2980b9; color:#fff; border:none; border-radius:4px; padding:8px 24px; cursor:pointer; font-size:1em;">Cerrar</button>
+          </div>
+        `;
+        document.body.appendChild(confirmationModal);
+      } else {
+        confirmationModal.style.display = "flex";
+      }
+      // Mostrar el número de permiso en el modal
+      const permitNumber = document.getElementById("generated-permit");
+      if (permitNumber) {
+        permitNumber.textContent = idPermiso || "-";
+      }
+      // Asegurar que el botón tenga type="button" y asignar el manejador SIEMPRE
+      const modalCloseBtn = document.getElementById("modal-close-btn");
+      if (modalCloseBtn) {
+        modalCloseBtn.setAttribute("type", "button");
+        modalCloseBtn.onclick = function (e) {
+          e.preventDefault();
+          confirmationModal.style.display = "none";
+          window.location.href = "/Modules/SupSeguridad/supseguridad.html";
+        };
+      }
     });
   }
 
@@ -373,7 +427,11 @@ document.addEventListener("DOMContentLoaded", function () {
           const general = data.general || {};
 
           document.getElementById("start-time-label").textContent =
-            detalles.horario || detalles.hora_inicio || general.horario || general.hora_inicio || "-";
+            detalles.horario ||
+            detalles.hora_inicio ||
+            general.horario ||
+            general.hora_inicio ||
+            "-";
           document.getElementById("fecha-label").textContent =
             detalles.fecha || general.fecha || "-";
           document.getElementById("activity-type-label").textContent =

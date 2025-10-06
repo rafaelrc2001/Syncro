@@ -124,7 +124,16 @@ if (btnAutorizar) {
           }),
         }
       );
-      window.location.href = "/Modules/Usuario/AutorizarPT.html";
+      // Mostrar modal de confirmación en vez de redirigir inmediatamente
+      const confirmationModal = document.getElementById("confirmation-modal");
+      if (confirmationModal) {
+        confirmationModal.style.display = "flex";
+      }
+      // Si tienes el número de permiso generado, puedes ponerlo aquí:
+      const permitNumber = document.getElementById("generated-permit");
+      if (permitNumber) {
+        permitNumber.textContent = idPermiso || "-";
+      }
     } catch (err) {
       console.error(
         "[DEPURACIÓN] Error al insertar autorización de área:",
@@ -135,6 +144,14 @@ if (btnAutorizar) {
 }
 
 // --- Lógica para el botón "No Autorizar" ---
+
+// Lógica para cerrar el modal de confirmación y redirigir
+const modalCloseBtn = document.getElementById("modal-close-btn");
+if (modalCloseBtn) {
+  modalCloseBtn.addEventListener("click", function () {
+    window.location.href = "/Modules/Usuario/AutorizarPT.html";
+  });
+}
 const btnNoAutorizar = document.getElementById("btn-no-autorizar");
 if (btnNoAutorizar) {
   btnNoAutorizar.addEventListener("click", function () {

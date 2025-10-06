@@ -14,7 +14,7 @@
 <body style="background: #f4f6fb; min-height: 100vh; margin: 0; font-family: 'Roboto', Arial, sans-serif;">
         <div style="display: flex; justify-content: center; align-items: flex-start; min-height: 100vh;">
             <section class="form-section" data-section="2" style="max-width: 900px; width: 100%; margin: 40px 0; background: #fff; border-radius: 18px; box-shadow: 0 4px 24px rgba(44,62,80,0.10); padding: 2.5rem 2rem;">
-                <div class="company-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid #e3e6ea;">
+                <div class="company-header">
                 <div style="display: flex; align-items: center; gap: 1rem;">
                     <img src="/img/proagro.png" alt="Logo ProAgro" style="height: 60px; width: auto;">
                 </div>
@@ -32,11 +32,11 @@
                     <h2>Permiso de Trabajo No Peligroso</h2>
                     <h3>NP-XXXXXX</h3>
                 </div>
-                                <div style="border: 2px solid #0d6122; border-radius: 10px; padding: 18px 18px 8px 18px; margin-bottom: 28px; background: #f8fcf9;">
-                                    <div style="margin-bottom: 18px; text-align: center; width: 100%;">
-                                        <span style="display: block; background: #eaf7ef; color: #0d6122; font-weight: 500; padding: 14px 0; border-radius: 8px; font-size: 1.35rem; letter-spacing: 0.2px; border: 1.5px solid #b6e2c6; width: 100%; max-width: 100%;">Información General</span>
+                                <div id="box-info-general" class="usuario-box">
+                                    <div class="usuario-box-header">
+                                        <span>Información General</span>
                                     </div>
-                  <div class="executive-section usuario" style="margin-bottom: 0; box-shadow: none; background: transparent; border: none;">
+                  <div class="executive-section " style="margin-bottom: 0; box-shadow: none; background: transparent; border: none;">
                       
                     <div class="section-header">
                           <i class="ri-information-line"></i>
@@ -86,7 +86,7 @@
                       </div>
                   </div>
                 
-                <div class="executive-section usuario">
+                <div class="executive-section ">
                     <div class="section-header">
                         <i class="ri-tools-line"></i>
                         <h3>Equipo</h3>
@@ -112,12 +112,12 @@
 
                 </div>
 
-                                 <div style="border: 2px solid #0d1c61; border-radius: 10px; padding: 18px 18px 8px 18px; margin-bottom: 28px; background: #f8f8fc;">
-                                     <div style="margin-bottom: 18px; text-align: center; width: 100%;">
-                                         <span style="display: block; background: #eaf0fa; color: #0d1c61; font-weight: 500; padding: 14px 0; border-radius: 8px; font-size: 1.35rem; letter-spacing: 0.2px; border: 1.5px solid #b6c6e2; width: 100%; max-width: 100%;">Formulario Área</span>
+                           <div id="box-formulario-area" class="area-box">
+                                    <div class="area-box-header">
+                                         <span>Formulario Área</span>
                                      </div>
               
-                <div class="executive-section area">
+                <div class="executive-section ">
                     <div class="section-header ">
                         <i class="ri-flask-line"></i>
                         <h3>Condiciones del Proceso</h3>
@@ -139,7 +139,7 @@
                 </div>
 
 
-                <div class="executive-section area">
+                <div class="executive-section ">
                     <div class="section-header section-header-cielo">
                         <i class="ri-checkbox-multiple-line"></i>
                         <h3>Análisis Previo al Trabajo</h3>
@@ -200,9 +200,9 @@
 
 
                         <!-- Sección AST y Participantes -->
-              <div style="border: 2px solid #0d6122; border-radius: 10px; padding: 18px 18px 8px 18px; margin-bottom: 28px; background: #f8fcf9;">
+              <div id="box-ast" class="usuario-box">
              
-                        <div class="executive-section usuario">
+                        <div class="executive-section ">
                     <div class="section-header">
                         <i class="ri-shield-check-line"></i>
                         <h3>AST - Análisis de Seguridad en el Trabajo</h3>
@@ -246,7 +246,7 @@
                     </div>
                 </div>
                 <!-- Sección 4: Participantes -->
-                <div class="executive-section usuario">
+                <div class="executive-section ">
                     <div class="section-header">
                         <i class="ri-team-line"></i>
                         <h3>Personal Involucrado</h3>

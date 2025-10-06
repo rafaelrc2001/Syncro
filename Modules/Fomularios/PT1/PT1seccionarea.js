@@ -1,5 +1,5 @@
 // --- Lógica para el botón "Autorizar" ---
-const btnAutorizar = document.getElementById("btn-autorizar-pt");
+const btnAutorizar = document.getElementById("btn-guardar-campos");
 if (btnAutorizar) {
   btnAutorizar.addEventListener("click", async function () {
     // 1. Obtener datos necesarios
@@ -17,8 +17,10 @@ if (btnAutorizar) {
       alert("No se pudo obtener el ID del permiso.");
       return;
     }
+    // Validar responsable obligatorio
     if (!responsable_area) {
-      alert("Debes ingresar el nombre del responsable.");
+      alert("Debes ingresar el nombre del responsable del área.");
+      if (responsableInput) responsableInput.focus();
       return;
     }
 
@@ -382,156 +384,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Guardar datos del análisis previo y condiciones
-  const btnGuardar = document.getElementById("btn-guardar-campos");
-  if (btnGuardar) {
-    btnGuardar.addEventListener("click", async function () {
-      // Leer el id del permiso de la URL
-      const params = new URLSearchParams(window.location.search);
-      const idPermiso = params.get("id");
-      if (!idPermiso) {
-        return;
-      }
-      // Recolectar datos del formulario con los nombres esperados por el backend
-      const fluido = document.getElementById("fluid").value;
-      const presion = document.getElementById("pressure").value;
-      const temperatura = document.getElementById("temperature").value;
-      const observaciones_analisis_previo = document.getElementById(
-        "pre-work-observations"
-      ).value;
-      function getRadio(name) {
-        const checked = document.querySelector(`input[name='${name}']:checked`);
-        return checked ? checked.value : null;
-      }
-      const trabajo_area_riesgo_controlado = getRadio("risk-area");
-      const necesita_entrega_fisica = getRadio("physical-delivery");
-      const necesita_ppe_adicional = getRadio("additional-ppe");
-      const area_circundante_riesgo = getRadio("surrounding-risk");
-      const necesita_supervision = getRadio("supervision-needed");
-      // Construir payload
-      const payload = {
-        fluido,
-        presion,
-        temperatura,
-        trabajo_area_riesgo_controlado,
-        necesita_entrega_fisica,
-        necesita_ppe_adicional,
-        area_circundante_riesgo,
-        necesita_supervision,
-        observaciones_analisis_previo,
-      };
-      try {
-        // 1. Guardar los datos del formulario
-        const resp = await fetch(
-          `http://localhost:3000/api/pt-no-peligroso/requisitos_area/${idPermiso}`,
-          {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
-          }
-        );
-        if (!resp.ok) throw new Error("Error al guardar los datos");
-
-        // 2. Actualizar estatus antes de autorizar
-        let idEstatus = null;
-        try {
-          const respEstatus = await fetch(
-            `http://localhost:3000/api/permisos-trabajo/${idPermiso}`
-          );
-          if (respEstatus.ok) {
-            const permisoData = await respEstatus.json();
-            idEstatus =
-              permisoData.id_estatus ||
-              (permisoData.data && permisoData.data.id_estatus);
-            console.log(
-              "[DEPURACIÓN] idEstatus obtenido:",
-              idEstatus,
-              "| permisoData:",
-              permisoData
-            );
-          } else {
-            // Error al obtener id_estatus
-          }
-        } catch (err) {
-          // Error al consultar id_estatus
-        }
-
-        if (idEstatus) {
-          try {
-            const payloadEstatus = { id_estatus: idEstatus };
-            console.log(
-              "[DEPURACIÓN] Enviando a /api/estatus/seguridad:",
-              payloadEstatus
-            );
-            const respEstatus = await fetch(
-              "http://localhost:3000/api/estatus/seguridad",
-              {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payloadEstatus),
-              }
-            );
-            console.log(
-              "[DEPURACIÓN] Respuesta HTTP de estatus/seguridad:",
-              respEstatus.status
-            );
-            let data = {};
-            try {
-              data = await respEstatus.json();
-            } catch (e) {
-              console.warn(
-                "[DEPURACIÓN] No se pudo parsear JSON de respuesta de estatus/seguridad"
-              );
-            }
-            if (!respEstatus.ok) {
-              // Error en respuesta de estatus/seguridad
-            } else {
-              // Respuesta exitosa de estatus/seguridad
-            }
-          } catch (err) {
-            // Excepción al actualizar estatus de seguridad
-          }
-        } else {
-          // No se obtuvo id_estatus para actualizar estatus
-        }
-
-        // 3. Autorizar el permiso (API)
-        const responsableInput = document.getElementById(
-          "responsable-aprobador"
-        );
-        const operadorInput = document.getElementById("responsable-aprobador2");
-        const responsable_area = responsableInput
-          ? responsableInput.value.trim()
-          : "";
-        const operador_area = operadorInput ? operadorInput.value.trim() : "";
-        if (!responsable_area) {
-          return;
-        }
-        const respAuth = await fetch(
-          "http://localhost:3000/api/autorizaciones/area",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              id_permiso: idPermiso,
-              responsable_area,
-              encargado_area: operador_area,
-            }),
-          }
-        );
-        if (!respAuth.ok) {
-          await respAuth.json();
-          return;
-        }
-        alert("Permiso autorizado correctamente");
-        // window.location.href = "/Modules/Usuario/AutorizarPT.html";
-      } catch (err) {
-        console.error("Error al guardar o autorizar:", err);
-        alert(
-          "Error al guardar o autorizar el permiso. Revisa la consola para más detalles."
-        );
-      }
-    });
-  }
 
   // Lógica para el botón "No Autorizar"
   const btnNoAutorizar = document.getElementById("btn-no-autorizar");
@@ -644,7 +496,8 @@ document.addEventListener("DOMContentLoaded", function () {
           const tieneEquipo = equipo && equipo.trim() !== "";
 
           // Mostrar "Sí" o "No"
-          document.getElementById("equipment-intervene-label").textContent = tieneEquipo ? "Sí" : "No";
+          document.getElementById("equipment-intervene-label").textContent =
+            tieneEquipo ? "Sí" : "No";
 
           // Campos de condiciones del proceso
           const fluidInput = document.getElementById("fluid");
@@ -652,33 +505,33 @@ document.addEventListener("DOMContentLoaded", function () {
           const temperatureInput = document.getElementById("temperature");
 
           if (!tieneEquipo) {
-              // Si NO hay equipo, deshabilita y muestra "-"
-              if (fluidInput) {
-                  fluidInput.value = "-";
-                  fluidInput.disabled = true;
-              }
-              if (pressureInput) {
-                  pressureInput.value = "-";
-                  pressureInput.disabled = true;
-              }
-              if (temperatureInput) {
-                  temperatureInput.value = "-";
-                  temperatureInput.disabled = true;
-              }
+            // Si NO hay equipo, deshabilita y muestra "-"
+            if (fluidInput) {
+              fluidInput.value = "-";
+              fluidInput.disabled = true;
+            }
+            if (pressureInput) {
+              pressureInput.value = "-";
+              pressureInput.disabled = true;
+            }
+            if (temperatureInput) {
+              temperatureInput.value = "-";
+              temperatureInput.disabled = true;
+            }
           } else {
-              // Si hay equipo, habilita y muestra los valores reales
-              if (fluidInput) {
-                  fluidInput.value = data.detalles.fluido || "";
-                  fluidInput.disabled = false;
-              }
-              if (pressureInput) {
-                  pressureInput.value = data.detalles.presion || "";
-                  pressureInput.disabled = false;
-              }
-              if (temperatureInput) {
-                  temperatureInput.value = data.detalles.temperatura || "";
-                  temperatureInput.disabled = false;
-              }
+            // Si hay equipo, habilita y muestra los valores reales
+            if (fluidInput) {
+              fluidInput.value = data.detalles.fluido || "";
+              fluidInput.disabled = false;
+            }
+            if (pressureInput) {
+              pressureInput.value = data.detalles.presion || "";
+              pressureInput.disabled = false;
+            }
+            if (temperatureInput) {
+              temperatureInput.value = data.detalles.temperatura || "";
+              temperatureInput.disabled = false;
+            }
           }
 
           // Condiciones actuales del equipo: mostrar fluido, presion, temperatura si existen

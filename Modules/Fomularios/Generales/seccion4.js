@@ -410,7 +410,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           // Obtener el valor de equipo_intervencion para PT1
           const equipo_intervencion =
-  document.getElementById("equipment")?.value || "";
+            document.getElementById("equipment")?.value || "";
           // CREA el objeto una sola vez
           const datosNoPeligroso = {
             id_permiso,
@@ -475,14 +475,15 @@ document.addEventListener("DOMContentLoaded", () => {
           // ==============================
 
           // Obtener valores del formulario PT2.html
-let tipo_mantenimiento = document.getElementById("maintenance-type")?.value || null;
-if (tipo_mantenimiento === "OTRO") {
-  const otroInput = document.getElementById("other-maintenance");
-  if (otroInput && otroInput.value.trim()) {
-    tipo_mantenimiento = otroInput.value.trim();
-  }
-}
-let otro_tipo_mantenimiento = null; // Ya no se usa
+          let tipo_mantenimiento =
+            document.getElementById("maintenance-type")?.value || null;
+          if (tipo_mantenimiento === "OTRO") {
+            const otroInput = document.getElementById("other-maintenance");
+            if (otroInput && otroInput.value.trim()) {
+              tipo_mantenimiento = otroInput.value.trim();
+            }
+          }
+          let otro_tipo_mantenimiento = null; // Ya no se usa
 
           const ot_numero =
             document.getElementById("work-order")?.value || null;
@@ -491,12 +492,15 @@ let otro_tipo_mantenimiento = null; // Ya no se usa
           const hora = document.getElementById("start-time")?.value || "";
           const hora_inicio = `${fecha} ${hora}`;
           // Solo agregar tiene_equipo_intervencion si existe en el DOM
-          const inputEquipoIntervencion = document.querySelector('input[name="has-equipment"]:checked');
-let tiene_equipo_intervencion = null;
-if (inputEquipoIntervencion) {
-  tiene_equipo_intervencion = inputEquipoIntervencion.value;
-}
-        const descripcion_equipo = document.getElementById("equipment")?.value || null;
+          const inputEquipoIntervencion = document.querySelector(
+            'input[name="has-equipment"]:checked'
+          );
+          let tiene_equipo_intervencion = null;
+          if (inputEquipoIntervencion) {
+            tiene_equipo_intervencion = inputEquipoIntervencion.value;
+          }
+          const descripcion_equipo =
+            document.getElementById("equipment")?.value || null;
           const fluido = document.getElementById("fluid")?.value || null;
           const presion = document.getElementById("pressure")?.value || null;
           const temperatura =
@@ -678,7 +682,7 @@ if (inputEquipoIntervencion) {
           // FIN BLOQUE: Insertar otro tipo de PT
           // Aquí termina la lógica para otro tipo de permiso de trabajo
           // ==============================
-      
+
           // ...existing code...
         } else if (tipoFormulario === 3) {
           // ==============================
@@ -686,7 +690,8 @@ if (inputEquipoIntervencion) {
           // ==============================
 
           // Información general
-          let tipo_mantenimiento = document.getElementById("maintenance-type")?.value || "";
+          let tipo_mantenimiento =
+            document.getElementById("maintenance-type")?.value || "";
           if (tipo_mantenimiento === "OTRO") {
             const otroInput = document.getElementById("other-maintenance");
             if (otroInput && otroInput.value.trim()) {
@@ -698,35 +703,67 @@ if (inputEquipoIntervencion) {
           const hora = document.getElementById("start-time")?.value || "";
           const fecha = document.getElementById("permit-date")?.value || "";
           const hora_inicio = `${fecha} ${hora}`;
-          const equipo_intervencion = document.getElementById("equipment")?.value || "";
+          const equipo_intervencion =
+            document.getElementById("equipment")?.value || "";
 
           // Medidas/Requisitos para administrar los riesgos
-          const warning_signs = document.querySelector('input[name="warning-signs"]:checked')?.value || "";
-          const explosion_proof_lighting = document.querySelector('input[name="explosion-proof-lighting"]:checked')?.value || "";
-          const forced_ventilation = document.querySelector('input[name="forced-ventilation"]:checked')?.value || "";
-          const medical_evaluation = document.querySelector('input[name="medical-evaluation"]:checked')?.value || "";
-          const lifeline = document.querySelector('input[name="lifeline"]:checked')?.value || "";
-          const external_watch = document.querySelector('input[name="external-watch"]:checked')?.value || "";
-          const external_watch_name = document.querySelector('input[name="external-watch-name"]')?.value || "";
-          const rescue_personnel = document.querySelector('input[name="rescue-personnel"]:checked')?.value || "";
-          const rescue_personnel_name = document.querySelector('input[name="rescue-personnel-name"]')?.value || "";
-          const barriers = document.querySelector('input[name="barriers"]:checked')?.value || "";
-          const special_equipment = document.querySelector('input[name="special-equipment"]:checked')?.value || "";
-          const special_equipment_type = document.querySelector('input[name="special-equipment-type"]')?.value || "";
+          const warning_signs =
+            document.querySelector('input[name="warning-signs"]:checked')
+              ?.value || "";
+          const explosion_proof_lighting =
+            document.querySelector(
+              'input[name="explosion-proof-lighting"]:checked'
+            )?.value || "";
+          const forced_ventilation =
+            document.querySelector('input[name="forced-ventilation"]:checked')
+              ?.value || "";
+          const medical_evaluation =
+            document.querySelector('input[name="medical-evaluation"]:checked')
+              ?.value || "";
+          const lifeline =
+            document.querySelector('input[name="lifeline"]:checked')?.value ||
+            "";
+          const external_watch =
+            document.querySelector('input[name="external-watch"]:checked')
+              ?.value || "";
+          const external_watch_name =
+            document.querySelector('input[name="external-watch-name"]')
+              ?.value || "";
+          const rescue_personnel =
+            document.querySelector('input[name="rescue-personnel"]:checked')
+              ?.value || "";
+          const rescue_personnel_name =
+            document.querySelector('input[name="rescue-personnel-name"]')
+              ?.value || "";
+          const barriers =
+            document.querySelector('input[name="barriers"]:checked')?.value ||
+            "";
+          const special_equipment =
+            document.querySelector('input[name="special-equipment"]:checked')
+              ?.value || "";
+          const special_equipment_type =
+            document.querySelector('input[name="special-equipment-type"]')
+              ?.value || "";
 
           // Datos compactos
-          const authorized_personnel = document.getElementById("authorized-personnel")?.value || "";
+          const authorized_personnel =
+            document.getElementById("authorized-personnel")?.value || "";
           const stay_time = document.getElementById("stay-time")?.value || "";
-          const recovery_time = document.getElementById("recovery-time")?.value || "";
-          const confined_space_type = document.getElementById("confined-space-type")?.value || "";
+          const recovery_time =
+            document.getElementById("recovery-time")?.value || "";
+          const confined_space_type =
+            document.getElementById("confined-space-type")?.value || "";
 
           // Observaciones
-          const observations = document.getElementById("observations")?.value || "";
+          const observations =
+            document.getElementById("observations")?.value || "";
 
           // Campos generales
           const empresa = document.getElementById("company")?.value || "";
-          const nombre_solicitante = document.getElementById("applicant")?.value || "";
-          const descripcion_trabajo = document.getElementById("work-description")?.value || "";
+          const nombre_solicitante =
+            document.getElementById("applicant")?.value || "";
+          const descripcion_trabajo =
+            document.getElementById("work-description")?.value || "";
 
           // Construir el objeto de datos para enviar
           const datosEspacioConfinado = {
@@ -735,7 +772,8 @@ if (inputEquipoIntervencion) {
             ot_numero,
             tag,
             hora_inicio,
-              equipo_intervenir: document.getElementById("equipment")?.value || "", // <--- CAMBIA AQUÍ
+            equipo_intervenir:
+              document.getElementById("equipment")?.value || "", // <--- CAMBIA AQUÍ
             avisos_trabajos: warning_signs,
             iluminacion_prueba_explosion: explosion_proof_lighting,
             ventilacion_forzada: forced_ventilation,
@@ -782,22 +820,29 @@ if (inputEquipoIntervencion) {
           // ==============================
           // FIN BLOQUE: Insertar PT Entrada a Espacios Confinados
           // ==============================
-              
         } else if (tipoFormulario === 4) {
           // ==============================
           // INICIO BLOQUE: Insertar PT Altura
           // ==============================
           // Recabar datos de la sección 4 (Permiso de Trabajo en Altura)
-          const tipo_mantenimiento =
-            document.querySelector('input[name="maintenance-type"]:checked')
-              ?.value || "";
+
+          // Obtener tipo de mantenimiento correctamente (manejar OTRO)
+          let tipo_mantenimiento =
+            document.getElementById("maintenance-type")?.value || "";
+          if (tipo_mantenimiento === "OTRO") {
+            const otroInput = document.getElementById("other-maintenance");
+            if (otroInput && otroInput.value.trim()) {
+              tipo_mantenimiento = otroInput.value.trim();
+            }
+          }
           const ot_numero = document.getElementById("work-order")?.value || "";
           const tag = document.getElementById("tag")?.value || "";
           const hora = document.getElementById("start-time")?.value || "";
           const fecha = document.getElementById("permit-date")?.value || "";
           const hora_inicio = fecha ? `${fecha} ${hora}` : hora;
+          // Leer correctamente el campo de equipo a intervenir
           const equipo_intervenir =
-            document.getElementById("equipment-description")?.value || "";
+            document.getElementById("equipment")?.value || "";
           const descripcion_trabajo =
             document.getElementById("work-description")?.value || "";
           const nombre_solicitante =
@@ -913,18 +958,22 @@ if (inputEquipoIntervencion) {
           // ==============================
 
           // Información general
-          const tipo_mantenimiento =
-            document.querySelector('input[name="maintenance-type"]:checked')
-              ?.value || "";
-          const tipo_mantenimiento_otro =
-            document.getElementById("other-maintenance-type")?.value || "";
+          let tipo_mantenimiento =
+            document.getElementById("maintenance-type")?.value || "";
+          if (tipo_mantenimiento === "OTRO") {
+            const otroInput = document.getElementById("other-maintenance");
+            if (otroInput && otroInput.value.trim()) {
+              tipo_mantenimiento = otroInput.value.trim();
+            }
+          }
           const ot_numero = document.getElementById("work-order")?.value || "";
           const tag = document.getElementById("tag")?.value || "";
           const hora = document.getElementById("start-time")?.value || "";
           const fecha = document.getElementById("permit-date")?.value || "";
-          const hora_inicio = hora || null; // En tu tabla es TIME, no TIMESTAMP
+          const hora_inicio = fecha ? `${fecha} ${hora}` : hora;
+          // Leer correctamente el campo de equipo a intervenir
           const equipo_intervenir =
-            document.getElementById("equipment-description")?.value || "";
+            document.getElementById("equipment")?.value || "";
           const empresa = document.getElementById("company")?.value || "";
           const descripcion_trabajo =
             document.getElementById("work-description")?.value || "";
@@ -935,7 +984,6 @@ if (inputEquipoIntervencion) {
           const datosFuegoAbierto = {
             id_permiso,
             tipo_mantenimiento,
-            tipo_mantenimiento_otro,
             ot_numero,
             tag,
             hora_inicio,
@@ -975,18 +1023,22 @@ if (inputEquipoIntervencion) {
           // ==============================
 
           // Información general
-          const tipo_mantenimiento =
-            document.querySelector('input[name="maintenance-type"]:checked')
-              ?.value || "";
-          const tipo_mantenimiento_otro =
-            document.getElementById("other-maintenance-type")?.value || "";
+          let tipo_mantenimiento =
+            document.getElementById("maintenance-type")?.value || "";
+          if (tipo_mantenimiento === "OTRO") {
+            const otroInput = document.getElementById("other-maintenance");
+            if (otroInput && otroInput.value.trim()) {
+              tipo_mantenimiento = otroInput.value.trim();
+            }
+          }
           const ot_numero = document.getElementById("work-order")?.value || "";
           const tag = document.getElementById("tag")?.value || "";
           const hora = document.getElementById("start-time")?.value || "";
           const fecha = document.getElementById("permit-date")?.value || "";
-          const hora_inicio = hora || null; // Solo la hora, tu tabla es TIME
+          const hora_inicio = fecha ? `${fecha} ${hora}` : hora;
+          // Leer correctamente el campo de equipo a intervenir
           const equipo_intervenir =
-            document.getElementById("equipment-description")?.value || "";
+            document.getElementById("equipment")?.value || "";
           const empresa = document.getElementById("company")?.value || "";
           const descripcion_trabajo =
             document.getElementById("work-description")?.value || "";
@@ -1043,7 +1095,6 @@ if (inputEquipoIntervencion) {
           const datosEnergiaElectrica = {
             id_permiso,
             tipo_mantenimiento,
-            tipo_mantenimiento_otro,
             ot_numero,
             tag,
             hora_inicio,
@@ -1098,18 +1149,22 @@ if (inputEquipoIntervencion) {
           // ==============================
 
           // Información general
-          const tipo_mantenimiento =
-            document.querySelector('input[name="maintenance-type"]:checked')
-              ?.value || "";
-          const tipo_mantenimiento_otro =
-            document.getElementById("other-maintenance-type")?.value || "";
+          let tipo_mantenimiento =
+            document.getElementById("maintenance-type")?.value || "";
+          if (tipo_mantenimiento === "OTRO") {
+            const otroInput = document.getElementById("other-maintenance");
+            if (otroInput && otroInput.value.trim()) {
+              tipo_mantenimiento = otroInput.value.trim();
+            }
+          }
           const ot_numero = document.getElementById("work-order")?.value || "";
           const tag = document.getElementById("tag")?.value || "";
           const hora = document.getElementById("start-time")?.value || "";
           const fecha = document.getElementById("permit-date")?.value || "";
-          const hora_inicio = hora || null; // Solo la hora, tu tabla es TIME
+          const hora_inicio = fecha ? `${fecha} ${hora}` : hora;
+          // Leer correctamente el campo de equipo a intervenir
           const equipo_intervenir =
-            document.getElementById("equipment-description")?.value || "";
+            document.getElementById("equipment")?.value || "";
           const empresa = document.getElementById("company")?.value || "";
           const descripcion_trabajo =
             document.getElementById("work-description")?.value || "";
@@ -1164,7 +1219,6 @@ if (inputEquipoIntervencion) {
           const datosFuentesRadioactivas = {
             id_permiso,
             tipo_mantenimiento,
-            tipo_mantenimiento_otro,
             ot_numero,
             tag,
             hora_inicio,
@@ -1225,7 +1279,7 @@ if (inputEquipoIntervencion) {
           // Lógica para formulario 10
         }
         // ... repite hasta el tipo 10 ...
-        else if (tipoFormulario === 10) {
+        else if (tipoFormulario === 11) {
           // Lógica para formulario 10
         }
 

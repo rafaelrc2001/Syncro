@@ -59,10 +59,6 @@ document.addEventListener("DOMContentLoaded", function () {
       const selected = document.querySelector(
         `input[name="${group.name}"]:checked`
       );
-      if (!selected) {
-        isValid = false;
-        alert(group.message);
-      }
     });
 
     // Validación especial para campos condicionales
@@ -92,7 +88,6 @@ document.addEventListener("DOMContentLoaded", function () {
     );
     if (!gasTestApproved) {
       isValid = false;
-      alert("Por favor indique si la prueba de gas fue aprobada");
     }
 
     return isValid;
@@ -137,7 +132,7 @@ document.addEventListener("DOMContentLoaded", function () {
       field.addEventListener("blur", function () {
         if (this.value && isNaN(this.value)) {
           this.style.borderColor = "#ff4444";
-          alert("Por favor ingrese un valor numérico válido");
+
           this.focus();
         } else {
           this.style.borderColor = "#dee2e6";

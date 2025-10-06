@@ -47,7 +47,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const plantSelected = document.querySelector('input[name="plant"]:checked');
     if (!plantSelected) {
       isValid = false;
-      alert("Por favor seleccione una planta o lugar de trabajo.");
     }
 
     // Validar que al menos un tipo de mantenimiento esté seleccionado
@@ -56,7 +55,6 @@ document.addEventListener("DOMContentLoaded", function () {
     );
     if (!maintenanceSelected) {
       isValid = false;
-      alert("Por favor seleccione un tipo de mantenimiento.");
     }
 
     // Validar campos "OTRO" si están seleccionados
@@ -98,9 +96,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (!isValid) {
-      alert(
-        "Por favor complete todos los campos requeridos antes de continuar."
-      );
     }
 
     return isValid;

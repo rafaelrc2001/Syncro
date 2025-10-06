@@ -55,16 +55,6 @@ document.addEventListener("DOMContentLoaded", function () {
       },
     ];
 
-    radioGroups.forEach((group) => {
-      const selected = document.querySelector(
-        `input[name="${group.name}"]:checked`
-      );
-      if (!selected) {
-        isValid = false;
-        alert(group.message);
-      }
-    });
-
     return isValid;
   }
 

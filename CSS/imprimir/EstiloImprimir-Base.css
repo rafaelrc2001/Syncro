@@ -1,3 +1,4 @@
+
 /* Estilos para el encabezado de la empresa */
 .company-header {
     display: flex !important;
@@ -86,6 +87,11 @@
     margin-bottom: 16px !important;
 }
 
+
+
+
+
+
 /* Fondo verde con marco para el header de Datos generales y Medidas */
 
 .usuario .section-header {
@@ -120,3 +126,58 @@
 /* Estilos base para section-header */
 
 
+
+.usuario-box{
+     border-radius: 10px !important;
+    padding: 18px 18px 8px 18px !important;
+    margin-bottom: 28px !important;
+    border: 2px solid #0d6122 !important;
+    background: #f8fcf9 !important;
+}
+
+.area-box {
+     border-radius: 10px !important;
+    padding: 18px 18px 8px 18px !important;
+    margin-bottom: 28px !important;
+    border: 2px solid #0d1c61 !important;
+    background: #f8f8fc !important;
+}
+
+.usuario-box-header {
+    margin-bottom: 18px !important;
+    text-align: center !important;
+    width: 100% !important;
+}
+
+
+.usuario-box-header span {
+    display: block !important;
+    background: #eaf7ef !important;
+    color: #0d6122 !important;
+    font-weight: 500 !important;
+    padding: 14px 0 !important;
+    border-radius: 8px !important;
+    font-size: 1.35rem !important;
+    letter-spacing: 0.2px !important;
+    border: 1.5px solid #b6e2c6 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    text-align: center !important;
+    margin: 0 auto !important;
+}
+
+.area-box-header span {
+    display: block !important;
+    background: #eaf0fa !important;
+    color: #0d1c61 !important;
+    font-weight: 500 !important;
+    padding: 14px 0 !important;
+    border-radius: 8px !important;
+    font-size: 1.35rem !important;
+    letter-spacing: 0.2px !important;
+    border: 1.5px solid #b6c6e2 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    text-align: center !important;
+    margin: 0 auto !important;
+}

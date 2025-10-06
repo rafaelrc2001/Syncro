@@ -247,19 +247,45 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("descripcion-trabajo-label").textContent =
     data.general.descripcion_trabajo || "-";
 }
-        if (data && data.detalles) {
-          document.getElementById("work-order-label").textContent =
-            data.detalles.ot || "-";
+        if (data && (data.detalles || data.general)) {
+       const detalles = data.detalles || {};
+const general = data.general || {};
+
+document.getElementById("empresa-label").textContent =
+  detalles.empresa || general.empresa || "-";
+document.getElementById("nombre-solicitante-label").textContent =
+  detalles.solicitante || general.solicitante || "-";
+document.getElementById("sucursal-label").textContent =
+  detalles.sucursal || general.sucursal || "-";
+document.getElementById("contrato-label").textContent =
+  detalles.contrato || general.contrato || "-";
+
           document.getElementById("start-time-label").textContent =
-            data.detalles.horario || data.detalles.hora_inicio || "-";
+            detalles.horario || detalles.hora_inicio || general.horario || general.hora_inicio || "-";
+          document.getElementById("fecha-label").textContent =
+            detalles.fecha || general.fecha || "-";
           document.getElementById("activity-type-label").textContent =
-            data.detalles.tipo_actividad || "-";
+            detalles.tipo_actividad || general.tipo_actividad || "-";
           document.getElementById("plant-label").textContent =
-            data.detalles.planta || "-";
+            detalles.planta || general.area || general.planta || "-";
+          document.getElementById("descripcion-trabajo-label").textContent =
+            detalles.descripcion_trabajo || general.descripcion_trabajo || "-";
+          document.getElementById("empresa-label").textContent =
+            detalles.empresa || general.empresa || "-";
+          document.getElementById("nombre-solicitante-label").textContent =
+            detalles.solicitante || general.solicitante || "-";
+          document.getElementById("sucursal-label").textContent =
+            detalles.sucursal || general.sucursal || "-";
+          document.getElementById("contrato-label").textContent =
+            detalles.contrato || general.contrato || "-";
+          document.getElementById("work-order-label").textContent =
+            detalles.ot || general.ot || "-";
           document.getElementById("equipment-label").textContent =
-            data.detalles.equipo || "-";
+            detalles.equipo || general.equipo || "-";
           document.getElementById("tag-label").textContent =
-            data.detalles.tag || "-";
+            detalles.tag || general.tag || "-";
+
+            
           // Condiciones actuales del equipo: mostrar fluido, presion, temperatura si existen
           let condiciones = [];
           if (data.detalles.fluido)

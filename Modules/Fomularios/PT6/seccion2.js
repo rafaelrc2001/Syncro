@@ -53,55 +53,46 @@ document.addEventListener("DOMContentLoaded", function () {
         name: "maintenance-type",
         message: "Por favor seleccione un tipo de mantenimiento",
       },
-      {
-        name: "equipment-identified",
-        message: "Por favor indique si se identificó el equipo",
-      },
-      {
-        name: "equipment-deenergized",
-        message: "Por favor indique si el equipo quedó desenergizado",
-      },
-      {
-        name: "equipment-locked",
-        message: "Por favor indique si se instaló candado",
-      },
-      {
-        name: "area-responsible",
-        message: "Por favor ingrese el responsable del área",
-      },
-      {
-        name: "work-responsible",
-        message: "Por favor ingrese el responsable del trabajo",
-      },
     ];
 
     radioGroups.forEach((group) => {
       const selected = document.querySelector(
         `input[name="${group.name}"]:checked`
       );
-      if (!selected && !document.getElementById(group.name)) {
+      if (!selected) {
         isValid = false;
         alert(group.message);
       }
     });
 
     // Validación especial para campos condicionales
-    const specialProtection = document.querySelector(
-      'input[name="special-protection"]:checked'
+    document
+      .querySelectorAll('.yes-no-na input[type="radio"][value="SI"]:checked')
+      .forEach((radio) => {
+        const parentGroup = radio.closest(".form-group");
+        if (parentGroup) {
+          const textInput = parentGroup.querySelector('input[type="text"]');
+          if (textInput && !textInput.disabled && !textInput.value.trim()) {
+            isValid = false;
+            textInput.style.borderColor = "#ff4444";
+            textInput.addEventListener(
+              "input",
+              function () {
+                this.style.borderColor = "#dee2e6";
+              },
+              { once: true }
+            );
+          }
+        }
+      });
+
+    // Validación para pruebas de gas
+    const gasTestApproved = document.querySelector(
+      'input[name="gas-test-approved"]:checked'
     );
-    if (specialProtection && specialProtection.value === "SI") {
-      const protectionType = document.getElementById("special-protection-type");
-      if (!protectionType.value.trim()) {
-        isValid = false;
-        protectionType.style.borderColor = "#ff4444";
-        protectionType.addEventListener(
-          "input",
-          function () {
-            this.style.borderColor = "#dee2e6";
-          },
-          { once: true }
-        );
-      }
+    if (!gasTestApproved) {
+      isValid = false;
+      alert("Por favor indique si la prueba de gas fue aprobada");
     }
 
     return isValid;
@@ -119,40 +110,41 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Manejar campos de verificación de seguridad
+  // Manejar campos de medidas de seguridad
   document
-    .querySelectorAll('.verification-grid input[type="radio"]')
+    .querySelectorAll('.yes-no-na input[type="radio"]')
     .forEach((radio) => {
       radio.addEventListener("change", function () {
-        const parentGroup = this.closest(".verification-item");
+        const parentGroup = this.closest(".form-group");
         if (parentGroup) {
-          // Actualizar estilo visual según selección
-          if (this.value === "SI") {
-            parentGroup.style.backgroundColor = "rgba(76, 175, 80, 0.1)";
-          } else if (this.value === "NO") {
-            parentGroup.style.backgroundColor = "rgba(244, 67, 54, 0.1)";
-          } else {
-            parentGroup.style.backgroundColor = "transparent";
+          // Habilitar campo de texto asociado si es necesario
+          const textInput = parentGroup.querySelector('input[type="text"]');
+          if (textInput) {
+            textInput.disabled = this.value !== "SI";
+            if (this.value === "SI") {
+              textInput.focus();
+            }
           }
         }
       });
     });
 
-  // Validación de campo de nivel de tensión
-  const voltageField = document.getElementById("voltage-level");
-  if (voltageField) {
-    voltageField.addEventListener("blur", function () {
-      if (this.value && !/^[\d.]+$/.test(this.value)) {
-        this.style.borderColor = "#ff4444";
-        alert(
-          "Por favor ingrese un valor numérico válido para el nivel de tensión"
-        );
-        this.focus();
-      } else {
-        this.style.borderColor = "#dee2e6";
-      }
-    });
-  }
+  // Validación de campos numéricos para pruebas de gas
+  const gasTestFields = ["co2-level", "nh3-level", "oxygen-level", "lel-level"];
+  gasTestFields.forEach((fieldId) => {
+    const field = document.getElementById(fieldId);
+    if (field) {
+      field.addEventListener("blur", function () {
+        if (this.value && isNaN(this.value)) {
+          this.style.borderColor = "#ff4444";
+          alert("Por favor ingrese un valor numérico válido");
+          this.focus();
+        } else {
+          this.style.borderColor = "#dee2e6";
+        }
+      });
+    }
+  });
 
   // Manejar el botón de cancelar específico para la sección 2
   const cancelBtnSection2 = document.querySelector(
@@ -170,27 +162,55 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Habilitar campo de tipo de protección especial cuando se selecciona "SI"
-  document
-    .querySelector('input[name="special-protection"]')
-    .addEventListener("change", function () {
-      const protectionType = document.getElementById("special-protection-type");
-      protectionType.disabled = this.value !== "SI";
-      if (this.value === "SI") {
-        protectionType.focus();
+  // Mostrar campo OTRO si se selecciona OTRO en el select
+  const maintenanceSelect = document.getElementById("maintenance-type");
+  const otherContainer = document.getElementById("other-maintenance-container");
+  const otherInput = document.getElementById("other-maintenance");
+
+  if (maintenanceSelect && otherContainer) {
+    maintenanceSelect.addEventListener("change", function () {
+      if (this.value === "OTRO") {
+        otherContainer.style.display = "block";
+        otherInput.required = true;
+      } else {
+        otherContainer.style.display = "none";
+        otherInput.required = false;
+        otherInput.value = "";
       }
     });
-});
+  }
 
-// Campos del toggle
-function initEquipmentToggle() {
-  const equipmentRadios = document.querySelectorAll(
-    'input[name="has-equipment"]'
-  );
-  const equipmentFields = [
-    document.getElementById("equipment").closest(".form-group"),
-    document.getElementById("tag").closest(".form-group"),
-    document.getElementById("equipment-conditions-title"),
-    document.getElementById("equipment-conditions-grid"),
-  ];
-}
+  // Mostrar/ocultar campos de equipo a intervenir y TAG
+  function initEquipmentToggle() {
+    const equipmentRadios = document.querySelectorAll(
+      'input[name="has-equipment"]'
+    );
+    const equipmentFields = [
+      document.getElementById("equipment").closest(".form-group"),
+      document.getElementById("tag").closest(".form-group"),
+      document.getElementById("equipment-conditions-title"),
+      document.getElementById("equipment-conditions-grid"),
+    ];
+
+    function toggleEquipmentFields() {
+      const showEquipment =
+        document.querySelector('input[name="has-equipment"]:checked').value ===
+        "si";
+      equipmentFields.forEach((element) => {
+        if (element) element.style.display = showEquipment ? "block" : "none";
+      });
+      const equipmentField = document.getElementById("equipment");
+      if (equipmentField) equipmentField.required = showEquipment;
+      const tagField = document.getElementById("tag");
+      if (tagField) tagField.required = showEquipment;
+    }
+
+    equipmentRadios.forEach((radio) => {
+      radio.addEventListener("change", toggleEquipmentFields);
+    });
+
+    toggleEquipmentFields();
+  }
+
+  initEquipmentToggle();
+});

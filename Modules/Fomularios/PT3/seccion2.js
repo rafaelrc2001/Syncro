@@ -143,6 +143,58 @@ document.addEventListener("DOMContentLoaded", function () {
       // Actualizar barra de progreso si es necesario
     }
   }
+
+  // Mostrar campo OTRO si se selecciona OTRO en el select
+  const maintenanceSelect = document.getElementById("maintenance-type");
+  const otherContainer = document.getElementById("other-maintenance-container");
+  const otherInput = document.getElementById("other-maintenance");
+
+  if (maintenanceSelect && otherContainer) {
+    maintenanceSelect.addEventListener("change", function () {
+      if (this.value === "OTRO") {
+        otherContainer.style.display = "block";
+        otherInput.required = true;
+      } else {
+        otherContainer.style.display = "none";
+        otherInput.required = false;
+        otherInput.value = "";
+      }
+    });
+  }
+
+  // Mostrar/ocultar campos de equipo a intervenir y TAG
+  function initEquipmentToggle() {
+    const equipmentRadios = document.querySelectorAll(
+      'input[name="has-equipment"]'
+    );
+    const equipmentFields = [
+      document.getElementById("equipment").closest(".form-group"),
+      document.getElementById("tag").closest(".form-group"),
+      document.getElementById("equipment-conditions-title"),
+      document.getElementById("equipment-conditions-grid"),
+    ];
+
+    function toggleEquipmentFields() {
+      const showEquipment =
+        document.querySelector('input[name="has-equipment"]:checked').value ===
+        "si";
+      equipmentFields.forEach((element) => {
+        if (element) element.style.display = showEquipment ? "block" : "none";
+      });
+      const equipmentField = document.getElementById("equipment");
+      if (equipmentField) equipmentField.required = showEquipment;
+      const tagField = document.getElementById("tag");
+      if (tagField) tagField.required = showEquipment;
+    }
+
+    equipmentRadios.forEach((radio) => {
+      radio.addEventListener("change", toggleEquipmentFields);
+    });
+
+    toggleEquipmentFields();
+  }
+
+  initEquipmentToggle();
 });
 
 // Campos del toggle

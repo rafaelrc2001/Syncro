@@ -92,11 +92,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
-    if (!isValid) {
-      alert(
-        "Por favor complete todos los campos requeridos en la sección de Entrada a Espacios Confinados."
-      );
-    }
+
 
     return isValid;
   }

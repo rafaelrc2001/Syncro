@@ -678,95 +678,64 @@ if (inputEquipoIntervencion) {
           // FIN BLOQUE: Insertar otro tipo de PT
           // Aquí termina la lógica para otro tipo de permiso de trabajo
           // ==============================
+      
+          // ...existing code...
         } else if (tipoFormulario === 3) {
-          // Lógica para formulario 3
           // ==============================
           // INICIO BLOQUE: Insertar PT Entrada a Espacios Confinados
           // ==============================
 
           // Información general
-          const tipo_mantenimiento =
-            document.querySelector('input[name="maintenance-type"]:checked')
-              ?.value || "";
-          const otro_tipo_mantenimiento =
-            document.getElementById("other-maintenance-type")?.value || "";
+          let tipo_mantenimiento = document.getElementById("maintenance-type")?.value || "";
+          if (tipo_mantenimiento === "OTRO") {
+            const otroInput = document.getElementById("other-maintenance");
+            if (otroInput && otroInput.value.trim()) {
+              tipo_mantenimiento = otroInput.value.trim();
+            }
+          }
           const ot_numero = document.getElementById("work-order")?.value || "";
           const tag = document.getElementById("tag")?.value || "";
           const hora = document.getElementById("start-time")?.value || "";
           const fecha = document.getElementById("permit-date")?.value || "";
           const hora_inicio = `${fecha} ${hora}`;
-          const descripcion_equipo =
-            document.getElementById("equipment-description")?.value || "";
+          const equipo_intervencion = document.getElementById("equipment")?.value || "";
 
           // Medidas/Requisitos para administrar los riesgos
-          const warning_signs =
-            document.querySelector('input[name="warning-signs"]:checked')
-              ?.value || "";
-          const explosion_proof_lighting =
-            document.querySelector(
-              'input[name="explosion-proof-lighting"]:checked'
-            )?.value || "";
-          const forced_ventilation =
-            document.querySelector('input[name="forced-ventilation"]:checked')
-              ?.value || "";
-          const medical_evaluation =
-            document.querySelector('input[name="medical-evaluation"]:checked')
-              ?.value || "";
-          const lifeline =
-            document.querySelector('input[name="lifeline"]:checked')?.value ||
-            "";
-          const external_watch =
-            document.querySelector('input[name="external-watch"]:checked')
-              ?.value || "";
-          const external_watch_name =
-            document.querySelector('input[name="external-watch-name"]')
-              ?.value || "";
-          const rescue_personnel =
-            document.querySelector('input[name="rescue-personnel"]:checked')
-              ?.value || "";
-          const rescue_personnel_name =
-            document.querySelector('input[name="rescue-personnel-name"]')
-              ?.value || "";
-          const barriers =
-            document.querySelector('input[name="barriers"]:checked')?.value ||
-            "";
-          const special_equipment =
-            document.querySelector('input[name="special-equipment"]:checked')
-              ?.value || "";
-          const special_equipment_type =
-            document.querySelector('input[name="special-equipment-type"]')
-              ?.value || "";
+          const warning_signs = document.querySelector('input[name="warning-signs"]:checked')?.value || "";
+          const explosion_proof_lighting = document.querySelector('input[name="explosion-proof-lighting"]:checked')?.value || "";
+          const forced_ventilation = document.querySelector('input[name="forced-ventilation"]:checked')?.value || "";
+          const medical_evaluation = document.querySelector('input[name="medical-evaluation"]:checked')?.value || "";
+          const lifeline = document.querySelector('input[name="lifeline"]:checked')?.value || "";
+          const external_watch = document.querySelector('input[name="external-watch"]:checked')?.value || "";
+          const external_watch_name = document.querySelector('input[name="external-watch-name"]')?.value || "";
+          const rescue_personnel = document.querySelector('input[name="rescue-personnel"]:checked')?.value || "";
+          const rescue_personnel_name = document.querySelector('input[name="rescue-personnel-name"]')?.value || "";
+          const barriers = document.querySelector('input[name="barriers"]:checked')?.value || "";
+          const special_equipment = document.querySelector('input[name="special-equipment"]:checked')?.value || "";
+          const special_equipment_type = document.querySelector('input[name="special-equipment-type"]')?.value || "";
 
           // Datos compactos
-          const authorized_personnel =
-            document.getElementById("authorized-personnel")?.value || "";
+          const authorized_personnel = document.getElementById("authorized-personnel")?.value || "";
           const stay_time = document.getElementById("stay-time")?.value || "";
-          const recovery_time =
-            document.getElementById("recovery-time")?.value || "";
-          const confined_space_type =
-            document.getElementById("confined-space-type")?.value || "";
+          const recovery_time = document.getElementById("recovery-time")?.value || "";
+          const confined_space_type = document.getElementById("confined-space-type")?.value || "";
 
           // Observaciones
-          const observations =
-            document.getElementById("observations")?.value || "";
+          const observations = document.getElementById("observations")?.value || "";
 
-          // Puedes agregar aquí los campos generales si los necesitas
+          // Campos generales
           const empresa = document.getElementById("company")?.value || "";
-          const nombre_solicitante =
-            document.getElementById("applicant")?.value || "";
-          const descripcion_trabajo =
-            document.getElementById("work-description")?.value || "";
+          const nombre_solicitante = document.getElementById("applicant")?.value || "";
+          const descripcion_trabajo = document.getElementById("work-description")?.value || "";
 
           // Construir el objeto de datos para enviar
-
-          // ...existing code...
           const datosEspacioConfinado = {
             id_permiso,
             tipo_mantenimiento,
             ot_numero,
             tag,
             hora_inicio,
-            equipo_intervencion: descripcion_equipo,
+              equipo_intervenir: document.getElementById("equipment")?.value || "", // <--- CAMBIA AQUÍ
             avisos_trabajos: warning_signs,
             iluminacion_prueba_explosion: explosion_proof_lighting,
             ventilacion_forzada: forced_ventilation,
@@ -786,9 +755,8 @@ if (inputEquipoIntervencion) {
             observaciones_adicionales: observations,
             descripcion_trabajo,
             nombre_solicitante,
-            // Si necesitas enviar empresa, nombre_solicitante, descripcion_trabajo, agrégalos aquí
+            empresa,
           };
-          // ...existing code...
 
           // Imprimir en consola lo que se enviará
           console.log(
@@ -796,28 +764,25 @@ if (inputEquipoIntervencion) {
             datosEspacioConfinado
           );
 
-          // Enviar los datos al backend (ajusta la URL según tu endpoint real)
-
-          // ...existing code...
+          // Enviar los datos al backend
           const espacioConfinadoResponse = await fetch(
-            "http://localhost:3000/api/pt-confinados", // <-- CORRIGE AQUÍ
+            "http://localhost:3000/api/pt-confinados",
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify(datosEspacioConfinado),
             }
           );
-          // ...existing code...
           const espacioConfinadoResult = await espacioConfinadoResponse.json();
           if (!espacioConfinadoResponse.ok || !espacioConfinadoResult.success)
             throw new Error(
               espacioConfinadoResult.error ||
                 "Error al guardar PT Espacios Confinados"
             );
-
           // ==============================
           // FIN BLOQUE: Insertar PT Entrada a Espacios Confinados
           // ==============================
+              
         } else if (tipoFormulario === 4) {
           // ==============================
           // INICIO BLOQUE: Insertar PT Altura

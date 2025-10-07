@@ -275,31 +275,70 @@ if (idPermiso) {
     .then((data) => {
       const detalles = data.data || data;
 
-// Información General
-setText("start-time-label", detalles.hora_inicio || "-");
-setText("fecha-label", detalles.fecha_creacion ? detalles.fecha_creacion.split("T")[0] : "-");
-setText("activity-type-label", detalles.tipo_mantenimiento || "-");
-setText("plant-label", detalles.planta || "-");
-setText("descripcion-trabajo-label", detalles.descripcion_trabajo || "-");
-setText("empresa-label", detalles.empresa || "-");
-setText("nombre-solicitante-label", detalles.nombre_solicitante || "-");
-setText("sucursal-label", detalles.sucursal || "-");
-setText("contrato-label", detalles.contrato || "-");
-setText("work-order-label", detalles.ot_numero || "-");
+      // Información General
+      setText("start-time-label", detalles.hora_inicio || "-");
+      setText("fecha-label", detalles.fecha_creacion ? detalles.fecha_creacion.split("T")[0] : "-");
+      setText("activity-type-label", detalles.tipo_mantenimiento || "-");
+      setText("plant-label", detalles.planta || "-");
+      setText("descripcion-trabajo-label", detalles.descripcion_trabajo || "-");
+      setText("empresa-label", detalles.empresa || "-");
+      setText("nombre-solicitante-label", detalles.nombre_solicitante || "-");
+      setText("sucursal-label", detalles.sucursal || "-");
+      setText("contrato-label", detalles.contrato || "-");
+      setText("work-order-label", detalles.ot_numero || "-");
 
-// Sección Equipo
-const tieneEquipo = detalles.tiene_equipo_intervenir && detalles.tiene_equipo_intervenir.trim() !== "";
-setText("equipment-intervene-label", tieneEquipo ? "SI" : "NO");
-setText("equipment-label", tieneEquipo ? detalles.tiene_equipo_intervenir : "-");
-setText("tag-label", detalles.tag || "-");
+      // Sección Equipo
+      const tieneEquipo = detalles.tiene_equipo_intervenir && detalles.tiene_equipo_intervenir.trim() !== "";
+      setText("equipment-intervene-label", tieneEquipo ? "SI" : "NO");
+      setText("equipment-label", tieneEquipo ? detalles.tiene_equipo_intervenir : "-");
+      setText("tag-label", detalles.tag || "-");
 
-// Formulario Usuario
-setText("special-tools-label", detalles.requiere_herramientas_especiales || "-");
- setText("what-special-tools-label", detalles.tipo_herramientas_especiales || "-"); // <-- AGREGA AQUÍ
-setText("adequate-tools-label", detalles.herramientas_adecuadas || "-");
-setText("pre-verification-label", detalles.requiere_verificacion_previa || "-");
-setText("risk-knowledge-label", detalles.requiere_conocer_riesgos || "-");
-setText("final-observations-label", detalles.observaciones_medidas || "-");
+      // Formulario Usuario
+      setText("special-tools-label", detalles.requiere_herramientas_especiales || "-");
+      setText("what-special-tools-label", detalles.tipo_herramientas_especiales || "-");
+      setText("adequate-tools-label", detalles.herramientas_adecuadas || "-");
+      setText("pre-verification-label", detalles.requiere_verificacion_previa || "-");
+      setText("risk-knowledge-label", detalles.requiere_conocer_riesgos || "-");
+      setText("final-observations-label", detalles.observaciones_medidas || "-");
+
+      // Condiciones del Proceso: solo habilitar si hay equipo a intervenir
+      const fluidInput = document.getElementById("fluid");
+      const pressureInput = document.getElementById("pressure");
+      const temperatureInput = document.getElementById("temperature");
+
+      if (tieneEquipo) {
+        if (fluidInput) {
+          fluidInput.value = detalles.fluido || "";
+          fluidInput.readOnly = false;
+          fluidInput.style.background = "#fff";
+        }
+        if (pressureInput) {
+          pressureInput.value = detalles.presion || "";
+          pressureInput.readOnly = false;
+          pressureInput.style.background = "#fff";
+        }
+        if (temperatureInput) {
+          temperatureInput.value = detalles.temperatura || "";
+          temperatureInput.readOnly = false;
+          temperatureInput.style.background = "#fff";
+        }
+      } else {
+        if (fluidInput) {
+          fluidInput.value = "-";
+          fluidInput.readOnly = true;
+          fluidInput.style.background = "#eee";
+        }
+        if (pressureInput) {
+          pressureInput.value = "-";
+          pressureInput.readOnly = true;
+          pressureInput.style.background = "#eee";
+        }
+        if (temperatureInput) {
+          temperatureInput.value = "-";
+          temperatureInput.readOnly = true;
+          temperatureInput.style.background = "#eee";
+        }
+      }
     })
     .catch((err) => {
       console.error("Error al obtener datos:", err);

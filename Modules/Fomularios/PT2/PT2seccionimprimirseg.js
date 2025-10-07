@@ -152,6 +152,49 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("final-observations-label").textContent =
               data.general.observaciones_medidas || "-";
           // ...agrega aquí más campos si los necesitas...
+          // Mapeo de datos generales y equipo para imprimirseg
+          if (data && data.general) {
+            if (document.getElementById("start-time-label"))
+              document.getElementById("start-time-label").textContent =
+                data.general.hora_inicio || "-";
+            if (document.getElementById("fecha-label"))
+              document.getElementById("fecha-label").textContent =
+                data.general.fecha || "-";
+            if (document.getElementById("activity-type-label"))
+              document.getElementById("activity-type-label").textContent =
+                data.general.tipo_mantenimiento || "-";
+            if (document.getElementById("plant-label"))
+              document.getElementById("plant-label").textContent =
+                data.general.area || "-";
+            if (document.getElementById("descripcion-trabajo-label"))
+              document.getElementById("descripcion-trabajo-label").textContent =
+                data.general.descripcion_trabajo || "-";
+            if (document.getElementById("empresa-label"))
+              document.getElementById("empresa-label").textContent =
+                data.general.empresa || "-";
+            if (document.getElementById("nombre-solicitante-label"))
+              document.getElementById("nombre-solicitante-label").textContent =
+                data.general.solicitante || "-";
+            if (document.getElementById("sucursal-label"))
+              document.getElementById("sucursal-label").textContent =
+                data.general.sucursal || "-";
+            if (document.getElementById("contrato-label"))
+              document.getElementById("contrato-label").textContent =
+                data.general.contrato || "-";
+            if (document.getElementById("work-order-label"))
+              document.getElementById("work-order-label").textContent =
+                data.general.ot_numero || "-";
+            // Sección Equipo
+            if (document.getElementById("equipment-intervene-label"))
+              document.getElementById("equipment-intervene-label").textContent =
+                data.general.tiene_equipo_intervenir ? "SI" : "NO";
+            if (document.getElementById("equipment-label"))
+              document.getElementById("equipment-label").textContent =
+                data.general.tiene_equipo_intervenir || "-";
+            if (document.getElementById("tag-label"))
+              document.getElementById("tag-label").textContent =
+                data.general.tag || "-";
+          }
           // Rellenar requisitos y condiciones del proceso
           if (data && data.general) {
             document.getElementById("resp-fuera-operacion").textContent =

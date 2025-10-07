@@ -113,27 +113,54 @@ document.addEventListener("DOMContentLoaded", function () {
         if (data && data.general) {
           document.querySelector(".section-header h3").textContent =
             data.general.prefijo || "NP-XXXXXX";
-          if (document.getElementById("descripcion-trabajo-label"))
-            document.getElementById("descripcion-trabajo-label").textContent =
-              data.general.descripcion_trabajo || "-";
-          if (document.getElementById("maintenance-type-label"))
-            document.getElementById("maintenance-type-label").textContent =
-              data.general.tipo_mantenimiento || "-";
-          if (document.getElementById("work-order-label"))
-            document.getElementById("work-order-label").textContent =
-              data.general.ot_numero || "-";
-          if (document.getElementById("tag-label"))
-            document.getElementById("tag-label").textContent =
-              data.general.tag || "-";
+          // Asignar campos generales igual que en el área
           if (document.getElementById("start-time-label"))
             document.getElementById("start-time-label").textContent =
               data.general.hora_inicio || "-";
-          if (document.getElementById("equipment-description-label"))
-            document.getElementById("equipment-description-label").textContent =
-              data.general.descripcion_equipo || "-";
+          if (document.getElementById("fecha-label"))
+            document.getElementById("fecha-label").textContent =
+              data.general.fecha || "-";
+          if (document.getElementById("activity-type-label"))
+            document.getElementById("activity-type-label").textContent =
+              data.general.tipo_mantenimiento || "-";
+          if (document.getElementById("plant-label"))
+            document.getElementById("plant-label").textContent =
+              data.general.area || "-";
+          if (document.getElementById("descripcion-trabajo-label"))
+            document.getElementById("descripcion-trabajo-label").textContent =
+              data.general.descripcion_trabajo || "-";
+          if (document.getElementById("empresa-label"))
+            document.getElementById("empresa-label").textContent =
+              data.general.empresa || "-";
+          if (document.getElementById("nombre-solicitante-label"))
+            document.getElementById("nombre-solicitante-label").textContent =
+              data.general.solicitante || "-";
+          if (document.getElementById("sucursal-label"))
+            document.getElementById("sucursal-label").textContent =
+              data.general.sucursal || "-";
+          if (document.getElementById("contrato-label"))
+            document.getElementById("contrato-label").textContent =
+              data.general.contrato || "-";
+          if (document.getElementById("work-order-label"))
+            document.getElementById("work-order-label").textContent =
+              data.general.ot_numero || "-";
+          // Sección Equipo
+          if (document.getElementById("equipment-intervene-label"))
+            document.getElementById("equipment-intervene-label").textContent =
+              "";
+          if (document.getElementById("equipment-label"))
+            document.getElementById("equipment-label").textContent =
+              data.general.tiene_equipo_intervenir || "-";
+          if (document.getElementById("tag-label"))
+            document.getElementById("tag-label").textContent =
+              data.general.tag || "-";
+          // Formulario Usuario
           if (document.getElementById("special-tools-label"))
             document.getElementById("special-tools-label").textContent =
               data.general.requiere_herramientas_especiales || "-";
+          if (document.getElementById("what-special-tools-label"))
+            document.getElementById("what-special-tools-label").textContent =
+              data.general.tipo_herramientas_especiales || "-";
           if (document.getElementById("adequate-tools-label"))
             document.getElementById("adequate-tools-label").textContent =
               data.general.herramientas_adecuadas || "-";
@@ -192,24 +219,54 @@ document.addEventListener("DOMContentLoaded", function () {
         // Campos generales PT2
         if (data && data.data) {
           const detalles = data.data;
-          if (document.getElementById("maintenance-type-label"))
-            document.getElementById("maintenance-type-label").textContent =
-              detalles.tipo_mantenimiento || "-";
-          if (document.getElementById("work-order-label"))
-            document.getElementById("work-order-label").textContent =
-              detalles.ot_numero || "-";
-          if (document.getElementById("tag-label"))
-            document.getElementById("tag-label").textContent =
-              detalles.tag || "-";
+          // Ajuste de nombres de campos según el objeto recibido
           if (document.getElementById("start-time-label"))
             document.getElementById("start-time-label").textContent =
               detalles.hora_inicio || "-";
-          if (document.getElementById("equipment-description-label"))
-            document.getElementById("equipment-description-label").textContent =
-              detalles.descripcion_equipo || "-";
+          if (document.getElementById("fecha-label"))
+            document.getElementById("fecha-label").textContent =
+              detalles.fecha || "-";
+          if (document.getElementById("activity-type-label"))
+            document.getElementById("activity-type-label").textContent =
+              detalles.tipo_mantenimiento || "-";
+          if (document.getElementById("plant-label"))
+            document.getElementById("plant-label").textContent =
+              detalles.area || "-";
+          if (document.getElementById("descripcion-trabajo-label"))
+            document.getElementById("descripcion-trabajo-label").textContent =
+              detalles.descripcion_trabajo || "-";
+          if (document.getElementById("empresa-label"))
+            document.getElementById("empresa-label").textContent =
+              detalles.empresa || "-";
+          if (document.getElementById("nombre-solicitante-label"))
+            document.getElementById("nombre-solicitante-label").textContent =
+              detalles.solicitante || "-";
+          if (document.getElementById("sucursal-label"))
+            document.getElementById("sucursal-label").textContent =
+              detalles.sucursal || "-";
+          if (document.getElementById("contrato-label"))
+            document.getElementById("contrato-label").textContent =
+              detalles.contrato || "-";
+          if (document.getElementById("work-order-label"))
+            document.getElementById("work-order-label").textContent =
+              detalles.ot_numero || "-";
+          // Sección Equipo
+          if (document.getElementById("equipment-intervene-label"))
+            document.getElementById("equipment-intervene-label").textContent =
+              detalles.tiene_equipo_intervenir ? "SI" : "NO";
+          if (document.getElementById("equipment-label"))
+            document.getElementById("equipment-label").textContent =
+              detalles.tiene_equipo_intervenir || "-";
+          if (document.getElementById("tag-label"))
+            document.getElementById("tag-label").textContent =
+              detalles.tag || "-";
+          // Formulario Usuario
           if (document.getElementById("special-tools-label"))
             document.getElementById("special-tools-label").textContent =
               detalles.requiere_herramientas_especiales || "-";
+          if (document.getElementById("what-special-tools-label"))
+            document.getElementById("what-special-tools-label").textContent =
+              detalles.tipo_herramientas_especiales || "-";
           if (document.getElementById("adequate-tools-label"))
             document.getElementById("adequate-tools-label").textContent =
               detalles.herramientas_adecuadas || "-";
@@ -222,7 +279,16 @@ document.addEventListener("DOMContentLoaded", function () {
           if (document.getElementById("final-observations-label"))
             document.getElementById("final-observations-label").textContent =
               detalles.observaciones_medidas || "-";
-          // ...agrega aquí más campos generales de PT2 si los tienes...
+          // Condiciones del Proceso
+          if (document.getElementById("fluid"))
+            document.getElementById("fluid").textContent =
+              detalles.fluido || "-";
+          if (document.getElementById("pressure"))
+            document.getElementById("pressure").textContent =
+              detalles.presion || "-";
+          if (document.getElementById("temperature"))
+            document.getElementById("temperature").textContent =
+              detalles.temperatura || "-";
         }
         // Rellenar AST y Participantes igual que PT1
         if (data && data.ast) {

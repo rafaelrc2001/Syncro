@@ -166,6 +166,68 @@ document.addEventListener("DOMContentLoaded", function () {
               data.general.con_juntas_ciegas || "-";
             document.getElementById("resp-producto-entrampado").textContent =
               data.general.producto_entrampado || "-";
+            // Mapeo de datos generales y equipo para imprimir
+            if (data && data.general) {
+              if (document.getElementById("start-time-label"))
+                document.getElementById("start-time-label").textContent =
+                  data.general.hora_inicio || "-";
+              if (document.getElementById("fecha-label"))
+                document.getElementById("fecha-label").textContent =
+                  data.general.fecha || "-";
+              if (document.getElementById("activity-type-label"))
+                document.getElementById("activity-type-label").textContent =
+                  data.general.tipo_mantenimiento || "-";
+              if (document.getElementById("plant-label"))
+                document.getElementById("plant-label").textContent =
+                  data.general.area || "-";
+              if (document.getElementById("descripcion-trabajo-label"))
+                document.getElementById(
+                  "descripcion-trabajo-label"
+                ).textContent = data.general.descripcion_trabajo || "-";
+              if (document.getElementById("empresa-label"))
+                document.getElementById("empresa-label").textContent =
+                  data.general.empresa || "-";
+              if (document.getElementById("nombre-solicitante-label"))
+                document.getElementById(
+                  "nombre-solicitante-label"
+                ).textContent = data.general.solicitante || "-";
+              if (document.getElementById("sucursal-label"))
+                document.getElementById("sucursal-label").textContent =
+                  data.general.sucursal || "-";
+              if (document.getElementById("contrato-label"))
+                document.getElementById("contrato-label").textContent =
+                  data.general.contrato || "-";
+              if (document.getElementById("work-order-label"))
+                document.getElementById("work-order-label").textContent =
+                  data.general.ot_numero || "-";
+              // Sección Equipo
+              // --- Corrección: buscar el dato en data.general y data.data ---
+              let equipo = "";
+              if (
+                data.general &&
+                data.general.tiene_equipo_intervenir &&
+                data.general.tiene_equipo_intervenir.trim() !== ""
+              ) {
+                equipo = data.general.tiene_equipo_intervenir;
+              } else if (
+                data.data &&
+                data.data.tiene_equipo_intervenir &&
+                data.data.tiene_equipo_intervenir.trim() !== ""
+              ) {
+                equipo = data.data.tiene_equipo_intervenir;
+              }
+              if (document.getElementById("equipment-intervene-label"))
+                document.getElementById(
+                  "equipment-intervene-label"
+                ).textContent = equipo !== "" ? "SI" : "NO";
+              if (document.getElementById("equipment-label"))
+                document.getElementById("equipment-label").textContent =
+                  equipo !== "" ? equipo : "NO";
+              if (document.getElementById("tag-label"))
+                document.getElementById("tag-label").textContent =
+                  data.general.tag || "-";
+            }
+
             document.getElementById("resp-requiere-lavado").textContent =
               data.general.requiere_lavado || "-";
             document.getElementById("resp-requiere-neutralizado").textContent =

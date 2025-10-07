@@ -457,15 +457,15 @@ router.get("/autorizaciones/personas/:id_permiso", async (req, res) => {
 
   try {
     const result = await db.query(
-  `SELECT 
+      `SELECT 
     s.nombre as nombre_supervisor,
     a.operador_area,
     a.responsable_area
   FROM autorizaciones a
   LEFT JOIN supervisores s ON a.id_supervisor = s.id_supervisor
   WHERE a.id_permiso = $1`,
-  [id_permiso]
-);
+      [id_permiso]
+    );
 
     if (result.rows.length === 0) {
       return res.status(404).json({
@@ -486,6 +486,35 @@ router.get("/autorizaciones/personas/:id_permiso", async (req, res) => {
       error: "Error al consultar las personas que han autorizado",
       details: process.env.NODE_ENV === "development" ? err.message : undefined,
     });
+  }
+});
+
+// Endpoint para consultar el estatus y comentarios de un permiso
+router.get("/api/permiso-estatus", async (req, res) => {
+  const idPermiso = req.query.id;
+  if (!idPermiso) {
+    return res.status(400).json({ error: "Falta el parámetro id" });
+  }
+  try {
+    const query = `
+      SELECT pt.id_permiso, e.estatus, e.comentarios
+      FROM permisos_trabajo pt
+      INNER JOIN estatus e ON pt.id_estatus = e.id_estatus
+      WHERE pt.id_permiso = ?
+    `;
+    db.query(query, [idPermiso], (err, results) => {
+      if (err) {
+        return res
+          .status(500)
+          .json({ error: "Error en la consulta", details: err });
+      }
+      if (results.length === 0) {
+        return res.status(404).json({ error: "Permiso no encontrado" });
+      }
+      res.json(results[0]);
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Error interno", details: error });
   }
 });
 

@@ -295,6 +295,7 @@ setText("tag-label", detalles.tag || "-");
 
 // Formulario Usuario
 setText("special-tools-label", detalles.requiere_herramientas_especiales || "-");
+ setText("what-special-tools-label", detalles.tipo_herramientas_especiales || "-"); // <-- AGREGA AQUÍ
 setText("adequate-tools-label", detalles.herramientas_adecuadas || "-");
 setText("pre-verification-label", detalles.requiere_verificacion_previa || "-");
 setText("risk-knowledge-label", detalles.requiere_conocer_riesgos || "-");
@@ -514,5 +515,30 @@ document.addEventListener("DOMContentLoaded", function () {
           "Error al obtener datos del permiso. Revisa la consola para más detalles."
         );
       });
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  const idPermiso = params.get("id");
+
+  if (idPermiso) {
+    fetch(`http://localhost:3000/api/verformularios?id=${encodeURIComponent(idPermiso)}`)
+      .then((resp) => resp.json())
+      .then((data) => {
+        if (data && data.general) {
+          const general = data.general;
+          setText("nombre-solicitante-label", general.solicitante || "-");
+          setText("sucursal-label", general.sucursal || "-");
+          setText("contrato-label", general.contrato || "-");
+          // Si quieres mostrar más campos, usa siempre general:
+          setText("plant-label", general.area || "-");
+          setText("descripcion-trabajo-label", general.descripcion_trabajo || "-");
+          setText("empresa-label", general.empresa || "-");
+          setText("activity-type-label", general.tipo_mantenimiento || "-");
+          setText("work-order-label", general.ot_numero || "-");
+        } else {
+          console.warn("No se encontró la sección 'general' en la respuesta:", data);
+        }
+      })
+      .catch((err) => console.error("Error al cargar los datos del permiso:", err));
   }
 });

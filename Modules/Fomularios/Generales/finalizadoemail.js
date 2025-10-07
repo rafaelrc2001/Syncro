@@ -90,14 +90,11 @@ window.n8nFormHandler = async function () {
   );
 
   console.log("[n8nFormHandler] Enviando datos a N8N...");
-  await fetch(
-    "https://7mhxkntt-5678.usw3.devtunnels.ms/webhook-test/cierre-pt",
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    }
-  );
+  await fetch("https://7mhxkntt-5678.usw3.devtunnels.ms/webhook/cierre-pt", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(formData),
+  });
   console.log("[n8nFormHandler] FIN FLUJO");
 };
 

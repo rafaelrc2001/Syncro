@@ -273,76 +273,35 @@ if (idPermiso) {
   fetch(`http://localhost:3000/api/pt-apertura/${idPermiso}`)
     .then((resp) => resp.json())
     .then((data) => {
-      console.log("Respuesta de la API:", data);
-      if (data && data.success && data.data) {
-        const permiso = data.data;
-        console.log("Valores del permiso recibidos:", permiso);
-        setText("maintenance-type-label", permiso.tipo_mantenimiento || "-");
-        setText("work-order-label", permiso.ot_numero || "-");
-        setText("tag-label", permiso.tag || "-");
-        setText("start-time-label", permiso.hora_inicio || "-");
-        //setText("has-equipment-label", permiso.tiene_equipo_intervenir || "-");
-        setText(
-          "equipment-description-label",
-          permiso.descripcion_equipo || "-"
-        );
-        setText(
-          "special-tools-label",
-          permiso.requiere_herramientas_especiales || "-"
-        );
-        setText(
-          "special-tools-type-label",
-          permiso.tipo_herramientas_especiales || "-"
-        );
-        setText("adequate-tools-label", permiso.herramientas_adecuadas || "-");
-        setText(
-          "pre-verification-label",
-          permiso.requiere_verificacion_previa || "-"
-        );
-        setText(
-          "risk-knowledge-label",
-          permiso.requiere_conocer_riesgos || "-"
-        );
-        setText(
-          "final-observations-label",
-          permiso.observaciones_medidas || "-"
-        );
-        // Radios de requisitos
-        const radios = [
-          "fuera_operacion",
-          "despresurizado_purgado",
-          "necesita_aislamiento",
-          "con_valvulas",
-          "con_juntas_ciegas",
-          "producto_entrampado",
-          "requiere_lavado",
-          "requiere_neutralizado",
-          "requiere_vaporizado",
-          "suspender_trabajos_adyacentes",
-          "acordonar_area",
-          "prueba_gas_toxico_inflamable",
-          "equipo_electrico_desenergizado",
-          "tapar_purgas_drenajes",
-        ];
-        radios.forEach((name) => {
-          if (permiso[name]) {
-            const radio = document.querySelector(
-              `input[name='${name}'][value='${permiso[name]}']`
-            );
-            if (radio) radio.checked = true;
-          }
-        });
-      } else {
-        alert(
-          "No se encontraron datos para este permiso o la API no respondió correctamente."
-        );
-      }
+      const detalles = data.data || data;
+
+// Información General
+setText("start-time-label", detalles.hora_inicio || "-");
+setText("fecha-label", detalles.fecha_creacion ? detalles.fecha_creacion.split("T")[0] : "-");
+setText("activity-type-label", detalles.tipo_mantenimiento || "-");
+setText("plant-label", detalles.planta || "-");
+setText("descripcion-trabajo-label", detalles.descripcion_trabajo || "-");
+setText("empresa-label", detalles.empresa || "-");
+setText("nombre-solicitante-label", detalles.nombre_solicitante || "-");
+setText("sucursal-label", detalles.sucursal || "-");
+setText("contrato-label", detalles.contrato || "-");
+setText("work-order-label", detalles.ot_numero || "-");
+
+// Sección Equipo
+const tieneEquipo = detalles.tiene_equipo_intervenir && detalles.tiene_equipo_intervenir.trim() !== "";
+setText("equipment-intervene-label", tieneEquipo ? "SI" : "NO");
+setText("equipment-label", tieneEquipo ? detalles.tiene_equipo_intervenir : "-");
+setText("tag-label", detalles.tag || "-");
+
+// Formulario Usuario
+setText("special-tools-label", detalles.requiere_herramientas_especiales || "-");
+setText("adequate-tools-label", detalles.herramientas_adecuadas || "-");
+setText("pre-verification-label", detalles.requiere_verificacion_previa || "-");
+setText("risk-knowledge-label", detalles.requiere_conocer_riesgos || "-");
+setText("final-observations-label", detalles.observaciones_medidas || "-");
     })
     .catch((err) => {
-      console.error("Error al obtener datos del permiso:", err);
-      alert(
-        "Error al obtener datos del permiso. Revisa la consola para más detalles."
-      );
+      console.error("Error al obtener datos:", err);
     });
 }
 
@@ -516,40 +475,21 @@ document.addEventListener("DOMContentLoaded", function () {
         // Llenar campos generales usando data.data
         if (data && data.data) {
           const detalles = data.data;
-          if (document.getElementById("maintenance-type-label"))
-            document.getElementById("maintenance-type-label").textContent =
-              detalles.tipo_mantenimiento || "-";
-          if (document.getElementById("work-order-label"))
-            document.getElementById("work-order-label").textContent =
-              detalles.ot_numero || "-";
-          if (document.getElementById("tag-label"))
-            document.getElementById("tag-label").textContent =
-              detalles.tag || "-";
-          if (document.getElementById("start-time-label"))
-            document.getElementById("start-time-label").textContent =
-              detalles.hora_inicio || "-";
-          if (document.getElementById("equipment-description-label"))
-            document.getElementById("equipment-description-label").textContent =
-              detalles.descripcion_equipo || "-";
-          if (document.getElementById("special-tools-label"))
-            document.getElementById("special-tools-label").textContent =
-              detalles.requiere_herramientas_especiales || "-";
-          if (document.getElementById("special-tools-type-label"))
-            document.getElementById("special-tools-type-label").textContent =
-              detalles.tipo_herramientas_especiales || "-";
-          if (document.getElementById("adequate-tools-label"))
-            document.getElementById("adequate-tools-label").textContent =
-              detalles.herramientas_adecuadas || "-";
-          if (document.getElementById("pre-verification-label"))
-            document.getElementById("pre-verification-label").textContent =
-              detalles.requiere_verificacion_previa || "-";
-          if (document.getElementById("risk-knowledge-label"))
-            document.getElementById("risk-knowledge-label").textContent =
-              detalles.requiere_conocer_riesgos || "-";
-          if (document.getElementById("final-observations-label"))
-            document.getElementById("final-observations-label").textContent =
-              detalles.observaciones_medidas || "-";
-          // ...agrega aquí más campos generales de PT2 si los tienes...
+
+          // Información General
+          setText("activity-type-label", detalles.tipo_mantenimiento || "-");
+          setText("plant-label", detalles.planta || "-");
+          setText("descripcion-trabajo-label", detalles.descripcion_trabajo || "-");
+          setText("empresa-label", detalles.empresa || "-");
+          setText("nombre-solicitante-label", detalles.nombre_solicitante || "-");
+          setText("sucursal-label", detalles.sucursal || "-");
+          setText("contrato-label", detalles.contrato || "-");
+          setText("work-order-label", detalles.ot_numero || "-");
+
+          // Sección Equipo
+          setText("equipment-intervene-label", detalles.tiene_equipo_intervenir || "-");
+          setText("equipment-label", detalles.descripcion_equipo || "-");
+          setText("tag-label", detalles.tag || "-");
         }
         // Rellenar AST y Participantes si existen en la respuesta
         if (data.ast) {

@@ -78,9 +78,9 @@ router.get("/verformularios", async (req, res) => {
     } else if (tipo_permiso === "PT para Apertura Equipo Línea") {
       console.log("Entrando a bloque PT para Apertura Equipo Línea");
       // Consulta correcta para pt_apertura
-      
-            // ...existing code...
-const queryGeneralApertura = `
+
+      // ...existing code...
+      const queryGeneralApertura = `
     SELECT 
         pt.id_permiso,
         TO_CHAR(pt.fecha_hora, 'DD/MM/YYYY') AS fecha,
@@ -133,7 +133,11 @@ const queryGeneralApertura = `
         pa.nh3_nivel,
         pa.oxigeno_nivel,
         pa.lel_nivel,
-        pa.tiene_equipo_intervenir -- <-- AGREGA ESTA LÍNEA
+        pa.aprobado_co2,
+        pa.aprobado_nh3,
+        pa.aprobado_oxigeno,
+        pa.aprobado_lel,
+        pa.tiene_equipo_intervenir
     FROM permisos_trabajo pt
     INNER JOIN pt_apertura pa ON pt.id_permiso = pa.id_permiso
     INNER JOIN sucursales s ON pt.id_sucursal = s.id_sucursal
@@ -142,7 +146,7 @@ const queryGeneralApertura = `
     INNER JOIN tipos_permisos tp ON pt.id_tipo_permiso = tp.id_tipo_permiso
     WHERE pt.id_permiso = $1
 `;
-// ...existing code...
+      // ...existing code...
       resultGeneral = await pool.query(queryGeneralApertura, [id]);
       console.log("Resultado general apertura:", resultGeneral.rows);
 

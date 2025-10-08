@@ -326,52 +326,67 @@ router.put(
   "/pt-apertura/requisitos_supervisor/:id_permiso",
   async (req, res) => {
     const { id_permiso } = req.params;
+    console.log("ID recibido:", id_permiso); // <-- Aquí
+    console.log("Body recibido:", req.body); // <-- Aquí
+
     const {
-      special_protection,
-      skin_protection,
-      respiratory_protection,
-      eye_protection,
-      fire_protection,
-      fire_protection_type,
-      barriers_required,
-      observations,
-      co2_level,
-      nh3_level,
-      oxygen_level,
-      lel_level,
+      proteccion_especial_recomendada,
+      proteccion_piel_cuerpo,
+      proteccion_respiratoria,
+      proteccion_ojos_cara,
+      proteccion_contra_incendio,
+      tipo_proteccion_incendio,
+      requiere_barreras,
+      observaciones,
+      nivel_co2,
+      nivel_nh3,
+      nivel_oxigeno,
+      nivel_lel,
+      aprobado_co2,
+      aprobado_nh3,
+      aprobado_oxigeno,
+      aprobado_lel,
     } = req.body;
 
     const query = `
-    UPDATE pt_apertura SET
-      proteccion_especial_recomendada = $1,
-      proteccion_piel_cuerpo = $2,
-      proteccion_respiratoria = $3,
-      proteccion_ocular = $4,
-      proteccion_contraincendio = $5,
-      tipo_proteccion_contraincendio = $6,
-      instalacion_barreras = $7,
-      observaciones_riesgos = $8,
-      co2_nivel = $9,
-      nh3_nivel = $10,
-      oxigeno_nivel = $11,
-      lel_nivel = $12
-    WHERE id_permiso = $13
-    RETURNING *;
-  `;
+      UPDATE pt_apertura SET
+        proteccion_especial_recomendada = $1,
+        proteccion_piel_cuerpo = $2,
+        proteccion_respiratoria = $3,
+        proteccion_ocular = $4,
+        proteccion_contraincendio = $5,
+        tipo_proteccion_contraincendio = $6,
+        instalacion_barreras = $7,
+        observaciones_riesgos = $8,
+        co2_nivel = $9,
+        nh3_nivel = $10,
+        oxigeno_nivel = $11,
+        lel_nivel = $12,
+        aprobado_co2 = $13,
+        aprobado_nh3 = $14,
+        aprobado_oxigeno = $15,
+        aprobado_lel = $16
+      WHERE id_permiso = $17
+      RETURNING *;
+    `;
 
     const values = [
-      special_protection,
-      skin_protection,
-      respiratory_protection,
-      eye_protection,
-      fire_protection,
-      fire_protection_type,
-      barriers_required,
-      observations,
-      co2_level,
-      nh3_level,
-      oxygen_level,
-      lel_level,
+      proteccion_especial_recomendada,
+      proteccion_piel_cuerpo,
+      proteccion_respiratoria,
+      proteccion_ojos_cara,
+      proteccion_contra_incendio,
+      tipo_proteccion_incendio,
+      requiere_barreras,
+      observaciones,
+      nivel_co2,
+      nivel_nh3,
+      nivel_oxigeno,
+      nivel_lel,
+      aprobado_co2,
+      aprobado_nh3,
+      aprobado_oxigeno,
+      aprobado_lel,
       id_permiso,
     ];
 

@@ -61,25 +61,26 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Habilitar/deshabilitar campo "¿Cuál?" según radio seleccionado
-  const radios = document.querySelectorAll('input[name="special-tools"]');
-  const cualInput = document.getElementById("special-tools-type");
+  const radios = document.getElementsByName("special-tools");
+  const combinedInputDiv = document.querySelector(".combined-input");
+  const inputTipo = document.getElementById("special-tools-type");
 
-  function updateCualInput() {
-    const selected = document.querySelector('input[name="special-tools"]:checked');
-    if (!selected || !cualInput) return;
-    if (selected.value === "SI") {
-      cualInput.disabled = false;
-      cualInput.value = "";
-      cualInput.placeholder = "Especifique el tipo";
+  function toggleInputTipo() {
+    const selected = Array.from(radios).find((r) => r.checked);
+    if (selected && selected.value === "SI") {
+      combinedInputDiv.style.display = "";
+      inputTipo.disabled = false;
+      inputTipo.style.background = "#fff";
     } else {
-      cualInput.disabled = true;
-      cualInput.value = "-";
-      cualInput.placeholder = "-";
+      inputTipo.value = "";
+      inputTipo.disabled = true;
+      inputTipo.style.background = "#eee";
+      combinedInputDiv.style.display = "none";
     }
   }
 
   radios.forEach((radio) => {
-    radio.addEventListener("change", updateCualInput);
+    radio.addEventListener("change", toggleInputTipo);
   });
 
   updateCualInput();

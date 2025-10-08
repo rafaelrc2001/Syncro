@@ -255,9 +255,13 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("equipment-intervene-label").textContent =
               detalles.tiene_equipo_intervenir ? "SI" : "NO";
           if (document.getElementById("equipment-label")) {
-            console.log("Valor de tiene_equipo_intervenir:", detalles.tiene_equipo_intervenir);
+            console.log(
+              "Valor de tiene_equipo_intervenir:",
+              detalles.tiene_equipo_intervenir
+            );
             document.getElementById("equipment-label").textContent =
-              detalles.tiene_equipo_intervenir !== null && detalles.tiene_equipo_intervenir !== undefined
+              detalles.tiene_equipo_intervenir !== null &&
+              detalles.tiene_equipo_intervenir !== undefined
                 ? detalles.tiene_equipo_intervenir
                 : "-";
           }
@@ -381,6 +385,25 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementsByName("oxigeno")[0]?.value || "";
       const lel_level = document.getElementsByName("lel")[0]?.value || "";
 
+      // Pruebas de gas
+      const aprobado_co2 = getRadioValue("aprobado_co2");
+      const aprobado_nh3 = getRadioValue("aprobado_amonico");
+      const aprobado_oxigeno = getRadioValue("aprobado_oxigeno");
+      const aprobado_lel = getRadioValue("aprobado_lel");
+
+      const proteccion_especial_recomendada = special_protection;
+      const proteccion_piel_cuerpo = skin_protection;
+      const proteccion_respiratoria = respiratory_protection;
+      const proteccion_ojos_cara = eye_protection;
+      const proteccion_contra_incendio = fire_protection;
+      const tipo_proteccion_incendio = fire_protection_type;
+      const requiere_barreras = barriers_required;
+      const observaciones = observations;
+      const nivel_co2 = co2_level;
+      const nivel_nh3 = nh3_level;
+      const nivel_oxigeno = oxygen_level;
+      const nivel_lel = lel_level;
+
       // Actualizar requisitos de supervisor y pruebas
       try {
         await fetch(
@@ -389,18 +412,22 @@ document.addEventListener("DOMContentLoaded", function () {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              special_protection,
-              skin_protection,
-              respiratory_protection,
-              eye_protection,
-              fire_protection,
-              fire_protection_type,
-              barriers_required,
-              observations,
-              co2_level,
-              nh3_level,
-              oxygen_level,
-              lel_level,
+              proteccion_especial_recomendada,
+              proteccion_piel_cuerpo,
+              proteccion_respiratoria,
+              proteccion_ojos_cara,
+              proteccion_contra_incendio,
+              tipo_proteccion_incendio,
+              requiere_barreras,
+              observaciones,
+              nivel_co2,
+              nivel_nh3,
+              nivel_oxigeno,
+              nivel_lel,
+              aprobado_co2,
+              aprobado_nh3,
+              aprobado_oxigeno,
+              aprobado_lel,
             }),
           }
         );
@@ -584,4 +611,27 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       }
     });
+
+  const radios = document.getElementsByName("fire-protection");
+  const textarea = document.getElementById("fire-protection-type");
+  // Busca la fila <tr> que contiene la etiqueta y el textarea
+  let tr = textarea.closest("tr");
+  function toggleTextarea() {
+    const selected = Array.from(radios).find((r) => r.checked);
+    if (selected && selected.value === "SI") {
+      tr.style.display = "";
+      textarea.disabled = false;
+      textarea.style.background = "#fff";
+    } else {
+      textarea.value = "";
+      textarea.disabled = true;
+      textarea.style.background = "#eee";
+      tr.style.display = "none";
+    }
+  }
+  radios.forEach((radio) => {
+    radio.addEventListener("change", toggleTextarea);
+  });
+  // Inicializa el estado al cargar
+  toggleTextarea();
 });

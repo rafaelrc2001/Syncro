@@ -255,22 +255,23 @@ document.addEventListener("DOMContentLoaded", function () {
               data.general.observaciones_riesgos || "-";
 
             // Registro de Pruebas Requeridas
+            // Registro de Pruebas Requeridas
             document.getElementById("valor-co2").textContent =
               data.general.co2_nivel || "-";
             document.getElementById("aprobado-co2").textContent =
-              data.general.co2_aprobado || "-";
+              data.general.aprobado_co2 || "-";
             document.getElementById("valor-amonico").textContent =
               data.general.nh3_nivel || "-";
             document.getElementById("aprobado-amonico").textContent =
-              data.general.nh3_aprobado || "-";
+              data.general.aprobado_nh3 || "-";
             document.getElementById("valor-oxigeno").textContent =
               data.general.oxigeno_nivel || "-";
             document.getElementById("aprobado-oxigeno").textContent =
-              data.general.oxigeno_aprobado || "-";
+              data.general.aprobado_oxigeno || "-";
             document.getElementById("valor-lel").textContent =
               data.general.lel_nivel || "-";
             document.getElementById("aprobado-lel").textContent =
-              data.general.lel_aprobado || "-";
+              data.general.aprobado_lel || "-";
           }
         }
         // Campos generales PT2

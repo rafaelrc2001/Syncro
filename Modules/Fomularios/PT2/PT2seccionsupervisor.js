@@ -465,8 +465,26 @@ document.addEventListener("DOMContentLoaded", function () {
           console.error("Error al actualizar estatus activo:", err);
         }
       }
-      alert("Permiso autorizado correctamente");
-      window.location.href = "/Modules/SupSeguridad/supseguridad.html";
+      const confirmationModal = document.getElementById("confirmation-modal");
+      if (confirmationModal) {
+        confirmationModal.style.display = "flex";
+        // Mostrar el número de permiso en el modal
+        const permitSpan = document.getElementById("generated-permit");
+        if (permitSpan) {
+          permitSpan.textContent = idPermiso;
+        }
+        // Botón cerrar del modal
+        const closeBtn = document.getElementById("close-confirmation-modal");
+        if (closeBtn) {
+          closeBtn.onclick = function () {
+            window.location.href = "/Modules/SupSeguridad/supseguridad.html";
+          };
+        }
+      } else {
+        // Fallback si no existe el modal
+        alert("Permiso autorizado correctamente");
+        window.location.href = "/Modules/SupSeguridad/supseguridad.html";
+      }
     });
   }
 
@@ -634,4 +652,11 @@ document.addEventListener("DOMContentLoaded", function () {
   });
   // Inicializa el estado al cargar
   toggleTextarea();
+
+  const modalCloseBtn = document.getElementById("modal-close-btn");
+  if (modalCloseBtn) {
+    modalCloseBtn.addEventListener("click", function () {
+      window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
+    });
+  }
 });

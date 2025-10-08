@@ -131,7 +131,16 @@ if (btnGuardarCampos) {
           encargado_area: operador_area,
         }),
       });
-      window.location.href = "/Modules/Usuario/AutorizarPT.html";
+
+      // Mostrar el modal de confirmación
+      const confirmationModal = document.getElementById("confirmation-modal");
+      if (confirmationModal) {
+        confirmationModal.style.display = "flex";
+      }
+      const permitNumber = document.getElementById("generated-permit");
+      if (permitNumber) {
+        permitNumber.textContent = idPermiso || "-";
+      }
     } catch (err) {
       alert(
         "Error al autorizar el permiso. Revisa la consola para más detalles."
@@ -277,7 +286,10 @@ if (idPermiso) {
 
       // Información General
       setText("start-time-label", detalles.hora_inicio || "-");
-      setText("fecha-label", detalles.fecha_creacion ? detalles.fecha_creacion.split("T")[0] : "-");
+      setText(
+        "fecha-label",
+        detalles.fecha_creacion ? detalles.fecha_creacion.split("T")[0] : "-"
+      );
       setText("activity-type-label", detalles.tipo_mantenimiento || "-");
       setText("plant-label", detalles.planta || "-");
       setText("descripcion-trabajo-label", detalles.descripcion_trabajo || "-");
@@ -288,18 +300,35 @@ if (idPermiso) {
       setText("work-order-label", detalles.ot_numero || "-");
 
       // Sección Equipo
-      const tieneEquipo = detalles.tiene_equipo_intervenir && detalles.tiene_equipo_intervenir.trim() !== "";
+      const tieneEquipo =
+        detalles.tiene_equipo_intervenir &&
+        detalles.tiene_equipo_intervenir.trim() !== "";
       setText("equipment-intervene-label", tieneEquipo ? "SI" : "NO");
-      setText("equipment-label", tieneEquipo ? detalles.tiene_equipo_intervenir : "-");
+      setText(
+        "equipment-label",
+        tieneEquipo ? detalles.tiene_equipo_intervenir : "-"
+      );
       setText("tag-label", detalles.tag || "-");
 
       // Formulario Usuario
-      setText("special-tools-label", detalles.requiere_herramientas_especiales || "-");
-      setText("what-special-tools-label", detalles.tipo_herramientas_especiales || "-");
+      setText(
+        "special-tools-label",
+        detalles.requiere_herramientas_especiales || "-"
+      );
+      setText(
+        "what-special-tools-label",
+        detalles.tipo_herramientas_especiales || "-"
+      );
       setText("adequate-tools-label", detalles.herramientas_adecuadas || "-");
-      setText("pre-verification-label", detalles.requiere_verificacion_previa || "-");
+      setText(
+        "pre-verification-label",
+        detalles.requiere_verificacion_previa || "-"
+      );
       setText("risk-knowledge-label", detalles.requiere_conocer_riesgos || "-");
-      setText("final-observations-label", detalles.observaciones_medidas || "-");
+      setText(
+        "final-observations-label",
+        detalles.observaciones_medidas || "-"
+      );
 
       // Condiciones del Proceso: solo habilitar si hay equipo a intervenir
       const fluidInput = document.getElementById("fluid");
@@ -519,15 +548,24 @@ document.addEventListener("DOMContentLoaded", function () {
           // Información General
           setText("activity-type-label", detalles.tipo_mantenimiento || "-");
           setText("plant-label", detalles.planta || "-");
-          setText("descripcion-trabajo-label", detalles.descripcion_trabajo || "-");
+          setText(
+            "descripcion-trabajo-label",
+            detalles.descripcion_trabajo || "-"
+          );
           setText("empresa-label", detalles.empresa || "-");
-          setText("nombre-solicitante-label", detalles.nombre_solicitante || "-");
+          setText(
+            "nombre-solicitante-label",
+            detalles.nombre_solicitante || "-"
+          );
           setText("sucursal-label", detalles.sucursal || "-");
           setText("contrato-label", detalles.contrato || "-");
           setText("work-order-label", detalles.ot_numero || "-");
 
           // Sección Equipo
-          setText("equipment-intervene-label", detalles.tiene_equipo_intervenir || "-");
+          setText(
+            "equipment-intervene-label",
+            detalles.tiene_equipo_intervenir || "-"
+          );
           setText("equipment-label", detalles.descripcion_equipo || "-");
           setText("tag-label", detalles.tag || "-");
         }
@@ -560,7 +598,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const idPermiso = params.get("id");
 
   if (idPermiso) {
-    fetch(`http://localhost:3000/api/verformularios?id=${encodeURIComponent(idPermiso)}`)
+    fetch(
+      `http://localhost:3000/api/verformularios?id=${encodeURIComponent(
+        idPermiso
+      )}`
+    )
       .then((resp) => resp.json())
       .then((data) => {
         if (data && data.general) {
@@ -570,14 +612,29 @@ document.addEventListener("DOMContentLoaded", function () {
           setText("contrato-label", general.contrato || "-");
           // Si quieres mostrar más campos, usa siempre general:
           setText("plant-label", general.area || "-");
-          setText("descripcion-trabajo-label", general.descripcion_trabajo || "-");
+          setText(
+            "descripcion-trabajo-label",
+            general.descripcion_trabajo || "-"
+          );
           setText("empresa-label", general.empresa || "-");
           setText("activity-type-label", general.tipo_mantenimiento || "-");
           setText("work-order-label", general.ot_numero || "-");
         } else {
-          console.warn("No se encontró la sección 'general' en la respuesta:", data);
+          console.warn(
+            "No se encontró la sección 'general' en la respuesta:",
+            data
+          );
         }
       })
-      .catch((err) => console.error("Error al cargar los datos del permiso:", err));
+      .catch((err) =>
+        console.error("Error al cargar los datos del permiso:", err)
+      );
+  }
+
+  const modalCloseBtn = document.getElementById("modal-close-btn");
+  if (modalCloseBtn) {
+    modalCloseBtn.addEventListener("click", function () {
+      window.location.href = "/Modules/Usuario/AutorizarPT.html";
+    });
   }
 });

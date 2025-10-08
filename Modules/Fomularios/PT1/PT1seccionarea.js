@@ -112,6 +112,27 @@ if (btnAutorizar) {
       }
 
       // --- Insertar autorización de área vía API ---
+      const fluidInput = document.getElementById("fluid");
+      const pressureInput = document.getElementById("pressure");
+      const temperatureInput = document.getElementById("temperature");
+      const fluido = fluidInput ? fluidInput.value.trim() : "";
+      const presion = pressureInput ? pressureInput.value.trim() : "";
+      const temperatura = temperatureInput ? temperatureInput.value.trim() : "";
+
+      // Ejemplo para preguntas de análisis previo
+      const pregunta1 =
+        document.querySelector('input[name="pregunta1"]:checked')?.value || "";
+      const pregunta2 =
+        document.querySelector('input[name="pregunta2"]:checked')?.value || "";
+      const pregunta3 =
+        document.querySelector('input[name="pregunta3"]:checked')?.value || "";
+      const pregunta4 =
+        document.querySelector('input[name="pregunta4"]:checked')?.value || "";
+      const pregunta5 =
+        document.querySelector('input[name="pregunta5"]:checked')?.value || "";
+      const observaciones =
+        document.getElementById("observaciones")?.value.trim() || "";
+
       const resp = await fetch(
         "http://localhost:3000/api/autorizaciones/area",
         {
@@ -121,6 +142,15 @@ if (btnAutorizar) {
             id_permiso: idPermiso,
             responsable_area,
             encargado_area: operador_area,
+            fluido,
+            presion,
+            temperatura,
+            pregunta1,
+            pregunta2,
+            pregunta3,
+            pregunta4,
+            pregunta5,
+            observaciones,
           }),
         }
       );

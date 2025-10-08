@@ -92,8 +92,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
-
-
     return isValid;
   }
 
@@ -191,6 +189,42 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   initEquipmentToggle();
+
+  // Mostrar/ocultar campos adicionales según radio 'SI'
+  function toggleCombinedInput(radioName, inputName) {
+    const radios = section2.querySelectorAll(`input[name='${radioName}']`);
+    const inputContainer = section2
+      .querySelector(`input[name='${inputName}']`)
+      .closest(".combined-input");
+    function updateVisibility() {
+      const selected = section2.querySelector(
+        `input[name='${radioName}']:checked`
+      );
+      if (selected && selected.value === "SI") {
+        inputContainer.style.display = "block";
+        const input = inputContainer.querySelector("input, textarea");
+        if (input) input.required = true;
+      } else {
+        inputContainer.style.display = "none";
+        const input = inputContainer.querySelector("input, textarea");
+        if (input) {
+          input.required = false;
+          input.value = "";
+        }
+      }
+    }
+    radios.forEach((radio) => {
+      radio.addEventListener("change", updateVisibility);
+    });
+    updateVisibility();
+  }
+
+  // Vigilancia exterior
+  toggleCombinedInput("external-watch", "external-watch-name");
+  // Personal rescatista
+  toggleCombinedInput("rescue-personnel", "rescue-personnel-name");
+  // Equipo especial
+  toggleCombinedInput("special-equipment", "special-equipment-type");
 });
 
 // Campos del toggle

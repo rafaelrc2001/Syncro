@@ -822,6 +822,120 @@ document.addEventListener("DOMContentLoaded", function () {
   console.log("Funcionalidad de PDF PT2 inicializada correctamente");
 });
 
+// Lógica para mostrar el modal de cierre de permiso y guardar el comentario
+document.addEventListener("DOMContentLoaded", function () {
+  var btnCerrarPermiso = document.getElementById("btn-cerrar-permiso");
+  var modalCerrarPermiso = document.getElementById("modalCerrarPermiso");
+  var btnCancelarCerrarPermiso = document.getElementById(
+    "btnCancelarCerrarPermiso"
+  );
+  var btnGuardarCerrarPermiso = document.getElementById(
+    "btnGuardarCerrarPermiso"
+  );
+
+  if (btnCerrarPermiso && modalCerrarPermiso) {
+    btnCerrarPermiso.addEventListener("click", function () {
+      modalCerrarPermiso.style.display = "flex";
+    });
+  }
+  if (btnCancelarCerrarPermiso && modalCerrarPermiso) {
+    btnCancelarCerrarPermiso.addEventListener("click", function () {
+      modalCerrarPermiso.style.display = "none";
+    });
+  }
+
+  // Guardar comentario de cierre en la base de datos
+  if (btnGuardarCerrarPermiso && modalCerrarPermiso) {
+    btnGuardarCerrarPermiso.addEventListener("click", async function () {
+      var comentario = document
+        .getElementById("comentarioCerrarPermiso")
+        .value.trim();
+      if (!comentario) {
+        alert("Debes escribir el motivo del cierre.");
+        return;
+      }
+      // Obtener el id del permiso desde la URL o variable global
+      var params = new URLSearchParams(window.location.search);
+      var idPermiso = params.get("id") || window.idPermisoActual;
+      console.log("Permiso de trabajo a cerrar:", idPermiso);
+      if (!idPermiso) {
+        alert("No se pudo obtener el ID del permiso.");
+        return;
+      }
+      // Consultar el id_estatus desde permisos_trabajo
+      let idEstatus = null;
+      try {
+        const respEstatus = await fetch(
+          `http://localhost:3000/api/permisos-trabajo/${idPermiso}`
+        );
+        if (respEstatus.ok) {
+          const permisoData = await respEstatus.json();
+          idEstatus =
+            permisoData.id_estatus ||
+            (permisoData.data && permisoData.data.id_estatus);
+        }
+      } catch (err) {
+        console.error("Error al consultar id_estatus:", err);
+      }
+      if (!idEstatus) {
+        alert("No se pudo obtener el estatus del permiso.");
+        return;
+      }
+      // Guardar el comentario en la tabla estatus
+      try {
+        // 1. Guardar el comentario
+        const respComentario = await fetch(
+          "http://localhost:3000/api/estatus/comentario",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id_estatus: idEstatus, comentario }),
+          }
+        );
+        let dataComentario = {};
+        try {
+          dataComentario = await respComentario.json();
+        } catch (e) {}
+        if (!dataComentario.success) {
+          alert("No se pudo guardar el comentario de cierre.");
+          return;
+        }
+
+        // 2. Actualizar el estatus a 'Terminado'
+        const payloadEstatus = { id_estatus: idEstatus };
+        const respEstatus = await fetch(
+          "http://localhost:3000/api/estatus/terminado",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payloadEstatus),
+          }
+        );
+        let dataEstatus = {};
+        try {
+          dataEstatus = await respEstatus.json();
+        } catch (e) {}
+        if (!respEstatus.ok || !dataEstatus.success) {
+          alert("No se pudo actualizar el estatus a Terminado.");
+          return;
+        }
+
+        // 3. Enviar los datos a N8N usando el archivo separado
+        if (window.n8nFormHandler) {
+          await window.n8nFormHandler();
+        }
+
+        // Cerrar el modal y mostrar mensaje de éxito
+        modalCerrarPermiso.style.display = "none";
+        alert("Permiso cerrado y estatus actualizado a Terminado.");
+        window.location.href = "/Modules/usuario/autorizarPT.html";
+      } catch (err) {
+        alert("Error al guardar el comentario de cierre o actualizar estatus.");
+      }
+    });
+  }
+});
+
 function llenarTablaResponsables(idPermiso) {
   fetch(`http://localhost:3000/api/autorizaciones/personas/${idPermiso}`)
     .then((response) => response.json())
@@ -863,4 +977,47 @@ function llenarTablaResponsables(idPermiso) {
     .catch((err) => {
       console.error("Error al consultar personas de autorización:", err);
     });
+}
+
+const btnCancelarPermiso = document.getElementById("btn-cancelar-permiso");
+const modalCerrarPermiso = document.getElementById("modalCerrarPermiso");
+const btnGuardarCerrarPermiso = document.getElementById(
+  "btnGuardarCerrarPermiso"
+);
+
+if (btnCancelarPermiso && modalCerrarPermiso && btnGuardarCerrarPermiso) {
+  btnCancelarPermiso.addEventListener("click", function () {
+    // Mostrar el modal para escribir el comentario de cancelación
+    modalCerrarPermiso.style.display = "flex";
+    // Limpiar el textarea
+    document.getElementById("comentarioCerrarPermiso").value = "";
+  });
+
+  btnGuardarCerrarPermiso.addEventListener("click", async function () {
+    // Solo ejecutar el flujo de cancelación si el modal fue abierto por cancelar
+    if (modalCerrarPermiso.style.display === "flex") {
+      var comentario = document
+        .getElementById("comentarioCerrarPermiso")
+        .value.trim();
+      if (!comentario) {
+        alert("Debes escribir el motivo de la cancelación.");
+        return;
+      }
+      if (window.n8nFormHandler) {
+        try {
+          await window.n8nFormHandler();
+          alert("Permiso cancelado y correo enviado correctamente.");
+          modalCerrarPermiso.style.display = "none";
+          window.location.href = "/Modules/usuario/autorizarPT.html";
+        } catch (err) {
+          alert(
+            "Error al cancelar el permiso o enviar el correo. Revisa la consola."
+          );
+          console.error("Error en cancelación de permiso:", err);
+        }
+      } else {
+        alert("No se encontró la función de cancelación de email.");
+      }
+    }
+  });
 }

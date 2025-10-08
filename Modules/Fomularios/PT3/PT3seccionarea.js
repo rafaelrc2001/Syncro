@@ -304,6 +304,21 @@ if (idPermiso) {
         setText("work-order-label", permiso.ot_numero || "-");
         setText("tag-label", permiso.tag || "-");
         setText("start-time-label", permiso.hora_inicio || "-");
+        setText("fecha-label", permiso.fecha || "-");
+        setText("activity-type-label", permiso.tipo_permiso || "-");
+        setText("plant-label", permiso.area || "-");
+        setText(
+          "descripcion-trabajo-label",
+          permiso.descripcion_trabajo || "-"
+        );
+        setText("empresa-label", permiso.empresa || "-");
+        setText("nombre-solicitante-label", permiso.solicitante || "-");
+        setText("sucursal-label", permiso.sucursal || "-");
+        setText("contrato-label", permiso.contrato || "-");
+        setText("work-order-label", permiso.ot_numero || "-");
+        setText("equipment-intervene-label", permiso.equipo_intervenir || "-");
+        setText("equipment-label", permiso.equipo_intervenir || "-");
+        setText("tag-label", permiso.tag || "-");
         //setText("has-equipment-label", permiso.tiene_equipo_intervenir || "-");
         setText(
           "equipment-description-label",
@@ -605,27 +620,42 @@ document.addEventListener("DOMContentLoaded", function () {
           if (document.getElementById("start-time-label"))
             document.getElementById("start-time-label").textContent =
               detalles.hora_inicio || "-";
-          if (document.getElementById("equipment-description-label"))
-            document.getElementById("equipment-description-label").textContent =
-              detalles.descripcion_equipo || "-";
-          if (document.getElementById("special-tools-label"))
-            document.getElementById("special-tools-label").textContent =
-              detalles.requiere_herramientas_especiales || "-";
-          if (document.getElementById("special-tools-type-label"))
-            document.getElementById("special-tools-type-label").textContent =
-              detalles.tipo_herramientas_especiales || "-";
-          if (document.getElementById("adequate-tools-label"))
-            document.getElementById("adequate-tools-label").textContent =
-              detalles.herramientas_adecuadas || "-";
-          if (document.getElementById("pre-verification-label"))
-            document.getElementById("pre-verification-label").textContent =
-              detalles.requiere_verificacion_previa || "-";
-          if (document.getElementById("risk-knowledge-label"))
-            document.getElementById("risk-knowledge-label").textContent =
-              detalles.requiere_conocer_riesgos || "-";
-          if (document.getElementById("final-observations-label"))
-            document.getElementById("final-observations-label").textContent =
-              detalles.observaciones_medidas || "-";
+          if (document.getElementById("fecha-label"))
+            document.getElementById("fecha-label").textContent =
+              detalles.fecha || "-";
+          if (document.getElementById("activity-type-label"))
+            document.getElementById("activity-type-label").textContent =
+              detalles.tipo_permiso || "-";
+          if (document.getElementById("plant-label"))
+            document.getElementById("plant-label").textContent =
+              detalles.area || "-";
+          if (document.getElementById("descripcion-trabajo-label"))
+            document.getElementById("descripcion-trabajo-label").textContent =
+              detalles.descripcion_trabajo || "-";
+          if (document.getElementById("empresa-label"))
+            document.getElementById("empresa-label").textContent =
+              detalles.empresa || "-";
+          if (document.getElementById("nombre-solicitante-label"))
+            document.getElementById("nombre-solicitante-label").textContent =
+              detalles.solicitante || "-";
+          if (document.getElementById("sucursal-label"))
+            document.getElementById("sucursal-label").textContent =
+              detalles.sucursal || "-";
+          if (document.getElementById("contrato-label"))
+            document.getElementById("contrato-label").textContent =
+              detalles.contrato || "-";
+          if (document.getElementById("work-order-label"))
+            document.getElementById("work-order-label").textContent =
+              detalles.ot_numero || "-";
+          if (document.getElementById("equipment-intervene-label"))
+            document.getElementById("equipment-intervene-label").textContent =
+              detalles.equipo_intervenir || "-";
+          if (document.getElementById("equipment-label"))
+            document.getElementById("equipment-label").textContent =
+              detalles.equipo_intervenir || "-";
+          if (document.getElementById("tag-label"))
+            document.getElementById("tag-label").textContent =
+              detalles.tag || "-";
           // ...agrega aquí más campos generales de PT2 si los tienes...
         }
         // Rellenar AST y Participantes si existen en la respuesta
@@ -775,5 +805,21 @@ fetch(`http://localhost:3000/api/pt-confinado/${idPermiso}`)
     if (data && data.data) {
       rellenarRequisitosTrabajo(data.data);
       // ...otros rellenos...
+    }
+  })
+  .catch((err) => {
+    console.error("Error al obtener datos del permiso:", err);
+  });
+
+fetch(`http://localhost:3000/api/verformularios?id=${idPermiso}`)
+  .then((resp) => resp.json())
+  .then((data) => {
+    console.log(data); // Aquí ves los datos en consola
+    if (data && data.general) {
+      document.getElementById("maintenance-type-label").textContent =
+        data.general.tipo_mantenimiento || "-";
+      document.getElementById("work-order-label").textContent =
+        data.general.ot_numero || "-";
+      // ...y así con los demás campos
     }
   });

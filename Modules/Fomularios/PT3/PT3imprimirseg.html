@@ -11,12 +11,12 @@
     <link rel="stylesheet" href="/CSS/imprimir/EstiloImprimir-Base.css">
     <link rel="stylesheet" href="/CSS/Imprimir/EstiloImprimir-PT3.css">
 
+
 </head>
 <body style="background: #f4f6fb; min-height: 100vh; margin: 0; font-family: 'Roboto', Arial, sans-serif;">
-    <div style="display: flex; justify-content: center; align-items: flex-start; min-height: 100vh;">
-        <section class="executive-section" style="max-width: 900px; width: 100%; margin: 40px 0; background: #fff; border-radius: 18px; box-shadow: 0 4px 24px rgba(44,62,80,0.10); padding: 2.5rem 2rem;">
-              <!-- Encabezado con logos de la empresa -->
-            <div class="company-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid #e3e6ea;">
+        <div style="display: flex; justify-content: center; align-items: flex-start; min-height: 100vh;">
+            <section class="form-section" data-section="2" style="max-width: 900px; width: 100%; margin: 40px 0; background: #fff; border-radius: 18px; box-shadow: 0 4px 24px rgba(44,62,80,0.10); padding: 2.5rem 2rem;">
+                <div class="company-header">
                 <div style="display: flex; align-items: center; gap: 1rem;">
                     <img src="/img/proagro.png" alt="Logo ProAgro" style="height: 60px; width: auto;">
                 </div>
@@ -29,56 +29,97 @@
                 </div>
          
             </div>
-            
-             <div class="section-header">
-                <i class="ri-checkbox-circle-line"></i>
-                <h2>
-Permiso de Trabajo Espacio Confinado</h2>
-                <h3 id="prefijo-label">-</h3>
-            </div>
 
-
-              <div class="executive-section usuario">
                 <div class="section-header">
-                    <i class="ri-information-line"></i>
-                    <h3>Datos generales</h3>
+                    <i class="ri-checkbox-circle-line"></i>
+                    <h2>Permiso de Trabajo para Apertura Equipo Línea</h2>
+                    <h3>NP-XXXXXX</h3>
                 </div>
-                <div class="executive-grid">
-                    <div class="executive-item">
-                        <label>Descripción del trabajo</label>
-                        <p id="descripcion-trabajo-label">-</p>
+                                 <div class="general-box-header">
+                                        <span>Información General</span>
+                                    </div>
+                  <div class="executive-section " style="margin-bottom: 0; box-shadow: none; background: transparent; border: none;">
+                      
+                   
+                       <div class="executive-grid">
+                          <div class="executive-item">
+                              <label>Hora de inicio</label>
+                              <p id="start-time-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                              <label>Fecha</label>
+                              <p id="fecha-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                              <label>Tipo de actividad</label>
+                              <p id="activity-type-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                              <label>Planta o lugar de trabajo</label>
+                              <p id="plant-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                              <label>Descripción del trabajo</label>
+                              <p id="descripcion-trabajo-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                              <label>Empresa</label>
+                              <p id="empresa-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                            <label>Nombre de quien solicita</label>
+                            <p id="nombre-solicitante-label">-</p>
+                            </div>
+                                                    <div class="executive-item">
+                            <label>Sucursal</label>
+                            <p id="sucursal-label">-</p>
+                            </div>
+                            <div class="executive-item">
+                            <label>Contrato</label>
+                            <p id="contrato-label">-</p>
+                            </div>
+                          <div class="executive-item">
+                              <label>O.T. No.</label>
+                              <p id="work-order-label">-</p>
+                          </div>
+                      </div>
+                  </div>
+                
+                  <div class="executive-section ">
+                    <div class="section-header">
+                        <i class="ri-tools-line"></i>
+                        <h3>Equipo</h3>
                     </div>
-                    <div class="executive-item">
-                        <label>Tipo de mantenimiento</label>
-                        <p id="maintenance-type-label" class="highlight"></p>
-                    </div>
-                    <div class="executive-item">
-                        <label>O.T. No.</label>
-                        <p id="work-order-label"></p>
-                    </div>
-                    <div class="executive-item">
-                        <label>TAG</label>
-                        <p id="tag-label"></p>
-                    </div>
-                    <div class="executive-item">
-                        <label>Hora de inicio</label>
-                        <p id="start-time-label"></p>
-                    </div>
-                    <div class="executive-item">
-                        <label>Equipo</label>
-                        <p id="equipment-description-label"></p>
+                    <div class="executive-grid">
+                        <div class="executive-item">
+                            <label>¿Tiene Equipo a Intervenir?</label>
+                            <p id="equipment-intervene-label">-</p>
+                        </div>
+                        <div class="executive-item">
+                            <label>Equipo a Intervenir</label>
+                            <p id="equipment-label">-</p>
+                        </div>
+                        <div class="executive-item">
+                            <label>TAG</label>
+                            <p id="tag-label">-</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-         
-<div class="executive-section usuario">
-    <div class="section-header">
-        <i class="ri-shield-check-line"></i>
-        <h3>MEDIDAS / REQUISITOS PARA ADMINISTRAR LOS RIESGOS</h3>
-    </div>
-</div>
 
-<table class="tabla-medidas">
+         
+
+                
+                    <div class="usuario-box-header">
+                        <span>Formulario Usuario</span>
+                    </div>
+
+            <div class="executive-section">
+                <div class="section-header">
+                    <i class="ri-shield-check-line"></i>
+                    <h3>MEDIDAS / REQUISITOS PARA ADMINISTRAR LOS RIESGOS</h3>
+                </div>
+
+<table>
     <thead>
         <tr>
             <th>Pregunta</th>
@@ -156,8 +197,15 @@ Permiso de Trabajo Espacio Confinado</h2>
 </div>
 
 
+</div>
 
- <div class="executive-section area">
+
+
+                                    <div class="area-box-header">
+                                         <span>Formulario Área</span>
+                                     </div>
+
+      <div class="executive-section ">
                     <div class="section-header section-header-cielo">
                         <i class="ri-flask-line"></i>
                         <h3>Condiciones del Proceso</h3>
@@ -178,13 +226,12 @@ Permiso de Trabajo Espacio Confinado</h2>
                     </div>
                 </div>
 
-
-              <div class="executive-section area">
+            <div class="executive-section ">
                 <div class="section-header section-header-cielo">
                     <i class="ri-tools-line"></i>
                     <h3>ANÁLISIS DE REQUISITOS PARA EFECTUAR EL TRABAJO</h3>
                 </div>
-                <table class="tabla-analisis-requisitos">
+                <table class="styled-table">
                     <thead class="thead-nopeligroso">
                         <tr>
                             <th>Requisito</th>
@@ -294,10 +341,16 @@ Permiso de Trabajo Espacio Confinado</h2>
 
             
 
+                        <div class="supervisor-box-header">
+                             <span>Formulario Supervisor</span>
+                         </div>
+
+            
+
               
               
 
-   <div class="executive-section supervisor">
+   <div class="executive-section ">
         <div class="section-header section-header-cielo">
             <i class="ri-shield-check-line"></i>
             <h3>REQUISITOS PARA ADMINISTRAR LOS RIESGOS</h3>
@@ -405,7 +458,7 @@ Permiso de Trabajo Espacio Confinado</h2>
     
 
    <!-- Sección AST y Participantes -->
-                <div class="executive-section  usuario">
+                <div class="executive-section  ">
                     <div class="section-header">
                         <i class="ri-shield-check-line"></i>
                         <h3>AST - Análisis de Seguridad en el Trabajo</h3>
@@ -449,7 +502,7 @@ Permiso de Trabajo Espacio Confinado</h2>
                     </div>
                 </div>
                 <!-- Sección 4: Participantes -->
-                  <div class="executive-section usuario">
+                  <div class="executive-section ">
                     <div class="section-header">
                         <i class="ri-team-line"></i>
                         <h3>Personal Involucrado</h3>
@@ -473,7 +526,7 @@ Permiso de Trabajo Espacio Confinado</h2>
                 </div>
                 
 <!-- Sección 5: Aprobaciones -->
-           <div class="executive-section usuario">
+           <div class="executive-section ">
                     <div class="section-header">
                         <i class="ri-team-line"></i>
                         <h3>Responsables</h3>

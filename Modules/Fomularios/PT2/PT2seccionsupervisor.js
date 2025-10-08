@@ -254,9 +254,13 @@ document.addEventListener("DOMContentLoaded", function () {
           if (document.getElementById("equipment-intervene-label"))
             document.getElementById("equipment-intervene-label").textContent =
               detalles.tiene_equipo_intervenir ? "SI" : "NO";
-          if (document.getElementById("equipment-label"))
+          if (document.getElementById("equipment-label")) {
+            console.log("Valor de tiene_equipo_intervenir:", detalles.tiene_equipo_intervenir);
             document.getElementById("equipment-label").textContent =
-              detalles.tiene_equipo_intervenir || "-";
+              detalles.tiene_equipo_intervenir !== null && detalles.tiene_equipo_intervenir !== undefined
+                ? detalles.tiene_equipo_intervenir
+                : "-";
+          }
           if (document.getElementById("tag-label"))
             document.getElementById("tag-label").textContent =
               detalles.tag || "-";

@@ -78,67 +78,71 @@ router.get("/verformularios", async (req, res) => {
     } else if (tipo_permiso === "PT para Apertura Equipo Línea") {
       console.log("Entrando a bloque PT para Apertura Equipo Línea");
       // Consulta correcta para pt_apertura
-      const queryGeneralApertura = `
-                SELECT 
-                    pt.id_permiso,
-                    TO_CHAR(pt.fecha_hora, 'DD/MM/YYYY') AS fecha,
-                    pt.prefijo,
-                    tp.nombre AS tipo_permiso,
-                    pt.contrato,
-                    pa.empresa,
-                    s.nombre AS sucursal,
-                    a.nombre AS area, 
-                    d.nombre AS departamento,
-                    pa.nombre_solicitante AS solicitante,
-                    pa.descripcion_trabajo,
-                    pa.tipo_mantenimiento,
-                    pa.ot_numero,
-                    pa.tag,
-                    TO_CHAR(pa.hora_inicio, 'HH24:MI') AS hora_inicio,
-                    pa.fluido,
-                    pa.presion,
-                    pa.temperatura,
-                    pa.antecedentes,
-                    pa.requiere_herramientas_especiales,
-                    pa.tipo_herramientas_especiales,
-                    pa.herramientas_adecuadas,
-                    pa.requiere_verificacion_previa,
-                    pa.requiere_conocer_riesgos,
-                    pa.observaciones_medidas,
-                    pa.fuera_operacion,
-                    pa.despresurizado_purgado,
-                    pa.necesita_aislamiento,
-                    pa.con_valvulas,
-                    pa.con_juntas_ciegas,
-                    pa.producto_entrampado,
-                    pa.requiere_lavado,
-                    pa.requiere_neutralizado,
-                    pa.requiere_vaporizado,
-                    pa.suspender_trabajos_adyacentes,
-                    pa.acordonar_area,
-                    pa.prueba_gas_toxico_inflamable,
-                    pa.equipo_electrico_desenergizado,
-                    pa.tapar_purgas_drenajes,
-                    pa.proteccion_especial_recomendada,
-                    pa.proteccion_piel_cuerpo,
-                    pa.proteccion_respiratoria,
-                    pa.proteccion_ocular,
-                    pa.proteccion_contraincendio,
-                    pa.tipo_proteccion_contraincendio,
-                    pa.instalacion_barreras,
-                    pa.observaciones_riesgos,
-                    pa.co2_nivel,
-                    pa.nh3_nivel,
-                    pa.oxigeno_nivel,
-                    pa.lel_nivel
-                FROM permisos_trabajo pt
-                INNER JOIN pt_apertura pa ON pt.id_permiso = pa.id_permiso
-                INNER JOIN sucursales s ON pt.id_sucursal = s.id_sucursal
-                INNER JOIN areas a ON pt.id_area = a.id_area
-                INNER JOIN departamentos d ON pt.id_departamento = d.id_departamento
-                INNER JOIN tipos_permisos tp ON pt.id_tipo_permiso = tp.id_tipo_permiso
-                WHERE pt.id_permiso = $1
-            `;
+      
+            // ...existing code...
+const queryGeneralApertura = `
+    SELECT 
+        pt.id_permiso,
+        TO_CHAR(pt.fecha_hora, 'DD/MM/YYYY') AS fecha,
+        pt.prefijo,
+        tp.nombre AS tipo_permiso,
+        pt.contrato,
+        pa.empresa,
+        s.nombre AS sucursal,
+        a.nombre AS area, 
+        d.nombre AS departamento,
+        pa.nombre_solicitante AS solicitante,
+        pa.descripcion_trabajo,
+        pa.tipo_mantenimiento,
+        pa.ot_numero,
+        pa.tag,
+        TO_CHAR(pa.hora_inicio, 'HH24:MI') AS hora_inicio,
+        pa.fluido,
+        pa.presion,
+        pa.temperatura,
+        pa.antecedentes,
+        pa.requiere_herramientas_especiales,
+        pa.tipo_herramientas_especiales,
+        pa.herramientas_adecuadas,
+        pa.requiere_verificacion_previa,
+        pa.requiere_conocer_riesgos,
+        pa.observaciones_medidas,
+        pa.fuera_operacion,
+        pa.despresurizado_purgado,
+        pa.necesita_aislamiento,
+        pa.con_valvulas,
+        pa.con_juntas_ciegas,
+        pa.producto_entrampado,
+        pa.requiere_lavado,
+        pa.requiere_neutralizado,
+        pa.requiere_vaporizado,
+        pa.suspender_trabajos_adyacentes,
+        pa.acordonar_area,
+        pa.prueba_gas_toxico_inflamable,
+        pa.equipo_electrico_desenergizado,
+        pa.tapar_purgas_drenajes,
+        pa.proteccion_especial_recomendada,
+        pa.proteccion_piel_cuerpo,
+        pa.proteccion_respiratoria,
+        pa.proteccion_ocular,
+        pa.proteccion_contraincendio,
+        pa.tipo_proteccion_contraincendio,
+        pa.instalacion_barreras,
+        pa.observaciones_riesgos,
+        pa.co2_nivel,
+        pa.nh3_nivel,
+        pa.oxigeno_nivel,
+        pa.lel_nivel,
+        pa.tiene_equipo_intervenir -- <-- AGREGA ESTA LÍNEA
+    FROM permisos_trabajo pt
+    INNER JOIN pt_apertura pa ON pt.id_permiso = pa.id_permiso
+    INNER JOIN sucursales s ON pt.id_sucursal = s.id_sucursal
+    INNER JOIN areas a ON pt.id_area = a.id_area
+    INNER JOIN departamentos d ON pt.id_departamento = d.id_departamento
+    INNER JOIN tipos_permisos tp ON pt.id_tipo_permiso = tp.id_tipo_permiso
+    WHERE pt.id_permiso = $1
+`;
+// ...existing code...
       resultGeneral = await pool.query(queryGeneralApertura, [id]);
       console.log("Resultado general apertura:", resultGeneral.rows);
 

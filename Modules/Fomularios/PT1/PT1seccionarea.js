@@ -86,74 +86,65 @@ if (btnAutorizar) {
               "[DEPURACIÓN] Error en respuesta de estatus/seguridad:",
               data
             );
-            // alert(
-            //   "Error al actualizar estatus: " +
-            //     (data.error || respEstatus.status)
-            // );
           } else {
             console.log(
               "[DEPURACIÓN] Respuesta exitosa de estatus/seguridad:",
               data
             );
-            // alert("Estatus actualizado correctamente en la tabla estatus.");
           }
         } catch (err) {
           console.error(
             "[DEPURACIÓN] Excepción al actualizar estatus de seguridad:",
             err
           );
-          // alert("Excepción al actualizar estatus: " + err.message);
         }
       } else {
         console.warn(
           "[DEPURACIÓN] No se obtuvo id_estatus para actualizar estatus."
         );
-        // alert("No se obtuvo id_estatus para actualizar estatus.");
       }
 
-      // --- Insertar autorización de área vía API ---
-      const fluidInput = document.getElementById("fluid");
-      const pressureInput = document.getElementById("pressure");
-      const temperatureInput = document.getElementById("temperature");
-      const fluido = fluidInput ? fluidInput.value.trim() : "";
-      const presion = pressureInput ? pressureInput.value.trim() : "";
-      const temperatura = temperatureInput ? temperatureInput.value.trim() : "";
 
-      // Ejemplo para preguntas de análisis previo
-      const pregunta1 =
-        document.querySelector('input[name="pregunta1"]:checked')?.value || "";
-      const pregunta2 =
-        document.querySelector('input[name="pregunta2"]:checked')?.value || "";
-      const pregunta3 =
-        document.querySelector('input[name="pregunta3"]:checked')?.value || "";
-      const pregunta4 =
-        document.querySelector('input[name="pregunta4"]:checked')?.value || "";
-      const pregunta5 =
-        document.querySelector('input[name="pregunta5"]:checked')?.value || "";
-      const observaciones =
-        document.getElementById("observaciones")?.value.trim() || "";
+      // ...existing code...
+const fluidInput = document.getElementById("fluid");
+const pressureInput = document.getElementById("pressure");
+const temperatureInput = document.getElementById("temperature");
+const fluido = fluidInput ? fluidInput.value.trim() : "";
+const presion = pressureInput ? pressureInput.value.trim() : "";
+const temperatura = temperatureInput ? temperatureInput.value.trim() : "";
 
-      const resp = await fetch(
-        "http://localhost:3000/api/autorizaciones/area",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            id_permiso: idPermiso,
-            responsable_area,
-            encargado_area: operador_area,
-            fluido,
-            presion,
-            temperatura,
-            pregunta1,
-            pregunta2,
-            pregunta3,
-            pregunta4,
-            pregunta5,
-            observaciones,
-          }),
-        }
-      );
+const trabajo_area_riesgo_controlado =
+  document.querySelector('input[name="pregunta1"]:checked')?.value || "";
+const necesita_entrega_fisica =
+  document.querySelector('input[name="pregunta2"]:checked')?.value || "";
+const necesita_ppe_adicional =
+  document.querySelector('input[name="pregunta3"]:checked')?.value || "";
+const area_circundante_riesgo =
+  document.querySelector('input[name="pregunta4"]:checked')?.value || "";
+const necesita_supervision =
+  document.querySelector('input[name="pregunta5"]:checked')?.value || "";
+const observaciones_analisis_previo =
+  document.getElementById("observaciones")?.value.trim() || "";
+
+const resp = await fetch(
+  `http://localhost:3000/api/pt-no-peligroso/requisitos_area/${idPermiso}`,
+  {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      fluido,
+      presion,
+      temperatura,
+      trabajo_area_riesgo_controlado,
+      necesita_entrega_fisica,
+      necesita_ppe_adicional,
+      area_circundante_riesgo,
+      necesita_supervision,
+      observaciones_analisis_previo,
+    }),
+  }
+);
+// ...existing code...
       // Mostrar modal de confirmación en vez de redirigir inmediatamente
       const confirmationModal = document.getElementById("confirmation-modal");
       if (confirmationModal) {

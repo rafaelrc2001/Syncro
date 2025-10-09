@@ -1,5 +1,5 @@
 // Función para manejar el envío del formulario a n8n
-window.n8nFormHandler = async function () {
+window.n8nFormHandlerCancelado = async function () {
   console.log("[n8nFormHandler] INICIO FLUJO");
   const params = new URLSearchParams(window.location.search);
   const idPermiso =
@@ -19,7 +19,7 @@ window.n8nFormHandler = async function () {
   // 2. Obtener el valor del comentario de cierre del textarea
   console.log("[n8nFormHandler] Obteniendo comentario de cierre...");
   let comentario = "";
-  const comentarioInput = document.getElementById("comentarioCerrarPermiso");
+  const comentarioInput = document.getElementById("comentarioCancelarPermiso");
   if (comentarioInput) {
     comentario = comentarioInput.value.trim();
     console.log("[n8nFormHandler] Comentario de cierre:", comentario);

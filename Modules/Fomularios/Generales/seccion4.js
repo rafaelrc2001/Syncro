@@ -791,6 +791,7 @@ document.addEventListener("DOMContentLoaded", () => {
             descripcion_trabajo,
             nombre_solicitante,
             empresa,
+            contrato, // <-- AGREGA ESTA LÍNEA
           };
 
           // Imprimir en consola lo que se enviará

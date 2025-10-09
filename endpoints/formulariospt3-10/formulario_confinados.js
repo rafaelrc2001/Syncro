@@ -29,8 +29,10 @@ router.post("/pt-confinados", async (req, res) => {
     tiempo_recuperacion_min,
     clase_espacio_confinado,
     observaciones_adicionales,
-    descripcion_trabajo, // <-- NUEVO
+    descripcion_trabajo,
     nombre_solicitante,
+    empresa,
+    contrato,
   } = req.body;
 
   // Validar campos obligatorios mínimos (puedes ajustar según tus necesidades)
@@ -48,9 +50,9 @@ router.post("/pt-confinados", async (req, res) => {
         avisos_trabajos, iluminacion_prueba_explosion, ventilacion_forzada, evaluacion_medica_aptos, cable_vida_trabajadores,
         vigilancia_exterior, nombre_vigilante, personal_rescatista, nombre_rescatista, instalar_barreras, equipo_especial, tipo_equipo_especial,
         numero_personas_autorizadas, tiempo_permanencia_min, tiempo_recuperacion_min, clase_espacio_confinado, observaciones_adicionales,
-        descripcion_trabajo, nombre_solicitante      -- <-- NUEVO
+        descripcion_trabajo, nombre_solicitante, empresa, contrato
       ) VALUES (
-        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25
+        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27
       ) RETURNING *`,
       [
         id_permiso,
@@ -76,8 +78,10 @@ router.post("/pt-confinados", async (req, res) => {
         tiempo_recuperacion_min || null,
         clase_espacio_confinado || null,
         observaciones_adicionales || null,
-        descripcion_trabajo || null, // <-- NUEVO
-        nombre_solicitante || null, // <-- NUEVO
+        descripcion_trabajo || null,
+        nombre_solicitante || null,
+        empresa || null,
+        contrato || null,
       ]
     );
     res.status(201).json({

@@ -104,47 +104,50 @@ if (btnAutorizar) {
         );
       }
 
-
       // ...existing code...
-const fluidInput = document.getElementById("fluid");
-const pressureInput = document.getElementById("pressure");
-const temperatureInput = document.getElementById("temperature");
-const fluido = fluidInput ? fluidInput.value.trim() : "";
-const presion = pressureInput ? pressureInput.value.trim() : "";
-const temperatura = temperatureInput ? temperatureInput.value.trim() : "";
+      const fluidInput = document.getElementById("fluid");
+      const pressureInput = document.getElementById("pressure");
+      const temperatureInput = document.getElementById("temperature");
+      const fluido = fluidInput ? fluidInput.value.trim() : "";
+      const presion = pressureInput ? pressureInput.value.trim() : "";
+      const temperatura = temperatureInput ? temperatureInput.value.trim() : "";
 
-const trabajo_area_riesgo_controlado =
-  document.querySelector('input[name="pregunta1"]:checked')?.value || "";
-const necesita_entrega_fisica =
-  document.querySelector('input[name="pregunta2"]:checked')?.value || "";
-const necesita_ppe_adicional =
-  document.querySelector('input[name="pregunta3"]:checked')?.value || "";
-const area_circundante_riesgo =
-  document.querySelector('input[name="pregunta4"]:checked')?.value || "";
-const necesita_supervision =
-  document.querySelector('input[name="pregunta5"]:checked')?.value || "";
-const observaciones_analisis_previo =
-  document.getElementById("observaciones")?.value.trim() || "";
+      const trabajo_area_riesgo_controlado =
+        document.querySelector('input[name="risk-area"]:checked')?.value || "";
+      const necesita_entrega_fisica =
+        document.querySelector('input[name="physical-delivery"]:checked')
+          ?.value || "";
+      const necesita_ppe_adicional =
+        document.querySelector('input[name="additional-ppe"]:checked')?.value ||
+        "";
+      const area_circundante_riesgo =
+        document.querySelector('input[name="surrounding-risk"]:checked')
+          ?.value || "";
+      const necesita_supervision =
+        document.querySelector('input[name="supervision-needed"]:checked')
+          ?.value || "";
+      const observaciones_analisis_previo =
+        document.getElementById("pre-work-observations")?.value.trim() || "";
 
-const resp = await fetch(
-  `http://localhost:3000/api/pt-no-peligroso/requisitos_area/${idPermiso}`,
-  {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      fluido,
-      presion,
-      temperatura,
-      trabajo_area_riesgo_controlado,
-      necesita_entrega_fisica,
-      necesita_ppe_adicional,
-      area_circundante_riesgo,
-      necesita_supervision,
-      observaciones_analisis_previo,
-    }),
-  }
-);
-// ...existing code...
+      const resp = await fetch(
+        `http://localhost:3000/api/pt-no-peligroso/requisitos_area/${idPermiso}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            fluido,
+            presion,
+            temperatura,
+            trabajo_area_riesgo_controlado,
+            necesita_entrega_fisica,
+            necesita_ppe_adicional,
+            area_circundante_riesgo,
+            necesita_supervision,
+            observaciones_analisis_previo,
+          }),
+        }
+      );
+      // ...existing code...
       // Mostrar modal de confirmación en vez de redirigir inmediatamente
       const confirmationModal = document.getElementById("confirmation-modal");
       if (confirmationModal) {

@@ -1,5 +1,5 @@
 // Función para manejar el envío del formulario a n8n
-window.n8nFormHandler = async function () {
+window.n8nFormHandlerFinalizado = async function () {
   console.log("[n8nFormHandler] INICIO FLUJO");
   const params = new URLSearchParams(window.location.search);
   const idPermiso =

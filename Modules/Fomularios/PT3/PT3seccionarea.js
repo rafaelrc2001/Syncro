@@ -292,88 +292,87 @@ if (btnRegresar) {
 const params = new URLSearchParams(window.location.search);
 const idPermiso = params.get("id");
 if (idPermiso) {
-  console.log("Consultando permiso de apertura con id:", idPermiso);
-  fetch(`http://localhost:3000/api/pt-confinado/${idPermiso}`)
+  fetch(
+    `http://localhost:3000/api/verformularios?id=${encodeURIComponent(
+      idPermiso
+    )}`
+  )
     .then((resp) => resp.json())
     .then((data) => {
-      console.log("Respuesta de la API:", data);
-      if (data && data.success && data.data) {
-        const permiso = data.data;
-        console.log("Valores del permiso recibidos:", permiso);
-        setText("maintenance-type-label", permiso.tipo_mantenimiento || "-");
-        setText("work-order-label", permiso.ot_numero || "-");
-        setText("tag-label", permiso.tag || "-");
-        setText("start-time-label", permiso.hora_inicio || "-");
-        setText("fecha-label", permiso.fecha || "-");
-        setText("activity-type-label", permiso.tipo_permiso || "-");
-        setText("plant-label", permiso.area || "-");
+      // Usar la sección 'general' si existe
+      if (data && data.general) {
+        const general = data.general;
+        setText("start-time-label", general.hora_inicio || "-");
+        setText(
+          "fecha-label",
+          general.fecha ||
+            (general.fecha_creacion
+              ? general.fecha_creacion.split("T")[0]
+              : "-")
+        );
+        setText("activity-type-label", general.tipo_mantenimiento || "-");
+        setText("plant-label", general.area || "-");
         setText(
           "descripcion-trabajo-label",
-          permiso.descripcion_trabajo || "-"
+          general.descripcion_trabajo || "-"
         );
-        setText("empresa-label", permiso.empresa || "-");
-        setText("nombre-solicitante-label", permiso.solicitante || "-");
-        setText("sucursal-label", permiso.sucursal || "-");
-        setText("contrato-label", permiso.contrato || "-");
-        setText("work-order-label", permiso.ot_numero || "-");
-        setText("equipment-intervene-label", permiso.equipo_intervenir || "-");
-        setText("equipment-label", permiso.equipo_intervenir || "-");
-        setText("tag-label", permiso.tag || "-");
-        //setText("has-equipment-label", permiso.tiene_equipo_intervenir || "-");
+        setText("empresa-label", general.empresa || "-");
         setText(
-          "equipment-description-label",
-          permiso.descripcion_equipo || "-"
+          "nombre-solicitante-label",
+          general.solicitante || general.nombre_solicitante || "-"
         );
+        setText("sucursal-label", general.sucursal || "-");
+        setText("contrato-label", general.contrato || "-");
+        setText("work-order-label", general.ot_numero || "-");
+        // --- CAMPOS DE EQUIPO ---
         setText(
-          "special-tools-label",
-          permiso.requiere_herramientas_especiales || "-"
+          "equipment-label",
+          general.descripcion_equipo || general.equipo_intervenir || "-"
         );
         setText(
-          "special-tools-type-label",
-          permiso.tipo_herramientas_especiales || "-"
+          "equipment-intervene-label",
+          general.tiene_equipo_intervenir ||
+            (general.equipo_intervenir ? "SI" : "NO")
         );
-        setText("adequate-tools-label", permiso.herramientas_adecuadas || "-");
+        setText("tag-label", general.tag || "-");
+      } else if (data && data.data) {
+        // Si no existe 'general', usar 'data'
+        const detalles = data.data;
+        setText("start-time-label", detalles.hora_inicio || "-");
         setText(
-          "pre-verification-label",
-          permiso.requiere_verificacion_previa || "-"
+          "fecha-label",
+          detalles.fecha ||
+            (detalles.fecha_creacion
+              ? detalles.fecha_creacion.split("T")[0]
+              : "-")
+        );
+        setText("activity-type-label", detalles.tipo_mantenimiento || "-");
+        setText("plant-label", detalles.area || "-");
+        setText(
+          "descripcion-trabajo-label",
+          detalles.descripcion_trabajo || "-"
+        );
+        setText("empresa-label", detalles.empresa || "-");
+        setText(
+          "nombre-solicitante-label",
+          detalles.solicitante || detalles.nombre_solicitante || "-"
+        );
+        setText("sucursal-label", detalles.sucursal || "-");
+        setText("contrato-label", detalles.contrato || "-");
+        setText("work-order-label", detalles.ot_numero || "-");
+        // --- CAMPOS DE EQUIPO ---
+        setText(
+          "equipment-label",
+          detalles.descripcion_equipo || detalles.equipo_intervenir || "-"
         );
         setText(
-          "risk-knowledge-label",
-          permiso.requiere_conocer_riesgos || "-"
+          "equipment-intervene-label",
+          detalles.tiene_equipo_intervenir ||
+            (detalles.equipo_intervenir ? "SI" : "NO")
         );
-        setText(
-          "final-observations-label",
-          permiso.observaciones_medidas || "-"
-        );
-        // Radios de requisitos
-        const radios = [
-          "fuera_operacion",
-          "despresurizado_purgado",
-          "necesita_aislamiento",
-          "con_valvulas",
-          "con_juntas_ciegas",
-          "producto_entrampado",
-          "requiere_lavado",
-          "requiere_neutralizado",
-          "requiere_vaporizado",
-          "suspender_trabajos_adyacentes",
-          "acordonar_area",
-          "prueba_gas_toxico_inflamable",
-          "equipo_electrico_desenergizado",
-          "tapar_purgas_drenajes",
-        ];
-        radios.forEach((name) => {
-          if (permiso[name]) {
-            const radio = document.querySelector(
-              `input[name='${name}'][value='${permiso[name]}']`
-            );
-            if (radio) radio.checked = true;
-          }
-        });
+        setText("tag-label", detalles.tag || "-");
       } else {
-        alert(
-          "No se encontraron datos para este permiso o la API no respondió correctamente."
-        );
+        console.warn("No se encontraron datos generales para el permiso.");
       }
     })
     .catch((err) => {
@@ -823,3 +822,19 @@ fetch(`http://localhost:3000/api/verformularios?id=${idPermiso}`)
       // ...y así con los demás campos
     }
   });
+
+function rellenarDatosGenerales(data) {
+  setText("start-time-label", data.hora_inicio || "-");
+  setText("fecha-label", data.fecha || "-");
+  setText("activity-type-label", data.tipo_mantenimiento || "-");
+  setText("plant-label", data.area || "-");
+  setText("descripcion-trabajo-label", data.descripcion_trabajo || "-");
+  setText("empresa-label", data.empresa || "-");
+  setText(
+    "nombre-solicitante-label",
+    data.solicitante || data.nombre_solicitante || "-"
+  );
+  setText("sucursal-label", data.sucursal || "-");
+  setText("contrato-label", data.contrato || "-");
+  setText("work-order-label", data.ot_numero || "-");
+}

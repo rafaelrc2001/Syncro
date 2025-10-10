@@ -7,6 +7,7 @@ async function enviarDatosAN8N(motivoCierre) {
     alert("No se pudo obtener el ID del permiso para enviar a N8N.");
     return;
   }
+  let formData = {};
   try {
     const resp = await fetch(
       `http://localhost:3000/api/verformularios?id=${idPermiso}`
@@ -14,21 +15,67 @@ async function enviarDatosAN8N(motivoCierre) {
     const data = await resp.json();
     // Imprimir los datos obtenidos de la API
     console.log("Datos obtenidos de la API para N8N:", data);
-    const formData = {
-      numeroPermiso: data.general?.prefijo || "",
-      fechaPermiso: data.general?.fecha || "",
-      empresa: data.general?.empresa || "",
-      subcontrata: data.general?.subcontrata || "",
-      sucursal: data.general?.sucursal || "",
-      planta: data.general?.planta || "",
-      solicitante: data.general?.solicitante || "",
-      descripcionTrabajo: data.general?.descripcion_trabajo || "",
-      fechaSolicitud: new Date().toISOString(),
-      mantenimiento: data.general?.mantenimiento || "",
-      tipopermiso: data.general?.tipo_permiso || "",
-      correo: data.general?.correo || "",
-      motivoCierre: motivoCierre || "",
-    };
+    // Si la API devuelve datos completos, úsalo
+    if (data && data.general && Object.keys(data.general).length > 0) {
+      formData = {
+        numeroPermiso:
+          data.general.prefijo ||
+          document.querySelector(".section-header h3")?.textContent ||
+          "",
+        fechaPermiso:
+          data.general.fecha ||
+          document.getElementById("fecha-label")?.textContent ||
+          "",
+        empresa:
+          data.general.empresa ||
+          document.getElementById("empresa-label")?.textContent ||
+          "",
+        subcontrata: data.general.subcontrata || "",
+        sucursal:
+          data.general.sucursal ||
+          document.getElementById("sucursal-label")?.textContent ||
+          "",
+        planta:
+          data.general.planta ||
+          document.getElementById("plant-label")?.textContent ||
+          "",
+        solicitante:
+          data.general.solicitante ||
+          document.getElementById("nombre-solicitante-label")?.textContent ||
+          "",
+        descripcionTrabajo:
+          data.general.descripcion_trabajo ||
+          document.getElementById("descripcion-trabajo-label")?.textContent ||
+          "",
+        fechaSolicitud: new Date().toISOString(),
+        mantenimiento: data.general.mantenimiento || "",
+        tipopermiso: data.general.tipo_permiso || "",
+        correo: data.general.correo || "",
+        motivoCierre: motivoCierre || "",
+      };
+    } else {
+      // Si la API falla o no tiene datos, recolecta del DOM
+      formData = {
+        numeroPermiso:
+          document.querySelector(".section-header h3")?.textContent || "",
+        fechaPermiso: document.getElementById("fecha-label")?.textContent || "",
+        empresa: document.getElementById("empresa-label")?.textContent || "",
+        subcontrata: "",
+        sucursal: document.getElementById("sucursal-label")?.textContent || "",
+        planta: document.getElementById("plant-label")?.textContent || "",
+        solicitante:
+          document.getElementById("nombre-solicitante-label")?.textContent ||
+          "",
+        descripcionTrabajo:
+          document.getElementById("descripcion-trabajo-label")?.textContent ||
+          "",
+        fechaSolicitud: new Date().toISOString(),
+        mantenimiento: "",
+        tipopermiso: "",
+        correo: "",
+        motivoCierre: motivoCierre || "",
+      };
+    }
     // Enviar a N8N (reemplaza la URL por la tuya)
     await fetch("https://TU_WEBHOOK_N8N", {
       method: "POST",
@@ -77,7 +124,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnSalir = document.getElementById("btn-salir-nuevo");
   if (btnSalir) {
     btnSalir.addEventListener("click", function () {
-      window.location.href = "../../usuario/autorizarPT.html";
+      window.location.href = "../../usuario/CrearPT.html";
     });
   }
 });

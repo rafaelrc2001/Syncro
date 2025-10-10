@@ -147,6 +147,28 @@ if (btnAutorizar) {
           }),
         }
       );
+      // Guardar responsable y operador de área igual que PT2
+      await fetch("http://localhost:3000/api/autorizaciones/area", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id_permiso: idPermiso,
+          responsable_area,
+          encargado_area: operador_area,
+        }),
+      });
+
+      // --- Agregar responsable y operador de área ---
+      await fetch("http://localhost:3000/api/autorizaciones/area", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id_permiso: idPermiso,
+          responsable_area,
+          encargado_area: operador_area,
+        }),
+      });
+
       // ...existing code...
       // Mostrar modal de confirmación en vez de redirigir inmediatamente
       const confirmationModal = document.getElementById("confirmation-modal");

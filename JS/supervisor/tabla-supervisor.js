@@ -163,7 +163,7 @@ function mostrarPermisosFiltrados(filtro) {
                 <button class="action-btn view" data-idpermiso="${
                   permiso.id_permiso
                 }"><i class="ri-eye-line"></i></button>
-                <button class="action-btn print"><i class="ri-printer-line"></i></button>
+               
                 <button class="action-btn edit"><i class="ri-edit-line"></i></button>
             </td>
         `;
@@ -179,35 +179,39 @@ function mostrarPermisosFiltrados(filtro) {
   actualizarPaginacion(totalPaginas, filtro);
 
   // Botón imprimir y ver: ambos redirigen a imprimir
-  document.querySelectorAll(".action-btn.print, .action-btn.view").forEach((btn) => {
-    btn.addEventListener("click", function () {
-      const row = this.closest("tr");
-      const tipoPermiso = row ? row.children[1].textContent.trim() : "";
-      const idPermiso = row
-        ? row.querySelector(".action-btn.view, .action-btn.print").getAttribute("data-idpermiso")
-        : "";
+  document
+    .querySelectorAll(".action-btn.print, .action-btn.view")
+    .forEach((btn) => {
+      btn.addEventListener("click", function () {
+        const row = this.closest("tr");
+        const tipoPermiso = row ? row.children[1].textContent.trim() : "";
+        const idPermiso = row
+          ? row
+              .querySelector(".action-btn.view, .action-btn.print")
+              .getAttribute("data-idpermiso")
+          : "";
 
-      if (tipoPermiso === "PT No Peligroso") {
-        window.location.href = `/Modules/Fomularios/PT1/PT1imprimir.html?tipo=PT1&id=${idPermiso}`;
-      } else if (tipoPermiso === "PT para Apertura Equipo Línea") {
-        window.location.href = `/Modules/Fomularios/PT2/PT2imprimir.html?tipo=PT2&id=${idPermiso}`;
-      } else if (tipoPermiso === "PT de Entrada a Espacio Confinado") {
-        window.location.href = `/Modules/Fomularios/PT3/PT3imprimir.html?tipo=PT3&id=${idPermiso}`;
-      } else if (tipoPermiso === "PT en Altura") {
-        window.location.href = `/Modules/Fomularios/PT4/PT4imprimir.html?tipo=PT4&id=${idPermiso}`;
-      } else if (tipoPermiso === "PT de Fuego Abierto") {
-        window.location.href = `/Modules/Fomularios/PT5/PT5imprimir.html?tipo=PT5&id=${idPermiso}`;
-      } else if (tipoPermiso === "PT con Energía Eléctrica") {
-        window.location.href = `/Modules/Fomularios/PT6/PT6imprimir.html?tipo=PT6&id=${idPermiso}`;
-      } else if (tipoPermiso === "PT con Fuentes Radioactivas") {
-        window.location.href = `/Modules/Fomularios/PT7/PT7imprimir.html?tipo=PT7&id=${idPermiso}`;
-      } else if (tipoPermiso === "PT para Izaje con Hiab con Grúa") {
-        window.location.href = `/Modules/Fomularios/PT8/PT8imprimir.html?tipo=PT8&id=${idPermiso}`;
-      } else {
-        window.location.href = `/JS/usuario/LogicaImprimir.html?tipo=OTRO&id=${idPermiso}`;
-      }
+        if (tipoPermiso === "PT No Peligroso") {
+          window.location.href = `/Modules/Fomularios/PT1/PT1imprimir.html?tipo=PT1&id=${idPermiso}`;
+        } else if (tipoPermiso === "PT para Apertura Equipo Línea") {
+          window.location.href = `/Modules/Fomularios/PT2/PT2imprimir.html?tipo=PT2&id=${idPermiso}`;
+        } else if (tipoPermiso === "PT de Entrada a Espacio Confinado") {
+          window.location.href = `/Modules/Fomularios/PT3/PT3imprimir.html?tipo=PT3&id=${idPermiso}`;
+        } else if (tipoPermiso === "PT en Altura") {
+          window.location.href = `/Modules/Fomularios/PT4/PT4imprimir.html?tipo=PT4&id=${idPermiso}`;
+        } else if (tipoPermiso === "PT de Fuego Abierto") {
+          window.location.href = `/Modules/Fomularios/PT5/PT5imprimir.html?tipo=PT5&id=${idPermiso}`;
+        } else if (tipoPermiso === "PT con Energía Eléctrica") {
+          window.location.href = `/Modules/Fomularios/PT6/PT6imprimir.html?tipo=PT6&id=${idPermiso}`;
+        } else if (tipoPermiso === "PT con Fuentes Radioactivas") {
+          window.location.href = `/Modules/Fomularios/PT7/PT7imprimir.html?tipo=PT7&id=${idPermiso}`;
+        } else if (tipoPermiso === "PT para Izaje con Hiab con Grúa") {
+          window.location.href = `/Modules/Fomularios/PT8/PT8imprimir.html?tipo=PT8&id=${idPermiso}`;
+        } else {
+          window.location.href = `/JS/usuario/LogicaImprimir.html?tipo=OTRO&id=${idPermiso}`;
+        }
+      });
     });
-  });
 }
 
 // Evento del select
@@ -545,7 +549,9 @@ if (tableBody) {
     }
 
     // Ver/Imprimir
-    const printOrViewBtn = e.target.closest(".action-btn.print, .action-btn.view");
+    const printOrViewBtn = e.target.closest(
+      ".action-btn.print, .action-btn.view"
+    );
     if (printOrViewBtn) {
       const row = printOrViewBtn.closest("tr");
       const tipoPermiso = row ? row.children[1].textContent.trim() : "";

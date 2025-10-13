@@ -10,9 +10,6 @@
     <link rel="stylesheet" href="/CSS/EstiloImprimir.css">
     <link rel="stylesheet" href="/CSS/imprimir/EstiloImprimir-Base.css">
     <link rel="stylesheet" href="/CSS/Imprimir/EstiloImprimir-PT3.css">
-
-
-
 </head>
 <body style="background: #f4f6fb; min-height: 100vh; margin: 0; font-family: 'Roboto', Arial, sans-serif;">
         <div style="display: flex; justify-content: center; align-items: flex-start; min-height: 100vh;">
@@ -31,10 +28,10 @@
          
             </div>
 
-                <div class="section-header">
+                <div class="section-header header-centered">
                     <i class="ri-checkbox-circle-line"></i>
                     <h2>Permiso de Trabajo para Apertura Equipo Línea</h2>
-                    <h3>NP-XXXXXX</h3>
+                    <h3 id="prefijo-label">NP-XXXXXX</h3>
                 </div>
                                  <div class="general-box-header">
                                         <span>Información General</span>
@@ -92,13 +89,10 @@
                         <h3>Equipo</h3>
                     </div>
                     <div class="executive-grid">
-                        <div class="executive-item">
-                            <label>¿Tiene Equipo a Intervenir?</label>
-                            <p id="equipment-intervene-label">-</p>
-                        </div>
+     
                         <div class="executive-item">
                             <label>Equipo a Intervenir</label>
-                            <p id="equipment-label">-</p>
+                            <p id="equipment-intervene-label">-</p>
                         </div>
                         <div class="executive-item">
                             <label>TAG</label>
@@ -111,7 +105,7 @@
 
                 
                     <div class="usuario-box-header">
-                        <span>Formulario Usuario</span>
+                        <span>Formulario Area Solicitante</span>
                     </div>
 
             <div class="executive-section">
@@ -189,7 +183,8 @@
 <div>
     <label>Tiempo de permanencia:</label>
     <span id="tiempo_permanencia_min"></span>
-    <label>Tiempo de recuperación:</label>
+</div>
+<div><label>Tiempo de recuperación:</label>
     <span id="tiempo_recuperacion_min"></span>
 </div>
 <div>
@@ -203,7 +198,7 @@
 
 
                                     <div class="area-box-header">
-                                         <span>Formulario Área</span>
+                                         <span>Formulario Responsable Área</span>
                                      </div>
 
       <div class="executive-section ">
@@ -309,6 +304,15 @@
                             <td><span id="equipo_aislado">-</span></td>
                         </tr>
                         <tr>
+                        <td>¿Aislamiento con válvula?</td>
+                        <td><span id="equipo_aislado_valvula">-</span></td>
+                        </tr>
+                        <tr>
+                        <td>¿Aislamiento con junta ciega?</td>
+                        <td><span id="equipo_aislado_junta_ciega">-</span></td>
+                        </tr>
+
+                        <tr>
                             <td>¿El equipo fue lavado?</td>
                             <td><span id="equipo_lavado">-</span></td>
                         </tr>
@@ -343,7 +347,7 @@
             
 
                         <div class="supervisor-box-header">
-                             <span>Formulario Supervisor</span>
+                             <span>Formulario Seguridad Industrial</span>
                          </div>
 
             

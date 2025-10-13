@@ -544,26 +544,7 @@
                     </div>
                 </div>
                 <!-- Sección 5: Aprobaciones -->
-                <div class="approval-section">
-                    <div class="approval-stamps">
-                        <div class="stamp">
-                            <div class="stamp-title">Responsable del area:</div>
-                            <div class="stamp-placeholder"></div>
-                            <div class="stamp-name" id="stamp-aprobador"></div>
-                        </div>
-                        <div class="stamp">
-                            <div class="stamp-title">Operador del área:</div>
-                            <div class="stamp-placeholder"></div>
-                            <div class="stamp-name" id="stamp-encargado"></div>
-                            <div class="stamp-date"></div>
-                        </div>
-                        <div class="stamp approved">
-                            <div class="stamp-title">Pendiente por aprobar:</div>
-                            <div class="stamp-placeholder"></div>
-                            <div class="stamp-name">Pendiente</div>
-                        </div>
-                    </div>
-                </div>
+                
 
 
 
@@ -597,6 +578,21 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                            <!-- Modal de confirmación -->
+                        <div class="modal" id="confirmation-modal" style="display:none;">
+                            <div class="modal-content">
+                                <div class="modal-icon success">
+                                    <i class="ri-checkbox-circle-line"></i>
+                                </div>
+                                <h3>Permiso autorizado correctamente</h3>
+                                <p>El permiso de trabajo el número: <strong id="generated-permit">-</strong></p>
+                                <div class="modal-actions">
+                                    <button class="btn secondary" id="modal-close-btn">Cerrar</button>
+                                    
+                                </div>
+                            </div>
+                        </div>
 
 
     </div>

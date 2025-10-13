@@ -114,133 +114,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // --- FUNCIÓN ESPECÍFICA PARA RELLENAR DATOS PT3 ---
-  function rellenarDatosPT3(data) {
-    console.log("Rellenando datos específicos de PT3:", data);
-
-    // Datos generales básicos
-    setText("prefijo-label", data.prefijo);
-    setText("descripcion-trabajo-label", data.descripcion_trabajo);
-    setText("maintenance-type-label", data.tipo_mantenimiento);
-    setText("work-order-label", data.ot_numero);
-    setText("tag-label", data.tag);
-    setText("start-time-label", data.hora_inicio);
-    setText("equipment-description-label", data.descripcion_equipo);
-
-    // Condiciones del proceso
-    setText("fluid", data.fluido);
-    setText("pressure", data.presion);
-    setText("temperature", data.temperatura);
-
-    // Medidas/Requisitos específicos de PT3 (Espacio Confinado)
-    setText("avisos_trabajos", data.avisos_trabajos);
-    setText("iluminacion_prueba_explosion", data.iluminacion_prueba_explosion);
-    setText("ventilacion_forzada", data.ventilacion_forzada);
-    setText("evaluacion_medica_aptos", data.evaluacion_medica_aptos);
-    setText("cable_vida_trabajadores", data.cable_vida_trabajadores);
-    setText("vigilancia_exterior", data.vigilancia_exterior);
-    setText("nombre_vigilante", data.nombre_vigilante);
-    setText("personal_rescatista", data.personal_rescatista);
-    setText("nombre_rescatista", data.nombre_rescatista);
-    setText("instalar_barreras", data.instalar_barreras);
-    setText("equipo_especial", data.equipo_especial);
-    setText("tipo_equipo_especial", data.tipo_equipo_especial);
-    setText("observaciones_adicionales", data.observaciones_adicionales);
-    setText("numero_personas_autorizadas", data.numero_personas_autorizadas);
-    setText("tiempo_permanencia_min", data.tiempo_permanencia_min);
-    setText("tiempo_recuperacion_min", data.tiempo_recuperacion_min);
-    setText("clase_espacio_confinado", data.clase_espacio_confinado);
-
-    // Análisis de requisitos para efectuar el trabajo
-    setText("verificar_explosividad", data.verificar_explosividad);
-    setText("verificar_gas_toxico", data.verificar_gas_toxico);
-    setText(
-      "verificar_deficiencia_oxigeno",
-      data.verificar_deficiencia_oxigeno
-    );
-    setText(
-      "verificar_enriquecimiento_oxigeno",
-      data.verificar_enriquecimiento_oxigeno
-    );
-    setText("verificar_polvo_humos_fibras", data.verificar_polvo_humos_fibras);
-    setText("verificar_amoniaco", data.verificar_amoniaco);
-    setText("verificar_material_piel", data.verificar_material_piel);
-    setText("verificar_temperatura", data.verificar_temperatura);
-    setText("verificar_lel", data.verificar_lel);
-    setText(
-      "suspender_trabajos_adyacentes",
-      data.suspender_trabajos_adyacentes
-    );
-    setText("acordonar_area", data.acordonar_area);
-    setText("prueba_gas_toxico_inflamable", data.prueba_gas_toxico_inflamable);
-    setText("porcentaje_lel", data.porcentaje_lel);
-    setText("nh3", data.nh3);
-    setText("porcentaje_oxigeno", data.porcentaje_oxigeno);
-    setText(
-      "equipo_despresionado_fuera_operacion",
-      data.equipo_despresionado_fuera_operacion
-    );
-    setText("equipo_aislado", data.equipo_aislado);
-    setText("equipo_lavado", data.equipo_lavado);
-    setText("equipo_neutralizado", data.equipo_neutralizado);
-    setText("equipo_vaporizado", data.equipo_vaporizado);
-    setText("aislar_purgas_drenaje_venteo", data.aislar_purgas_drenaje_venteo);
-    setText("abrir_registros_necesarios", data.abrir_registros_necesarios);
-    setText("observaciones_requisitos", data.observaciones_requisitos);
-
-    // Requisitos para administrar los riesgos
-    setText("proteccion_piel_cuerpo", data.proteccion_piel_cuerpo);
-    setText(
-      "detalle_proteccion_piel_cuerpo",
-      data.proteccion_piel_detalle || data.detalle_proteccion_piel_cuerpo
-    );
-    setText("proteccion_respiratoria", data.proteccion_respiratoria);
-    setText(
-      "detalle_proteccion_respiratoria",
-      data.proteccion_respiratoria_detalle ||
-        data.detalle_proteccion_respiratoria
-    );
-    setText("proteccion_ocular", data.proteccion_ocular);
-    setText(
-      "detalle_proteccion_ocular",
-      data.proteccion_ocular_detalle || data.detalle_proteccion_ocular
-    );
-    setText("arnes_seguridad", data.arnes_seguridad);
-    setText("cable_vida", data.cable_vida);
-    setText(
-      "ventilacion_forzada_opcion",
-      data.ventilacion_forzada_opcion || data.ventilacion_forzada
-    );
-    setText(
-      "detalle_ventilacion_forzada",
-      data.ventilacion_forzada_detalle || data.detalle_ventilacion_forzada
-    );
-    setText("iluminacion_explosion", data.iluminacion_explosion);
-    setText(
-      "vigilancia_exterior_opcion",
-      data.vigilancia_exterior_opcion || data.vigilancia_exterior
-    );
-
-    // Prueba de gas - PT3 específico (usando los nuevos IDs del HTML)
-    setText("param_co2", data.param_co2 || data.co2_aprobado);
-    setText("valor_co2", data.valor_co2 || data.co2_valor);
-    setText("param_amoniaco", data.param_amoniaco || data.amniaco_aprobado);
-    setText("valor_amoniaco", data.valor_amoniaco || data.amniaco_valor);
-    setText("param_oxigeno", data.param_oxigeno || data.oxigeno_aprobado);
-    setText("valor_oxigeno", data.valor_oxigeno || data.oxigeno_valor);
-    setText(
-      "param_explosividad_lel",
-      data.param_explosividad_lel || data.lel_aprobado
-    );
-    setText(
-      "valor_explosividad_lel",
-      data.valor_explosividad_lel || data.lel_valor
-    );
-    setText("param_otro", data.param_otro || data.otro_aprobado);
-    setText("valor_otro", data.valor_otro || data.otro_valor);
-    setText("observaciones_gas", data.observaciones || data.observaciones_gas);
-  }
-
   // Leer el id del permiso de la URL
   const params = new URLSearchParams(window.location.search);
   const idPermiso = params.get("id");
@@ -249,22 +122,6 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("Cargando permiso PT3 ID:", idPermiso);
 
     // 1. Primero obtener datos específicos de PT3
-    fetch(`http://localhost:3000/api/pt-confinado/${idPermiso}`)
-      .then((resp) => resp.json())
-      .then((data) => {
-        console.log("Datos específicos de PT3 recibidos:", data);
-
-        if (data && data.data) {
-          rellenarDatosPT3(data.data);
-        } else if (data && !data.data) {
-          rellenarDatosPT3(data);
-        } else {
-          console.warn("No se encontraron datos específicos de PT3");
-        }
-      })
-      .catch((err) => {
-        console.error("Error al obtener datos específicos de PT3:", err);
-      });
 
     // 2. Después obtener datos generales del permiso
     fetch(
@@ -292,18 +149,198 @@ document.addEventListener("DOMContentLoaded", function () {
               "descripcion-trabajo-label",
               data.general.descripcion_trabajo
             );
-            setText("maintenance-type-label", data.general.tipo_mantenimiento);
+
             setText("work-order-label", data.general.ot_numero);
             setText("tag-label", data.general.tag);
             setText("start-time-label", data.general.hora_inicio);
+
+            setText("fecha-label", data.general.fecha);
+            setText("activity-type-label", data.general.tipo_mantenimiento);
+            setText("plant-label", data.general.area);
+            setText("empresa-label", data.general.empresa);
+            setText("nombre-solicitante-label", data.general.solicitante);
+            setText("sucursal-label", data.general.sucursal);
+            setText("contrato-label", data.general.contrato);
             setText(
-              "equipment-description-label",
-              data.general.descripcion_equipo
+              "equipment-intervene-label",
+              data.general.equipo_intervenir
             );
+
             setText("fluid", data.general.fluido);
             setText("pressure", data.general.presion);
             setText("temperature", data.general.temperatura);
           }
+
+          setText("avisos_trabajos", data.general.avisos_trabajos);
+          setText(
+            "iluminacion_prueba_explosion",
+            data.general.iluminacion_prueba_explosion
+          );
+          setText("ventilacion_forzada", data.general.ventilacion_forzada);
+          setText(
+            "evaluacion_medica_aptos",
+            data.general.evaluacion_medica_aptos
+          );
+          setText(
+            "cable_vida_trabajadores",
+            data.general.cable_vida_trabajadores
+          );
+          setText("vigilancia_exterior", data.general.vigilancia_exterior);
+          setText("nombre_vigilante", data.general.nombre_vigilante);
+          setText("personal_rescatista", data.general.personal_rescatista);
+          setText("nombre_rescatista", data.general.nombre_rescatista);
+          setText("instalar_barreras", data.general.instalar_barreras);
+
+          // Nuevos campos de aislamiento
+          setText(
+            "equipo_aislado_valvula",
+            data.general.equipo_aislado_valvula ? "SI" : "NO"
+          );
+          setText(
+            "equipo_aislado_junta_ciega",
+            data.general.equipo_aislado_junta_ciega ? "SI" : "NO"
+          );
+          setText("equipo_especial", data.general.equipo_especial);
+          setText("tipo_equipo_especial", data.general.tipo_equipo_especial);
+          setText(
+            "observaciones_adicionales",
+            data.general.observaciones_adicionales
+          );
+
+          setText(
+            "numero_personas_autorizadas",
+            data.general.numero_personas_autorizadas
+          );
+          setText(
+            "tiempo_permanencia_min",
+            data.general.tiempo_permanencia_min
+          );
+          setText(
+            "clase_espacio_confinado",
+            data.general.clase_espacio_confinado
+          );
+          setText(
+            "tiempo_recuperacion_min",
+            data.general.tiempo_recuperacion_min
+          );
+
+          // Rellenar los datos del responsable del area
+
+          setText(
+            "verificar_explosividad",
+            data.general.verificar_explosividad
+          );
+          setText("verificar_gas_toxico", data.general.verificar_gas_toxico);
+          setText(
+            "verificar_deficiencia_oxigeno",
+            data.general.verificar_deficiencia_oxigeno
+          );
+          setText(
+            "verificar_enriquecimiento_oxigeno",
+            data.general.verificar_enriquecimiento_oxigeno
+          );
+          setText(
+            "verificar_polvo_humos_fibras",
+            data.general.verificar_polvo_humos_fibras
+          );
+          setText("verificar_amoniaco", data.general.verificar_amoniaco);
+          setText(
+            "verificar_material_piel",
+            data.general.verificar_material_piel
+          );
+          setText("verificar_temperatura", data.general.verificar_temperatura);
+          setText("verificar_lel", data.general.verificar_lel);
+          setText(
+            "suspender_trabajos_adyacentes",
+            data.general.suspender_trabajos_adyacentes
+          );
+          setText("acordonar_area", data.general.acordonar_area);
+          setText(
+            "prueba_gas_toxico_inflamable",
+            data.general.prueba_gas_toxico_inflamable
+          );
+          setText("porcentaje_lel", data.general.porcentaje_lel);
+          setText("nh3", data.general.nh3);
+          setText("porcentaje_oxigeno", data.general.porcentaje_oxigeno);
+          setText(
+            "equipo_despresionado_fuera_operacion",
+            data.general.equipo_despresionado_fuera_operacion
+          );
+          setText("equipo_aislado", data.general.equipo_aislado);
+          setText("equipo_lavado", data.general.equipo_lavado);
+          setText("equipo_neutralizado", data.general.equipo_neutralizado);
+          setText("equipo_vaporizado", data.general.equipo_vaporizado);
+          setText(
+            "aislar_purgas_drenaje_venteo",
+            data.general.aislar_purgas_drenaje_venteo
+          );
+          setText(
+            "abrir_registros_necesarios",
+            data.general.abrir_registros_necesarios
+          );
+          setText(
+            "observaciones_requisitos",
+            data.general.observaciones_requisitos
+          );
+
+          // Rellenar supervisores
+          // Rellenar supervisores
+          // Requisitos para administrar los riesgos
+          setText(
+            "proteccion_piel_cuerpo",
+            data.general.proteccion_piel_cuerpo
+          );
+          setText(
+            "detalle_proteccion_piel_cuerpo",
+            data.general.proteccion_piel_detalle
+          );
+          setText(
+            "proteccion_respiratoria",
+            data.general.proteccion_respiratoria
+          );
+          setText(
+            "detalle_proteccion_respiratoria",
+            data.general.proteccion_respiratoria_detalle
+          );
+          setText("proteccion_ocular", data.general.proteccion_ocular);
+          setText(
+            "detalle_proteccion_ocular",
+            data.general.proteccion_ocular_detalle
+          );
+          setText("arnes_seguridad", data.general.arnes_seguridad);
+          setText("cable_vida", data.general.cable_vida);
+          setText(
+            "ventilacion_forzada_opcion",
+            data.general.ventilacion_forzada_opcion
+          );
+          setText(
+            "detalle_ventilacion_forzada",
+            data.general.ventilacion_forzada_detalle
+          );
+          setText("iluminacion_explosion", data.general.iluminacion_explosion);
+          setText(
+            "vigilancia_exterior_opcion",
+            data.general.vigilancia_exterior_opcion
+          );
+
+          // Prueba de gas
+          setText("param_co2", data.general.param_co2);
+          setText("valor_co2", data.general.valor_co2);
+          setText("param_amoniaco", data.general.param_amoniaco);
+          setText("valor_amoniaco", data.general.valor_amoniaco);
+          setText("param_oxigeno", data.general.param_oxigeno);
+          setText("valor_oxigeno", data.general.valor_oxigeno);
+          setText(
+            "param_explosividad_lel",
+            data.general.param_explosividad_lel
+          );
+          setText(
+            "valor_explosividad_lel",
+            data.general.valor_explosividad_lel
+          );
+          setText("param_otro", data.general.param_otro);
+          setText("valor_otro", data.general.valor_otro);
+          setText("observaciones_gas", data.general.observaciones);
         }
 
         // Rellenar AST y Participantes

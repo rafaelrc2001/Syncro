@@ -90,10 +90,7 @@
                         <h3>Equipo</h3>
                     </div>
                     <div class="executive-grid">
-                        <div class="executive-item">
-                            <label>¿Tiene Equipo a Intervenir?</label>
-                            <p id="equipment-intervene-label">-</p>
-                        </div>
+               
                         <div class="executive-item">
                             <label>Equipo a Intervenir</label>
                             <p id="equipment-label">-</p>
@@ -109,7 +106,7 @@
 
                 
                     <div class="usuario-box-header">
-                        <span>Formulario Usuario</span>
+                        <span>Formulario Area Solicitante</span>
                     </div>
 
             <div class="executive-section">
@@ -201,7 +198,7 @@
 
 
                                     <div class="area-box-header">
-                                         <span>Formulario Área</span>
+                                         <span>Formulario Responsable Área</span>
                                      </div>
 
       <div class="executive-section ">
@@ -225,7 +222,7 @@
                     </div>
                 </div>
 
-            <div class="executive-section ">
+           <div class="executive-section ">
                 <div class="section-header section-header-cielo">
                     <i class="ri-tools-line"></i>
                     <h3>ANÁLISIS DE REQUISITOS PARA EFECTUAR EL TRABAJO</h3>
@@ -307,6 +304,15 @@
                             <td><span id="equipo_aislado">-</span></td>
                         </tr>
                         <tr>
+                        <td>¿Aislamiento con válvula?</td>
+                        <td><span id="equipo_aislado_valvula">-</span></td>
+                        </tr>
+                        <tr>
+                        <td>¿Aislamiento con junta ciega?</td>
+                        <td><span id="equipo_aislado_junta_ciega">-</span></td>
+                        </tr>
+
+                        <tr>
                             <td>¿El equipo fue lavado?</td>
                             <td><span id="equipo_lavado">-</span></td>
                         </tr>
@@ -337,12 +343,11 @@
 
 
 
-
             
 
               
                         <div class="supervisor-box-header">
-                             <span>Formulario Supervisor</span>
+                             <span>Formulario Seguridad Industrial</span>
                          </div>
 
     <div  class="executive-section">
@@ -656,6 +661,23 @@
             </div>
         </div>
     </div>
+
+
+        <!-- Modal de confirmación -->
+                        <div class="modal" id="confirmation-modal" style="display:none;">
+                            <div class="modal-content">
+                                <div class="modal-icon success">
+                                    <i class="ri-checkbox-circle-line"></i>
+                                </div>
+                                <h3>Permiso autorizado correctamente</h3>
+                                <p>El permiso de trabajo el número: <strong id="generated-permit">-</strong></p>
+                                <div class="modal-actions">
+                                    <button class="btn secondary" id="modal-close-btn">Cerrar</button>
+                                    
+                                </div>
+                            </div>
+                        </div>
+
 
     <!-- Script debe ir antes del cierre de body -->
     <script src="/Modules/Fomularios/PT3/PT3seccionsupervisor.js"></script>

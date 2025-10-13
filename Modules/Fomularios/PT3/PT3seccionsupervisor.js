@@ -1,7 +1,9 @@
+// Definir idPermiso globalmente al inicio
+const params = new URLSearchParams(window.location.search);
+const idPermiso = params.get("id");
+
 // Mostrar nombres de responsable y operador del área en la sección de aprobaciones
 document.addEventListener("DOMContentLoaded", function () {
-  const params = new URLSearchParams(window.location.search);
-  const idPermiso = params.get("id");
   if (!idPermiso) return;
   fetch(`http://localhost:3000/api/autorizaciones/personas/${idPermiso}`)
     .then((res) => res.json())
@@ -30,208 +32,17 @@ function actualizarAprobador2(value) {
 // Utilidad para asignar texto
 function setText(id, value) {
   const el = document.getElementById(id);
-  console.log(`setText: id="${id}", value="${value}", element found:`, !!el);
   if (el) {
-    el.textContent = value || "-";
-    console.log(`setText: Asignado "${value || "-"}" a elemento "${id}"`);
+    el.textContent =
+      value !== null && value !== undefined && value !== "" ? value : "-";
   } else {
-    console.warn(`setText: No se encontró elemento con ID "${id}"`);
+    console.warn(`⚠️ No se encontró el elemento con id=\"${id}\"`);
   }
-}
-
-// Función para rellenar los campos de "MEDIDAS / REQUISITOS PARA ADMINISTRAR LOS RIESGOS"
-function rellenarMedidasRequisitos(data) {
-  const setText = (id, value) => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = value || "-";
-  };
-
-  setText("avisos_trabajos", data.avisos_trabajos);
-  setText("iluminacion_prueba_explosion", data.iluminacion_prueba_explosion);
-  setText("ventilacion_forzada", data.ventilacion_forzada);
-  setText("evaluacion_medica_aptos", data.evaluacion_medica_aptos);
-  setText("cable_vida_trabajadores", data.cable_vida_trabajadores);
-  setText("vigilancia_exterior", data.vigilancia_exterior);
-  setText("nombre_vigilante", data.nombre_vigilante);
-  setText("personal_rescatista", data.personal_rescatista);
-  setText("nombre_rescatista", data.nombre_rescatista);
-  setText("instalar_barreras", data.instalar_barreras);
-  setText("equipo_especial", data.equipo_especial);
-  setText("tipo_equipo_especial", data.tipo_equipo_especial);
-  setText("observaciones_adicionales", data.observaciones_adicionales);
-  setText("numero_personas_autorizadas", data.numero_personas_autorizadas);
-  setText("tiempo_permanencia_min", data.tiempo_permanencia_min);
-  setText("tiempo_recuperacion_min", data.tiempo_recuperacion_min);
-  setText("clase_espacio_confinado", data.clase_espacio_confinado);
-}
-
-// Función para rellenar requisitos de trabajo con radios, checkboxes e inputs
-function rellenarRequisitosTrabajo(permiso) {
-  // Radios
-  [
-    "verificar_explosividad",
-    "verificar_gas_toxico",
-    "verificar_deficiencia_oxigeno",
-    "verificar_enriquecimiento_oxigeno",
-    "verificar_polvo_humos_fibras",
-    "verificar_amoniaco",
-    "verificar_material_piel",
-    "verificar_temperatura",
-    "verificar_lel",
-    "suspender_trabajos_adyacentes",
-    "acordonar_area",
-    "prueba_gas_toxico_inflamable",
-    "equipo_despresionado_fuera_operacion",
-    "equipo_aislado",
-    "equipo_lavado",
-    "equipo_neutralizado",
-    "equipo_vaporizado",
-    "aislar_purgas_drenaje_venteo",
-    "abrir_registros_necesarios",
-  ].forEach((name) => {
-    if (permiso[name]) {
-      // Primero llenar los spans de solo lectura
-      const span = document.getElementById(name);
-      if (span) span.textContent = permiso[name] || "-";
-
-      // Luego marcar los radios si existen
-      const radio = document.querySelector(
-        `input[name='${name}'][value='${permiso[name]}']`
-      );
-      if (radio) {
-        radio.checked = true;
-        console.log(`Radio ${name} marcado con valor: ${permiso[name]}`);
-      }
-    }
-  });
-
-  // Checkboxes
-  if (typeof permiso.equipo_aislado_valvula !== "undefined") {
-    const cb = document.querySelector("input[name='equipo_aislado_valvula']");
-    if (cb) cb.checked = !!permiso.equipo_aislado_valvula;
-  }
-  if (typeof permiso.equipo_aislado_junta_ciega !== "undefined") {
-    const cb = document.querySelector(
-      "input[name='equipo_aislado_junta_ciega']"
-    );
-    if (cb) cb.checked = !!permiso.equipo_aislado_junta_ciega;
-  }
-
-  // Inputs tipo texto y spans de solo lectura
-  if (permiso.porcentaje_lel !== null) {
-    setText("porcentaje_lel", permiso.porcentaje_lel);
-    const input = document.querySelector("input[name='porcentaje_lel']");
-    if (input) input.value = permiso.porcentaje_lel;
-  }
-  if (permiso.nh3 !== null) {
-    setText("nh3", permiso.nh3);
-    const input = document.querySelector("input[name='nh3']");
-    if (input) input.value = permiso.nh3;
-  }
-  if (permiso.porcentaje_oxigeno !== null) {
-    setText("porcentaje_oxigeno", permiso.porcentaje_oxigeno);
-    const input = document.querySelector("input[name='porcentaje_oxigeno']");
-    if (input) input.value = permiso.porcentaje_oxigeno;
-  }
-  if (permiso.observaciones_requisitos !== null) {
-    setText("observaciones_requisitos", permiso.observaciones_requisitos);
-    const textarea = document.querySelector(
-      "textarea[name='observaciones_requisitos']"
-    );
-    if (textarea) textarea.value = permiso.observaciones_requisitos;
-  }
-  // Condiciones del proceso
-  if (permiso.fluido !== null) {
-    setText("fluid", permiso.fluido);
-    const input = document.getElementById("fluid");
-    if (input) input.value = permiso.fluido;
-  }
-  if (permiso.presion !== null) {
-    setText("pressure", permiso.presion);
-    const input = document.getElementById("pressure");
-    if (input) input.value = permiso.presion;
-  }
-  if (permiso.temperatura !== null) {
-    setText("temperature", permiso.temperatura);
-    const input = document.getElementById("temperature");
-    if (input) input.value = permiso.temperatura;
-  }
-}
-
-// FUNCIONES PARA RELLENAR AST Y PARTICIPANTES
-function mostrarAST(ast) {
-  const eppList = document.getElementById("modal-epp-list");
-  if (eppList) {
-    eppList.innerHTML = "";
-    if (ast && ast.epp_requerido) {
-      ast.epp_requerido.split(",").forEach((item) => {
-        const li = document.createElement("li");
-        li.textContent = item.trim();
-        eppList.appendChild(li);
-      });
-    }
-  }
-  const maqList = document.getElementById("modal-maquinaria-list");
-  if (maqList) {
-    maqList.innerHTML = "";
-    if (ast && ast.maquinaria_herramientas) {
-      ast.maquinaria_herramientas.split(",").forEach((item) => {
-        const li = document.createElement("li");
-        li.textContent = item.trim();
-        maqList.appendChild(li);
-      });
-    }
-  }
-  const matList = document.getElementById("modal-materiales-list");
-  if (matList) {
-    matList.innerHTML = "";
-    if (ast && ast.material_accesorios) {
-      ast.material_accesorios.split(",").forEach((item) => {
-        const li = document.createElement("li");
-        li.textContent = item.trim();
-        matList.appendChild(li);
-      });
-    }
-  }
-}
-
-function mostrarActividadesAST(actividades) {
-  const tbody = document.getElementById("modal-ast-actividades-body");
-  if (tbody) {
-    tbody.innerHTML = "";
-    if (Array.isArray(actividades)) {
-      actividades.forEach((act) => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${act.no || ""}</td>
-          <td>${act.secuencia_actividad || ""}</td>
-          <td>${act.personal_ejecutor || ""}</td>
-          <td>${act.peligros_potenciales || ""}</td>
-          <td>${act.descripcion || ""}</td>
-          <td>${act.responsable || ""}</td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-  }
-}
-
-function mostrarParticipantesAST(participantes) {
-  const tbody = document.getElementById("modal-ast-participantes-body");
-  if (tbody) {
-    tbody.innerHTML = "";
-    if (Array.isArray(participantes)) {
-      participantes.forEach((p) => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${p.nombre || ""}</td>
-          <td><span class="role-badge">${p.funcion || ""}</span></td>
-          <td>${p.credencial || ""}</td>
-          <td>${p.cargo || ""}</td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
+  if (el) {
+    el.textContent =
+      value !== null && value !== undefined && value !== "" ? value : "-";
+  } else {
+    console.warn(`⚠️ No se encontró el elemento con id="${id}"`);
   }
 }
 
@@ -464,7 +275,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnSalir = document.getElementById("btn-salir-nuevo");
   if (btnSalir) {
     btnSalir.addEventListener("click", function () {
-    window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
+      window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
     });
   }
   // --- Lógica para el botón "No Autorizar" ---
@@ -604,19 +415,138 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Rellenar datos generales si existen
         if (data && data.general) {
-          console.log("📊 Rellenando datos generales:", data.general);
           setText(
             "descripcion-trabajo-label",
             data.general.descripcion_trabajo
           );
-          setText("maintenance-type-label", data.general.tipo_mantenimiento);
+
           setText("work-order-label", data.general.ot_numero);
           setText("tag-label", data.general.tag);
           setText("start-time-label", data.general.hora_inicio);
+          setText("fecha-label", data.general.fecha);
+          setText("activity-type-label", data.general.tipo_mantenimiento);
+          setText("plant-label", data.general.area);
           setText(
-            "equipment-description-label",
-            data.general.descripcion_equipo
+            "descripcion-trabajo-label",
+            data.general.descripcion_trabajo
           );
+          setText("nombre-solicitante-label", data.general.solicitante);
+          setText("sucursal-label", data.general.sucursal);
+          setText("contrato-label", data.general.contrato);
+
+          setText("equipment-label", data.general.equipo_intervenir);
+
+          setText("empresa-label", data.general.empresa);
+          setText("avisos_trabajos", data.general.avisos_trabajos);
+          setText(
+            "iluminacion_prueba_explosion",
+            data.general.iluminacion_prueba_explosion
+          );
+          setText("ventilacion_forzada", data.general.ventilacion_forzada);
+          setText(
+            "evaluacion_medica_aptos",
+            data.general.evaluacion_medica_aptos
+          );
+          setText(
+            "cable_vida_trabajadores",
+            data.general.cable_vida_trabajadores
+          );
+          setText("vigilancia_exterior", data.general.vigilancia_exterior);
+          setText("nombre_vigilante", data.general.nombre_vigilante);
+          setText("personal_rescatista", data.general.personal_rescatista);
+          setText("nombre_rescatista", data.general.nombre_rescatista);
+          setText("instalar_barreras", data.general.instalar_barreras);
+          setText("equipo_especial", data.general.equipo_especial);
+          setText("tipo_equipo_especial", data.general.tipo_equipo_especial);
+          setText(
+            "observaciones_adicionales",
+            data.general.observaciones_adicionales
+          );
+          setText(
+            "numero_personas_autorizadas",
+            data.general.numero_personas_autorizadas
+          );
+          setText(
+            "tiempo_permanencia_min",
+            data.general.tiempo_permanencia_min
+          );
+          setText(
+            "tiempo_recuperacion_min",
+            data.general.tiempo_recuperacion_min
+          );
+          setText(
+            "clase_espacio_confinado",
+            data.general.clase_espacio_confinado
+          );
+
+          setText(
+            "verificar_explosividad",
+            data.general.verificar_explosividad
+          );
+          setText("verificar_gas_toxico", data.general.verificar_gas_toxico);
+          setText(
+            "verificar_deficiencia_oxigeno",
+            data.general.verificar_deficiencia_oxigeno
+          );
+          setText(
+            "verificar_enriquecimiento_oxigeno",
+            data.general.verificar_enriquecimiento_oxigeno
+          );
+          setText(
+            "verificar_polvo_humos_fibras",
+            data.general.verificar_polvo_humos_fibras
+          );
+          setText("verificar_amoniaco", data.general.verificar_amoniaco);
+          setText(
+            "verificar_material_piel",
+            data.general.verificar_material_piel
+          );
+          setText("verificar_temperatura", data.general.verificar_temperatura);
+          setText("verificar_lel", data.general.verificar_lel);
+          setText(
+            "suspender_trabajos_adyacentes",
+            data.general.suspender_trabajos_adyacentes
+          );
+          setText("acordonar_area", data.general.acordonar_area);
+          setText(
+            "prueba_gas_toxico_inflamable",
+            data.general.prueba_gas_toxico_inflamable
+          );
+          setText("porcentaje_lel", data.general.porcentaje_lel);
+          setText("nh3", data.general.nh3);
+          setText("porcentaje_oxigeno", data.general.porcentaje_oxigeno);
+          setText(
+            "equipo_despresionado_fuera_operacion",
+            data.general.equipo_despresionado_fuera_operacion
+          );
+          setText("equipo_aislado", data.general.equipo_aislado);
+          setText("equipo_lavado", data.general.equipo_lavado);
+          setText("equipo_neutralizado", data.general.equipo_neutralizado);
+          setText("equipo_vaporizado", data.general.equipo_vaporizado);
+          setText(
+            "aislar_purgas_drenaje_venteo",
+            data.general.aislar_purgas_drenaje_venteo
+          );
+          setText(
+            "abrir_registros_necesarios",
+            data.general.abrir_registros_necesarios
+          );
+          setText(
+            "observaciones_requisitos",
+            data.general.observaciones_requisitos
+          );
+
+          setText(
+            "equipo_aislado_valvula",
+            data.general.equipo_aislado_valvula ? "SI" : "NO"
+          );
+          setText(
+            "equipo_aislado_junta_ciega",
+            data.general.equipo_aislado_junta_ciega ? "SI" : "NO"
+          );
+          setText("fluid", data.general.fluido);
+          setText("pressure", data.general.presion);
+          setText("temperature", data.general.temperatura);
         } else {
           console.warn("⚠️ No se encontraron datos generales en la respuesta");
         }
@@ -660,7 +590,6 @@ document.addEventListener("DOMContentLoaded", function () {
           console.log("Datos del permiso PT3:", permiso);
 
           // Rellenar todos los campos de requisitos de trabajo
-          rellenarRequisitosTrabajo(permiso);
 
           // Rellenar todos los campos específicos de medidas/requisitos
           const campos = [
@@ -696,3 +625,81 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   rellenarSupervisoresYCategorias();
 });
+
+// --- FUNCIONES PARA RELLENAR AST Y PARTICIPANTES ---
+function mostrarAST(ast) {
+  const eppList = document.getElementById("modal-epp-list");
+  if (eppList) {
+    eppList.innerHTML = "";
+    if (ast && ast.epp_requerido) {
+      ast.epp_requerido.split(",").forEach((item) => {
+        const li = document.createElement("li");
+        li.textContent = item.trim();
+        eppList.appendChild(li);
+      });
+    }
+  }
+  const maqList = document.getElementById("modal-maquinaria-list");
+  if (maqList) {
+    maqList.innerHTML = "";
+    if (ast && ast.maquinaria_herramientas) {
+      ast.maquinaria_herramientas.split(",").forEach((item) => {
+        const li = document.createElement("li");
+        li.textContent = item.trim();
+        maqList.appendChild(li);
+      });
+    }
+  }
+  const matList = document.getElementById("modal-materiales-list");
+  if (matList) {
+    matList.innerHTML = "";
+    if (ast && ast.material_accesorios) {
+      ast.material_accesorios.split(",").forEach((item) => {
+        const li = document.createElement("li");
+        li.textContent = item.trim();
+        matList.appendChild(li);
+      });
+    }
+  }
+}
+
+function mostrarActividadesAST(actividades) {
+  const tbody = document.getElementById("modal-ast-actividades-body");
+  if (tbody) {
+    tbody.innerHTML = "";
+    if (Array.isArray(actividades)) {
+      actividades.forEach((act) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+                <td>${act.no || ""}</td>
+                <td>${act.secuencia_actividad || ""}</td>
+                <td>${act.personal_ejecutor || ""}</td>
+                <td>${act.peligros_potenciales || ""}</td>
+                <td>${act.acciones_preventivas || act.descripcion || ""}</td>
+                <td>${act.responsable || ""}</td>
+            `;
+        tbody.appendChild(tr);
+      });
+    }
+  }
+}
+
+function mostrarParticipantesAST(participantes) {
+  const tbody = document.getElementById("modal-ast-participantes-body");
+  if (tbody) {
+    tbody.innerHTML = "";
+    if (Array.isArray(participantes)) {
+      participantes.forEach((p) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+                <td>${p.nombre || ""}</td>
+                <td><span class="role-badge">${p.funcion || ""}</span></td>
+                <td>${p.credencial || ""}</td>
+                <td>${p.cargo || ""}</td>
+                 <td>    </td>
+            `;
+        tbody.appendChild(tr);
+      });
+    }
+  }
+}

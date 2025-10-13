@@ -260,8 +260,14 @@ document.addEventListener("DOMContentLoaded", function () {
           console.error("Error al actualizar estatus activo:", err);
         }
       }
-      alert("Permiso autorizado correctamente");
-      window.location.href = "/Modules/SupSeguridad/supseguridad.html";
+      const confirmationModal = document.getElementById("confirmation-modal");
+      if (confirmationModal) {
+        confirmationModal.style.display = "flex";
+      }
+      const permitNumber = document.getElementById("generated-permit");
+      if (permitNumber) {
+        permitNumber.textContent = idPermiso || "-";
+      }
     });
   }
 
@@ -703,3 +709,9 @@ function mostrarParticipantesAST(participantes) {
     }
   }
 }
+
+document.getElementById("modal-close-btn").onclick = function () {
+  const confirmationModal = document.getElementById("confirmation-modal");
+  if (confirmationModal) confirmationModal.style.display = "none";
+  window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
+};

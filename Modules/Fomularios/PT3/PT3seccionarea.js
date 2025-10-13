@@ -154,7 +154,16 @@ if (btnGuardarCampos) {
           encargado_area: operador_area,
         }),
       });
-      window.location.href = "/Modules/Usuario/AutorizarPT.html";
+      // Mostrar modal de confirmación y número de permiso
+      const confirmationModal = document.getElementById("confirmation-modal");
+      if (confirmationModal) {
+        confirmationModal.style.display = "flex";
+      }
+      const permitNumber = document.getElementById("generated-permit");
+      if (permitNumber) {
+        permitNumber.textContent = idPermiso || "-";
+      }
+      // La redirección se hace al cerrar el modal (ver evento modal-close-btn)
     } catch (err) {
       alert(
         "Error al autorizar el permiso. Revisa la consola para más detalles."
@@ -838,3 +847,9 @@ function rellenarDatosGenerales(data) {
   setText("contrato-label", data.contrato || "-");
   setText("work-order-label", data.ot_numero || "-");
 }
+
+document.getElementById("modal-close-btn").onclick = function () {
+  const confirmationModal = document.getElementById("confirmation-modal");
+  if (confirmationModal) confirmationModal.style.display = "none";
+  window.location.href = "/Modules/usuario/AutorizarPT.html";
+};

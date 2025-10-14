@@ -989,3 +989,33 @@ td {
         padding: 0 15px 15px;
     }
 }
+
+
+.status-activo {
+    background-color: #E8F5E9;
+    color: #2E7D32;
+}
+.status-terminado {
+    background-color: #E3F2FD;
+    color: #1565C0;
+}
+.status-cancelado {
+    background-color: #FFEBEE;
+    color: #C62828;
+}
+.status-noautorizado {
+    background-color: #cc1b29;
+    color: #ffffff;
+}
+.status-esperaseguridad {
+    background-color: #e7d16c;
+    color: #455A64;
+}
+.status-esperaarea {
+    background-color: #FFF3E0;
+    color: #EF6C00;
+}
+.status-default {
+    background-color: #bdbdbd;
+    color: #fff;
+}

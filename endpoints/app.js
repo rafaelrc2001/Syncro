@@ -24,6 +24,10 @@ const formularioRadiacionRouter = require("./formulariospt3-10/formulario_radiac
 const formularioAlturaRouter = require("./formulariospt3-10/formulario_altura");
 const pt1ImprimirRouter = require("./impresiones/pt1_imprimir");
 const pt2PDFRouter = require("./impresiones/pt2_pdf_routes"); // Nuevo router para PDF PT2
+const graficasAreasRouter = require("./graficas/endpoint_graficas_areas");
+const permisosTipoRouter = require("./graficas/endpoint_permisos");
+const graficaEstatusRouter = require("./graficas/endpoint_grafica_estatus");
+const tablaPermisosRouter = require("./graficas/endpoint_tabla");
 
 const loginconsultaRouter = require("./loginconsulta");
 
@@ -68,6 +72,10 @@ app.use("/api", formularioRadiacionRouter); // <--- Y ESTA LÍNEA
 app.use("/api", formularioAlturaRouter); // Monta las rutas de formulario_altura.js bajo el prefijo /api
 app.use("/api", pt1ImprimirRouter); // Monta las rutas de impresión PT1 bajo el prefijo /api
 app.use("/api/pt2", pt2PDFRouter); // Monta las rutas de PDF PT2 bajo el prefijo /api/pt2
+app.use("/api", graficasAreasRouter); // Monta las rutas de graficas/endpoint_graficas_areas.js bajo el prefijo /api
+app.use("/api", permisosTipoRouter); // Monta las rutas de graficas/endpoint_permisos.js bajo el prefijo /api
+app.use("/api", graficaEstatusRouter); // Monta las rutas de graficas/endpoint_grafica_estatus.js bajo el prefijo /api
+app.use("/api", tablaPermisosRouter); // Monta las rutas de graficas/endpoint_tabla.js bajo el prefijo /api
 
 // ================= RUTAS DE TABLAS BASE =================
 const tablasBase = require("./tablasbase");

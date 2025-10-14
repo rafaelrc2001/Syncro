@@ -97,7 +97,7 @@
             </div>
             <div class="card-content">
               <h3>Total de Permisos</h3>
-              <p class="count">247</p>
+              <p class="count">0</p>
             </div>
           </div>
 
@@ -107,7 +107,7 @@
             </div>
             <div class="card-content">
               <h3>Por Autorizar</h3>
-              <p class="count">32</p>
+              <p class="count">0</p>
             </div>
           </div>
 
@@ -117,7 +117,7 @@
             </div>
             <div class="card-content">
               <h3>Activos</h3>
-              <p class="count">170</p>
+              <p class="count">0</p>
             </div>
           </div>
 
@@ -127,7 +127,7 @@
             </div>
             <div class="card-content">
               <h3>Terminados</h3>
-              <p class="count">198</p>
+              <p class="count">0</p>
             </div>
           </div>
 
@@ -137,7 +137,7 @@
             </div>
             <div class="card-content">
               <h3>No Autorizados</h3>
-              <p class="count">15</p>
+              <p class="count">0</p>
             </div>
           </div>
 
@@ -181,49 +181,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>PM-2023-00145</td>
-                    <td>Trabajo en Altura</td>
-                    <td>Limpieza</td>
-                    <td>Juan Pérez</td>
-                    <td><span class="status-badge active">Activo</span></td>
-                  </tr>
-                  <tr>
-                    <td>PM-2023-00144</td>
-                    <td>Trabajo Eléctrico</td>
-                    <td>Actividad eléctrica</td>
-                    <td>María García</td>
-                    <td><span class="status-badge pending">Pendiente</span></td>
-                  </tr>
-                  <tr>
-                    <td>PM-2023-00143</td>
-                    <td>Espacios Confinados</td>
-                    <td>Actividad de obras</td>
-                    <td>María García</td>
-                    <td>
-                      <span class="status-badge completed">Terminado</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>PM-2023-00142</td>
-                    <td>Trabajo en Caliente</td>
-                    <td>Construcción</td>
-                    <td>Ana Martínez</td>
-                    <td>
-                      <span class="status-badge wait-area">Espera área</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>PM-2023-00141</td>
-                    <td>Trabajo en Frío</td>
-                    <td>Mantenimiento</td>
-                    <td>Carlos López</td>
-                    <td>
-                      <span class="status-badge wait-security"
-                        >Espera seguridad</span
-                      >
-                    </td>
-                  </tr>
+                  <!-- Las filas se llenarán dinámicamente por JS -->
                 </tbody>
               </table>
             </div>
@@ -271,6 +229,9 @@
     <script src="/JS/usuario/js-dash/grafica-areas.js"></script>
     <script src="/JS/usuario/js-dash/grafica-tipos.js"></script>
     <script src="/JS/usuario/js-dash/grafica-estatus.js"></script>
+    <script src="/JS/usuario/js-dash/tabla-dash.js"></script>
+    <script type="module" src="/JS/usuario/tabla-crearpt.js"></script>
+
     <script>
       // Función para mostrar la fecha actual
       function mostrarFecha() {
@@ -289,16 +250,13 @@
       document.addEventListener("DOMContentLoaded", mostrarFecha);
     </script>
     <script src="/JS/usuario/MenuUsuario.js"></script>
-  
-  
-  <div id="modal-ver" class="modal" style="display:none;">
-  <div class="modal-content">
-    <span class="modal-close">&times;</span>
-    <h2>Detalle del registro</h2>
-    <div id="modal-detalle"></div>
-  </div>
-</div>
-  
-  
+
+    <div id="modal-ver" class="modal" style="display: none">
+      <div class="modal-content">
+        <span class="modal-close">&times;</span>
+        <h2>Detalle del registro</h2>
+        <div id="modal-detalle"></div>
+      </div>
+    </div>
   </body>
 </html>

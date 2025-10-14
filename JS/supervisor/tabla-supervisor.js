@@ -621,3 +621,70 @@ function formatearFecha(fechaISO) {
     minute: "2-digit",
   });
 }
+
+// Paginación compacta con flechas y puntos suspensivos
+function actualizarPaginacion(totalPaginas, filtro) {
+  const pagContainer = document.querySelector(".pagination");
+  if (!pagContainer) return;
+  pagContainer.innerHTML = "";
+
+  // Botón anterior
+  const btnPrev = document.createElement("button");
+  btnPrev.className = "pagination-btn";
+  btnPrev.innerHTML = '<i class="ri-arrow-left-s-line"></i>';
+  btnPrev.disabled = paginaActual === 1;
+  btnPrev.onclick = () => {
+    if (paginaActual > 1) {
+      paginaActual--;
+      mostrarPermisosFiltrados(document.getElementById("status-filter").value);
+    }
+  };
+  pagContainer.appendChild(btnPrev);
+
+  // Paginación compacta
+  const maxVisible = 2; // páginas antes/después de la actual
+  let pages = [];
+  if (totalPaginas <= 7) {
+    for (let i = 1; i <= totalPaginas; i++) pages.push(i);
+  } else {
+    pages.push(1);
+    if (paginaActual > maxVisible + 2) pages.push("...");
+    let start = Math.max(2, paginaActual - maxVisible);
+    let end = Math.min(totalPaginas - 1, paginaActual + maxVisible);
+    for (let i = start; i <= end; i++) pages.push(i);
+    if (paginaActual < totalPaginas - maxVisible - 1) pages.push("...");
+    pages.push(totalPaginas);
+  }
+  pages.forEach((p) => {
+    if (p === "...") {
+      const span = document.createElement("span");
+      span.textContent = "...";
+      span.className = "pagination-ellipsis";
+      pagContainer.appendChild(span);
+    } else {
+      const btn = document.createElement("button");
+      btn.className = "pagination-btn" + (p === paginaActual ? " active" : "");
+      btn.textContent = p;
+      btn.onclick = () => {
+        paginaActual = p;
+        mostrarPermisosFiltrados(
+          document.getElementById("status-filter").value
+        );
+      };
+      pagContainer.appendChild(btn);
+    }
+  });
+
+  // Botón siguiente
+  const btnNext = document.createElement("button");
+  btnNext.className = "pagination-btn";
+  btnNext.innerHTML = '<i class="ri-arrow-right-s-line"></i>';
+  btnNext.disabled = paginaActual === totalPaginas || totalPaginas === 0;
+  btnNext.onclick = () => {
+    if (paginaActual < totalPaginas) {
+      paginaActual++;
+      mostrarPermisosFiltrados(document.getElementById("status-filter").value);
+    }
+  };
+  pagContainer.appendChild(btnNext);
+}

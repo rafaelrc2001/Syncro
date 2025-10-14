@@ -257,49 +257,53 @@ const params = new URLSearchParams(window.location.search);
 const idPermiso = params.get("id");
 if (idPermiso) {
   console.log("Consultando permiso de altura con id:", idPermiso);
-  fetch(`http://localhost:3000/api/pt-altura/${idPermiso}`)
-    .then((response) => response.json())
+  fetch(`http://localhost:3000/api/verformularios?id=${encodeURIComponent(idPermiso)}`)
+    .then((resp) => resp.json())
     .then((data) => {
-      if (data && data.success && data.data) {
-        const permiso = data.data;
-        const map = {
-              "maintenance-type-label": permiso.tipo_mantenimiento,
-      "work-order-label": permiso.ot_numero,
-      "tag-label": permiso.tag,
-      "start-time-label": permiso.hora_inicio,
-      "equipment-description-label": permiso.equipo_intervenir,
-    
-          "requiere-escalera-label": permiso.requiere_escalera,
-          "tipo-escalera-label": permiso.tipo_escalera || "-",
-          "requiere-canastilla-label": permiso.requiere_canastilla_grua,
-          "aseguramiento-estrobo-label": permiso.aseguramiento_estrobo,
-          "requiere-andamio-label": permiso.requiere_andamio_cama_completa,
-          "requiere-otro-acceso-label": permiso.otro_tipo_acceso,
-          "cual-acceso-label": permiso.cual_acceso || "-",
-          "acceso-libre-obstaculos-label": permiso.acceso_libre_obstaculos,
-          "canastilla-asegurada-label": permiso.canastilla_asegurada,
-          "andamio-completo-label": permiso.andamio_completo,
-          "andamio-seguros-zapatas-label": permiso.andamio_seguros_zapatas,
-          "escaleras-buen-estado-label": permiso.escaleras_buen_estado,
-          "linea-vida-segura-label": permiso.linea_vida_segura,
-          "arnes-completo-buen-estado-label": permiso.arnes_completo_buen_estado,
-          "suspender-trabajos-adyacentes-label": permiso.suspender_trabajos_adyacentes,
-          "numero-personas-autorizadas-label": permiso.numero_personas_autorizadas,
-          "trabajadores-aptos-evaluacion-label": permiso.trabajadores_aptos_evaluacion,
-          "requiere-barreras-label": permiso.requiere_barreras,
-          "observaciones-label": permiso.observaciones
-        };
-
-        for (let id in map) {
-          const el = document.getElementById(id);
-          if (el) el.textContent = map[id] || "-";
-        }
+  console.log("Datos recibidos de verformularios:", data); // <-- Esto muestra los datos en la consola
+  if (data && data.general) {
+    const d = data.general;
+        // Mapeo de campos generales
+        setText("maintenance-type-label", d.tipo_mantenimiento || "-");
+setText("work-order-label", d.ot_numero || "-");
+setText("tag-label", d.tag || "-");
+setText("start-time-label", d.hora_inicio || "-");
+setText("fecha-label", d.fecha || "-");
+setText("activity-type-label", d.tipo_mantenimiento || "-");
+setText("plant-label", d.area || "-");
+setText("descripcion-trabajo-label", d.descripcion_trabajo || "-");
+setText("empresa-label", d.empresa || "-");
+setText("nombre-solicitante-label", d.solicitante || "-");
+setText("sucursal-label", d.sucursal || "-");
+setText("contrato-label", d.contrato || "-");
+setText("work-order-label", d.ot_numero || "-");
+setText("equipment-label", d.equipo_intervenir || "-");
+setText("tag-label", d.tag || "-");
+setText("requiere-escalera-label", d.requiere_escalera || "-");
+setText("tipo-escalera-label", d.tipo_escalera || "-");
+setText("requiere-canastilla-label", d.requiere_canastilla_grua || "-");
+setText("aseguramiento-estrobo-label", d.aseguramiento_estrobo || "-");
+setText("requiere-andamio-label", d.requiere_andamio_cama_completa || "-");
+setText("requiere-otro-acceso-label", d.otro_tipo_acceso || "-");
+setText("cual-acceso-label", d.cual_acceso || "-");
+setText("acceso-libre-obstaculos-label", d.acceso_libre_obstaculos || "-");
+setText("canastilla-asegurada-label", d.canastilla_asegurada || "-");
+setText("andamio-completo-label", d.andamio_completo || "-");
+setText("andamio-seguros-zapatas-label", d.andamio_seguros_zapatas || "-");
+setText("escaleras-buen-estado-label", d.escaleras_buen_estado || "-");
+setText("linea-vida-segura-label", d.linea_vida_segura || "-");
+setText("arnes-completo-buen-estado-label", d.arnes_completo_buen_estado || "-");
+setText("suspender-trabajos-adyacentes-label", d.suspender_trabajos_adyacentes || "-");
+setText("numero-personas-autorizadas-label", d.numero_personas_autorizadas || "-");
+setText("trabajadores-aptos-evaluacion-label", d.trabajadores_aptos_evaluacion || "-");
+setText("requiere-barreras-label", d.requiere_barreras || "-");
+setText("observaciones-label", d.observaciones || "-");
       } else {
         console.warn("Estructura de datos inesperada o datos faltantes:", data);
       }
     })
     .catch((err) => {
-      console.error("Error al consultar la API de permiso de altura:", err);
+      console.error("Error al consultar la API de verformularios:", err);
     });
 }
 
@@ -536,10 +540,10 @@ document.addEventListener("DOMContentLoaded", function () {
             d.equipo_intervenir || "-";
 
           // ANÁLISIS DE REQUISITOS PARA EFECTUAR EL TRABAJO
-          document.getElementById("requiere-escalera-label").textContent =
-            d.requiere_escalera || "-";
-          const el = document.getElementById("requiere-escalera-label");
-          console.log("Elemento existe:", el); // Debe mostrar el elemento <p>
+        //  document.getElementById("requiere-escalera-label").textContent =
+          //  d.requiere_escalera || "-";
+       //   const el = document.getElementById("requiere-escalera-label");
+         // console.log("Elemento existe:", el); // Debe mostrar el elemento <p>
 
           document.getElementById("tipo-escalera-label").textContent =
             d.tipo_escalera !== undefined ? d.tipo_escalera : "-";
@@ -548,7 +552,7 @@ document.addEventListener("DOMContentLoaded", function () {
           ).textContent = d.requiere_canastilla_grua || "-";
           document.getElementById("aseguramiento-estrobo-label").textContent =
             d.aseguramiento_estrobo || "-";
-          document.getElementById("requiere-andamio-cama-label").textContent =
+          document.getElementById("requiere-andamio_cama-label").textContent =
             d.requiere_andamio_cama_completa || "-";
           document.getElementById("otro-tipo-acceso-label").textContent =
             d.otro_tipo_acceso || "-";

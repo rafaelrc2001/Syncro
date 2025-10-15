@@ -137,69 +137,138 @@ function setText(id, value) {
 
 // Lógica para mostrar los datos en las etiquetas (igual que sección área)
 function mostrarDatosSupervisor(permiso) {
-  setText("prefijo-label", permiso.prefijo); // Nuevo: mapeo prefijo
-  setText("descripcion-trabajo-label", permiso.descripcion_trabajo); // Nuevo: mapeo descripcion
-  setText("maintenance-type-label", permiso.tipo_mantenimiento);
-  setText("work-order-label", permiso.ot_numero);
-  setText("tag-label", permiso.tag);
-  setText("start-time-label", permiso.hora_inicio);
-  setText("equipment-description-label", permiso.equipo_intervenir);
-  setText("requiere-escalera-label", permiso.requiere_escalera);
+  // Mapeo de campos generales igual que en área
+  const data = permiso.general ? permiso.general : permiso;
+
+  setText("start-time-label", data.hora_inicio || "-");
+  setText("fecha-label", data.fecha || data.fecha_creacion || "-");
+  setText("activity-type-label", data.tipo_mantenimiento || "-");
+  setText(
+    "plant-label",
+    data.area && data.area.trim() !== "" ? data.area : "-"
+  );
+  setText("descripcion-trabajo-label", data.descripcion_trabajo || "-");
+  setText("empresa-label", data.empresa || "-");
+  setText(
+    "nombre-solicitante-label",
+    data.solicitante || data.nombre_solicitante || "-"
+  );
+  setText(
+    "sucursal-label",
+    data.sucursal && data.sucursal.trim() !== "" ? data.sucursal : "-"
+  );
+  setText(
+    "contrato-label",
+    data.contrato && data.contrato.trim() !== "" ? data.contrato : "-"
+  );
+  setText("work-order-label", data.ot_numero || "-");
+  setText(
+    "equipment-label",
+    data.equipo_intervenir && data.equipo_intervenir.trim() !== ""
+      ? data.equipo_intervenir
+      : "-"
+  );
+  setText("tag-label", data.tag && data.tag.trim() !== "" ? data.tag : "-");
+
+  setText("requiere-escalera-label", permiso.requiere_escalera || "-");
   setText("tipo-escalera-label", permiso.tipo_escalera || "-");
-  setText("requiere-canastilla-label", permiso.requiere_canastilla_grua);
-  setText("aseguramiento-estrobo-label", permiso.aseguramiento_estrobo);
-  setText("requiere-andamio-label", permiso.requiere_andamio_cama_completa);
-  setText("requiere-otro-acceso-label", permiso.otro_tipo_acceso);
+  setText("requiere-canastilla-label", permiso.requiere_canastilla_grua || "-");
+  setText("aseguramiento-estrobo-label", permiso.aseguramiento_estrobo || "-");
+  setText(
+    "requiere-andamio-label",
+    permiso.requiere_andamio_cama_completa || "-"
+  );
+  setText("requiere-otro-acceso-label", permiso.otro_tipo_acceso || "-");
   setText("cual-acceso-label", permiso.cual_acceso || "-");
-  setText("acceso-libre-obstaculos-label", permiso.acceso_libre_obstaculos);
-  setText("canastilla-asegurada-label", permiso.canastilla_asegurada);
-  setText("andamio-completo-label", permiso.andamio_completo);
-  setText("andamio-seguros-zapatas-label", permiso.andamio_seguros_zapatas);
-  setText("escaleras-buen-estado-label", permiso.escaleras_buen_estado);
-  setText("linea-vida-segura-label", permiso.linea_vida_segura);
+  setText(
+    "acceso-libre-obstaculos-label",
+    permiso.acceso_libre_obstaculos || "-"
+  );
+  setText("canastilla-asegurada-label", permiso.canastilla_asegurada || "-");
+  setText("andamio-completo-label", permiso.andamio_completo || "-");
+  setText(
+    "andamio-seguros-zapatas-label",
+    permiso.andamio_seguros_zapatas || "-"
+  );
+  setText("escaleras-buen-estado-label", permiso.escaleras_buen_estado || "-");
+  setText("linea-vida-segura-label", permiso.linea_vida_segura || "-");
   setText(
     "arnes-completo-buen-estado-label",
-    permiso.arnes_completo_buen_estado
+    permiso.arnes_completo_buen_estado || "-"
   );
   setText(
     "suspender-trabajos-adyacentes-label",
-    permiso.suspender_trabajos_adyacentes
+    permiso.suspender_trabajos_adyacentes || "-"
   );
   setText(
     "numero-personas-autorizadas-label",
-    permiso.numero_personas_autorizadas
+    permiso.numero_personas_autorizadas || "-"
   );
   setText(
     "trabajadores-aptos-evaluacion-label",
-    permiso.trabajadores_aptos_evaluacion
+    permiso.trabajadores_aptos_evaluacion || "-"
   );
-  setText("requiere-barreras-label", permiso.requiere_barreras);
-  setText("observaciones-label", permiso.observaciones);
+  setText("requiere-barreras-label", permiso.requiere_barreras || "-");
+  setText("observaciones-label", permiso.observaciones || "-");
 
-  // Mapeo de condiciones del proceso
-  // Si existe 'fluido', úsalo; si no, busca en otros posibles campos
-  setText(
-    "fluid",
-    permiso.fluido || permiso.fluido_proceso || permiso.fluido_area || "-"
-  );
-  setText("pressure", permiso.presion);
-  setText("temperature", permiso.temperatura);
+  // Mapeo del área.
+
+  setText("fluid", data.fluido || "-");
+  setText("pressure", data.presion || "-");
+  setText("temperature", data.temperatura || "-");
+  // Mapeo eliminado. Puedes pegar aquí el mapeo correcto desde el área.
 }
 
 // Al cargar la página, obtener el id y mostrar los datos
 
 document.addEventListener("DOMContentLoaded", function () {
+  // Mostrar/ocultar los campos '¿Cuál?' según el checkbox SI
+  function toggleCualInput(checkboxName, inputName) {
+    const siCheckbox = document.querySelector(`[name='${checkboxName}_si']`);
+    const noCheckbox = document.querySelector(`[name='${checkboxName}_no']`);
+    const naCheckbox = document.querySelector(`[name='${checkboxName}_na']`);
+    const input = document.querySelector(`[name='${inputName}_cual']`);
+    if (siCheckbox && noCheckbox && naCheckbox && input) {
+      function updateVisibility() {
+        input.style.display = siCheckbox.checked ? "" : "none";
+      }
+      siCheckbox.addEventListener("change", updateVisibility);
+      noCheckbox.addEventListener("change", updateVisibility);
+      naCheckbox.addEventListener("change", updateVisibility);
+      // Inicializar visibilidad al cargar
+      updateVisibility();
+    }
+  }
+  toggleCualInput("proteccion_especial", "proteccion_especial");
+  toggleCualInput("equipo_caidas", "equipo_caidas");
   // Lógica para el botón "Salir" igual que PT3
   const btnSalir = document.getElementById("btn-salir-nuevo");
   if (btnSalir) {
     btnSalir.addEventListener("click", function () {
-    window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
+      window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
     });
   }
   const params = new URLSearchParams(window.location.search);
   const idPermiso = params.get("id");
   if (idPermiso) {
-    // 1. Obtener datos generales y AST
+    fetch(`http://localhost:3000/api/autorizaciones/personas/${idPermiso}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && data.success && data.data) {
+          const responsable = document.getElementById(
+            "nombre-responsable-area"
+          );
+          const operador = document.getElementById("nombre-operador-area");
+          if (responsable)
+            responsable.textContent = data.data.responsable_area || "-";
+          if (operador) operador.textContent = data.data.operador_area || "-";
+        }
+      })
+      .catch((err) => {
+        console.error("Error al obtener responsables de área:", err);
+      });
+
+    // Solo usar /api/verformularios
     fetch(
       `http://localhost:3000/api/verformularios?id=${encodeURIComponent(
         idPermiso
@@ -207,6 +276,7 @@ document.addEventListener("DOMContentLoaded", function () {
     )
       .then((resp) => resp.json())
       .then((data) => {
+        console.log("Respuesta completa de /api/verformularios:", data);
         // Prefijo en el título
         if (data && data.general && document.getElementById("prefijo-label")) {
           document.getElementById("prefijo-label").textContent =
@@ -215,7 +285,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Rellenar datos generales si existen
         if (data && data.general) {
           console.log("Datos generales:", data.general);
-          // mostrarDatosSupervisor(data.general); // <--- Comentado para prueba
+          mostrarDatosSupervisor(data.general);
         }
         // Rellenar AST y Participantes
         if (data && data.ast) {
@@ -233,22 +303,6 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
           mostrarParticipantesAST([]);
         }
-      });
-    // 2. Obtener datos específicos del permiso para otros campos (si necesitas más detalles)
-    fetch(`http://localhost:3000/api/pt-altura/${idPermiso}`)
-      .then((response) => response.json())
-      .then((data) => {
-        if (data && data.success && data.data) {
-          mostrarDatosSupervisor(data.data);
-        } else {
-          console.warn(
-            "Estructura de datos inesperada o datos faltantes:",
-            data
-          );
-        }
-      })
-      .catch((err) => {
-        console.error("Error al consultar la API de permiso de altura:", err);
       });
   }
   rellenarSupervisoresYCategorias();
@@ -364,6 +418,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // --- Lógica para el botón "Autorizar" ---
 const btnAutorizar = document.getElementById("btn-guardar-campos");
+
 if (btnAutorizar) {
   btnAutorizar.addEventListener("click", async function () {
     const params = new URLSearchParams(window.location.search);
@@ -464,7 +519,40 @@ if (btnAutorizar) {
       }
     }
 
-    alert("Permiso autorizado correctamente");
-    window.location.href = "/Modules/SupSeguridad/supseguridad.html";
+    // --- MODAL DE CONFIRMACIÓN ---
+    const confirmationModal = document.getElementById("confirmation-modal");
+    if (confirmationModal) {
+      confirmationModal.style.display = "flex";
+    }
+    const permitNumber = document.getElementById("generated-permit");
+    if (permitNumber) {
+      permitNumber.textContent = idPermiso || "-";
+    }
+    // La redirección se hace al cerrar el modal (ver evento modal-close-btn)
   });
 }
+
+// Cierre del modal y redirección
+const modalCloseBtn = document.getElementById("modal-close-btn");
+if (modalCloseBtn) {
+  modalCloseBtn.onclick = function () {
+    const confirmationModal = document.getElementById("confirmation-modal");
+    if (confirmationModal) confirmationModal.style.display = "none";
+    window.location.href = "/Modules/SupSeguridad/supseguridad.html";
+  };
+}
+
+// Manejo de checkboxes SI/NO/NA
+document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
+  checkbox.addEventListener("change", function () {
+    const name = this.name.replace(/_(si|no|na)$/, "");
+    if (this.checked) {
+      ["si", "no", "na"].forEach((opcion) => {
+        if (this.name !== `${name}_${opcion}`) {
+          const otro = document.querySelector(`[name='${name}_${opcion}']`);
+          if (otro) otro.checked = false;
+        }
+      });
+    }
+  });
+});

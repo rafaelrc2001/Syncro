@@ -1,3 +1,94 @@
+// --- Mapeo de datos generales igual que supervisor ---
+function mostrarDatosImprimir(permiso) {
+  const data = permiso.general ? permiso.general : permiso;
+  setText("start-time-label", data.hora_inicio || "-");
+  setText("fecha-label", data.fecha || data.fecha_creacion || "-");
+  setText("activity-type-label", data.tipo_mantenimiento || "-");
+  setText(
+    "plant-label",
+    data.area && data.area.trim() !== "" ? data.area : "-"
+  );
+  setText("descripcion-trabajo-label", data.descripcion_trabajo || "-");
+  setText("empresa-label", data.empresa || "-");
+  setText(
+    "nombre-solicitante-label",
+    data.solicitante || data.nombre_solicitante || "-"
+  );
+  setText(
+    "sucursal-label",
+    data.sucursal && data.sucursal.trim() !== "" ? data.sucursal : "-"
+  );
+  setText(
+    "contrato-label",
+    data.contrato && data.contrato.trim() !== "" ? data.contrato : "-"
+  );
+  setText("work-order-label", data.ot_numero || "-");
+  setText(
+    "equipment-label",
+    data.equipo_intervenir && data.equipo_intervenir.trim() !== ""
+      ? data.equipo_intervenir
+      : "-"
+  );
+  setText("tag-label", data.tag && data.tag.trim() !== "" ? data.tag : "-");
+
+  setText("requiere-escalera-label", permiso.requiere_escalera || "-");
+  setText("tipo-escalera-label", permiso.tipo_escalera || "-");
+  setText("requiere-canastilla-label", permiso.requiere_canastilla_grua || "-");
+  setText("aseguramiento-estrobo-label", permiso.aseguramiento_estrobo || "-");
+  setText(
+    "requiere-andamio-label",
+    permiso.requiere_andamio_cama_completa || "-"
+  );
+  setText("requiere-otro-acceso-label", permiso.otro_tipo_acceso || "-");
+  setText("cual-acceso-label", permiso.cual_acceso || "-");
+  setText(
+    "acceso-libre-obstaculos-label",
+    permiso.acceso_libre_obstaculos || "-"
+  );
+  setText("canastilla-asegurada-label", permiso.canastilla_asegurada || "-");
+  setText("andamio-completo-label", permiso.andamio_completo || "-");
+  setText(
+    "andamio-seguros-zapatas-label",
+    permiso.andamio_seguros_zapatas || "-"
+  );
+  setText("escaleras-buen-estado-label", permiso.escaleras_buen_estado || "-");
+  setText("linea-vida-segura-label", permiso.linea_vida_segura || "-");
+  setText(
+    "arnes-completo-buen-estado-label",
+    permiso.arnes_completo_buen_estado || "-"
+  );
+  setText(
+    "suspender-trabajos-adyacentes-label",
+    permiso.suspender_trabajos_adyacentes || "-"
+  );
+  setText(
+    "numero-personas-autorizadas-label",
+    permiso.numero_personas_autorizadas || "-"
+  );
+  setText(
+    "trabajadores-aptos-evaluacion-label",
+    permiso.trabajadores_aptos_evaluacion || "-"
+  );
+  setText("requiere-barreras-label", permiso.requiere_barreras || "-");
+  setText("observaciones-label", permiso.observaciones || "-");
+
+  setText("fluid", data.fluido || "-");
+  setText("pressure", data.presion || "-");
+  setText("temperature", data.temperatura || "-");
+
+  // --- Medidas / Requisitos para Administrar los Riesgos ---
+  setText("proteccion_especial_respuesta", permiso.proteccion_especial || "-");
+  setText("proteccion_especial_cual", permiso.proteccion_especial_cual || "-");
+  setText("equipo_caidas_respuesta", permiso.equipo_caidas || "-");
+  setText("equipo_caidas_cual", permiso.equipo_caidas_cual || "-");
+  setText("linea_amortiguador_respuesta", permiso.linea_amortiguador || "-");
+  setText("punto_fijo_respuesta", permiso.punto_fijo || "-");
+  setText("linea_vida_respuesta", permiso.linea_vida || "-");
+  setText("andamio_completo_respuesta", permiso.andamio_completo_opcion || "-");
+  setText("tarjeta_andamio_respuesta", permiso.tarjeta_andamio || "-");
+  setText("viento_permitido_respuesta", permiso.viento_permitido || "-");
+  setText("escalera_condicion_respuesta", permiso.escalera_condicion || "-");
+}
 // --- Funciones de utilidad ---
 function getRadioValue(name) {
   const radios = document.getElementsByName(name);
@@ -222,6 +313,8 @@ document.addEventListener("DOMContentLoaded", function () {
     )
       .then((resp) => resp.json())
       .then((data) => {
+        console.log("Respuesta completa de /api/verformularios:", data);
+
         // Prefijo en el título
         if (data && data.general && document.getElementById("prefijo-label")) {
           // Mostrar el prefijo en el encabezado
@@ -235,7 +328,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Rellenar datos generales si existen
         if (data && data.general) {
           console.log("Datos generales:", data.general);
-          // mostrarDatosSupervisor(data.general); // <--- Comentado para prueba
+          mostrarDatosImprimir(data.general);
         }
         // Rellenar AST y Participantes
         if (data && data.ast) {
@@ -253,23 +346,6 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
           mostrarParticipantesAST([]);
         }
-      });
-    // 2. Obtener datos específicos del permiso para otros campos (si necesitas más detalles)
-    fetch(`http://localhost:3000/api/pt-altura/${idPermiso}`)
-      .then((response) => response.json())
-      .then((data) => {
-        if (data && data.success && data.data) {
-          console.log("permiso:", data.data); // <-- Depuración
-          mostrarDatosSupervisor(data.data);
-        } else {
-          console.warn(
-            "Estructura de datos inesperada o datos faltantes:",
-            data
-          );
-        }
-      })
-      .catch((err) => {
-        console.error("Error al consultar la API de permiso de altura:", err);
       });
 
     // === AGREGA ESTA LÍNEA AQUÍ ===

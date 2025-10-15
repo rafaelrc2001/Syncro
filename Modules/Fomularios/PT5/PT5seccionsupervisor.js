@@ -207,7 +207,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnSalir = document.getElementById("btn-salir-nuevo");
   if (btnSalir) {
     btnSalir.addEventListener("click", function () {
-     window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
+      window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
     });
   }
 
@@ -215,6 +215,22 @@ document.addEventListener("DOMContentLoaded", function () {
   const idPermiso = params.get("id");
 
   if (idPermiso) {
+    fetch(`http://localhost:3000/api/autorizaciones/personas/${idPermiso}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && data.success && data.data) {
+          // Mostrar en la sección de aprobación
+          const supervisor = document.getElementById("stamp-aprobador");
+          if (supervisor)
+            supervisor.textContent = data.data.responsable_area || "-";
+          const categoria = document.getElementById("stamp-encargado");
+          if (categoria) categoria.textContent = data.data.operador_area || "-";
+        }
+      })
+      .catch((err) => {
+        console.error("Error al obtener responsables de área:", err);
+      });
+
     // 1. Obtener datos generales y AST
     fetch(
       `http://localhost:3000/api/verformularios?id=${encodeURIComponent(
@@ -223,19 +239,29 @@ document.addEventListener("DOMContentLoaded", function () {
     )
       .then((resp) => resp.json())
       .then((data) => {
-        // Prefijo en el título y descripción del trabajo
+        // Mapeo de datos generales para la sección principal y equipo
         if (data && data.general) {
-          if (document.getElementById("prefijo-label")) {
-            document.getElementById("prefijo-label").textContent =
-              data.general.prefijo || "-";
-          }
-          if (document.getElementById("descripcion-trabajo-label")) {
-            document.getElementById("descripcion-trabajo-label").textContent =
-              data.general.descripcion_trabajo || "-";
-          }
+          setText("prefijo-label", data.general.prefijo || "-");
+          setText("start-time-label", data.general.hora_inicio || "-");
+          setText("fecha-label", data.general.fecha || "-");
+          setText(
+            "activity-type-label",
+            data.general.tipo_mantenimiento || "-"
+          );
+          setText("plant-label", data.general.area || "-");
+          setText(
+            "descripcion-trabajo-label",
+            data.general.descripcion_trabajo || "-"
+          );
+          setText("empresa-label", data.general.empresa || "-");
+          setText("nombre-solicitante-label", data.general.solicitante || "-");
+          setText("sucursal-label", data.general.sucursal || "-");
+          setText("contrato-label", data.general.contrato || "-");
+          setText("work-order-label", data.general.ot_numero || "-");
+          setText("equipment-label", data.general.equipo_intervenir || "-");
+          setText("tag-label", data.general.tag || "-");
         }
-
-        // Rellenar datos generales usando data.data
+        // Rellenar datos adicionales usando data.data (otros mapeos)
         if (data && data.data) {
           const detalles = data.data;
           setText("maintenance-type-label", detalles.tipo_mantenimiento);

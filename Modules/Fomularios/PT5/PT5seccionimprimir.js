@@ -64,6 +64,18 @@ async function imprimirPermisoTradicional() {
 }
 
 // Event listener para el botón de imprimir
+// Mapeo de datos faltantes
+setText("start-time-label", data.general.hora_inicio || "-");
+setText("fecha-label", data.general.fecha || "-");
+setText("activity-type-label", data.general.tipo_mantenimiento || "-");
+setText("plant-label", data.general.area || "-");
+setText("empresa-label", data.general.empresa || "-");
+setText("nombre-solicitante-label", data.general.solicitante || "-");
+setText("sucursal-label", data.general.sucursal || "-");
+setText("contrato-label", data.general.contrato || "-");
+setText("work-order-label", data.general.ot_numero || "-");
+setText("equipment-label", data.general.equipo_intervenir || "-");
+setText("tag-label", data.general.tag || "-");
 const btnImprimir = document.getElementById("btn-imprimir-permiso");
 if (btnImprimir) {
   btnImprimir.addEventListener("click", function (e) {
@@ -88,6 +100,15 @@ if (btnImprimir) {
 //     e.preventDefault();
 //     mostrarInstruccionesImpresion();
 //   }
+// Mapeo de datos faltantes desde detalles si existen
+setText("fecha-label", detalles.fecha);
+setText("activity-type-label", detalles.tipo_mantenimiento);
+setText("plant-label", detalles.area);
+setText("empresa-label", detalles.empresa);
+setText("nombre-solicitante-label", detalles.solicitante);
+setText("sucursal-label", detalles.sucursal);
+setText("contrato-label", detalles.contrato);
+setText("equipment-label", detalles.equipo_intervenir);
 // });
 // --- Funciones de utilidad ---
 function getRadioValue(name) {

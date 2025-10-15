@@ -28,10 +28,10 @@
          
             </div>
 
-                <div class="section-header">
+                <div class="section-header header-centered">
                     <i class="ri-checkbox-circle-line"></i>
                     <h2>Permiso de Trabajo para Altura</h2>
-                    <h3>NP-XXXXXX</h3>
+                    <h3 id="prefijo-label">NP-XXXXXX</h3>
                 </div>
                                  <div class="general-box-header">
                                         <span>Información General</span>
@@ -102,9 +102,12 @@
                 </div>
 
 
+                    <div class="usuario-box-header">
+                        <span>Formulario Area Solicitante</span>
+                    </div>
 
 
-            <div class="executive-section usuario">
+            <div class="executive-section">
                 <div class="section-header">
                     <i class="ri-checkbox-multiple-line"></i>
                     <h3>ANÁLISIS DE REQUISITOS PARA EFECTUAR EL TRABAJO </h3>
@@ -182,9 +185,11 @@
 
 
 
-            
+                                    <div class="area-box-header">
+                                         <span>Formulario Responsable Área</span>
+                                     </div>
 
-               <div class="executive-section area">
+               <div class="executive-section ">
                     <div class="section-header section-header-cielo">
                         <i class="ri-flask-line"></i>
                         <h3>Condiciones del Proceso</h3>
@@ -207,7 +212,7 @@
 
                 
             <!-- Sección AST y Participantes -->
-                <div class="executive-section usuario">
+                <div class="executive-section">
                     <div class="section-header">
                         <i class="ri-shield-check-line"></i>
                         <h3>AST - Análisis de Seguridad en el Trabajo</h3>
@@ -251,7 +256,7 @@
                     </div>
                 </div>
                  <!-- Sección 4: Participantes -->
-                <div class="executive-section usuario">
+                <div class="executive-section ">
                     <div class="section-header">
                         <i class="ri-team-line"></i>
                         <h3>Personal Involucrado</h3>
@@ -287,27 +292,7 @@
                     </div>
                 </div>
                 <!-- Sección 5: Aprobaciones -->
-                <div class="approval-section">
-                    <div class="approval-stamps">
-                        <div class="stamp">
-                            <div class="stamp-title">Responsable del area:</div>
-                            <div class="stamp-placeholder"></div>
-                            <div class="stamp-name" id="stamp-aprobador"></div>
-                        </div>
-                        <div class="stamp">
-                            <div class="stamp-title">Operador del área:</div>
-                            <div class="stamp-placeholder"></div>
-                            <div class="stamp-name" id="stamp-encargado"></div>
-                            <div class="stamp-date"></div>
-                        </div>
-                        <div class="stamp approved">
-                            <div class="stamp-title">Pendiente por aprobar:</div>
-                            <div class="stamp-placeholder"></div>
-                            <div class="stamp-name">Pendiente</div>
-                        </div>
-                    </div>
-                </div>
-
+               
 
 
                 <div class="button-group" style="display: flex; justify-content: space-between; margin-top: 48px; gap: 16px;">
@@ -340,6 +325,30 @@
                                                 </div>
                                             </div>
                                         </div>
+
+
+
+                                         <!-- Modal de confirmación -->
+                        <div class="modal" id="confirmation-modal" style="display:none;">
+                            <div class="modal-content">
+                                <div class="modal-icon success">
+                                    <i class="ri-checkbox-circle-line"></i>
+                                </div>
+                                <h3>Permiso autorizado correctamente</h3>
+                                <p>El permiso de trabajo el número: <strong id="generated-permit">-</strong></p>
+                                <div class="modal-actions">
+                                    <button class="btn secondary" id="modal-close-btn">Cerrar</button>
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+
+
 
 
     </div>

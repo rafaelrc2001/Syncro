@@ -559,16 +559,28 @@ document.addEventListener("DOMContentLoaded", function () {
     )
       .then((resp) => resp.json())
       .then((data) => {
+        console.log(data); // Muestra el objeto completo en formato expandible
         // Prefijo en el título y descripción del trabajo
         if (data && data.general) {
-          if (document.querySelector(".section-header h3")) {
-            document.querySelector(".section-header h3").textContent =
-              data.general.prefijo || "PT-XXXXXX";
-          }
-          if (document.getElementById("descripcion-trabajo-label")) {
-            document.getElementById("descripcion-trabajo-label").textContent =
-              data.general.descripcion_trabajo || "-";
-          }
+          setText("start-time-label", data.general.hora_inicio || "-");
+          setText("fecha-label", data.general.fecha || "-");
+          setText(
+            "activity-type-label",
+            data.general.tipo_mantenimiento || "-"
+          );
+          setText("plant-label", data.general.area || "-");
+          setText(
+            "descripcion-trabajo-label",
+            data.general.descripcion_trabajo || "-"
+          );
+          setText("empresa-label", data.general.empresa || "-");
+          setText("nombre-solicitante-label", data.general.solicitante || "-");
+          setText("sucursal-label", data.general.sucursal || "-");
+          setText("contrato-label", data.general.contrato || "-");
+          setText("work-order-label", data.general.ot_numero || "-");
+          setText("equipment-label", data.general.equipo_intervenir || "-");
+          setText("tag-label", data.general.tag || "-");
+          setText("prefijo-label", data.general.prefijo || "-");
         }
         // Llenar campos generales usando data.data
         if (data && data.data) {

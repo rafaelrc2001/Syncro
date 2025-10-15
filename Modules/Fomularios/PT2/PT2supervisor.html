@@ -304,9 +304,12 @@
                                         <td class="centered"><input type="radio" name="fire-protection" value="NO"></td>
                                         <td class="centered"><input type="radio" name="fire-protection" value="N/A"></td>
                                     </tr>
-                                    <tr>
+                                    <!-- El campo ¿Cuál? debe estar en su propio <tr> para no afectar los siguientes campos -->
+                                    <tr id="tr-fire-protection-type">
                                         <td style="text-align:right; font-weight: 500;">¿Cuál?</td>
-                                                                                <td colspan="3"><textarea id="fire-protection-type" name="fire-protection-type" placeholder="Especifique el tipo" class="compact" style="width:98%; min-height:80px; resize:vertical; background:#fff; border:1px solid #d0d7de; border-radius:6px; padding:6px 10px;"></textarea></td>
+                                        <td colspan="3">
+                                            <textarea id="fire-protection-type" name="fire-protection-type" placeholder="Especifique el tipo" class="compact" style="width:98%; min-height:80px; resize:vertical; background:#fff; border:1px solid #d0d7de; border-radius:6px; padding:6px 10px;"></textarea>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>¿Instalación de barreras y/o barricadas?</td>

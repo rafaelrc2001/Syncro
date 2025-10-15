@@ -29,13 +29,12 @@ if (btnGuardarCampos) {
       return checked ? checked.value : null;
     }
     // Construir payload con todos los campos requeridos por el backend
-  // ...dentro del btnGuardarCampos.addEventListener...
-const payload = {
-  fluido: document.getElementById("fluid")?.value || "",
-  presion: document.getElementById("pressure")?.value || "",
-  temperatura: document.getElementById("temperature")?.value || "",
-
-};
+    // ...dentro del btnGuardarCampos.addEventListener...
+    const payload = {
+      fluido: document.getElementById("fluid")?.value || "",
+      presion: document.getElementById("pressure")?.value || "",
+      temperatura: document.getElementById("temperature")?.value || "",
+    };
     try {
       const resp = await fetch(
         `http://localhost:3000/api/pt-altura/requisitos_area/${idPermiso}`,
@@ -118,7 +117,23 @@ const payload = {
           encargado_area: operador_area,
         }),
       });
-      window.location.href = "/Modules/Usuario/AutorizarPT.html";
+      // Mostrar modal de confirmación y número de permiso
+      const confirmationModal = document.getElementById("confirmation-modal");
+      if (confirmationModal) {
+        confirmationModal.style.display = "flex";
+      }
+      const permitNumber = document.getElementById("generated-permit");
+      if (permitNumber) {
+        permitNumber.textContent = idPermiso || "-";
+      }
+      // La redirección se hace al cerrar el modal (ver evento modal-close-btn)
+
+      // Cierre del modal y redirección
+      document.getElementById("modal-close-btn").onclick = function () {
+        const confirmationModal = document.getElementById("confirmation-modal");
+        if (confirmationModal) confirmationModal.style.display = "none";
+        window.location.href = "/Modules/usuario/AutorizarPT.html";
+      };
     } catch (err) {
       alert(
         "Error al autorizar el permiso. Revisa la consola para más detalles."
@@ -257,47 +272,72 @@ const params = new URLSearchParams(window.location.search);
 const idPermiso = params.get("id");
 if (idPermiso) {
   console.log("Consultando permiso de altura con id:", idPermiso);
-  fetch(`http://localhost:3000/api/verformularios?id=${encodeURIComponent(idPermiso)}`)
+  fetch(
+    `http://localhost:3000/api/verformularios?id=${encodeURIComponent(
+      idPermiso
+    )}`
+  )
     .then((resp) => resp.json())
     .then((data) => {
-  console.log("Datos recibidos de verformularios:", data); // <-- Esto muestra los datos en la consola
-  if (data && data.general) {
-    const d = data.general;
+      console.log("Datos recibidos de verformularios:", data); // <-- Esto muestra los datos en la consola
+      if (data && data.general) {
+        const d = data.general;
         // Mapeo de campos generales
         setText("maintenance-type-label", d.tipo_mantenimiento || "-");
-setText("work-order-label", d.ot_numero || "-");
-setText("tag-label", d.tag || "-");
-setText("start-time-label", d.hora_inicio || "-");
-setText("fecha-label", d.fecha || "-");
-setText("activity-type-label", d.tipo_mantenimiento || "-");
-setText("plant-label", d.area || "-");
-setText("descripcion-trabajo-label", d.descripcion_trabajo || "-");
-setText("empresa-label", d.empresa || "-");
-setText("nombre-solicitante-label", d.solicitante || "-");
-setText("sucursal-label", d.sucursal || "-");
-setText("contrato-label", d.contrato || "-");
-setText("work-order-label", d.ot_numero || "-");
-setText("equipment-label", d.equipo_intervenir || "-");
-setText("tag-label", d.tag || "-");
-setText("requiere-escalera-label", d.requiere_escalera || "-");
-setText("tipo-escalera-label", d.tipo_escalera || "-");
-setText("requiere-canastilla-label", d.requiere_canastilla_grua || "-");
-setText("aseguramiento-estrobo-label", d.aseguramiento_estrobo || "-");
-setText("requiere-andamio-label", d.requiere_andamio_cama_completa || "-");
-setText("requiere-otro-acceso-label", d.otro_tipo_acceso || "-");
-setText("cual-acceso-label", d.cual_acceso || "-");
-setText("acceso-libre-obstaculos-label", d.acceso_libre_obstaculos || "-");
-setText("canastilla-asegurada-label", d.canastilla_asegurada || "-");
-setText("andamio-completo-label", d.andamio_completo || "-");
-setText("andamio-seguros-zapatas-label", d.andamio_seguros_zapatas || "-");
-setText("escaleras-buen-estado-label", d.escaleras_buen_estado || "-");
-setText("linea-vida-segura-label", d.linea_vida_segura || "-");
-setText("arnes-completo-buen-estado-label", d.arnes_completo_buen_estado || "-");
-setText("suspender-trabajos-adyacentes-label", d.suspender_trabajos_adyacentes || "-");
-setText("numero-personas-autorizadas-label", d.numero_personas_autorizadas || "-");
-setText("trabajadores-aptos-evaluacion-label", d.trabajadores_aptos_evaluacion || "-");
-setText("requiere-barreras-label", d.requiere_barreras || "-");
-setText("observaciones-label", d.observaciones || "-");
+        setText("work-order-label", d.ot_numero || "-");
+        setText("tag-label", d.tag || "-");
+        setText("start-time-label", d.hora_inicio || "-");
+        setText("fecha-label", d.fecha || "-");
+        setText("activity-type-label", d.tipo_mantenimiento || "-");
+        setText("plant-label", d.area || "-");
+        setText("descripcion-trabajo-label", d.descripcion_trabajo || "-");
+        setText("empresa-label", d.empresa || "-");
+        setText("nombre-solicitante-label", d.solicitante || "-");
+        setText("sucursal-label", d.sucursal || "-");
+        setText("contrato-label", d.contrato || "-");
+        setText("work-order-label", d.ot_numero || "-");
+        setText("equipment-label", d.equipo_intervenir || "-");
+        setText("tag-label", d.tag || "-");
+        setText("requiere-escalera-label", d.requiere_escalera || "-");
+        setText("tipo-escalera-label", d.tipo_escalera || "-");
+        setText("requiere-canastilla-label", d.requiere_canastilla_grua || "-");
+        setText("aseguramiento-estrobo-label", d.aseguramiento_estrobo || "-");
+        setText(
+          "requiere-andamio-label",
+          d.requiere_andamio_cama_completa || "-"
+        );
+        setText("requiere-otro-acceso-label", d.otro_tipo_acceso || "-");
+        setText("cual-acceso-label", d.cual_acceso || "-");
+        setText(
+          "acceso-libre-obstaculos-label",
+          d.acceso_libre_obstaculos || "-"
+        );
+        setText("canastilla-asegurada-label", d.canastilla_asegurada || "-");
+        setText("andamio-completo-label", d.andamio_completo || "-");
+        setText(
+          "andamio-seguros-zapatas-label",
+          d.andamio_seguros_zapatas || "-"
+        );
+        setText("escaleras-buen-estado-label", d.escaleras_buen_estado || "-");
+        setText("linea-vida-segura-label", d.linea_vida_segura || "-");
+        setText(
+          "arnes-completo-buen-estado-label",
+          d.arnes_completo_buen_estado || "-"
+        );
+        setText(
+          "suspender-trabajos-adyacentes-label",
+          d.suspender_trabajos_adyacentes || "-"
+        );
+        setText(
+          "numero-personas-autorizadas-label",
+          d.numero_personas_autorizadas || "-"
+        );
+        setText(
+          "trabajadores-aptos-evaluacion-label",
+          d.trabajadores_aptos_evaluacion || "-"
+        );
+        setText("requiere-barreras-label", d.requiere_barreras || "-");
+        setText("observaciones-label", d.observaciones || "-");
       } else {
         console.warn("Estructura de datos inesperada o datos faltantes:", data);
       }
@@ -540,10 +580,10 @@ document.addEventListener("DOMContentLoaded", function () {
             d.equipo_intervenir || "-";
 
           // ANÁLISIS DE REQUISITOS PARA EFECTUAR EL TRABAJO
-        //  document.getElementById("requiere-escalera-label").textContent =
+          //  document.getElementById("requiere-escalera-label").textContent =
           //  d.requiere_escalera || "-";
-       //   const el = document.getElementById("requiere-escalera-label");
-         // console.log("Elemento existe:", el); // Debe mostrar el elemento <p>
+          //   const el = document.getElementById("requiere-escalera-label");
+          // console.log("Elemento existe:", el); // Debe mostrar el elemento <p>
 
           document.getElementById("tipo-escalera-label").textContent =
             d.tipo_escalera !== undefined ? d.tipo_escalera : "-";

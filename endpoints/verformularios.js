@@ -257,49 +257,63 @@ WHERE pt.id_permiso = $1
       resultDetalles = { rows: [] };
     } else if (tipo_permiso === "PT en Altura") {
       const queryGeneralAltura = `
-    SELECT 
-        pt.id_permiso,
-        TO_CHAR(pt.fecha_hora, 'DD/MM/YYYY') AS fecha,
-        pt.prefijo,
-        tp.nombre AS tipo_permiso,
-        pt.contrato,
-        pa.empresa,
-        s.nombre AS sucursal,
-        a.nombre AS area, 
-        d.nombre AS departamento,
-        pa.nombre_solicitante AS solicitante,
-        pa.descripcion_trabajo,
-        pa.tipo_mantenimiento,
-        pa.ot_numero,
-        pa.tag,
-        TO_CHAR(pa.hora_inicio, 'HH24:MI') AS hora_inicio,
-        pa.equipo_intervenir,
-        pa.requiere_escalera,
-        pa.requiere_canastilla_grua,
-        pa.aseguramiento_estrobo,
-        pa.requiere_andamio_cama_completa,
-        pa.otro_tipo_acceso,
-        pa.acceso_libre_obstaculos,
-        pa.canastilla_asegurada,
-        pa.andamio_completo,
-        pa.andamio_seguros_zapatas,
-        pa.escaleras_buen_estado,
-        pa.linea_vida_segura,
-        pa.arnes_completo_buen_estado,
-        pa.suspender_trabajos_adyacentes,
-        pa.numero_personas_autorizadas,
-        pa.trabajadores_aptos_evaluacion,
-        pa.requiere_barreras,
-        pa.observaciones,
-        TO_CHAR(pa.fecha_creacion, 'DD/MM/YYYY') AS fecha_creacion,
-        TO_CHAR(pa.fecha_actualizacion, 'DD/MM/YYYY') AS fecha_actualizacion
-    FROM permisos_trabajo pt
-    INNER JOIN pt_altura pa ON pt.id_permiso = pa.id_permiso
-    INNER JOIN sucursales s ON pt.id_sucursal = s.id_sucursal
-    INNER JOIN areas a ON pt.id_area = a.id_area
-    INNER JOIN departamentos d ON pt.id_departamento = d.id_departamento
-    INNER JOIN tipos_permisos tp ON pt.id_tipo_permiso = tp.id_tipo_permiso
-    WHERE pt.id_permiso = $1
+  SELECT 
+    pt.id_permiso,
+    TO_CHAR(pt.fecha_hora, 'DD/MM/YYYY') AS fecha,
+    pt.prefijo,
+    tp.nombre AS tipo_permiso,
+    pt.contrato,
+    pa.empresa,
+    s.nombre AS sucursal,
+    a.nombre AS area, 
+    d.nombre AS departamento,
+    pa.nombre_solicitante AS solicitante,
+    pa.descripcion_trabajo,
+    pa.tipo_mantenimiento,
+    pa.ot_numero,
+    pa.tag,
+    TO_CHAR(pa.hora_inicio, 'HH24:MI') AS hora_inicio,
+    pa.equipo_intervenir,
+    pa.fluido,
+    pa.presion,
+    pa.temperatura,
+    pa.requiere_escalera,
+    pa.requiere_canastilla_grua,
+    pa.aseguramiento_estrobo,
+    pa.requiere_andamio_cama_completa,
+    pa.otro_tipo_acceso,
+    pa.acceso_libre_obstaculos,
+    pa.canastilla_asegurada,
+    pa.andamio_completo,
+    pa.andamio_seguros_zapatas,
+    pa.escaleras_buen_estado,
+    pa.linea_vida_segura,
+    pa.arnes_completo_buen_estado,
+    pa.suspender_trabajos_adyacentes,
+    pa.numero_personas_autorizadas,
+    pa.trabajadores_aptos_evaluacion,
+    pa.requiere_barreras,
+    pa.observaciones,
+  TO_CHAR(pa.fecha_creacion, 'DD/MM/YYYY') AS fecha_creacion,
+  TO_CHAR(pa.fecha_actualizacion, 'DD/MM/YYYY') AS fecha_actualizacion,
+  pa.proteccion_especial,
+    pa.proteccion_especial_cual,
+    pa.equipo_caidas,
+    pa.equipo_caidas_cual,
+    pa.linea_amortiguador,
+    pa.punto_fijo,
+    pa.linea_vida,
+    pa.andamio_completo_opcion,
+    pa.tarjeta_andamio,
+    pa.viento_permitido,
+    pa.escalera_condicion
+  FROM permisos_trabajo pt
+  INNER JOIN pt_altura pa ON pt.id_permiso = pa.id_permiso
+  INNER JOIN sucursales s ON pt.id_sucursal = s.id_sucursal
+  INNER JOIN areas a ON pt.id_area = a.id_area
+  INNER JOIN departamentos d ON pt.id_departamento = d.id_departamento
+  INNER JOIN tipos_permisos tp ON pt.id_tipo_permiso = tp.id_tipo_permiso
+  WHERE pt.id_permiso = $1
 `;
 
       // Consulta para pt_altura

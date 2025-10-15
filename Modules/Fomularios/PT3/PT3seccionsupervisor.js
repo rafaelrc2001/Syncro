@@ -4,6 +4,55 @@ const idPermiso = params.get("id");
 
 // Mostrar nombres de responsable y operador del área en la sección de aprobaciones
 document.addEventListener("DOMContentLoaded", function () {
+  // Mostrar/ocultar el campo "Valor" según selección "SI" en radios de parámetros de gas
+  function toggleValorInput(radioName, inputName) {
+    const radios = document.getElementsByName(radioName);
+    const input = document.querySelector(`[name='${inputName}']`);
+    if (!input) return;
+    function update() {
+      const siRadio = Array.from(radios).find(
+        (r) => r.value === "SI" && r.checked
+      );
+      input.style.display = siRadio ? "" : "none";
+      if (!siRadio) input.value = "";
+    }
+    radios.forEach((r) => r.addEventListener("change", update));
+    update();
+  }
+
+  // Aplica la lógica para los campos de valor de parámetros de gas
+  toggleValorInput("co2_aprobado", "co2_valor");
+  toggleValorInput("amniaco_aprobado", "amniaco_valor");
+  toggleValorInput("oxigeno_aprobado", "oxigeno_valor");
+  toggleValorInput("lel_aprobado", "lel_valor");
+  toggleValorInput("otro_aprobado", "otro_valor");
+  // Mostrar/ocultar los campos "¿Cuál?" según selección "SI" en radios
+  function toggleDetalleInput(radioName, inputName) {
+    const radios = document.getElementsByName(radioName);
+    const input = document.querySelector(`[name='${inputName}']`);
+    if (!input) return;
+    function update() {
+      const siRadio = Array.from(radios).find(
+        (r) => r.value === "SI" && r.checked
+      );
+      input.style.display = siRadio ? "" : "none";
+      if (!siRadio) input.value = "";
+    }
+    radios.forEach((r) => r.addEventListener("change", update));
+    update();
+  }
+
+  // Aplica la lógica para los campos con detalle
+  toggleDetalleInput(
+    "proteccion_piel_cuerpo",
+    "detalle_proteccion_piel_cuerpo"
+  );
+  toggleDetalleInput(
+    "proteccion_respiratoria",
+    "detalle_proteccion_respiratoria"
+  );
+  toggleDetalleInput("proteccion_ocular", "detalle_proteccion_ocular");
+  toggleDetalleInput("ventilacion_forzada", "detalle_ventilacion_forzada");
   if (!idPermiso) return;
   fetch(`http://localhost:3000/api/autorizaciones/personas/${idPermiso}`)
     .then((res) => res.json())

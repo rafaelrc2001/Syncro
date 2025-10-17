@@ -30,17 +30,18 @@ function initEquipmentToggle() {
 
     // Si vamos a ocultar, preservamos los valores actuales en data-preserve
     if (!showEquipment) {
+      // Preservar valores de inputs (excepto `tag`, que no queremos preservar)
       if (equipmentEl) equipmentEl.dataset.preserve = equipmentEl.value;
-      if (tagEl) tagEl.dataset.preserve = tagEl.value;
       if (fluidField) fluidField.dataset.preserve = fluidField.value;
       if (pressureField) pressureField.dataset.preserve = pressureField.value;
       if (temperatureField)
         temperatureField.dataset.preserve = temperatureField.value;
-      // También guardar en sessionStorage como respaldo
+
+      // También guardar en sessionStorage como respaldo (no guardar `tag`)
       try {
         if (equipmentEl)
           sessionStorage.setItem("preserve_equipment", equipmentEl.value || "");
-        // No preservar tag en sessionStorage: borrar cualquier precedente
+        // Asegurarse de que no exista tag preservado
         sessionStorage.removeItem("preserve_tag");
         if (fluidField)
           sessionStorage.setItem("preserve_fluid", fluidField.value || "");
@@ -58,6 +59,50 @@ function initEquipmentToggle() {
       } catch (e) {
         console.warn("[EQUIP-TGL] no se pudo guardar en sessionStorage:", e);
       }
+
+      // Limpiar el valor de `tag` inmediatamente cuando el usuario selecciona NO
+      if (tagEl) {
+        tagEl.value = "";
+      }
+
+      // También limpiar el valor del campo `equipment` visualmente (pero
+      // mantenemos la preservación en dataset/sessionStorage para poder
+      // restaurarlo si el usuario vuelve a seleccionar "Sí")
+      if (equipmentEl) {
+        equipmentEl.value = "";
+      }
+
+      // Helper: limpiar elementos que muestran el valor (spans/labels dinámicos)
+      const clearAssociatedDisplays = (inputEl) => {
+        if (!inputEl || !inputEl.id) return;
+        const id = inputEl.id;
+        // patrones comunes de elementos que muestran valores
+        const selectors = [
+          `#${id}-display`,
+          `.${id}-display`,
+          `#display-${id}`,
+          `.${id}_display`,
+          `[data-display-for="${id}"]`,
+          `[data-bind="${id}"]`,
+        ];
+        for (const sel of selectors) {
+          const el = document.querySelector(sel);
+          if (el) el.textContent = "";
+        }
+        // Si la etiqueta <label for="id"> contiene un span.value, vaciarlo
+        const lbl = document.querySelector(`label[for="${id}"]`);
+        if (lbl) {
+          const valSpan = lbl.querySelector(".value");
+          if (valSpan) valSpan.textContent = "";
+        }
+      };
+
+      // Limpiar displays asociados a los campos relevantes
+      clearAssociatedDisplays(tagEl);
+      clearAssociatedDisplays(equipmentEl);
+      clearAssociatedDisplays(fluidField);
+      clearAssociatedDisplays(pressureField);
+      clearAssociatedDisplays(temperatureField);
     }
 
     // Mostrar/ocultar contenedores

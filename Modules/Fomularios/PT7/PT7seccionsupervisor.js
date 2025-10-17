@@ -1,4 +1,105 @@
 // --- Lógica fusionada para guardar campos y autorizar ---
+// Variables para fusión de datos (permiso específico y verformularios)
+let _permisoFetch = null;
+let _verformulariosFetch = null;
+
+// Helper: aplica valor según prioridad: permiso > verformularios.data > verformularios.general
+function aplicarCampoFusionado(
+  domId,
+  propPermiso,
+  propVerData,
+  propVerGeneral
+) {
+  let val = null;
+  if (
+    _permisoFetch &&
+    _permisoFetch[propPermiso] !== undefined &&
+    _permisoFetch[propPermiso] !== null &&
+    _permisoFetch[propPermiso] !== ""
+  ) {
+    val = _permisoFetch[propPermiso];
+  } else if (
+    _verformulariosFetch &&
+    _verformulariosFetch.data &&
+    _verformulariosFetch.data[propVerData] !== undefined &&
+    _verformulariosFetch.data[propVerData] !== null &&
+    _verformulariosFetch.data[propVerData] !== ""
+  ) {
+    val = _verformulariosFetch.data[propVerData];
+  } else if (
+    _verformulariosFetch &&
+    _verformulariosFetch.general &&
+    _verformulariosFetch.general[propVerGeneral] !== undefined &&
+    _verformulariosFetch.general[propVerGeneral] !== null &&
+    _verformulariosFetch.general[propVerGeneral] !== ""
+  ) {
+    val = _verformulariosFetch.general[propVerGeneral];
+  }
+  setText(domId, val || "-");
+}
+
+function actualizarCamposFusionados() {
+  // Campos que típicamente faltaban en la sección supervisor
+  // Campos generales / sincronizados con la sección area
+  aplicarCampoFusionado("prefijo-label", "prefijo", "prefijo", "prefijo");
+  aplicarCampoFusionado(
+    "maintenance-type-label",
+    "tipo_mantenimiento",
+    "tipo_mantenimiento",
+    "tipo_mantenimiento"
+  );
+  aplicarCampoFusionado(
+    "start-time-label",
+    "hora_inicio",
+    "hora_inicio",
+    "hora_inicio"
+  );
+  aplicarCampoFusionado("fecha-label", "fecha", "fecha", "fecha");
+  aplicarCampoFusionado(
+    "activity-type-label",
+    "tipo_mantenimiento",
+    "tipo_mantenimiento",
+    "tipo_mantenimiento"
+  );
+  aplicarCampoFusionado("plant-label", "area", "area", "area");
+  // descripción/descripcion_equipo/descripcion_trabajo
+  aplicarCampoFusionado(
+    "descripcion-trabajo-label",
+    "descripcion_equipo",
+    "descripcion_trabajo",
+    "descripcion_trabajo"
+  );
+  // Equipo: mantener ambas etiquetas que se usan en plantillas
+  aplicarCampoFusionado(
+    "equipment-description-label",
+    "descripcion_equipo",
+    "descripcion_trabajo",
+    "descripcion_trabajo"
+  );
+  aplicarCampoFusionado(
+    "equipment-label",
+    "descripcion_equipo",
+    "equipo_intervenir",
+    "equipo_intervenir"
+  );
+  aplicarCampoFusionado("empresa-label", "empresa", "empresa", "empresa");
+  aplicarCampoFusionado(
+    "nombre-solicitante-label",
+    "solicitante",
+    "solicitante",
+    "solicitante"
+  );
+  aplicarCampoFusionado("sucursal-label", "sucursal", "sucursal", "sucursal");
+  aplicarCampoFusionado("contrato-label", "contrato", "contrato", "contrato");
+  aplicarCampoFusionado(
+    "work-order-label",
+    "ot_numero",
+    "ot_numero",
+    "ot_numero"
+  );
+  aplicarCampoFusionado("tag-label", "tag", "tag", "tag");
+}
+
 // --- Lógica para el botón Autorizar (guardar identificación de la fuente y autorizar) ---
 const btnGuardarCampos = document.getElementById("btn-guardar-campos");
 if (btnGuardarCampos) {
@@ -250,6 +351,8 @@ if (idPermiso) {
       if (data && data.success && data.data) {
         const permiso = data.data;
         console.log("Valores del permiso recibidos:", permiso);
+        // Guardar permiso en caché para fusión
+        _permisoFetch = permiso;
         setText("maintenance-type-label", permiso.tipo_mantenimiento || "-");
         setText("work-order-label", permiso.ot_numero || "-");
         setText("tag-label", permiso.tag || "-");
@@ -347,6 +450,33 @@ if (idPermiso) {
             if (radio) radio.checked = true;
           }
         });
+        // Actualizar campos fusionados (permiso > verformularios.data > verformularios.general)
+        try {
+          actualizarCamposFusionados();
+        } catch (e) {
+          console.warn("actualizarCamposFusionados falló (permiso):", e);
+        }
+        // Intentar traer verformularios para completar datos generales (si aplica)
+        fetch(
+          `http://localhost:3000/api/verformularios?id=${encodeURIComponent(
+            idPermiso
+          )}`
+        )
+          .then((r) => r.json())
+          .then((vf) => {
+            _verformulariosFetch = vf || {};
+            try {
+              actualizarCamposFusionados();
+            } catch (e) {
+              console.warn(
+                "actualizarCamposFusionados falló (verformularios):",
+                e
+              );
+            }
+          })
+          .catch((err) => {
+            console.warn("No se pudo obtener verformularios para fusión:", err);
+          });
       } else {
         alert(
           "No se encontraron datos para este permiso o la API no respondió correctamente."
@@ -368,45 +498,93 @@ function setText(id, value) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  // Llenar selects de supervisor y categoría
+  // Leer el id del permiso de la URL (se usa para consultar autorizaciones)
+  const params2 = new URLSearchParams(window.location.search);
+  const idPermiso2 = params2.get("id");
+
+  // Llenar selects de supervisor y categoría y luego pre-seleccionar los valores
+  // guardados en /api/autorizaciones/personas/:id (si existen)
   rellenarSupervisoresYCategorias();
 
-  function rellenarSupervisoresYCategorias() {
-    fetch("http://localhost:3000/api/supervisores")
-      .then((resp) => resp.json())
-      .then((data) => {
-        const selectSupervisor = document.getElementById(
-          "responsable-aprobador"
-        );
-        if (selectSupervisor) {
-          selectSupervisor.innerHTML =
-            '<option value="" disabled selected>Seleccione un supervisor...</option>';
-          (Array.isArray(data) ? data : data.supervisores).forEach((sup) => {
+  async function rellenarSupervisoresYCategorias() {
+    try {
+      // Traer supervisores
+      const respSup = await fetch("http://localhost:3000/api/supervisores");
+      const supData = await respSup.json();
+      const selectSupervisor = document.getElementById("responsable-aprobador");
+      if (selectSupervisor) {
+        selectSupervisor.innerHTML =
+          '<option value="" disabled selected>Seleccione un supervisor...</option>';
+        (Array.isArray(supData) ? supData : supData.supervisores).forEach(
+          (sup) => {
             const option = document.createElement("option");
             option.value = sup.nombre || sup.id;
             option.textContent = sup.nombre;
             selectSupervisor.appendChild(option);
-          });
-        }
-      });
-
-    fetch("http://localhost:3000/api/categorias")
-      .then((resp) => resp.json())
-      .then((data) => {
-        const selectCategoria = document.getElementById(
-          "responsable-aprobador2"
+          }
         );
-        if (selectCategoria) {
-          selectCategoria.innerHTML =
-            '<option value="" disabled selected>Seleccione una categoría...</option>';
-          (Array.isArray(data) ? data : data.categorias).forEach((cat) => {
+      }
+
+      // Traer categorias
+      const respCat = await fetch("http://localhost:3000/api/categorias");
+      const catData = await respCat.json();
+      const selectCategoria = document.getElementById("responsable-aprobador2");
+      if (selectCategoria) {
+        selectCategoria.innerHTML =
+          '<option value="" disabled selected>Seleccione una categoría...</option>';
+        (Array.isArray(catData) ? catData : catData.categorias).forEach(
+          (cat) => {
             const option = document.createElement("option");
             option.value = cat.nombre || cat.id;
             option.textContent = cat.nombre;
             selectCategoria.appendChild(option);
-          });
+          }
+        );
+      }
+
+      // Si existe idPermiso, traer responsables guardados y setear stamps y selects
+      if (idPermiso2) {
+        try {
+          const respPers = await fetch(
+            `http://localhost:3000/api/autorizaciones/personas/${idPermiso2}`
+          );
+          const persData = await respPers.json();
+          if (persData && persData.success && persData.data) {
+            const supervisorName = persData.data.responsable_area;
+            const operadorName = persData.data.operador_area;
+            const supervisorStamp = document.getElementById("stamp-aprobador");
+            if (supervisorStamp)
+              supervisorStamp.textContent = supervisorName || "-";
+            const encargadoStamp = document.getElementById("stamp-encargado");
+            if (encargadoStamp)
+              encargadoStamp.textContent = operadorName || "-";
+
+            // Pre-seleccionar en los selects si existe la opción correspondiente
+            if (selectSupervisor && supervisorName) {
+              const opt = Array.from(selectSupervisor.options).find(
+                (o) =>
+                  o.value === supervisorName || o.textContent === supervisorName
+              );
+              if (opt) selectSupervisor.value = opt.value;
+            }
+            if (selectCategoria && operadorName) {
+              const opt2 = Array.from(selectCategoria.options).find(
+                (o) =>
+                  o.value === operadorName || o.textContent === operadorName
+              );
+              if (opt2) selectCategoria.value = opt2.value;
+            }
+          }
+        } catch (err) {
+          console.warn(
+            "No se pudo obtener autorizaciones/personas para preseleccionar:",
+            err
+          );
         }
-      });
+      }
+    } catch (err) {
+      console.error("Error al rellenar supervisores/categorias:", err);
+    }
   }
   // Guardar requisitos
   const btnGuardar = document.getElementById("btn-guardar-requisitos");
@@ -446,12 +624,27 @@ document.addEventListener("DOMContentLoaded", function () {
       };
       try {
         const resp = await fetch(
-          `http://localhost:3000/api/pt-radiativas/requisitos_area/${idPermiso}`,
+          `http://localhost:3000/api/pt-radiacion/requisitos_area/${idPermiso}`,
           {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),
           }
+        );
+        console.log("[PT7-SUP] payload (guardar requisitos):", payload);
+        let respJson = {};
+        try {
+          respJson = await resp.json();
+        } catch (e) {
+          console.warn(
+            "[PT7-SUP] no JSON en respuesta al guardar requisitos",
+            e
+          );
+        }
+        console.log(
+          "[PT7-SUP] respuesta guardar requisitos:",
+          resp.status,
+          respJson
         );
         if (!resp.ok) throw new Error("Error al guardar los requisitos");
         alert("Requisitos guardados correctamente");
@@ -543,94 +736,13 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
   }
-
-  // Leer el id del permiso de la URL
-  const params2 = new URLSearchParams(window.location.search);
-  const idPermiso2 = params2.get("id");
-  if (idPermiso2) {
-    // Llamar a la API para obtener los datos del permiso
-    fetch(
-      `http://localhost:3000/api/verformularios?id=${encodeURIComponent(
-        idPermiso2
-      )}`
-    )
-      .then((resp) => resp.json())
-      .then((data) => {
-        // Llenar campos generales usando data.data
-        if (data && data.data) {
-          const detalles = data.data;
-
-          if (document.getElementById("maintenance-type-label"))
-            document.getElementById("maintenance-type-label").textContent =
-              detalles.tipo_mantenimiento || "-";
-          if (document.getElementById("work-order-label"))
-            document.getElementById("work-order-label").textContent =
-              detalles.ot_numero || "-";
-          if (document.getElementById("tag-label"))
-            document.getElementById("tag-label").textContent =
-              detalles.tag || "-";
-          if (document.getElementById("start-time-label"))
-            document.getElementById("start-time-label").textContent =
-              detalles.hora_inicio || "-";
-          if (document.getElementById("equipment-description-label"))
-            document.getElementById("equipment-description-label").textContent =
-              detalles.descripcion_equipo || "-";
-          if (document.getElementById("special-tools-label"))
-            document.getElementById("special-tools-label").textContent =
-              detalles.requiere_herramientas_especiales || "-";
-          if (document.getElementById("special-tools-type-label"))
-            document.getElementById("special-tools-type-label").textContent =
-              detalles.tipo_herramientas_especiales || "-";
-          if (document.getElementById("adequate-tools-label"))
-            document.getElementById("adequate-tools-label").textContent =
-              detalles.herramientas_adecuadas || "-";
-          if (document.getElementById("pre-verification-label"))
-            document.getElementById("pre-verification-label").textContent =
-              detalles.requiere_verificacion_previa || "-";
-          if (document.getElementById("risk-knowledge-label"))
-            document.getElementById("risk-knowledge-label").textContent =
-              detalles.requiere_conocer_riesgos || "-";
-          if (document.getElementById("final-observations-label"))
-            document.getElementById("final-observations-label").textContent =
-              detalles.observaciones_medidas || "-";
-          // ...agrega aquí más campos generales de PT2 si los tienes...
-        }
-        // Rellenar AST y Participantes si existen en la respuesta
-        if (data.ast) {
-          mostrarAST(data.ast);
-        } else {
-          mostrarAST({}); // Limpia listas si no hay datos
-        }
-        if (data.actividades_ast) {
-          mostrarActividadesAST(data.actividades_ast);
-        } else {
-          mostrarActividadesAST([]); // Limpia tabla si no hay datos
-        }
-        if (data.participantes_ast) {
-          mostrarParticipantesAST(data.participantes_ast);
-        } else {
-          mostrarParticipantesAST([]); // Limpia tabla si no hay datos
-        }
-        let prefijo =
-          (data.general && data.general.prefijo) ||
-          (data.data && data.data.prefijo) ||
-          data.prefijo ||
-          "-";
-        document.getElementById("prefijo-label").textContent = prefijo;
-      })
-      .catch((err) => {
-        console.error("Error al obtener datos del permiso:", err);
-        alert(
-          "Error al obtener datos del permiso. Revisa la consola para más detalles."
-        );
-      });
-  }
+  // (verformularios ya se consulta cuando se carga el permiso específico más arriba)
 });
 
 // Salir: redirigir a AutorizarPT.html
 const btnSalirNuevo = document.getElementById("btn-salir-nuevo");
 if (btnSalirNuevo) {
   btnSalirNuevo.addEventListener("click", function () {
-   window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
+    window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
   });
 }

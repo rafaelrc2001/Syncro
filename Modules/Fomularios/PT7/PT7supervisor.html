@@ -13,45 +13,94 @@
 
 </head>
 <body style="background: #f4f6fb; min-height: 100vh; margin: 0; font-family: 'Roboto', Arial, sans-serif;">
-    <div style="display: flex; justify-content: center; align-items: flex-start; min-height: 100vh;">
-        <section class="executive-section" style="max-width: 900px; width: 100%; margin: 40px 0; background: #fff; border-radius: 18px; box-shadow: 0 4px 24px rgba(44,62,80,0.10); padding: 2.5rem 2rem;">
-            <div class="section-header">
-                <i class="ri-checkbox-circle-line"></i>
-                <h2>Permiso de Trabajo para Fuentes Radiactivas</h2>
-                 <h3 id="prefijo-label">-</h3>
-            </div>
-            <div class="executive-section usuario">
-                <div class="section-header">
-                    <i class="ri-information-line"></i>
-                    <h3>Datos generales</h3>
+        <div style="display: flex; justify-content: center; align-items: flex-start; min-height: 100vh;">
+            <section class="form-section" data-section="2" style="max-width: 900px; width: 100%; margin: 40px 0; background: #fff; border-radius: 18px; box-shadow: 0 4px 24px rgba(44,62,80,0.10); padding: 2.5rem 2rem;">
+                <div class="company-header">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <img src="/img/proagro.png" alt="Logo ProAgro" style="height: 60px; width: auto;">
                 </div>
-                <div class="executive-grid">
-                    <div class="executive-item">
-                        <label>Descripción del trabajo</label>
-                        <p id="descripcion-trabajo-label">-</p>
+                <div style="text-align: center; flex-grow: 1;">
+                    <h1 style="margin: 0; color: #2c3e50; font-size: 1.5rem; font-weight: 600;">SISTEMA DE PERMISOS DE TRABAJO</h1>
+                    <p style="margin: 0.5rem 0 0 0; color: #7f8c8d; font-size: 0.9rem;">Gestión Integral de Seguridad Laboral</p>
+                </div>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                    <img src="/img/pemex.png" alt="Logo PEMEX" style="height: 60px; width: auto;">
+                </div>
+         
+            </div>
+
+                <div class="section-header header-centered">
+                    <i class="ri-checkbox-circle-line"></i>
+                    <h2>Permiso de Trabajo para Fuentes Radiactivas</h2>
+                    <h3 id="prefijo-label">NP-XXXXXX</h3>
+                </div>
+                                 <div class="general-box-header">
+                                        <span>Información General</span>
+                                    </div>
+                  <div class="executive-section " style="margin-bottom: 0; box-shadow: none; background: transparent; border: none;">
+                      
+                   
+                       <div class="executive-grid">
+                          <div class="executive-item">
+                              <label>Hora de inicio</label>
+                              <p id="start-time-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                              <label>Fecha</label>
+                              <p id="fecha-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                              <label>Tipo de actividad</label>
+                              <p id="activity-type-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                              <label>Planta o lugar de trabajo</label>
+                              <p id="plant-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                              <label>Descripción del trabajo</label>
+                              <p id="descripcion-trabajo-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                              <label>Empresa</label>
+                              <p id="empresa-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                            <label>Nombre de quien solicita</label>
+                            <p id="nombre-solicitante-label">-</p>
+                            </div>
+                                                    <div class="executive-item">
+                            <label>Sucursal</label>
+                            <p id="sucursal-label">-</p>
+                            </div>
+                            <div class="executive-item">
+                            <label>Contrato</label>
+                            <p id="contrato-label">-</p>
+                            </div>
+                          <div class="executive-item">
+                              <label>O.T. No.</label>
+                              <p id="work-order-label">-</p>
+                          </div>
+                      </div>
+                  </div>
+                
+                  <div class="executive-section ">
+                    <div class="section-header">
+                        <i class="ri-tools-line"></i>
+                        <h3>Equipo</h3>
                     </div>
-                    <div class="executive-item">
-                        <label>Tipo de mantenimiento</label>
-                        <p id="maintenance-type-label" class="highlight"></p>
-                    </div>
-                    <div class="executive-item">
-                        <label>O.T. No.</label>
-                        <p id="work-order-label"></p>
-                    </div>
-                    <div class="executive-item">
-                        <label>TAG</label>
-                        <p id="tag-label"></p>
-                    </div>
-                    <div class="executive-item">
-                        <label>Hora de inicio</label>
-                        <p id="start-time-label"></p>
-                    </div>
-                    <div class="executive-item">
-                        <label>Equipo</label>
-                        <p id="equipment-description-label"></p>
+                    <div class="executive-grid">
+                        
+                        <div class="executive-item">
+                            <label>Equipo a Intervenir</label>
+                            <p id="equipment-label">-</p>
+                        </div>
+                        <div class="executive-item">
+                            <label>TAG</label>
+                            <p id="tag-label">-</p>
+                        </div>
                     </div>
                 </div>
-            </div>
       
 
 
@@ -327,11 +376,6 @@
                             <div class="stamp-placeholder"></div>
                             <div class="stamp-name" id="stamp-encargado"></div>
                             <div class="stamp-date"></div>
-                        </div>
-                        <div class="stamp approved">
-                            <div class="stamp-title">Pendiente por aprobar:</div>
-                            <div class="stamp-placeholder"></div>
-                            <div class="stamp-name">Pendiente</div>
                         </div>
                     </div>
                 </div>

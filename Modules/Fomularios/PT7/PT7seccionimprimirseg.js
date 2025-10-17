@@ -295,12 +295,27 @@ document.addEventListener("DOMContentLoaded", function () {
       };
       try {
         const resp = await fetch(
-          `http://localhost:3000/api/pt-radiativas/requisitos_area/${idPermiso}`,
+          `http://localhost:3000/api/pt-radiacion/requisitos_area/${idPermiso}`,
           {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),
           }
+        );
+        console.log("[PT7-IMP-SEG] payload (guardar requisitos):", payload);
+        let respJson = {};
+        try {
+          respJson = await resp.json();
+        } catch (e) {
+          console.warn(
+            "[PT7-IMP-SEG] no JSON en respuesta al guardar requisitos",
+            e
+          );
+        }
+        console.log(
+          "[PT7-IMP-SEG] respuesta guardar requisitos:",
+          resp.status,
+          respJson
         );
         if (!resp.ok) throw new Error("Error al guardar los requisitos");
         alert("Requisitos guardados correctamente");

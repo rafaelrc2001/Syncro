@@ -1,4 +1,91 @@
 // --- Lógica fusionada para guardar campos y autorizar ---
+// Variables para fusión de fuentes (permiso específico y verformularios)
+let _permisoFetch = null;
+let _verformulariosFetch = null;
+
+// Helper: aplica valor según prioridad: permiso > verformularios.data > verformularios.general
+function aplicarCampoFusionado(
+  domId,
+  propPermiso,
+  propVerData,
+  propVerGeneral
+) {
+  let val = null;
+  if (
+    _permisoFetch &&
+    _permisoFetch[propPermiso] !== undefined &&
+    _permisoFetch[propPermiso] !== null &&
+    _permisoFetch[propPermiso] !== ""
+  ) {
+    val = _permisoFetch[propPermiso];
+  } else if (
+    _verformulariosFetch &&
+    _verformulariosFetch.data &&
+    _verformulariosFetch.data[propVerData] !== undefined &&
+    _verformulariosFetch.data[propVerData] !== null &&
+    _verformulariosFetch.data[propVerData] !== ""
+  ) {
+    val = _verformulariosFetch.data[propVerData];
+  } else if (
+    _verformulariosFetch &&
+    _verformulariosFetch.general &&
+    _verformulariosFetch.general[propVerGeneral] !== undefined &&
+    _verformulariosFetch.general[propVerGeneral] !== null &&
+    _verformulariosFetch.general[propVerGeneral] !== ""
+  ) {
+    val = _verformulariosFetch.general[propVerGeneral];
+  }
+  // Usar la utilidad setText (declarada más abajo en el archivo)
+  setText(domId, val || "-");
+}
+
+function actualizarCamposFusionados() {
+  // Campos generales
+  aplicarCampoFusionado("prefijo-label", "prefijo", "prefijo", "prefijo");
+  aplicarCampoFusionado(
+    "start-time-label",
+    "hora_inicio",
+    "hora_inicio",
+    "hora_inicio"
+  );
+  aplicarCampoFusionado("fecha-label", "fecha", "fecha", "fecha");
+  aplicarCampoFusionado(
+    "activity-type-label",
+    "tipo_mantenimiento",
+    "tipo_mantenimiento",
+    "tipo_mantenimiento"
+  );
+  aplicarCampoFusionado("plant-label", "area", "area", "area");
+  // descripción/descripcion_equipo/descripcion_trabajo
+  aplicarCampoFusionado(
+    "descripcion-trabajo-label",
+    "descripcion_equipo",
+    "descripcion_trabajo",
+    "descripcion_trabajo"
+  );
+  aplicarCampoFusionado("empresa-label", "empresa", "empresa", "empresa");
+  aplicarCampoFusionado(
+    "nombre-solicitante-label",
+    "solicitante",
+    "solicitante",
+    "solicitante"
+  );
+  aplicarCampoFusionado("sucursal-label", "sucursal", "sucursal", "sucursal");
+  aplicarCampoFusionado("contrato-label", "contrato", "contrato", "contrato");
+  aplicarCampoFusionado(
+    "work-order-label",
+    "ot_numero",
+    "ot_numero",
+    "ot_numero"
+  );
+  aplicarCampoFusionado(
+    "equipment-label",
+    "descripcion_equipo",
+    "equipo_intervenir",
+    "equipo_intervenir"
+  );
+  aplicarCampoFusionado("tag-label", "tag", "tag", "tag");
+}
 const btnGuardarCampos = document.getElementById("btn-guardar-campos");
 if (btnGuardarCampos) {
   btnGuardarCampos.addEventListener("click", async function () {
@@ -64,6 +151,15 @@ if (btnGuardarCampos) {
           body: JSON.stringify(payload),
         }
       );
+      // Depuración: mostrar payload y respuesta
+      console.log("[PT7] payload (guardar campos):", payload);
+      let respJson = {};
+      try {
+        respJson = await resp.json();
+      } catch (e) {
+        console.warn("[PT7] no JSON en respuesta al guardar campos", e);
+      }
+      console.log("[PT7] respuesta guardar campos:", resp.status, respJson);
       if (!resp.ok) throw new Error("Error al guardar los requisitos");
     } catch (err) {
       alert("Error al guardar los campos/requisitos. No se puede autorizar.");
@@ -281,6 +377,8 @@ if (idPermiso) {
       if (data && data.success && data.data) {
         const permiso = data.data;
         console.log("Valores del permiso recibidos:", permiso);
+        // Guardar permiso en cache para fusión de campos
+        _permisoFetch = permiso;
         setText("maintenance-type-label", permiso.tipo_mantenimiento || "-");
         setText("work-order-label", permiso.ot_numero || "-");
         setText("tag-label", permiso.tag || "-");
@@ -336,6 +434,12 @@ if (idPermiso) {
             if (radio) radio.checked = true;
           }
         });
+        // Actualizar campos fusionados (permiso > verformularios.data > verformularios.general)
+        try {
+          actualizarCamposFusionados();
+        } catch (e) {
+          console.warn("actualizarCamposFusionados falló:", e);
+        }
       } else {
         alert(
           "No se encontraron datos para este permiso o la API no respondió correctamente."
@@ -505,6 +609,8 @@ document.addEventListener("DOMContentLoaded", function () {
     )
       .then((resp) => resp.json())
       .then((data) => {
+        // Guardar verformularios para fusión de campos
+        _verformulariosFetch = data || {};
         // Llenar campos generales usando data.data
         if (data && data.data) {
           const detalles = data.data;
@@ -542,6 +648,15 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("final-observations-label").textContent =
               detalles.observaciones_medidas || "-";
           // ...agrega aquí más campos generales de PT2 si los tienes...
+        }
+        // Asegurar que si el endpoint trae contrato en general, se muestre
+        if (data && data.general && data.general.contrato) {
+          setText("contrato-label", data.general.contrato);
+        }
+        try {
+          actualizarCamposFusionados();
+        } catch (e) {
+          console.warn("actualizarCamposFusionados falló (verformularios):", e);
         }
         // Rellenar AST y Participantes si existen en la respuesta
         if (data.ast) {

@@ -144,6 +144,14 @@ router.put("/pt-electrico/requisitos_area/:id", async (req, res) => {
     nivel_tension,
   } = req.body;
 
+  // LOG DE DEPURACIÓN: mostrar lo que llega desde el cliente
+  // LOG DE DEPURACIÓN: mostrar lo que llega desde el cliente
+  // LOG DE DEPURACIÓN: mostrar lo que llega desde el cliente
+  // LOG DE DEPURACIÓN: mostrar lo que llega desde el cliente
+
+  console.log("[DEBUG][PUT requisitos_area] id_permiso:", id_permiso);
+  console.log("[DEBUG][PUT requisitos_area] req.body:", req.body);
+
   try {
     const result = await db.query(
       `UPDATE pt_electrico SET

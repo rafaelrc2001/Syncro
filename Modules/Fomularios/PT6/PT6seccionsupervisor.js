@@ -76,6 +76,10 @@ if (btnGuardarCampos) {
     }
     try {
       // Guardar requisitos generales
+      console.log(
+        "[DEPURACIÓN] Enviando requisitos_area payload (supervisor):",
+        payload
+      );
       const resp = await fetch(
         `http://localhost:3000/api/pt-electrico/requisitos_area/${idPermiso}`,
         {
@@ -83,6 +87,10 @@ if (btnGuardarCampos) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         }
+      );
+      console.log(
+        "[DEPURACIÓN] Respuesta requisitos_area (supervisor) status:",
+        resp.status
       );
       if (!resp.ok) throw new Error("Error al guardar los requisitos");
 
@@ -148,7 +156,28 @@ if (btnGuardarCampos) {
         }
       }
 
-      window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
+      // Mostrar modal de confirmación (misma UX que PT5 y PT6 area)
+      const confirmationModal = document.getElementById("confirmation-modal");
+      if (confirmationModal) {
+        confirmationModal.style.display = "flex";
+      }
+      const permitNumber = document.getElementById("generated-permit");
+      if (permitNumber) {
+        permitNumber.textContent = idPermiso || "-";
+      }
+      // Cerrar el modal y redirigir al listado de supervisores
+      const modalCloseBtn = document.getElementById("modal-close-btn");
+      if (modalCloseBtn) {
+        modalCloseBtn.onclick = function () {
+          const confirmationModal =
+            document.getElementById("confirmation-modal");
+          if (confirmationModal) confirmationModal.style.display = "none";
+          window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
+        };
+      } else {
+        // Fallback: redirect si el modal o el botón no existen
+        window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
+      }
     } catch (err) {
       alert(
         "Error al autorizar el permiso. Revisa la consola para más detalles."
@@ -284,6 +313,22 @@ const params = new URLSearchParams(window.location.search);
 const idPermiso = params.get("id");
 if (idPermiso) {
   console.log("Consultando permiso de electrico con id:", idPermiso);
+  // Obtener los nombres de responsables (responsable de área / operador) — mismo comportamiento que PT5
+  fetch(`http://localhost:3000/api/autorizaciones/personas/${idPermiso}`)
+    .then((res) => res.json())
+    .then((data) => {
+      if (data && data.success && data.data) {
+        const supervisorStamp = document.getElementById("stamp-aprobador");
+        if (supervisorStamp)
+          supervisorStamp.textContent = data.data.responsable_area || "-";
+        const encargadoStamp = document.getElementById("stamp-encargado");
+        if (encargadoStamp)
+          encargadoStamp.textContent = data.data.operador_area || "-";
+      }
+    })
+    .catch((err) => {
+      console.error("Error al obtener responsables de área:", err);
+    });
   fetch(`http://localhost:3000/api/pt-electrico/${idPermiso}`)
     .then((resp) => resp.json())
     .then((data) => {
@@ -306,6 +351,17 @@ if (idPermiso) {
           "equipment-description-label",
           permiso.equipo_intervenir || "-"
         );
+
+        // Campos generales adicionales (prefijo, empresa, solicitante, etc.)
+        setText("prefijo-label", permiso.prefijo || "-");
+        setText("empresa-label", permiso.empresa || "-");
+        setText(
+          "nombre-solicitante-label",
+          permiso.solicitante || permiso.nombre_solicitante || "-"
+        );
+        setText("sucursal-label", permiso.sucursal || "-");
+        setText("contrato-label", permiso.contrato || "-");
+        setText("plant-label", permiso.area || "-");
 
         // Mapear campos de "Medidas para administrar los riesgos"
         setText("equipo_desenergizado", permiso.equipo_desenergizado || "-");
@@ -599,16 +655,40 @@ document.addEventListener("DOMContentLoaded", function () {
     )
       .then((resp) => resp.json())
       .then((data) => {
-        // Prefijo en el título y descripción del trabajo
+        // Prefijo y datos generales en el título y descripción del trabajo
         if (data && data.general) {
-          if (document.getElementById("prefijo-label")) {
+          if (document.getElementById("prefijo-label"))
             document.getElementById("prefijo-label").textContent =
               data.general.prefijo || "-";
-          }
-          if (document.getElementById("descripcion-trabajo-label")) {
+          if (document.getElementById("start-time-label"))
+            document.getElementById("start-time-label").textContent =
+              data.general.hora_inicio || "-";
+          if (document.getElementById("fecha-label"))
+            document.getElementById("fecha-label").textContent =
+              data.general.fecha || "-";
+          if (document.getElementById("activity-type-label"))
+            document.getElementById("activity-type-label").textContent =
+              data.general.tipo_mantenimiento || "-";
+          if (document.getElementById("plant-label"))
+            document.getElementById("plant-label").textContent =
+              data.general.area || "-";
+          if (document.getElementById("descripcion-trabajo-label"))
             document.getElementById("descripcion-trabajo-label").textContent =
               data.general.descripcion_trabajo || "-";
-          }
+          if (document.getElementById("empresa-label"))
+            document.getElementById("empresa-label").textContent =
+              data.general.empresa || "-";
+          if (document.getElementById("nombre-solicitante-label"))
+            document.getElementById("nombre-solicitante-label").textContent =
+              data.general.solicitante ||
+              data.general.nombre_solicitante ||
+              "-";
+          if (document.getElementById("sucursal-label"))
+            document.getElementById("sucursal-label").textContent =
+              data.general.sucursal || "-";
+          if (document.getElementById("contrato-label"))
+            document.getElementById("contrato-label").textContent =
+              data.general.contrato || "-";
         }
         // Llenar campos generales usando data.data
         if (data && data.data) {
@@ -717,6 +797,6 @@ function rellenarSupervisoresYCategorias() {
 const btnSalirNuevo = document.getElementById("btn-salir-nuevo");
 if (btnSalirNuevo) {
   btnSalirNuevo.addEventListener("click", function () {
-  window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
+    window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
   });
 }

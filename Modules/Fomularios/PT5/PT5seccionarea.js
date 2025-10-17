@@ -136,7 +136,28 @@ if (btnGuardarCampos) {
           encargado_area: operador_area,
         }),
       });
-      window.location.href = "/Modules/Usuario/AutorizarPT.html";
+      // Mostrar modal de confirmación y número de permiso (igual que PT4)
+      const confirmationModal = document.getElementById("confirmation-modal");
+      if (confirmationModal) {
+        confirmationModal.style.display = "flex";
+      }
+      const permitNumber = document.getElementById("generated-permit");
+      if (permitNumber) {
+        permitNumber.textContent = idPermiso || "-";
+      }
+      // El cierre del modal hará la redirección
+      const modalClose = document.getElementById("modal-close-btn");
+      if (modalClose) {
+        modalClose.onclick = function () {
+          const confirmationModal =
+            document.getElementById("confirmation-modal");
+          if (confirmationModal) confirmationModal.style.display = "none";
+          window.location.href = "/Modules/Usuario/AutorizarPT.html";
+        };
+      } else {
+        // Fallback: redirigir si el modal o el botón no existen
+        window.location.href = "/Modules/Usuario/AutorizarPT.html";
+      }
     } catch (err) {
       alert(
         "Error al autorizar el permiso. Revisa la consola para más detalles."

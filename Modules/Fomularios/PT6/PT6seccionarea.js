@@ -61,6 +61,7 @@ if (btnGuardarCampos) {
       nivel_tension: getInputValue("nivel_tension"),
     };
     try {
+      console.log("[DEPURACIÓN] Enviando requisitos_area payload:", payload);
       const resp = await fetch(
         `http://localhost:3000/api/pt-electrico/requisitos_area/${idPermiso}`,
         {
@@ -68,6 +69,10 @@ if (btnGuardarCampos) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         }
+      );
+      console.log(
+        "[DEPURACIÓN] Respuesta requisitos_area status:",
+        resp.status
       );
       if (!resp.ok) throw new Error("Error al guardar los requisitos");
     } catch (err) {
@@ -140,7 +145,28 @@ if (btnGuardarCampos) {
           encargado_area: operador_area,
         }),
       });
-      window.location.href = "/Modules/Usuario/AutorizarPT.html";
+      // Mostrar modal de confirmación y número de permiso (igual que PT5)
+      const confirmationModal = document.getElementById("confirmation-modal");
+      if (confirmationModal) {
+        confirmationModal.style.display = "flex";
+      }
+      const permitNumber = document.getElementById("generated-permit");
+      if (permitNumber) {
+        permitNumber.textContent = idPermiso || "-";
+      }
+      // El cierre del modal hará la redirección
+      const modalClose = document.getElementById("modal-close-btn");
+      if (modalClose) {
+        modalClose.onclick = function () {
+          const confirmationModal =
+            document.getElementById("confirmation-modal");
+          if (confirmationModal) confirmationModal.style.display = "none";
+          window.location.href = "/Modules/Usuario/AutorizarPT.html";
+        };
+      } else {
+        // Fallback: redirigir si el modal o el botón no existen
+        window.location.href = "/Modules/Usuario/AutorizarPT.html";
+      }
     } catch (err) {
       alert(
         "Error al autorizar el permiso. Revisa la consola para más detalles."
@@ -301,6 +327,16 @@ if (idPermiso) {
           "equipment-description-label",
           permiso.equipo_intervenir || "-"
         );
+        // Campos generales adicionales
+        setText("prefijo-label", permiso.prefijo || "-");
+        setText("empresa-label", permiso.empresa || "-");
+        setText(
+          "nombre-solicitante-label",
+          permiso.solicitante || permiso.nombre_solicitante || "-"
+        );
+        setText("sucursal-label", permiso.sucursal || "-");
+        setText("contrato-label", permiso.contrato || "-");
+        setText("plant-label", permiso.area || "-");
 
         // Mapear campos de "Medidas para administrar los riesgos"
         setText("equipo_desenergizado", permiso.equipo_desenergizado || "-");
@@ -530,16 +566,41 @@ document.addEventListener("DOMContentLoaded", function () {
     )
       .then((resp) => resp.json())
       .then((data) => {
-        // Prefijo en el título y descripción del trabajo
+        // Prefijo y datos generales en el título y descripción del trabajo
         if (data && data.general) {
-          if (document.getElementById("prefijo-label")) {
+          // Usamos document.getElementById directamente para no depender del orden
+          if (document.getElementById("prefijo-label"))
             document.getElementById("prefijo-label").textContent =
               data.general.prefijo || "-";
-          }
-          if (document.getElementById("descripcion-trabajo-label")) {
+          if (document.getElementById("start-time-label"))
+            document.getElementById("start-time-label").textContent =
+              data.general.hora_inicio || "-";
+          if (document.getElementById("fecha-label"))
+            document.getElementById("fecha-label").textContent =
+              data.general.fecha || "-";
+          if (document.getElementById("activity-type-label"))
+            document.getElementById("activity-type-label").textContent =
+              data.general.tipo_mantenimiento || "-";
+          if (document.getElementById("plant-label"))
+            document.getElementById("plant-label").textContent =
+              data.general.area || "-";
+          if (document.getElementById("descripcion-trabajo-label"))
             document.getElementById("descripcion-trabajo-label").textContent =
               data.general.descripcion_trabajo || "-";
-          }
+          if (document.getElementById("empresa-label"))
+            document.getElementById("empresa-label").textContent =
+              data.general.empresa || "-";
+          if (document.getElementById("nombre-solicitante-label"))
+            document.getElementById("nombre-solicitante-label").textContent =
+              data.general.solicitante ||
+              data.general.nombre_solicitante ||
+              "-";
+          if (document.getElementById("sucursal-label"))
+            document.getElementById("sucursal-label").textContent =
+              data.general.sucursal || "-";
+          if (document.getElementById("contrato-label"))
+            document.getElementById("contrato-label").textContent =
+              data.general.contrato || "-";
         }
         // Llenar campos generales usando data.data
         if (data && data.data) {

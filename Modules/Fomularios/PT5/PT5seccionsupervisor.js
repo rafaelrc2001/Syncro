@@ -8,7 +8,14 @@ function getRadioValue(name) {
 }
 
 function getInputValue(name) {
-  return document.querySelector(`[name="${name}"]`)?.value || "";
+  const byName = document.querySelector(`[name="${name}"]`);
+  if (byName) return byName.value || "";
+  const byId = document.getElementById(name);
+  if (byId) {
+    if (byId.value !== undefined) return byId.value || "";
+    return byId.textContent || byId.innerText || "";
+  }
+  return "";
 }
 
 // Nueva función para manejar checkboxes de SI/NO/NA
@@ -545,7 +552,24 @@ if (btnAutorizar) {
       }
     }
 
-    alert("Permiso autorizado correctamente");
-    window.location.href = "/Modules/SupSeguridad/supseguridad.html";
+    // --- MODAL DE CONFIRMACIÓN (replicado de PT4) ---
+    const confirmationModal = document.getElementById("confirmation-modal");
+    if (confirmationModal) {
+      confirmationModal.style.display = "flex";
+    }
+    const permitNumber = document.getElementById("generated-permit");
+    if (permitNumber) {
+      permitNumber.textContent = idPermiso || "-";
+    }
   });
+}
+
+// Cierre del modal y redirección (mismo comportamiento que PT4)
+const modalCloseBtn = document.getElementById("modal-close-btn");
+if (modalCloseBtn) {
+  modalCloseBtn.onclick = function () {
+    const confirmationModal = document.getElementById("confirmation-modal");
+    if (confirmationModal) confirmationModal.style.display = "none";
+    window.location.href = "/Modules/SupSeguridad/supseguridad.html";
+  };
 }

@@ -13,10 +13,9 @@
     <link rel="stylesheet" href="/CSS/Imprimir/EstiloImprimir-PT6.css">
 </head>
 <body style="background: #f4f6fb; min-height: 100vh; margin: 0; font-family: 'Roboto', Arial, sans-serif;">
-    <div style="display: flex; justify-content: center; align-items: flex-start; min-height: 100vh;">
-        <section class="executive-section" style="max-width: 900px; width: 100%; margin: 40px 0; background: #fff; border-radius: 18px; box-shadow: 0 4px 24px rgba(44,62,80,0.10); padding: 2.5rem 2rem;">
-            
-             <div class="company-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid #e3e6ea;">
+        <div style="display: flex; justify-content: center; align-items: flex-start; min-height: 100vh;">
+            <section class="form-section" data-section="2" style="max-width: 900px; width: 100%; margin: 40px 0; background: #fff; border-radius: 18px; box-shadow: 0 4px 24px rgba(44,62,80,0.10); padding: 2.5rem 2rem;">
+                <div class="company-header">
                 <div style="display: flex; align-items: center; gap: 1rem;">
                     <img src="/img/proagro.png" alt="Logo ProAgro" style="height: 60px; width: auto;">
                 </div>
@@ -30,43 +29,80 @@
          
             </div>
 
-            <div class="section-header">
-                <i class="ri-checkbox-circle-line"></i>
-                <h2>Permiso de Trabajo para Electrico </h2>
-                <h3 id="prefijo-label">-</h3>
-            </div>
-            <div class="executive-section usuario">
-                <div class="section-header">
-                    <i class="ri-information-line"></i>
-                    <h3>Datos generales</h3>
+                <div class="section-header header-centered">
+                    <i class="ri-checkbox-circle-line"></i>
+                    <h2>Permiso de Trabajo para Electrico</h2>
+                    <h3 id="prefijo-label">NP-XXXXXX</h3>
                 </div>
-                <div class="executive-grid">
-                    <div class="executive-item">
-                        <label>Descripción del trabajo</label>
-                        <p id="descripcion-trabajo-label">-</p>
+                                 <div class="general-box-header">
+                                        <span>Información General</span>
+                                    </div>
+                  <div class="executive-section " style="margin-bottom: 0; box-shadow: none; background: transparent; border: none;">
+                      
+                   
+                       <div class="executive-grid">
+                          <div class="executive-item">
+                              <label>Hora de inicio</label>
+                              <p id="start-time-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                              <label>Fecha</label>
+                              <p id="fecha-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                              <label>Tipo de actividad</label>
+                              <p id="activity-type-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                              <label>Planta o lugar de trabajo</label>
+                              <p id="plant-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                              <label>Descripción del trabajo</label>
+                              <p id="descripcion-trabajo-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                              <label>Empresa</label>
+                              <p id="empresa-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                            <label>Nombre de quien solicita</label>
+                            <p id="nombre-solicitante-label">-</p>
+                            </div>
+                                                    <div class="executive-item">
+                            <label>Sucursal</label>
+                            <p id="sucursal-label">-</p>
+                            </div>
+                            <div class="executive-item">
+                            <label>Contrato</label>
+                            <p id="contrato-label">-</p>
+                            </div>
+                          <div class="executive-item">
+                              <label>O.T. No.</label>
+                              <p id="work-order-label">-</p>
+                          </div>
+                      </div>
+                  </div>
+                
+                  <div class="executive-section ">
+                    <div class="section-header">
+                        <i class="ri-tools-line"></i>
+                        <h3>Equipo</h3>
                     </div>
-                    <div class="executive-item">
-                        <label>Tipo de mantenimiento</label>
-                        <p id="maintenance-type-label" class="highlight"></p>
-                    </div>
-                    <div class="executive-item">
-                        <label>O.T. No.</label>
-                        <p id="work-order-label"></p>
-                    </div>
-                    <div class="executive-item">
-                        <label>TAG</label>
-                        <p id="tag-label"></p>
-                    </div>
-                    <div class="executive-item">
-                        <label>Hora de inicio</label>
-                        <p id="start-time-label"></p>
-                    </div>
-                    <div class="executive-item">
-                        <label>Equipo</label>
-                        <p id="equipment-description-label"></p>
+                    <div class="executive-grid">
+                        
+                        <div class="executive-item">
+                            <label>Equipo a Intervenir</label>
+                            <p id="equipment-label">-</p>
+                        </div>
+                        <div class="executive-item">
+                            <label>TAG</label>
+                            <p id="tag-label">-</p>
+                        </div>
                     </div>
                 </div>
-            </div>
+
+
             <!-- Medidas para administrar los riesgos por parte del ejecutor de la actividad -->
 <div class="executive-section usuario">
     <div class="section-header">
@@ -190,6 +226,7 @@
     </table>
 </div>
 
+<!-- CONDICIONES ACTUALES DEL EQUIPO -->
 <!-- CONDICIONES ACTUALES DEL EQUIPO -->
 <div class="executive-section area">
     <div class="section-header section-header-cielo">
@@ -374,10 +411,41 @@
 
 
     </div>
+
+
+
+     <div id="modalCerrarPermiso" class="modal-comentario" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(44,62,80,0.25); z-index:1000; justify-content:center; align-items:center;">
+                                            <div style="background:#fff; border-radius:12px; max-width:400px; width:90vw; padding:2em 1.5em; box-shadow:0 4px 24px rgba(44,62,80,0.18); display:flex; flex-direction:column; gap:1em;">
+                                                <h3 style="margin:0 0 0.5em 0; font-size:1.2em; color:#2980b9;">
+                                                    <i class="ri-lock-2-line" style="margin-right:8px;"></i>Motivo de Cierre de Permiso
+                                                </h3>
+                                                <textarea id="comentarioCerrarPermiso" rows="4" style="width:100%; border:1px solid #d0d7de; border-radius:6px; padding:8px; resize:vertical;" placeholder="Escribe el motivo del cierre..."></textarea>
+                                                <div style="display:flex; justify-content:flex-end; gap:10px;">
+                                                    <button id="btnCancelarCerrarPermiso" type="button" style="background:#eee; color:#333; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Cancelar</button>
+                                                    <button id="btnGuardarCerrarPermiso" type="button" style="background:#2980b9; color:#fff; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Guardar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        
+                                            <div id="modalCancelarPermisoUnico" class="modal-comentario" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(44,62,80,0.25); z-index:1000; justify-content:center; align-items:center;">
+                                                <div style="background:#fff; border-radius:12px; max-width:400px; width:90vw; padding:2em 1.5em; box-shadow:0 4px 24px rgba(44,62,80,0.18); display:flex; flex-direction:column; gap:1em;">
+                                                    <h3 style="margin:0 0 0.5em 0; font-size:1.2em; color:#c0392b;">
+                                                        <i class="ri-close-circle-line" style="margin-right:8px;"></i>Motivo de Cancelación de Permiso
+                                                    </h3>
+                                                    <textarea id="comentarioCancelarPermiso" rows="4" style="width:100%; border:1px solid #d0d7de; border-radius:6px; padding:8px; resize:vertical;" placeholder="Escribe el motivo de la cancelación..."></textarea>
+                                                    <div style="display:flex; justify-content:flex-end; gap:10px;">
+                                                        <button id="btnCancelarCancelarPermiso" type="button" style="background:#eee; color:#333; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Cancelar</button>
+                                                        <button id="btnGuardarCancelarPermiso" type="button" style="background:#c0392b; color:#fff; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Guardar</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
 </body>
     
 </html>
 
-<script src="/Modules/Fomularios/PT6/PT6seccionimprimirseg.js"></script>
+<script src="/Modules/Fomularios/PT6/PT6seccionimprimir.js"></script>
 </body>
 </html>

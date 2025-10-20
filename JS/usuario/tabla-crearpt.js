@@ -196,7 +196,9 @@ function mostrarPermisosFiltrados(filtro) {
     <td>${permiso.area}</td>
     <td>${permiso.solicitante}</td>
  <td>${formatearFecha(permiso.fecha_hora)}</td>
-    <td><span class="status-badge${badgeClass ? " " + badgeClass : ""}">${permiso.estatus}</span></td>
+    <td><span class="status-badge${badgeClass ? " " + badgeClass : ""}">${
+      permiso.estatus
+    }</span></td>
     <td>
         <button class="action-btn print" data-idpermiso="${
           permiso.id_permiso
@@ -248,6 +250,7 @@ function actualizarPaginacion(totalPaginas, filtro) {
   const pagContainer = document.querySelector(".pagination");
   if (!pagContainer) return;
   pagContainer.innerHTML = "";
+
   // Botón anterior
   const btnPrev = document.createElement("button");
   btnPrev.className = "pagination-btn";
@@ -260,17 +263,42 @@ function actualizarPaginacion(totalPaginas, filtro) {
     }
   };
   pagContainer.appendChild(btnPrev);
-  // Botones de página
-  for (let i = 1; i <= totalPaginas; i++) {
-    const btn = document.createElement("button");
-    btn.className = "pagination-btn" + (i === paginaActual ? " active" : "");
-    btn.textContent = i;
-    btn.onclick = () => {
-      paginaActual = i;
-      mostrarPermisosFiltrados(document.getElementById("status-filter").value);
-    };
-    pagContainer.appendChild(btn);
+
+  // Paginación compacta (primera, ..., cercanas, ..., última)
+  const maxVisible = 2; // páginas antes/después de la actual
+  let pages = [];
+  if (totalPaginas <= 7) {
+    for (let i = 1; i <= totalPaginas; i++) pages.push(i);
+  } else {
+    pages.push(1);
+    if (paginaActual > maxVisible + 2) pages.push("...");
+    let start = Math.max(2, paginaActual - maxVisible);
+    let end = Math.min(totalPaginas - 1, paginaActual + maxVisible);
+    for (let i = start; i <= end; i++) pages.push(i);
+    if (paginaActual < totalPaginas - maxVisible - 1) pages.push("...");
+    pages.push(totalPaginas);
   }
+
+  pages.forEach((p) => {
+    if (p === "...") {
+      const span = document.createElement("span");
+      span.textContent = "...";
+      span.className = "pagination-ellipsis";
+      pagContainer.appendChild(span);
+    } else {
+      const btn = document.createElement("button");
+      btn.className = "pagination-btn" + (p === paginaActual ? " active" : "");
+      btn.textContent = p;
+      btn.onclick = () => {
+        paginaActual = p;
+        mostrarPermisosFiltrados(
+          document.getElementById("status-filter").value
+        );
+      };
+      pagContainer.appendChild(btn);
+    }
+  });
+
   // Botón siguiente
   const btnNext = document.createElement("button");
   btnNext.className = "pagination-btn";

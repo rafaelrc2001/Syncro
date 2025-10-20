@@ -9,9 +9,10 @@ const pool = require("./database");
 router.get("/vertablas", async (req, res) => {
   try {
     const result = await pool.query(`
-       SELECT 
+    SELECT 
     pt.id_permiso,
     pt.prefijo,
+    pt.contrato,
     tp.nombre AS tipo_permiso,
     COALESCE(ptnp.descripcion_trabajo, pta.descripcion_trabajo, ptc.descripcion_trabajo, ptf.descripcion_trabajo, pte.descripcion_trabajo, ptr.descripcion_trabajo, pta2.descripcion_trabajo) AS descripcion,
     a.nombre AS area,
@@ -44,9 +45,10 @@ router.get("/vertablas/:id_departamento", async (req, res) => {
   try {
     const result = await pool.query(
       `
-                    SELECT 
-        pt.id_permiso,
-        pt.prefijo,
+              SELECT 
+              pt.id_permiso,
+              pt.prefijo,
+              pt.contrato,
         tp.nombre AS tipo_permiso,
         COALESCE(ptnp.descripcion_trabajo, pta.descripcion_trabajo, ptc.descripcion_trabajo, ptf.descripcion_trabajo, pte.descripcion_trabajo, ptr.descripcion_trabajo, pta2.descripcion_trabajo) AS descripcion,
         a.nombre AS area,
@@ -83,8 +85,9 @@ async function obtenerPermisosPorDepartamento(id_departamento) {
     const result = await pool.query(
       `
 SELECT 
-        pt.id_permiso,
-        pt.prefijo,
+  pt.id_permiso,
+  pt.prefijo,
+  pt.contrato,
         tp.nombre AS tipo_permiso,
         COALESCE(ptnp.descripcion_trabajo, pta.descripcion_trabajo, ptc.descripcion_trabajo, ptf.descripcion_trabajo, pte.descripcion_trabajo, ptr.descripcion_trabajo, pta2.descripcion_trabajo) AS descripcion,
         a.nombre AS area,
@@ -120,9 +123,10 @@ router.get("/autorizar/:id_departamento", async (req, res) => {
   try {
     const result = await pool.query(
       `
-        SELECT 
-    pt.id_permiso,
-    pt.prefijo,
+    SELECT 
+  pt.id_permiso,
+  pt.prefijo,
+  pt.contrato,
     tp.nombre AS tipo_permiso,
     COALESCE(ptnp.descripcion_trabajo, pta.descripcion_trabajo, ptc.descripcion_trabajo, ptf.descripcion_trabajo, pte.descripcion_trabajo, ptr.descripcion_trabajo, pta2.descripcion_trabajo) AS descripcion,
     a.nombre AS area,
@@ -163,8 +167,9 @@ router.get("/autorizar-jefe", async (req, res) => {
   try {
     const result = await pool.query(`
         SELECT 
-    pt.id_permiso,
-    pt.prefijo,
+      pt.id_permiso,
+      pt.prefijo,
+      pt.contrato,
     tp.nombre AS tipo_permiso,
     COALESCE(ptnp.descripcion_trabajo, pta.descripcion_trabajo, ptc.descripcion_trabajo, ptf.descripcion_trabajo, pte.descripcion_trabajo, ptr.descripcion_trabajo, pta2.descripcion_trabajo) AS descripcion,
     a.nombre AS area,

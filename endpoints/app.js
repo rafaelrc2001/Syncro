@@ -28,6 +28,7 @@ const graficasAreasRouter = require("./graficas/endpoint_graficas_areas");
 const permisosTipoRouter = require("./graficas/endpoint_permisos");
 const graficaEstatusRouter = require("./graficas/endpoint_grafica_estatus");
 const tablaPermisosRouter = require("./graficas/endpoint_tabla");
+const exportarRouter = require("./exportar");
 
 const loginconsultaRouter = require("./loginconsulta");
 
@@ -76,6 +77,7 @@ app.use("/api", graficasAreasRouter); // Monta las rutas de graficas/endpoint_gr
 app.use("/api", permisosTipoRouter); // Monta las rutas de graficas/endpoint_permisos.js bajo el prefijo /api
 app.use("/api", graficaEstatusRouter); // Monta las rutas de graficas/endpoint_grafica_estatus.js bajo el prefijo /api
 app.use("/api", tablaPermisosRouter); // Monta las rutas de graficas/endpoint_tabla.js bajo el prefijo /api
+app.use("/api", exportarRouter); // Monta las rutas de exportar.js bajo /api (p.ej. /api/exportar-supervisor)
 
 // ================= RUTAS DE TABLAS BASE =================
 const tablasBase = require("./tablasbase");

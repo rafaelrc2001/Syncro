@@ -91,10 +91,19 @@ function mostrarPermisosFiltrados(filtro) {
     });
   }
 
-  // Filtrado por folio
+  // Filtrado por texto (folio, contrato, solicitante, tipo_permiso)
   if (filtroBusqueda) {
     filtrados = filtrados.filter((permiso) => {
-      return (permiso.prefijo || "").toLowerCase().includes(filtroBusqueda);
+      const prefijo = (permiso.prefijo || "").toLowerCase();
+      const contrato = (permiso.contrato || "").toString().toLowerCase();
+      const solicitante = (permiso.solicitante || "").toLowerCase();
+      const tipo = (permiso.tipo_permiso || "").toLowerCase();
+      return (
+        prefijo.includes(filtroBusqueda) ||
+        contrato.includes(filtroBusqueda) ||
+        solicitante.includes(filtroBusqueda) ||
+        tipo.includes(filtroBusqueda)
+      );
     });
   }
 
@@ -688,3 +697,46 @@ function actualizarPaginacion(totalPaginas, filtro) {
   };
   pagContainer.appendChild(btnNext);
 }
+
+// Devuelve los permisos actualmente filtrados (sin paginación).
+// Esto se expone en `window` para que otros scripts (p. ej. export) puedan obtener
+// exactamente los registros que el usuario está viendo/filtrando.
+window.getPermisosFiltrados = function () {
+  // Si aún no se cargó nada
+  if (!Array.isArray(permisosGlobal)) return [];
+
+  let filtrados = permisosGlobal.slice();
+
+  // Aplicar filtro por estatus tal como en mostrarPermisosFiltrados
+  const statusSelect = document.getElementById("status-filter");
+  const filtroStatus = statusSelect ? statusSelect.value : "all";
+  if (filtroStatus !== "all") {
+    filtrados = filtrados.filter((permiso) => {
+      const estatus = (permiso.estatus || "").toLowerCase().trim();
+      const filtroNorm = (filtroStatus || "").toLowerCase().trim();
+      if (filtroNorm === "continua") {
+        return estatus === "continua";
+      }
+      return estatus === filtroNorm;
+    });
+  }
+
+  // Aplicar búsqueda de texto (folio, contrato, solicitante, tipo_permiso)
+  if (filtroBusqueda) {
+    const q = filtroBusqueda;
+    filtrados = filtrados.filter((permiso) => {
+      const prefijo = (permiso.prefijo || "").toLowerCase();
+      const contrato = (permiso.contrato || "").toString().toLowerCase();
+      const solicitante = (permiso.solicitante || "").toLowerCase();
+      const tipo = (permiso.tipo_permiso || "").toLowerCase();
+      return (
+        prefijo.includes(q) ||
+        contrato.includes(q) ||
+        solicitante.includes(q) ||
+        tipo.includes(q)
+      );
+    });
+  }
+
+  return filtrados;
+};

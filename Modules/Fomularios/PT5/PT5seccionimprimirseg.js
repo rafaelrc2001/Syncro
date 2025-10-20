@@ -64,6 +64,8 @@ async function imprimirPermisoTradicional() {
 }
 
 // Event listener para el botón de imprimir
+// Nota: el mapeo de datos se realiza cuando llegan las respuestas de las APIs (ver fetch() más abajo).
+// Registramos el botón de imprimir de forma segura sin leer variables globales no definidas.
 const btnImprimir = document.getElementById("btn-imprimir-permiso");
 if (btnImprimir) {
   btnImprimir.addEventListener("click", function (e) {
@@ -99,7 +101,16 @@ function getRadioValue(name) {
 }
 
 function getInputValue(name) {
-  return document.querySelector(`[name="${name}"]`)?.value || "";
+  const byName = document.querySelector(`[name="${name}"]`);
+  if (byName) return byName.value || "";
+  const byId = document.getElementById(name);
+  if (byId) {
+    // Inputs, textareas
+    if (byId.value !== undefined) return byId.value || "";
+    // Other elements
+    return byId.textContent || byId.innerText || "";
+  }
+  return "";
 }
 
 // Nueva función para manejar checkboxes de SI/NO/NA
@@ -186,6 +197,270 @@ function mostrarParticipantesAST(participantes) {
       });
     }
   }
+}
+
+// Estado temporal que junta las distintas fuentes para construir la estructura final
+const printSources = {
+  general: null,
+  detalles: null,
+  fuego: null,
+  ast: null,
+  actividades_ast: null,
+  participantes_ast: null,
+  responsables_area: null,
+};
+
+function formatDateIsoToDDMMYYYY(iso) {
+  if (!iso) return null;
+  try {
+    const d = new Date(iso);
+    if (isNaN(d)) return null;
+    const dd = String(d.getDate()).padStart(2, "0");
+    const mm = String(d.getMonth() + 1).padStart(2, "0");
+    const yyyy = d.getFullYear();
+    return `${dd}/${mm}/${yyyy}`;
+  } catch (err) {
+    return null;
+  }
+}
+
+/**
+ * Construye la estructura final para impresión siguiendo el ejemplo proporcionado.
+ * Devuelve un objeto con: tipo_permiso, general, detalles, ast, actividades_ast, participantes_ast, responsables_area
+ */
+function construirEstructuraImpresion(sources) {
+  const {
+    general = {},
+    detalles = {},
+    fuego = {},
+    ast = null,
+    actividades_ast = null,
+    participantes_ast = null,
+    responsables_area = null,
+  } = sources || {};
+
+  // Prioridad: fuego > detalles > general
+  const pick = (key) => {
+    if (
+      fuego &&
+      fuego[key] !== undefined &&
+      fuego[key] !== null &&
+      fuego[key] !== ""
+    )
+      return fuego[key];
+    if (
+      detalles &&
+      detalles[key] !== undefined &&
+      detalles[key] !== null &&
+      detalles[key] !== ""
+    )
+      return detalles[key];
+    if (
+      general &&
+      general[key] !== undefined &&
+      general[key] !== null &&
+      general[key] !== ""
+    )
+      return general[key];
+    return null;
+  };
+
+  const gen = {
+    id_permiso:
+      pick("id_permiso") ||
+      pick("id") ||
+      pick("idPermiso") ||
+      general.id ||
+      null,
+    fecha:
+      formatDateIsoToDDMMYYYY(
+        pick("fecha") || pick("fecha_creacion") || general.fecha_creacion
+      ) || null,
+    prefijo: pick("prefijo") || null,
+    tipo_permiso:
+      pick("tipo_permiso") || pick("tipo_mantenimiento") || "Permiso Fuego",
+    contrato: pick("contrato") || null,
+    empresa: pick("empresa") || null,
+    sucursal: pick("sucursal") || null,
+    area: pick("area") || null,
+    departamento: pick("departamento") || null,
+    solicitante: pick("solicitante") || pick("nombre_solicitante") || null,
+    descripcion_trabajo: pick("descripcion_trabajo") || null,
+    tipo_mantenimiento: pick("tipo_mantenimiento") || null,
+    ot_numero: pick("ot_numero") || null,
+    tag: pick("tag") || null,
+    hora_inicio: pick("hora_inicio") || null,
+    equipo_intervenir: pick("equipo_intervenir") || null,
+    fluido: pick("fluido") || null,
+    presion: pick("presion") || pick("pressure") || null,
+    temperatura: pick("temperatura") || pick("temperature") || null,
+    // campos de medidas/requisitos opcionales que pueden venir en fuego o detalles
+    requiere_escalera: pick("requiere_escalera") || null,
+    requiere_canastilla_grua:
+      pick("requiere_canastilla_grua") || pick("requiere_canastilla") || null,
+    aseguramiento_estrobo: pick("aseguramiento_estrobo") || null,
+    requiere_andamio_cama_completa:
+      pick("requiere_andamio_cama_completa") || null,
+    otro_tipo_acceso: pick("otro_tipo_acceso") || null,
+    acceso_libre_obstaculos: pick("acceso_libre_obstaculos") || null,
+    canastilla_asegurada: pick("canastilla_asegurada") || null,
+    andamio_completo: pick("andamio_completo") || null,
+    andamio_seguros_zapatas: pick("andamio_seguros_zapatas") || null,
+    escaleras_buen_estado: pick("escaleras_buen_estado") || null,
+    linea_vida_segura: pick("linea_vida_segura") || null,
+    arnes_completo_buen_estado: pick("arnes_completo_buen_estado") || null,
+    suspender_trabajos_adyacentes:
+      pick("suspender_trabajos_adyacentes") || null,
+    numero_personas_autorizadas: pick("numero_personas_autorizadas") || null,
+    trabajadores_aptos_evaluacion:
+      pick("trabajadores_aptos_evaluacion") || null,
+    requiere_barreras: pick("requiere_barreras") || null,
+    observaciones: pick("observaciones") || null,
+    fecha_creacion:
+      formatDateIsoToDDMMYYYY(
+        pick("fecha_creacion") || general.fecha_creacion
+      ) || null,
+    fecha_actualizacion:
+      formatDateIsoToDDMMYYYY(
+        pick("fecha_actualizacion") || general.fecha_actualizacion
+      ) || null,
+  };
+
+  return {
+    tipo_permiso: gen.tipo_permiso || "Permiso Fuego",
+    general: gen,
+    detalles: detalles || {},
+    ast: ast || {},
+    actividades_ast: actividades_ast || [],
+    participantes_ast: participantes_ast || [],
+    responsables_area: responsables_area || {},
+  };
+}
+
+function updateImpresion() {
+  try {
+    const estructura = construirEstructuraImpresion(printSources);
+    // Exponer para depuración
+    window.printPayload = estructura;
+    // Llamar a la función existente de mapeo usando las fuentes originales para mantener compatibilidad
+    mostrarDatosImprimir({
+      general: estructura.general || {},
+      detalles: estructura.detalles || {},
+      fuego: printSources.fuego || {},
+      ast: estructura.ast,
+      actividades_ast: estructura.actividades_ast,
+      participantes_ast: estructura.participantes_ast,
+    });
+  } catch (err) {
+    console.error("Error al construir/actualizar payload de impresión:", err);
+  }
+}
+
+/**
+ * Mapea los datos combinados (general, detalles, fuego) a los labels de la vista de impresión.
+ * Prioridad de fuentes: fuego > detalles > general
+ */
+function mostrarDatosImprimir(sources = {}) {
+  const { fuego = {}, detalles = {}, general = {} } = sources;
+
+  function pick(...keys) {
+    for (const k of keys) {
+      if (fuego && fuego[k] !== undefined && fuego[k] !== null) return fuego[k];
+      if (detalles && detalles[k] !== undefined && detalles[k] !== null)
+        return detalles[k];
+      if (general && general[k] !== undefined && general[k] !== null)
+        return general[k];
+    }
+    return "-";
+  }
+
+  // General / encabezados
+  setText("prefijo-label", pick("prefijo", "id_permiso", "id"));
+  setText("start-time-label", pick("hora_inicio", "start_time", "hora"));
+  setText("fecha-label", pick("fecha"));
+  setText(
+    "activity-type-label",
+    pick("tipo_mantenimiento", "maintenance_type")
+  );
+  setText("plant-label", pick("area", "plant"));
+  setText(
+    "descripcion-trabajo-label",
+    pick("descripcion_trabajo", "descripcion")
+  );
+  setText("empresa-label", pick("empresa"));
+  setText(
+    "nombre-solicitante-label",
+    pick("solicitante", "nombre_solicitante")
+  );
+  setText("sucursal-label", pick("sucursal"));
+  setText("contrato-label", pick("contrato"));
+  setText("work-order-label", pick("ot_numero", "ot"));
+  setText("equipment-label", pick("equipo_intervenir", "equipo"));
+  setText("tag-label", pick("tag"));
+
+  // Condiciones del proceso
+  setText("fluid-label", pick("fluido"));
+  setText("pressure-label", pick("presion", "pressure"));
+  setText("temperature-label", pick("temperatura", "temperature"));
+
+  // Requisitos para efectuar el trabajo
+  const requisitos = [
+    "fuera_operacion",
+    "despresurizado_purgado",
+    "producto_entrampado",
+    "necesita_aislamiento",
+    "con_valvulas",
+    "con_juntas_ciegas",
+    "requiere_lavado",
+    "requiere_neutralizado",
+    "requiere_vaporizado",
+    "suspender_trabajos_adyacentes",
+    "acordonar_area",
+    "prueba_gas_toxico_inflamable",
+    "equipo_electrico_desenergizado",
+    "tapar_purgas_drenajes",
+  ];
+  requisitos.forEach((r) => setText(`${r}-label`, pick(r)));
+
+  // Medidas/requisitos para administrar riesgos por parte del ejecutor
+  const medidas = [
+    "ventilacion_forzada",
+    "limpieza_interior",
+    "instalo_ventilacion_forzada",
+    "equipo_conectado_tierra",
+    "cables_pasan_drenajes",
+    "cables_uniones_intermedias",
+    "equipo_proteccion_personal",
+  ];
+  medidas.forEach((m) => setText(`${m}-label`, pick(m)));
+
+  // Prueba de gas específica
+  setText("co2-label", pick("co2"));
+  setText("amoniaco-label", pick("amoniaco"));
+  setText("oxigeno-label", pick("oxigeno"));
+  setText("explosividad_lel-label", pick("explosividad_lel"));
+  setText("otro_gas_cual-label", pick("otro_gas_cual"));
+  setText("observaciones_gas-label", pick("observaciones_gas"));
+
+  // --- Verificación para administrar los riesgos (campos del supervisor) ---
+  setText("explosividad_interior-label", pick("explosividad_interior"));
+  setText("explosividad_exterior-label", pick("explosividad_exterior"));
+  setText("vigia_contraincendio-label", pick("vigia_contraincendio"));
+  setText("manguera_contraincendio-label", pick("manguera_contraincendio"));
+  setText("cortina_agua-label", pick("cortina_agua"));
+  setText("extintor_contraincendio-label", pick("extintor_contraincendio"));
+  setText("cubrieron_drenajes-label", pick("cubrieron_drenajes"));
+
+  // Asegurar también que condiciones del proceso están mapeadas (alternativas)
+  setText("fluid-label", pick("fluido", "fluid"));
+  setText("pressure-label", pick("presion", "pressure"));
+  setText("temperature-label", pick("temperatura", "temperature"));
+
+  // AST y participantes si vinieron en sources
+  if (sources.ast) mostrarAST(sources.ast);
+  if (sources.actividades_ast) mostrarActividadesAST(sources.actividades_ast);
+  if (sources.participantes_ast)
+    mostrarParticipantesAST(sources.participantes_ast);
 }
 
 function rellenarSupervisoresYCategorias() {
@@ -359,7 +634,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnSalir = document.getElementById("btn-salir-nuevo");
   if (btnSalir) {
     btnSalir.addEventListener("click", function () {
-      window.location.href = "/Modules/SupSeguridad/supseguridad.html";
+      window.location.href = "../../SupSeguridad/SupSeguridad.html";
     });
   }
 
@@ -428,6 +703,17 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
           mostrarParticipantesAST([]);
         }
+        // Guardar fuentes y actualizar la estructura para impresión
+        try {
+          printSources.general = data.general || {};
+          printSources.detalles = data.data || {};
+          printSources.ast = data.ast || {};
+          printSources.actividades_ast = data.actividades_ast || [];
+          printSources.participantes_ast = data.participantes_ast || [];
+          updateImpresion();
+        } catch (err) {
+          console.error("Error al almacenar fuentes (verformularios):", err);
+        }
       });
 
     // 2. Obtener datos específicos del permiso de fuego
@@ -436,6 +722,13 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((data) => {
         if (data && data.success && data.data) {
           mostrarDatosSupervisor(data.data);
+          // Guardar fuentes fuego y actualizar la estructura para impresión
+          try {
+            printSources.fuego = data.data || {};
+            updateImpresion();
+          } catch (err) {
+            console.error("Error al almacenar fuentes (pt-fuego):", err);
+          }
         } else {
           console.warn(
             "Estructura de datos inesperada o datos faltantes:",
@@ -464,6 +757,17 @@ function llenarTablaResponsables(idPermiso) {
 
       if (result.success && result.data) {
         const data = result.data;
+        // Guardar responsables para la estructura de impresión
+        try {
+          printSources.responsables_area = {
+            responsable_area: data.responsable_area || null,
+            operador_area: data.operador_area || null,
+            nombre_supervisor: data.nombre_supervisor || null,
+          };
+        } catch (err) {
+          console.error("Error guardando responsables en printSources:", err);
+        }
+
         const filas = [
           { nombre: data.responsable_area, cargo: "Responsable de área" },
           { nombre: data.operador_area, cargo: "Operador del área" },
@@ -503,11 +807,30 @@ function llenarTablaResponsables(idPermiso) {
           tr.innerHTML = `<td colspan="3">Sin responsables registrados</td>`;
           tbody.appendChild(tr);
         }
+        // Actualizar la estructura de impresión ahora que tenemos responsables
+        try {
+          updateImpresion();
+        } catch (err) {
+          console.error(
+            "Error al actualizar impresion luego de responsables:",
+            err
+          );
+        }
       } else {
         // Si no hay datos, muestra mensaje
         const tr = document.createElement("tr");
         tr.innerHTML = `<td colspan="3">Sin responsables registrados</td>`;
         tbody.appendChild(tr);
+        // Asegurar que printSources.responsables_area esté definido
+        printSources.responsables_area = {};
+        try {
+          updateImpresion();
+        } catch (err) {
+          console.error(
+            "Error al actualizar impresion (sin responsables):",
+            err
+          );
+        }
       }
     })
     .catch((err) => {

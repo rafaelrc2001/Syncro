@@ -125,8 +125,12 @@
 
         <!-- Actions Section -->
         <section class="actions-section">
-          <button class="btn secondary">
+          <button id="export-excel-btn" type="button" class="btn secondary">
             <i class="ri-download-line"></i> Exportar a Excel
+          </button>
+
+          <button id="export-csv-btn" type="button" class="btn secondary">
+            <i class="ri-file-text-line"></i> Exportar a CSV
           </button>
 
           <div class="filter-dropdown">
@@ -189,8 +193,6 @@
     </div>
 
     <!-- Modal de ver -->
-    
-       
 
     <div id="modalComentario" class="modal">
       <div class="modal-content">
@@ -238,5 +240,9 @@
     <script src="/JS/supervisor/MenuSupervisor.js"></script>
     <script src="/JS/generales/LogicaVer.js"></script>
     <script type="module" src="/JS/supervisor/tabla-supervisor.js"></script>
+    <!-- SheetJS (xlsx) for Excel export -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="/JS/supervisor/export_excel.js"></script>
+    <script src="/JS/supervisor/export_csv.js"></script>
   </body>
 </html>

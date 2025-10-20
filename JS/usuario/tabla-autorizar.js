@@ -176,7 +176,16 @@ function mostrarPermisosFiltrados(filtro) {
   // Filtrado por folio
   if (filtroBusqueda) {
     filtrados = filtrados.filter((permiso) => {
-      return (permiso.prefijo || "").toLowerCase().includes(filtroBusqueda);
+      const prefijo = (permiso.prefijo || "").toLowerCase();
+      const contrato = (permiso.contrato || "").toString().toLowerCase();
+      const solicitante = (permiso.solicitante || "").toLowerCase();
+      const tipo = (permiso.tipo_permiso || "").toLowerCase();
+      return (
+        prefijo.includes(filtroBusqueda) ||
+        contrato.includes(filtroBusqueda) ||
+        solicitante.includes(filtroBusqueda) ||
+        tipo.includes(filtroBusqueda)
+      );
     });
   }
 
@@ -793,3 +802,179 @@ function formatearFecha(fechaISO) {
     minute: "2-digit",
   });
 }
+
+// Devuelve los permisos actualmente filtrados (sin paginación).
+// Se expone en `window` para que otros scripts (p. ej. export) puedan obtener
+// exactamente los registros que el usuario está viendo/filtrando.
+window.getPermisosFiltrados = function () {
+  if (!Array.isArray(permisosGlobal)) return [];
+
+  let filtrados = permisosGlobal.slice();
+
+  // Aplicar filtro por estatus tal como en mostrarPermisosFiltrados
+  const statusSelect = document.getElementById("status-filter");
+  const filtroStatus = statusSelect ? statusSelect.value : "all";
+  if (filtroStatus !== "all") {
+    filtrados = filtrados.filter((permiso) => {
+      const estatus = (permiso.estatus || "").toLowerCase().trim();
+      const filtroNorm = (filtroStatus || "").toLowerCase().trim();
+      if (filtroNorm === "continua") return estatus === "continua";
+      return estatus === filtroNorm;
+    });
+  }
+
+  // Aplicar búsqueda de texto (folio, contrato, solicitante, tipo_permiso)
+  if (filtroBusqueda) {
+    const q = filtroBusqueda;
+    filtrados = filtrados.filter((permiso) => {
+      const prefijo = (permiso.prefijo || "").toLowerCase();
+      const contrato = (permiso.contrato || "").toString().toLowerCase();
+      const solicitante = (permiso.solicitante || "").toLowerCase();
+      const tipo = (permiso.tipo_permiso || "").toLowerCase();
+      return (
+        prefijo.includes(q) ||
+        contrato.includes(q) ||
+        solicitante.includes(q) ||
+        tipo.includes(q)
+      );
+    });
+  }
+
+  return filtrados;
+};
+
+// Exportar a Excel (intenta usar SheetJS si está cargado en la página; si no, cae a CSV)
+function exportPermisosToExcel(rows, filename = "export-permisos.xlsx") {
+  if (!rows || !rows.length) {
+    alert("No hay registros para exportar.");
+    return;
+  }
+
+  // Mapea los campos a columnas más legibles si se desea
+  const mapped = rows.map((p) => ({
+    Prefijo: p.prefijo || "",
+    Tipo: p.tipo_permiso || "",
+    Descripcion: p.descripcion || "",
+    Area: p.area || "",
+    Solicitante: p.solicitante || "",
+    Contrato: p.contrato || "",
+    Fecha: formatearFecha(p.fecha_hora) || "",
+    Estatus: p.estatus || "",
+    ID: p.id_permiso || "",
+  }));
+
+  // Si SheetJS (XLSX) está disponible, usarlo
+  if (window.XLSX && typeof window.XLSX.utils !== "undefined") {
+    try {
+      const ws = window.XLSX.utils.json_to_sheet(mapped);
+      const wb = window.XLSX.utils.book_new();
+      window.XLSX.utils.book_append_sheet(wb, ws, "Permisos");
+      window.XLSX.writeFile(wb, filename);
+      return;
+    } catch (err) {
+      console.error("Error exportando con SheetJS:", err);
+      // fallback a CSV
+    }
+  }
+
+  // Fallback: CSV download
+  const keys = Object.keys(mapped[0]);
+  const lines = [keys.join(",")];
+  mapped.forEach((row) => {
+    const vals = keys.map((k) => {
+      const v = row[k] == null ? "" : String(row[k]);
+      // escapado simple
+      return '"' + v.replace(/"/g, '""') + '"';
+    });
+    lines.push(vals.join(","));
+  });
+  const csv = lines.join("\r\n");
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename.replace(/\.xlsx$|\.csv$/i, "") + ".csv";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+// Conectar el botón de export (busca id "export-excel" o clase ".export-excel")
+document.addEventListener("DOMContentLoaded", () => {
+  const attachExport = (el) => {
+    if (!el) return;
+    el.addEventListener("click", () => {
+      (async () => {
+        try {
+          // Intenta pedir al servidor la consulta detallada por departamento
+          const usuario = JSON.parse(localStorage.getItem("usuario")) || {};
+          const id_departamento = usuario.id;
+          const status =
+            (document.getElementById("status-filter") || {}).value || "all";
+          const q = (filtroBusqueda || "").trim();
+          if (!id_departamento)
+            throw new Error("No se encontró id_departamento");
+          const url = `/api/exportar-autorizar/${encodeURIComponent(
+            id_departamento
+          )}?q=${encodeURIComponent(q)}&status=${encodeURIComponent(status)}`;
+          const resp = await fetch(url);
+          if (!resp.ok) throw new Error("Error en exportar-autorizar server");
+          const data = await resp.json();
+          if (Array.isArray(data) && data.length > 0) {
+            // Mapear columnas exactamente como devuelve el servidor
+            const now = new Date();
+            const stamp = now.toISOString().slice(0, 19).replace(/[:T]/g, "-");
+            // Si existe SheetJS, crear workbook con las columnas recibidas
+            if (window.XLSX && typeof window.XLSX.utils !== "undefined") {
+              const worksheet = window.XLSX.utils.json_to_sheet(data);
+              const workbook = window.XLSX.utils.book_new();
+              window.XLSX.utils.book_append_sheet(
+                workbook,
+                worksheet,
+                "Permisos"
+              );
+              window.XLSX.writeFile(
+                workbook,
+                `permisos-detallado-${stamp}.xlsx`
+              );
+            } else {
+              // fallback a CSV
+              exportPermisosToExcel(data, `permisos-detallado-${stamp}.xlsx`);
+            }
+            return;
+          }
+          // Si no hay datos, caer al export cliente
+          const rows = window.getPermisosFiltrados();
+          const now2 = new Date();
+          const stamp2 = now2.toISOString().slice(0, 19).replace(/[:T]/g, "-");
+          exportPermisosToExcel(rows, `permisos-${stamp2}.xlsx`);
+        } catch (err) {
+          console.error(
+            "Export server failed, falling back to client export:",
+            err
+          );
+          const rows = window.getPermisosFiltrados();
+          const now = new Date();
+          const stamp = now.toISOString().slice(0, 19).replace(/[:T]/g, "-");
+          exportPermisosToExcel(rows, `permisos-${stamp}.xlsx`);
+        }
+      })();
+    });
+  };
+
+  const btnById = document.getElementById("export-excel");
+  attachExport(btnById);
+  // También aceptar el id que usan otras páginas (por ejemplo supervisor)
+  const btnByIdAlt = document.getElementById("export-excel-btn");
+  attachExport(btnByIdAlt);
+  // también por clase
+  document.querySelectorAll(".export-excel").forEach(attachExport);
+  // y por atributo data-export para flexibilidad
+  document.querySelectorAll('[data-export="permisos"]').forEach(attachExport);
+  // Si la página usa el botón genérico en .actions-section (sin id), lo enlazamos también
+  const genericActionsBtn = document.querySelector(
+    ".actions-section .btn.secondary"
+  );
+  attachExport(genericActionsBtn);
+});

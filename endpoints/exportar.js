@@ -266,64 +266,64 @@ router.get("/exportar-crear/:id_departamento", async (req, res) => {
     // Base query (igual que exportar-supervisor pero filtrando por departamento)
     // Add sensible fallbacks so exported JSON has non-null strings where possible
     let sql = `SELECT DISTINCT ON (pt.id_permiso)
-      pt.id_permiso,
-      pt.prefijo,
-      tp.nombre AS tipo_permiso,
-      DATE(pt.fecha_hora) AS fecha,
-      COALESCE(
-          TO_CHAR(ptnp.hora_inicio, 'HH24:MI'), 
-          TO_CHAR(pta.hora_inicio, 'HH24:MI'), 
-          TO_CHAR(ptc.hora_inicio, 'HH24:MI'), 
-          TO_CHAR(ptf.hora_inicio, 'HH24:MI'), 
-          TO_CHAR(pte.hora_inicio, 'HH24:MI'), 
-          TO_CHAR(ptr.hora_inicio, 'HH24:MI'), 
-          TO_CHAR(pta2.hora_inicio, 'HH24:MI'),
-          TO_CHAR(pt.fecha_hora, 'HH24:MI')
-      ) AS hora_inicio,
-      COALESCE(ptnp.tipo_mantenimiento, pta.tipo_mantenimiento, ptc.tipo_mantenimiento, ptf.tipo_mantenimiento, pte.tipo_mantenimiento, ptr.tipo_mantenimiento, pta2.tipo_mantenimiento, '') AS tipo_actividad,
-      a.nombre AS planta_lugar_trabajo,
-      COALESCE(ptnp.descripcion_trabajo, pta.descripcion_trabajo, ptc.descripcion_trabajo, ptf.descripcion_trabajo, pte.descripcion_trabajo, ptr.descripcion_trabajo, pta2.descripcion_trabajo, '') AS descripcion_trabajo,
-      COALESCE(ptnp.empresa, pta.empresa, ptc.empresa, ptf.empresa, pte.empresa, ptr.empresa, pta2.empresa, '') AS empresa,
-      COALESCE(ptnp.nombre_solicitante, pta.nombre_solicitante, ptc.nombre_solicitante, ptf.nombre_solicitante, pte.nombre_solicitante, ptr.nombre_solicitante, pta2.nombre_solicitante, '') AS nombre_solicitante,
-      COALESCE(s.nombre, '') AS sucursal,
-      COALESCE(pt.contrato::text, '') AS contrato,
-      COALESCE(ptnp.ot_no, pta.ot_numero, ptc.ot_numero, ptf.ot_numero, pte.ot_numero, ptr.ot_numero, pta2.ot_numero, '') AS ot_numero,
-      COALESCE(ptnp.equipo_intervencion, pta.descripcion_equipo, ptc.equipo_intervenir, ptf.equipo_intervenir, pte.equipo_intervenir, ptr.equipo_intervenir, pta2.equipo_intervenir, '') AS equipo_intervenir,
-      COALESCE(ptnp.tag, pta.tag, ptc.tag, ptf.tag, pte.tag, ptr.tag, pta2.tag, '') AS tag,
-      COALESCE(az.responsable_area, '') AS responsable_area,
-      COALESCE(sup.nombre, '') AS responsable_seguridad,
-      COALESCE(az.operador_area, '') AS operador_responsable,
-      a.nombre AS area,
-      e.estatus,
-      pt.fecha_hora
-  FROM permisos_trabajo pt
-  INNER JOIN tipos_permisos tp ON pt.id_tipo_permiso = tp.id_tipo_permiso
-  INNER JOIN areas a ON pt.id_area = a.id_area
-  INNER JOIN estatus e ON pt.id_estatus = e.id_estatus
-    LEFT JOIN sucursales s ON pt.id_sucursal = s.id_sucursal
-  LEFT JOIN pt_no_peligroso ptnp ON pt.id_permiso = ptnp.id_permiso
-  LEFT JOIN pt_apertura pta ON pt.id_permiso = pta.id_permiso
-  LEFT JOIN pt_confinados ptc ON pt.id_permiso = ptc.id_permiso
-  LEFT JOIN pt_fuego ptf ON pt.id_permiso = ptf.id_permiso
-  LEFT JOIN pt_electrico pte ON pt.id_permiso = pte.id_permiso
-  LEFT JOIN pt_radiacion ptr ON pt.id_permiso = ptr.id_permiso
-  LEFT JOIN pt_altura pta2 ON pt.id_permiso = pta2.id_permiso
-  LEFT JOIN autorizaciones az ON pt.id_permiso = az.id_permiso
-  LEFT JOIN supervisores sup ON az.id_supervisor = sup.id_supervisor
-  WHERE a.id_departamento = $1\n`;
+        pt.id_permiso,
+        pt.prefijo,
+        tp.nombre AS tipo_permiso,
+        DATE(pt.fecha_hora) AS fecha,
+        COALESCE(
+            TO_CHAR(ptnp.hora_inicio, 'HH24:MI'), 
+            TO_CHAR(pta.hora_inicio, 'HH24:MI'), 
+            TO_CHAR(ptc.hora_inicio, 'HH24:MI'), 
+            TO_CHAR(ptf.hora_inicio, 'HH24:MI'), 
+            TO_CHAR(pte.hora_inicio, 'HH24:MI'), 
+            TO_CHAR(ptr.hora_inicio, 'HH24:MI'), 
+            TO_CHAR(pta2.hora_inicio, 'HH24:MI'),
+            TO_CHAR(pt.fecha_hora, 'HH24:MI')
+        ) AS hora_inicio,
+        COALESCE(ptnp.tipo_mantenimiento, pta.tipo_mantenimiento, ptc.tipo_mantenimiento, ptf.tipo_mantenimiento, pte.tipo_mantenimiento, ptr.tipo_mantenimiento, pta2.tipo_mantenimiento, '') AS tipo_actividad,
+        a.nombre AS planta_lugar_trabajo,
+        COALESCE(ptnp.descripcion_trabajo, pta.descripcion_trabajo, ptc.descripcion_trabajo, ptf.descripcion_trabajo, pte.descripcion_trabajo, ptr.descripcion_trabajo, pta2.descripcion_trabajo, '') AS descripcion_trabajo,
+        COALESCE(ptnp.empresa, pta.empresa, ptc.empresa, ptf.empresa, pte.empresa, ptr.empresa, pta2.empresa, '') AS empresa,
+        COALESCE(ptnp.nombre_solicitante, pta.nombre_solicitante, ptc.nombre_solicitante, ptf.nombre_solicitante, pte.nombre_solicitante, ptr.nombre_solicitante, pta2.nombre_solicitante, '') AS nombre_solicitante,
+        COALESCE(s.nombre, '') AS sucursal,
+        COALESCE(pt.contrato::text, '') AS contrato,
+        COALESCE(ptnp.ot_no, pta.ot_numero, ptc.ot_numero, ptf.ot_numero, pte.ot_numero, ptr.ot_numero, pta2.ot_numero, '') AS ot_numero,
+        COALESCE(ptnp.equipo_intervencion, pta.descripcion_equipo, ptc.equipo_intervenir, ptf.equipo_intervenir, pte.equipo_intervenir, ptr.equipo_intervenir, pta2.equipo_intervenir, '') AS equipo_intervenir,
+        COALESCE(ptnp.tag, pta.tag, ptc.tag, ptf.tag, pte.tag, ptr.tag, pta2.tag, '') AS tag,
+        COALESCE(az.responsable_area, '') AS responsable_area,
+        COALESCE(sup.nombre, '') AS responsable_seguridad,
+        COALESCE(az.operador_area, '') AS operador_responsable,
+        a.nombre AS area,
+        e.estatus,
+        pt.fecha_hora
+    FROM permisos_trabajo pt
+    INNER JOIN tipos_permisos tp ON pt.id_tipo_permiso = tp.id_tipo_permiso
+    INNER JOIN areas a ON pt.id_area = a.id_area
+    INNER JOIN estatus e ON pt.id_estatus = e.id_estatus
+      LEFT JOIN sucursales s ON pt.id_sucursal = s.id_sucursal
+    LEFT JOIN pt_no_peligroso ptnp ON pt.id_permiso = ptnp.id_permiso
+    LEFT JOIN pt_apertura pta ON pt.id_permiso = pta.id_permiso
+    LEFT JOIN pt_confinados ptc ON pt.id_permiso = ptc.id_permiso
+    LEFT JOIN pt_fuego ptf ON pt.id_permiso = ptf.id_permiso
+    LEFT JOIN pt_electrico pte ON pt.id_permiso = pte.id_permiso
+    LEFT JOIN pt_radiacion ptr ON pt.id_permiso = ptr.id_permiso
+    LEFT JOIN pt_altura pta2 ON pt.id_permiso = pta2.id_permiso
+    LEFT JOIN autorizaciones az ON pt.id_permiso = az.id_permiso
+    LEFT JOIN supervisores sup ON az.id_supervisor = sup.id_supervisor
+    WHERE a.id_departamento = $1\n`;
 
     // If includeAll is false, append the existence check so behavior remains backwards compatible
     if (!includeAll) {
       sql += `    /* Keep the existence check for type-specific rows so we only export permisos that have a pt_* record */
-    AND (
-      ptnp.id_permiso IS NOT NULL 
-      OR pta.id_permiso IS NOT NULL 
-      OR ptc.id_permiso IS NOT NULL 
-      OR ptf.id_permiso IS NOT NULL 
-      OR pte.id_permiso IS NOT NULL 
-      OR ptr.id_permiso IS NOT NULL 
-      OR pta2.id_permiso IS NOT NULL
-    )\n`;
+      AND (
+        ptnp.id_permiso IS NOT NULL 
+        OR pta.id_permiso IS NOT NULL 
+        OR ptc.id_permiso IS NOT NULL 
+        OR ptf.id_permiso IS NOT NULL 
+        OR pte.id_permiso IS NOT NULL 
+        OR ptr.id_permiso IS NOT NULL 
+        OR pta2.id_permiso IS NOT NULL
+      )\n`;
     }
 
     // Push department param first

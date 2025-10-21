@@ -785,7 +785,7 @@ document.addEventListener("DOMContentLoaded", function () {
 const btnSalirNuevo = document.getElementById("btn-salir-nuevo");
 if (btnSalirNuevo) {
   btnSalirNuevo.addEventListener("click", function () {
-    window.location.href = "/Modules/Usuario/CrearPT.html";
+    window.location.href = "/Modules/Usuario/AutorizarPT.html";
   });
 }
 

@@ -1,3 +1,13 @@
+import {
+  asignarEventosVer,
+  mostrarInformacionGeneral,
+  mostrarDetallesTecnicos,
+  mostrarAST,
+  mostrarActividadesAST,
+  mostrarParticipantesAST,
+  renderApertura,
+} from "../generales/LogicaVerFormularios.js";
+
 const btnCancelarEspecial = document.getElementById("btn-cancelar-especial");
 if (btnCancelarEspecial) {
   btnCancelarEspecial.addEventListener("click", function () {
@@ -14,35 +24,6 @@ if (btnCancelarEspecial) {
     }
   });
 }
-
-// Botón especial para terminar permisos
-const btnTerminarEspecial = document.getElementById("btn-terminar-especial");
-if (btnTerminarEspecial) {
-  btnTerminarEspecial.addEventListener("click", function () {
-    const modal = document.getElementById("modalComentarioTerminarEspecial");
-    if (idPermisoSeleccionado && modal) {
-      modal.setAttribute("data-idpermiso", idPermisoSeleccionado);
-      modal.classList.add("active");
-      console.log(
-        "modalComentarioTerminarEspecial abierto con id_permiso:",
-        idPermisoSeleccionado
-      );
-    } else {
-      alert("Selecciona un permiso primero");
-    }
-  });
-}
-import { asignarEventosVer } from "../generales/LogicaVerFormularios.js";
-import {
-  renderApertura,
-  renderAperturaAreaVisual,
-  renderAperturaSupervisorVisual,
-} from "../generales/render_pt_apertura.js";
-import { renderComentario } from "../generales/render_comentario_firmas.js";
-
-// funcionesusuario.js
-// Centraliza la lógica de tarjetas y tabla de permisos para el usuario
-
 let permisosGlobal = [];
 let paginaActual = 1;
 const registrosPorPagina = 7;
@@ -744,38 +725,47 @@ function ocultarModalComentarioContinuar() {
   document.getElementById("modalComentarioContinuar").style.display = "none";
 }
 
-// Mostrar el modal al hacer clic en "Continuar"
-document
-  .getElementById("btn-continuar-pt")
-  .addEventListener("click", function () {
+// Mostrar el modal al hacer clic en "Continuar" (guardado por si el elemento no existe)
+const btnContinuarEl = document.getElementById("btn-continuar-pt");
+if (btnContinuarEl) {
+  btnContinuarEl.addEventListener("click", function () {
     console.log("[DEBUG] Botón Continuar presionado");
-    document.getElementById("modalComentarioContinuar").style.display = "flex";
+    const modalCont = document.getElementById("modalComentarioContinuar");
+    if (modalCont) modalCont.style.display = "flex";
   });
+} else {
+  console.warn("[WARN] #btn-continuar-pt not found in DOM");
+}
 
-// Ocultar el modal al hacer clic en "Cancelar"
-document
-  .querySelector("#modalComentarioContinuar .cancelar-btn")
-  .addEventListener("click", function () {
-    document.getElementById("modalComentarioContinuar").style.display = "none";
+// Ocultar el modal al hacer clic en "Cancelar" (guardado por si el elemento no existe)
+const cancelarContinuarBtn = document.querySelector(
+  "#modalComentarioContinuar .cancelar-btn"
+);
+if (cancelarContinuarBtn) {
+  cancelarContinuarBtn.addEventListener("click", function () {
+    const modalCont = document.getElementById("modalComentarioContinuar");
+    if (modalCont) modalCont.style.display = "none";
     console.log("[DEBUG] Modal Continuar ocultado");
   });
+} else {
+  console.warn(
+    "[WARN] #modalComentarioContinuar .cancelar-btn not found in DOM"
+  );
+}
 
 // Mensaje al hacer clic en "Enviar"
 
 //Lo que hace es enviar el comentario al servidor ya aztualizar el estatus
 
-document;
+// Nota: El chequeo top-level que abría el modal y mostraba
+// `alert("Selecciona un permiso primero")` se removió porque
+// provocaba un mensaje al cargar la página cuando no había
+// ninguna fila seleccionada. El control de apertura de modales
+// debe ocurrir desde los manejadores de eventos (por ejemplo,
+// botones que comprueban `idPermisoSeleccionado`).
 
-const permisoSeleccionado = document.querySelector("tr.selected");
-const modal = document.getElementById("modalComentarioContinuar");
-if (permisoSeleccionado && modal) {
-  const id_permiso = permisoSeleccionado.getAttribute("data-idpermiso");
-  modal.setAttribute("data-idpermiso", id_permiso);
-  modal.classList.add("active");
-  console.log("modalComentarioContinuar abierto con id_permiso:", id_permiso);
-} else {
-  alert("Selecciona un permiso primero");
-}
+// Si necesita comportamiento automático aquí, implementarlo dentro
+// de un event listener o función invocada explícitamente.
 
 function mostrarModalComentarioCancelarEspecial() {
   const modal = document.getElementById("modalComentarioCancelarEspecial");
@@ -847,5 +837,139 @@ function formatearFecha(fechaISO) {
     year: "numeric",
     hour: "2-digit",
     minute: "2-digit",
+  });
+}
+
+// Expose filtered permisos for export (mirrors mostrarPermisosFiltrados behavior)
+window.getPermisosFiltrados = function () {
+  if (!Array.isArray(permisosGlobal)) return [];
+
+  let filtrados = permisosGlobal.slice();
+
+  // Status filter
+  const statusSelect = document.getElementById("status-filter");
+  const filtroStatus = statusSelect ? statusSelect.value : "all";
+  if (filtroStatus !== "all") {
+    filtrados = filtrados.filter((permiso) => {
+      const estatus = (permiso.estatus || "").toLowerCase().trim();
+      const filtroNorm = (filtroStatus || "").toLowerCase().trim();
+      if (filtroNorm === "continua") return estatus === "continua";
+      return estatus === filtroNorm;
+    });
+  }
+
+  // Text search (folio)
+  if (filtroBusqueda) {
+    const q = filtroBusqueda;
+    filtrados = filtrados.filter((permiso) => {
+      return (permiso.prefijo || "").toLowerCase().includes(q);
+    });
+  }
+
+  return filtrados;
+};
+
+// Export helper: try SheetJS, fallback to CSV
+function exportPermisosToExcel(rows, filename = "export-permisos.xlsx") {
+  if (!rows || !rows.length) {
+    alert("No hay registros para exportar.");
+    return;
+  }
+  // Map only the columns shown in the Crear-PT table and in the same order
+  const mapped = rows.map((p) => ({
+    n_Permiso: p.prefijo || "",
+    "Tipo de permiso": p.tipo_permiso || "",
+    "Tipo de actividad": p.descripcion || "",
+    Área: p.area || "",
+    Solicitante: p.solicitante || "",
+    "Fecha y hora": formatearFecha(p.fecha_hora) || "",
+    Estatus: p.estatus || "",
+    // include id for debugging but keep it as the last column
+    id_permiso: p.id_permiso || "",
+  }));
+
+  // Diagnostics: log filter state so we can verify what was exported
+  try {
+    const statusSelect = document.getElementById("status-filter");
+    const statusVal = statusSelect ? statusSelect.value : "all";
+    console.info("[EXPORT-DIAG] statusFilter:", statusVal);
+    console.info("[EXPORT-DIAG] textSearch:", filtroBusqueda || "(empty)");
+    console.info("[EXPORT-DIAG] rowsToExport:", mapped.length);
+    const ids = rows.map((r) => r.id_permiso).filter(Boolean);
+    console.info("[EXPORT-DIAG] ids:", ids.slice(0, 200));
+  } catch (e) {
+    console.warn("[EXPORT-DIAG] failed to log diagnostics:", e);
+  }
+
+  if (window.XLSX && typeof window.XLSX.utils !== "undefined") {
+    try {
+      const ws = window.XLSX.utils.json_to_sheet(mapped);
+      const wb = window.XLSX.utils.book_new();
+      window.XLSX.utils.book_append_sheet(wb, ws, "Permisos");
+      window.XLSX.writeFile(wb, filename);
+      return;
+    } catch (err) {
+      console.error("Error exportando con SheetJS:", err);
+      // fallthrough to CSV
+    }
+  }
+
+  // CSV fallback
+  const keys = Object.keys(mapped[0]);
+  const lines = [keys.join(",")];
+  mapped.forEach((row) => {
+    const vals = keys.map((k) => {
+      const v = row[k] == null ? "" : String(row[k]);
+      return '"' + v.replace(/"/g, '""') + '"';
+    });
+    lines.push(vals.join(","));
+  });
+  const csv = lines.join("\r\n");
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename.replace(/\.xlsx$|\.csv$/i, "") + ".csv";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+// Wire export button (#btn-exportar or .export-btn) robustly
+function attachExportButton() {
+  const btn =
+    document.getElementById("btn-exportar") ||
+    document.querySelector(".export-btn");
+  if (!btn) return false;
+  // avoid double-attach
+  if (btn.__exportAttached) return true;
+  btn.__exportAttached = true;
+  btn.addEventListener("click", (e) => {
+    console.log("[EXPORT] export button clicked");
+    const rows = window.getPermisosFiltrados
+      ? window.getPermisosFiltrados()
+      : [];
+    if (!rows || !rows.length) {
+      alert("No hay registros visibles para exportar.");
+      console.log("[EXPORT] no rows to export", rows);
+      return;
+    }
+    try {
+      exportPermisosToExcel(rows, "permisos-crear-pt.xlsx");
+    } catch (err) {
+      console.error("[EXPORT] error exporting:", err);
+      alert(
+        "Ocurrió un error al exportar. Revisa la consola para más detalles."
+      );
+    }
+  });
+  return true;
+}
+
+// Try to attach immediately (script is loaded at end of body). Also attach on DOMContentLoaded
+if (!attachExportButton()) {
+  document.addEventListener("DOMContentLoaded", () => {
+    attachExportButton();
   });
 }

@@ -114,8 +114,27 @@ function mostrarPermisosFiltrados(filtro) {
 
   // Filtrado por folio
   if (filtroBusqueda) {
+    const q = filtroBusqueda;
     filtrados = filtrados.filter((permiso) => {
-      return (permiso.prefijo || "").toLowerCase().includes(filtroBusqueda);
+      const prefijo = (permiso.prefijo || "").toString().toLowerCase();
+      // contrato puede venir en diferentes propiedades según el origen
+      const contrato = (
+        permiso.contrato ||
+        permiso.contrato_df ||
+        permiso.ot_numero ||
+        permiso.ot_no ||
+        ""
+      )
+        .toString()
+        .toLowerCase();
+      const descripcion = (permiso.descripcion || "").toString().toLowerCase();
+      const solicitante = (permiso.solicitante || "").toString().toLowerCase();
+      return (
+        prefijo.includes(q) ||
+        contrato.includes(q) ||
+        descripcion.includes(q) ||
+        solicitante.includes(q)
+      );
     });
   }
 
@@ -862,7 +881,24 @@ window.getPermisosFiltrados = function () {
   if (filtroBusqueda) {
     const q = filtroBusqueda;
     filtrados = filtrados.filter((permiso) => {
-      return (permiso.prefijo || "").toLowerCase().includes(q);
+      const prefijo = (permiso.prefijo || "").toString().toLowerCase();
+      const contrato = (
+        permiso.contrato ||
+        permiso.contrato_df ||
+        permiso.ot_numero ||
+        permiso.ot_no ||
+        ""
+      )
+        .toString()
+        .toLowerCase();
+      const descripcion = (permiso.descripcion || "").toString().toLowerCase();
+      const solicitante = (permiso.solicitante || "").toString().toLowerCase();
+      return (
+        prefijo.includes(q) ||
+        contrato.includes(q) ||
+        descripcion.includes(q) ||
+        solicitante.includes(q)
+      );
     });
   }
 

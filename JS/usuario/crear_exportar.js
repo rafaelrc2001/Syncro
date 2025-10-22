@@ -1,5 +1,4 @@
-// crear_exportar.js
-// Exportador para la página Crear PT. Llama a /api/exportar-crear/:id_departamento
+// crear_exportar.js - VERSIÓN CORREGIDA
 (function () {
   function formatStamp() {
     const now = new Date();
@@ -42,76 +41,52 @@
       const id_departamento = usuario.id;
       if (!id_departamento) throw new Error("No se encontró id_departamento");
 
-      const status =
-        (document.getElementById("status-filter") || {}).value || "all";
+      const status = document.getElementById("status-filter")?.value || "all";
       const searchInput = document.querySelector(".search-bar input");
-      const q = (
-        searchInput ? searchInput.value.trim() : window.filtroBusqueda || ""
-      ).trim();
+      const q = (searchInput ? searchInput.value.trim() : "").trim();
 
       const params = new URLSearchParams();
       if (q) params.append("q", q);
-      if (status) params.append("status", status);
+      if (status && status !== "all") params.append("status", status);
 
-      // Collect client-side filtered ids (if available) and send as ids param
-      let clientIds = [];
-      if (typeof window.getPermisosFiltrados === "function") {
-        try {
-          const clientFiltered = window.getPermisosFiltrados() || [];
-          clientIds = clientFiltered
-            .map((r) => r.id_permiso ?? r.id ?? r.idPermiso)
-            .filter((v) => v != null);
-          if (clientIds.length > 0) params.append("ids", clientIds.join(","));
-        } catch (err) {
-          console.warn("exportCrear: error getting client filtered ids", err);
-        }
-      }
-
-      // include_all optional: set to 1 if you want ALL permisos (even sin pt_* rows)
-      // Example: params.append('include_all', '1');
-
-      // Prefer an explicit API origin when available (set window.API_ORIGIN in your page)
-      // Otherwise default to the backend at http://localhost:3000 which runs the /api routes
-      const apiOrigin = window.API_ORIGIN || "http://localhost:3000";
+      // USAR LOCALHOST:3000 - NO 127.0.0.1:5501
+      const apiOrigin = "http://localhost:3000";
       const url = `${apiOrigin}/api/exportar-crear/${encodeURIComponent(
         id_departamento
       )}?${params.toString()}`;
-      console.debug("exportCrear: requesting", url, "(apiOrigin used)");
 
-      let data = [];
-      try {
-        const resp = await fetch(url);
-        if (!resp.ok) throw new Error("Error en exportar-crear server");
-        data = await resp.json();
-        // Debug: show raw server data (sample)
-        try {
-          const rawSample = Array.isArray(data) ? data.slice(0, 10) : data;
-          console.debug(
-            "exportCrear: server response rows=",
-            Array.isArray(data) ? data.length : 1
-          );
-          console.debug("exportCrear: raw server data sample=", rawSample);
-        } catch (e) {
-          console.debug("exportCrear: unable to print raw server data", e);
-        }
-        if (clientIds && clientIds.length > 0 && Array.isArray(data)) {
-          const idsSet = new Set(clientIds.map(String));
-          data = data.filter((r) => {
-            const id = r.id_permiso ?? r.id ?? r.idPermiso;
-            return id != null && idsSet.has(String(id));
-          });
-        }
-      } catch (err) {
-        console.warn(
-          "Fallo la exportación server-side, usando datos client-side:",
-          err
+      console.log("Exportando Crear-PT desde (encoded):", url);
+      console.log(
+        "Exportando Crear-PT desde (decoded):",
+        decodeURIComponent(url)
+      );
+      console.log("Params enviados:", params.toString());
+
+      const resp = await fetch(url);
+      console.log("Fetch response URL:", resp.url);
+      console.log("Fetch response status:", resp.status, resp.statusText);
+      if (!resp.ok)
+        throw new Error(
+          `Error del servidor: ${resp.status} - ${resp.statusText}`
         );
-        if (typeof window.getPermisosFiltrados === "function") {
-          data = window.getPermisosFiltrados() || [];
-        } else {
-          data = [];
-        }
+
+      let data = await resp.json();
+
+      if (!Array.isArray(data)) {
+        console.error("Datos recibidos no son un array:", data);
+        data = [];
       }
+
+      console.log(`Datos recibidos para exportar: ${data.length} registros`);
+
+      if (data.length === 0) {
+        alert("No hay datos para exportar con los filtros aplicados");
+        return;
+      }
+
+      // DEBUG: Mostrar estructura de datos
+      console.log("Primer registro completo:", data[0]);
+      console.log("Todos los campos disponibles:", Object.keys(data[0] || {}));
 
       const columns = [
         "id_permiso",
@@ -137,152 +112,146 @@
         "fecha_hora",
       ];
 
-      const stamp = formatStamp();
-
-      // Normalize and filter server data before export
-      const rawRows = Array.isArray(data) ? data : [];
-      const rowsForExport = rawRows.map((r) => {
-        const id = r.id_permiso ?? r.id ?? r.idPermiso ?? null;
-        // Parse ISO fecha or fallback to fecha_hora
-        let fechaVal = null;
-        if (r.fecha) {
-          // Accept YYYY-MM-DD or full ISO
-          try {
-            const d = new Date(r.fecha);
-            if (!isNaN(d)) fechaVal = d.toISOString().slice(0, 10);
-          } catch (e) {
-            fechaVal = String(r.fecha).slice(0, 10);
-          }
-        } else if (r.fecha_hora) {
-          try {
-            const d2 = new Date(r.fecha_hora);
-            if (!isNaN(d2)) fechaVal = d2.toISOString().slice(0, 10);
-          } catch (e) {
-            fechaVal = String(r.fecha_hora).slice(0, 10);
-          }
-        }
-
-        // Normalize hora_inicio to HH:MM (if provided as text or time)
-        let hora = r.hora_inicio ?? r.hora ?? null;
-        if (hora) {
-          // If it's ISO-like, extract time
-          if (typeof hora === "string" && hora.includes("T")) {
-            try {
-              hora = new Date(hora).toISOString().slice(11, 16);
-            } catch (e) {
-              hora = hora.slice(0, 5);
-            }
-          } else if (typeof hora === "string") {
-            hora = hora.trim().slice(0, 5);
-          }
-        }
-
+      // Mapeo directo y seguro
+      const rowsForExport = data.map((r) => {
         return {
-          id_permiso: id,
-          prefijo: r.prefijo ?? r.prefijo_permiso ?? null,
-          tipo_permiso: r.tipo_permiso ?? r.tipo_perm ?? r.tipo ?? null,
-          fecha: fechaVal,
-          hora_inicio: hora ?? null,
-          tipo_actividad: r.tipo_actividad ?? r.tipo_mantenimiento ?? null,
-          planta_lugar_trabajo:
-            r.planta_lugar_trabajo ?? r.planta ?? r.nombre_planta ?? null,
-          descripcion_trabajo: r.descripcion_trabajo ?? r.descripcion ?? null,
-          empresa: r.empresa ?? null,
-          nombre_solicitante: r.nombre_solicitante ?? r.solicitante ?? null,
-          sucursal: r.sucursal ?? null,
-          contrato:
-            r.contrato != null
-              ? String(r.contrato)
-              : r.contrato_df
-              ? String(r.contrato_df)
-              : "",
-          ot_numero: r.ot_numero ?? r.ot_no ?? null,
-          equipo_intervenir:
-            r.equipo_intervenir ?? r.equipo_intervencion ?? null,
-          tag: r.tag ?? null,
-          responsable_area: r.responsable_area ?? r.responsable ?? null,
-          responsable_seguridad: r.responsable_seguridad ?? null,
-          operador_responsable:
-            r.operador_responsable ?? r.operador_area ?? null,
-          area: r.area ?? null,
-          estatus: r.estatus ?? null,
-          fecha_hora: r.fecha_hora ?? null,
-          _raw: r,
+          id_permiso: r.id_permiso || "",
+          prefijo: r.prefijo || "",
+          tipo_permiso: r.tipo_permiso || "",
+          fecha: r.fecha || "",
+          hora_inicio: r.hora_inicio || "",
+          tipo_actividad: r.tipo_actividad || "",
+          planta_lugar_trabajo: r.planta_lugar_trabajo || "",
+          descripcion_trabajo: r.descripcion_trabajo || "",
+          empresa: r.empresa || "",
+          nombre_solicitante: r.nombre_solicitante || "",
+          sucursal: r.sucursal || "",
+          contrato: r.contrato || "",
+          ot_numero: r.ot_numero || "",
+          equipo_intervenir: r.equipo_intervenir || "",
+          tag: r.tag || "",
+          responsable_area: r.responsable_area || "",
+          responsable_seguridad: r.responsable_seguridad || "",
+          operador_responsable: r.operador_responsable || "",
+          area: r.area || "",
+          estatus: r.estatus || "",
+          fecha_hora: r.fecha_hora || "",
         };
       });
-      // Keep all normalized rows, even if some fields are empty
-      // Debug: inspect mapped rows and missing columns before export
-      try {
-        console.debug(
-          "exportCrear: mapped rowsForExport sample=",
-          rowsForExport.slice(0, 10)
-        );
-        const missing = rowsForExport
-          .map((r) => {
-            const missingCols = columns.filter(
-              (k) => r[k] === null || r[k] === undefined || r[k] === ""
-            );
-            return { id: r.id_permiso, missing: missingCols };
-          })
-          .filter((x) => x.missing.length > 0);
-        console.debug(
-          "exportCrear: rows with missing cols (sample up to 20)=",
-          missing.slice(0, 20)
-        );
-      } catch (e) {
-        console.debug("exportCrear: error while logging mapped rows", e);
-      }
-      if (
-        Array.isArray(rowsForExport) &&
-        rowsForExport.length > 0 &&
-        window.XLSX &&
-        typeof window.XLSX.utils !== "undefined"
-      ) {
-        const normalized = rowsForExport.map((r) => {
-          const obj = {};
-          columns.forEach((k) => {
-            obj[k] = k in r ? r[k] : null;
+
+      console.log("Datos mapeados para exportar:", rowsForExport.slice(0, 3));
+
+      const stamp = formatStamp();
+
+      if (window.XLSX && typeof window.XLSX.utils !== "undefined") {
+        try {
+          const worksheet = window.XLSX.utils.json_to_sheet(rowsForExport, {
+            header: columns,
           });
-          return obj;
-        });
-
-        const worksheet = window.XLSX.utils.json_to_sheet(normalized, {
-          header: columns,
-        });
-        const workbook = window.XLSX.utils.book_new();
-        window.XLSX.utils.book_append_sheet(workbook, worksheet, "CrearPT");
-
-        const wbout = window.XLSX.write(workbook, {
-          bookType: "xlsx",
-          type: "array",
-        });
-        const blob = new Blob([wbout], { type: "application/octet-stream" });
-        downloadBlob(blob, `crear-permisos-${stamp}.xlsx`);
-        return;
+          const workbook = window.XLSX.utils.book_new();
+          window.XLSX.utils.book_append_sheet(workbook, worksheet, "CrearPT");
+          window.XLSX.writeFile(workbook, `crear-permisos-${stamp}.xlsx`);
+          console.log(`Exportación exitosa: crear-permisos-${stamp}.xlsx`);
+        } catch (err) {
+          console.error("Error al generar Excel:", err);
+          toCsvAndDownload(
+            rowsForExport,
+            columns,
+            `crear-permisos-${stamp}.xlsx`
+          );
+        }
+      } else {
+        toCsvAndDownload(
+          rowsForExport,
+          columns,
+          `crear-permisos-${stamp}.xlsx`
+        );
       }
-
-      toCsvAndDownload(rowsForExport, columns, `crear-permisos-${stamp}.xlsx`);
     } catch (err) {
       console.error("Error en exportCrear:", err);
-      alert("No se pudo exportar. Revisa la consola para más detalles.");
+      alert(
+        `No se pudo exportar: ${err.message}\n\nVerifica que el servidor esté ejecutándose en http://localhost:3000`
+      );
     }
   }
 
   function attachExportButtons() {
-    const attach = (el) => {
-      if (!el) return;
-      el.addEventListener("click", (e) => {
+    console.log("Buscando botones de exportación...");
+
+    // Buscar por ID específico
+    const btn = document.getElementById("export-excel-crear");
+    console.log("Botón encontrado por ID:", btn);
+
+    // Buscar por clase
+    const btnByClass = document.querySelector(".export-excel-crear");
+    console.log("Botón encontrado por clase:", btnByClass);
+
+    // Buscar cualquier botón con texto relacionado
+    const buttons = document.querySelectorAll("button");
+    let exportButton = null;
+
+    buttons.forEach((button) => {
+      const text = button.textContent || button.innerText;
+      if (
+        text.includes("Exportar") ||
+        text.includes("exportar") ||
+        (button.id && button.id.includes("export")) ||
+        (button.className && button.className.includes("export"))
+      ) {
+        console.log("Botón potencial encontrado:", button);
+        exportButton = button;
+      }
+    });
+
+    // Asignar evento al botón principal
+    if (btn) {
+      console.log("Asignando evento al botón por ID");
+      btn.addEventListener("click", (e) => {
         e.preventDefault();
         exportCrear();
       });
-    };
+      return true;
+    }
 
-    attach(document.getElementById("export-excel-crear"));
-    attach(document.getElementById("export-excel-crear-btn"));
-    document.querySelectorAll(".export-excel-crear").forEach(attach);
+    // Fallback: asignar por clase
+    if (btnByClass) {
+      console.log("Asignando evento al botón por clase");
+      btnByClass.addEventListener("click", (e) => {
+        e.preventDefault();
+        exportCrear();
+      });
+      return true;
+    }
+
+    // Fallback final
+    if (exportButton) {
+      console.log("Asignando evento al botón encontrado por texto");
+      exportButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        exportCrear();
+      });
+      return true;
+    }
+
+    console.warn("No se encontró ningún botón de exportación");
+    return false;
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
+  // Intentar asignar inmediatamente y en DOMContentLoaded
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => {
+      console.log("DOM cargado, asignando botones...");
+      if (!attachExportButtons()) {
+        // Reintentar después de un breve delay por si los botones se cargan dinámicamente
+        setTimeout(attachExportButtons, 1000);
+      }
+    });
+  } else {
+    console.log("DOM ya listo, asignando botones...");
     attachExportButtons();
-  });
+  }
+
+  // También exponer la función globalmente para debugging
+  window.exportCrear = exportCrear;
+  console.log("Función exportCrear disponible globalmente");
 })();

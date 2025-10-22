@@ -54,3 +54,25 @@ DB_MAX_POOL=20
 
 # Otros (opcional)
 LOG_LEVEL=info
+
+
+
+
+Para la base de datos se necesite tener creada la base de datos
+
+select * from jefe
+INSERT INTO nombre_tabla (usuario, contraseña) 
+VALUES ('admin', 'admin123');
+
+
+
+INSERT INTO nombre_tabla (id_tipo_permiso, nombre) 
+VALUES 
+(1, 'PT No Peligroso'),
+(2, 'PT para Apertura Equipo Línea'),
+(3, 'PT de Entrada a Espacio Confinado'),
+(4, 'PT en Altura'),
+(5, 'PT de Fuego Abierto'),
+(6, 'PT con Energía Eléctrica'),
+(7, 'PT con Fuentes Radioactivas'),
+(8, 'PT para Izaje con Hlab con Grúa');

@@ -351,6 +351,7 @@ document.addEventListener("DOMContentLoaded", () => {
               id_permiso: idPermiso,
               supervisor,
               categoria,
+              fecha_hora_supervisor: new Date().toISOString(),
             }),
           }
         );
@@ -468,6 +469,7 @@ document.addEventListener("DOMContentLoaded", () => {
               id_permiso: idPermiso,
               supervisor,
               categoria,
+              fecha_hora_supervisor: new Date().toISOString(),
             }),
           }
         );

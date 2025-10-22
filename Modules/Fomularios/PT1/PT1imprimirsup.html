@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Permiso No Peligroso</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="/CSS/EstiloGeneral.css" />
+    <link rel="stylesheet" href="/CSS/EstiloImprimir.css">
+    <link rel="stylesheet" href="/CSS/imprimir/EstiloImprimir-Base.css">
+    <link rel="stylesheet" href="/CSS/Imprimir/EstiloImprimir-PT1.css">
+
+</head>
+<body style="background: #f4f6fb; min-height: 100vh; margin: 0; font-family: 'Roboto', Arial, sans-serif;">
+        <div style="display: flex; justify-content: center; align-items: flex-start; min-height: 100vh;">
+            <section class="form-section" data-section="2" style="max-width: 900px; width: 100%; margin: 40px 0; background: #fff; border-radius: 18px; box-shadow: 0 4px 24px rgba(44,62,80,0.10); padding: 2.5rem 2rem;">
+                <div class="company-header">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <img src="/img/proagro.png" alt="Logo ProAgro" style="height: 60px; width: auto;">
+                </div>
+                <div style="text-align: center; flex-grow: 1;">
+                    <h1 style="margin: 0; color: #2c3e50; font-size: 1.5rem; font-weight: 600;">SISTEMA DE PERMISOS DE TRABAJO</h1>
+                    <p style="margin: 0.5rem 0 0 0; color: #7f8c8d; font-size: 0.9rem;">Gestión Integral de Seguridad Laboral</p>
+                </div>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                    <img src="/img/pemex.png" alt="Logo PEMEX" style="height: 60px; width: auto;">
+                </div>
+         
+            </div>
+                 <div class="section-header header-centered">
+                    <i class="ri-checkbox-circle-line"></i>
+                    <h2>Permiso de Trabajo No Peligroso</h2>
+                    <h3>NP-XXXXXX</h3>
+                </div>
+                               
+                                    <div class="general-box-header">
+                                        <span>Información General</span>
+                                    </div>
+                  <div class="executive-section " style="margin-bottom: 0; box-shadow: none; background: transparent; border: none;">
+                      
+                    
+                      <div class="executive-grid">
+                          <div class="executive-item">
+                              <label>Hora de inicio</label>
+                              <p id="start-time-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                              <label>Fecha</label>
+                              <p id="fecha-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                              <label>Tipo de actividad</label>
+                              <p id="activity-type-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                              <label>Planta o lugar de trabajo</label>
+                              <p id="plant-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                              <label>Descripción del trabajo</label>
+                              <p id="descripcion-trabajo-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                              <label>Empresa</label>
+                              <p id="empresa-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                              <label>Nombre de quien solicita</label>
+                              <p id="nombre-solicitante-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                              <label>Sucursal</label>
+                              <p id="sucursal-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                              <label>Contrato</label>
+                              <p id="contrato-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                              <label>O.T. No.</label>
+                              <p id="work-order-label">-</p>
+                          </div>
+                      </div>
+                </div>
+
+
+
+
+                <div class="executive-section">
+                    <div class="section-header">
+                        <i class="ri-tools-line"></i>
+                        <h3>Equipo</h3>
+                    </div>
+                    <div class="executive-grid">
+                        <div class="executive-item">
+                            <label>Equipo a Intervenir</label>
+                            <p id="equipment-label">-</p>
+                        </div>
+                        <div class="executive-item">
+                            <label>TAG</label>
+                            <p id="tag-label">-</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="area-box-header">
+                     <span>Formulario Responsable Área</span>
+                </div>
+                <div class="executive-section ">
+                    <div class="section-header">
+                        <i class="ri-flask-line"></i>
+                        <h3 class="pt1-section-title">Condiciones del Proceso</h3>
+                    </div>
+                    <div class="executive-grid">
+                        <div class="executive-item pt1-hover-effect">
+                            <label for="fluid" class="pt1-label">Fluido</label>
+                            <p id="fluid" class="pt1-fluid-highlight">-</p>
+                        </div>
+                        <div class="executive-item pt1-hover-effect">
+                            <label for="pressure" class="pt1-label">Presión</label>
+                            <p id="pressure" class="pt1-process-field">-</p>
+                        </div>
+                        <div class="executive-item pt1-hover-effect">
+                            <label for="temperature" class="pt1-label">Temperatura</label>
+                            <p id="temperature" class="pt1-process-field">-</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="executive-section ">
+                    <div class="section-header">
+                        <i class="ri-checkbox-multiple-line"></i>
+                        <h3 class="pt1-section-title">Análisis Previo al Trabajo</h3>
+                    </div>
+                    <form id="form-no-peligroso-analisis">
+                        <table class="styled-table pt1-analisis-table" style="width:100%; background:#fff; border-radius:8px; overflow:hidden;">
+                            <thead>
+                                <tr>
+                                    <th>Pregunta</th>
+                                    <th class="centered">Respuesta</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>¿El trabajo se realizará en un área de riesgo controlado?</td>
+                                    <td class="centered"><span id="resp-risk-area" class="pt1-response-highlight">-</span></td>
+                                </tr>
+                                <tr>
+                                    <td>¿Se necesita entrega física, para efectuar el trabajo por parte del personal de la planta o departamento?</td>
+                                    <td class="centered"><span id="resp-physical-delivery" class="pt1-response-highlight">-</span></td>
+                                </tr>
+                                <tr>
+                                    <td>¿El personal que va a ejecutar el trabajo, necesita equipo de protección personal adicional al estándar del área donde se desarrollará el trabajo?</td>
+                                    <td class="centered"><span id="resp-additional-ppe" class="pt1-response-highlight">-</span></td>
+                                </tr>
+                                <tr>
+                                    <td>¿En el área circundante se efectuarán trabajos con riesgo?</td>
+                                    <td class="centered"><span id="resp-surrounding-risk" class="pt1-response-highlight">-</span></td>
+                                </tr>
+                                <tr>
+                                    <td>¿Necesita supervisión el personal?</td>
+                                    <td class="centered"><span id="resp-supervision-needed" class="pt1-response-highlight">-</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="executive-item" style="margin-top:1em;">
+                            <label for="pre-work-observations" class="pt1-label">Observaciones adicionales:</label>
+                            <p id="pre-work-observations" class="pt1-observaciones" style="width:100%; min-height:38px; border-radius:6px; padding:6px 10px; margin:0;">-</p>
+                        </div>
+                    </form>
+                </div>
+                <!-- Sección AST y Participantes -->
+                <div class="executive-section ">
+                    <div class="section-header">
+                        <i class="ri-shield-check-line"></i>
+                        <h3>AST - Análisis de Seguridad en el Trabajo</h3>
+                    </div>
+                    <div class="ast-summary">
+                        <table class="ast-table">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Secuencia de la Actividad</th>
+                                    <th>Personal Ejecutor</th>
+                                    <th>Peligros Potenciales</th>
+                                    <th>Acciones Preventivas</th>
+                                    <th>Responsable</th>
+                                </tr>
+                            </thead>
+                            <tbody id="modal-ast-actividades-body">
+                                <!-- Actividades AST dinámicas -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="safety-grid">
+                        <div class="safety-item">
+                            <h4><i class="ri-shield-user-line"></i> EPP Requerido</h4>
+                            <ul class="safety-list" id="modal-epp-list">
+                                <li></li>
+                            </ul>
+                        </div>
+                        <div class="safety-item">
+                            <h4><i class="ri-tools-line"></i> Maquinaria y Herramientas</h4>
+                            <ul class="safety-list" id="modal-maquinaria-list">
+                                <li></li>
+                            </ul>
+                        </div>
+                        <div class="safety-item">
+                            <h4><i class="ri-box-line"></i> Materiales y Accesorios</h4>
+                            <ul class="safety-list" id="modal-materiales-list">
+                                <li></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Sección 4: Participantes -->
+                <div class="executive-section ">
+                    <div class="section-header">
+                        <i class="ri-team-line"></i>
+                        <h3>Personal Involucrado</h3>
+                    </div>
+                    <div class="ast-summary">
+                        <table class="ast-table ast-table-participantes" id="tabla-participantes">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Función</th>
+                                    <th>Credencial</th>
+                                    <th>Cargo</th>
+                                    <th>Firma</th>
+                                </tr>
+                            </thead>
+                            <tbody id="modal-ast-participantes-body">
+                                <!-- Participantes AST dinámicos -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+          <!-- Sección 5: Aprobaciones -->
+           <div class="executive-section">
+                    <div class="section-header">
+                        <i class="ri-team-line"></i>
+                        <h3>Responsables</h3>
+                    </div>
+                    <div class="ast-summary">
+                       <table class="ast-table ast-table-responsables">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Cargo</th>
+                                    <th>Firma</th>                                
+                                </tr>
+                            </thead>
+                            <tbody id="modal-ast-responsable-body">
+                                <!-- Participantes AST dinámicos -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+
+                <!-- Botones de acción -->
+                <div class="button-group" style="display: flex; justify-content: space-between; margin-top: 48px; gap: 16px;">
+                    <button id="btn-salir-nuevo" class="btn btn-pt1 btn-salir-gris" type="button">
+                        <i class="ri-logout-box-r-line" style="margin-right: 8px;"></i>Salir
+                    </button>
+                    <div style="display: flex; gap: 16px;">
+                        <button id="btn-imprimir-permiso" class="btn btn-pt1 btn-guardar-azulpetroleo" type="button">
+                            <i class="ri-printer-line" style="margin-right: 8px;"></i>Imprimir Permiso
+                        </button>
+                    </div>
+                </div>
+
+                </div>
+            </section>
+        </div>
+
+
+
+  <div id="modalComentario" class="modal-comentario" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(44,62,80,0.25); z-index:1000; justify-content:center; align-items:center;">
+                                            <div style="background:#fff; border-radius:12px; max-width:400px; width:90vw; padding:2em 1.5em; box-shadow:0 4px 24px rgba(44,62,80,0.18); display:flex; flex-direction:column; gap:1em;">
+                                                <h3 style="margin:0 0 0.5em 0; font-size:1.2em; color:#c0392b;"><i class="ri-close-circle-line" style="margin-right:8px;"></i>Motivo de No Autorización</h3>
+                                                <textarea id="comentarioNoAutorizar" rows="4" style="width:100%; border:1px solid #d0d7de; border-radius:6px; padding:8px; resize:vertical;" placeholder="Escribe el motivo del rechazo..."></textarea>
+                                                <div style="display:flex; justify-content:flex-end; gap:10px;">
+                                                    <button id="btnCancelarComentario" type="button" style="background:#eee; color:#333; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Cancelar</button>
+                                                    <button id="btnGuardarComentario" type="button" style="background:#c0392b; color:#fff; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Guardar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+        
+</body>
+    
+</html>
+
+
+
+     <!-- <script src="/Modules/Fomularios/PT1/PT1.js"></script>-->
+
+     <script src="/Modules/Fomularios/PT1/PT1seccionimprimirsup.js"></script>
+</body>
+</html>

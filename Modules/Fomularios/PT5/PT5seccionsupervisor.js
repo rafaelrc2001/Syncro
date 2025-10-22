@@ -384,6 +384,7 @@ document.addEventListener("DOMContentLoaded", function () {
                   supervisor,
                   categoria,
                   comentario_no_autorizar: comentario,
+                  fecha_hora_supervisor: new Date().toISOString(),
                 }),
               }
             );
@@ -479,6 +480,7 @@ if (btnAutorizar) {
             id_permiso: idPermiso,
             supervisor,
             categoria,
+            fecha_hora_supervisor: new Date().toISOString(),
           }),
         }
       );

@@ -1,11 +1,4 @@
-import {
-  mostrarInformacionGeneral,
-  mostrarDetallesTecnicos,
-  mostrarAST,
-  mostrarActividadesAST,
-  mostrarParticipantesAST,
-  renderApertura,
-} from "../generales/LogicaVerFormularios.js";
+// imports for modal view removed (modal functionality stripped)
 
 // --- Tarjetas desde autorizar ---
 async function cargarTargetasDesdeAutorizar() {
@@ -63,65 +56,45 @@ let filtroBusqueda = "";
 
 // --- Tabla de permisos ---
 function asignarEventosVer() {
+  // Vista/Imprimir: funcionalidad removida intencionalmente.
+  // Los botones `.action-btn.view` y `.action-btn.print` permanecen en el DOM
+  // (para mantener la estructura de la tabla), pero no se les adjuntan
+  // manejadores aquí. Si en el futuro quieres restaurar la funcionalidad,
+  // reimplementar los listeners en esta función.
+
+  // (misma lógica de mapeo que en `tabla-crearpt.js`).
   document.querySelectorAll(".action-btn.view").forEach((btn) => {
-    btn.addEventListener("click", async function () {
-      const idPermiso = this.getAttribute("data-idpermiso");
-      // Reinicia el select de supervisor y el campo visual cada vez que se abre el modal
-      const supervisorSelect = document.getElementById("responsable-aprobador");
-      if (supervisorSelect) supervisorSelect.selectedIndex = 0;
-      const nombreAprobador = document.getElementById("nombre-aprobador");
-      if (nombreAprobador)
-        nombreAprobador.textContent = "Seleccione un supervisor";
+    // evitar múltiples attaches
+    if (btn.__viewAttached) return;
+    btn.__viewAttached = true;
+    btn.addEventListener("click", function () {
+      const row = this.closest("tr");
+      const tipoPermiso = row ? row.children[1].textContent.trim() : "";
+      const idPermiso = this.getAttribute("data-idpermiso") || "";
 
-      // Reinicia el select de categoría cada vez que se abre el modal
-      const categoriaSelect = document.getElementById("responsable-aprobador2");
-      if (categoriaSelect) categoriaSelect.selectedIndex = 0;
-      window.idPermisoActual = idPermiso; // Guardar el ID globalmente
-      console.log("ID del permiso consultado:", idPermiso);
       try {
-        const response = await fetch(
-          `http://localhost:3000/api/verformularios?id=${encodeURIComponent(
-            idPermiso
-          )}`
-        );
-        if (!response.ok) throw new Error("Error al obtener datos del permiso");
-        const data = await response.json();
-        console.log("Respuesta de /api/verformularios:", data);
-        // Llenar sección 1: Información General
-        if (data.general) mostrarInformacionGeneral(data.general);
-        // Llenar sección 2: Detalles Técnicos
-        if (typeof mostrarDetallesTecnicos === "function" && data.detalles) {
-          mostrarDetallesTecnicos(data.detalles);
+        if (tipoPermiso === "PT No Peligroso") {
+          window.location.href = `/Modules/Fomularios/PT1/PT1imprimirsup.html?tipo=PT1&id=${idPermiso}`;
+        } else if (tipoPermiso === "PT para Apertura Equipo Línea") {
+          window.location.href = `/Modules/Fomularios/PT2/PT2imprimirsup.html?tipo=PT2&id=${idPermiso}`;
+        } else if (tipoPermiso === "PT de Entrada a Espacio Confinado") {
+          window.location.href = `/Modules/Fomularios/PT3/PT3imprimirsup.html?tipo=PT3&id=${idPermiso}`;
+        } else if (tipoPermiso === "PT en Altura") {
+          window.location.href = `/Modules/Fomularios/PT4/PT4imprimirsup.html?tipo=PT4&id=${idPermiso}`;
+        } else if (tipoPermiso === "PT de Fuego Abierto") {
+          window.location.href = `/Modules/Fomularios/PT5/PT5imprimirsup.html?tipo=PT5&id=${idPermiso}`;
+        } else if (tipoPermiso === "PT con Energía Eléctrica") {
+          window.location.href = `/Modules/Fomularios/PT6/PT6imprimirsup.html?tipo=PT6&id=${idPermiso}`;
+        } else if (tipoPermiso === "PT con Fuentes Radioactivas") {
+          window.location.href = `/Modules/Fomularios/PT7/PT7imprimirsup.html?tipo=PT7&id=${idPermiso}`;
+        } else if (tipoPermiso === "PT para Izaje con Hiab con Grúa") {
+          window.location.href = `/Modules/Fomularios/PT8/PT8imprimirsup.html?tipo=PT8&id=${idPermiso}`;
+        } else {
+          // fallback a la misma página de impresión genérica usada en crearpt
+          window.location.href = `/JS/usuario/LogicaImprimir.html?tipo=OTRO&id=${idPermiso}`;
         }
-        // Llenar AST y Participantes si tienes los datos y funciones
-        if (typeof mostrarAST === "function" && data.ast) {
-          mostrarAST(data.ast);
-        }
-        if (typeof mostrarActividadesAST === "function") {
-          mostrarActividadesAST(data.actividades_ast || []);
-        }
-        if (typeof mostrarParticipantesAST === "function") {
-          mostrarParticipantesAST(data.participantes_ast || []);
-        }
-        // Asignar responsables de área
-        const responsables = data.responsables_area || {};
-
-        // Selecciona los elementos .stamp-name correspondientes
-        const responsableAreaElem = document
-          .querySelectorAll(".stamp")[0]
-          .querySelector(".stamp-name");
-        const operadorAreaElem = document
-          .querySelectorAll(".stamp")[1]
-          .querySelector(".stamp-name");
-
-        // Asigna los valores
-        responsableAreaElem.textContent = responsables.responsable_area || "";
-        operadorAreaElem.textContent = responsables.operador_area || "";
-
-        // Abrir el modal
-        document.getElementById("modalVer").classList.add("active");
       } catch (err) {
-        console.error("Error al obtener datos del permiso:", err);
+        console.error("Error redirigiendo al permiso:", err);
       }
     });
   });
@@ -158,7 +131,22 @@ function mostrarPermisosFiltrados(filtro) {
   // Filtrado por folio
   if (filtroBusqueda) {
     filtrados = filtrados.filter((permiso) => {
-      return (permiso.prefijo || "").toLowerCase().includes(filtroBusqueda);
+      const prefijo = (permiso.prefijo || "").toString().toLowerCase();
+      const contrato = (
+        permiso.contrato ||
+        permiso.contrato_df ||
+        permiso.ot_numero ||
+        permiso.ot_no ||
+        ""
+      )
+        .toString()
+        .toLowerCase();
+      const solicitante = (permiso.solicitante || "").toString().toLowerCase();
+      return (
+        prefijo.includes(filtroBusqueda) ||
+        contrato.includes(filtroBusqueda) ||
+        solicitante.includes(filtroBusqueda)
+      );
     });
   }
 
@@ -227,7 +215,6 @@ function mostrarPermisosFiltrados(filtro) {
                 <button class="action-btn view" data-idpermiso="${
                   permiso.id_permiso
                 }"><i class="ri-eye-line"></i></button>
-                <button class="action-btn print"><i class="ri-printer-line"></i></button>
             </td>
         `;
     tbody.appendChild(row);
@@ -246,6 +233,7 @@ function actualizarPaginacion(totalPaginas, filtro) {
   const pagContainer = document.querySelector(".pagination");
   if (!pagContainer) return;
   pagContainer.innerHTML = "";
+
   // Botón anterior
   const btnPrev = document.createElement("button");
   btnPrev.className = "pagination-btn";
@@ -258,17 +246,42 @@ function actualizarPaginacion(totalPaginas, filtro) {
     }
   };
   pagContainer.appendChild(btnPrev);
-  // Botones de página
-  for (let i = 1; i <= totalPaginas; i++) {
-    const btn = document.createElement("button");
-    btn.className = "pagination-btn" + (i === paginaActual ? " active" : "");
-    btn.textContent = i;
-    btn.onclick = () => {
-      paginaActual = i;
-      mostrarPermisosFiltrados(document.getElementById("status-filter").value);
-    };
-    pagContainer.appendChild(btn);
+
+  // Paginación compacta (primera, ..., cercanas, ..., última)
+  const maxVisible = 2; // páginas antes/después de la actual
+  let pages = [];
+  if (totalPaginas <= 7) {
+    for (let i = 1; i <= totalPaginas; i++) pages.push(i);
+  } else {
+    pages.push(1);
+    if (paginaActual > maxVisible + 2) pages.push("...");
+    let start = Math.max(2, paginaActual - maxVisible);
+    let end = Math.min(totalPaginas - 1, paginaActual + maxVisible);
+    for (let i = start; i <= end; i++) pages.push(i);
+    if (paginaActual < totalPaginas - maxVisible - 1) pages.push("...");
+    pages.push(totalPaginas);
   }
+
+  pages.forEach((p) => {
+    if (p === "...") {
+      const span = document.createElement("span");
+      span.textContent = "...";
+      span.className = "pagination-ellipsis";
+      pagContainer.appendChild(span);
+    } else {
+      const btn = document.createElement("button");
+      btn.className = "pagination-btn" + (p === paginaActual ? " active" : "");
+      btn.textContent = p;
+      btn.onclick = () => {
+        paginaActual = p;
+        mostrarPermisosFiltrados(
+          document.getElementById("status-filter").value
+        );
+      };
+      pagContainer.appendChild(btn);
+    }
+  });
+
   // Botón siguiente
   const btnNext = document.createElement("button");
   btnNext.className = "pagination-btn";
@@ -292,162 +305,9 @@ document
   });
 
 document.addEventListener("DOMContentLoaded", () => {
-  // --- Botón No autorizar ---
-  const btnNoAutorizar = document.getElementById("btn-noautorizar-pt");
-  if (btnNoAutorizar) {
-    btnNoAutorizar.addEventListener("click", async function () {
-      // Validar supervisor y categoría antes de abrir el modal de comentario
-      const supervisorInput = document.getElementById("responsable-aprobador");
-      const categoriaInput = document.getElementById("responsable-aprobador2");
-      const supervisor = supervisorInput ? supervisorInput.value.trim() : "";
-      const categoria = categoriaInput ? categoriaInput.value.trim() : "";
-      if (!supervisor || !categoria) {
-        alert(
-          "Debes seleccionar el supervisor y la categoría antes de continuar."
-        );
-        if (!supervisor && supervisorInput) supervisorInput.focus();
-        if (!categoria && categoriaInput) categoriaInput.focus();
-        return;
-      }
-      // Solo cierra el modal de ver y abre el de comentario
-      document.getElementById("modalVer").classList.remove("active");
-      const modalAceptado = document.getElementById("modalAceptado");
-      if (modalAceptado) {
-        modalAceptado.classList.remove("active");
-        modalAceptado.setAttribute("hidden", "");
-      }
-      const modalComentario = document.getElementById("modalComentario");
-      if (modalComentario) {
-        modalComentario.classList.add("active");
-        modalComentario.removeAttribute("hidden");
-      }
-      // Consulta el id_estatus y lo guarda en variable global
-      const idPermiso = window.idPermisoActual;
-      window.idEstatusNoAutorizado = null;
-      if (idPermiso) {
-        try {
-          const resp = await fetch(
-            `http://localhost:3000/api/permisos-trabajo/${idPermiso}`
-          );
-          if (resp.ok) {
-            const permisoData = await resp.json();
-            window.idEstatusNoAutorizado =
-              permisoData.id_estatus ||
-              (permisoData.data && permisoData.data.id_estatus);
-          }
-        } catch (err) {
-          console.error("Error al consultar id_estatus:", err);
-        }
-      }
-    });
-  }
-
-  // --- Botón Enviar comentario ---
-  const btnEnviarComentario = document.querySelector(
-    "#modalComentario .enviar-btn"
-  );
-  if (btnEnviarComentario) {
-    btnEnviarComentario.addEventListener("click", async function () {
-      const idPermiso = window.idPermisoActual;
-      const idEstatus = window.idEstatusNoAutorizado;
-      const supervisorInput = document.getElementById("responsable-aprobador");
-      const categoriaInput = document.getElementById("responsable-aprobador2");
-      const comentarioInput = document.getElementById("comentario");
-      const supervisor = supervisorInput ? supervisorInput.value.trim() : "";
-      const categoria = categoriaInput ? categoriaInput.value.trim() : "";
-      const comentario = comentarioInput ? comentarioInput.value.trim() : "";
-      if (!idPermiso) {
-        alert(
-          "No se pudo obtener el ID del permiso. Selecciona un permiso válido."
-        );
-        return;
-      }
-      if (!supervisor || !categoria) {
-        alert(
-          "Debes seleccionar el supervisor y la categoría antes de continuar."
-        );
-        if (!supervisor && supervisorInput) supervisorInput.focus();
-        if (!categoria && categoriaInput) categoriaInput.focus();
-        return;
-      }
-      if (!comentario) {
-        alert("Debes agregar un comentario antes de continuar.");
-        if (comentarioInput) comentarioInput.focus();
-        return;
-      }
-      // 1. Actualizar supervisor y categoría en autorizaciones
-      let autorizacionExitosa = false;
-      try {
-        const resp = await fetch(
-          "http://localhost:3000/api/autorizaciones/supervisor-categoria",
-          {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              id_permiso: idPermiso,
-              supervisor,
-              categoria,
-            }),
-          }
-        );
-        if (!resp.ok) {
-          autorizacionExitosa = false;
-          alert("Error al actualizar supervisor y categoría.");
-          return;
-        } else {
-          autorizacionExitosa = true;
-        }
-      } catch (err) {
-        console.error("Error al actualizar supervisor y categoría:", err);
-        autorizacionExitosa = false;
-        alert("Error al actualizar supervisor y categoría.");
-        return;
-      }
-
-      // 2. Actualizar el estatus si se obtuvo el id_estatus
-      if (autorizacionExitosa && idEstatus) {
-        try {
-          await fetch("http://localhost:3000/api/estatus/no_autorizado", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ id_estatus: idEstatus }),
-          });
-        } catch (err) {
-          console.error("Error al actualizar estatus de no_autorizado:", err);
-        }
-        // 3. Guardar el comentario en la columna nueva
-        try {
-          await fetch("http://localhost:3000/api/estatus/comentario", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ id_estatus: idEstatus, comentario }),
-          });
-        } catch (err) {
-          alert("No se pudo guardar el comentario.");
-          console.error("Error al guardar el comentario:", err);
-        }
-      }
-
-      // Oculta el modalComentario y el modalVer
-      const modalComentario = document.getElementById("modalComentario");
-      if (modalComentario) {
-        modalComentario.classList.remove("active");
-        modalComentario.setAttribute("hidden", "");
-      }
-      const modalVer = document.getElementById("modalVer");
-      if (modalVer) {
-        modalVer.classList.remove("active");
-        modalVer.setAttribute("hidden", "");
-      }
-
-      // Actualiza la tabla y tarjetas
-      cargarPermisosTabla();
-      cargarTargetasDesdeAutorizar();
-    });
-  }
+  // Inicialización mínima: cargar tarjetas y tabla, y enlazar búsqueda
   cargarTargetasDesdeAutorizar();
   cargarPermisosTabla();
-  // Búsqueda por folio compatible con paginación
   const searchInput = document.querySelector(".search-bar input");
   if (searchInput) {
     searchInput.addEventListener("input", function () {
@@ -456,227 +316,9 @@ document.addEventListener("DOMContentLoaded", () => {
       mostrarPermisosFiltrados(document.getElementById("status-filter").value);
     });
   }
-
-  // Botón cerrar del modalAceptado
-  const btnCerrarAceptado = document.querySelector(
-    "#modalAceptado .cerrar-btn"
-  );
-  if (btnCerrarAceptado) {
-    btnCerrarAceptado.addEventListener("click", function () {
-      const modalAceptado = document.getElementById("modalAceptado");
-      if (modalAceptado) {
-        modalAceptado.classList.remove("active");
-        modalAceptado.setAttribute("hidden", "");
-      }
-    });
-  }
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-  // Supervisores
-  fetch("http://localhost:3000/api/supervisores")
-    .then((res) => res.json())
-    .then((data) => {
-      const select = document.getElementById("responsable-aprobador");
-      select.innerHTML =
-        '<option value="" disabled selected>Seleccione un supervisor...</option>';
-      data.forEach((sup) => {
-        const option = document.createElement("option");
-        option.value = sup.nombre;
-        option.textContent = sup.nombre;
-        select.appendChild(option);
-      });
-    });
-
-  // Categorías
-  fetch("http://localhost:3000/api/categorias")
-    .then((res) => res.json())
-    .then((data) => {
-      const select = document.getElementById("responsable-aprobador2");
-      select.innerHTML =
-        '<option value="" disabled selected>Seleccione una categoria...</option>';
-      data.forEach((cat) => {
-        const option = document.createElement("option");
-        option.value = cat.nombre;
-        option.textContent = cat.nombre;
-        select.appendChild(option);
-      });
-    });
-
-  //BOTONES DE INSERTAR:
-
-  // --- Lógica exclusiva para los botones de AutorizarPT ---
-  const btnAceptar = document.getElementById("btn-autorizar-pt");
-  if (btnAceptar) {
-    btnAceptar.addEventListener("click", async function () {
-      const idPermiso = window.idPermisoActual;
-      const responsableInput = document.getElementById("responsable-aprobador");
-      const operadorInput = document.getElementById("responsable-aprobador2");
-      const supervisor = responsableInput ? responsableInput.value.trim() : "";
-      const categoria = operadorInput ? operadorInput.value.trim() : "";
-      if (!idPermiso) {
-        alert(
-          "No se pudo obtener el ID del permiso. Selecciona un permiso válido."
-        );
-        return;
-      }
-      if (!supervisor || !categoria) {
-        alert(
-          "Debes seleccionar el supervisor y la categoría antes de autorizar."
-        );
-        return;
-      }
-
-      // 1. Actualizar supervisor y categoría en autorizaciones
-      try {
-        await fetch(
-          "http://localhost:3000/api/autorizaciones/supervisor-categoria",
-          {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              id_permiso: idPermiso,
-              supervisor,
-              categoria,
-            }),
-          }
-        );
-      } catch (err) {
-        console.error("Error al actualizar supervisor y categoría:", err);
-      }
-
-      // 2. Consultar el id_estatus desde permisos_trabajo
-      let idEstatus = null;
-      try {
-        const resp = await fetch(
-          `http://localhost:3000/api/permisos-trabajo/${idPermiso}`
-        );
-        if (resp.ok) {
-          const permisoData = await resp.json();
-          idEstatus =
-            permisoData.id_estatus ||
-            (permisoData.data && permisoData.data.id_estatus);
-        }
-      } catch (err) {
-        console.error("Error al consultar id_estatus:", err);
-      }
-
-      // 3. Actualizar el estatus a "activo"
-      if (idEstatus) {
-        try {
-          await fetch("http://localhost:3000/api/estatus/activo", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ id_estatus: idEstatus }),
-          });
-        } catch (err) {
-          console.error("Error al actualizar estatus activo:", err);
-        }
-      }
-
-      // Oculta el modalVer y muestra el modalAceptado
-      document.getElementById("modalVer").classList.remove("active");
-      const modalComentario = document.getElementById("modalComentario");
-      if (modalComentario) {
-        modalComentario.classList.remove("active");
-        modalComentario.setAttribute("hidden", "");
-      }
-      const modalAceptado = document.getElementById("modalAceptado");
-      if (modalAceptado) {
-        modalAceptado.classList.add("active");
-        modalAceptado.removeAttribute("hidden");
-      }
-      cargarPermisosTabla();
-      cargarTargetasDesdeAutorizar();
-    });
-  }
-
-  const btnNoAutorizar = document.getElementById("btn-noautorizar-pt");
-  if (btnNoAutorizar) {
-    btnNoAutorizar.addEventListener("click", async function () {
-      const idPermiso = window.idPermisoActual;
-      const responsableInput = document.getElementById("responsable-aprobador");
-      const operadorInput = document.getElementById("responsable-aprobador2");
-      const supervisor = responsableInput ? responsableInput.value.trim() : "";
-      const categoria = operadorInput ? operadorInput.value.trim() : "";
-      if (!idPermiso) {
-        alert(
-          "No se pudo obtener el ID del permiso. Selecciona un permiso válido."
-        );
-        return;
-      }
-      if (!supervisor || !categoria) {
-        alert(
-          "Debes seleccionar el supervisor y la categoría antes de continuar."
-        );
-        return;
-      }
-
-      // 1. Actualizar supervisor y categoría en autorizaciones
-      try {
-        await fetch(
-          "http://localhost:3000/api/autorizaciones/supervisor-categoria",
-          {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              id_permiso: idPermiso,
-              supervisor,
-              categoria,
-            }),
-          }
-        );
-      } catch (err) {
-        console.error("Error al actualizar supervisor y categoría:", err);
-      }
-
-      // 2. Consultar el id_estatus desde permisos_trabajo
-      let idEstatus = null;
-      try {
-        const resp = await fetch(
-          `http://localhost:3000/api/permisos-trabajo/${idPermiso}`
-        );
-        if (resp.ok) {
-          const permisoData = await resp.json();
-          idEstatus =
-            permisoData.id_estatus ||
-            (permisoData.data && permisoData.data.id_estatus);
-        }
-      } catch (err) {
-        console.error("Error al consultar id_estatus:", err);
-      }
-
-      // 3. Actualizar el estatus a "no autorizado"
-      if (idEstatus) {
-        try {
-          await fetch("http://localhost:3000/api/estatus/no_autorizado", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ id_estatus: idEstatus }),
-          });
-        } catch (err) {
-          console.error("Error al actualizar estatus no autorizado:", err);
-        }
-      }
-
-      // Oculta el modalVer y muestra el modalComentario
-      document.getElementById("modalVer").classList.remove("active");
-      const modalAceptado = document.getElementById("modalAceptado");
-      if (modalAceptado) {
-        modalAceptado.classList.remove("active");
-        modalAceptado.setAttribute("hidden", "");
-      }
-      const modalComentario = document.getElementById("modalComentario");
-      if (modalComentario) {
-        modalComentario.classList.add("active");
-        modalComentario.removeAttribute("hidden");
-      }
-      cargarPermisosTabla();
-      cargarTargetasDesdeAutorizar();
-    });
-  }
-});
-
+// Removed modal-related DOMContentLoaded block (supervisores/categorias and modal handlers)
 
 function formatearFecha(fechaISO) {
   if (!fechaISO) return "-";
@@ -689,3 +331,48 @@ function formatearFecha(fechaISO) {
     minute: "2-digit",
   });
 }
+
+// Exponer función para que la lógica de exportar pueda obtener los permisos
+// actualmente filtrados (sin paginación). Copiado/adaptado desde tabla-supervisor.js
+window.getPermisosFiltrados = function () {
+  if (!Array.isArray(permisosGlobal)) return [];
+
+  let filtrados = permisosGlobal.slice();
+
+  // Aplicar filtro por estatus tal como en mostrarPermisosFiltrados
+  const statusSelect = document.getElementById("status-filter");
+  const filtroStatus = statusSelect ? statusSelect.value : "all";
+  if (filtroStatus !== "all") {
+    filtrados = filtrados.filter((permiso) => {
+      const estatus = (permiso.estatus || "").toLowerCase().trim();
+      const filtroNorm = (filtroStatus || "").toLowerCase().trim();
+      if (filtroNorm === "continua") {
+        return estatus === "continua";
+      }
+      return estatus === filtroNorm;
+    });
+  }
+
+  // Aplicar búsqueda de texto (folio, contrato, solicitante)
+  if (filtroBusqueda) {
+    const q = filtroBusqueda;
+    filtrados = filtrados.filter((permiso) => {
+      const prefijo = (permiso.prefijo || "").toString().toLowerCase();
+      const contrato = (
+        permiso.contrato ||
+        permiso.contrato_df ||
+        permiso.ot_numero ||
+        permiso.ot_no ||
+        ""
+      )
+        .toString()
+        .toLowerCase();
+      const solicitante = (permiso.solicitante || "").toString().toLowerCase();
+      return (
+        prefijo.includes(q) || contrato.includes(q) || solicitante.includes(q)
+      );
+    });
+  }
+
+  return filtrados;
+};

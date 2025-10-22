@@ -115,6 +115,7 @@ if (btnGuardarCampos) {
           id_permiso: idPermiso,
           responsable_area,
           encargado_area: operador_area,
+          fecha_hora_area: new Date().toISOString(),
         }),
       });
       // Mostrar modal de confirmación y número de permiso
@@ -204,6 +205,7 @@ if (btnNoAutorizar) {
             responsable_area,
             encargado_area: operador_area,
             comentario_no_autorizar: comentario,
+            fecha_hora_area: new Date().toISOString(),
           }),
         });
         // Consultar el id_estatus desde permisos_trabajo

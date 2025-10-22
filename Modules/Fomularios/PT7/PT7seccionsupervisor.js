@@ -175,6 +175,7 @@ if (btnGuardarCampos) {
             id_permiso: idPermiso,
             supervisor,
             categoria,
+            fecha_hora_supervisor: new Date().toISOString(),
           }),
         }
       );

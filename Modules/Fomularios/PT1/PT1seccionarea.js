@@ -155,6 +155,7 @@ if (btnAutorizar) {
           id_permiso: idPermiso,
           responsable_area,
           encargado_area: operador_area,
+          fecha_hora_area: new Date().toISOString(),
         }),
       });
 
@@ -265,6 +266,7 @@ if (btnNoAutorizar) {
               responsable_area,
               encargado_area: operador_area,
               comentario_no_autorizar: comentario,
+              fecha_hora_area: new Date().toISOString(),
             }),
           }
         );

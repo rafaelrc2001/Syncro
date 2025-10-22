@@ -352,6 +352,7 @@ document.addEventListener("DOMContentLoaded", function () {
               id_permiso: idPermiso,
               supervisor,
               categoria,
+              fecha_hora_supervisor: new Date().toISOString(),
             }),
           }
         );
@@ -538,6 +539,7 @@ document.addEventListener("DOMContentLoaded", function () {
                   supervisor,
                   categoria,
                   comentario_no_autorizar: comentario,
+                  fecha_hora_supervisor: new Date().toISOString(),
                 }),
               }
             );

@@ -148,6 +148,7 @@ function mostrarDatosSupervisor(permiso) {
     data.area && data.area.trim() !== "" ? data.area : "-"
   );
   setText("descripcion-trabajo-label", data.descripcion_trabajo || "-");
+  setText("fecha_hora_supervisor-label", new Date().toISOString() || "-");
   setText("empresa-label", data.empresa || "-");
   setText(
     "nombre-solicitante-label",
@@ -356,6 +357,7 @@ document.addEventListener("DOMContentLoaded", function () {
                   supervisor,
                   categoria,
                   comentario_no_autorizar: comentario,
+                  fecha_hora_supervisor: new Date().toISOString(),
                 }),
               }
             );
@@ -448,6 +450,7 @@ if (btnAutorizar) {
             id_permiso: idPermiso,
             supervisor,
             categoria,
+            fecha_hora_supervisor: new Date().toISOString(),
           }),
         }
       );

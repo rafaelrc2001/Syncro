@@ -236,7 +236,8 @@ router.post("/estatus/terminado", async (req, res) => {
 
 // Nueva ruta para insertar en la tabla de autorizaciones según requerimiento del usuario
 router.post("/autorizaciones/area", async (req, res) => {
-  const { id_permiso, responsable_area, encargado_area } = req.body;
+  const { id_permiso, responsable_area, encargado_area, fecha_hora_area } =
+    req.body;
 
   // Validar que los campos requeridos estén presentes
   if (!id_permiso || !responsable_area) {
@@ -253,10 +254,36 @@ router.post("/autorizaciones/area", async (req, res) => {
       [id_permiso]
     );
     if (existe.rows.length > 0) {
-      return res.status(409).json({
-        success: false,
-        error: "Ya existe una autorización para este id_permiso",
-      });
+      // Si ya existe, actualizamos (upsert) los campos que lleguen
+      try {
+        const result = await db.query(
+          `UPDATE autorizaciones
+             SET responsable_area = $1,
+                operador_area = COALESCE($2, operador_area),
+                fecha_hora_area = COALESCE($3, fecha_hora_area)
+             WHERE id_permiso = $4
+             RETURNING *`,
+          [
+            responsable_area,
+            encargado_area || null,
+            fecha_hora_area || null,
+            id_permiso,
+          ]
+        );
+        return res.status(200).json({
+          success: true,
+          message: "Autorización de área actualizada exitosamente",
+          data: result.rows[0],
+        });
+      } catch (err) {
+        console.error("Error actualizando autorizacion existente:", err);
+        return res.status(500).json({
+          success: false,
+          error: "Error al actualizar la autorización de área",
+          details:
+            process.env.NODE_ENV === "development" ? err.message : undefined,
+        });
+      }
     }
   } catch (err) {
     console.error("Error verificando duplicado:", err);
@@ -267,13 +294,21 @@ router.post("/autorizaciones/area", async (req, res) => {
     });
   }
 
+  // Si no existe, insertamos el registro incluyendo fecha_hora_area y comentario si vienen
   try {
     const result = await db.query(
       `INSERT INTO autorizaciones (
-        id_permiso, id_supervisor, id_categoria, responsable_area, operador_area
-      ) VALUES ($1, $2, $3, $4, $5)
+        id_permiso, id_supervisor, id_categoria, responsable_area, operador_area, fecha_hora_area
+      ) VALUES ($1, $2, $3, $4, $5, COALESCE($6, NOW()))
       RETURNING *`,
-      [id_permiso, null, null, responsable_area, encargado_area]
+      [
+        id_permiso,
+        null,
+        null,
+        responsable_area,
+        encargado_area || null,
+        fecha_hora_area || null,
+      ]
     );
     res.status(201).json({
       success: true,
@@ -353,7 +388,7 @@ router.post("/estatus/no_autorizado", async (req, res) => {
 
 // Endpoint para actualizar supervisor y categoría (solo nombres) en autorizaciones
 router.put("/autorizaciones/supervisor-categoria", async (req, res) => {
-  const { id_permiso, supervisor, categoria } = req.body;
+  const { id_permiso, supervisor, categoria, fecha_hora_supervisor } = req.body;
 
   if (!id_permiso || !supervisor || !categoria) {
     return res.status(400).json({
@@ -389,25 +424,56 @@ router.put("/autorizaciones/supervisor-categoria", async (req, res) => {
     }
     const idCategoria = catResult.rows[0].id_categoria;
 
-    // Actualizar la tabla autorizaciones con los IDs
-    const result = await db.query(
-      `UPDATE autorizaciones
-       SET id_supervisor = $1, id_categoria = $2
-       WHERE id_permiso = $3
-       RETURNING *`,
-      [idSupervisor, idCategoria, id_permiso]
+    // Verificar si ya existe una fila de autorizacion para id_permiso
+    const existe = await db.query(
+      "SELECT 1 FROM autorizaciones WHERE id_permiso = $1 LIMIT 1",
+      [id_permiso]
     );
-    if (result.rows.length === 0) {
-      return res.status(404).json({
-        success: false,
-        error: "No se encontró la autorización para actualizar",
+
+    if (existe.rows.length > 0) {
+      // Si existe, actualizar los campos y la fecha del supervisor (sin sobreescribir si no se envía)
+      const result = await db.query(
+        `UPDATE autorizaciones
+         SET id_supervisor = $1,
+             id_categoria = $2,
+             fecha_hora_supervisor = COALESCE($3, fecha_hora_supervisor)
+         WHERE id_permiso = $4
+         RETURNING *`,
+        [idSupervisor, idCategoria, fecha_hora_supervisor || null, id_permiso]
+      );
+      if (result.rows.length === 0) {
+        return res.status(404).json({
+          success: false,
+          error: "No se encontró la autorización para actualizar",
+        });
+      }
+      return res.status(200).json({
+        success: true,
+        message: "Supervisor, categoría y hora actualizados exitosamente",
+        data: result.rows[0],
+      });
+    } else {
+      // Si no existe, insertar una nueva fila incluyendo la fecha (si no se envía, usar NOW())
+      const insert = await db.query(
+        `INSERT INTO autorizaciones (
+          id_permiso, id_supervisor, id_categoria, responsable_area, operador_area, fecha_hora_supervisor
+        ) VALUES ($1, $2, $3, $4, $5, COALESCE($6, NOW()))
+        RETURNING *`,
+        [
+          id_permiso,
+          idSupervisor,
+          idCategoria,
+          null,
+          null,
+          fecha_hora_supervisor || null,
+        ]
+      );
+      return res.status(201).json({
+        success: true,
+        message: "Autorización creada con supervisor y hora",
+        data: insert.rows[0],
       });
     }
-    res.status(200).json({
-      success: true,
-      message: "Supervisor y categoría actualizados exitosamente",
-      data: result.rows[0],
-    });
   } catch (err) {
     console.error("Error actualizando supervisor y categoría:", err);
     res.status(500).json({

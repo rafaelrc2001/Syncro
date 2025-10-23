@@ -1,0 +1,11 @@
+{
+  "name": "syncro-pt",
+  "version": "1.0.0",
+  "description": "Permisos de Trabajo - Aplicación estática HTML/CSS/JS",
+  "scripts": {
+    "start": "serve -s . -n -L -p $PORT"
+  },
+  "dependencies": {
+    "serve": "^14.2.1"
+  }
+}

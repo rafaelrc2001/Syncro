@@ -9,9 +9,11 @@
     <h1>Bienvenido</h1>
     <a href="/login.html">Ir al sitio</a>
     <script>
-      if (window.location.pathname !== '/') {
-        window.location.href = '/login.html';
-      }
+      document.addEventListener('DOMContentLoaded', () => {
+        if (window.location.pathname !== '/') {
+          window.location.href = '/login.html';
+        }
+      });
     </script>
   </body>
 </html>

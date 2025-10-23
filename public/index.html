@@ -4,10 +4,122 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sistema de permisos</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        background: linear-gradient(135deg, #4a1c7f 0%, #2c5aa0 50%, #3b82c8 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      body::before {
+        content: '';
+        position: absolute;
+        width: 200%;
+        height: 200%;
+        background-image: 
+          radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+          radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+        background-size: 50px 50px, 100px 100px;
+        background-position: 0 0, 25px 25px;
+        animation: float 20s linear infinite;
+      }
+
+      @keyframes float {
+        0% { transform: translate(0, 0); }
+        100% { transform: translate(-50px, -50px); }
+      }
+
+      .spinner-container {
+        position: relative;
+        z-index: 10;
+        background: rgba(47, 57, 112, 0.7);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 60px 80px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        text-align: center;
+      }
+
+      .logo-section {
+        margin-bottom: 40px;
+      }
+
+      .logo-section img {
+        max-width: 250px;
+        height: auto;
+        margin-bottom: 15px;
+      }
+
+      .syncro-logo {
+        font-size: 48px;
+        font-weight: 700;
+        color: #00d4ff;
+        letter-spacing: 2px;
+        text-shadow: 0 2px 10px rgba(0, 212, 255, 0.3);
+      }
+
+      .spinner {
+        width: 80px;
+        height: 80px;
+        margin: 40px auto;
+        position: relative;
+      }
+
+      .spinner-ring {
+        width: 100%;
+        height: 100%;
+        border: 4px solid rgba(0, 212, 255, 0.1);
+        border-top-color: #00d4ff;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      .loading-text {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 18px;
+        margin-top: 20px;
+        animation: pulse 1.5s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%, 100% { opacity: 0.6; }
+        50% { opacity: 1; }
+      }
+
+      .hidden {
+        display: none;
+      }
+    </style>
   </head>
   <body>
-    <h1>Bienvenido</h1>
-    <a href="/login.html">Ir al sitio</a>
+    <div class="spinner-container">
+      <div class="logo-section">
+        <div class="syncro-logo">SYNCRO</div>
+      </div>
+      
+      <div class="spinner">
+        <div class="spinner-ring"></div>
+      </div>
+      
+      <div class="loading-text">Cargando sistema...</div>
+    </div>
+
     <script>
       document.addEventListener('DOMContentLoaded', () => {
         if (window.location.pathname === '/') {
@@ -15,6 +127,5 @@
         }
       });
     </script>
-     
   </body>
 </html>

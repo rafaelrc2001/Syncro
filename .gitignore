@@ -1,0 +1,59 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Logs
+logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# Environment
+.env
+
+# Build
+/dist/
+/build/
+
+# Database
+*.sqlite
+*.db
+*.db-journal
+
+# Coverage
+coverage/
+
+# Others
+*.bak
+*.tmp
+*.swp
+
+# Windows
+*.exe
+*.dll
+*.pdb
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Misc
+*.orig
+
+# Ignore compiled JS from TS
+*.tsbuildinfo
+
+# Ignore generated files
+out/
+
+# Ignore uploads
+uploads/
+
+# Ignore images cache
+img/cache/

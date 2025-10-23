@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Syncro</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Orbitron:wght@500;700&family=Roboto:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/CSS/EstiloGeneral.css" />
+    <link rel="stylesheet" href="/CSS/EstiloVer.css" />
+  </head>
+  <body>
+    <div class="app-container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <h2 class="logo-container">
+            <i class="ri-refresh-line logo-icon"></i>
+            <span class="logo-text">Syncro</span>
+          </h2>
+          <button class="collapse-btn">
+            <i class="ri-menu-line menu-icon"></i>
+            <i class="ri-arrow-right-s-line collapse-icon"></i>
+          </button>
+        </div>
+        <nav class="sidebar-nav">
+          <ul>
+            <li>
+              <a href="#"
+                ><i class="ri-pie-chart-2-line"></i> <span>Dashboard</span></a
+              >
+            </li>
+            <li>
+              <a href="#"
+                ><i class="ri-clipboard-line"></i>
+                <span>Crear Permisos</span></a
+              >
+            </li>
+            <li>
+              <a href="#"
+                ><i class="ri-shield-user-line"></i>
+                <span>Autorizar Permisos</span></a
+              >
+            </li>
+          </ul>
+        </nav>
+        <div class="sidebar-footer">
+          <div class="user-profile">
+            <div class="avatar">JP</div>
+            <div class="user-info">
+              <span class="name">Juan Pérez</span>
+              <span class="role"></span>
+            </div>
+          </div>
+          <button class="logout-btn">
+            <i class="ri-logout-box-r-line"></i>
+          </button>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <header class="main-header">
+          <h1>
+            <span style="font-size: 1.5rem">🛡️</span> Autorización de permisos
+          </h1>
+          <div class="header-actions">
+            <div class="search-bar">
+              <input type="text" placeholder="Buscar por folio o nombre..." />
+              <i class="ri-search-line"></i>
+            </div>
+          </div>
+        </header>
+
+        <!-- Cards Section -->
+        <section class="cards-section">
+          <div class="card">
+            <div class="card-icon" style="background-color: #eceff1">
+              <i class="ri-file-list-2-line" style="color: #455a64"></i>
+            </div>
+            <div class="card-content">
+              <h3>Total de Permisos</h3>
+              <p class="count"></p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-icon" style="background-color: #fff8e1">
+              <i class="ri-alarm-warning-line" style="color: #ff8f00"></i>
+            </div>
+            <div class="card-content">
+              <h3>Por Autorizar</h3>
+              <p class="count"></p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-icon" style="background-color: #e8f5e9">
+              <i class="ri-check-line" style="color: #2e7d32"></i>
+            </div>
+            <div class="card-content">
+              <h3>Activos</h3>
+              <p class="count"></p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-icon" style="background-color: #e3f2fd">
+              <i class="ri-flag-line" style="color: #1565c0"></i>
+            </div>
+            <div class="card-content">
+              <h3>Permisos Terminados</h3>
+              <p class="count"></p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-icon" style="background-color: #ffebee">
+              <i class="ri-close-circle-line" style="color: #c62828"></i>
+            </div>
+            <div class="card-content">
+              <h3>No Autorizados</h3>
+              <p class="count"></p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Actions Section -->
+        <section class="actions-section">
+          <button class="btn secondary">
+            <i class="ri-download-line"></i> Exportar a Excel
+          </button>
+
+          <div class="filter-dropdown">
+            <select id="status-filter">
+              <option value="all">Todos</option>
+              <option value="Activo">Activo</option>
+              <option value="Terminado">Terminado</option>
+              <option value="Cancelado">Cancelado</option>
+              <option value="En espera del área" selected>
+                En espera del área
+              </option>
+
+              <option value="Espera seguridad">Espera seguridad</option>
+              <option value="No autorizado">No autorizado</option>
+            </select>
+            <i class="ri-arrow-down-s-line"></i>
+          </div>
+        </section>
+
+        <!-- Permits Table -->
+        <section class="permits-table">
+          <div class="table-header">
+            <h3>Listado de Permisos</h3>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Permiso</th>
+                  <th>Tipo de permiso</th>
+                  <th>Tipo de actividad</th>
+                  <th>Área</th>
+                  <th>Solicitante</th>
+                  <th>Fecha y hora</th>
+                  <th>Estatus</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="table-body">
+                <!-- Aquí se llenarán las filas dinámicamente -->
+              </tbody>
+            </table>
+          </div>
+          <div class="table-footer">
+            <div class="pagination">
+              <button class="pagination-btn">
+                <i class="ri-arrow-left-s-line"></i>
+              </button>
+              <button class="pagination-btn active">1</button>
+              <button class="pagination-btn">2</button>
+              <button class="pagination-btn">3</button>
+              <button class="pagination-btn">
+                <i class="ri-arrow-right-s-line"></i>
+              </button>
+            </div>
+            <div class="records-counter">
+              <span id="records-count">0</span> registros
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Modal de ver -->
+
+    <script src="/JS/usuario/MenuUsuario.js"></script>
+    <script src="/JS/generales/LogicaVer.js"></script>
+    <script type="module" src="/JS/usuario/tabla-autorizar.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="/JS/usuario/autorizar_exportar.js"></script>
+  </body>
+</html>

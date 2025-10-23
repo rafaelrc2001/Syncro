@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syncro - Registrar Área</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Orbitron:wght@500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="/CSS/EstiloJefe.css">
+    <link rel="stylesheet" href="/CSS/EstiloRegistros.css">
+   
+</head>
+<body>
+    <div class="app-container">
+        
+         <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2 class="logo-container">
+                    <i class="ri-refresh-line logo-icon"></i>
+                    <span class="logo-text">Syncro</span>
+                </h2>
+                <button class="collapse-btn">
+                    <i class="ri-menu-line menu-icon"></i>
+                    <i class="ri-arrow-right-s-line collapse-icon"></i>
+                </button>
+            </div>
+            <nav class="sidebar-nav">
+                    <ul>
+                        <li>
+                            <a href="#"><i class="ri-pie-chart-2-line"></i> <span>Dashboard</span></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="ri-shield-user-line"></i> <span>Autorizar Permisos</span></a>
+                        </li>
+                        <li class="has-submenu">
+                            <a href="#"><i class="ri-add-circle-line"></i> <span>Registrar</span> <i class="ri-arrow-down-s-line submenu-icon"></i></a>
+                            <ul class="submenu">
+                                 <li><a><span>área</span></a></li>
+                                 <li><a><span>categoria</span></a></li>
+                                 <li class="active" ><a><span>sucursal</span></a></li>
+                                 <li><a><span>departamento</span></a></li>
+                                 <li><a><span>supervisor</span></a></li>
+                            </ul>
+                        </li>
+                    </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="avatar">JP</div>
+                    <div class="user-info">
+                        <span class="name">Juan Pérez</span>
+                        <span class="role">Jefe de Seguridad</span>
+                    </div>
+                </div>
+                <button class="logout-btn"><i class="ri-logout-box-r-line"></i></button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="main-header">
+                <h1><i class="ri-store-2-line"></i> Registro de Sucursal</h1>
+                <div class="header-actions">
+                    <div class="search-bar">
+                        <input type="text" id="search-bar" placeholder="Buscar por nombre de sucursal...">
+                        <i class="ri-search-line"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Actions Section -->
+            <section class="actions-section">
+                <button class="btn secondary" id="register-sucursal-btn">
+                    <i class="ri-add-line"></i> Registrar Sucursal
+                </button>
+            </section>
+
+            <!-- Sucursales Table -->
+            <section class="table-container-crud">
+                <div class="table-header">
+                    <h3>Lista de Sucursales</h3>
+                </div>
+                <div class="table-container">
+                    <table class="table-crud" id="sucursal-table">
+                        <thead>
+                            <tr>
+                                <th>Nombre de la Sucursal</th>
+                                <th class="actions-cell">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body">
+                            <!-- Datos dinámicos -->
+                        </tbody>
+                    </table>
+                </div>
+                <div id="paginacion-container" class="pagination"></div>
+                <div class="table-footer-crud">
+                    <!-- La paginación ahora es dinámica con JS -->
+                    <div class="records-counter">
+                        <span id="records-count">3</span> registros
+                    </div>
+                   
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal para registrar sucursal -->
+    <div class="modal" id="sucursal-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="ri-store-2-line"></i> Registrar Nueva Sucursal</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="sucursal-form">
+                    <div class="form-group">
+                        <label for="sucursal-name">Nombre de la Sucursal</label>
+                        <input type="text" id="sucursal-name" name="sucursal-name" placeholder="Ingrese el nombre de la sucursal" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn cancel-btn">Cancelar</button>
+                        <button type="submit" class="btn primary"><i class="ri-save-line"></i> Registrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="/JS/jefe/MenuJefe.js"></script>
+    <script src="/JS/jefe/crear-sucursal.js"></script>
+</body>
+</html>

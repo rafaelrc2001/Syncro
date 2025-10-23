@@ -1,0 +1,306 @@
+/* Estilos para el encabezado de la empresa */
+.company-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-bottom: 2rem !important;
+    padding-bottom: 1rem !important;
+    border-bottom: 2px solid #e3e6ea !important;
+    page-break-inside: avoid !important;
+}
+
+.company-header img {
+    height: 60px !important;
+    width: auto !important;
+    max-width: 120px !important;
+    object-fit: contain !important;
+}
+
+.company-header h1 {
+    margin: 0 !important;
+    color: #2c3e50 !important;
+    font-size: 1.5rem !important;
+    font-weight: 600 !important;
+    text-align: center !important;
+}
+
+.company-header p {
+    margin: 0.5rem 0 0 0 !important;
+    color: #7f8c8d !important;
+    font-size: 0.9rem !important;
+    text-align: center !important;
+}
+
+.company-header .codigo-referencia {
+    background: #f8f9fa !important;
+    border: 1px solid #dee2e6 !important;
+    border-radius: 4px !important;
+    padding: 0.3rem 0.6rem !important;
+    font-size: 0.75rem !important;
+    color: #495057 !important;
+    font-weight: 500 !important;
+    white-space: nowrap !important;
+}
+
+/* Responsive para impresión */
+@media print {
+    .company-header {
+        margin-bottom: 1.5rem !important;
+        padding-bottom: 0.8rem !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+    
+    .company-header img {
+        height: 50px !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+    
+    .company-header h1 {
+        font-size: 1.3rem !important;
+    }
+    
+    .company-header p {
+        font-size: 0.8rem !important;
+    }
+    
+    .company-header .codigo-referencia {
+        background: #f8f9fa !important;
+        border: 1px solid #dee2e6 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        font-size: 0.7rem !important;
+    }
+}
+
+
+
+
+/* Estilos base para section-header */
+.section-header {
+    border-radius: 4px !important;
+    padding: 12px 16px !important;
+    justify-content: center !important;
+    text-align: center !important;
+    margin-bottom: 16px !important;
+}
+
+/* Encabezados alineados a la izquierda para impresión base */
+.section-header {
+    display: flex !important;
+    align-items: center !important;
+    flex-direction: row !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+    gap: 12px !important;
+}
+
+
+
+/* Fondo verde con marco para el header de Datos generales y Medidas */
+
+.usuario .section-header {
+    background: rgba(13, 97, 34, 0.08) !important;
+    border: 2px solid rgba(13, 97, 34, 0.3) !important;
+}
+
+/* Fondo azul con marco para headers de proceso */
+.area .section-header {
+    background: rgba(2, 200, 250, 0.08) !important;
+    border: 2px solid rgba(2, 200, 250, 0.3) !important;
+}
+
+/* Fondo rojo oscuro con headers de riesgos y pruebas */
+.supervisor .section-header{
+    background: rgba(252, 12, 12, 0.1) !important;
+    border: 2px solid rgba(126, 21, 24, 0.5) !important;
+}
+
+
+
+/* Estilos base para section-header */
+/* Estilos base para section-header */
+/* Estilos base para section-header */
+/* Estilos base para section-header */
+/* Estilos base para section-header */
+/* Estilos base para section-header */
+/* Estilos base para section-header */
+/* Estilos base para section-header */
+/* Estilos base para section-header */
+/* Estilos base para section-header */
+/* Estilos base para section-header */
+
+
+
+.usuario-box{
+     border-radius: 10px !important;
+    padding: 18px 18px 8px 18px !important;
+    margin-bottom: 28px !important;
+    border: 2px solid #41da67 !important;
+    background: #f8fcf9 !important;
+}
+
+.area-box {
+     border-radius: 10px !important;
+    padding: 18px 18px 8px 18px !important;
+    margin-bottom: 28px !important;
+    border: 2px solid #0d1c61 !important;
+    background: #f8f8fc !important;
+}
+
+.usuario-box-header {
+    margin-bottom: 18px !important;
+    text-align: center !important;
+    width: 100% !important;
+}
+
+
+.general-box-header span {
+    display: block !important;
+    background: #003B5C !important;
+    color: #ffffff !important;
+    font-weight: 500 !important;
+    padding: 14px 0 !important;
+    border-radius: 8px !important;
+    font-size: 1.35rem !important;
+    letter-spacing: 0.2px !important;
+    border: 1.5px solid #b6e2c6 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    text-align: center !important;
+    margin: 0 auto !important;
+}
+
+
+.usuario-box-header span {
+    display: block !important;
+    background: #00BFA5!important;
+    color: #ffffff !important;
+    font-weight: 500 !important;
+    padding: 14px 0 !important;
+    border-radius: 8px !important;
+    font-size: 1.35rem !important;
+    letter-spacing: 0.2px !important;
+    border: 1.5px solid #b6e2c6 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    text-align: center !important;
+    margin: 0 auto !important;
+}
+
+
+.area-box-header span {
+    display: block !important;
+    background: #FF6F00 !important;
+    color: #ffffff !important;
+    font-weight: 500 !important;
+    padding: 14px 0 !important;
+    border-radius: 8px !important;
+    font-size: 1.35rem !important;
+    letter-spacing: 0.2px !important;
+    border: 1.5px solid #b6c6e2 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    text-align: center !important;
+    margin: 0 auto !important;
+}
+
+
+.supervisor-box-header span {
+    display: block !important;
+    background: #c62828 !important;
+    color: #ffffff !important;
+    font-weight: 500 !important;
+    padding: 14px 0 !important;
+    border-radius: 8px !important;
+    font-size: 1.35rem !important;
+    letter-spacing: 0.2px !important;
+    border: 1.5px solid #b6c6e2 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    text-align: center !important;
+    margin: 0 auto !important;
+}
+
+
+
+
+
+/* Modal de confirmación de autorización */
+/* Modal de confirmación de autorización */
+/* Modal de confirmación de autorización */
+/* Modal de confirmación de autorización */
+/* Modal de confirmación de autorización */
+/* Modal de confirmación de autorización */
+/* Modal de confirmación de autorización */
+/* Modal de confirmación de autorización */
+#confirmation-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(44,62,80,0.25);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+#confirmation-modal.show {
+    display: flex;
+}
+
+#confirmation-modal .modal-content {
+    background: #fff;
+    border-radius: 14px;
+    max-width: 400px;
+    width: 90vw;
+    padding: 2em 1.5em;
+    box-shadow: 0 4px 24px rgba(44,62,80,0.18);
+    display: flex;
+    flex-direction: column;
+    gap: 1.2em;
+    align-items: center;
+}
+
+#confirmation-modal .modal-icon.success {
+    color: #0d6122;
+    font-size: 2.5em;
+    margin-bottom: 0.5em;
+}
+
+#confirmation-modal h3 {
+    margin: 0 0 0.2em 0;
+    font-size: 1.3em;
+    color: #222;
+    text-align: center;
+}
+
+#confirmation-modal p {
+    margin: 0 0 1em 0;
+    color: #333;
+    text-align: center;
+}
+
+#confirmation-modal .modal-actions {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+#confirmation-modal .btn.secondary {
+    background: #00bfae;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 28px;
+    font-weight: 600;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+#confirmation-modal .btn.secondary:hover {
+    background: #009e8e;
+}

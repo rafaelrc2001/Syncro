@@ -511,6 +511,52 @@ router.post("/estatus/comentario", async (req, res) => {
 });
 
 // Endpoint para consultar los nombres de las personas que han autorizado un permiso
+// Ruta alternativa para compatibilidad con diferentes parámetros
+router.get("/autorizaciones/personas/:id", async (req, res) => {
+  const { id } = req.params;
+
+  if (!id) {
+    return res.status(400).json({
+      success: false,
+      error: "id es requerido",
+    });
+  }
+
+  try {
+    const result = await db.query(
+      `SELECT 
+    s.nombre as nombre_supervisor,
+    a.operador_area,
+    a.responsable_area
+  FROM autorizaciones a
+  LEFT JOIN supervisores s ON a.id_supervisor = s.id_supervisor
+  WHERE a.id_permiso = $1`,
+      [id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No se encontraron autorizaciones para este permiso",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Personas autorizadoras obtenidas exitosamente",
+      data: result.rows[0],
+    });
+  } catch (err) {
+    console.error("Error al consultar personas autorizadoras:", err);
+    res.status(500).json({
+      success: false,
+      error: "Error al consultar las personas que han autorizado",
+      details: process.env.NODE_ENV === "development" ? err.message : undefined,
+    });
+  }
+});
+
+// Endpoint para consultar los nombres de las personas que han autorizado un permiso
 router.get("/autorizaciones/personas/:id_permiso", async (req, res) => {
   const { id_permiso } = req.params;
 

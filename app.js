@@ -54,7 +54,14 @@ app.options('*', cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(express.static('public'));
+// Configuración de archivos estáticos con headers apropiados
+app.use(express.static('public', {
+  setHeaders: function (res, path, stat) {
+    if (path.endsWith('.css')) {
+      res.set('Content-Type', 'text/css');
+    }
+  }
+}));
 
 // Endpoint de login de usuario departamento
 app.use('/endpoints', loginconsultaRouter);

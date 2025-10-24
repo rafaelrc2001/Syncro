@@ -643,11 +643,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (idPermiso) {
     // 1. Obtener datos generales y AST
-    fetch(
-      `/api/verformularios?id=${encodeURIComponent(
-        idPermiso
-      )}`
-    )
+    fetch(`/api/verformularios?id=${encodeURIComponent(idPermiso)}`)
       .then((resp) => resp.json())
       .then((data) => {
         // Prefijo en el título y descripción del trabajo

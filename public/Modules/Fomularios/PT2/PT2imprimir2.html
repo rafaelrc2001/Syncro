@@ -21,25 +21,7 @@
         }
     </style>
     
-    <!-- INSTRUCCIONES PARA ELIMINAR COMPLETAMENTE ENCABEZADOS Y PIES DE PÁGINA -->
-    <script>
-        // Mostrar instrucciones al usuario la primera vez
-        window.addEventListener('load', function() {
-            if (!localStorage.getItem('instruccionesVistas')) {
-                setTimeout(() => {
-                    alert(`PARA ELIMINAR ENCABEZADOS Y PIES DE PÁGINA:
 
-1. Presiona Ctrl+P para imprimir
-2. En el diálogo de impresión:
-   - Chrome/Edge: Ve a "Más configuraciones" → Desmarcar "Encabezados y pies de página"
-   - Firefox: Ve a "Configurar página" → Encabezados y pies en "Vacío"
-
-Esta configuración se guardará para futuras impresiones.`);
-                    localStorage.setItem('instruccionesVistas', 'true');
-                }, 2000);
-            }
-        });
-    </script>
 
   </head>
 <body style="background: #f4f6fb; min-height: 100vh; margin: 0; font-family: 'Roboto', Arial, sans-serif;">

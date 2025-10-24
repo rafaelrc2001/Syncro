@@ -175,11 +175,23 @@ LEFT JOIN pt_radiacion ptr ON pt.id_permiso = ptr.id_permiso
 LEFT JOIN pt_altura pta2 ON pt.id_permiso = pta2.id_permiso
 LEFT JOIN autorizaciones az ON pt.id_permiso = az.id_permiso
 LEFT JOIN supervisores sup ON az.id_supervisor = sup.id_supervisor
-WHERE a.id_departamento = $1
-/*WHERE pt.id_departamento = $1*/
-  /* Keep the existence check for type-specific rows so we only export permisos that have a pt_* record */
+WHERE a.id_departamento = $1\n`;
 
-`;
+    // If include_all=1 is provided, skip the pt_* existence check (useful for new permisos that
+    // haven't populated a type-specific table yet). Default is to enforce the existence check.
+    const includeAll = String(req.query.include_all || "0") === "1";
+
+    if (!includeAll) {
+      sql += `    /* Keep the existence check for type-specific rows so we only export permisos that have a pt_* record */\n      AND (
+        ptnp.id_permiso IS NOT NULL 
+        OR pta.id_permiso IS NOT NULL 
+        OR ptc.id_permiso IS NOT NULL 
+        OR ptf.id_permiso IS NOT NULL 
+        OR pte.id_permiso IS NOT NULL 
+        OR ptr.id_permiso IS NOT NULL 
+        OR pta2.id_permiso IS NOT NULL
+      )\n`;
+    }
 
     // Push department param first
     params.push(id_departamento);

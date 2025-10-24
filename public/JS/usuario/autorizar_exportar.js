@@ -55,6 +55,9 @@
       const params = new URLSearchParams();
       if (q) params.append("q", q);
       if (status) params.append("status", status);
+      // Ask server to include permisos even if they don't yet have a pt_* row
+      // (useful for newly created permisos that haven't populated type-specific tables)
+      params.append("include_all", "1");
 
       // Collect client-side filtered ids (if available) and send as ids param
       let clientIds = [];

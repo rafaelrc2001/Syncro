@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnSalir = document.getElementById("btn-salir-nuevo");
   if (btnSalir) {
     btnSalir.addEventListener("click", function () {
-      window.location.href = "../../SupSeguridad/supseguridad.html";
+      window.location.href = "/Modules/SupSeguridad/supseguridad.html";
     });
   }
 });
@@ -230,38 +230,40 @@ document.addEventListener("DOMContentLoaded", function () {
   const idPermiso = params.get("id");
   if (idPermiso) {
     // Llamar a la API para obtener los datos del permiso
-    fetch(
-      `/api/verformularios?id=${encodeURIComponent(
-        idPermiso
-      )}`
-    )
+    fetch(`/api/verformularios?id=${encodeURIComponent(idPermiso)}`)
       .then((resp) => resp.json())
       .then((data) => {
         console.log("Datos recibidos para el permiso:", data);
         // Prefijo en el título y descripción del trabajo
-      if (data && data.general) {
-  document.querySelector(".section-header h3").textContent =
-    data.general.prefijo || "NP-XXXXXX";
-  // Aquí actualizas el título de la pestaña
-  document.title = `Permiso No Peligroso ${data.general.prefijo || "NP-XXXXXX"}`;
-  document.getElementById("descripcion-trabajo-label").textContent =
-    data.general.descripcion_trabajo || "-";
-}
+        if (data && data.general) {
+          document.querySelector(".section-header h3").textContent =
+            data.general.prefijo || "NP-XXXXXX";
+          // Aquí actualizas el título de la pestaña
+          document.title = `Permiso No Peligroso ${
+            data.general.prefijo || "NP-XXXXXX"
+          }`;
+          document.getElementById("descripcion-trabajo-label").textContent =
+            data.general.descripcion_trabajo || "-";
+        }
         if (data && (data.detalles || data.general)) {
-       const detalles = data.detalles || {};
-const general = data.general || {};
+          const detalles = data.detalles || {};
+          const general = data.general || {};
 
-document.getElementById("empresa-label").textContent =
-  detalles.empresa || general.empresa || "-";
-document.getElementById("nombre-solicitante-label").textContent =
-  detalles.solicitante || general.solicitante || "-";
-document.getElementById("sucursal-label").textContent =
-  detalles.sucursal || general.sucursal || "-";
-document.getElementById("contrato-label").textContent =
-  detalles.contrato || general.contrato || "-";
+          document.getElementById("empresa-label").textContent =
+            detalles.empresa || general.empresa || "-";
+          document.getElementById("nombre-solicitante-label").textContent =
+            detalles.solicitante || general.solicitante || "-";
+          document.getElementById("sucursal-label").textContent =
+            detalles.sucursal || general.sucursal || "-";
+          document.getElementById("contrato-label").textContent =
+            detalles.contrato || general.contrato || "-";
 
           document.getElementById("start-time-label").textContent =
-            detalles.horario || detalles.hora_inicio || general.horario || general.hora_inicio || "-";
+            detalles.horario ||
+            detalles.hora_inicio ||
+            general.horario ||
+            general.hora_inicio ||
+            "-";
           document.getElementById("fecha-label").textContent =
             detalles.fecha || general.fecha || "-";
           document.getElementById("activity-type-label").textContent =
@@ -285,7 +287,6 @@ document.getElementById("contrato-label").textContent =
           document.getElementById("tag-label").textContent =
             detalles.tag || general.tag || "-";
 
-            
           // Condiciones actuales del equipo: mostrar fluido, presion, temperatura si existen
           let condiciones = [];
           if (data.detalles.fluido)
@@ -410,7 +411,6 @@ document.getElementById("contrato-label").textContent =
   }
 });
 
-
 /**
  * Función de impresión tradicional (fallback)
  */
@@ -479,11 +479,11 @@ function llenarTablaResponsables(idPermiso) {
         const filas = [
           { nombre: data.responsable_area, cargo: "Responsable de área" },
           { nombre: data.operador_area, cargo: "Operador del área" },
-          { nombre: data.nombre_supervisor, cargo: "Supervisor" }
+          { nombre: data.nombre_supervisor, cargo: "Supervisor" },
         ];
 
         let hayResponsables = false;
-        filas.forEach(fila => {
+        filas.forEach((fila) => {
           if (fila.nombre && fila.nombre.trim() !== "") {
             hayResponsables = true;
             const tr = document.createElement("tr");
@@ -497,7 +497,7 @@ function llenarTablaResponsables(idPermiso) {
         });
 
         // Si alguna fila no tiene nombre, igual la mostramos con N/A
-        filas.forEach(fila => {
+        filas.forEach((fila) => {
           if (!fila.nombre || fila.nombre.trim() === "") {
             const tr = document.createElement("tr");
             tr.innerHTML = `

@@ -299,7 +299,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnSalir = document.getElementById("btn-salir-nuevo");
   if (btnSalir) {
     btnSalir.addEventListener("click", function () {
-      window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
+      window.location.href = "../../JefeSeguridad/JefeSeguridad.html";
     });
   }
   const params = new URLSearchParams(window.location.search);

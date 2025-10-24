@@ -521,7 +521,7 @@ document.addEventListener("DOMContentLoaded", function () {
 const btnSalirNuevo = document.getElementById("btn-salir-nuevo");
 if (btnSalirNuevo) {
   btnSalirNuevo.addEventListener("click", function () {
-    window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
+    window.location.href = "../../JefeSeguridad/JefeSeguridad.html";
   });
 }
 

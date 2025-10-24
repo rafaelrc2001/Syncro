@@ -634,7 +634,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnSalir = document.getElementById("btn-salir-nuevo");
   if (btnSalir) {
     btnSalir.addEventListener("click", function () {
-      window.location.href = "../../SupSeguridad/SupSeguridad.html";
+      window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
     });
   }
 
@@ -643,11 +643,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (idPermiso) {
     // 1. Obtener datos generales y AST
-    fetch(
-      `/api/verformularios?id=${encodeURIComponent(
-        idPermiso
-      )}`
-    )
+    fetch(`/api/verformularios?id=${encodeURIComponent(idPermiso)}`)
       .then((resp) => resp.json())
       .then((data) => {
         // Prefijo en el título y descripción del trabajo

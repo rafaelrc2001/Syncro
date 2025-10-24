@@ -116,7 +116,7 @@ const btnSalirNuevo = document.getElementById("btn-salir-nuevo");
 if (btnSalirNuevo) {
   btnSalirNuevo.addEventListener("click", function (e) {
     e.preventDefault();
-    window.location.href = "/Modules/SupSeguridad/supseguridad.html";
+    window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
   });
 }
 // Mostrar solo la sección 2 al cargar y ocultar las demás
@@ -213,7 +213,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnRegresar = document.getElementById("btn-regresar");
   if (btnRegresar) {
     btnRegresar.addEventListener("click", function () {
-      window.location.href = "/Modules/SupSeguridad/supseguridad.html";
+      window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
     });
   }
 
@@ -221,7 +221,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnSalir = document.getElementById("btn-salir");
   if (btnSalir) {
     btnSalir.addEventListener("click", function () {
-      window.location.href = "/Modules/SupSeguridad/supseguridad.html";
+      window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
     });
   }
 
@@ -230,11 +230,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const idPermiso = params.get("id");
   if (idPermiso) {
     // Llamar a la API para obtener los datos del permiso
-    fetch(
-      `/api/verformularios?id=${encodeURIComponent(
-        idPermiso
-      )}`
-    )
+    fetch(`/api/verformularios?id=${encodeURIComponent(idPermiso)}`)
       .then((resp) => resp.json())
       .then((data) => {
         console.log("Datos recibidos para el permiso:", data);

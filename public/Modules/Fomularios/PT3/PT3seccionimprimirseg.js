@@ -124,11 +124,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // 1. Primero obtener datos específicos de PT3
 
     // 2. Después obtener datos generales del permiso
-    fetch(
-      `/api/verformularios?id=${encodeURIComponent(
-        idPermiso
-      )}`
-    )
+    fetch(`/api/verformularios?id=${encodeURIComponent(idPermiso)}`)
       .then((resp) => resp.json())
       .then((data) => {
         console.log("Datos generales recibidos:", data);
@@ -369,7 +365,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnSalir = document.getElementById("btn-salir-nuevo");
   if (btnSalir) {
     btnSalir.addEventListener("click", function () {
-      window.location.href = "../../SupSeguridad/SupSeguridad.html";
+      window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
     });
   }
 

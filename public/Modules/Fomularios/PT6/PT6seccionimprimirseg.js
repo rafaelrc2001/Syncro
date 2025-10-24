@@ -102,7 +102,7 @@ async function agregarPersonaEnArea(idPermiso, persona) {
 const btnRegresar = document.getElementById("btn-regresar");
 if (btnRegresar) {
   btnRegresar.addEventListener("click", function () {
-    window.location.href = "SupSeguridad/SupSeguridad.html";
+    window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
   });
 }
 
@@ -433,11 +433,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const idPermiso2 = params2.get("id");
   if (idPermiso2) {
     // Llamar a la API para obtener los datos del permiso
-    fetch(
-      `/api/verformularios?id=${encodeURIComponent(
-        idPermiso2
-      )}`
-    )
+    fetch(`/api/verformularios?id=${encodeURIComponent(idPermiso2)}`)
       .then((resp) => resp.json())
       .then((data) => {
         // Prefijo en el título y descripción del trabajo
@@ -525,7 +521,7 @@ document.addEventListener("DOMContentLoaded", function () {
 const btnSalirNuevo = document.getElementById("btn-salir-nuevo");
 if (btnSalirNuevo) {
   btnSalirNuevo.addEventListener("click", function () {
-    window.location.href = "/Modules/SupSeguridad/supseguridad.html";
+    window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
   });
 }
 

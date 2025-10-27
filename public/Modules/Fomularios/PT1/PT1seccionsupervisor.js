@@ -53,28 +53,33 @@ document.addEventListener("DOMContentLoaded", function () {
       }
       // 1. Actualizar supervisor y categoría en autorizaciones
       try {
-        await fetch(
-          "/api/autorizaciones/supervisor-categoria",
-          {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              id_permiso: idPermiso,
-              supervisor,
-              categoria,
-              fecha_hora_supervisor: new Date().toISOString(),
-            }),
-          }
+        // Generar timestamp automático para autorización supervisor PT1 (hora local)
+        const nowSupervisor = new Date();
+        const fechaHoraAutorizacionSupervisor = new Date(
+          nowSupervisor.getTime() - nowSupervisor.getTimezoneOffset() * 60000
+        ).toISOString();
+        console.log(
+          "[AUTORIZAR SUPERVISOR PT1] Timestamp generado (hora local):",
+          fechaHoraAutorizacionSupervisor
         );
+
+        await fetch("/api/autorizaciones/supervisor-categoria", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id_permiso: idPermiso,
+            supervisor,
+            categoria,
+            fecha_hora_supervisor: fechaHoraAutorizacionSupervisor,
+          }),
+        });
       } catch (err) {
         console.error("Error al actualizar supervisor y categoría:", err);
       }
       // 2. Consultar el id_estatus desde permisos_trabajo
       let idEstatus = null;
       try {
-        const respEstatus = await fetch(
-          `/api/permisos-trabajo/${idPermiso}`
-        );
+        const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
         if (respEstatus.ok) {
           const permisoData = await respEstatus.json();
           idEstatus =
@@ -181,20 +186,28 @@ document.addEventListener("DOMContentLoaded", function () {
           }
           // 1. Actualizar supervisor y categoría en autorizaciones
           try {
-            await fetch(
-              "/api/autorizaciones/supervisor-categoria",
-              {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  id_permiso: idPermiso,
-                  supervisor,
-                  categoria,
-                  comentario_no_autorizar: comentario,
-                  fecha_hora_supervisor: new Date().toISOString(),
-                }),
-              }
+            // Generar timestamp automático para rechazo supervisor PT1 (hora local)
+            const nowRechazoSupervisor = new Date();
+            const fechaHoraRechazoSupervisor = new Date(
+              nowRechazoSupervisor.getTime() -
+                nowRechazoSupervisor.getTimezoneOffset() * 60000
+            ).toISOString();
+            console.log(
+              "[NO AUTORIZAR SUPERVISOR PT1] Timestamp generado (hora local):",
+              fechaHoraRechazoSupervisor
             );
+
+            await fetch("/api/autorizaciones/supervisor-categoria", {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                id_permiso: idPermiso,
+                supervisor,
+                categoria,
+                comentario_no_autorizar: comentario,
+                fecha_hora_supervisor: fechaHoraRechazoSupervisor,
+              }),
+            });
           } catch (err) {
             console.error("Error al actualizar supervisor y categoría:", err);
           }
@@ -409,11 +422,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const idPermiso = params.get("id");
   if (idPermiso) {
     // Llamar a la API para obtener los datos del permiso
-    fetch(
-      `/api/verformularios?id=${encodeURIComponent(
-        idPermiso
-      )}`
-    )
+    fetch(`/api/verformularios?id=${encodeURIComponent(idPermiso)}`)
       .then((resp) => resp.json())
       .then((data) => {
         console.log("Datos recibidos para el permiso:", data);

@@ -29,9 +29,7 @@ if (btnAutorizar) {
       // --- Consultar el id_estatus desde permisos_trabajo ---
       let idEstatus = null;
       try {
-        const respEstatus = await fetch(
-          `/api/permisos-trabajo/${idPermiso}`
-        );
+        const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
         if (respEstatus.ok) {
           const permisoData = await respEstatus.json();
           idEstatus =
@@ -61,14 +59,11 @@ if (btnAutorizar) {
             "[DEPURACIÓN] Enviando a /api/estatus/seguridad:",
             payloadEstatus
           );
-          const respEstatus = await fetch(
-            "/api/estatus/seguridad",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(payloadEstatus),
-            }
-          );
+          const respEstatus = await fetch("/api/estatus/seguridad", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payloadEstatus),
+          });
           console.log(
             "[DEPURACIÓN] Respuesta HTTP de estatus/seguridad:",
             respEstatus.status
@@ -147,6 +142,17 @@ if (btnAutorizar) {
           }),
         }
       );
+
+      // Generar timestamp automático para autorización PT1 (hora local)
+      const now = new Date();
+      const fechaHoraAutorizacion = new Date(
+        now.getTime() - now.getTimezoneOffset() * 60000
+      ).toISOString();
+      console.log(
+        "[AUTORIZAR PT1] Timestamp generado (hora local):",
+        fechaHoraAutorizacion
+      );
+
       // Guardar responsable y operador de área igual que PT2
       await fetch("/api/autorizaciones/area", {
         method: "POST",
@@ -155,7 +161,7 @@ if (btnAutorizar) {
           id_permiso: idPermiso,
           responsable_area,
           encargado_area: operador_area,
-          fecha_hora_area: new Date().toISOString(),
+          fecha_hora_area: fechaHoraAutorizacion,
         }),
       });
 
@@ -167,6 +173,7 @@ if (btnAutorizar) {
           id_permiso: idPermiso,
           responsable_area,
           encargado_area: operador_area,
+          fecha_hora_area: fechaHoraAutorizacion,
         }),
       });
 
@@ -255,21 +262,28 @@ if (btnNoAutorizar) {
         return;
       }
       try {
-        // 1. Guardar comentario y responsable en la tabla de autorizaciones (puedes adaptar el endpoint si tienes uno específico para no autorizado)
-        const resp = await fetch(
-          "/api/autorizaciones/area",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              id_permiso: idPermiso,
-              responsable_area,
-              encargado_area: operador_area,
-              comentario_no_autorizar: comentario,
-              fecha_hora_area: new Date().toISOString(),
-            }),
-          }
+        // Generar timestamp automático para rechazo PT1 (hora local)
+        const nowRechazo = new Date();
+        const fechaHoraRechazo = new Date(
+          nowRechazo.getTime() - nowRechazo.getTimezoneOffset() * 60000
+        ).toISOString();
+        console.log(
+          "[NO AUTORIZAR PT1] Timestamp generado (hora local):",
+          fechaHoraRechazo
         );
+
+        // 1. Guardar comentario y responsable en la tabla de autorizaciones (puedes adaptar el endpoint si tienes uno específico para no autorizado)
+        const resp = await fetch("/api/autorizaciones/area", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id_permiso: idPermiso,
+            responsable_area,
+            encargado_area: operador_area,
+            comentario_no_autorizar: comentario,
+            fecha_hora_area: fechaHoraRechazo,
+          }),
+        });
         if (!resp.ok) {
           await resp.json().catch(() => ({}));
         }
@@ -277,9 +291,7 @@ if (btnNoAutorizar) {
         // 2. Consultar el id_estatus desde permisos_trabajo
         let idEstatus = null;
         try {
-          const respEstatus = await fetch(
-            `/api/permisos-trabajo/${idPermiso}`
-          );
+          const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
           if (respEstatus.ok) {
             const permisoData = await respEstatus.json();
             idEstatus =
@@ -306,14 +318,11 @@ if (btnNoAutorizar) {
               "[NO AUTORIZAR] Enviando a /api/estatus/no_autorizado:",
               payloadEstatus
             );
-            const respEstatus = await fetch(
-              "/api/estatus/no_autorizado",
-              {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payloadEstatus),
-              }
-            );
+            const respEstatus = await fetch("/api/estatus/no_autorizado", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payloadEstatus),
+            });
             let data = {};
             try {
               data = await respEstatus.json();
@@ -328,14 +337,11 @@ if (btnNoAutorizar) {
             }
 
             // 3.1 Guardar el comentario en la tabla estatus
-            const respComentario = await fetch(
-              "/api/estatus/comentario",
-              {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ id_estatus: idEstatus, comentario }),
-              }
-            );
+            const respComentario = await fetch("/api/estatus/comentario", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ id_estatus: idEstatus, comentario }),
+            });
             let dataComentario = {};
             try {
               dataComentario = await respComentario.json();
@@ -497,11 +503,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const idPermiso = params.get("id");
   if (idPermiso) {
     // Llamar a la API para obtener los datos del permiso
-    fetch(
-      `/api/verformularios?id=${encodeURIComponent(
-        idPermiso
-      )}`
-    )
+    fetch(`/api/verformularios?id=${encodeURIComponent(idPermiso)}`)
       .then((resp) => resp.json())
       .then((data) => {
         console.log("Datos recibidos para el permiso:", data);

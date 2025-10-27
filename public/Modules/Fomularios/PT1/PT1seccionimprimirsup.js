@@ -526,3 +526,315 @@ function llenarTablaResponsables(idPermiso) {
       console.error("Error al consultar personas de autorización:", err);
     });
 }
+
+// --- Lógica para el botón "Autorizar" del Supervisor ---
+const btnAutorizarSupervisor = document.getElementById(
+  "btn-guardar-campos-supervisor"
+);
+if (btnAutorizarSupervisor) {
+  btnAutorizarSupervisor.addEventListener("click", async function () {
+    // 1. Obtener datos necesarios
+    const params = new URLSearchParams(window.location.search);
+    const idPermiso = params.get("id") || window.idPermisoActual;
+    const supervisorInput = document.getElementById("responsable-aprobador");
+    const categoriaInput = document.getElementById("responsable-aprobador2");
+    const nombre_supervisor = supervisorInput
+      ? supervisorInput.value.trim()
+      : "";
+    const categoria_supervisor = categoriaInput
+      ? categoriaInput.value.trim()
+      : "";
+
+    // 2. Validaciones básicas
+    if (!idPermiso) {
+      alert("No se pudo obtener el ID del permiso.");
+      return;
+    }
+    if (!nombre_supervisor) {
+      alert("Debes seleccionar un supervisor.");
+      if (supervisorInput) supervisorInput.focus();
+      return;
+    }
+
+    // 3. Insertar autorización de supervisor vía API
+    try {
+      // Generar timestamp automático para autorización supervisor PT1 (hora local)
+      const nowSupervisor = new Date();
+      const fechaHoraAutorizacionSupervisor = new Date(
+        nowSupervisor.getTime() - nowSupervisor.getTimezoneOffset() * 60000
+      ).toISOString();
+      console.log(
+        "[AUTORIZAR SUPERVISOR PT1] Timestamp generado (hora local):",
+        fechaHoraAutorizacionSupervisor
+      );
+
+      // Actualizar autorización de supervisor
+      const respSupervisor = await fetch("/api/autorizaciones/supervisor", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id_permiso: idPermiso,
+          nombre_supervisor,
+          categoria_supervisor,
+          fecha_hora_supervisor: fechaHoraAutorizacionSupervisor,
+        }),
+      });
+
+      if (!respSupervisor.ok) {
+        throw new Error(
+          `Error ${respSupervisor.status}: ${respSupervisor.statusText}`
+        );
+      }
+
+      // --- Consultar y actualizar estatus ---
+      let idEstatus = null;
+      try {
+        const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
+        if (respEstatus.ok) {
+          const permisoData = await respEstatus.json();
+          idEstatus =
+            permisoData.id_estatus ||
+            (permisoData.data && permisoData.data.id_estatus);
+          console.log(
+            "[AUTORIZAR SUPERVISOR PT1] idEstatus obtenido:",
+            idEstatus
+          );
+        }
+      } catch (err) {
+        console.error(
+          "[AUTORIZAR SUPERVISOR PT1] Error al consultar id_estatus:",
+          err
+        );
+      }
+
+      // Actualizar estatus si se obtuvo el id_estatus
+      if (idEstatus) {
+        try {
+          const payloadEstatus = { id_estatus: idEstatus };
+          console.log(
+            "[AUTORIZAR SUPERVISOR PT1] Enviando a /api/estatus/autorizado:",
+            payloadEstatus
+          );
+          const respEstatus = await fetch("/api/estatus/autorizado", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payloadEstatus),
+          });
+
+          if (respEstatus.ok) {
+            console.log(
+              "[AUTORIZAR SUPERVISOR PT1] Estatus actualizado exitosamente"
+            );
+          } else {
+            console.error(
+              "[AUTORIZAR SUPERVISOR PT1] Error al actualizar estatus:",
+              respEstatus.status
+            );
+          }
+        } catch (err) {
+          console.error(
+            "[AUTORIZAR SUPERVISOR PT1] Excepción al actualizar estatus:",
+            err
+          );
+        }
+      }
+
+      // Mostrar modal de confirmación o redirigir
+      alert("Permiso autorizado exitosamente por el supervisor.");
+      window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
+    } catch (err) {
+      console.error(
+        "[AUTORIZAR SUPERVISOR PT1] Error al insertar autorización:",
+        err
+      );
+      alert(
+        "Error al procesar la autorización. Por favor, inténtalo de nuevo."
+      );
+    }
+  });
+}
+
+// --- Lógica para el botón "No Autorizar" del Supervisor ---
+const btnNoAutorizarSupervisor = document.getElementById(
+  "btn-no-autorizar-supervisor"
+);
+if (btnNoAutorizarSupervisor) {
+  btnNoAutorizarSupervisor.addEventListener("click", function () {
+    // 1. Validar supervisor seleccionado
+    const supervisorInput = document.getElementById("responsable-aprobador");
+    const nombre_supervisor = supervisorInput
+      ? supervisorInput.value.trim()
+      : "";
+    if (!nombre_supervisor) {
+      alert("Debes seleccionar un supervisor antes de rechazar.");
+      return;
+    }
+
+    // Mostrar el modal para capturar el comentario de rechazo
+    const modal = document.getElementById("modalComentarioSupervisor");
+    if (modal) {
+      modal.style.display = "flex";
+      const comentarioInput = document.getElementById(
+        "comentarioNoAutorizarSupervisor"
+      );
+      if (comentarioInput) comentarioInput.value = "";
+    }
+  });
+
+  // Lógica para cerrar/cancelar el modal de supervisor
+  const btnCancelarComentarioSupervisor = document.getElementById(
+    "btnCancelarComentarioSupervisor"
+  );
+  if (btnCancelarComentarioSupervisor) {
+    btnCancelarComentarioSupervisor.addEventListener("click", function () {
+      const modal = document.getElementById("modalComentarioSupervisor");
+      if (modal) modal.style.display = "none";
+    });
+  }
+
+  // Lógica para guardar el comentario y actualizar estatus a No Autorizado por Supervisor
+  const btnGuardarComentarioSupervisor = document.getElementById(
+    "btnGuardarComentarioSupervisor"
+  );
+  if (btnGuardarComentarioSupervisor) {
+    btnGuardarComentarioSupervisor.addEventListener("click", async function () {
+      const comentario = document
+        .getElementById("comentarioNoAutorizarSupervisor")
+        .value.trim();
+      const supervisorInput = document.getElementById("responsable-aprobador");
+      const categoriaInput = document.getElementById("responsable-aprobador2");
+      const nombre_supervisor = supervisorInput
+        ? supervisorInput.value.trim()
+        : "";
+      const categoria_supervisor = categoriaInput
+        ? categoriaInput.value.trim()
+        : "";
+      const params = new URLSearchParams(window.location.search);
+      const idPermiso = params.get("id") || window.idPermisoActual;
+
+      if (!comentario) {
+        alert("Debes ingresar un comentario.");
+        return;
+      }
+      if (!idPermiso) {
+        alert("No se pudo obtener el ID del permiso.");
+        return;
+      }
+      if (!nombre_supervisor) {
+        alert("Debes seleccionar un supervisor.");
+        return;
+      }
+
+      try {
+        // Generar timestamp automático para rechazo supervisor PT1 (hora local)
+        const nowRechazoSupervisor = new Date();
+        const fechaHoraRechazoSupervisor = new Date(
+          nowRechazoSupervisor.getTime() -
+            nowRechazoSupervisor.getTimezoneOffset() * 60000
+        ).toISOString();
+        console.log(
+          "[NO AUTORIZAR SUPERVISOR PT1] Timestamp generado (hora local):",
+          fechaHoraRechazoSupervisor
+        );
+
+        // 1. Guardar comentario y supervisor en la tabla de autorizaciones
+        const respSupervisor = await fetch("/api/autorizaciones/supervisor", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id_permiso: idPermiso,
+            nombre_supervisor,
+            categoria_supervisor,
+            comentario_no_autorizar: comentario,
+            fecha_hora_supervisor: fechaHoraRechazoSupervisor,
+          }),
+        });
+
+        if (!respSupervisor.ok) {
+          throw new Error(
+            `Error ${respSupervisor.status}: ${respSupervisor.statusText}`
+          );
+        }
+
+        // 2. Consultar el id_estatus desde permisos_trabajo
+        let idEstatus = null;
+        try {
+          const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
+          if (respEstatus.ok) {
+            const permisoData = await respEstatus.json();
+            idEstatus =
+              permisoData.id_estatus ||
+              (permisoData.data && permisoData.data.id_estatus);
+            console.log(
+              "[NO AUTORIZAR SUPERVISOR PT1] idEstatus obtenido:",
+              idEstatus
+            );
+          }
+        } catch (err) {
+          console.error(
+            "[NO AUTORIZAR SUPERVISOR PT1] Error al consultar id_estatus:",
+            err
+          );
+        }
+
+        // 3. Actualizar el estatus a 'no autorizado' y guardar el comentario
+        if (idEstatus) {
+          try {
+            const payloadEstatus = { id_estatus: idEstatus };
+            console.log(
+              "[NO AUTORIZAR SUPERVISOR PT1] Enviando a /api/estatus/no_autorizado:",
+              payloadEstatus
+            );
+            const respEstatus = await fetch("/api/estatus/no_autorizado", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payloadEstatus),
+            });
+
+            if (respEstatus.ok) {
+              console.log(
+                "[NO AUTORIZAR SUPERVISOR PT1] Estatus actualizado a No Autorizado"
+              );
+
+              // Guardar el comentario en la tabla estatus
+              const respComentario = await fetch("/api/estatus/comentario", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id_estatus: idEstatus, comentario }),
+              });
+
+              if (respComentario.ok) {
+                console.log(
+                  "[NO AUTORIZAR SUPERVISOR PT1] Comentario guardado exitosamente"
+                );
+              }
+            } else {
+              throw new Error("Error al actualizar estatus");
+            }
+          } catch (err) {
+            console.error(
+              "[NO AUTORIZAR SUPERVISOR PT1] Error al actualizar estatus:",
+              err
+            );
+            throw err;
+          }
+        } else {
+          throw new Error("No se pudo obtener id_estatus");
+        }
+
+        // 4. Cerrar el modal y mostrar mensaje de éxito
+        const modal = document.getElementById("modalComentarioSupervisor");
+        if (modal) modal.style.display = "none";
+
+        alert("Permiso rechazado exitosamente por el supervisor.");
+        window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
+      } catch (err) {
+        console.error(
+          "[NO AUTORIZAR SUPERVISOR PT1] Error en el proceso de rechazo:",
+          err
+        );
+        alert("Error al procesar el rechazo. Por favor, inténtalo de nuevo.");
+      }
+    });
+  }
+}

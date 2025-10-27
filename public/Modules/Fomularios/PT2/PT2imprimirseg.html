@@ -20,26 +20,6 @@
             }
         }
     </style>
-    
-    <!-- INSTRUCCIONES PARA ELIMINAR COMPLETAMENTE ENCABEZADOS Y PIES DE PÁGINA -->
-    <script>
-        // Mostrar instrucciones al usuario la primera vez
-        window.addEventListener('load', function() {
-            if (!localStorage.getItem('instruccionesVistas')) {
-                setTimeout(() => {
-                    alert(`PARA ELIMINAR ENCABEZADOS Y PIES DE PÁGINA:
-
-1. Presiona Ctrl+P para imprimir
-2. En el diálogo de impresión:
-   - Chrome/Edge: Ve a "Más configuraciones" → Desmarcar "Encabezados y pies de página"
-   - Firefox: Ve a "Configurar página" → Encabezados y pies en "Vacío"
-
-Esta configuración se guardará para futuras impresiones.`);
-                    localStorage.setItem('instruccionesVistas', 'true');
-                }, 2000);
-            }
-        });
-    </script>
 
   </head>
 <body style="background: #f4f6fb; min-height: 100vh; margin: 0; font-family: 'Roboto', Arial, sans-serif;">
@@ -69,6 +49,13 @@ Esta configuración se guardará para futuras impresiones.`);
               <div class="general-box-header">
                                         <span>Información General</span>
                                     </div>
+
+                                <div  id="hora-creacion-header" style="text-align: center;">
+                                    <i class="ri-time-line"></i>
+                                    <h3>Hora de creación</h3>
+                                </div>
+
+
 
             <div class="executive-section">
          
@@ -142,6 +129,9 @@ Esta configuración se guardará para futuras impresiones.`);
                      <span>Formulario Area Solicitante</span> 
             </div>
 
+
+                
+
           <div class="executive-section">
                 <div class="section-header">
                     <i class="ri-checkbox-multiple-line"></i>
@@ -180,6 +170,13 @@ Esta configuración se guardará para futuras impresiones.`);
              <div class="area-box-header">
                  <span>Formulario Responsable del Área</span>
              </div>
+
+
+                 <div  id="hora-responsable-header" style="text-align: center;">
+                                    <i class="ri-time-line"></i>
+                                    <h3>Hora de autorización</h3>
+                    </div>
+
             <!-- Sección Condiciones del Proceso independiente -->
             <div class="executive-section">
                 <div class="section-header section-header-cielo">
@@ -286,6 +283,11 @@ Esta configuración se guardará para futuras impresiones.`);
                          <div class="supervisor-box-header">
                              <span>Formulario Supervisor</span>
                          </div>
+                          <div  id="hora-supervisor-header" style="text-align: center;">
+                                    <i class="ri-time-line"></i>
+                                    <h3>Hora de autorización</h3>
+                                </div>
+
 
                         <!-- Requisitos para Administrar los Riesgos (solo lectura) -->
                         <div class="executive-section ">
@@ -378,8 +380,7 @@ Esta configuración se guardará para futuras impresiones.`);
             </div>
 
 
-
-
+                 
                  <!-- Sección AST y Participantes -->
                 <div class="executive-section ">
                    
@@ -513,6 +514,7 @@ Esta configuración se guardará para futuras impresiones.`);
 
      <!-- <script src="/Modules/Fomularios/PT1/PT1.js"></script>-->
 
+     <script src="/Modules/Fomularios/Generales/fecha_hora.js"></script>
      <script src="/Modules/Fomularios/PT2/PT2seccionimprimirseg.js"></script>
 </body>
 </html>

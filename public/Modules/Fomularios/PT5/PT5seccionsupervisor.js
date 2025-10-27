@@ -239,11 +239,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
     // 1. Obtener datos generales y AST
-    fetch(
-      `/api/verformularios?id=${encodeURIComponent(
-        idPermiso
-      )}`
-    )
+    fetch(`/api/verformularios?id=${encodeURIComponent(idPermiso)}`)
       .then((resp) => resp.json())
       .then((data) => {
         // Mapeo de datos generales para la sección principal y equipo
@@ -374,20 +370,46 @@ document.addEventListener("DOMContentLoaded", function () {
 
           // 1. Actualizar supervisor y categoría en autorizaciones
           try {
-            await fetch(
-              "/api/autorizaciones/supervisor-categoria",
-              {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  id_permiso: idPermiso,
-                  supervisor,
-                  categoria,
-                  comentario_no_autorizar: comentario,
-                  fecha_hora_supervisor: new Date().toISOString(),
-                }),
-              }
+            // Generar timestamp automático para rechazo supervisor PT5 (hora local)
+            const nowRechazoSupervisor = new Date();
+            const year = nowRechazoSupervisor.getFullYear();
+            const month = String(nowRechazoSupervisor.getMonth() + 1).padStart(
+              2,
+              "0"
             );
+            const day = String(nowRechazoSupervisor.getDate()).padStart(2, "0");
+            const hours = String(nowRechazoSupervisor.getHours()).padStart(
+              2,
+              "0"
+            );
+            const minutes = String(nowRechazoSupervisor.getMinutes()).padStart(
+              2,
+              "0"
+            );
+            const seconds = String(nowRechazoSupervisor.getSeconds()).padStart(
+              2,
+              "0"
+            );
+            const milliseconds = String(
+              nowRechazoSupervisor.getMilliseconds()
+            ).padStart(3, "0");
+            const fechaHoraRechazoSupervisor = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}`;
+            console.log(
+              "[NO AUTORIZAR SUPERVISOR PT5] Timestamp generado (hora local):",
+              fechaHoraRechazoSupervisor
+            );
+
+            await fetch("/api/autorizaciones/supervisor-categoria", {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                id_permiso: idPermiso,
+                supervisor,
+                categoria,
+                comentario_no_autorizar: comentario,
+                fecha_hora_supervisor: fechaHoraRechazoSupervisor,
+              }),
+            });
           } catch (err) {
             console.error("Error al actualizar supervisor y categoría:", err);
           }
@@ -471,19 +493,34 @@ if (btnAutorizar) {
 
     // 1. Actualizar supervisor y categoría en autorizaciones
     try {
-      await fetch(
-        "/api/autorizaciones/supervisor-categoria",
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            id_permiso: idPermiso,
-            supervisor,
-            categoria,
-            fecha_hora_supervisor: new Date().toISOString(),
-          }),
-        }
+      // Generar timestamp automático para autorización supervisor PT5 (hora local)
+      const nowSupervisor = new Date();
+      const year = nowSupervisor.getFullYear();
+      const month = String(nowSupervisor.getMonth() + 1).padStart(2, "0");
+      const day = String(nowSupervisor.getDate()).padStart(2, "0");
+      const hours = String(nowSupervisor.getHours()).padStart(2, "0");
+      const minutes = String(nowSupervisor.getMinutes()).padStart(2, "0");
+      const seconds = String(nowSupervisor.getSeconds()).padStart(2, "0");
+      const milliseconds = String(nowSupervisor.getMilliseconds()).padStart(
+        3,
+        "0"
       );
+      const fechaHoraAutorizacionSupervisor = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}`;
+      console.log(
+        "[AUTORIZAR SUPERVISOR PT5] Timestamp generado (hora local):",
+        fechaHoraAutorizacionSupervisor
+      );
+
+      await fetch("/api/autorizaciones/supervisor-categoria", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id_permiso: idPermiso,
+          supervisor,
+          categoria,
+          fecha_hora_supervisor: fechaHoraAutorizacionSupervisor,
+        }),
+      });
     } catch (err) {
       console.error("Error al actualizar supervisor y categoría:", err);
     }
@@ -513,14 +550,11 @@ if (btnAutorizar) {
         "Payload enviado a /requisitos_supervisor para fuego:",
         payloadSupervisor
       );
-      await fetch(
-        `/api/fuego/requisitos_supervisor/${idPermiso}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payloadSupervisor),
-        }
-      );
+      await fetch(`/api/fuego/requisitos_supervisor/${idPermiso}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payloadSupervisor),
+      });
     } catch (err) {
       console.error("Error al actualizar requisitos supervisor:", err);
     }
@@ -528,9 +562,7 @@ if (btnAutorizar) {
     // 2. Consultar id_estatus
     let idEstatus = null;
     try {
-      const respEstatus = await fetch(
-        `/api/permisos-trabajo/${idPermiso}`
-      );
+      const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
       if (respEstatus.ok) {
         const permisoData = await respEstatus.json();
         idEstatus =

@@ -4,33 +4,34 @@
 //Notas:
 //Tengo dos funciones de estatus una mas arrbiba en el codigo y la otra hasta abajo
 
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const db = require('./database');
-require('dotenv').config();
+const express = require("express");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const db = require("./database");
+require("dotenv").config();
 
-const tablasRouter = require('./tablas');
-const listasRouter = require('./listas');
-const vertablasRouter = require('./vertablas');
-const targetasRouter = require('./verformularios');
-const verformulariosRouter = require('./loginconsulta');
-const autorizacionesEstatusRouter = require('./autorizaciones_estatus');
-const formulariosRouter = require('./formularios');
-const formularioConfinadosRouter = require('./formulariospt3-10/formulario_confinados');
-const formularioFuegoRouter = require('./formulariospt3-10/formulario_fuego'); // <--- AGREGA ESTA LÍNEA
-const formularioElectricoRouter = require('./formulariospt3-10/formulario_electrico'); // <--- AGREGA ESTA LÍNEA
-const formularioRadiacionRouter = require('./formulariospt3-10/formulario_radiactivas'); // <--- AGREGA ESTA LÍNEA
-const formularioAlturaRouter = require('./formulariospt3-10/formulario_altura');
-const pt1ImprimirRouter = require('./impresiones/pt1_imprimir');
-const pt2PDFRouter = require('./impresiones/pt2_pdf_routes'); // Nuevo router para PDF PT2
-const graficasAreasRouter = require('./graficas/endpoint_graficas_areas');
-const permisosTipoRouter = require('./graficas/endpoint_permisos');
-const graficaEstatusRouter = require('./graficas/endpoint_grafica_estatus');
-const tablaPermisosRouter = require('./graficas/endpoint_tabla');
-const exportarRouter = require('./exportar');
+const tablasRouter = require("./tablas");
+const listasRouter = require("./listas");
+const vertablasRouter = require("./vertablas");
+const targetasRouter = require("./verformularios");
+const verformulariosRouter = require("./loginconsulta");
+const autorizacionesEstatusRouter = require("./autorizaciones_estatus");
+const formulariosRouter = require("./formularios");
+const formularioConfinadosRouter = require("./formulariospt3-10/formulario_confinados");
+const formularioFuegoRouter = require("./formulariospt3-10/formulario_fuego"); // <--- AGREGA ESTA LÍNEA
+const formularioElectricoRouter = require("./formulariospt3-10/formulario_electrico"); // <--- AGREGA ESTA LÍNEA
+const formularioRadiacionRouter = require("./formulariospt3-10/formulario_radiactivas"); // <--- AGREGA ESTA LÍNEA
+const formularioAlturaRouter = require("./formulariospt3-10/formulario_altura");
+const pt1ImprimirRouter = require("./impresiones/pt1_imprimir");
+const pt2PDFRouter = require("./impresiones/pt2_pdf_routes"); // Nuevo router para PDF PT2
+const graficasAreasRouter = require("./graficas/endpoint_graficas_areas");
+const permisosTipoRouter = require("./graficas/endpoint_permisos");
+const graficaEstatusRouter = require("./graficas/endpoint_grafica_estatus");
+const tablaPermisosRouter = require("./graficas/endpoint_tabla");
+const exportarRouter = require("./exportar");
+const fechasAutorizacionRouter = require("./fechas_autorizacion_routes");
 
-const loginconsultaRouter = require('./loginconsulta');
+const loginconsultaRouter = require("./loginconsulta");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -48,88 +49,91 @@ const PORT = process.env.PORT || 3000;
 //   allowedHeaders: ["Content-Type", "Authorization"],
 // };
 app.use(cors());
-app.options('*', cors());
+app.options("*", cors());
 
 // Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Configuración de archivos estáticos con headers apropiados
-app.use(express.static('public', {
-  setHeaders: function (res, path, stat) {
-    if (path.endsWith('.css')) {
-      res.set('Content-Type', 'text/css');
-    }
-  }
-}));
+app.use(
+  express.static("public", {
+    setHeaders: function (res, path, stat) {
+      if (path.endsWith(".css")) {
+        res.set("Content-Type", "text/css");
+      }
+    },
+  })
+);
 
 // Endpoint de login de usuario departamento
-app.use('/endpoints', loginconsultaRouter);
+app.use("/endpoints", loginconsultaRouter);
 
 // Rutas de la API
 
-app.use('/api', tablasRouter); // Monta las rutas de tablas.js bajo el prefijo /api
-app.use('/api', listasRouter); // Monta las rutas de listas.js bajo el prefijo /api
-app.use('/api', vertablasRouter); // Monta las rutas de vertablas.js bajo el prefijo /api
-app.use('/api', targetasRouter); // Monta las rutas de targetas.js bajo el prefijo /api
-app.use('/api', verformulariosRouter); // Monta las rutas de verformularios.js bajo el prefijo /api
-app.use('/api', autorizacionesEstatusRouter); // Monta las rutas de autorizaciones_estatus.js bajo el prefijo /api
-app.use('/api', formulariosRouter); // Monta las rutas de formularios.js bajo el prefijo /api
-app.use('/api', formularioConfinadosRouter); // Monta las rutas de formulario_confinados.js bajo el prefijo /api
-app.use('/api', formularioFuegoRouter); // <--- Y ESTA LÍNEA
-app.use('/api', formularioElectricoRouter); // <--- Y ESTA LÍNEA
-app.use('/api', formularioRadiacionRouter); // <--- Y ESTA LÍNEA
-app.use('/api', formularioAlturaRouter); // Monta las rutas de formulario_altura.js bajo el prefijo /api
-app.use('/api', pt1ImprimirRouter); // Monta las rutas de impresión PT1 bajo el prefijo /api
-app.use('/api/pt2', pt2PDFRouter); // Monta las rutas de PDF PT2 bajo el prefijo /api/pt2
-app.use('/api', graficasAreasRouter); // Monta las rutas de graficas/endpoint_graficas_areas.js bajo el prefijo /api
-app.use('/api', permisosTipoRouter); // Monta las rutas de graficas/endpoint_permisos.js bajo el prefijo /api
-app.use('/api', graficaEstatusRouter); // Monta las rutas de graficas/endpoint_grafica_estatus.js bajo el prefijo /api
-app.use('/api', tablaPermisosRouter); // Monta las rutas de graficas/endpoint_tabla.js bajo el prefijo /api
-app.use('/api', exportarRouter); // Monta las rutas de exportar.js bajo /api (p.ej. /api/exportar-supervisor)
+app.use("/api", tablasRouter); // Monta las rutas de tablas.js bajo el prefijo /api
+app.use("/api", listasRouter); // Monta las rutas de listas.js bajo el prefijo /api
+app.use("/api", vertablasRouter); // Monta las rutas de vertablas.js bajo el prefijo /api
+app.use("/api", targetasRouter); // Monta las rutas de targetas.js bajo el prefijo /api
+app.use("/api", verformulariosRouter); // Monta las rutas de verformularios.js bajo el prefijo /api
+app.use("/api", autorizacionesEstatusRouter); // Monta las rutas de autorizaciones_estatus.js bajo el prefijo /api
+app.use("/api", formulariosRouter); // Monta las rutas de formularios.js bajo el prefijo /api
+app.use("/api", formularioConfinadosRouter); // Monta las rutas de formulario_confinados.js bajo el prefijo /api
+app.use("/api", formularioFuegoRouter); // <--- Y ESTA LÍNEA
+app.use("/api", formularioElectricoRouter); // <--- Y ESTA LÍNEA
+app.use("/api", formularioRadiacionRouter); // <--- Y ESTA LÍNEA
+app.use("/api", formularioAlturaRouter); // Monta las rutas de formulario_altura.js bajo el prefijo /api
+app.use("/api", pt1ImprimirRouter); // Monta las rutas de impresión PT1 bajo el prefijo /api
+app.use("/api/pt2", pt2PDFRouter); // Monta las rutas de PDF PT2 bajo el prefijo /api/pt2
+app.use("/api", graficasAreasRouter); // Monta las rutas de graficas/endpoint_graficas_areas.js bajo el prefijo /api
+app.use("/api", permisosTipoRouter); // Monta las rutas de graficas/endpoint_permisos.js bajo el prefijo /api
+app.use("/api", graficaEstatusRouter); // Monta las rutas de graficas/endpoint_grafica_estatus.js bajo el prefijo /api
+app.use("/api", tablaPermisosRouter); // Monta las rutas de graficas/endpoint_tabla.js bajo el prefijo /api
+app.use("/api", exportarRouter); // Monta las rutas de exportar.js bajo /api (p.ej. /api/exportar-supervisor)
+app.use("/api", fechasAutorizacionRouter); // Monta las rutas de fechas de autorización
 
 // ================= RUTAS DE TABLAS BASE =================
-const tablasBase = require('./tablasbase');
+const tablasBase = require("./tablasbase");
 
 // CATEGORIAS
-app.get('/api/categorias', tablasBase.getCategorias);
-app.post('/api/categorias', tablasBase.createCategoria);
-app.put('/api/categorias/:id', tablasBase.updateCategoria);
-app.delete('/api/categorias/:id', tablasBase.deleteCategoria);
+app.get("/api/categorias", tablasBase.getCategorias);
+app.post("/api/categorias", tablasBase.createCategoria);
+app.put("/api/categorias/:id", tablasBase.updateCategoria);
+app.delete("/api/categorias/:id", tablasBase.deleteCategoria);
 
 // AREAS
-app.get('/api/areas', tablasBase.getAreas);
-app.get('/api/areas/:id', tablasBase.getAreaById);
-app.post('/api/areas', tablasBase.createArea);
-app.put('/api/areas/:id', tablasBase.updateArea);
-app.delete('/api/areas/:id', tablasBase.deleteArea);
+app.get("/api/areas", tablasBase.getAreas);
+app.get("/api/areas/:id", tablasBase.getAreaById);
+app.post("/api/areas", tablasBase.createArea);
+app.put("/api/areas/:id", tablasBase.updateArea);
+app.delete("/api/areas/:id", tablasBase.deleteArea);
 
 // SUCURSALES
-app.get('/api/sucursales', tablasBase.getSucursales);
-app.get('/api/sucursales/:id', tablasBase.getSucursalById);
-app.post('/api/sucursales', tablasBase.createSucursal);
-app.put('/api/sucursales/:id', tablasBase.updateSucursal);
-app.delete('/api/sucursales/:id', tablasBase.deleteSucursal);
+app.get("/api/sucursales", tablasBase.getSucursales);
+app.get("/api/sucursales/:id", tablasBase.getSucursalById);
+app.post("/api/sucursales", tablasBase.createSucursal);
+app.put("/api/sucursales/:id", tablasBase.updateSucursal);
+app.delete("/api/sucursales/:id", tablasBase.deleteSucursal);
 
 // DEPARTAMENTOS
-app.get('/api/departamentos', tablasBase.getDepartamentos);
-app.get('/api/departamentos/:id', tablasBase.getDepartamentoById);
-app.post('/api/departamentos', tablasBase.createDepartamento);
-app.put('/api/departamentos/:id', tablasBase.updateDepartamento);
-app.delete('/api/departamentos/:id', tablasBase.deleteDepartamento);
+app.get("/api/departamentos", tablasBase.getDepartamentos);
+app.get("/api/departamentos/:id", tablasBase.getDepartamentoById);
+app.post("/api/departamentos", tablasBase.createDepartamento);
+app.put("/api/departamentos/:id", tablasBase.updateDepartamento);
+app.delete("/api/departamentos/:id", tablasBase.deleteDepartamento);
 
 // SUPERVISORES
-app.get('/api/supervisores_base', tablasBase.getSupervisores);
-app.get('/api/supervisores/:id', tablasBase.getSupervisorById);
-app.post('/api/supervisores', tablasBase.createSupervisor);
-app.put('/api/supervisores/:id', tablasBase.updateSupervisor);
-app.delete('/api/supervisores/:id', tablasBase.deleteSupervisor);
+app.get("/api/supervisores_base", tablasBase.getSupervisores);
+app.get("/api/supervisores/:id", tablasBase.getSupervisorById);
+app.post("/api/supervisores", tablasBase.createSupervisor);
+app.put("/api/supervisores/:id", tablasBase.updateSupervisor);
+app.delete("/api/supervisores/:id", tablasBase.deleteSupervisor);
 
-app.get('/api/areas', tablasBase.getAreas);
-app.get('/api/areas/:id', tablasBase.getAreaById);
-app.post('/api/areas', tablasBase.createArea);
-app.put('/api/areas/:id', tablasBase.updateArea);
-app.delete('/api/areas/:id', tablasBase.deleteArea);
+app.get("/api/areas", tablasBase.getAreas);
+app.get("/api/areas/:id", tablasBase.getAreaById);
+app.post("/api/areas", tablasBase.createArea);
+app.put("/api/areas/:id", tablasBase.updateArea);
+app.delete("/api/areas/:id", tablasBase.deleteArea);
 
 // Endpoint de estado de la aplicación
 app.listen(PORT, () => {

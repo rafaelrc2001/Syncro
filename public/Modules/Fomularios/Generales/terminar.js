@@ -63,9 +63,7 @@ if (btnGuardarCerrarPermiso) {
         "🌐 [CERRAR] Consultando id_estatus en /api/permisos-trabajo/",
         idPermiso
       );
-      const respEstatus = await fetch(
-        `/api/permisos-trabajo/${idPermiso}`
-      );
+      const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
       const permisoData = await respEstatus.json();
       idEstatus =
         permisoData.id_estatus ||
@@ -78,14 +76,11 @@ if (btnGuardarCerrarPermiso) {
 
     try {
       console.log("💾 [CERRAR] Guardando comentario → /api/estatus/comentario");
-      const respComentario = await fetch(
-        "/api/estatus/comentario",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ id_estatus: idEstatus, comentario }),
-        }
-      );
+      const respComentario = await fetch("/api/estatus/comentario", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id_estatus: idEstatus, comentario }),
+      });
       const dataComentario = await respComentario.json();
 
       if (!dataComentario.success) {
@@ -94,14 +89,11 @@ if (btnGuardarCerrarPermiso) {
       }
 
       console.log("🔄 [CERRAR] Actualizando estatus → /api/estatus/terminado");
-      const respEstatusTerminado = await fetch(
-        "/api/estatus/terminado",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ id_estatus: idEstatus }),
-        }
-      );
+      const respEstatusTerminado = await fetch("/api/estatus/terminado", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id_estatus: idEstatus }),
+      });
       const dataEstatusTerminado = await respEstatusTerminado.json();
 
       if (!respEstatusTerminado.ok || !dataEstatusTerminado.success) {
@@ -116,6 +108,7 @@ if (btnGuardarCerrarPermiso) {
         await window.n8nFormHandlerFinalizado();
         alert("Permiso cerrado y correo enviado correctamente.");
         modalCerrarPermiso.style.display = "none";
+        alert("Prueba para ver los datos.");
         window.location.href = "/Modules/usuario/crearPT.html";
       } else {
         console.warn(

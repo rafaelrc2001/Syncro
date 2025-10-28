@@ -1,4 +1,6 @@
 // Rellenar la tabla de permisos en el dashboard
+// DESHABILITADO - Ahora usa filtro-global.js
+/*
 document.addEventListener("DOMContentLoaded", function () {
   const usuario = JSON.parse(localStorage.getItem("usuario"));
   const id_departamento = usuario && usuario.id ? usuario.id : 1;
@@ -86,3 +88,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+*/
+
+console.log("tabla-dash.js: Funcionalidad migrada a filtro-global.js");

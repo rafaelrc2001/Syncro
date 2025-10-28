@@ -288,7 +288,8 @@ function cargarDatosEstatus() {
 document.addEventListener("DOMContentLoaded", function () {
   if (document.getElementById("status-chart")) {
     window.statusChartInstance = initStatusChart();
-    cargarDatosEstatus();
+    // Datos serán cargados EXCLUSIVAMENTE por el filtro-global.js
+    // cargarDatosEstatus(); // DESHABILITADO PERMANENTEMENTE
   }
 });
 

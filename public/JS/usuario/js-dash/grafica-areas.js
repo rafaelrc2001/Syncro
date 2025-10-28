@@ -154,27 +154,32 @@ function initAreasChart() {
 
   // Función para actualizar datos
   function updateAreasChart(newData) {
+    // Actualizar los datos globales
+    areasData.categories = newData.categories || areasData.categories;
+    areasData.values = newData.values || areasData.values;
+    areasData.colors = newData.colors || areasData.colors;
+
     const updatedOption = {
       xAxis: {
-        data: newData.categories || areasData.categories,
+        data: areasData.categories,
       },
       series: [
         {
-          data: (newData.values || areasData.values).map((value, index) => ({
+          data: areasData.values.map((value, index) => ({
             value: value,
             itemStyle: {
               color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                 {
                   offset: 0,
-                  color: (newData.colors || areasData.colors)[index],
+                  color: areasData.colors[index],
                 },
                 {
                   offset: 1,
-                  color: (newData.colors || areasData.colors)[index] + "80",
+                  color: areasData.colors[index] + "80",
                 },
               ]),
               borderRadius: [4, 4, 0, 0],
-              shadowColor: (newData.colors || areasData.colors)[index] + "30",
+              shadowColor: areasData.colors[index] + "30",
               shadowBlur: 4,
               shadowOffsetY: 2,
             },
@@ -237,8 +242,9 @@ function cargarDatosAreas() {
 document.addEventListener("DOMContentLoaded", function () {
   if (document.getElementById("areas-chart")) {
     window.areasChartInstance = initAreasChart();
+    // Datos serán cargados EXCLUSIVAMENTE por el filtro-global.js
+    // cargarDatosAreas(); // DESHABILITADO PERMANENTEMENTE
   }
-  cargarDatosAreas();
 });
 
 // Exportar para uso global

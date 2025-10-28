@@ -287,7 +287,8 @@ function cargarDatosTipos() {
 document.addEventListener("DOMContentLoaded", function () {
   if (document.getElementById("type-chart")) {
     window.typesChartInstance = initTypesChart();
-    cargarDatosTipos();
+    // Datos serán cargados EXCLUSIVAMENTE por el filtro-global.js
+    // cargarDatosTipos(); // DESHABILITADO PERMANENTEMENTE
   }
 });
 

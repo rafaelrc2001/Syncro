@@ -88,16 +88,25 @@ if (btnGuardarCerrarPermiso) {
         return;
       }
 
-      // ✅ COMENTARIO GUARDADO - NO actualizar estatus aquí
-      // La actualización del estatus se maneja en PTXseccionimprimir.js con tipos específicos
-      console.log(
-        "✅ [CERRAR] Comentario guardado exitosamente. El estatus se actualiza por el sistema de tipos específicos."
-      );
+      // ✅ COMENTARIO GUARDADO
+      console.log("✅ [CERRAR] Comentario guardado exitosamente.");
+
+      // Enviar datos a N8N si la función está disponible
+      if (window.n8nFormHandlerFinalizado) {
+        try {
+          await window.n8nFormHandlerFinalizado(comentario);
+          console.log("📨 [CERRAR] Datos enviados a N8N correctamente.");
+        } catch (e) {
+          console.warn("⚠️ [CERRAR] Error al enviar datos a N8N:", e);
+        }
+      } else {
+        console.warn(
+          "⚠️ [CERRAR] No se encontró window.n8nFormHandlerFinalizado"
+        );
+      }
 
       alert("Comentario de cierre guardado correctamente.");
       modalCerrarPermiso.style.display = "none";
-
-      // No redirigir aquí - que lo maneje el sistema principal
     } catch (err) {
       console.error("❌ [CERRAR] Error en el flujo de cierre:", err);
       alert("Error al cerrar el permiso. Ver consola para más detalles.");

@@ -144,8 +144,15 @@
           <!-- Search Bar moved here -->
           <div class="search-card">
             <div class="search-bar">
-              <input type="text" placeholder="Buscar por folio o nombre..." />
+              <input
+                id="global-search"
+                type="text"
+                placeholder="Buscar por folio o nombre..."
+              />
               <i class="ri-search-line"></i>
+            </div>
+            <div id="filter-results" class="filter-results">
+              Mostrando todos los registros
             </div>
           </div>
         </section>
@@ -230,6 +237,7 @@
     <script src="/JS/usuario/js-dash/grafica-tipos.js"></script>
     <script src="/JS/usuario/js-dash/grafica-estatus.js"></script>
     <script src="/JS/usuario/js-dash/tabla-dash.js"></script>
+    <script src="/JS/usuario/js-dash/filtro-global.js"></script>
     <script type="module" src="/JS/usuario/tabla-crearpt.js"></script>
 
     <script>

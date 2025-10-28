@@ -36,9 +36,7 @@ async function cargarTargetasDesdePermisos() {
     const id_departamento = usuario && usuario.id ? usuario.id : null;
     if (!id_departamento)
       throw new Error("No se encontró el id de departamento del usuario");
-    const response = await fetch(
-      `/api/vertablas/${id_departamento}`
-    );
+    const response = await fetch(`/api/vertablas/${id_departamento}`);
     if (!response.ok) throw new Error("Error al consultar permisos");
     const permisos = await response.json();
 
@@ -59,7 +57,12 @@ async function cargarTargetasDesdePermisos() {
         porAutorizar++;
       } else if (estatus === "activo") {
         activos++;
-      } else if (estatus === "terminado") {
+      } else if (
+        estatus === "terminado" ||
+        estatus === "cierre sin incidentes" ||
+        estatus === "cierre con incidentes" ||
+        estatus === "cierre con accidentes"
+      ) {
         terminados++;
       } else if (estatus === "no autorizado") {
         noAutorizados++;
@@ -84,9 +87,7 @@ async function cargarPermisosTabla() {
     const id_departamento = usuario && usuario.id ? usuario.id : null;
     if (!id_departamento)
       throw new Error("No se encontró el id de departamento del usuario");
-    const response = await fetch(
-      `/api/vertablas/${id_departamento}`
-    );
+    const response = await fetch(`/api/vertablas/${id_departamento}`);
     if (!response.ok) throw new Error("Error al consultar permisos");
     permisosGlobal = await response.json();
     mostrarPermisosFiltrados("En espera del área");
@@ -129,11 +130,13 @@ function mostrarPermisosFiltrados(filtro) {
         .toLowerCase();
       const descripcion = (permiso.descripcion || "").toString().toLowerCase();
       const solicitante = (permiso.solicitante || "").toString().toLowerCase();
+      const tipoPermiso = (permiso.tipo_permiso || "").toString().toLowerCase();
       return (
         prefijo.includes(q) ||
         contrato.includes(q) ||
         descripcion.includes(q) ||
-        solicitante.includes(q)
+        solicitante.includes(q) ||
+        tipoPermiso.includes(q)
       );
     });
   }
@@ -185,6 +188,15 @@ function mostrarPermisosFiltrados(filtro) {
         break;
       case "wait-security":
         badgeClass = "wait-security3";
+        break;
+      case "cierre sin incidentes":
+        badgeClass = "cierre-sin-incidentes";
+        break;
+      case "cierre con incidentes":
+        badgeClass = "cierre-con-incidentes";
+        break;
+      case "cierre con accidentes":
+        badgeClass = "cierre-con-accidentes";
         break;
       default:
         badgeClass = "";
@@ -893,11 +905,13 @@ window.getPermisosFiltrados = function () {
         .toLowerCase();
       const descripcion = (permiso.descripcion || "").toString().toLowerCase();
       const solicitante = (permiso.solicitante || "").toString().toLowerCase();
+      const tipoPermiso = (permiso.tipo_permiso || "").toString().toLowerCase();
       return (
         prefijo.includes(q) ||
         contrato.includes(q) ||
         descripcion.includes(q) ||
-        solicitante.includes(q)
+        solicitante.includes(q) ||
+        tipoPermiso.includes(q)
       );
     });
   }

@@ -88,37 +88,16 @@ if (btnGuardarCerrarPermiso) {
         return;
       }
 
-      console.log("🔄 [CERRAR] Actualizando estatus → /api/estatus/terminado");
-      const respEstatusTerminado = await fetch("/api/estatus/terminado", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id_estatus: idEstatus }),
-      });
-      const dataEstatusTerminado = await respEstatusTerminado.json();
+      // ✅ COMENTARIO GUARDADO - NO actualizar estatus aquí
+      // La actualización del estatus se maneja en PTXseccionimprimir.js con tipos específicos
+      console.log(
+        "✅ [CERRAR] Comentario guardado exitosamente. El estatus se actualiza por el sistema de tipos específicos."
+      );
 
-      if (!respEstatusTerminado.ok || !dataEstatusTerminado.success) {
-        alert("Error al actualizar el estatus a terminado.");
-        return;
-      }
+      alert("Comentario de cierre guardado correctamente.");
+      modalCerrarPermiso.style.display = "none";
 
-      if (window.n8nFormHandlerFinalizado) {
-        console.log(
-          "📨 [CERRAR] Ejecutando n8nFormHandlerFinalizado() para enviar correo..."
-        );
-        await window.n8nFormHandlerFinalizado();
-        alert("Permiso cerrado y correo enviado correctamente.");
-        modalCerrarPermiso.style.display = "none";
-        alert("Prueba para ver los datos.");
-        window.location.href = "/Modules/usuario/crearPT.html";
-      } else {
-        console.warn(
-          "⚠️ [CERRAR] No se encontró window.n8nFormHandlerFinalizado"
-        );
-        // Añadir redirección incluso si no hay función de email
-        alert("Permiso cerrado correctamente.");
-        modalCerrarPermiso.style.display = "none";
-        window.location.href = "/Modules/usuario/crearPT.html";
-      }
+      // No redirigir aquí - que lo maneje el sistema principal
     } catch (err) {
       console.error("❌ [CERRAR] Error en el flujo de cierre:", err);
       alert("Error al cerrar el permiso. Ver consola para más detalles.");

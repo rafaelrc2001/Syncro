@@ -761,6 +761,29 @@ td {
     color: #ffffff;
 }
 
+/* Estilos para los nuevos tipos de cierre */
+.status-badge.cierre-sin-incidentes {
+    background-color: #E8F5E9;
+    color: #1B5E20;
+    border: 1px solid #4CAF50;
+}
+
+.status-badge.cierre-con-incidentes {
+    background-color: #FFF3E0;
+    color: #E65100;
+    border: 1px solid #FF9800;
+}
+
+.status-badge.cierre-con-accidentes {
+    background-color: #FFEBEE;
+    color: #B71C1C;
+    border: 1px solid #F44336;
+}
+
+.status-badge:hover {
+    filter: brightness(95%);
+}
+
 .action-btn {
     width: 30px;
     height: 30px;

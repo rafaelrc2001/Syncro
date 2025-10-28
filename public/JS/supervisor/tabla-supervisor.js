@@ -35,7 +35,12 @@ async function cargarTargetasDesdeAutorizar() {
         porAutorizar++;
       } else if (estatus === "activo") {
         activos++;
-      } else if (estatus === "terminado") {
+      } else if (
+        estatus === "terminado" ||
+        estatus === "cierre sin incidentes" ||
+        estatus === "cierre con incidentes" ||
+        estatus === "cierre con accidentes"
+      ) {
         terminados++;
       } else if (estatus === "no autorizado") {
         noAutorizados++;
@@ -133,6 +138,15 @@ function mostrarPermisosFiltrados(filtro) {
         break;
       case "terminado":
         badgeClass = "completed";
+        break;
+      case "cierre sin incidentes":
+        badgeClass = "cierre-sin-incidentes";
+        break;
+      case "cierre con incidentes":
+        badgeClass = "cierre-con-incidentes";
+        break;
+      case "cierre con accidentes":
+        badgeClass = "cierre-con-accidentes";
         break;
       case "completed":
         badgeClass = "completed2";
@@ -342,19 +356,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // 1. Actualizar supervisor y categoría en autorizaciones
       try {
-        await fetch(
-          "/api/autorizaciones/supervisor-categoria",
-          {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              id_permiso: idPermiso,
-              supervisor,
-              categoria,
-              fecha_hora_supervisor: new Date().toISOString(),
-            }),
-          }
-        );
+        await fetch("/api/autorizaciones/supervisor-categoria", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id_permiso: idPermiso,
+            supervisor,
+            categoria,
+            fecha_hora_supervisor: new Date().toISOString(),
+          }),
+        });
       } catch (err) {
         console.error("Error al actualizar supervisor y categoría:", err);
       }
@@ -378,14 +389,11 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
         try {
-          await fetch(
-            `/api/pt-apertura/requisitos_supervisor/${idPermiso}`,
-            {
-              method: "PUT",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(datosSupervisorMapped),
-            }
-          );
+          await fetch(`/api/pt-apertura/requisitos_supervisor/${idPermiso}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(datosSupervisorMapped),
+          });
         } catch (err) {
           console.error("Error al guardar datos de apertura supervisor:", err);
         }
@@ -394,9 +402,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // 2. Consultar el id_estatus desde permisos_trabajo
       let idEstatus = null;
       try {
-        const resp = await fetch(
-          `/api/permisos-trabajo/${idPermiso}`
-        );
+        const resp = await fetch(`/api/permisos-trabajo/${idPermiso}`);
         if (resp.ok) {
           const permisoData = await resp.json();
           idEstatus =
@@ -460,19 +466,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // 1. Actualizar supervisor y categoría en autorizaciones
       try {
-        await fetch(
-          "/api/autorizaciones/supervisor-categoria",
-          {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              id_permiso: idPermiso,
-              supervisor,
-              categoria,
-              fecha_hora_supervisor: new Date().toISOString(),
-            }),
-          }
-        );
+        await fetch("/api/autorizaciones/supervisor-categoria", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id_permiso: idPermiso,
+            supervisor,
+            categoria,
+            fecha_hora_supervisor: new Date().toISOString(),
+          }),
+        });
       } catch (err) {
         console.error("Error al actualizar supervisor y categoría:", err);
       }
@@ -480,9 +483,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // 2. Consultar el id_estatus desde permisos_trabajo
       let idEstatus = null;
       try {
-        const resp = await fetch(
-          `/api/permisos-trabajo/${idPermiso}`
-        );
+        const resp = await fetch(`/api/permisos-trabajo/${idPermiso}`);
         if (resp.ok) {
           const permisoData = await resp.json();
           idEstatus =

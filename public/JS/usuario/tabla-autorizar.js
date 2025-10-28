@@ -39,7 +39,7 @@ async function cargarTargetasDesdeAutorizar() {
         porAutorizar++;
       } else if (estatus === "activo") {
         activos++;
-      } else if (estatus === "terminado") {
+      } else if (estatus === "terminado" || estatus === "cierre sin incidentes" || estatus === "cierre con incidentes" || estatus === "cierre con accidentes") {
         terminados++;
       } else if (estatus === "no autorizado") {
         noAutorizados++;
@@ -215,6 +215,15 @@ function mostrarPermisosFiltrados(filtro) {
         break;
       case "terminado":
         badgeClass = "completed";
+        break;
+      case "cierre sin incidentes":
+        badgeClass = "cierre-sin-incidentes";
+        break;
+      case "cierre con incidentes":
+        badgeClass = "cierre-con-incidentes";
+        break;
+      case "cierre con accidentes":
+        badgeClass = "cierre-con-accidentes";
         break;
       case "completed":
         badgeClass = "completed2";

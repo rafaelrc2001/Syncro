@@ -227,6 +227,120 @@ router.post("/estatus/terminado", async (req, res) => {
   }
 });
 
+// Nueva ruta para actualizar el estatus a 'cierre sin incidentes' usando el id_estatus recibido
+router.post("/estatus/cierre_sin_incidentes", async (req, res) => {
+  const { id_estatus } = req.body;
+  const ESTATUS = "cierre sin incidentes";
+
+  if (!id_estatus) {
+    return res.status(400).json({
+      success: false,
+      error: "id_estatus es requerido",
+    });
+  }
+
+  try {
+    const result = await db.query(
+      "UPDATE estatus SET estatus = $1 WHERE id_estatus = $2 RETURNING id_estatus as id, estatus",
+      [ESTATUS, id_estatus]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: "No se encontró el estatus para actualizar",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: "Estatus de cierre sin incidentes actualizado exitosamente",
+      data: result.rows[0],
+    });
+  } catch (err) {
+    console.error("Error en la base de datos:", err);
+    res.status(500).json({
+      success: false,
+      error: "Error al actualizar el estatus de cierre sin incidentes",
+      details: err.message,
+    });
+  }
+});
+
+// Nueva ruta para actualizar el estatus a 'cierre con incidentes' usando el id_estatus recibido
+router.post("/estatus/cierre_con_incidentes", async (req, res) => {
+  const { id_estatus } = req.body;
+  const ESTATUS = "cierre con incidentes";
+
+  if (!id_estatus) {
+    return res.status(400).json({
+      success: false,
+      error: "id_estatus es requerido",
+    });
+  }
+
+  try {
+    const result = await db.query(
+      "UPDATE estatus SET estatus = $1 WHERE id_estatus = $2 RETURNING id_estatus as id, estatus",
+      [ESTATUS, id_estatus]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: "No se encontró el estatus para actualizar",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: "Estatus de cierre con incidentes actualizado exitosamente",
+      data: result.rows[0],
+    });
+  } catch (err) {
+    console.error("Error en la base de datos:", err);
+    res.status(500).json({
+      success: false,
+      error: "Error al actualizar el estatus de cierre con incidentes",
+      details: err.message,
+    });
+  }
+});
+
+// Nueva ruta para actualizar el estatus a 'cierre con accidentes' usando el id_estatus recibido
+router.post("/estatus/cierre_con_accidentes", async (req, res) => {
+  const { id_estatus } = req.body;
+  const ESTATUS = "cierre con accidentes";
+
+  if (!id_estatus) {
+    return res.status(400).json({
+      success: false,
+      error: "id_estatus es requerido",
+    });
+  }
+
+  try {
+    const result = await db.query(
+      "UPDATE estatus SET estatus = $1 WHERE id_estatus = $2 RETURNING id_estatus as id, estatus",
+      [ESTATUS, id_estatus]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: "No se encontró el estatus para actualizar",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: "Estatus de cierre con accidentes actualizado exitosamente",
+      data: result.rows[0],
+    });
+  } catch (err) {
+    console.error("Error en la base de datos:", err);
+    res.status(500).json({
+      success: false,
+      error: "Error al actualizar el estatus de cierre con accidentes",
+      details: err.message,
+    });
+  }
+});
+
 // Ruta para insertar autorizaciones
 // Ruta para insertar autorizaciones
 // Ruta para insertar autorizaciones

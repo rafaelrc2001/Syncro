@@ -306,11 +306,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const idPermiso = params.get("id");
   if (idPermiso) {
     // 1. Obtener datos generales y AST
-    fetch(
-      `/api/verformularios?id=${encodeURIComponent(
-        idPermiso
-      )}`
-    )
+    fetch(`/api/verformularios?id=${encodeURIComponent(idPermiso)}`)
       .then((resp) => resp.json())
       .then((data) => {
         console.log("Respuesta completa de /api/verformularios:", data);
@@ -352,6 +348,153 @@ document.addEventListener("DOMContentLoaded", function () {
     llenarTablaResponsables(idPermiso);
   }
   rellenarSupervisoresYCategorias();
+
+  // --- LÓGICA PARA CERRAR PERMISO ---
+  var btnCerrarPermiso = document.getElementById("btn-cerrar-permiso");
+  var modalCerrarPermiso = document.getElementById("modalCerrarPermiso");
+  var btnCancelarCerrarPermiso = document.getElementById(
+    "btnCancelarCerrarPermiso"
+  );
+  var btnGuardarCerrarPermiso = document.getElementById(
+    "btnGuardarCerrarPermiso"
+  );
+
+  if (btnCerrarPermiso && modalCerrarPermiso) {
+    btnCerrarPermiso.addEventListener("click", function () {
+      modalCerrarPermiso.style.display = "flex";
+    });
+  }
+  if (btnCancelarCerrarPermiso && modalCerrarPermiso) {
+    btnCancelarCerrarPermiso.addEventListener("click", function () {
+      modalCerrarPermiso.style.display = "none";
+    });
+  }
+
+  // Guardar comentario de cierre en la base de datos
+  if (btnGuardarCerrarPermiso && modalCerrarPermiso) {
+    btnGuardarCerrarPermiso.addEventListener("click", async function () {
+      var comentario = document
+        .getElementById("comentarioCerrarPermiso")
+        .value.trim();
+      var tipoCierre = document.getElementById("tipoCierrePermiso").value;
+
+      if (!comentario) {
+        alert("Debes escribir el motivo del cierre.");
+        return;
+      }
+
+      if (!tipoCierre) {
+        alert("Debes seleccionar el tipo de cierre.");
+        return;
+      }
+
+      // Obtener el id del permiso desde la URL o variable global
+      var params = new URLSearchParams(window.location.search);
+      var idPermiso = params.get("id") || window.idPermisoActual;
+      console.log("Permiso de trabajo a cerrar:", idPermiso);
+      if (!idPermiso) {
+        alert("No se pudo obtener el ID del permiso.");
+        return;
+      }
+
+      // Consultar el id_estatus desde permisos_trabajo
+      let idEstatus = null;
+      try {
+        const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
+        if (respEstatus.ok) {
+          const permisoData = await respEstatus.json();
+          idEstatus =
+            permisoData.id_estatus ||
+            (permisoData.data && permisoData.data.id_estatus);
+        }
+      } catch (err) {
+        console.error("Error al consultar id_estatus:", err);
+      }
+      if (!idEstatus) {
+        alert("No se pudo obtener el estatus del permiso.");
+        return;
+      }
+
+      // Mapear el tipo de cierre al endpoint correspondiente
+      let endpoint;
+      let mensajeExito;
+
+      switch (tipoCierre) {
+        case "cierre-sin-incidentes":
+          endpoint = "/api/estatus/cierre_sin_incidentes";
+          mensajeExito = "Permiso cerrado sin incidentes exitosamente.";
+          break;
+        case "cierre-con-incidentes":
+          endpoint = "/api/estatus/cierre_con_incidentes";
+          mensajeExito =
+            "Permiso cerrado con incidentes registrado exitosamente.";
+          break;
+        case "cierre-con-accidentes":
+          endpoint = "/api/estatus/cierre_con_accidentes";
+          mensajeExito =
+            "Permiso cerrado con accidentes registrado exitosamente.";
+          break;
+        case "cancelado":
+          endpoint = "/api/estatus/cancelado";
+          mensajeExito = "Permiso cancelado exitosamente.";
+          break;
+        default:
+          alert("Tipo de cierre no válido.");
+          return;
+      }
+
+      // Guardar el comentario y actualizar el estatus
+      try {
+        // 1. Guardar el comentario
+        const respComentario = await fetch("/api/estatus/comentario", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id_estatus: idEstatus, comentario }),
+        });
+        let dataComentario = {};
+        try {
+          dataComentario = await respComentario.json();
+        } catch (e) {}
+        if (!dataComentario.success) {
+          alert("No se pudo guardar el comentario de cierre.");
+          return;
+        }
+
+        // 2. Actualizar el estatus según la selección
+        const payloadEstatus = { id_estatus: idEstatus };
+        const respEstatus = await fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payloadEstatus),
+        });
+        let dataEstatus = {};
+        try {
+          dataEstatus = await respEstatus.json();
+        } catch (e) {}
+        if (!respEstatus.ok || !dataEstatus.success) {
+          alert(
+            `No se pudo actualizar el estatus. Error: ${
+              dataEstatus.error || "Desconocido"
+            }`
+          );
+          return;
+        }
+
+        // 3. Enviar los datos a N8N si existe la función
+        if (window.n8nFormHandler) {
+          await window.n8nFormHandler();
+        }
+
+        // Cerrar el modal y mostrar mensaje de éxito
+        modalCerrarPermiso.style.display = "none";
+        alert(mensajeExito);
+        window.location.href = "/Modules/Usuario/CrearPT.html";
+      } catch (err) {
+        console.error("Error completo:", err);
+        alert("Error al guardar el comentario de cierre o actualizar estatus.");
+      }
+    });
+  }
 });
 
 /**

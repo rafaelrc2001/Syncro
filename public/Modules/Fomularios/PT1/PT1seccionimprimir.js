@@ -9,9 +9,7 @@ async function enviarDatosAN8N(motivoCierre) {
   }
   let formData = {};
   try {
-    const resp = await fetch(
-      `/api/verformularios?id=${idPermiso}`
-    );
+    const resp = await fetch(`/api/verformularios?id=${idPermiso}`);
     const data = await resp.json();
     // Imprimir los datos obtenidos de la API
     console.log("Datos obtenidos de la API para N8N:", data);
@@ -157,10 +155,18 @@ document.addEventListener("DOMContentLoaded", function () {
       var comentario = document
         .getElementById("comentarioCerrarPermiso")
         .value.trim();
+      var tipoCierre = document.getElementById("tipoCierrePermiso").value;
+
       if (!comentario) {
         alert("Debes escribir el motivo del cierre.");
         return;
       }
+
+      if (!tipoCierre) {
+        alert("Debes seleccionar el tipo de cierre.");
+        return;
+      }
+
       // Obtener el id del permiso desde la URL o variable global
       var params = new URLSearchParams(window.location.search);
       var idPermiso = params.get("id") || window.idPermisoActual;
@@ -169,12 +175,11 @@ document.addEventListener("DOMContentLoaded", function () {
         alert("No se pudo obtener el ID del permiso.");
         return;
       }
+
       // Consultar el id_estatus desde permisos_trabajo
       let idEstatus = null;
       try {
-        const respEstatus = await fetch(
-          `/api/permisos-trabajo/${idPermiso}`
-        );
+        const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
         if (respEstatus.ok) {
           const permisoData = await respEstatus.json();
           idEstatus =
@@ -188,17 +193,43 @@ document.addEventListener("DOMContentLoaded", function () {
         alert("No se pudo obtener el estatus del permiso.");
         return;
       }
-      // Guardar el comentario en la tabla estatus
+
+      // Mapear el tipo de cierre al endpoint correspondiente
+      let endpoint;
+      let mensajeExito;
+
+      switch (tipoCierre) {
+        case "cierre-sin-incidentes":
+          endpoint = "/api/estatus/cierre_sin_incidentes";
+          mensajeExito = "Permiso cerrado sin incidentes exitosamente.";
+          break;
+        case "cierre-con-incidentes":
+          endpoint = "/api/estatus/cierre_con_incidentes";
+          mensajeExito =
+            "Permiso cerrado con incidentes registrado exitosamente.";
+          break;
+        case "cierre-con-accidentes":
+          endpoint = "/api/estatus/cierre_con_accidentes";
+          mensajeExito =
+            "Permiso cerrado con accidentes registrado exitosamente.";
+          break;
+        case "cancelado":
+          endpoint = "/api/estatus/cancelado";
+          mensajeExito = "Permiso cancelado exitosamente.";
+          break;
+        default:
+          alert("Tipo de cierre no válido.");
+          return;
+      }
+
+      // Guardar el comentario y actualizar el estatus
       try {
         // 1. Guardar el comentario
-        const respComentario = await fetch(
-          "/api/estatus/comentario",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ id_estatus: idEstatus, comentario }),
-          }
-        );
+        const respComentario = await fetch("/api/estatus/comentario", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id_estatus: idEstatus, comentario }),
+        });
         let dataComentario = {};
         try {
           dataComentario = await respComentario.json();
@@ -208,22 +239,23 @@ document.addEventListener("DOMContentLoaded", function () {
           return;
         }
 
-        // 2. Actualizar el estatus a 'Terminado'
+        // 2. Actualizar el estatus según la selección
         const payloadEstatus = { id_estatus: idEstatus };
-        const respEstatus = await fetch(
-          "/api/estatus/terminado",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payloadEstatus),
-          }
-        );
+        const respEstatus = await fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payloadEstatus),
+        });
         let dataEstatus = {};
         try {
           dataEstatus = await respEstatus.json();
         } catch (e) {}
         if (!respEstatus.ok || !dataEstatus.success) {
-          alert("No se pudo actualizar el estatus a Terminado.");
+          alert(
+            `No se pudo actualizar el estatus. Error: ${
+              dataEstatus.error || "Desconocido"
+            }`
+          );
           return;
         }
 
@@ -234,9 +266,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Cerrar el modal y mostrar mensaje de éxito
         modalCerrarPermiso.style.display = "none";
-        alert("Permiso cerrado y estatus actualizado a Terminado.");
+        alert(mensajeExito);
         window.location.href = "/Modules/Usuario/CrearPT.html";
       } catch (err) {
+        console.error("Error completo:", err);
         alert("Error al guardar el comentario de cierre o actualizar estatus.");
       }
     });
@@ -432,11 +465,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const idPermiso = params.get("id");
   if (idPermiso) {
     // Llamar a la API para obtener los datos del permiso
-    fetch(
-      `/api/verformularios?id=${encodeURIComponent(
-        idPermiso
-      )}`
-    )
+    fetch(`/api/verformularios?id=${encodeURIComponent(idPermiso)}`)
       .then((resp) => resp.json())
       .then((data) => {
         console.log("Datos recibidos para el permiso:", data);

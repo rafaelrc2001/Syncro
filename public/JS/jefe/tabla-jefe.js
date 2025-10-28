@@ -28,7 +28,12 @@ async function cargarTargetasDesdeAutorizar() {
         porAutorizar++;
       } else if (estatus === "activo") {
         activos++;
-      } else if (estatus === "terminado") {
+      } else if (
+        estatus === "terminado" ||
+        estatus === "cierre sin incidentes" ||
+        estatus === "cierre con incidentes" ||
+        estatus === "cierre con accidentes"
+      ) {
         terminados++;
       } else if (estatus === "no autorizado") {
         noAutorizados++;
@@ -142,10 +147,12 @@ function mostrarPermisosFiltrados(filtro) {
         .toString()
         .toLowerCase();
       const solicitante = (permiso.solicitante || "").toString().toLowerCase();
+      const tipoPermiso = (permiso.tipo_permiso || "").toString().toLowerCase();
       return (
         prefijo.includes(filtroBusqueda) ||
         contrato.includes(filtroBusqueda) ||
-        solicitante.includes(filtroBusqueda)
+        solicitante.includes(filtroBusqueda) ||
+        tipoPermiso.includes(filtroBusqueda)
       );
     });
   }
@@ -176,6 +183,15 @@ function mostrarPermisosFiltrados(filtro) {
         break;
       case "terminado":
         badgeClass = "completed";
+        break;
+      case "cierre sin incidentes":
+        badgeClass = "cierre-sin-incidentes";
+        break;
+      case "cierre con incidentes":
+        badgeClass = "cierre-con-incidentes";
+        break;
+      case "cierre con accidentes":
+        badgeClass = "cierre-con-accidentes";
         break;
       case "completed":
         badgeClass = "completed2";
@@ -368,8 +384,12 @@ window.getPermisosFiltrados = function () {
         .toString()
         .toLowerCase();
       const solicitante = (permiso.solicitante || "").toString().toLowerCase();
+      const tipoPermiso = (permiso.tipo_permiso || "").toString().toLowerCase();
       return (
-        prefijo.includes(q) || contrato.includes(q) || solicitante.includes(q)
+        prefijo.includes(q) ||
+        contrato.includes(q) ||
+        solicitante.includes(q) ||
+        tipoPermiso.includes(q)
       );
     });
   }

@@ -105,20 +105,41 @@ function initStatusChart() {
     tooltip: {
       trigger: "item",
       formatter: function (params) {
-        const total = statusData.values.reduce((a, b) => a + b, 0);
-        const percentage = ((params.value / total) * 100).toFixed(1);
+        // Usar siempre los datos actuales de la serie, pero validar existencia
+        let total = 0;
+        let dataArr = [];
+        if (
+          params &&
+          params.series &&
+          params.series.data &&
+          Array.isArray(params.series.data)
+        ) {
+          dataArr = params.series.data;
+          total = dataArr.reduce((acc, item) => acc + item.value, 0);
+        } else if (Array.isArray(statusData.values)) {
+          dataArr = statusData.values;
+          total = statusData.values.reduce((a, b) => a + b, 0);
+        }
+        // Log de depuración para ver los valores y el total
+        console.log("[DEBUG ESTATUS]", {
+          value: params.value,
+          total,
+          data: dataArr,
+        });
+        const percentage =
+          total > 0 ? ((params.value / total) * 100).toFixed(1) : "0";
         return `
-                    <div style="font-weight: 600; margin-bottom: 5px;">
-                        ${params.name}
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 5px; margin-bottom: 3px;">
-                        <span style="display: inline-block; width: 10px; height: 10px; background: ${params.color}; border-radius: 50%;"></span>
-                        Cantidad: <strong>${params.value}</strong>
-                    </div>
-                    <div style="color: #666; font-size: 11px;">
-                        Porcentaje: ${percentage}%
-                    </div>
-                `;
+          <div style="font-weight: 600; margin-bottom: 5px;">
+            ${params.name}
+          </div>
+          <div style="display: flex; align-items: center; gap: 5px; margin-bottom: 3px;">
+            <span style="display: inline-block; width: 10px; height: 10px; background: ${params.color}; border-radius: 50%;"></span>
+            Cantidad: <strong>${params.value}</strong>
+          </div>
+          <div style="color: #666; font-size: 11px;">
+            Porcentaje: ${percentage}%
+          </div>
+        `;
       },
       backgroundColor: "rgba(255, 255, 255, 0.95)",
       borderColor: "#00BFA5",
@@ -164,8 +185,17 @@ function initStatusChart() {
         label: {
           show: true,
           formatter: function (params) {
-            const total = statusData.values.reduce((a, b) => a + b, 0);
-            const percentage = ((params.value / total) * 100).toFixed(1);
+            let total = 0;
+            if (params && params.series && Array.isArray(params.series.data)) {
+              total = params.series.data.reduce(
+                (acc, item) => acc + item.value,
+                0
+              );
+            } else {
+              total = statusData.values.reduce((a, b) => a + b, 0);
+            }
+            const percentage =
+              total > 0 ? ((params.value / total) * 100).toFixed(1) : "0";
             return `${params.name}: ${percentage}%`;
           },
           fontSize: 11,

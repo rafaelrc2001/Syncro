@@ -25,13 +25,19 @@ function initAreasChart() {
       },
       formatter: function (params) {
         const data = params[0];
+        const total = areasData.values.reduce((a, b) => a + b, 0);
+        const percentage =
+          total > 0 ? ((data.value / total) * 100).toFixed(1) : "0";
         return `
-                    <div style="font-weight: 600; margin-bottom: 3px; font-size: 11px;">${data.name}</div>
-                    <div style="display: flex; align-items: center; gap: 5px; font-size: 11px;">
-                        <span style="display: inline-block; width: 8px; height: 8px; background: ${data.color}; border-radius: 50%;"></span>
-                        Permisos: <strong>${data.value}</strong>
-                    </div>
-                `;
+          <div style="font-weight: 600; margin-bottom: 3px; font-size: 11px;">${data.name}</div>
+          <div style="display: flex; align-items: center; gap: 5px; font-size: 11px;">
+            <span style="display: inline-block; width: 8px; height: 8px; background: ${data.color}; border-radius: 50%;"></span>
+            Permisos: <strong>${data.value}</strong>
+          </div>
+          <div style="font-size: 10px; color: #666; margin-bottom: 3px;">
+            Porcentaje: ${percentage}%
+          </div>
+        `;
       },
       backgroundColor: "rgba(255, 255, 255, 0.95)",
       borderColor: "#003B5C",
@@ -121,12 +127,17 @@ function initAreasChart() {
               shadowOffsetY: 3,
             },
           },
-          // Agregar etiqueta con el valor
+          // Etiqueta con porcentaje
           label: {
             show: true,
             position: "top",
             distance: 5,
-            formatter: "{c}",
+            formatter: function (params) {
+              const total = areasData.values.reduce((a, b) => a + b, 0);
+              const percentage =
+                total > 0 ? ((params.value / total) * 100).toFixed(1) : "0";
+              return `${percentage}%`;
+            },
             fontSize: 10,
             fontWeight: "bold",
             color: "#4A4A4A",

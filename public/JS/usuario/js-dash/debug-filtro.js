@@ -130,3 +130,21 @@ window.debugAreas = function () {
 window.verificarFiltroGlobal = verificarFiltroGlobal;
 window.probarFiltro = probarFiltro;
 window.limpiarFiltros = limpiarFiltros;
+
+// Formato de datos para gráficas
+window.formatter = function (params) {
+  let total = 0;
+  if (params && params.series && Array.isArray(params.series.data)) {
+    total = params.series.data.reduce((acc, item) => acc + item.value, 0);
+  } else {
+    total = statusData.values.reduce((a, b) => a + b, 0);
+  }
+  console.log("DEBUG:", {
+    value: params.value,
+    total,
+    data: params.series.data,
+  });
+  const percentage =
+    total > 0 ? ((params.value / total) * 100).toFixed(1) : "0";
+  return `...`;
+};

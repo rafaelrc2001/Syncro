@@ -35,31 +35,42 @@ function initTypesChart() {
       },
       formatter: function (params) {
         const data = params[0];
-        const percentage = (
-          (data.value / typesData.values.reduce((a, b) => a + b, 0)) *
-          100
-        ).toFixed(1);
-        const riskLevel = typesData.riskLevels[data.dataIndex];
-        const riskColor =
-          riskLevel === "Alto"
-            ? "#D32F2F"
-            : riskLevel === "Medio"
-            ? "#FF6F00"
-            : "#00BFA5";
-
+        let total = 0;
+        let dataArr = [];
+        if (
+          data &&
+          data.seriesIndex !== undefined &&
+          params &&
+          params[0] &&
+          params[0].seriesIndex !== undefined &&
+          params[0].series &&
+          params[0].series.data &&
+          Array.isArray(params[0].series.data)
+        ) {
+          dataArr = params[0].series.data;
+          total = dataArr.reduce((acc, item) => acc + item.value, 0);
+        } else if (Array.isArray(typesData.values)) {
+          dataArr = typesData.values;
+          total = typesData.values.reduce((a, b) => a + b, 0);
+        }
+        // Log de depuración para ver los valores y el total
+        console.log("[DEBUG TIPOS]", {
+          value: data.value,
+          total,
+          data: dataArr,
+        });
+        const percentage =
+          total > 0 ? ((data.value / total) * 100).toFixed(1) : "0";
         return `
-                    <div style="font-weight: 600; margin-bottom: 3px; font-size: 11px;">${data.name}</div>
-                    <div style="display: flex; align-items: center; gap: 5px; font-size: 11px; margin-bottom: 3px;">
-                        <span style="display: inline-block; width: 8px; height: 8px; background: ${data.color}; border-radius: 50%;"></span>
-                        Permisos: <strong>${data.value}</strong>
-                    </div>
-                    <div style="font-size: 10px; color: #666; margin-bottom: 3px;">
-                        Porcentaje: ${percentage}%
-                    </div>
-                    <div style="font-size: 10px;">
-                        Riesgo: <span style="color: ${riskColor}; font-weight: 600;">${riskLevel}</span>
-                    </div>
-                `;
+          <div style="font-weight: 600; margin-bottom: 3px; font-size: 11px;">${data.name}</div>
+          <div style="display: flex; align-items: center; gap: 5px; font-size: 11px; margin-bottom: 3px;">
+            <span style="display: inline-block; width: 8px; height: 8px; background: ${data.color}; border-radius: 50%;"></span>
+            Permisos: <strong>${data.value}</strong>
+          </div>
+          <div style="font-size: 10px; color: #666; margin-bottom: 3px;">
+            Porcentaje: ${percentage}%
+          </div>
+        `;
       },
       backgroundColor: "rgba(255, 255, 255, 0.95)",
       borderColor: "#003B5C",
@@ -181,28 +192,27 @@ function initTypesChart() {
 
   // Función para actualizar datos
   function updateTypesChart(newData) {
-    const updatedData = {
-      categories: newData.categories || typesData.categories,
-      values: newData.values || typesData.values,
-      colors: newData.colors || typesData.colors,
-      riskLevels: newData.riskLevels || typesData.riskLevels,
-    };
+    // Actualizar los datos internos para que el formatter siempre tenga los datos correctos
+    typesData.categories = newData.categories || typesData.categories;
+    typesData.values = newData.values || typesData.values;
+    typesData.colors = newData.colors || typesData.colors;
+    typesData.riskLevels = newData.riskLevels || typesData.riskLevels;
 
     const updatedOption = {
       yAxis: {
-        data: updatedData.categories,
+        data: typesData.categories,
       },
       series: [
         {
-          data: updatedData.values.map((value, index) => ({
+          data: typesData.values.map((value, index) => ({
             value: value,
             itemStyle: {
               color: new echarts.graphic.LinearGradient(1, 0, 0, 0, [
-                { offset: 0, color: updatedData.colors[index] },
-                { offset: 1, color: updatedData.colors[index] + "80" },
+                { offset: 0, color: typesData.colors[index] },
+                { offset: 1, color: typesData.colors[index] + "80" },
               ]),
               borderRadius: [0, 4, 4, 0],
-              shadowColor: updatedData.colors[index] + "30",
+              shadowColor: typesData.colors[index] + "30",
               shadowBlur: 4,
               shadowOffsetX: 2,
             },

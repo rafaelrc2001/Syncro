@@ -185,18 +185,20 @@ function initStatusChart() {
         label: {
           show: true,
           formatter: function (params) {
+            // Sumar todas las cantidades para obtener el total
             let total = 0;
             if (params && params.series && Array.isArray(params.series.data)) {
               total = params.series.data.reduce(
                 (acc, item) => acc + item.value,
                 0
               );
-            } else {
+            } else if (Array.isArray(statusData.values)) {
               total = statusData.values.reduce((a, b) => a + b, 0);
             }
+            // Calcular el porcentaje de cada estatus
             const percentage =
               total > 0 ? ((params.value / total) * 100).toFixed(1) : "0";
-            return `${params.name}: ${percentage}%`;
+            return `${percentage}%`;
           },
           fontSize: 11,
           color: "#4A4A4A",

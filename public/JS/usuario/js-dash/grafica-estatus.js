@@ -105,29 +105,22 @@ function initStatusChart() {
     tooltip: {
       trigger: "item",
       formatter: function (params) {
-        // Usar siempre los datos actuales de la serie, pero validar existencia
-        let total = 0;
-        let dataArr = [];
-        if (
-          params &&
-          params.series &&
-          params.series.data &&
-          Array.isArray(params.series.data)
-        ) {
-          dataArr = params.series.data;
-          total = dataArr.reduce((acc, item) => acc + item.value, 0);
-        } else if (Array.isArray(statusData.values)) {
-          dataArr = statusData.values;
-          total = statusData.values.reduce((a, b) => a + b, 0);
-        }
-        // Log de depuración para ver los valores y el total
-        console.log("[DEBUG ESTATUS]", {
-          value: params.value,
-          total,
-          data: dataArr,
-        });
+        // Obtener el total de todos los valores del gráfico
+        const series = params?.series?.data || params?.data?.seriesData || [];
+        const total = series.length
+          ? series.reduce((sum, item) => sum + (item.value || 0), 0)
+          : params?.data?.total || 0;
+
+        // Si no hay total confiable, intenta tomarlo desde la instancia
+        const chart = echarts.getInstanceByDom(document.getElementById("status-chart"));
+        const option = chart ? chart.getOption() : null;
+        const pieData = option?.series?.[0]?.data || [];
+        const totalFromChart = pieData.reduce((s, i) => s + (i.value || 0), 0);
+
+        const finalTotal = total || totalFromChart;
         const percentage =
-          total > 0 ? ((params.value / total) * 100).toFixed(1) : "0";
+          finalTotal > 0 ? ((params.value / finalTotal) * 100).toFixed(1) : "0";
+
         return `
           <div style="font-weight: 600; margin-bottom: 5px;">
             ${params.name}
@@ -140,34 +133,6 @@ function initStatusChart() {
             Porcentaje: ${percentage}%
           </div>
         `;
-      },
-      backgroundColor: "rgba(255, 255, 255, 0.95)",
-      borderColor: "#00BFA5",
-      borderWidth: 1,
-      textStyle: {
-        color: "#1C1C1C",
-        fontSize: 12,
-      },
-    },
-    legend: {
-      orient: "horizontal",
-      bottom: "0%",
-      data: statusData.categories.map(
-        (category, index) => `${statusData.icons[index]} ${category}`
-      ),
-      textStyle: {
-        color: "#4A4A4A",
-        fontSize: 11,
-      },
-      itemGap: 15,
-      itemWidth: 12,
-      itemHeight: 12,
-      formatter: function (name) {
-        // Acortar nombres largos para la leyenda
-        if (name.length > 15) {
-          return name.substring(0, 12) + "...";
-        }
-        return name;
       },
     },
     series: [
@@ -185,19 +150,12 @@ function initStatusChart() {
         label: {
           show: true,
           formatter: function (params) {
-            // Sumar todas las cantidades para obtener el total
-            let total = 0;
-            if (params && params.series && Array.isArray(params.series.data)) {
-              total = params.series.data.reduce(
-                (acc, item) => acc + item.value,
-                0
-              );
-            } else if (Array.isArray(statusData.values)) {
-              total = statusData.values.reduce((a, b) => a + b, 0);
-            }
-            // Calcular el porcentaje de cada estatus
-            const percentage =
-              total > 0 ? ((params.value / total) * 100).toFixed(1) : "0";
+            // Obtener el total igual que en el tooltip
+            const chart = echarts.getInstanceByDom(document.getElementById("status-chart"));
+            const option = chart ? chart.getOption() : null;
+            const pieData = option?.series?.[0]?.data || [];
+            const total = pieData.reduce((s, i) => s + (i.value || 0), 0);
+            const percentage = total > 0 ? ((params.value / total) * 100).toFixed(1) : "0";
             return `${percentage}%`;
           },
           fontSize: 11,

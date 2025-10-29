@@ -49,8 +49,11 @@
       if (q) params.append("q", q);
       if (status && status !== "all") params.append("status", status);
 
-      // USAR LOCALHOST:3000 - NO 127.0.0.1:5501
-      const apiOrigin = "http://localhost:3000";
+      // Usar la URL pública en producción y localhost en desarrollo
+      const apiOrigin =
+        window.location.hostname === "localhost"
+          ? "http://localhost:3000"
+          : "https://syncro-production-30a.up.railway.app"; // Reemplaza por tu URL real de Railway
       const url = `${apiOrigin}/api/exportar-crear/${encodeURIComponent(
         id_departamento
       )}?${params.toString()}`;
@@ -62,15 +65,24 @@
       );
       console.log("Params enviados:", params.toString());
 
-      const resp = await fetch(url);
-      console.log("Fetch response URL:", resp.url);
-      console.log("Fetch response status:", resp.status, resp.statusText);
-      if (!resp.ok)
-        throw new Error(
-          `Error del servidor: ${resp.status} - ${resp.statusText}`
-        );
-
-      let data = await resp.json();
+      let data = [];
+      try {
+        const resp = await fetch(url);
+        console.log("Fetch response URL:", resp.url);
+        console.log("Fetch response status:", resp.status, resp.statusText);
+        if (!resp.ok)
+          throw new Error(
+            `Error del servidor: ${resp.status} - ${resp.statusText}`
+          );
+        data = await resp.json();
+      } catch (err) {
+        console.warn("Fallo la exportación server-side, usando datos client-side:", err);
+        if (typeof window.getPermisosFiltrados === "function") {
+          data = window.getPermisosFiltrados() || [];
+        } else {
+          data = [];
+        }
+      }
 
       if (!Array.isArray(data)) {
         console.error("Datos recibidos no son un array:", data);
@@ -113,31 +125,34 @@
       ];
 
       // Mapeo directo y seguro
-      const rowsForExport = data.map((r) => {
-        return {
-          id_permiso: r.id_permiso || "",
-          prefijo: r.prefijo || "",
-          tipo_permiso: r.tipo_permiso || "",
-          fecha: r.fecha || "",
-          hora_inicio: r.hora_inicio || "",
-          tipo_actividad: r.tipo_actividad || "",
-          planta_lugar_trabajo: r.planta_lugar_trabajo || "",
-          descripcion_trabajo: r.descripcion_trabajo || "",
-          empresa: r.empresa || "",
-          nombre_solicitante: r.nombre_solicitante || "",
-          sucursal: r.sucursal || "",
-          contrato: r.contrato || "",
-          ot_numero: r.ot_numero || "",
-          equipo_intervenir: r.equipo_intervenir || "",
-          tag: r.tag || "",
-          responsable_area: r.responsable_area || "",
-          responsable_seguridad: r.responsable_seguridad || "",
-          operador_responsable: r.operador_responsable || "",
-          area: r.area || "",
-          estatus: r.estatus || "",
-          fecha_hora: r.fecha_hora || "",
-        };
-      });
+      const rowsForExport = data.map((r) => ({
+        id_permiso: r.id_permiso ?? r.id ?? r.idPermiso ?? "",
+        prefijo: r.prefijo ?? r.prefijo_permiso ?? "",
+        tipo_permiso: r.tipo_permiso ?? r.tipo_perm ?? r.tipo ?? "",
+        fecha: r.fecha ?? (r.fecha_hora ? String(r.fecha_hora).slice(0, 10) : ""),
+        hora_inicio: r.hora_inicio ?? r.hora ?? "",
+        tipo_actividad: r.tipo_actividad ?? r.tipo_mantenimiento ?? "",
+        planta_lugar_trabajo: r.planta_lugar_trabajo ?? r.planta ?? r.nombre_planta ?? "",
+        descripcion_trabajo: r.descripcion_trabajo ?? r.descripcion ?? "",
+        empresa: r.empresa ?? "",
+        nombre_solicitante: r.nombre_solicitante ?? r.solicitante ?? "",
+        sucursal: r.sucursal ?? "",
+        contrato:
+          r.contrato != null
+            ? String(r.contrato)
+            : r.contrato_df
+            ? String(r.contrato_df)
+            : "",
+        ot_numero: r.ot_numero ?? r.ot_no ?? "",
+        equipo_intervenir: r.equipo_intervenir ?? r.equipo_intervencion ?? "",
+        tag: r.tag ?? "",
+        responsable_area: r.responsable_area ?? r.responsable ?? "",
+        responsable_seguridad: r.responsable_seguridad ?? "",
+        operador_responsable: r.operador_responsable ?? r.operador_area ?? "",
+        area: r.area ?? "",
+        estatus: r.estatus ?? "",
+        fecha_hora: r.fecha_hora ?? "",
+      }));
 
       console.log("Datos mapeados para exportar:", rowsForExport.slice(0, 3));
 

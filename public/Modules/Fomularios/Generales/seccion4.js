@@ -150,20 +150,9 @@ document.addEventListener("DOMContentLoaded", () => {
   if (permitForm) {
     permitForm.addEventListener("submit", async function (e) {
       // ==============================
-      // [AJUSTE RAILWAY] Generar timestamp UTC para la base de datos
-      // aqui se agrega la funcion para normalizar la hora
-      // se usa la hora local y se convierte a UTC
-      // esto asegura que la hora sea igual en Railway y local
-      // se recomienda usar este valor para la columna fecha_hora
-      const now = new Date();
-      // aqui se crea el timestamp en formato ISO UTC
-      // se resta el timezoneOffset para obtener la hora local en UTC
-      // este valor se usará en los objetos enviados al backend
-      // puedes imprimirlo para depuración
-      // ejemplo: 2025-10-29T15:30:00.000Z
-      const fecha_hora = new Date(
-        now.getTime() - now.getTimezoneOffset() * 60000
-      ).toISOString();
+      // Generar timestamp local para la base de datos
+      // Usar la función obtenerFechaHoraLocal para obtener la hora exacta local
+      const fecha_hora = obtenerFechaHoraLocal();
       // ==============================
 
       // Validar que plant_value no esté vacío antes de continuar
@@ -1518,4 +1507,16 @@ function textoABoolean(valor) {
     return valor.trim().toLowerCase() === "si";
   }
   return !!valor;
+}
+
+function obtenerFechaHoraLocal() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  const hours = String(now.getHours()).padStart(2, "0");
+  const minutes = String(now.getMinutes()).padStart(2, "0");
+  const seconds = String(now.getSeconds()).padStart(2, "0");
+  const milliseconds = String(now.getMilliseconds()).padStart(3, "0");
+  return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}`;
 }

@@ -149,6 +149,23 @@ document.addEventListener("DOMContentLoaded", () => {
   const permitForm = document.getElementById("complete-permit-form");
   if (permitForm) {
     permitForm.addEventListener("submit", async function (e) {
+      // ==============================
+      // [AJUSTE RAILWAY] Generar timestamp UTC para la base de datos
+      // aqui se agrega la funcion para normalizar la hora
+      // se usa la hora local y se convierte a UTC
+      // esto asegura que la hora sea igual en Railway y local
+      // se recomienda usar este valor para la columna fecha_hora
+      const now = new Date();
+      // aqui se crea el timestamp en formato ISO UTC
+      // se resta el timezoneOffset para obtener la hora local en UTC
+      // este valor se usará en los objetos enviados al backend
+      // puedes imprimirlo para depuración
+      // ejemplo: 2025-10-29T15:30:00.000Z
+      const fecha_hora = new Date(
+        now.getTime() - now.getTimezoneOffset() * 60000
+      ).toISOString();
+      // ==============================
+
       // Validar que plant_value no esté vacío antes de continuar
       let plantValue = sessionStorage.getItem("plant_value");
       // Si no está en sessionStorage, intenta leer del input hidden
@@ -304,22 +321,20 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // 1. Insertar permiso
-        const permisoResponse = await fetch(
-          "/api/permisos-trabajo",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              id_area,
-              id_departamento,
-              id_sucursal,
-              id_tipo_permiso,
-              id_estatus,
-              id_ast,
-              contrato, // Siempre enviar el campo contrato
-            }),
-          }
-        );
+        const permisoResponse = await fetch("/api/permisos-trabajo", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id_area,
+            id_departamento,
+            id_sucursal,
+            id_tipo_permiso,
+            id_estatus,
+            id_ast,
+            contrato, // Siempre enviar el campo contrato
+            fecha_hora, // Enviar la hora normalizada
+          }),
+        });
         const permisoResult = await permisoResponse.json();
         if (!permisoResponse.ok || !permisoResult.success)
           throw new Error(
@@ -450,14 +465,11 @@ document.addEventListener("DOMContentLoaded", () => {
             datosNoPeligroso
           );
 
-          const ptResponse = await fetch(
-            "/api/pt-no-peligroso",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(datosNoPeligroso),
-            }
-          );
+          const ptResponse = await fetch("/api/pt-no-peligroso", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(datosNoPeligroso),
+          });
           const ptResult = await ptResponse.json();
           if (!ptResponse.ok || !ptResult.success)
             throw new Error(
@@ -663,14 +675,11 @@ document.addEventListener("DOMContentLoaded", () => {
           };
 
           // Enviar los datos al backend (PT Apertura)
-          const aperturaResponse = await fetch(
-            "/api/pt-apertura",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(datosApertura),
-            }
-          );
+          const aperturaResponse = await fetch("/api/pt-apertura", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(datosApertura),
+          });
           const aperturaResult = await aperturaResponse.json();
           if (!aperturaResponse.ok || !aperturaResult.success)
             throw new Error(
@@ -769,7 +778,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ot_numero,
             tag,
             hora_inicio,
-            equipo_intervenir:
+            equipo_intervencion:
               document.getElementById("equipment")?.value || "", // <--- CAMBIA AQUÍ
             avisos_trabajos: warning_signs,
             iluminacion_prueba_explosion: explosion_proof_lighting,
@@ -801,14 +810,11 @@ document.addEventListener("DOMContentLoaded", () => {
           );
 
           // Enviar los datos al backend
-          const espacioConfinadoResponse = await fetch(
-            "/api/pt-confinados",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(datosEspacioConfinado),
-            }
-          );
+          const espacioConfinadoResponse = await fetch("/api/pt-confinados", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(datosEspacioConfinado),
+          });
           const espacioConfinadoResult = await espacioConfinadoResponse.json();
           if (!espacioConfinadoResponse.ok || !espacioConfinadoResult.success)
             throw new Error(
@@ -839,7 +845,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const fecha = document.getElementById("permit-date")?.value || "";
           const hora_inicio = fecha ? `${fecha} ${hora}` : hora;
           // Leer correctamente el campo de equipo a intervenir
-          const equipo_intervenir =
+          const equipo_intervencion =
             document.getElementById("equipment")?.value || "";
           const descripcion_trabajo =
             document.getElementById("work-description")?.value || "";
@@ -909,7 +915,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ot_numero,
             tag,
             hora_inicio,
-            equipo_intervenir,
+            equipo_intervencion,
             descripcion_trabajo,
             nombre_solicitante,
             empresa,
@@ -936,14 +942,11 @@ document.addEventListener("DOMContentLoaded", () => {
           console.log("[DEBUG] Datos a enviar PT Altura:", datosAltura);
 
           // Enviar los datos al backend
-          const alturaResponse = await fetch(
-            "/api/pt_altura",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(datosAltura),
-            }
-          );
+          const alturaResponse = await fetch("/api/pt_altura", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(datosAltura),
+          });
           const alturaResult = await alturaResponse.json();
           if (!alturaResponse.ok || !alturaResult.success)
             throw new Error(alturaResult.error || "Error al guardar PT Altura");
@@ -970,7 +973,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const fecha = document.getElementById("permit-date")?.value || "";
           const hora_inicio = fecha ? `${fecha} ${hora}` : hora;
           // Leer correctamente el campo de equipo a intervenir
-          const equipo_intervenir =
+          const equipo_intervencion =
             document.getElementById("equipment")?.value || "";
           const empresa = document.getElementById("company")?.value || "";
           const descripcion_trabajo =
@@ -985,7 +988,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ot_numero,
             tag,
             hora_inicio,
-            equipo_intervenir,
+            equipo_intervencion,
             empresa,
             descripcion_trabajo,
             nombre_solicitante, // <-- NUEVO
@@ -998,14 +1001,11 @@ document.addEventListener("DOMContentLoaded", () => {
           );
 
           // Enviar los datos al backend (ajusta la URL según tu endpoint real)
-          const fuegoAbiertoResponse = await fetch(
-            "/api/pt-fuego",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(datosFuegoAbierto),
-            }
-          );
+          const fuegoAbiertoResponse = await fetch("/api/pt-fuego", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(datosFuegoAbierto),
+          });
           const fuegoAbiertoResult = await fuegoAbiertoResponse.json();
           if (!fuegoAbiertoResponse.ok || !fuegoAbiertoResult.success)
             throw new Error(
@@ -1035,7 +1035,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const fecha = document.getElementById("permit-date")?.value || "";
           const hora_inicio = fecha ? `${fecha} ${hora}` : hora;
           // Leer correctamente el campo de equipo a intervenir
-          const equipo_intervenir =
+          const equipo_intervencion =
             document.getElementById("equipment")?.value || "";
           const empresa = document.getElementById("company")?.value || "";
           const descripcion_trabajo =
@@ -1096,7 +1096,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ot_numero,
             tag,
             hora_inicio,
-            equipo_intervenir,
+            equipo_intervencion,
             empresa,
             descripcion_trabajo,
             nombre_solicitante,
@@ -1123,14 +1123,11 @@ document.addEventListener("DOMContentLoaded", () => {
           );
 
           // Enviar los datos al backend
-          const energiaElectricaResponse = await fetch(
-            "/api/pt-electrico",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(datosEnergiaElectrica),
-            }
-          );
+          const energiaElectricaResponse = await fetch("/api/pt-electrico", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(datosEnergiaElectrica),
+          });
           const energiaElectricaResult = await energiaElectricaResponse.json();
           if (!energiaElectricaResponse.ok || !energiaElectricaResult.success)
             throw new Error(
@@ -1161,7 +1158,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const fecha = document.getElementById("permit-date")?.value || "";
           const hora_inicio = fecha ? `${fecha} ${hora}` : hora;
           // Leer correctamente el campo de equipo a intervenir
-          const equipo_intervenir =
+          const equipo_intervencion =
             document.getElementById("equipment")?.value || "";
           const empresa = document.getElementById("company")?.value || "";
           const descripcion_trabajo =
@@ -1220,7 +1217,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ot_numero,
             tag,
             hora_inicio,
-            equipo_intervenir,
+            equipo_intervencion,
             empresa,
             descripcion_trabajo,
             nombre_solicitante,
@@ -1247,14 +1244,11 @@ document.addEventListener("DOMContentLoaded", () => {
           );
 
           // Enviar los datos al backend
-          const fuentesRadioactivasResponse = await fetch(
-            "/api/pt-radiacion",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(datosFuentesRadioactivas),
-            }
-          );
+          const fuentesRadioactivasResponse = await fetch("/api/pt-radiacion", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(datosFuentesRadioactivas),
+          });
           const fuentesRadioactivasResult =
             await fuentesRadioactivasResponse.json();
           if (
@@ -1332,14 +1326,11 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
-        const responseAST = await fetch(
-          "/api/ast-actividades",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ actividades: astActivities }),
-          }
-        );
+        const responseAST = await fetch("/api/ast-actividades", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ actividades: astActivities }),
+        });
         const resultAST = await responseAST.json();
         if (!responseAST.ok || !resultAST.success)
           throw new Error(
@@ -1427,16 +1418,11 @@ async function poblarSelectParticipantes() {
     return;
   }
   try {
-    const response = await fetch(
-      `/api/participantes?id_estatus=${idEstatus}`
-    );
+    const response = await fetch(`/api/participantes?id_estatus=${idEstatus}`);
     const participantes = await response.json();
 
     console.log("[DEBUG] id_estatus enviado:", idEstatus);
-    console.log(
-      "[DEBUG] URL:",
-      `/api/participantes?id_estatus=${idEstatus}`
-    );
+    console.log("[DEBUG] URL:", `/api/participantes?id_estatus=${idEstatus}`);
     console.log("[DEBUG] participantes recibidos:", participantes);
 
     if (!Array.isArray(participantes)) {

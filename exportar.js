@@ -315,7 +315,7 @@ router.get("/exportar-crear/:id_departamento", async (req, res) => {
     LEFT JOIN pt_altura pta2 ON pt.id_permiso = pta2.id_permiso
     LEFT JOIN autorizaciones az ON pt.id_permiso = az.id_permiso
     LEFT JOIN supervisores sup ON az.id_supervisor = sup.id_supervisor
-    WHERE  pt.id_departamento = $1\n`;
+    WHERE  a.id_departamento = $1\n`;
 
     /* WHERE a.id_departamento = $1\n`;*/
 

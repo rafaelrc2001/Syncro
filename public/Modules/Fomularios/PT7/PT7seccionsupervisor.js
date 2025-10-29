@@ -166,26 +166,21 @@ if (btnGuardarCampos) {
     // 4. Autorizar: actualizar supervisor/categoría y estatus
     try {
       // Actualizar supervisor y categoría
-      await fetch(
-        "/api/autorizaciones/supervisor-categoria",
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            id_permiso: idPermiso,
-            supervisor,
-            categoria,
-            fecha_hora_supervisor: new Date().toISOString(),
-          }),
-        }
-      );
+      await fetch("/api/autorizaciones/supervisor-categoria", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id_permiso: idPermiso,
+          supervisor,
+          categoria,
+          fecha_hora_supervisor: new Date().toISOString(),
+        }),
+      });
 
       // Consultar id_estatus
       let idEstatus = null;
       try {
-        const respEstatus = await fetch(
-          `/api/permisos-trabajo/${idPermiso}`
-        );
+        const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
         if (respEstatus.ok) {
           const permisoData = await respEstatus.json();
           idEstatus =
@@ -282,9 +277,7 @@ if (btnNoAutorizar) {
         // Consultar el id_estatus desde permisos_trabajo
         let idEstatus = null;
         try {
-          const respEstatus = await fetch(
-            `/api/permisos-trabajo/${idPermiso}`
-          );
+          const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
           if (respEstatus.ok) {
             const permisoData = await respEstatus.json();
             idEstatus =
@@ -312,7 +305,7 @@ if (btnNoAutorizar) {
         // Cerrar el modal y redirigir
         const modal = document.getElementById("modalComentario");
         if (modal) modal.style.display = "none";
-        window.location.href = "/Modules/Usuario/AutorizarPT.html";
+        window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
       } catch (err) {}
     });
   }
@@ -336,7 +329,7 @@ async function agregarPersonaEnArea(idPermiso, persona) {
 const btnRegresar = document.getElementById("btn-regresar");
 if (btnRegresar) {
   btnRegresar.addEventListener("click", function () {
-    window.location.href = "/Modules/Usuario/AutorizarPT.html";
+    window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
   });
 }
 
@@ -458,11 +451,7 @@ if (idPermiso) {
           console.warn("actualizarCamposFusionados falló (permiso):", e);
         }
         // Intentar traer verformularios para completar datos generales (si aplica)
-        fetch(
-          `/api/verformularios?id=${encodeURIComponent(
-            idPermiso
-          )}`
-        )
+        fetch(`/api/verformularios?id=${encodeURIComponent(idPermiso)}`)
           .then((r) => r.json())
           .then((vf) => {
             _verformulariosFetch = vf || {};

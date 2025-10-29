@@ -423,7 +423,7 @@ document.addEventListener("DOMContentLoaded", function () {
           const modal = document.getElementById("modalComentario");
           if (modal) modal.style.display = "none";
           alert("Permiso no autorizado correctamente");
-          window.location.href = "/Modules/SupSeguridad/supseguridad.html";
+          window.location.href = "/Modules/SupSeguridad/Supseguridad.html";
         };
       }
       // Lógica para cerrar/cancelar el modal
@@ -573,7 +573,7 @@ if (modalCloseBtn) {
   modalCloseBtn.onclick = function () {
     const confirmationModal = document.getElementById("confirmation-modal");
     if (confirmationModal) confirmationModal.style.display = "none";
-    window.location.href = "/Modules/SupSeguridad/supseguridad.html";
+    window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
   };
 }
 

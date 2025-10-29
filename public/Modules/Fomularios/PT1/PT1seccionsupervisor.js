@@ -140,7 +140,7 @@ document.addEventListener("DOMContentLoaded", function () {
         modalCloseBtn.onclick = function (e) {
           e.preventDefault();
           confirmationModal.style.display = "none";
-          window.location.href = "/Modules/SupSeguridad/supseguridad.html";
+          window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
         };
       }
     });
@@ -248,7 +248,7 @@ document.addEventListener("DOMContentLoaded", function () {
           const modal = document.getElementById("modalComentario");
           if (modal) modal.style.display = "none";
           alert("Permiso no autorizado correctamente");
-          window.location.href = "/Modules/SupSeguridad/supseguridad.html";
+          window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
         };
       }
       // Lógica para cerrar/cancelar el modal
@@ -309,7 +309,7 @@ const btnSalirNuevo = document.getElementById("btn-salir-nuevo");
 if (btnSalirNuevo) {
   btnSalirNuevo.addEventListener("click", function (e) {
     e.preventDefault();
-    window.location.href = "/Modules/SupSeguridad/supseguridad.html";
+    window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
   });
 }
 // Mostrar solo la sección 2 al cargar y ocultar las demás
@@ -405,7 +405,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnRegresar = document.getElementById("btn-regresar");
   if (btnRegresar) {
     btnRegresar.addEventListener("click", function () {
-      window.location.href = "/Modules/SupSeguridad/supseguridad.html";
+      window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
     });
   }
 
@@ -413,7 +413,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnSalir = document.getElementById("btn-salir");
   if (btnSalir) {
     btnSalir.addEventListener("click", function () {
-      window.location.href = "/Modules/SupSeguridad/supseguridad.html";
+      window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
     });
   }
 

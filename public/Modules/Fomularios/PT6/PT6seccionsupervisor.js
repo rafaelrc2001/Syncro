@@ -319,7 +319,7 @@ if (btnNoAutorizar) {
         // Cerrar el modal y redirigir
         const modal = document.getElementById("modalComentario");
         if (modal) modal.style.display = "none";
-        window.location.href = "SupSeguridad/SupSeguridad.html";
+        window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
       } catch (err) {}
     });
   }
@@ -343,7 +343,7 @@ async function agregarPersonaEnArea(idPermiso, persona) {
 const btnRegresar = document.getElementById("btn-regresar");
 if (btnRegresar) {
   btnRegresar.addEventListener("click", function () {
-    window.location.href = "SupSeguridad/SupSeguridad.html";
+    window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
   });
 }
 

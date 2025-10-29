@@ -49,6 +49,11 @@
       if (q) params.append("q", q);
       if (status && status !== "all") params.append("status", status);
 
+      // Si filtro es 'Todos' y búsqueda vacía, incluir include_all=1
+      if ((status === "all" || !status) && !q) {
+        params.append("include_all", "1");
+      }
+
       // Usar la URL pública en producción y localhost en desarrollo
       const apiOrigin =
         window.location.hostname === "localhost"
@@ -76,7 +81,10 @@
           );
         data = await resp.json();
       } catch (err) {
-        console.warn("Fallo la exportación server-side, usando datos client-side:", err);
+        console.warn(
+          "Fallo la exportación server-side, usando datos client-side:",
+          err
+        );
         if (typeof window.getPermisosFiltrados === "function") {
           data = window.getPermisosFiltrados() || [];
         } else {
@@ -129,10 +137,12 @@
         id_permiso: r.id_permiso ?? r.id ?? r.idPermiso ?? "",
         prefijo: r.prefijo ?? r.prefijo_permiso ?? "",
         tipo_permiso: r.tipo_permiso ?? r.tipo_perm ?? r.tipo ?? "",
-        fecha: r.fecha ?? (r.fecha_hora ? String(r.fecha_hora).slice(0, 10) : ""),
+        fecha:
+          r.fecha ?? (r.fecha_hora ? String(r.fecha_hora).slice(0, 10) : ""),
         hora_inicio: r.hora_inicio ?? r.hora ?? "",
         tipo_actividad: r.tipo_actividad ?? r.tipo_mantenimiento ?? "",
-        planta_lugar_trabajo: r.planta_lugar_trabajo ?? r.planta ?? r.nombre_planta ?? "",
+        planta_lugar_trabajo:
+          r.planta_lugar_trabajo ?? r.planta ?? r.nombre_planta ?? "",
         descripcion_trabajo: r.descripcion_trabajo ?? r.descripcion ?? "",
         empresa: r.empresa ?? "",
         nombre_solicitante: r.nombre_solicitante ?? r.solicitante ?? "",

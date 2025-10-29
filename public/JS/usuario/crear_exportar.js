@@ -49,8 +49,11 @@
       if (q) params.append("q", q);
       if (status && status !== "all") params.append("status", status);
 
-      // USAR LOCALHOST:3000 - NO 127.0.0.1:5501
-      const apiOrigin = "http://localhost:3000";
+      // Usar la URL pública en producción y localhost en desarrollo
+      const apiOrigin =
+        window.location.hostname === "localhost"
+          ? "http://localhost:3000"
+          : "https://syncro-production-30a.up.railway.app"; // Reemplaza por tu URL real de Railway
       const url = `${apiOrigin}/api/exportar-crear/${encodeURIComponent(
         id_departamento
       )}?${params.toString()}`;

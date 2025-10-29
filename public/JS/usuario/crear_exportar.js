@@ -62,15 +62,24 @@
       );
       console.log("Params enviados:", params.toString());
 
-      const resp = await fetch(url);
-      console.log("Fetch response URL:", resp.url);
-      console.log("Fetch response status:", resp.status, resp.statusText);
-      if (!resp.ok)
-        throw new Error(
-          `Error del servidor: ${resp.status} - ${resp.statusText}`
-        );
-
-      let data = await resp.json();
+      let data = [];
+      try {
+        const resp = await fetch(url);
+        console.log("Fetch response URL:", resp.url);
+        console.log("Fetch response status:", resp.status, resp.statusText);
+        if (!resp.ok)
+          throw new Error(
+            `Error del servidor: ${resp.status} - ${resp.statusText}`
+          );
+        data = await resp.json();
+      } catch (err) {
+        console.warn("Fallo la exportación server-side, usando datos client-side:", err);
+        if (typeof window.getPermisosFiltrados === "function") {
+          data = window.getPermisosFiltrados() || [];
+        } else {
+          data = [];
+        }
+      }
 
       if (!Array.isArray(data)) {
         console.error("Datos recibidos no son un array:", data);

@@ -423,7 +423,7 @@ document.addEventListener("DOMContentLoaded", function () {
           const modal = document.getElementById("modalComentario");
           if (modal) modal.style.display = "none";
           alert("Permiso no autorizado correctamente");
-          window.location.href = "/Modules/SupSeguridad/Supseguridad.html";
+          window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
         };
       }
       // Lógica para cerrar/cancelar el modal

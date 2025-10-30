@@ -135,6 +135,9 @@ document.addEventListener("DOMContentLoaded", function () {
           if (document.getElementById("special-tools-label"))
             document.getElementById("special-tools-label").textContent =
               data.general.requiere_herramientas_especiales || "-";
+          if (document.getElementById("what-special-tools-label"))
+          document.getElementById("what-special-tools-label").textContent =
+          data.general.tipo_herramientas_especiales || "-";
           if (document.getElementById("adequate-tools-label"))
             document.getElementById("adequate-tools-label").textContent =
               data.general.herramientas_adecuadas || "-";
@@ -291,6 +294,9 @@ document.addEventListener("DOMContentLoaded", function () {
           if (document.getElementById("special-tools-label"))
             document.getElementById("special-tools-label").textContent =
               detalles.requiere_herramientas_especiales || "-";
+            if (document.getElementById("what-special-tools-label"))
+          document.getElementById("what-special-tools-label").textContent =
+          data.general.tipo_herramientas_especiales || "-";
           if (document.getElementById("adequate-tools-label"))
             document.getElementById("adequate-tools-label").textContent =
               detalles.herramientas_adecuadas || "-";

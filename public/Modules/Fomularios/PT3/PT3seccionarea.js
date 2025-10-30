@@ -870,5 +870,5 @@ function rellenarDatosGenerales(data) {
 document.getElementById("modal-close-btn").onclick = function () {
   const confirmationModal = document.getElementById("confirmation-modal");
   if (confirmationModal) confirmationModal.style.display = "none";
-  window.location.href = "/Modules/usuario/AutorizarPT.html";
+  window.location.href = "/Modules/Usuario/AutorizarPT.html";
 };

@@ -397,8 +397,14 @@ document.addEventListener("DOMContentLoaded", function () {
         "-",
 
       // Medidas para administrar riesgos
-      special_tools:
-        document.getElementById("special-tools-label")?.textContent || "-",
+    
+  // ...otros campos...
+  special_tools:
+    document.getElementById("special-tools-label")?.textContent || "-",
+  what_special_tools:
+    document.getElementById("what-special-tools-label")?.textContent || "-",
+  // ...otros campos...
+
       adequate_tools:
         document.getElementById("adequate-tools-label")?.textContent || "-",
       pre_verification:
@@ -414,6 +420,7 @@ document.addEventListener("DOMContentLoaded", function () {
       despresurizado_purgado:
         document.getElementById("resp-despresurizado-purgado")?.textContent ||
         "-",
+
       necesita_aislamiento:
         document.getElementById("resp-necesita-aislamiento")?.textContent ||
         "-",

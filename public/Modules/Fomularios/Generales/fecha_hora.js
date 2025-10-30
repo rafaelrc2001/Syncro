@@ -67,13 +67,23 @@ class FechaHoraManager {
   formatearFecha(fechaString) {
     if (!fechaString) return "Pendiente";
 
+    // Mostrar en consola la fecha que llega
+    console.log("Fecha recibida:", fechaString);
+
+    // Si la fecha viene en formato SQL (YYYY-MM-DD HH:mm:ss), mostrar tal cual
+    if (/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(fechaString)) {
+      // Opcional: puedes formatear para mostrar solo fecha y hora sin segundos
+      const [fecha, hora] = fechaString.split(' ');
+      const [h, m] = hora.split(":");
+      return `${fecha.replace(/-/g, "/")}, ${h}:${m}`;
+    }
+
+    // Si viene en otro formato, intentar formatear
     try {
       const fecha = new Date(fechaString);
-
       if (isNaN(fecha.getTime())) {
         return "Fecha inválida";
       }
-
       const opciones = {
         year: "numeric",
         month: "2-digit",
@@ -82,7 +92,6 @@ class FechaHoraManager {
         minute: "2-digit",
         hour12: false,
       };
-
       return fecha.toLocaleString("es-MX", opciones);
     } catch (error) {
       return "Error en fecha";

@@ -109,6 +109,12 @@ if (btnRegresar) {
 // Obtener el id_permiso de la URL (ejemplo: ?id=123)
 const params = new URLSearchParams(window.location.search);
 const idPermiso = params.get("id");
+
+const comentarioDiv = document.getElementById("comentarios-permiso");
+if (comentarioDiv && idPermiso) {
+  mostrarComentarioSiCorresponde(idPermiso, comentarioDiv);
+}
+
 let _permisoFetch = null;
 let _verformulariosFetch = null;
 
@@ -640,11 +646,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const idPermiso2 = params2.get("id");
   if (idPermiso2) {
     // Llamar a la API para obtener los datos del permiso
-    fetch(
-      `/api/verformularios?id=${encodeURIComponent(
-        idPermiso2
-      )}`
-    )
+    fetch(`/api/verformularios?id=${encodeURIComponent(idPermiso2)}`)
       .then((resp) => resp.json())
       .then((data) => {
         // Prefijo en el título y descripción del trabajo
@@ -717,11 +719,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // Además pedir verformularios (general + data) — esto puede contener nivel_tension en otro nodo
-        fetch(
-          `/api/verformularios?id=${encodeURIComponent(
-            idPermiso
-          )}`
-        )
+        fetch(`/api/verformularios?id=${encodeURIComponent(idPermiso)}`)
           .then((resp) => resp.json())
           .then((vf) => {
             console.log("Respuesta de verformularios (impresión):", vf);

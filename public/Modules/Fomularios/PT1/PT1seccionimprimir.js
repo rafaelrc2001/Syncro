@@ -463,6 +463,12 @@ document.addEventListener("DOMContentLoaded", function () {
   // Leer el id del permiso de la URL
   const params = new URLSearchParams(window.location.search);
   const idPermiso = params.get("id");
+
+  const comentarioDiv = document.getElementById("comentarios-permiso");
+  if (comentarioDiv && idPermiso) {
+    mostrarComentarioSiCorresponde(idPermiso, comentarioDiv);
+  }
+
   if (idPermiso) {
     // Llamar a la API para obtener los datos del permiso
     fetch(`/api/verformularios?id=${encodeURIComponent(idPermiso)}`)

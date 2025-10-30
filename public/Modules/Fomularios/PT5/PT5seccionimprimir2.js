@@ -641,13 +641,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const params = new URLSearchParams(window.location.search);
   const idPermiso = params.get("id");
 
+  const comentarioDiv = document.getElementById("comentarios-permiso");
+  if (comentarioDiv && idPermiso) {
+    mostrarComentarioSiCorresponde(idPermiso, comentarioDiv);
+  }
+
   if (idPermiso) {
     // 1. Obtener datos generales y AST
-    fetch(
-      `/api/verformularios?id=${encodeURIComponent(
-        idPermiso
-      )}`
-    )
+    fetch(`/api/verformularios?id=${encodeURIComponent(idPermiso)}`)
       .then((resp) => resp.json())
       .then((data) => {
         // Prefijo en el título y descripción del trabajo

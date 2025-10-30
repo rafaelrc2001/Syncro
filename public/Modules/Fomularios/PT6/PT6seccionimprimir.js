@@ -109,6 +109,12 @@ if (btnRegresar) {
 // Obtener el id_permiso de la URL (ejemplo: ?id=123)
 const params = new URLSearchParams(window.location.search);
 const idPermiso = params.get("id");
+
+const comentarioDiv = document.getElementById("comentarios-permiso");
+if (comentarioDiv && idPermiso) {
+  mostrarComentarioSiCorresponde(idPermiso, comentarioDiv);
+}
+
 let _permisoFetch = null;
 let _verformulariosFetch = null;
 

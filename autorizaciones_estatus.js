@@ -744,5 +744,39 @@ router.get("/api/permiso-estatus", async (req, res) => {
   }
 });
 
+//Para traerme el estatus y el comentario de un permiso por id_permiso
+//Para traerme el estatus y el comentario de un permiso por id_permiso
+//Para traerme el estatus y el comentario de un permiso por id_permiso
+//Para traerme el estatus y el comentario de un permiso por id_permiso
+// Endpoint para obtener estatus y comentarios de un permiso por id_permiso
+router.get("/estatus-comentarios/:id_permiso", async (req, res) => {
+  const { id_permiso } = req.params;
+  try {
+    const result = await db.query(
+      `SELECT e.estatus, e.comentarios
+       FROM permisos_trabajo p
+       JOIN estatus e ON p.id_estatus = e.id_estatus
+       WHERE p.id_permiso = $1`,
+      [id_permiso]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Permiso no encontrado",
+      });
+    }
+    res.json({
+      success: true,
+      estatus: result.rows[0].estatus,
+      comentarios: result.rows[0].comentarios,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      error: err.message,
+    });
+  }
+});
+
 // Dejar solo un module.exports al final
 module.exports = router;

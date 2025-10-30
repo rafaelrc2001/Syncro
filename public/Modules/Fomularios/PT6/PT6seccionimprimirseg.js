@@ -109,6 +109,12 @@ if (btnRegresar) {
 // Obtener el id_permiso de la URL (ejemplo: ?id=123)
 const params = new URLSearchParams(window.location.search);
 const idPermiso = params.get("id");
+
+const comentarioDiv = document.getElementById("comentarios-permiso");
+if (comentarioDiv && idPermiso) {
+  mostrarComentarioSiCorresponde(idPermiso, comentarioDiv);
+}
+
 if (idPermiso) {
   console.log("Consultando permiso de electrico con id:", idPermiso);
   fetch(`/api/pt-electrico/${idPermiso}`)

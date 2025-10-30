@@ -9,9 +9,7 @@ async function enviarDatosAN8N(motivoCierre) {
   }
   let formData = {};
   try {
-    const resp = await fetch(
-      `/api/verformularios?id=${idPermiso}`
-    );
+    const resp = await fetch(`/api/verformularios?id=${idPermiso}`);
     const data = await resp.json();
     // Imprimir los datos obtenidos de la API
     console.log("Datos obtenidos de la API para N8N:", data);
@@ -172,9 +170,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // Consultar el id_estatus desde permisos_trabajo
       let idEstatus = null;
       try {
-        const respEstatus = await fetch(
-          `/api/permisos-trabajo/${idPermiso}`
-        );
+        const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
         if (respEstatus.ok) {
           const permisoData = await respEstatus.json();
           idEstatus =
@@ -191,14 +187,11 @@ document.addEventListener("DOMContentLoaded", function () {
       // Guardar el comentario en la tabla estatus
       try {
         // 1. Guardar el comentario
-        const respComentario = await fetch(
-          "/api/estatus/comentario",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ id_estatus: idEstatus, comentario }),
-          }
-        );
+        const respComentario = await fetch("/api/estatus/comentario", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id_estatus: idEstatus, comentario }),
+        });
         let dataComentario = {};
         try {
           dataComentario = await respComentario.json();
@@ -210,14 +203,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // 2. Actualizar el estatus a 'Terminado'
         const payloadEstatus = { id_estatus: idEstatus };
-        const respEstatus = await fetch(
-          "/api/estatus/terminado",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payloadEstatus),
-          }
-        );
+        const respEstatus = await fetch("/api/estatus/terminado", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payloadEstatus),
+        });
         let dataEstatus = {};
         try {
           dataEstatus = await respEstatus.json();
@@ -430,13 +420,15 @@ document.addEventListener("DOMContentLoaded", function () {
   // Leer el id del permiso de la URL
   const params = new URLSearchParams(window.location.search);
   const idPermiso = params.get("id");
+
+  const comentarioDiv = document.getElementById("comentarios-permiso");
+  if (comentarioDiv && idPermiso) {
+    mostrarComentarioSiCorresponde(idPermiso, comentarioDiv);
+  }
+
   if (idPermiso) {
     // Llamar a la API para obtener los datos del permiso
-    fetch(
-      `/api/verformularios?id=${encodeURIComponent(
-        idPermiso
-      )}`
-    )
+    fetch(`/api/verformularios?id=${encodeURIComponent(idPermiso)}`)
       .then((resp) => resp.json())
       .then((data) => {
         console.log("Datos recibidos para el permiso:", data);

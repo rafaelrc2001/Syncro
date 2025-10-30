@@ -118,6 +118,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const params = new URLSearchParams(window.location.search);
   const idPermiso = params.get("id");
 
+  const comentarioDiv = document.getElementById("comentarios-permiso");
+  if (comentarioDiv && idPermiso) {
+    mostrarComentarioSiCorresponde(idPermiso, comentarioDiv);
+  }
+
   if (idPermiso) {
     console.log("Cargando permiso PT3 ID:", idPermiso);
 

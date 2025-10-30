@@ -17,6 +17,12 @@ window.n8nFormHandler = async function () {
   const idPermiso = sessionStorage.getItem("id_tipo_permiso");
   const nombrePermiso = mapaPermisos[idPermiso] || "";
 
+  // Obtener la hora local de México en formato ISO
+  const fechaSolicitudLocal = new Date().toLocaleString("sv-SE", {
+    timeZone: "America/Mexico_City",
+    hour12: false
+  }).replace(" ", "T");
+
   const formData = {
     numeroPermiso:
       window.permitNumber || document.getElementById("permit-number")?.value,
@@ -28,7 +34,7 @@ window.n8nFormHandler = async function () {
     planta: document.getElementById("plant")?.value,
     solicitante: document.getElementById("applicant")?.value,
     descripcionTrabajo: document.getElementById("work-description")?.value,
-    fechaSolicitud: new Date().toISOString(),
+    fechaSolicitud: fechaSolicitudLocal,
     mantenimiento: document.getElementById("maintenance-type")?.value,
     tipopermiso: nombrePermiso,
     // nombrePermiso: nombrePermiso, // puedes eliminar esta línea si no la necesitas duplicada

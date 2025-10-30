@@ -133,6 +133,10 @@ router.get("/verformularios", async (req, res) => {
         pa.nh3_nivel,
         pa.oxigeno_nivel,
         pa.lel_nivel,
+        pa.aprobado_co2,
+        pa.aprobado_nh3,
+        pa.aprobado_oxigeno,
+        pa.aprobado_lel,
         -- Columnas comentadas temporalmente hasta verificar esquema de BD
         -- pa.aprobado_co2,
         -- pa.aprobado_nh3,

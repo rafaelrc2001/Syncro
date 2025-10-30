@@ -141,6 +141,9 @@ document.addEventListener("DOMContentLoaded", function () {
           if (document.getElementById("special-tools-label"))
             document.getElementById("special-tools-label").textContent =
               data.general.requiere_herramientas_especiales || "-";
+          if (document.getElementById("what-special-tools-label"))
+          document.getElementById("what-special-tools-label").textContent =
+          data.general.tipo_herramientas_especiales || "-";
           if (document.getElementById("adequate-tools-label"))
             document.getElementById("adequate-tools-label").textContent =
               data.general.herramientas_adecuadas || "-";
@@ -297,6 +300,11 @@ document.addEventListener("DOMContentLoaded", function () {
           if (document.getElementById("special-tools-label"))
             document.getElementById("special-tools-label").textContent =
               detalles.requiere_herramientas_especiales || "-";
+
+          if (document.getElementById("what-special-tools-label"))
+          document.getElementById("what-special-tools-label").textContent =
+          data.general.tipo_herramientas_especiales || "-";
+
           if (document.getElementById("adequate-tools-label"))
             document.getElementById("adequate-tools-label").textContent =
               detalles.herramientas_adecuadas || "-";
@@ -403,8 +411,14 @@ document.addEventListener("DOMContentLoaded", function () {
         "-",
 
       // Medidas para administrar riesgos
-      special_tools:
-        document.getElementById("special-tools-label")?.textContent || "-",
+    
+  // ...otros campos...
+  special_tools:
+    document.getElementById("special-tools-label")?.textContent || "-",
+  what_special_tools:
+    document.getElementById("what-special-tools-label")?.textContent || "-",
+  // ...otros campos...
+
       adequate_tools:
         document.getElementById("adequate-tools-label")?.textContent || "-",
       pre_verification:
@@ -420,6 +434,7 @@ document.addEventListener("DOMContentLoaded", function () {
       despresurizado_purgado:
         document.getElementById("resp-despresurizado-purgado")?.textContent ||
         "-",
+
       necesita_aislamiento:
         document.getElementById("resp-necesita-aislamiento")?.textContent ||
         "-",
@@ -450,6 +465,8 @@ document.addEventListener("DOMContentLoaded", function () {
       tapar_purgas_drenajes:
         document.getElementById("resp-tapar-purgas-drenajes")?.textContent ||
         "-",
+
+
 
       // Condiciones del proceso
       fluid: document.getElementById("fluid")?.textContent || "-",

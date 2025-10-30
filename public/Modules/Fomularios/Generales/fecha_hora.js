@@ -67,26 +67,28 @@ class FechaHoraManager {
   formatearFecha(fechaString) {
     if (!fechaString) return "Pendiente";
 
+    console.log("Fecha recibida:", fechaString);
+
+    // Si la fecha viene en formato SQL (YYYY-MM-DD HH:mm:ss), mostrar tal cual
+    if (/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(fechaString)) {
+      const [fecha, hora] = fechaString.split(' ');
+      const [h, m] = hora.split(":");
+      return `${fecha.replace(/-/g, "/")}, ${h}:${m}`;
+    }
+
+    // Si viene en formato ISO con Z (UTC), mostrar en UTC
     try {
       const fecha = new Date(fechaString);
-
-      // Verificar que la fecha sea válida
       if (isNaN(fecha.getTime())) {
         return "Fecha inválida";
       }
-
-      // Formatear la fecha
-      const opciones = {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-        timeZone: "America/Mexico_City",
-      };
-
-      return fecha.toLocaleString("es-MX", opciones);
+      // Formatear en UTC
+      const year = fecha.getUTCFullYear();
+      const month = String(fecha.getUTCMonth() + 1).padStart(2, '0');
+      const day = String(fecha.getUTCDate()).padStart(2, '0');
+      const hour = String(fecha.getUTCHours()).padStart(2, '0');
+      const minute = String(fecha.getUTCMinutes()).padStart(2, '0');
+      return `${day}/${month}/${year}, ${hour}:${minute}`;
     } catch (error) {
       return "Error en fecha";
     }

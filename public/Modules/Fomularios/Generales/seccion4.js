@@ -767,7 +767,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ot_numero,
             tag,
             hora_inicio,
-            equipo_intervencion:
+            equipo_intervenir:
               document.getElementById("equipment")?.value || "", // <--- CAMBIA AQUÍ
             avisos_trabajos: warning_signs,
             iluminacion_prueba_explosion: explosion_proof_lighting,

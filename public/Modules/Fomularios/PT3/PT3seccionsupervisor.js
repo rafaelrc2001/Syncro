@@ -522,7 +522,7 @@ document.addEventListener("DOMContentLoaded", function () {
             "descripcion-trabajo-label",
             data.general.descripcion_trabajo
           );
-          setText("nombre-solicitante-label", data.general.solicitante);
+          setText("nombre-solicitante-label", data.general.nombre_solicitante);
           setText("sucursal-label", data.general.sucursal);
           setText("contrato-label", data.general.contrato);
 

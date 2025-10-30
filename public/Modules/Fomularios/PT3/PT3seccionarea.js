@@ -54,12 +54,18 @@ if (btnGuardarCampos) {
         "equipo_despresionado_fuera_operacion"
       ),
       equipo_aislado: getRadio("equipo_aislado"),
-      equipo_aislado_valvula:
-        document.querySelector("input[name='equipo_aislado_valvula']")
-          ?.checked || false,
-      equipo_aislado_junta_ciega:
-        document.querySelector("input[name='equipo_aislado_junta_ciega']")
-          ?.checked || false,
+
+      equipo_aislado_valvula: document.querySelector(
+        "input[name='equipo_aislado_valvula']"
+      )?.checked
+        ? "SI"
+        : "NO",
+      equipo_aislado_junta_ciega: document.querySelector(
+        "input[name='equipo_aislado_junta_ciega']"
+      )?.checked
+        ? "SI"
+        : "NO",
+
       equipo_lavado: getRadio("equipo_lavado"),
       equipo_neutralizado: getRadio("equipo_neutralizado"),
       equipo_vaporizado: getRadio("equipo_vaporizado"),
@@ -776,13 +782,13 @@ function rellenarRequisitosTrabajo(permiso) {
   // Checkboxes
   if (typeof permiso.equipo_aislado_valvula !== "undefined") {
     const cb = document.querySelector("input[name='equipo_aislado_valvula']");
-    if (cb) cb.checked = !!permiso.equipo_aislado_valvula;
+    if (cb) cb.checked = permiso.equipo_aislado_valvula === "SI";
   }
   if (typeof permiso.equipo_aislado_junta_ciega !== "undefined") {
     const cb = document.querySelector(
       "input[name='equipo_aislado_junta_ciega']"
     );
-    if (cb) cb.checked = !!permiso.equipo_aislado_junta_ciega;
+    if (cb) cb.checked = permiso.equipo_aislado_junta_ciega === "SI";
   }
 
   // Inputs tipo texto

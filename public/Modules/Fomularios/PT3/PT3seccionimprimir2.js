@@ -198,11 +198,11 @@ document.addEventListener("DOMContentLoaded", function () {
           // Nuevos campos de aislamiento
           setText(
             "equipo_aislado_valvula",
-            data.general.equipo_aislado_valvula ? "SI" : "NO"
+            data.general.equipo_aislado_valvula || "-"
           );
           setText(
             "equipo_aislado_junta_ciega",
-            data.general.equipo_aislado_junta_ciega ? "SI" : "NO"
+            data.general.equipo_aislado_junta_ciega || "-"
           );
           setText("equipo_especial", data.general.equipo_especial);
           setText("tipo_equipo_especial", data.general.tipo_equipo_especial);

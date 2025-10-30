@@ -70,12 +70,10 @@ class FechaHoraManager {
     try {
       const fecha = new Date(fechaString);
 
-      // Verificar que la fecha sea válida
       if (isNaN(fecha.getTime())) {
         return "Fecha inválida";
       }
 
-      // Formatear la fecha
       const opciones = {
         year: "numeric",
         month: "2-digit",
@@ -83,7 +81,6 @@ class FechaHoraManager {
         hour: "2-digit",
         minute: "2-digit",
         hour12: false,
-        timeZone: "America/Mexico_City",
       };
 
       return fecha.toLocaleString("es-MX", opciones);

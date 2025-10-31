@@ -312,7 +312,9 @@ WHERE pt.id_permiso = $1
     pa.andamio_completo_opcion,
     pa.tarjeta_andamio,
     pa.viento_permitido,
-    pa.escalera_condicion
+    pa.escalera_condicion,
+    pa.tipo_escalera,
+    pa.cual_acceso
   FROM permisos_trabajo pt
   INNER JOIN pt_altura pa ON pt.id_permiso = pa.id_permiso
   INNER JOIN sucursales s ON pt.id_sucursal = s.id_sucursal

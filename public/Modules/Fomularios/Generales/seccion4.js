@@ -846,6 +846,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const requiere_escalera =
             document.querySelector('input[name="warning-signs"]:checked')
               ?.value || "";
+          const tipo_escalera = document.getElementById("input-escalera")?.value || "";
           const requiere_canastilla_grua =
             document.querySelector(
               'input[name="explosion-proof-lighting"]:checked'
@@ -859,6 +860,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const otro_tipo_acceso =
             document.querySelector('input[name="lifeline"]:checked')?.value ||
             "";
+            const cual_acceso = document.getElementById("input-acceso")?.value || "";
 
           // Medidas para administrar los riesgos
           const acceso_libre_obstaculos =
@@ -925,6 +927,8 @@ document.addEventListener("DOMContentLoaded", () => {
             trabajadores_aptos_evaluacion,
             requiere_barreras,
             observaciones,
+            tipo_escalera,
+            cual_acceso,
           };
 
           // Imprimir en consola lo que se enviará

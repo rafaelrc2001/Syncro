@@ -194,3 +194,57 @@ document.addEventListener("DOMContentLoaded", function () {
 
   initEquipmentToggle();
 });
+
+
+// Mejorada: toggleInput ahora se enlaza automáticamente a los radios y muestra/oculta el campo según selección
+function toggleInput(name) {
+  const radios = document.getElementsByName(name);
+  const inputContainer = document.getElementById("input-" + name + "-container");
+  let show = false;
+  for (let i = 0; i < radios.length; i++) {
+    if (radios[i].checked && radios[i].value === "SI") {
+      show = true;
+      break;
+    }
+  }
+  if (inputContainer) {
+    inputContainer.style.display = show ? "block" : "none";
+  }
+}
+
+// Enlazar automáticamente a todos los grupos relevantes al cargar
+document.addEventListener("DOMContentLoaded", function () {
+  // ...existing code...
+
+
+  // Enlazar radios y contenedores según el HTML real
+  // ¿El trabajo requiere escalera? (name="warning-signs", input-escalera-container)
+  document.getElementsByName("warning-signs").forEach((radio) => {
+    radio.addEventListener("change", function () {
+      const show = this.value === "SI" && this.checked;
+      const container = document.getElementById("input-escalera-container");
+      if (container) container.style.display = show ? "block" : "none";
+    });
+    // Estado inicial
+    if (radio.checked && radio.value === "SI") {
+      const container = document.getElementById("input-escalera-container");
+      if (container) container.style.display = "block";
+    }
+  });
+
+  // ¿El trabajo requiere otro tipo de acceso, andamio o plataforma? (name="lifeline", input-acceso-container)
+  document.getElementsByName("lifeline").forEach((radio) => {
+    radio.addEventListener("change", function () {
+      const show = this.value === "SI" && this.checked;
+      const container = document.getElementById("input-acceso-container");
+      if (container) container.style.display = show ? "block" : "none";
+    });
+    // Estado inicial
+    if (radio.checked && radio.value === "SI") {
+      const container = document.getElementById("input-acceso-container");
+      if (container) container.style.display = "block";
+    }
+  });
+
+  // ...existing code...
+});

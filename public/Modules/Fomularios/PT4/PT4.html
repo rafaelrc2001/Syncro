@@ -301,17 +301,22 @@
                                 </div>
 
                                 <!-- Fila 1 -->
+                                <!-- Fila 1: Escalera -->
                                 <div class="form-table-row">
-                                    <div class="form-table-label">
-                                        <label>¿El trabajo requiere escalera?</label>
+                                <div class="form-table-label">
+                                    <label>¿El trabajo requiere escalera?</label>
+                                </div>
+                                <div class="form-table-options">
+                                    <div class="yes-no-na compact">
+                                        <label><input type="radio" name="warning-signs" value="SI"></label>
+                                        <label><input type="radio" name="warning-signs" value="NO"></label>
+                                        <label><input type="radio" name="warning-signs" value="N/A"></label>
                                     </div>
-                                    <div class="form-table-options">
-                                        <div class="yes-no-na compact">
-                                            <label><input type="radio" name="warning-signs" value="SI"></label>
-                                            <label><input type="radio" name="warning-signs" value="NO"></label>
-                                            <label><input type="radio" name="warning-signs" value="N/A"></label>
-                                        </div>
+                                    <div id="input-escalera-container" style="display:none;">
+                                    <label for="input-escalera" style="font-size:0.95em;">¿tipo?</label>
+                                    <input type="text" id="input-escalera" name="input-escalera" class="extra-input" placeholder="-">
                                     </div>
+                                </div>
                                 </div>
 
                                 <!-- Fila 2 -->
@@ -357,16 +362,21 @@
                                 </div>
 
                                 <!-- Fila 5 -->
+                                <!-- Fila 5: Otro tipo de acceso -->
                                 <div class="form-table-row">
-                                    <div class="form-table-label">
-                                        <label>¿El trabajo requiere otro tipo de acceso, andamio o plataforma?</label>
+                                <div class="form-table-label">
+                                    <label>¿El trabajo requiere otro tipo de acceso, andamio o plataforma?</label>
+                                </div>
+                                <div class="form-table-options">
+                                    <div class="yes-no-na compact">
+                                    <label><input type="radio" name="lifeline" value="SI"></label>
+                                    <label><input type="radio" name="lifeline" value="NO"></label>
+                                    <label><input type="radio" name="lifeline" value="N/A"></label>
+                                      
                                     </div>
-                                    <div class="form-table-options">
-                                        <div class="yes-no-na compact">
-                                            <label><input type="radio" name="lifeline" value="SI"></label>
-                                            <label><input type="radio" name="lifeline" value="NO"></label>
-                                            <label><input type="radio" name="lifeline" value="N/A"></label>
-                                        </div>
+                                    <div id="input-acceso-container" style="display:none;">
+                                    <label for="input-acceso" style="font-size:0.95em;">¿cuál?</label>
+                                    <input type="text" id="input-acceso" name="input-acceso" class="extra-input" placeholder="-">
                                     </div>
                                 </div>
                             </div>

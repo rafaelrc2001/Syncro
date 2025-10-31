@@ -20,9 +20,7 @@ async function cargarTargetasDesdeAutorizar() {
     const id_departamento = usuario && usuario.id ? usuario.id : null;
     if (!id_departamento)
       throw new Error("No se encontró el id de departamento del usuario");
-    const response = await fetch(
-      `/api/autorizar/${id_departamento}`
-    );
+    const response = await fetch(`/api/autorizar/${id_departamento}`);
     if (!response.ok) throw new Error("Error al consultar permisos");
     const permisos = await response.json();
 
@@ -39,7 +37,12 @@ async function cargarTargetasDesdeAutorizar() {
         porAutorizar++;
       } else if (estatus === "activo") {
         activos++;
-      } else if (estatus === "terminado" || estatus === "cierre sin incidentes" || estatus === "cierre con incidentes" || estatus === "cierre con accidentes") {
+      } else if (
+        estatus === "terminado" ||
+        estatus === "cierre sin incidentes" ||
+        estatus === "cierre con incidentes" ||
+        estatus === "cierre con accidentes"
+      ) {
         terminados++;
       } else if (estatus === "no autorizado") {
         noAutorizados++;
@@ -74,9 +77,7 @@ function asignarEventosVer() {
       console.log("ID del permiso consultado:", idPermiso);
       try {
         const response = await fetch(
-          `/api/verformularios?id=${encodeURIComponent(
-            idPermiso
-          )}`
+          `/api/verformularios?id=${encodeURIComponent(idPermiso)}`
         );
         if (!response.ok) throw new Error("Error al obtener datos del permiso");
         const data = await response.json();
@@ -145,9 +146,7 @@ async function cargarPermisosTabla() {
     const id_departamento = usuario && usuario.id ? usuario.id : null;
     if (!id_departamento)
       throw new Error("No se encontró el id de departamento del usuario");
-    const response = await fetch(
-      `/api/autorizar/${id_departamento}`
-    );
+    const response = await fetch(`/api/autorizar/${id_departamento}`);
     if (!response.ok) throw new Error("Error al consultar permisos");
     permisosGlobal = await response.json();
     mostrarPermisosFiltrados("En espera del área");
@@ -199,6 +198,7 @@ function mostrarPermisosFiltrados(filtro) {
   paginaDatos.forEach((permiso) => {
     const row = document.createElement("tr");
     let estatusNorm = permiso.estatus.toLowerCase().trim();
+    const puedeEditar = estatusNorm === "en espera del área";
     let badgeClass = "";
     switch (estatusNorm) {
       case "por autorizar":
@@ -256,17 +256,21 @@ function mostrarPermisosFiltrados(filtro) {
     <td>${permiso.descripcion}</td>
     <td>${permiso.area}</td>
     <td>${permiso.solicitante}</td>
-  <td>${formatearFecha(permiso.fecha_hora)}</td>
+    <td>${formatearFecha(permiso.fecha_hora)}</td>
     <td><span class="status-badge${badgeClass ? " " + badgeClass : ""}">${
       permiso.estatus
     }</span></td>
     <td>
-        <button class="action-btn print" data-idpermiso="${
-          permiso.id_permiso
-        }"><i class="ri-eye-line"></i></button>
-        <button class="action-btn edit"><i class="ri-edit-line"></i></button>
-     </td>
-`;
+    <button class="action-btn print" data-idpermiso="${permiso.id_permiso}">
+        <i class="ri-eye-line"></i>
+      </button>
+      <button class="action-btn edit${!puedeEditar ? " edit-disabled" : ""}"${
+      !puedeEditar ? " disabled" : ""
+    }>
+        <i class="ri-edit-line"></i>
+      </button>
+    </td>
+  `;
     tbody.appendChild(row);
   });
 
@@ -469,18 +473,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // 1. Insertar autorización de área
       try {
-        const resp = await fetch(
-          "/api/autorizaciones/area",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              id_permiso: idPermiso,
-              responsable_area,
-              encargado_area: operador_area,
-            }),
-          }
-        );
+        const resp = await fetch("/api/autorizaciones/area", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id_permiso: idPermiso,
+            responsable_area,
+            encargado_area: operador_area,
+          }),
+        });
         if (!resp.ok) {
           const data = await resp.json();
           if (resp.status === 409) {
@@ -498,9 +499,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // 2. Consultar el id_estatus desde permisos_trabajo
       let idEstatus = null;
       try {
-        const resp = await fetch(
-          `/api/permisos-trabajo/${idPermiso}`
-        );
+        const resp = await fetch(`/api/permisos-trabajo/${idPermiso}`);
         if (resp.ok) {
           const permisoData = await resp.json();
           idEstatus =
@@ -574,9 +573,7 @@ document.addEventListener("DOMContentLoaded", () => {
       window.idEstatusNoAutorizado = null;
       if (idPermiso) {
         try {
-          const resp = await fetch(
-            `/api/permisos-trabajo/${idPermiso}`
-          );
+          const resp = await fetch(`/api/permisos-trabajo/${idPermiso}`);
           if (resp.ok) {
             const permisoData = await resp.json();
             window.idEstatusNoAutorizado =
@@ -639,18 +636,15 @@ document.addEventListener("DOMContentLoaded", () => {
       // 1. Insertar autorización de área
       let autorizacionExitosa = false;
       try {
-        const resp = await fetch(
-          "/api/autorizaciones/area",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              id_permiso: idPermiso,
-              responsable_area,
-              encargado_area: operador_area,
-            }),
-          }
-        );
+        const resp = await fetch("/api/autorizaciones/area", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id_permiso: idPermiso,
+            responsable_area,
+            encargado_area: operador_area,
+          }),
+        });
         if (!resp.ok) {
           const data = await resp.json();
           if (resp.status === 409) {
@@ -806,10 +800,10 @@ function formatearFecha(fechaISO) {
   if (isNaN(fecha.getTime())) return "Fecha inválida";
   // Mostrar en UTC igual que en la base de datos
   const year = fecha.getUTCFullYear();
-  const month = String(fecha.getUTCMonth() + 1).padStart(2, '0');
-  const day = String(fecha.getUTCDate()).padStart(2, '0');
-  const hour = String(fecha.getUTCHours()).padStart(2, '0');
-  const minute = String(fecha.getUTCMinutes()).padStart(2, '0');
+  const month = String(fecha.getUTCMonth() + 1).padStart(2, "0");
+  const day = String(fecha.getUTCDate()).padStart(2, "0");
+  const hour = String(fecha.getUTCHours()).padStart(2, "0");
+  const minute = String(fecha.getUTCMinutes()).padStart(2, "0");
   return `${day}/${month}/${year}, ${hour}:${minute}`;
 }
 

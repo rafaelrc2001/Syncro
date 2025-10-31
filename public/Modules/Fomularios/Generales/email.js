@@ -18,10 +18,39 @@ window.n8nFormHandler = async function () {
   const nombrePermiso = mapaPermisos[idPermiso] || "";
 
   // Obtener la hora local de México en formato ISO
-  const fechaSolicitudLocal = new Date().toLocaleString("sv-SE", {
-    timeZone: "America/Mexico_City",
-    hour12: false
-  }).replace(" ", "T");
+  const fechaSolicitudLocal = new Date()
+    .toLocaleString("sv-SE", {
+      timeZone: "America/Mexico_City",
+      hour12: false,
+    })
+    .replace(" ", "T");
+
+  // Obtener el id del departamento desde localStorage
+  let id_departamento = null;
+  let nombre_departamento = "";
+  try {
+    const usuario = JSON.parse(localStorage.getItem("usuario"));
+    if (usuario && usuario.id) {
+      id_departamento = Number(usuario.id);
+    }
+  } catch (e) {
+    id_departamento = null;
+  }
+
+  // Consultar el nombre del departamento usando el endpoint
+  if (id_departamento) {
+    try {
+      const resp = await fetch(
+        `/api/departamento/nombre?id_departamento=${id_departamento}`
+      );
+      const data = await resp.json();
+      if (data && data.nombre) {
+        nombre_departamento = data.nombre;
+      }
+    } catch (e) {
+      nombre_departamento = "";
+    }
+  }
 
   const formData = {
     numeroPermiso:
@@ -37,6 +66,7 @@ window.n8nFormHandler = async function () {
     fechaSolicitud: fechaSolicitudLocal,
     mantenimiento: document.getElementById("maintenance-type")?.value,
     tipopermiso: nombrePermiso,
+    departamento: nombre_departamento,
     // nombrePermiso: nombrePermiso, // puedes eliminar esta línea si no la necesitas duplicada
     correo:
       window.correoDepartamento || document.getElementById("correo")?.value,

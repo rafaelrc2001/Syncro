@@ -377,7 +377,7 @@ function mostrarDatosImprimir(sources = {}) {
   // General / encabezados
   setText("prefijo-label", pick("prefijo", "id_permiso", "id"));
   setText("start-time-label", pick("hora_inicio", "start_time", "hora"));
-  setText("fecha-label", pick("fecha"));
+  setText("fecha-label", pick("fecha", "fecha_creacion"));
   setText(
     "activity-type-label",
     pick("tipo_mantenimiento", "maintenance_type")

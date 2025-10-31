@@ -2,6 +2,28 @@ const express = require("express");
 const router = express.Router();
 const db = require("./database");
 
+// Endpoint para obtener el nombre del departamento por id
+router.get("/departamento/nombre", async (req, res) => {
+  const id_departamento = parseInt(req.query.id_departamento, 10);
+  if (!Number.isInteger(id_departamento) || id_departamento <= 0) {
+    return res.status(400).json({ error: "id_departamento inválido" });
+  }
+  try {
+    const result = await db.query(
+      "SELECT nombre FROM departamentos WHERE id_departamento = $1 LIMIT 1",
+      [id_departamento]
+    );
+    if (result.rows && result.rows.length > 0) {
+      res.json({ nombre: result.rows[0].nombre });
+    } else {
+      res.json({ nombre: "" });
+    }
+  } catch (err) {
+    console.error("Error al consultar nombre de departamento:", err);
+    res.status(500).json({ error: "Error en la consulta" });
+  }
+});
+
 // Endpoint para obtener todas las sucursales
 // Endpoint para obtener todas las sucursales
 // Endpoint para obtener todas las sucursales

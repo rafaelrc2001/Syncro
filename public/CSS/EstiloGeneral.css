@@ -779,3 +779,9 @@ td {
     height: 150%;
     border: none;
 }
+
+.action-btn.edit.edit-disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
+}

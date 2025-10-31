@@ -122,6 +122,7 @@ function mostrarPermisosFiltrados(filtro) {
   paginaDatos.forEach((permiso) => {
     const row = document.createElement("tr");
     let estatusNorm = permiso.estatus.toLowerCase().trim();
+    const puedeEditar = estatusNorm === "espera seguridad";
     let badgeClass = "";
     switch (estatusNorm) {
       case "por autorizar":
@@ -186,8 +187,11 @@ function mostrarPermisosFiltrados(filtro) {
                 <button class="action-btn view" data-idpermiso="${
                   permiso.id_permiso
                 }"><i class="ri-eye-line"></i></button>
-               
-                <button class="action-btn edit"><i class="ri-edit-line"></i></button>
+                <button class="action-btn edit${
+                  !puedeEditar ? " edit-disabled" : ""
+                }"${
+      !puedeEditar ? " disabled" : ""
+    }><i class="ri-edit-line"></i></button>
             </td>
         `;
     tbody.appendChild(row);
@@ -628,10 +632,10 @@ function formatearFecha(fechaISO) {
   if (isNaN(fecha.getTime())) return "Fecha inválida";
   // Mostrar en UTC igual que en la base de datos
   const year = fecha.getUTCFullYear();
-  const month = String(fecha.getUTCMonth() + 1).padStart(2, '0');
-  const day = String(fecha.getUTCDate()).padStart(2, '0');
-  const hour = String(fecha.getUTCHours()).padStart(2, '0');
-  const minute = String(fecha.getUTCMinutes()).padStart(2, '0');
+  const month = String(fecha.getUTCMonth() + 1).padStart(2, "0");
+  const day = String(fecha.getUTCDate()).padStart(2, "0");
+  const hour = String(fecha.getUTCHours()).padStart(2, "0");
+  const minute = String(fecha.getUTCMinutes()).padStart(2, "0");
   return `${day}/${month}/${year}, ${hour}:${minute}`;
 }
 

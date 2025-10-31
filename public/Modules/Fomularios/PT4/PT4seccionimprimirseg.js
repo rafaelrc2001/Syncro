@@ -25,8 +25,8 @@ function mostrarDatosImprimir(permiso) {
   setText("work-order-label", data.ot_numero || "-");
   setText(
     "equipment-label",
-    data.equipo_intervenir && data.equipo_intervenir.trim() !== ""
-      ? data.equipo_intervenir
+    data.equipo_intervencion && data.equipo_intervencion.trim() !== ""
+      ? data.equipo_intervencion
       : "-"
   );
   setText("tag-label", data.tag && data.tag.trim() !== "" ? data.tag : "-");
@@ -236,7 +236,7 @@ function mostrarDatosSupervisor(permiso) {
   setText("work-order-label", permiso.ot_numero);
   setText("tag-label", permiso.tag);
   setText("start-time-label", permiso.hora_inicio);
-  setText("equipment-description-label", permiso.equipo_intervenir);
+  setText("equipment-description-label", permiso.equipo_intervencion);
   setText("requiere-escalera-label", permiso.requiere_escalera);
   setText("tipo-escalera-label", permiso.tipo_escalera || "-");
   setText("requiere-canastilla-label", permiso.requiere_canastilla_grua);

@@ -317,7 +317,7 @@ if (idPermiso) {
         setText("sucursal-label", d.sucursal || "-");
         setText("contrato-label", d.contrato || "-");
         setText("work-order-label", d.ot_numero || "-");
-        setText("equipment-label", d.equipo_intervenir || "-");
+        setText("equipment-label", d.equipo_intervencion || "-");
         setText("tag-label", d.tag || "-");
         setText("requiere-escalera-label", d.requiere_escalera || "-");
         setText("tipo-escalera-label", d.tipo_escalera || "-");
@@ -590,7 +590,7 @@ document.addEventListener("DOMContentLoaded", function () {
           document.getElementById("start-time-label").textContent =
             d.hora_inicio || "-";
           document.getElementById("equipment-description-label").textContent =
-            d.equipo_intervenir || "-";
+            d.equipo_intervencion || "-";
 
           // ANÁLISIS DE REQUISITOS PARA EFECTUAR EL TRABAJO
           //  document.getElementById("requiere-escalera-label").textContent =

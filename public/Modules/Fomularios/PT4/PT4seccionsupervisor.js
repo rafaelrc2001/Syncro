@@ -165,8 +165,8 @@ function mostrarDatosSupervisor(permiso) {
   setText("work-order-label", data.ot_numero || "-");
   setText(
     "equipment-label",
-    data.equipo_intervenir && data.equipo_intervenir.trim() !== ""
-      ? data.equipo_intervenir
+    data.equipo_intervencion && data.equipo_intervencion.trim() !== ""
+      ? data.equipo_intervencion
       : "-"
   );
   setText("tag-label", data.tag && data.tag.trim() !== "" ? data.tag : "-");

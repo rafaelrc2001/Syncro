@@ -279,6 +279,7 @@ WHERE pt.id_permiso = $1
     pa.tag,
     TO_CHAR(pa.hora_inicio, 'HH24:MI') AS hora_inicio,
     pa.equipo_intervenir,
+    pa.equipo_intervencion,
     pa.fluido,
     pa.presion,
     pa.temperatura,

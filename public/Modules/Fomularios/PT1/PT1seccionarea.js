@@ -224,10 +224,11 @@ if (btnNoAutorizar) {
       try {
         const data = window.currentPermisoData;
         const params = new URLSearchParams(window.location.search);
-        const idPermisoLocal = params.get('id') || (data && (data.general && data.general.id || data.id)) || '-';
-        const tipo = (data && (data.detalles && data.detalles.tipo_actividad)) || (data && data.general && data.general.prefijo) || '-';
-        const solicitante = (data && (data.general && data.general.solicitante)) || (data && data.detalles && data.detalles.solicitante) || '-';
-        const departamento = (data && (data.general && data.general.departamento)) || (data && data.detalles && data.detalles.departamento) || '-';
+  const idPermisoLocal = getPermisoValue(["general.prefijo","prefijo","data.prefijo"]) || params.get('id') || (data && (data.general && data.general.id || data.id)) || '-';
+  const tipoFromData = getPermisoValue(["data.tipo_permiso","general.tipo_permiso","detalles.tipo_actividad","general.tipo_actividad","general.prefijo","data.tipo_mantenimiento","general.tipo_mantenimiento"]);
+  const tipo = tipoFromData || document.getElementById('activity-type-label')?.textContent || '-';
+  const solicitante = getPermisoValue(["general.solicitante","detalles.solicitante"]) || document.getElementById('nombre-solicitante-label')?.textContent || '-';
+  const departamento = getPermisoValue(["detalles.departamento","general.departamento","detalles.planta","general.planta"]) || document.getElementById('plant-label')?.textContent || document.getElementById('sucursal-label')?.textContent || '-';
 
         const elId = document.getElementById('modal-permit-id-no');
         const elTipo = document.getElementById('modal-permit-type-no');
@@ -671,6 +672,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+// Helper: obtener campo del permiso cargado en memoria (window.currentPermisoData)
+function getPermisoValue(candidatePaths) {
+  const root = window.currentPermisoData || {};
+  for (const path of candidatePaths) {
+    const parts = path.split('.');
+    let cur = root;
+    for (const p of parts) {
+      if (cur == null) { cur = null; break; }
+      cur = cur[p];
+    }
+    if (cur != null && cur !== "" && cur !== "-") return cur;
+  }
+  return null;
+}
+
 // Función para el botón de autorización con confirmación
 const btnPreguntaAutorizar = document.getElementById("btn-pregunta-autorizar");
 const modalConfirmarAutorizar = document.getElementById("modalConfirmarAutorizar");
@@ -684,12 +700,12 @@ if (btnPreguntaAutorizar) {
     try {
       const data = window.currentPermisoData;
       const params = new URLSearchParams(window.location.search);
-      const idPermisoLocal = params.get('id') || (data && (data.general && data.general.id || data.id)) || '-';
-      const tipo = (data && (data.detalles && data.detalles.tipo_actividad)) || (data && data.general && data.general.prefijo) || '-';
-      const solicitante = (data && (data.general && data.general.solicitante)) || (data && data.detalles && data.detalles.solicitante) || '-';
-  // Mostrar el departamento (si existe). Antes usábamos `sucursal` aquí por error,
-  // ahora preferimos `departamento` y caer hacia '-' si no existe.
-  const departamento = (data && (data.general && data.general.departamento)) || (data && data.detalles && data.detalles.departamento) || '-';
+  const idPermisoLocal = getPermisoValue(["general.prefijo","prefijo","data.prefijo"]) || params.get('id') || (data && (data.general && data.general.id || data.id)) || '-';
+      const tipoFromData = getPermisoValue(["data.tipo_permiso","general.tipo_permiso","detalles.tipo_actividad","general.tipo_actividad","data.tipo_mantenimiento","general.tipo_mantenimiento"]);
+      const tipo = tipoFromData || document.getElementById('activity-type-label')?.textContent || '-';
+    const solicitante = getPermisoValue(["general.solicitante","detalles.solicitante"]) || document.getElementById('nombre-solicitante-label')?.textContent || '-';
+  // Mostrar el departamento (si existe). Preferir detalles.departamento -> general.departamento -> planta -> DOM
+  const departamento = getPermisoValue(["detalles.departamento","general.departamento","detalles.planta","general.planta"]) || document.getElementById('plant-label')?.textContent || document.getElementById('sucursal-label')?.textContent || '-';
 
       const elId = document.getElementById('modal-permit-id');
       const elTipo = document.getElementById('modal-permit-type');

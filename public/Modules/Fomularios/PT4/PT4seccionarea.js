@@ -1,160 +1,169 @@
-// --- Lógica fusionada para guardar campos y autorizar ---
+// --- Lógica fusionada para guardar campos y autorizar (PT4)
 const btnGuardarCampos = document.getElementById("btn-guardar-campos");
+
+// Deshabilitar botones hasta que se carguen datos canónicos
+try { if (btnGuardarCampos) btnGuardarCampos.disabled = true; } catch (e) {}
+try { if (btnNoAutorizar) btnNoAutorizar.disabled = true; } catch (e) {}
+
+// Cuando el usuario haga click en "Autorizar", mostramos el modal de confirmación
 if (btnGuardarCampos) {
-  btnGuardarCampos.addEventListener("click", async function () {
-    // 1. Obtener datos necesarios
-    const params = new URLSearchParams(window.location.search);
-    const idPermiso = params.get("id") || window.idPermisoActual;
-    const responsableInput = document.getElementById("responsable-aprobador");
-    const operadorInput = document.getElementById("responsable-aprobador2");
-    const responsable_area = responsableInput
-      ? responsableInput.value.trim()
-      : "";
-    const operador_area = operadorInput ? operadorInput.value.trim() : "";
-
-    // 2. Validaciones básicas
-    if (!idPermiso) {
-      alert("No se pudo obtener el ID del permiso.");
-      return;
-    }
-    if (!responsable_area) {
-      alert("Debes ingresar el nombre del responsable.");
-      return;
-    }
-
-    // 3. Guardar los campos/requisitos primero
-    // Utilidad para leer radios
-    function getRadio(name) {
-      const checked = document.querySelector(`input[name='${name}']:checked`);
-      return checked ? checked.value : null;
-    }
-    // Construir payload con todos los campos requeridos por el backend
-    // ...dentro del btnGuardarCampos.addEventListener...
-    const payload = {
-      fluido: document.getElementById("fluid")?.value || "",
-      presion: document.getElementById("pressure")?.value || "",
-      temperatura: document.getElementById("temperature")?.value || "",
-    };
+  btnGuardarCampos.addEventListener("click", function (e) {
+    e.preventDefault();
+    const modalConfirmarAutorizar = document.getElementById("modalConfirmarAutorizar");
+    if (!modalConfirmarAutorizar) return;
     try {
-      const resp = await fetch(`/api/pt-altura/requisitos_area/${idPermiso}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      const respText = await resp.text();
-      console.error("Respuesta del backend:", resp.status, respText);
-      if (!resp.ok) throw new Error("Error al guardar los requisitos");
+      const paramsModal = new URLSearchParams(window.location.search);
+      const idPermisoModal = paramsModal.get("id") || window.idPermisoActual || "-";
+  const prefijo = (window.currentPermisoData && (window.currentPermisoData.general && window.currentPermisoData.general.prefijo)) || idPermisoModal || "-";
+  const tipo = (window.currentPermisoData && (window.currentPermisoData.data && (window.currentPermisoData.data.tipo_permiso || window.currentPermisoData.data.tipo_mantenimiento))) || (window.currentPermisoData && window.currentPermisoData.general && (window.currentPermisoData.general.tipo_permiso || window.currentPermisoData.general.tipo_mantenimiento)) || document.getElementById("activity-type-label")?.textContent || "-";
+      const solicitante = (window.currentPermisoData && (window.currentPermisoData.data && (window.currentPermisoData.data.nombre_solicitante || window.currentPermisoData.data.solicitante))) || document.getElementById("nombre-solicitante-label")?.textContent || "-";
+      const departamento = (window.currentPermisoData && (window.currentPermisoData.data && (window.currentPermisoData.data.departamento || window.currentPermisoData.data.planta))) || document.getElementById("plant-label")?.textContent || document.getElementById("sucursal-label")?.textContent || "-";
+
+      const modalIdEl = document.getElementById("modal-permit-id");
+      const modalTypeEl = document.getElementById("modal-permit-type");
+      const modalSolicitanteEl = document.getElementById("modal-solicitante");
+      const modalDepartamentoEl = document.getElementById("modal-departamento");
+      if (modalIdEl) modalIdEl.textContent = prefijo;
+      if (modalTypeEl) modalTypeEl.textContent = tipo;
+      if (modalSolicitanteEl) modalSolicitanteEl.textContent = solicitante;
+      if (modalDepartamentoEl) modalDepartamentoEl.textContent = departamento;
     } catch (err) {
-      alert("Error al guardar los campos/requisitos. No se puede autorizar.");
-      console.error("Error al guardar requisitos:", err);
-      return;
+      console.warn("No se pudieron rellenar los campos del modal antes de mostrar:", err);
     }
-
-    // 4. Autorizar (igual que PT1)
-    try {
-      let idEstatus = null;
-      try {
-        const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
-        if (respEstatus.ok) {
-          const permisoData = await respEstatus.json();
-          idEstatus =
-            permisoData.id_estatus ||
-            (permisoData.data && permisoData.data.id_estatus);
-        } else {
-          console.error(
-            "[DEPURACIÓN] Error al obtener id_estatus. Status:",
-            respEstatus.status
-          );
-        }
-      } catch (err) {
-        console.error("[DEPURACIÓN] Error al consultar id_estatus:", err);
-      }
-
-      if (idEstatus) {
-        try {
-          const payloadEstatus = { id_estatus: idEstatus };
-          const respEstatus = await fetch("/api/estatus/seguridad", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payloadEstatus),
-          });
-          let data = {};
-          try {
-            data = await respEstatus.json();
-          } catch (e) {}
-          if (!respEstatus.ok) {
-            console.error(
-              "[DEPURACIÓN] Error en respuesta de estatus/seguridad:",
-              data
-            );
-          }
-        } catch (err) {
-          console.error(
-            "[DEPURACIÓN] Excepción al actualizar estatus de seguridad:",
-            err
-          );
-        }
-      } else {
-        console.warn(
-          "[DEPURACIÓN] No se obtuvo id_estatus para actualizar estatus."
-        );
-      }
-
-      // Generar timestamp automático para autorización PT4 (hora local)
-      const nowArea = new Date();
-      const year = nowArea.getFullYear();
-      const month = String(nowArea.getMonth() + 1).padStart(2, "0");
-      const day = String(nowArea.getDate()).padStart(2, "0");
-      const hours = String(nowArea.getHours()).padStart(2, "0");
-      const minutes = String(nowArea.getMinutes()).padStart(2, "0");
-      const seconds = String(nowArea.getSeconds()).padStart(2, "0");
-      const milliseconds = String(nowArea.getMilliseconds()).padStart(3, "0");
-      const fechaHoraAutorizacionArea = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}`;
-      console.log(
-        "[AUTORIZAR PT4] Timestamp generado (hora local):",
-        fechaHoraAutorizacionArea
-      );
-
-      await fetch("/api/autorizaciones/area", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          id_permiso: idPermiso,
-          responsable_area,
-          encargado_area: operador_area,
-          fecha_hora_area: fechaHoraAutorizacionArea,
-        }),
-      });
-      // Mostrar modal de confirmación y número de permiso
-      const confirmationModal = document.getElementById("confirmation-modal");
-      if (confirmationModal) {
-        confirmationModal.style.display = "flex";
-      }
-      const permitNumber = document.getElementById("generated-permit");
-      if (permitNumber) {
-        permitNumber.textContent = idPermiso || "-";
-      }
-      // La redirección se hace al cerrar el modal (ver evento modal-close-btn)
-
-      // Cierre del modal y redirección
-      document.getElementById("modal-close-btn").onclick = function () {
-        const confirmationModal = document.getElementById("confirmation-modal");
-        if (confirmationModal) confirmationModal.style.display = "none";
-        window.location.href = "/Modules/Usuario/AutorizarPT.html";
-      };
-    } catch (err) {
-      alert(
-        "Error al autorizar el permiso. Revisa la consola para más detalles."
-      );
-      console.error(
-        "[DEPURACIÓN] Error al insertar autorización de área:",
-        err
-      );
-    }
+    modalConfirmarAutorizar.style.display = "flex";
   });
 }
 
-// --- Lógica para el botón "No Autorizar" (abrir modal) ---
+// Función que ejecuta guardar requisitos y autorizar (llamada cuando el usuario confirma)
+async function ejecutarAutorizacionPT4() {
+  const params = new URLSearchParams(window.location.search);
+  const idPermiso = params.get("id") || window.idPermisoActual;
+  const responsableInput = document.getElementById("responsable-aprobador");
+  const operadorInput = document.getElementById("responsable-aprobador2");
+  const responsable_area = responsableInput ? responsableInput.value.trim() : "";
+  const operador_area = operadorInput ? operadorInput.value.trim() : "";
+
+  if (!idPermiso) {
+    alert("No se pudo obtener el ID del permiso.");
+    return;
+  }
+  if (!responsable_area) {
+    alert("Debes ingresar el nombre del responsable.");
+    return;
+  }
+
+  // Utilidad para leer radios
+  function getRadio(name) {
+    const checked = document.querySelector(`input[name='${name}']:checked`);
+    return checked ? checked.value : null;
+  }
+
+  const payload = {
+    fluido: document.getElementById("fluid")?.value || "",
+    presion: document.getElementById("pressure")?.value || "",
+    temperatura: document.getElementById("temperature")?.value || "",
+  };
+
+  try {
+    const resp = await fetch(`/api/pt-altura/requisitos_area/${idPermiso}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    const respText = await resp.text();
+    console.error("Respuesta del backend:", resp.status, respText);
+    if (!resp.ok) throw new Error("Error al guardar los requisitos");
+  } catch (err) {
+    alert("Error al guardar los campos/requisitos. No se puede autorizar.");
+    console.error("Error al guardar requisitos:", err);
+    return;
+  }
+
+  // Actualizar estatus si aplica y guardar autorización
+  try {
+    let idEstatus = null;
+    try {
+      const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
+      if (respEstatus.ok) {
+        const permisoData = await respEstatus.json();
+        idEstatus = permisoData.id_estatus || (permisoData.data && permisoData.data.id_estatus);
+      }
+    } catch (err) {
+      console.error("[DEPURACIÓN] Error al consultar id_estatus:", err);
+    }
+
+    if (idEstatus) {
+      try {
+        await fetch("/api/estatus/seguridad", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id_estatus: idEstatus }),
+        });
+      } catch (err) {
+        console.error("[DEPURACIÓN] Excepción al actualizar estatus de seguridad:", err);
+      }
+    } else {
+      console.warn("[DEPURACIÓN] No se obtuvo id_estatus para actualizar estatus.");
+    }
+
+    // Generar timestamp automático para autorización PT4 (hora local)
+    const nowArea = new Date();
+    const year = nowArea.getFullYear();
+    const month = String(nowArea.getMonth() + 1).padStart(2, "0");
+    const day = String(nowArea.getDate()).padStart(2, "0");
+    const hours = String(nowArea.getHours()).padStart(2, "0");
+    const minutes = String(nowArea.getMinutes()).padStart(2, "0");
+    const seconds = String(nowArea.getSeconds()).padStart(2, "0");
+    const milliseconds = String(nowArea.getMilliseconds()).padStart(3, "0");
+    const fechaHoraAutorizacionArea = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}`;
+
+    await fetch("/api/autorizaciones/area", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id_permiso: idPermiso,
+        responsable_area,
+        encargado_area: operador_area,
+        fecha_hora_area: fechaHoraAutorizacionArea,
+      }),
+    });
+
+    // Mostrar modal de confirmación y número de permiso
+    const confirmationModal = document.getElementById("confirmation-modal");
+    if (confirmationModal) confirmationModal.style.display = "flex";
+    const permitNumber = document.getElementById("generated-permit");
+    if (permitNumber) permitNumber.textContent = idPermiso || "-";
+
+    // La redirección se hace al cerrar el modal (ver evento modal-close-btn)
+  } catch (err) {
+    alert("Error al autorizar el permiso. Revisa la consola para más detalles.");
+    console.error("[DEPURACIÓN] Error al insertar autorización de área:", err);
+  }
+}
+
+// Vincular el botón "Continuar" del modal de confirmación a la ejecución real
+(function setupConfirmAutorizarPT4(){
+  const btnConfirmarAutorizar = document.getElementById('btnConfirmarAutorizar');
+  if (!btnConfirmarAutorizar) return;
+  btnConfirmarAutorizar.addEventListener('click', function(){
+    const modal = document.getElementById('modalConfirmarAutorizar');
+    if (modal) modal.style.display = 'none';
+    try { ejecutarAutorizacionPT4(); } catch (e) { console.error('Error al ejecutar autorización PT4 desde modal:', e); }
+  });
+})();
+
+// Botón cancelar dentro del modalConfirmarAutorizar (cerrar modal al pulsar "Cancelar").
+// El HTML usa id="btnCancelarConfirmar"; en caso de variantes mantenemos compatibilidad
+const btnCancelarConfirmar = document.getElementById('btnCancelarConfirmar');
+const btnCancelarConfirmarAutorizar = document.getElementById('btnCancelarConfirmarAutorizar');
+function cerrarModalConfirmarAutorizar() {
+  const modal = document.getElementById('modalConfirmarAutorizar');
+  if (modal) modal.style.display = 'none';
+}
+if (btnCancelarConfirmar) btnCancelarConfirmar.addEventListener('click', cerrarModalConfirmarAutorizar);
+if (btnCancelarConfirmarAutorizar) btnCancelarConfirmarAutorizar.addEventListener('click', cerrarModalConfirmarAutorizar);
+
+// --- Lógica para el botón "No Autorizar" (abrir modal de confirmación primero) ---
 const btnNoAutorizar = document.getElementById("btn-no-autorizar");
 if (btnNoAutorizar) {
   btnNoAutorizar.addEventListener("click", function () {
@@ -166,17 +175,86 @@ if (btnNoAutorizar) {
       alert("Debes ingresar el nombre del responsable antes de rechazar.");
       return;
     }
+
+    // Rellenar modalConfirmarNoAutorizar (si existe) con campos canónicos
+    const modalConfirmNo = document.getElementById("modalConfirmarNoAutorizar");
+    if (modalConfirmNo) {
+      try {
+        const paramsModal = new URLSearchParams(window.location.search);
+        const idPermisoModal = paramsModal.get("id") || window.idPermisoActual || "-";
+  const prefijo = (window.currentPermisoData && (window.currentPermisoData.general && window.currentPermisoData.general.prefijo)) || idPermisoModal || "-";
+  const tipo = (window.currentPermisoData && (window.currentPermisoData.data && (window.currentPermisoData.data.tipo_permiso || window.currentPermisoData.data.tipo_mantenimiento))) || (window.currentPermisoData && window.currentPermisoData.general && (window.currentPermisoData.general.tipo_permiso || window.currentPermisoData.general.tipo_mantenimiento)) || document.getElementById("activity-type-label")?.textContent || "-";
+        const solicitante = (window.currentPermisoData && (window.currentPermisoData.data && (window.currentPermisoData.data.nombre_solicitante || window.currentPermisoData.data.solicitante))) || document.getElementById("nombre-solicitante-label")?.textContent || "-";
+        const departamento = (window.currentPermisoData && (window.currentPermisoData.data && (window.currentPermisoData.data.departamento || window.currentPermisoData.data.planta))) || document.getElementById("plant-label")?.textContent || document.getElementById("sucursal-label")?.textContent || "-";
+
+        const modalIdEl = document.getElementById("modal-permit-id");
+        const modalTypeEl = document.getElementById("modal-permit-type");
+        const modalSolicitanteEl = document.getElementById("modal-solicitante");
+        const modalDepartamentoEl = document.getElementById("modal-departamento");
+        if (modalIdEl) modalIdEl.textContent = prefijo;
+        if (modalTypeEl) modalTypeEl.textContent = tipo;
+        if (modalSolicitanteEl) modalSolicitanteEl.textContent = solicitante;
+        if (modalDepartamentoEl) modalDepartamentoEl.textContent = departamento;
+
+        // También rellenar los campos específicos del modal "No Autorizar" si existen
+        try {
+          const modalIdNo = modalConfirmNo.querySelector("#modal-permit-id-no");
+          const modalTypeNo = modalConfirmNo.querySelector("#modal-permit-type-no");
+          const modalSolicitanteNo = modalConfirmNo.querySelector("#modal-solicitante-no");
+          const modalDepartamentoNo = modalConfirmNo.querySelector("#modal-departamento-no");
+          if (modalIdNo) modalIdNo.textContent = prefijo;
+          if (modalTypeNo) modalTypeNo.textContent = tipo;
+          if (modalSolicitanteNo) modalSolicitanteNo.textContent = solicitante;
+          if (modalDepartamentoNo) modalDepartamentoNo.textContent = departamento;
+        } catch (e) {
+          // noop: si por alguna razón el querySelector falla, no bloqueamos el flujo
+        }
+      } catch (err) {
+        console.warn('No se pudo rellenar modalConfirmarNoAutorizar:', err);
+      }
+
+      // Mostrar modal de confirmación (si existe)
+      modalConfirmNo.style.display = "flex";
+      return; // seguimos el flujo cuando el usuario confirme en el modalConfirmarNoAutorizar
+    }
+
+    // Fallback: abrir directamente el modalComentario si no existe modalConfirmarNoAutorizar
     const modal = document.getElementById("modalComentario");
     if (modal) {
       modal.style.display = "flex";
-      document.getElementById("comentarioNoAutorizar").value = "";
+      const input = document.getElementById("comentarioNoAutorizar");
+      if (input) input.value = "";
     }
   });
 
-  // Lógica para cerrar/cancelar el modal
-  const btnCancelarComentario = document.getElementById(
-    "btnCancelarComentario"
-  );
+  // Si existe el botón "Continuar" dentro del modalConfirmarNoAutorizar lo enlazamos
+  (function setupConfirmarNoAutorizarPT4(){
+    const btnConfirmarNoAutorizar = document.getElementById("btnConfirmarNoAutorizar");
+    if (!btnConfirmarNoAutorizar) return;
+    btnConfirmarNoAutorizar.addEventListener("click", function () {
+      const noConfirm = document.getElementById("modalConfirmarNoAutorizar");
+      if (noConfirm) noConfirm.style.display = "none";
+      // Abrir modalComentario para capturar motivo
+      const modal = document.getElementById("modalComentario");
+      if (modal) {
+        modal.style.display = "flex";
+        const input = document.getElementById("comentarioNoAutorizar");
+        if (input) input.value = "";
+      }
+    });
+  })();
+
+  // Botón cancelar dentro del modalConfirmarNoAutorizar
+  const btnCancelarConfirmarNo = document.getElementById("btnCancelarConfirmarNo");
+  if (btnCancelarConfirmarNo) {
+    btnCancelarConfirmarNo.addEventListener("click", function () {
+      const noConfirm = document.getElementById("modalConfirmarNoAutorizar");
+      if (noConfirm) noConfirm.style.display = "none";
+    });
+  }
+
+  // Lógica para cerrar/cancelar el modalComentario
+  const btnCancelarComentario = document.getElementById("btnCancelarComentario");
   if (btnCancelarComentario) {
     btnCancelarComentario.addEventListener("click", function () {
       const modal = document.getElementById("modalComentario");
@@ -188,14 +266,10 @@ if (btnNoAutorizar) {
   const btnGuardarComentario = document.getElementById("btnGuardarComentario");
   if (btnGuardarComentario) {
     btnGuardarComentario.addEventListener("click", async function () {
-      const comentario = document
-        .getElementById("comentarioNoAutorizar")
-        .value.trim();
+      const comentario = document.getElementById("comentarioNoAutorizar").value.trim();
       const responsableInput = document.getElementById("responsable-aprobador");
       const operadorInput = document.getElementById("responsable-aprobador2");
-      const responsable_area = responsableInput
-        ? responsableInput.value.trim()
-        : "";
+      const responsable_area = responsableInput ? responsableInput.value.trim() : "";
       const operador_area = operadorInput ? operadorInput.value.trim() : "";
       const params = new URLSearchParams(window.location.search);
       const idPermiso = params.get("id") || window.idPermisoActual;
@@ -211,15 +285,9 @@ if (btnNoAutorizar) {
         const hours = String(nowRechazoArea.getHours()).padStart(2, "0");
         const minutes = String(nowRechazoArea.getMinutes()).padStart(2, "0");
         const seconds = String(nowRechazoArea.getSeconds()).padStart(2, "0");
-        const milliseconds = String(nowRechazoArea.getMilliseconds()).padStart(
-          3,
-          "0"
-        );
+        const milliseconds = String(nowRechazoArea.getMilliseconds()).padStart(3, "0");
         const fechaHoraRechazoArea = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}`;
-        console.log(
-          "[NO AUTORIZAR PT4] Timestamp generado (hora local):",
-          fechaHoraRechazoArea
-        );
+        console.log("[NO AUTORIZAR PT4] Timestamp generado (hora local):", fechaHoraRechazoArea);
 
         // Guardar comentario y responsable en la tabla de autorizaciones
         await fetch("/api/autorizaciones/area", {
@@ -239,9 +307,7 @@ if (btnNoAutorizar) {
           const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
           if (respEstatus.ok) {
             const permisoData = await respEstatus.json();
-            idEstatus =
-              permisoData.id_estatus ||
-              (permisoData.data && permisoData.data.id_estatus);
+            idEstatus = permisoData.id_estatus || (permisoData.data && permisoData.data.id_estatus);
           }
         } catch (err) {}
         // Actualizar el estatus a 'no autorizado' y guardar el comentario en la tabla estatus
@@ -504,6 +570,15 @@ document.addEventListener("DOMContentLoaded", function () {
     fetch(`/api/verformularios?id=${encodeURIComponent(idPermiso2)}`)
       .then((resp) => resp.json())
       .then((data) => {
+        // Guardar respuesta canónica en memoria y habilitar botones dependientes
+        try { window.currentPermisoData = data || {}; } catch(e) {}
+        try {
+          const btnGuardar = document.getElementById('btn-guardar-campos');
+          const btnNo = document.getElementById('btn-no-autorizar');
+          if (btnGuardar) btnGuardar.disabled = false;
+          if (btnNo) btnNo.disabled = false;
+        } catch(e) { console.warn('No se pudieron habilitar botones tras cargar datos PT4', e); }
+
         if (data && data.general) {
           document.querySelector(".section-header h3").textContent =
             data.general.prefijo || "NP-XXXXXX";
@@ -664,4 +739,15 @@ if (btnSalirNuevo) {
   btnSalirNuevo.addEventListener("click", function () {
     window.location.href = "/Modules/Usuario/AutorizarPT.html";
   });
+}
+
+// Handler para el botón "Cerrar" del modal de confirmación — debe ocultar el modal y redirigir como en PT2/PT3
+const modalCloseBtn = document.getElementById("modal-close-btn");
+if (modalCloseBtn) {
+  modalCloseBtn.onclick = function () {
+    const confirmationModal = document.getElementById("confirmation-modal");
+    if (confirmationModal) confirmationModal.style.display = "none";
+    // Redirigir a la lista de autorizaciones (mismo comportamiento que PT2/PT3)
+    window.location.href = "/Modules/Usuario/AutorizarPT.html";
+  };
 }

@@ -395,6 +395,44 @@
 
 
 
+                          <!-- Modal de confirmación de autorización -->
+                        <div id="modalConfirmarAutorizar" class="modal-confirmar" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(44,62,80,0.25); z-index:1000; justify-content:center; align-items:center;">
+                            <div style="background:#fff; border-radius:12px; max-width:400px; width:90vw; padding:2em 1.5em; box-shadow:0 4px 24px rgba(44,62,80,0.18); display:flex; flex-direction:column; gap:1em;">
+                                <h3 style="margin:0 0 0.5em 0; font-size:1.2em; color:#2c3e50;">
+                                <i class="ri-check-double-line" style="margin-right:8px;"></i>Confirmar Autorización
+                                </h3>
+                                    <p>¿Estás seguro que deseas autorizar este permiso?</p>
+                                    <p>No tendrá opción para deshacer esta acción.</p>
+                                   <p>ID del Permiso: <strong id="modal-permit-id">-</strong></p>
+                                  <p>Tipo de Permiso: <strong id="modal-permit-type">-</strong></p>
+                                   <p>Solicitante: <strong id="modal-solicitante">-</strong></p>
+                                    <p>Departamento: <strong id="modal-departamento">-</strong></p>
+                                <div style="display:flex; justify-content:flex-end; gap:10px;">
+                                <button id="btnCancelarConfirmar" type="button" style="background:#eee; color:#333; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Cancelar</button>
+                                <button id="btnConfirmarAutorizar" type="button" style="background:#2c3e50; color:#fff; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Continuar</button>
+                                </div>
+                            </div>
+                        </div>
+
+                         <div id="modalConfirmarNoAutorizar" class="modal-confirmar" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(44,62,80,0.25); z-index:1000; justify-content:center; align-items:center;">
+                            <div style="background:#fff; border-radius:12px; max-width:400px; width:90vw; padding:2em 1.5em; box-shadow:0 4px 24px rgba(44,62,80,0.18); display:flex; flex-direction:column; gap:1em;">
+                                <h3 style="margin:0 0 0.5em 0; font-size:1.2em; color:#2c3e50;">
+                                <i class="ri-check-double-line" style="margin-right:8px;"></i>Confirmar No Autorización
+                                </h3>
+                                    <p>¿Estás seguro que deseas NO autorizar este permiso?</p>
+                                    <p>Esta acción no se podrá deshacer. Luego deberás ingresar el motivo del rechazo.</p>
+                                   <p>ID del Permiso: <strong id="modal-permit-id-no">-</strong></p>
+                                  <p>Tipo de Permiso: <strong id="modal-permit-type-no">-</strong></p>
+                                   <p>Solicitante: <strong id="modal-solicitante-no">-</strong></p>
+                                    <p>Departamento: <strong id="modal-departamento-no">-</strong></p>
+                                <div style="display:flex; justify-content:flex-end; gap:10px;">
+                                <button id="btnCancelarConfirmarNo" type="button" style="background:#eee; color:#333; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Cancelar</button>
+                                <button id="btnConfirmarNoAutorizar" type="button" style="background:#c0392b; color:#fff; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Continuar</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+
                     </form>
                 </div>
             </div>

@@ -3,61 +3,64 @@
 
 // Estilos específicos para la gráfica de estatus
 const statusChartStyles = `
-    .pie-chart {
-        background: white;
-        border-radius: 12px;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-        padding: 25px;
-        display: flex;
-        flex-direction: column;
-        height: 400px;
-    }
+  .pie-chart {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    height: 400px;
+  }
 
-    .pie-chart .chart-title {
-        font-size: 1.3rem;
-        color: var(--negro-carbon);
-        margin-bottom: 20px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-family: 'Montserrat', sans-serif;
-        font-weight: 600;
-    }
+  /* wrapper interno: columna que contiene chart y leyenda lado a lado */
+  .status-wrapper {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+  }
 
-    .pie-chart .chart-title i {
-        color: var(--verde-tecnico);
-        font-size: 1.4rem;
-    }
+  .status-chart-flex {
+    flex: 0 0 360px; /* ancho fijo razonable para el canvas */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-    #status-chart {
-        width: 100%;
-        height: 300px;
-        flex-grow: 1;
-    }
+  #status-chart {
+    width: 100%;
+    height: 260px; /* altura fija para renderizar correctamente */
+    max-width: 360px;
+    box-sizing: border-box;
+  }
 
-    .status-legend {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 15px;
-        margin-top: 15px;
-        padding-top: 15px;
-        border-top: 1px solid var(--blanco-neutro);
-        justify-content: center;
-    }
+  .status-legend-list {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 340px;
+    overflow: auto;
+    padding-left: 8px;
+  }
 
-    .status-legend-item {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        font-size: 0.8rem;
-        color: var(--gris-acero);
-    }
+  .status-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: var(--gris-acero);
+  }
 
-    .status-legend-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-    }
+  .status-legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex: 0 0 10px;
+  }
 `;
 
 // Inyectar estilos en el documento
@@ -66,6 +69,37 @@ function injectStatusChartStyles() {
   styleSheet.textContent = statusChartStyles;
   document.head.appendChild(styleSheet);
 }
+
+// Mapeo fijo estatus -> color (normalizado a minúsculas)
+const STATUS_COLOR_MAP = {
+  "activo": "#2ECC71",             // verde brillante
+  "terminado": "#1976D2",          // azul
+  "cancelado": "#D32F2F",          // rojo
+  "en espera del área": "#FF9800", // naranja
+  "en espera del area": "#FF9800",
+  "espera seguridad": "#5E35B1",   // púrpura
+  "no autorizado": "#FBC02D",      // amarillo
+  "cierre sin incidentes": "#00BCD4", // cian
+  "cierre con incidentes": "#D81B60", // magenta/rosa
+  "cierre con accidentes": "#455A64",  // gris oscuro
+};
+
+// Normaliza cadenas para comparar sin acentos ni mayúsculas
+function normalizeStatusKey(s) {
+  if (!s) return '';
+  try {
+     return s.toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+  } catch (e) {
+    return s.toString().toLowerCase().trim();
+  }
+}
+
+// Mapa normalizado (clave normalizada -> color) para búsquedas rápidas
+const NORMALIZED_STATUS_COLOR_MAP = Object.keys(STATUS_COLOR_MAP).reduce((acc, k) => {
+  acc[normalizeStatusKey(k)] = STATUS_COLOR_MAP[k];
+  return acc;
+}, {});
+
 
 // Configuración de la gráfica de estatus
 function initStatusChart() {
@@ -91,6 +125,28 @@ function initStatusChart() {
   // Inicializar gráfica
   const statusChart = echarts.init(document.getElementById("status-chart"));
 
+  // Reubicar DOM: envolver #status-chart en un wrapper con columna de chart y leyenda
+  (function relocateChartAndCreateLegend() {
+    const chartEl = document.getElementById('status-chart');
+    if (!chartEl) return;
+    const parent = chartEl.parentNode;
+    if (!parent) return;
+    // si el wrapper ya existe, no duplicar
+    if (parent.classList && parent.classList.contains('status-wrapper')) return;
+    const wrapper = document.createElement('div');
+    wrapper.className = 'status-wrapper';
+    const chartFlex = document.createElement('div');
+    chartFlex.className = 'status-chart-flex';
+    const legendDiv = document.createElement('div');
+    legendDiv.id = 'status-legend-list';
+    legendDiv.className = 'status-legend-list';
+    // reemplazar el chartEl por el wrapper y reubicar elementos
+    parent.replaceChild(wrapper, chartEl);
+    wrapper.appendChild(chartFlex);
+    wrapper.appendChild(legendDiv);
+    chartFlex.appendChild(chartEl);
+  })();
+
   // Preparar datos para la gráfica de pastel
   const pieData = statusData.categories.map((category, index) => ({
     value: statusData.values[index],
@@ -102,6 +158,7 @@ function initStatusChart() {
 
   // Configuración de la gráfica de pastel
   const statusOption = {
+    legend: { show: false }, // usamos leyenda HTML externa
     tooltip: {
       trigger: "item",
       formatter: function (params) {
@@ -139,8 +196,8 @@ function initStatusChart() {
       {
         name: "Estatus de Permisos",
         type: "pie",
-        radius: ["40%", "70%"],
-        center: ["50%", "45%"],
+  radius: ["38%", "64%"],
+  center: ["50%", "50%"],
         avoidLabelOverlap: false,
         itemStyle: {
           borderRadius: 10,
@@ -191,6 +248,29 @@ function initStatusChart() {
   // Aplicar configuración
   statusChart.setOption(statusOption);
 
+  // Función para recalcular el centro del pie en píxeles y aplicarlo
+  function updateChartCenter() {
+    try {
+      const chartEl = document.getElementById('status-chart');
+      if (!chartEl) return;
+      const w = Math.round(chartEl.clientWidth);
+      const h = Math.round(chartEl.clientHeight);
+      const cx = Math.round(w / 2);
+      const cy = Math.round(h / 2);
+      // aplicar centro en píxeles
+      statusChart.setOption({ series: [{ center: [cx, cy] }] });
+      console.debug('[statusChart] center px', { w, h, cx, cy });
+    } catch (e) {
+      console.warn('updateChartCenter error', e);
+    }
+  }
+
+  // Asegurar resize y centro tras primer render
+  setTimeout(function () {
+    try { statusChart.resize(); } catch (e) {}
+    updateChartCenter();
+  }, 160);
+
   // Hacer responsive
   window.addEventListener("resize", function () {
     statusChart.resize();
@@ -204,28 +284,48 @@ function initStatusChart() {
       colors: newData.colors || statusData.colors,
       icons: newData.icons || statusData.icons,
     };
-
-    const updatedPieData = updatedData.categories.map((category, index) => ({
-      value: updatedData.values[index],
-      name: `${updatedData.icons[index]} ${category}`,
-      itemStyle: {
-        color: updatedData.colors[index],
-      },
-    }));
+    const updatedPieData = updatedData.categories.map((category, index) => {
+      const key = normalizeStatusKey(category);
+      const color = NORMALIZED_STATUS_COLOR_MAP[key] || (Array.isArray(updatedData.colors) && updatedData.colors[index]) || '#cccccc';
+      return {
+        value: updatedData.values[index],
+        name: `${updatedData.icons[index]} ${category}`,
+        itemStyle: { color },
+      };
+    });
 
     const updatedOption = {
-      legend: {
-        data: updatedData.categories.map(
-          (category, index) => `${updatedData.icons[index]} ${category}`
-        ),
-      },
       series: [
         {
           data: updatedPieData,
         },
       ],
     };
+
+    // actualizar la gráfica
     statusChart.setOption(updatedOption);
+
+    // actualizar leyenda HTML externa
+    const legendEl = document.getElementById('status-legend-list');
+    if (legendEl) {
+      legendEl.innerHTML = '';
+      updatedData.categories.forEach((cat, idx) => {
+        const item = document.createElement('div');
+        item.className = 'status-legend-item';
+        const dot = document.createElement('span');
+        dot.className = 'status-legend-dot';
+        dot.style.background = (updatedPieData[idx] && updatedPieData[idx].itemStyle && updatedPieData[idx].itemStyle.color) || '#ccc';
+        const label = document.createElement('span');
+        label.textContent = `${updatedData.icons[idx] || ''} ${cat}`.trim();
+        item.appendChild(dot);
+        item.appendChild(label);
+        legendEl.appendChild(item);
+      });
+    }
+
+    // Forzar resize y recalcular centro
+    try { statusChart.resize(); } catch (e) {}
+    setTimeout(updateChartCenter, 50);
   }
 
   // Retornar funciones públicas
@@ -259,9 +359,11 @@ function cargarDatosEstatus() {
         "#4A4A4A",
       ];
       const baseIcons = ["✓", "⚡", "⏱️", "✗", "⚠️", "🔒", "🛑"];
-      const colors = categories.map(
-        (_, i) => baseColors[i % baseColors.length]
-      );
+      // Preferir el color fijo por estatus (mapa normalizado), si no existe usar baseColors
+      const colors = categories.map((cat, i) => {
+        const key = normalizeStatusKey(cat);
+        return NORMALIZED_STATUS_COLOR_MAP[key] || baseColors[i % baseColors.length];
+      });
       const icons = categories.map((_, i) => baseIcons[i % baseIcons.length]);
       if (window.statusChartInstance) {
         window.statusChartInstance.updateData({

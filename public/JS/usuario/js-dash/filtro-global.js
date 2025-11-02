@@ -129,6 +129,10 @@ class DashboardFilter {
             .includes(this.searchTerm) ||
           (permiso.Area || permiso.area || "")
             .toLowerCase()
+            .includes(this.searchTerm) ||
+          // Nuevo: permitir búsqueda por contrato (Contrato / contrato)
+          (permiso.Contrato || permiso.contrato || "")
+            .toLowerCase()
             .includes(this.searchTerm)
       );
     }

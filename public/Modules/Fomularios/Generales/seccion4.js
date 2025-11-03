@@ -846,7 +846,8 @@ document.addEventListener("DOMContentLoaded", () => {
           const requiere_escalera =
             document.querySelector('input[name="warning-signs"]:checked')
               ?.value || "";
-          const tipo_escalera = document.getElementById("input-escalera")?.value || "";
+          const tipo_escalera =
+            document.getElementById("input-escalera")?.value || "";
           const requiere_canastilla_grua =
             document.querySelector(
               'input[name="explosion-proof-lighting"]:checked'
@@ -860,7 +861,8 @@ document.addEventListener("DOMContentLoaded", () => {
           const otro_tipo_acceso =
             document.querySelector('input[name="lifeline"]:checked')?.value ||
             "";
-            const cual_acceso = document.getElementById("input-acceso")?.value || "";
+          const cual_acceso =
+            document.getElementById("input-acceso")?.value || "";
 
           // Medidas para administrar los riesgos
           const acceso_libre_obstaculos =
@@ -981,7 +983,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ot_numero,
             tag,
             hora_inicio,
-            equipo_intervencion,
+            equipo_intervenir: equipo_intervencion,
             empresa,
             descripcion_trabajo,
             nombre_solicitante, // <-- NUEVO

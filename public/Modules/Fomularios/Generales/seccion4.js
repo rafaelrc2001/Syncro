@@ -1091,7 +1091,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ot_numero,
             tag,
             hora_inicio,
-            equipo_intervencion,
+            equipo_intervenir: equipo_intervencion,
             empresa,
             descripcion_trabajo,
             nombre_solicitante,

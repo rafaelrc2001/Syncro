@@ -8,7 +8,9 @@ async function ejecutarAutorizacionPT5() {
   const idPermiso = params.get("id") || window.idPermisoActual;
   const responsableInput = document.getElementById("responsable-aprobador");
   const operadorInput = document.getElementById("responsable-aprobador2");
-  const responsable_area = responsableInput ? responsableInput.value.trim() : "";
+  const responsable_area = responsableInput
+    ? responsableInput.value.trim()
+    : "";
   const operador_area = operadorInput ? operadorInput.value.trim() : "";
 
   // Validaciones básicas
@@ -151,7 +153,10 @@ async function ejecutarAutorizacionPT5() {
       confirmationModal.style.display = "flex";
     }
     const permitNumber = document.getElementById("generated-permit");
-    const displayedPrefijo = document.getElementById("prefijo-label")?.textContent?.trim() || window.currentPermisoData?.general?.prefijo || idPermiso;
+    const displayedPrefijo =
+      document.getElementById("prefijo-label")?.textContent?.trim() ||
+      window.currentPermisoData?.general?.prefijo ||
+      idPermiso;
     if (permitNumber) {
       permitNumber.textContent = displayedPrefijo || "-";
     }
@@ -172,10 +177,7 @@ async function ejecutarAutorizacionPT5() {
     alert(
       "Error al autorizar el permiso. Revisa la consola para más detalles."
     );
-    console.error(
-      "[DEPURACIÓN] Error al insertar autorización de área:",
-      err
-    );
+    console.error("[DEPURACIÓN] Error al insertar autorización de área:", err);
   }
 }
 
@@ -184,10 +186,13 @@ async function ejecutarAutorizacionPT5() {
 function getPermisoValue(candidatePaths) {
   const root = window.currentPermisoData || {};
   for (const path of candidatePaths) {
-    const parts = path.split('.');
+    const parts = path.split(".");
     let cur = root;
     for (const p of parts) {
-      if (cur == null) { cur = undefined; break; }
+      if (cur == null) {
+        cur = undefined;
+        break;
+      }
       cur = cur[p];
     }
     if (cur != null && cur !== "" && cur !== "-") return cur;
@@ -198,19 +203,78 @@ function getPermisoValue(candidatePaths) {
 if (btnGuardarCampos) {
   btnGuardarCampos.addEventListener("click", function (e) {
     e.preventDefault();
-    const modalConfirmarAutorizar = document.getElementById("modalConfirmarAutorizar");
+    const modalConfirmarAutorizar = document.getElementById(
+      "modalConfirmarAutorizar"
+    );
     if (!modalConfirmarAutorizar) return;
     try {
       const paramsModal = new URLSearchParams(window.location.search);
-  const idPermisoModal = paramsModal.get("id") || window.idPermisoActual || "-";
-  // Preferir el prefijo mostrado en la página (PT4/PT5 usa #prefijo-label)
-  const prefijo = document.getElementById("prefijo-label")?.textContent?.trim() || (window.currentPermisoData && window.currentPermisoData.general && window.currentPermisoData.general.prefijo) || idPermisoModal || "-";
-  // Resolver tipo de permiso preferente: intentar campos canónicos antes del DOM
-  const tipoFromData = getPermisoValue(["data.tipo_permiso", "general.tipo_permiso", "data.tipo_mantenimiento", "general.tipo_mantenimiento", "tipo_permiso", "tipo_mantenimiento"]);
-  console.log("Tipo de permiso encontrado:", { tipo_permiso: tipoFromData });
-  const tipo = tipoFromData || document.getElementById("activity-type-label")?.textContent || "-";
-      const solicitante = (window.currentPermisoData && (window.currentPermisoData.data && (window.currentPermisoData.data.nombre_solicitante || window.currentPermisoData.data.solicitante))) || document.getElementById("nombre-solicitante-label")?.textContent || "-";
-      const departamento = (window.currentPermisoData && (window.currentPermisoData.data && (window.currentPermisoData.data.departamento || window.currentPermisoData.data.planta))) || document.getElementById("plant-label")?.textContent || document.getElementById("sucursal-label")?.textContent || "-";
+      const idPermisoModal =
+        paramsModal.get("id") || window.idPermisoActual || "-";
+      // Preferir el prefijo mostrado en la página (PT4/PT5 usa #prefijo-label)
+      const prefijo =
+        document.getElementById("prefijo-label")?.textContent?.trim() ||
+        (window.currentPermisoData &&
+          window.currentPermisoData.general &&
+          window.currentPermisoData.general.prefijo) ||
+        idPermisoModal ||
+        "-";
+      // Resolver tipo de permiso preferente: intentar campos canónicos antes del DOM
+      const tipoFromData = getPermisoValue([
+        "data.tipo_permiso",
+        "general.tipo_permiso",
+        "data.tipo_mantenimiento",
+        "general.tipo_mantenimiento",
+        "tipo_permiso",
+        "tipo_mantenimiento",
+      ]);
+      console.log("Tipo de permiso encontrado:", {
+        tipo_permiso: tipoFromData,
+      });
+      const tipo =
+        tipoFromData ||
+        document.getElementById("activity-type-label")?.textContent ||
+        "-";
+      const solicitante =
+        (window.currentPermisoData &&
+          window.currentPermisoData.data &&
+          (window.currentPermisoData.data.nombre_solicitante ||
+            window.currentPermisoData.data.solicitante)) ||
+        document.getElementById("nombre-solicitante-label")?.textContent ||
+        "-";
+      // Priorizar el nombre del departamento sobre el área/planta/sucursal
+      let departamento = "-";
+      if (window.currentPermisoData) {
+        if (
+          window.currentPermisoData.data &&
+          window.currentPermisoData.data.departamento
+        ) {
+          departamento = window.currentPermisoData.data.departamento;
+        } else if (
+          window.currentPermisoData.general &&
+          window.currentPermisoData.general.departamento
+        ) {
+          departamento = window.currentPermisoData.general.departamento;
+        } else if (
+          window.currentPermisoData.data &&
+          window.currentPermisoData.data.planta
+        ) {
+          departamento = window.currentPermisoData.data.planta;
+        } else if (
+          window.currentPermisoData.general &&
+          window.currentPermisoData.general.area
+        ) {
+          departamento = window.currentPermisoData.general.area;
+        } else if (document.getElementById("departamento-label")?.textContent) {
+          departamento =
+            document.getElementById("departamento-label").textContent;
+        } else if (document.getElementById("plant-label")?.textContent) {
+          departamento = document.getElementById("plant-label").textContent;
+        } else if (document.getElementById("sucursal-label")?.textContent) {
+          departamento = document.getElementById("sucursal-label").textContent;
+        }
+      }
+      departamento = departamento || "-";
 
       const modalIdEl = document.getElementById("modal-permit-id");
       const modalTypeEl = document.getElementById("modal-permit-type");
@@ -221,28 +285,37 @@ if (btnGuardarCampos) {
       if (modalSolicitanteEl) modalSolicitanteEl.textContent = solicitante;
       if (modalDepartamentoEl) modalDepartamentoEl.textContent = departamento;
     } catch (err) {
-      console.warn("No se pudieron rellenar los campos del modal antes de mostrar:", err);
+      console.warn(
+        "No se pudieron rellenar los campos del modal antes de mostrar:",
+        err
+      );
     }
     modalConfirmarAutorizar.style.display = "flex";
   });
 
   // Botón "Continuar" dentro del modal -> ejecutar autorización
-  (function setupConfirmAutorizarPT5(){
-    const btnConfirmarAutorizar = document.getElementById('btnConfirmarAutorizar');
+  (function setupConfirmAutorizarPT5() {
+    const btnConfirmarAutorizar = document.getElementById(
+      "btnConfirmarAutorizar"
+    );
     if (!btnConfirmarAutorizar) return;
-    btnConfirmarAutorizar.addEventListener('click', function(){
-      const modal = document.getElementById('modalConfirmarAutorizar');
-      if (modal) modal.style.display = 'none';
-      try { ejecutarAutorizacionPT5(); } catch (e) { console.error('Error al ejecutar autorización PT5 desde modal:', e); }
+    btnConfirmarAutorizar.addEventListener("click", function () {
+      const modal = document.getElementById("modalConfirmarAutorizar");
+      if (modal) modal.style.display = "none";
+      try {
+        ejecutarAutorizacionPT5();
+      } catch (e) {
+        console.error("Error al ejecutar autorización PT5 desde modal:", e);
+      }
     });
   })();
 
   // Botón cancelar dentro del modalConfirmarAutorizar
-  const btnCancelarConfirmar = document.getElementById('btnCancelarConfirmar');
+  const btnCancelarConfirmar = document.getElementById("btnCancelarConfirmar");
   if (btnCancelarConfirmar) {
-    btnCancelarConfirmar.addEventListener('click', function () {
-      const modal = document.getElementById('modalConfirmarAutorizar');
-      if (modal) modal.style.display = 'none';
+    btnCancelarConfirmar.addEventListener("click", function () {
+      const modal = document.getElementById("modalConfirmarAutorizar");
+      if (modal) modal.style.display = "none";
     });
   }
 }
@@ -255,37 +328,117 @@ function setupNoAutorizarHandlers() {
     btnNoAutorizar.addEventListener("click", function () {
       // Comportamiento igual que PT4: primero confirmamos la NO autorización
       const responsableInput = document.getElementById("responsable-aprobador");
-      const responsable_area = responsableInput ? responsableInput.value.trim() : "";
+      const responsable_area = responsableInput
+        ? responsableInput.value.trim()
+        : "";
       if (!responsable_area) {
         alert("Debes ingresar el nombre del responsable antes de rechazar.");
         return;
       }
 
       // Rellenar el modal de confirmación (modalConfirmarNoAutorizar) si existe
-      const modalConfirmNo = document.getElementById("modalConfirmarNoAutorizar");
+      const modalConfirmNo = document.getElementById(
+        "modalConfirmarNoAutorizar"
+      );
       if (modalConfirmNo) {
         try {
           const paramsModal = new URLSearchParams(window.location.search);
-          const idPermisoModal = paramsModal.get("id") || window.idPermisoActual || "-";
-          const prefijo = document.getElementById("prefijo-label")?.textContent?.trim() || (window.currentPermisoData && window.currentPermisoData.general && window.currentPermisoData.general.prefijo) || idPermisoModal || "-";
-          const tipo = (window.currentPermisoData && window.currentPermisoData.data && window.currentPermisoData.data.tipo_permiso) || (window.currentPermisoData && window.currentPermisoData.general && window.currentPermisoData.general.tipo_permiso) || document.getElementById("activity-type-label")?.textContent || "-";
-          const solicitante = (window.currentPermisoData && (window.currentPermisoData.data && (window.currentPermisoData.data.nombre_solicitante || window.currentPermisoData.data.solicitante))) || document.getElementById("nombre-solicitante-label")?.textContent || "-";
-          const departamento = (window.currentPermisoData && (window.currentPermisoData.data && (window.currentPermisoData.data.departamento || window.currentPermisoData.data.planta))) || document.getElementById("plant-label")?.textContent || document.getElementById("sucursal-label")?.textContent || "-";
+          const idPermisoModal =
+            paramsModal.get("id") || window.idPermisoActual || "-";
+          const prefijo =
+            document.getElementById("prefijo-label")?.textContent?.trim() ||
+            (window.currentPermisoData &&
+              window.currentPermisoData.general &&
+              window.currentPermisoData.general.prefijo) ||
+            idPermisoModal ||
+            "-";
+          const tipo =
+            (window.currentPermisoData &&
+              window.currentPermisoData.data &&
+              window.currentPermisoData.data.tipo_permiso) ||
+            (window.currentPermisoData &&
+              window.currentPermisoData.general &&
+              window.currentPermisoData.general.tipo_permiso) ||
+            document.getElementById("activity-type-label")?.textContent ||
+            "-";
+          const solicitante =
+            (window.currentPermisoData &&
+              window.currentPermisoData.data &&
+              (window.currentPermisoData.data.nombre_solicitante ||
+                window.currentPermisoData.data.solicitante)) ||
+            document.getElementById("nombre-solicitante-label")?.textContent ||
+            "-";
+          // Priorizar el nombre del departamento sobre el área/planta/sucursal
+          let departamento = "-";
+          if (window.currentPermisoData) {
+            if (
+              window.currentPermisoData.data &&
+              window.currentPermisoData.data.departamento
+            ) {
+              departamento = window.currentPermisoData.data.departamento;
+            } else if (
+              window.currentPermisoData.general &&
+              window.currentPermisoData.general.departamento
+            ) {
+              departamento = window.currentPermisoData.general.departamento;
+            } else if (
+              window.currentPermisoData.data &&
+              window.currentPermisoData.data.planta
+            ) {
+              departamento = window.currentPermisoData.data.planta;
+            } else if (
+              window.currentPermisoData.general &&
+              window.currentPermisoData.general.area
+            ) {
+              departamento = window.currentPermisoData.general.area;
+            } else if (
+              document.getElementById("departamento-label")?.textContent
+            ) {
+              departamento =
+                document.getElementById("departamento-label").textContent;
+            } else if (document.getElementById("plant-label")?.textContent) {
+              departamento = document.getElementById("plant-label").textContent;
+            } else if (document.getElementById("sucursal-label")?.textContent) {
+              departamento =
+                document.getElementById("sucursal-label").textContent;
+            }
+          }
+          departamento = departamento || "-";
 
           const modalIdEl = document.getElementById("modal-permit-id-no");
           const modalTypeEl = document.getElementById("modal-permit-type-no");
-          const modalSolicitanteEl = document.getElementById("modal-solicitante-no");
-          const modalDepartamentoEl = document.getElementById("modal-departamento-no");
+          const modalSolicitanteEl = document.getElementById(
+            "modal-solicitante-no"
+          );
+          const modalDepartamentoEl = document.getElementById(
+            "modal-departamento-no"
+          );
           if (modalIdEl) modalIdEl.textContent = prefijo;
           // Resolver tipo para modal 'No Autorizar' usando helper canónico
-          const tipoNoFromData = getPermisoValue(["data.tipo_permiso", "general.tipo_permiso", "data.tipo_mantenimiento", "general.tipo_mantenimiento", "tipo_permiso", "tipo_mantenimiento"]);
-          console.log("Tipo de permiso encontrado (no autorizar):", { tipo_permiso: tipoNoFromData });
-          const tipoNo = tipoNoFromData || document.getElementById("activity-type-label")?.textContent || "-";
+          const tipoNoFromData = getPermisoValue([
+            "data.tipo_permiso",
+            "general.tipo_permiso",
+            "data.tipo_mantenimiento",
+            "general.tipo_mantenimiento",
+            "tipo_permiso",
+            "tipo_mantenimiento",
+          ]);
+          console.log("Tipo de permiso encontrado (no autorizar):", {
+            tipo_permiso: tipoNoFromData,
+          });
+          const tipoNo =
+            tipoNoFromData ||
+            document.getElementById("activity-type-label")?.textContent ||
+            "-";
           if (modalTypeEl) modalTypeEl.textContent = tipoNo;
           if (modalSolicitanteEl) modalSolicitanteEl.textContent = solicitante;
-          if (modalDepartamentoEl) modalDepartamentoEl.textContent = departamento;
+          if (modalDepartamentoEl)
+            modalDepartamentoEl.textContent = departamento;
         } catch (err) {
-          console.warn("No se pudieron rellenar los campos del modalConfirmarNoAutorizar:", err);
+          console.warn(
+            "No se pudieron rellenar los campos del modalConfirmarNoAutorizar:",
+            err
+          );
         }
 
         modalConfirmNo.style.display = "flex";
@@ -302,7 +455,9 @@ function setupNoAutorizarHandlers() {
     });
 
     // Lógica para cerrar/cancelar el modal
-    const btnCancelarComentario = document.getElementById("btnCancelarComentario");
+    const btnCancelarComentario = document.getElementById(
+      "btnCancelarComentario"
+    );
     if (btnCancelarComentario) {
       btnCancelarComentario.addEventListener("click", function () {
         const modal = document.getElementById("modalComentario");
@@ -311,13 +466,17 @@ function setupNoAutorizarHandlers() {
     }
 
     // Lógica para guardar el comentario y actualizar estatus a No Autorizado
-    const btnGuardarComentario = document.getElementById("btnGuardarComentario");
+    const btnGuardarComentario = document.getElementById(
+      "btnGuardarComentario"
+    );
     if (btnGuardarComentario) {
       btnGuardarComentario.addEventListener("click", async function () {
         const comentario = document
           .getElementById("comentarioNoAutorizar")
           .value.trim();
-        const responsableInput = document.getElementById("responsable-aprobador");
+        const responsableInput = document.getElementById(
+          "responsable-aprobador"
+        );
         const operadorInput = document.getElementById("responsable-aprobador2");
         const responsable_area = responsableInput
           ? responsableInput.value.trim()
@@ -326,7 +485,9 @@ function setupNoAutorizarHandlers() {
         const params = new URLSearchParams(window.location.search);
         const idPermiso = params.get("id") || window.idPermisoActual;
         if (!comentario || !idPermiso || !responsable_area) {
-          alert("Faltan datos: asegúrate de ingresar responsable, motivo y que el permiso exista.");
+          alert(
+            "Faltan datos: asegúrate de ingresar responsable, motivo y que el permiso exista."
+          );
           return;
         }
         try {
@@ -338,9 +499,14 @@ function setupNoAutorizarHandlers() {
           const hours = String(nowRechazoArea.getHours()).padStart(2, "0");
           const minutes = String(nowRechazoArea.getMinutes()).padStart(2, "0");
           const seconds = String(nowRechazoArea.getSeconds()).padStart(2, "0");
-          const milliseconds = String(nowRechazoArea.getMilliseconds()).padStart(3, "0");
+          const milliseconds = String(
+            nowRechazoArea.getMilliseconds()
+          ).padStart(3, "0");
           const fechaHoraRechazoArea = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}`;
-          console.log("[NO AUTORIZAR PT5] Timestamp generado (hora local):", fechaHoraRechazoArea);
+          console.log(
+            "[NO AUTORIZAR PT5] Timestamp generado (hora local):",
+            fechaHoraRechazoArea
+          );
 
           // Guardar comentario y responsable en la tabla de autorizaciones
           await fetch("/api/autorizaciones/area", {
@@ -357,12 +523,21 @@ function setupNoAutorizarHandlers() {
           // Consultar el id_estatus desde permisos_trabajo
           let idEstatus = null;
           try {
-            const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
+            const respEstatus = await fetch(
+              `/api/permisos-trabajo/${idPermiso}`
+            );
             if (respEstatus.ok) {
               const permisoData = await respEstatus.json();
-              idEstatus = permisoData.id_estatus || (permisoData.data && permisoData.data.id_estatus);
+              idEstatus =
+                permisoData.id_estatus ||
+                (permisoData.data && permisoData.data.id_estatus);
             }
-          } catch (err) { console.warn("[NO AUTORIZAR PT5] Error consultando id_estatus:", err); }
+          } catch (err) {
+            console.warn(
+              "[NO AUTORIZAR PT5] Error consultando id_estatus:",
+              err
+            );
+          }
           // Actualizar el estatus a 'no autorizado' y guardar el comentario en la tabla estatus
           if (idEstatus) {
             try {
@@ -378,26 +553,35 @@ function setupNoAutorizarHandlers() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ id_estatus: idEstatus, comentario }),
               });
-            } catch (err) { console.warn("[NO AUTORIZAR PT5] Error actualizando estatus:", err); }
+            } catch (err) {
+              console.warn(
+                "[NO AUTORIZAR PT5] Error actualizando estatus:",
+                err
+              );
+            }
           }
           // Cerrar el modal y redirigir
           const modal = document.getElementById("modalComentario");
           if (modal) modal.style.display = "none";
           window.location.href = "/Modules/Usuario/AutorizarPT.html";
-        } catch (err) { console.error("[NO AUTORIZAR PT5] Error al guardar rechazo:", err); }
+        } catch (err) {
+          console.error("[NO AUTORIZAR PT5] Error al guardar rechazo:", err);
+        }
       });
     }
   } catch (e) {
-    console.error('[PT5] setupNoAutorizarHandlers error', e);
+    console.error("[PT5] setupNoAutorizarHandlers error", e);
   }
 }
 
 // Ejecutar el setup ahora y también al cargar el DOM por si el script se ejecutó antes
 // También enlazamos el flujo de confirmación que muestra primero
 // `modalConfirmarNoAutorizar` y luego abre `modalComentario` (comportamiento igual a PT4)
-(function setupConfirmarNoAutorizarFlowPT5(){
+(function setupConfirmarNoAutorizarFlowPT5() {
   // 'Continuar' dentro del modalConfirmarNoAutorizar -> abrir modalComentario
-  const btnConfirmarNoAutorizar = document.getElementById("btnConfirmarNoAutorizar");
+  const btnConfirmarNoAutorizar = document.getElementById(
+    "btnConfirmarNoAutorizar"
+  );
   if (btnConfirmarNoAutorizar) {
     btnConfirmarNoAutorizar.addEventListener("click", function () {
       const noConfirm = document.getElementById("modalConfirmarNoAutorizar");
@@ -412,7 +596,9 @@ function setupNoAutorizarHandlers() {
   }
 
   // 'Cancelar' dentro del modalConfirmarNoAutorizar -> cerrar ese modal
-  const btnCancelarConfirmarNo = document.getElementById("btnCancelarConfirmarNo");
+  const btnCancelarConfirmarNo = document.getElementById(
+    "btnCancelarConfirmarNo"
+  );
   if (btnCancelarConfirmarNo) {
     btnCancelarConfirmarNo.addEventListener("click", function () {
       const noConfirm = document.getElementById("modalConfirmarNoAutorizar");
@@ -421,8 +607,12 @@ function setupNoAutorizarHandlers() {
   }
 })();
 
-try { setupNoAutorizarHandlers(); } catch (e) { /* ignore */ }
-document.addEventListener('DOMContentLoaded', setupNoAutorizarHandlers);
+try {
+  setupNoAutorizarHandlers();
+} catch (e) {
+  /* ignore */
+}
+document.addEventListener("DOMContentLoaded", setupNoAutorizarHandlers);
 
 // --- Plantilla para agregar personas en el área (ajusta el endpoint y campos según tu backend) ---
 async function agregarPersonaEnArea(idPermiso, persona) {
@@ -455,7 +645,7 @@ if (idPermiso) {
     .then((resp) => resp.json())
     .then((data) => {
       console.log("Respuesta de la API:", data);
-        if (data && data.success && data.data) {
+      if (data && data.success && data.data) {
         const permiso = data.data;
         console.log("Valores del permiso recibidos:", permiso);
         // Exponer una estructura canónica para que getPermisoValue la utilice
@@ -466,21 +656,33 @@ if (idPermiso) {
           window.currentPermisoData = { general: permiso, data: permiso };
           // Normalizar: si hay alguna variante del tipo en los datos, propagarla
           const canonicalTipo =
-            permiso.tipo_permiso || permiso.tipo_mantenimiento ||
-            document.getElementById("activity-type-label")?.textContent || null;
+            permiso.tipo_permiso ||
+            permiso.tipo_mantenimiento ||
+            document.getElementById("activity-type-label")?.textContent ||
+            null;
           if (canonicalTipo) {
             // Aseguramos que ambos lugares (general & data) tengan el campo
-            window.currentPermisoData.general = window.currentPermisoData.general || {};
-            window.currentPermisoData.data = window.currentPermisoData.data || {};
-            if (!window.currentPermisoData.general.tipo_permiso || window.currentPermisoData.general.tipo_permiso === window.currentPermisoData.general.tipo_mantenimiento) {
+            window.currentPermisoData.general =
+              window.currentPermisoData.general || {};
+            window.currentPermisoData.data =
+              window.currentPermisoData.data || {};
+            if (
+              !window.currentPermisoData.general.tipo_permiso ||
+              window.currentPermisoData.general.tipo_permiso ===
+                window.currentPermisoData.general.tipo_mantenimiento
+            ) {
               window.currentPermisoData.general.tipo_permiso = canonicalTipo;
             }
-            if (!window.currentPermisoData.data.tipo_permiso || window.currentPermisoData.data.tipo_permiso === window.currentPermisoData.data.tipo_mantenimiento) {
+            if (
+              !window.currentPermisoData.data.tipo_permiso ||
+              window.currentPermisoData.data.tipo_permiso ===
+                window.currentPermisoData.data.tipo_mantenimiento
+            ) {
               window.currentPermisoData.data.tipo_permiso = canonicalTipo;
             }
           }
         } catch (e) {
-          console.warn('No se pudo asignar window.currentPermisoData:', e);
+          console.warn("No se pudo asignar window.currentPermisoData:", e);
         }
         setText("maintenance-type-label", permiso.tipo_mantenimiento || "-");
         setText("work-order-label", permiso.ot_numero || "-");
@@ -757,22 +959,33 @@ document.addEventListener("DOMContentLoaded", function () {
         if (data && data.general) {
           // Guardar referencia canonica también cuando la API /verformularios responde
           try {
-            window.currentPermisoData = { general: data.general || {}, data: data.data || {} };
+            window.currentPermisoData = {
+              general: data.general || {},
+              data: data.data || {},
+            };
             // Normalizar y propagar un tipo canonical para que getPermisoValue lo encuentre
             const canonicalTipo =
               (data.general && data.general.tipo_permiso) ||
               (data.general && data.general.tipo_mantenimiento) ||
               (data.data && data.data.tipo_permiso) ||
               (data.data && data.data.tipo_mantenimiento) ||
-              document.getElementById("activity-type-label")?.textContent || null;
+              document.getElementById("activity-type-label")?.textContent ||
+              null;
             if (canonicalTipo) {
-              window.currentPermisoData.general = window.currentPermisoData.general || {};
-              window.currentPermisoData.data = window.currentPermisoData.data || {};
-              window.currentPermisoData.general.tipo_permiso = window.currentPermisoData.general.tipo_permiso || canonicalTipo;
-              window.currentPermisoData.data.tipo_permiso = window.currentPermisoData.data.tipo_permiso || canonicalTipo;
+              window.currentPermisoData.general =
+                window.currentPermisoData.general || {};
+              window.currentPermisoData.data =
+                window.currentPermisoData.data || {};
+              window.currentPermisoData.general.tipo_permiso =
+                window.currentPermisoData.general.tipo_permiso || canonicalTipo;
+              window.currentPermisoData.data.tipo_permiso =
+                window.currentPermisoData.data.tipo_permiso || canonicalTipo;
             }
           } catch (e) {
-            console.warn('No se pudo asignar window.currentPermisoData desde /verformularios:', e);
+            console.warn(
+              "No se pudo asignar window.currentPermisoData desde /verformularios:",
+              e
+            );
           }
           setText("start-time-label", data.general.hora_inicio || "-");
           setText("fecha-label", data.general.fecha || "-");

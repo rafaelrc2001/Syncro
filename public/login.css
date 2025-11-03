@@ -290,3 +290,74 @@ body {
         max-width: 100px;
     }
 }
+
+
+/*LOGIN MODAL OLVIDASTE CONTRASEÑA*/
+
+.forgot-modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(44,62,80,0.25);
+  z-index: 2000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.forgot-modal-content {
+  background: #fff;
+  color: #2c3e50;
+  border-radius: 16px;
+  max-width: 350px;
+  width: 90vw;
+  padding: 2em 1.5em;
+  box-shadow: 0 8px 32px rgba(44,62,80,0.18);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
+  animation: fadeIn 0.3s;
+}
+
+.forgot-modal-icon {
+  background: #00B4FF;
+  color: #fff;
+  border-radius: 50%;
+  width: 48px; height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2em;
+  margin-bottom: 0.5em;
+  box-shadow: 0 2px 8px rgba(44,62,80,0.10);
+}
+
+.forgot-modal-content h3 {
+  margin: 0;
+  font-size: 1.15em;
+  font-weight: 700;
+  text-align: center;
+}
+
+.forgot-modal-content p {
+  text-align: center;
+  font-size: 1em;
+  margin-bottom: 0.5em;
+}
+
+.forgot-modal-btn {
+  background: #00B4FF;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 22px;
+  font-size: 1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.forgot-modal-btn:hover {
+  background: #007ACC;
+}

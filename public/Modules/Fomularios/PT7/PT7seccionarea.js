@@ -171,9 +171,7 @@ if (btnGuardarCampos) {
     try {
       let idEstatus = null;
       try {
-        const respEstatus = await fetch(
-          `/api/permisos-trabajo/${idPermiso}`
-        );
+        const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
         if (respEstatus.ok) {
           const permisoData = await respEstatus.json();
           idEstatus =
@@ -192,14 +190,11 @@ if (btnGuardarCampos) {
       if (idEstatus) {
         try {
           const payloadEstatus = { id_estatus: idEstatus };
-          const respEstatus = await fetch(
-            "/api/estatus/seguridad",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(payloadEstatus),
-            }
-          );
+          const respEstatus = await fetch("/api/estatus/seguridad", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payloadEstatus),
+          });
           let data = {};
           try {
             data = await respEstatus.json();
@@ -307,9 +302,7 @@ if (btnNoAutorizar) {
         // Consultar el id_estatus desde permisos_trabajo
         let idEstatus = null;
         try {
-          const respEstatus = await fetch(
-            `/api/permisos-trabajo/${idPermiso}`
-          );
+          const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
           if (respEstatus.ok) {
             const permisoData = await respEstatus.json();
             idEstatus =
@@ -602,11 +595,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const idPermiso2 = params2.get("id");
   if (idPermiso2) {
     // Llamar a la API para obtener los datos del permiso
-    fetch(
-      `/api/verformularios?id=${encodeURIComponent(
-        idPermiso2
-      )}`
-    )
+    fetch(`/api/verformularios?id=${encodeURIComponent(idPermiso2)}`)
       .then((resp) => resp.json())
       .then((data) => {
         // Guardar verformularios para fusión de campos

@@ -35,9 +35,16 @@
                     <h2>Permiso de Trabajo para Fuentes Radiactivas</h2>
                     <h3 id="prefijo-label">NP-XXXXXX</h3>
                 </div>
-                                 <div class="general-box-header">
+                                         <div class="general-box-header">
                                         <span>Información General</span>
                                     </div>
+                                    <div  id="hora-creacion-header" style="text-align: center;">
+                                    <i class="ri-time-line"></i>
+                                    <h3>Hora de creación</h3>
+                                </div>
+
+
+                                
                   <div class="executive-section " style="margin-bottom: 0; box-shadow: none; background: transparent; border: none;">
                       
                    
@@ -104,10 +111,41 @@
                 </div>
 
 
+   <div class="area-box-header">
+                                         <span>Formulario Responsable Área</span>
+                     </div>
+
+                       <div  id="hora-responsable-header" style="text-align: center;">
+                                    <i class="ri-time-line"></i>
+                                    <h3>Hora de autorización</h3>
+                    </div>
 
 
 
-            <div class="executive-section area">
+                    
+            
+                    <div class="section-header section-header-cielo">
+                        <i class="ri-flask-line"></i>
+                        <h3>Condiciones del Proceso</h3>
+                    </div>
+                    <div class="executive-grid">
+                        <div class="executive-item">
+                            <label for="fluid">Fluido</label>
+                            <input type="text" id="fluid" name="fluid" class="compact" value="" style="width:100%; background:#fff; border:1px solid #d0d7de; border-radius:6px; padding:6px 10px;">
+                        </div>
+                        <div class="executive-item">
+                            <label for="pressure">Presión</label>
+                            <input type="text" id="pressure" name="pressure" class="compact" value="" style="width:100%; background:#fff; border:1px solid #d0d7de; border-radius:6px; padding:6px 10px;">
+                        </div>
+                        <div class="executive-item">
+                            <label for="temperature">Temperatura</label>
+                            <input type="text" id="temperature" name="temperature" class="compact" value="" style="width:100%; background:#fff; border:1px solid #d0d7de; border-radius:6px; padding:6px 10px;">
+                        </div>
+                    </div>
+               
+
+
+         
                 <div class="section-header section-header-cielo">
                     <i class="ri-tools-line"></i>
                     <h3>Requisitos de apertura de área</h3>
@@ -189,7 +227,7 @@
                     </tbody>
                 </table>
                           
-            </div>
+           
 
 
 
@@ -204,30 +242,10 @@
 
             
 
-               <div class="executive-section area">
-                    <div class="section-header section-header-cielo">
-                        <i class="ri-flask-line"></i>
-                        <h3>Condiciones del Proceso</h3>
-                    </div>
-                    <div class="executive-grid">
-                        <div class="executive-item">
-                            <label for="fluid">Fluido</label>
-                            <input type="text" id="fluid" name="fluid" class="compact" value="" style="width:100%; background:#fff; border:1px solid #d0d7de; border-radius:6px; padding:6px 10px;">
-                        </div>
-                        <div class="executive-item">
-                            <label for="pressure">Presión</label>
-                            <input type="text" id="pressure" name="pressure" class="compact" value="" style="width:100%; background:#fff; border:1px solid #d0d7de; border-radius:6px; padding:6px 10px;">
-                        </div>
-                        <div class="executive-item">
-                            <label for="temperature">Temperatura</label>
-                            <input type="text" id="temperature" name="temperature" class="compact" value="" style="width:100%; background:#fff; border:1px solid #d0d7de; border-radius:6px; padding:6px 10px;">
-                        </div>
-                    </div>
-                </div>
 
                 
             <!-- Sección AST y Participantes -->
-                <div class="executive-section usuario">
+               
                     <div class="section-header">
                         <i class="ri-shield-check-line"></i>
                         <h3>AST - Análisis de Seguridad en el Trabajo</h3>
@@ -269,9 +287,9 @@
                             </ul>
                         </div>
                     </div>
-                </div>
+               
                  <!-- Sección 4: Participantes -->
-                <div class="executive-section usuario">
+          
                     <div class="section-header">
                         <i class="ri-team-line"></i>
                         <h3>Personal Involucrado</h3>
@@ -291,7 +309,9 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
+                
+
+
                 <div class="executive-section" style="display: flex; gap: 24px; align-items: flex-end">
                     <div style="flex: 1">
                         <label for="responsable-aprobador" style="font-weight: 600; display: block; margin-bottom: 8px">

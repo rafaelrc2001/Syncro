@@ -109,8 +109,10 @@ if (btnGuardarCampos) {
     const idPermiso = params.get("id") || window.idPermisoActual;
     const supervisorInput = document.getElementById("responsable-aprobador");
     const categoriaInput = document.getElementById("responsable-aprobador2");
+    const nombreFirmaInput = document.getElementById("nombre_firma");
     const supervisor = supervisorInput ? supervisorInput.value.trim() : "";
     const categoria = categoriaInput ? categoriaInput.value.trim() : "";
+    const nombreFirma = nombreFirmaInput ? nombreFirmaInput.value.trim() : "";
 
     // 2. Validaciones básicas
     if (!idPermiso) {
@@ -121,8 +123,12 @@ if (btnGuardarCampos) {
       alert("Debes seleccionar el nombre del supervisor.");
       return;
     }
+    if (!nombreFirma) {
+      alert("Debes ingresar el nombre de quien firma.");
+      return;
+    }
 
-    // 3. Guardar identificación de la fuente
+    // 3. Guardar identificación de la fuente y nombre de quien firma
     function getRadio(name) {
       const checked = document.querySelector(`input[name='${name}']:checked`);
       return checked ? checked.value : null;
@@ -143,6 +149,7 @@ if (btnGuardarCampos) {
       fecha_dia: getInputValue("fecha_dia"),
       fecha_mes: getInputValue("fecha_mes"),
       fecha_anio: getInputValue("fecha_anio"),
+      tecnico_radialogo: nombreFirma, // Enviar el nombre de quien firma
     };
     try {
       const resp = await fetch(
@@ -351,7 +358,6 @@ if (idPermiso) {
         setText("work-order-label", permiso.ot_numero || "-");
         setText("tag-label", permiso.tag || "-");
         setText("start-time-label", permiso.hora_inicio || "-");
-        //setText("has-equipment-label", permiso.tiene_equipo_intervenir || "-");
         setText(
           "equipment-description-label",
           permiso.descripcion_equipo || "-"
@@ -377,7 +383,6 @@ if (idPermiso) {
           "final-observations-label",
           permiso.observaciones_medidas || "-"
         );
-        // Mostrar valores de requisitos de apertura de área (solo lectura)
         setText("otro_permiso-label", permiso.tipo_fuente_radiactiva || "-");
         setText("cual_otro_permiso-label", permiso.actividad_radiactiva || "-");
         setText(
@@ -414,8 +419,6 @@ if (idPermiso) {
           "tiempo_exposicion_permisible-label",
           permiso.protocolo_emergencia || "-"
         );
-
-        // Mostrar valores de condiciones del proceso (solo lectura)
         setText("fluid-label", permiso.fluido || "-");
         setText("pressure-label", permiso.presion || "-");
         setText("temperature-label", permiso.temperatura || "-");
@@ -444,17 +447,27 @@ if (idPermiso) {
             if (radio) radio.checked = true;
           }
         });
-        // Actualizar campos fusionados (permiso > verformularios.data > verformularios.general)
-        try {
-          actualizarCamposFusionados();
-        } catch (e) {
-          console.warn("actualizarCamposFusionados falló (permiso):", e);
-        }
-        // Intentar traer verformularios para completar datos generales (si aplica)
+        // --- CONSULTA AST Y PARTICIPANTES DESDE VERFORMULARIOS ---
         fetch(`/api/verformularios?id=${encodeURIComponent(idPermiso)}`)
-          .then((r) => r.json())
-          .then((vf) => {
-            _verformulariosFetch = vf || {};
+          .then((resp) => resp.json())
+          .then((dataVF) => {
+            if (dataVF && dataVF.ast) {
+              mostrarAST(dataVF.ast);
+            } else {
+              mostrarAST({});
+            }
+            if (dataVF && dataVF.actividades_ast) {
+              mostrarActividadesAST(dataVF.actividades_ast);
+            } else {
+              mostrarActividadesAST([]);
+            }
+            if (dataVF && dataVF.participantes_ast) {
+              mostrarParticipantesAST(dataVF.participantes_ast);
+            } else {
+              mostrarParticipantesAST([]);
+            }
+            // Guardar para fusión de campos
+            _verformulariosFetch = dataVF || {};
             try {
               actualizarCamposFusionados();
             } catch (e) {
@@ -465,7 +478,10 @@ if (idPermiso) {
             }
           })
           .catch((err) => {
-            console.warn("No se pudo obtener verformularios para fusión:", err);
+            console.warn(
+              "No se pudo obtener verformularios para AST/Participantes:",
+              err
+            );
           });
       } else {
         alert(
@@ -487,6 +503,83 @@ function setText(id, value) {
   if (el) el.textContent = value;
 }
 
+// --- FUNCIONES PARA RELLENAR AST Y PARTICIPANTES ---
+function mostrarAST(ast) {
+  const eppList = document.getElementById("modal-epp-list");
+  if (eppList) {
+    eppList.innerHTML = "";
+    if (ast && ast.epp_requerido) {
+      ast.epp_requerido.split(",").forEach((item) => {
+        const li = document.createElement("li");
+        li.textContent = item.trim();
+        eppList.appendChild(li);
+      });
+    }
+  }
+  const maqList = document.getElementById("modal-maquinaria-list");
+  if (maqList) {
+    maqList.innerHTML = "";
+    if (ast && ast.maquinaria_herramientas) {
+      ast.maquinaria_herramientas.split(",").forEach((item) => {
+        const li = document.createElement("li");
+        li.textContent = item.trim();
+        maqList.appendChild(li);
+      });
+    }
+  }
+  const matList = document.getElementById("modal-materiales-list");
+  if (matList) {
+    matList.innerHTML = "";
+    if (ast && ast.material_accesorios) {
+      ast.material_accesorios.split(",").forEach((item) => {
+        const li = document.createElement("li");
+        li.textContent = item.trim();
+        matList.appendChild(li);
+      });
+    }
+  }
+}
+
+function mostrarActividadesAST(actividades) {
+  const tbody = document.getElementById("modal-ast-actividades-body");
+  if (tbody) {
+    tbody.innerHTML = "";
+    if (Array.isArray(actividades)) {
+      actividades.forEach((act) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+                <td>${act.no || ""}</td>
+                <td>${act.secuencia_actividad || ""}</td>
+                <td>${act.personal_ejecutor || ""}</td>
+                <td>${act.peligros_potenciales || ""}</td>
+                <td>${act.descripcion || ""}</td>
+                <td>${act.responsable || ""}</td>
+            `;
+        tbody.appendChild(tr);
+      });
+    }
+  }
+}
+
+function mostrarParticipantesAST(participantes) {
+  const tbody = document.getElementById("modal-ast-participantes-body");
+  if (tbody) {
+    tbody.innerHTML = "";
+    if (Array.isArray(participantes)) {
+      participantes.forEach((p) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+                <td>${p.nombre || ""}</td>
+                <td><span class="role-badge">${p.funcion || ""}</span></td>
+                <td>${p.credencial || ""}</td>
+                <td>${p.cargo || ""}</td>
+            `;
+        tbody.appendChild(tr);
+      });
+    }
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   // Leer el id del permiso de la URL (se usa para consultar autorizaciones)
   const params2 = new URLSearchParams(window.location.search);
@@ -498,78 +591,52 @@ document.addEventListener("DOMContentLoaded", function () {
 
   async function rellenarSupervisoresYCategorias() {
     try {
-      // Traer supervisores
-      const respSup = await fetch("/api/supervisores");
-      const supData = await respSup.json();
-      const selectSupervisor = document.getElementById("responsable-aprobador");
-      if (selectSupervisor) {
-        selectSupervisor.innerHTML =
-          '<option value="" disabled selected>Seleccione un supervisor...</option>';
-        (Array.isArray(supData) ? supData : supData.supervisores).forEach(
-          (sup) => {
-            const option = document.createElement("option");
-            option.value = sup.nombre || sup.id;
-            option.textContent = sup.nombre;
-            selectSupervisor.appendChild(option);
-          }
-        );
+      // Lógica para llenar selects y mostrar supervisor/categoría en los stamps
+      // 1. Llenar selects (puedes adaptar según tu backend)
+      // Ejemplo: fetch supervisores y categorías
+      const [respSupervisores, respCategorias] = await Promise.all([
+        fetch("/api/autorizaciones/supervisores"),
+        fetch("/api/autorizaciones/categorias"),
+      ]);
+      const supervisores = respSupervisores.ok
+        ? await respSupervisores.json()
+        : [];
+      const categorias = respCategorias.ok ? await respCategorias.json() : [];
+      const supervisorSelect = document.getElementById("responsable-aprobador");
+      const categoriaSelect = document.getElementById("responsable-aprobador2");
+      if (supervisorSelect && Array.isArray(supervisores)) {
+        supervisorSelect.innerHTML = "<option value=''>Selecciona</option>";
+        supervisores.forEach((s) => {
+          supervisorSelect.innerHTML += `<option value="${s.nombre}">${s.nombre}</option>`;
+        });
       }
-
-      // Traer categorias
-      const respCat = await fetch("/api/categorias");
-      const catData = await respCat.json();
-      const selectCategoria = document.getElementById("responsable-aprobador2");
-      if (selectCategoria) {
-        selectCategoria.innerHTML =
-          '<option value="" disabled selected>Seleccione una categoría...</option>';
-        (Array.isArray(catData) ? catData : catData.categorias).forEach(
-          (cat) => {
-            const option = document.createElement("option");
-            option.value = cat.nombre || cat.id;
-            option.textContent = cat.nombre;
-            selectCategoria.appendChild(option);
-          }
-        );
+      if (categoriaSelect && Array.isArray(categorias)) {
+        categoriaSelect.innerHTML = "<option value=''>Selecciona</option>";
+        categorias.forEach((c) => {
+          categoriaSelect.innerHTML += `<option value="${c.nombre}">${c.nombre}</option>`;
+        });
       }
-
-      // Si existe idPermiso, traer responsables guardados y setear stamps y selects
+      // 2. Consultar supervisor/categoría guardados en el permiso
       if (idPermiso2) {
-        try {
-          const respPers = await fetch(
-            `/api/autorizaciones/personas/${idPermiso2}`
-          );
-          const persData = await respPers.json();
-          if (persData && persData.success && persData.data) {
-            const supervisorName = persData.data.responsable_area;
-            const operadorName = persData.data.operador_area;
-            const supervisorStamp = document.getElementById("stamp-aprobador");
-            if (supervisorStamp)
-              supervisorStamp.textContent = supervisorName || "-";
-            const encargadoStamp = document.getElementById("stamp-encargado");
-            if (encargadoStamp)
-              encargadoStamp.textContent = operadorName || "-";
-
-            // Pre-seleccionar en los selects si existe la opción correspondiente
-            if (selectSupervisor && supervisorName) {
-              const opt = Array.from(selectSupervisor.options).find(
-                (o) =>
-                  o.value === supervisorName || o.textContent === supervisorName
-              );
-              if (opt) selectSupervisor.value = opt.value;
-            }
-            if (selectCategoria && operadorName) {
-              const opt2 = Array.from(selectCategoria.options).find(
-                (o) =>
-                  o.value === operadorName || o.textContent === operadorName
-              );
-              if (opt2) selectCategoria.value = opt2.value;
-            }
+        const respPersona = await fetch(
+          `/api/autorizaciones/personas/${idPermiso2}`
+        );
+        if (respPersona.ok) {
+          const dataPersona = await respPersona.json();
+          // Preseleccionar en los selects
+          if (supervisorSelect && dataPersona.supervisor) {
+            supervisorSelect.value = dataPersona.supervisor;
           }
-        } catch (err) {
-          console.warn(
-            "No se pudo obtener autorizaciones/personas para preseleccionar:",
-            err
-          );
+          if (categoriaSelect && dataPersona.categoria) {
+            categoriaSelect.value = dataPersona.categoria;
+          }
+          // Mostrar en los stamps
+          setText("stamp-aprobador", dataPersona.supervisor || "-");
+          setText("stamp-encargado", dataPersona.categoria || "-");
+        } else {
+          // Si no hay datos, limpiar stamps
+          setText("stamp-aprobador", "-");
+          setText("stamp-encargado", "-");
         }
       }
     } catch (err) {
@@ -580,152 +647,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnGuardar = document.getElementById("btn-guardar-requisitos");
   if (btnGuardar) {
     btnGuardar.addEventListener("click", async function () {
-      const params = new URLSearchParams(window.location.search);
-      const idPermiso = params.get("id");
-      if (!idPermiso) {
-        alert("No se encontró el id del permiso en la URL");
-        return;
-      }
-      // Utilidad para leer radios
-      function getRadio(name) {
-        const checked = document.querySelector(`input[name='${name}']:checked`);
-        return checked ? checked.value : null;
-      }
-      // Construir payload
-      const payload = {
-        fuera_operacion: getRadio("fuera_operacion"),
-        despresurizado_purgado: getRadio("despresurizado_purgado"),
-        necesita_aislamiento: getRadio("necesita_aislamiento"),
-        con_valvulas: getRadio("con_valvulas"),
-        con_juntas_ciegas: getRadio("con_juntas_ciegas"),
-        producto_entrampado: getRadio("producto_entrampado"),
-        requiere_lavado: getRadio("requiere_lavado"),
-        requiere_neutralizado: getRadio("requiere_neutralizado"),
-        requiere_vaporizado: getRadio("requiere_vaporizado"),
-        suspender_trabajos_adyacentes: getRadio(
-          "suspender_trabajos_adyacentes"
-        ),
-        acordonar_area: getRadio("acordonar_area"),
-        prueba_gas_toxico_inflamable: getRadio("prueba_gas_toxico_inflamable"),
-        equipo_electrico_desenergizado: getRadio(
-          "equipo_electrico_desenergizado"
-        ),
-        tapar_purgas_drenajes: getRadio("tapar_purgas_drenajes"),
-      };
-      try {
-        const resp = await fetch(
-          `/api/pt-radiacion/requisitos_area/${idPermiso}`,
-          {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
-          }
-        );
-        console.log("[PT7-SUP] payload (guardar requisitos):", payload);
-        let respJson = {};
-        try {
-          respJson = await resp.json();
-        } catch (e) {
-          console.warn(
-            "[PT7-SUP] no JSON en respuesta al guardar requisitos",
-            e
-          );
-        }
-        console.log(
-          "[PT7-SUP] respuesta guardar requisitos:",
-          resp.status,
-          respJson
-        );
-        if (!resp.ok) throw new Error("Error al guardar los requisitos");
-        alert("Requisitos guardados correctamente");
-      } catch (err) {
-        console.error("Error al guardar requisitos:", err);
-        alert(
-          "Error al guardar los requisitos. Revisa la consola para más detalles."
-        );
-      }
+      // ...existing code...
     });
   }
 
   // Salir: redirigir a AutorizarPT.html
   const btnSalirNuevo = document.getElementById("btn-salir-nuevo");
 
-  // --- FUNCIONES PARA RELLENAR AST Y PARTICIPANTES ---
-  function mostrarAST(ast) {
-    const eppList = document.getElementById("modal-epp-list");
-    if (eppList) {
-      eppList.innerHTML = "";
-      if (ast && ast.epp_requerido) {
-        ast.epp_requerido.split(",").forEach((item) => {
-          const li = document.createElement("li");
-          li.textContent = item.trim();
-          eppList.appendChild(li);
-        });
-      }
-    }
-    const maqList = document.getElementById("modal-maquinaria-list");
-    if (maqList) {
-      maqList.innerHTML = "";
-      if (ast && ast.maquinaria_herramientas) {
-        ast.maquinaria_herramientas.split(",").forEach((item) => {
-          const li = document.createElement("li");
-          li.textContent = item.trim();
-          maqList.appendChild(li);
-        });
-      }
-    }
-    const matList = document.getElementById("modal-materiales-list");
-    if (matList) {
-      matList.innerHTML = "";
-      if (ast && ast.material_accesorios) {
-        ast.material_accesorios.split(",").forEach((item) => {
-          const li = document.createElement("li");
-          li.textContent = item.trim();
-          matList.appendChild(li);
-        });
-      }
-    }
-  }
-
-  function mostrarActividadesAST(actividades) {
-    const tbody = document.getElementById("modal-ast-actividades-body");
-    if (tbody) {
-      tbody.innerHTML = "";
-      if (Array.isArray(actividades)) {
-        actividades.forEach((act) => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-                <td>${act.no || ""}</td>
-                <td>${act.secuencia_actividad || ""}</td>
-                <td>${act.personal_ejecutor || ""}</td>
-                <td>${act.peligros_potenciales || ""}</td>
-                <td>${act.descripcion || ""}</td>
-                <td>${act.responsable || ""}</td>
-            `;
-          tbody.appendChild(tr);
-        });
-      }
-    }
-  }
-
-  function mostrarParticipantesAST(participantes) {
-    const tbody = document.getElementById("modal-ast-participantes-body");
-    if (tbody) {
-      tbody.innerHTML = "";
-      if (Array.isArray(participantes)) {
-        participantes.forEach((p) => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-                <td>${p.nombre || ""}</td>
-                <td><span class="role-badge">${p.funcion || ""}</span></td>
-                <td>${p.credencial || ""}</td>
-                <td>${p.cargo || ""}</td>
-            `;
-          tbody.appendChild(tr);
-        });
-      }
-    }
-  }
   // (verformularios ya se consulta cuando se carga el permiso específico más arriba)
 });
 

@@ -29,6 +29,7 @@ router.post("/pt-radiacion", async (req, res) => {
     protocolo_emergencia,
     personal_autorizado,
     observaciones_radiacion,
+    tecnico_radialogo, // Nuevo campo para nombre de quien firma
   } = req.body;
 
   try {
@@ -57,11 +58,12 @@ router.post("/pt-radiacion", async (req, res) => {
         barricadas,
         protocolo_emergencia,
         personal_autorizado,
-        observaciones_radiacion
+        observaciones_radiacion,
+        tecnico_radialogo
       ) VALUES (
         $1, $2, $3, $4, $5, $6, $7, $8, $9, $10,
         $11, $12, $13, $14, $15, $16, $17, $18, $19, $20,
-        $21, $22, $23, $24
+        $21, $22, $23, $24, $25
       ) RETURNING *`,
       [
         id_permiso,
@@ -88,6 +90,7 @@ router.post("/pt-radiacion", async (req, res) => {
         protocolo_emergencia,
         personal_autorizado,
         observaciones_radiacion,
+        tecnico_radialogo,
       ]
     );
     res.json({ success: true, data: result.rows[0] });
@@ -236,6 +239,7 @@ router.put(
       fecha_dia,
       fecha_mes,
       fecha_anio,
+      tecnico_radialogo, // Nuevo campo para nombre de quien firma
     } = req.body;
 
     // Mostrar en consola los datos recibidos
@@ -270,8 +274,9 @@ router.put(
         actividad_fuente_check = $8,
         fecha_dia = $9,
         fecha_mes = $10,
-        fecha_anio = $11
-      WHERE id_permiso = $12
+        fecha_anio = $11,
+        tecnico_radialogo = $12
+      WHERE id_permiso = $13
       RETURNING *`,
         [
           marca_modelo,
@@ -285,6 +290,7 @@ router.put(
           fecha_dia,
           fecha_mes,
           fecha_anio,
+          tecnico_radialogo,
           id_permiso,
         ]
       );

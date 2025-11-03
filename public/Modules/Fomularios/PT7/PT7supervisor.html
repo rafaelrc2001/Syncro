@@ -34,9 +34,13 @@
                     <h2>Permiso de Trabajo para Fuentes Radiactivas</h2>
                     <h3 id="prefijo-label">NP-XXXXXX</h3>
                 </div>
-                                 <div class="general-box-header">
+                                       <div class="general-box-header">
                                         <span>Información General</span>
                                     </div>
+                                    <div  id="hora-creacion-header" style="text-align: center;">
+                                    <i class="ri-time-line"></i>
+                                    <h3>Hora de creación</h3>
+                                </div>
                   <div class="executive-section " style="margin-bottom: 0; box-shadow: none; background: transparent; border: none;">
                       
                    
@@ -105,8 +109,40 @@
 
 
 
+                   <div class="area-box-header">
+                                         <span>Formulario Responsable Área</span>
+                     </div>
 
-            <div class="executive-section area">
+                       <div  id="hora-responsable-header" style="text-align: center;">
+                                    <i class="ri-time-line"></i>
+                                    <h3>Hora de autorización</h3>
+                    </div>
+
+
+       
+
+                        
+                    <div class="section-header section-header-cielo">
+                        <i class="ri-flask-line"></i>
+                        <h3>Condiciones del Proceso</h3>
+                    </div>
+                    <div class="executive-grid">
+                        <div class="executive-item">
+                            <label>Fluido</label>
+                            <span id="fluid-label">-</span>
+                        </div>
+                        <div class="executive-item">
+                            <label>Presión</label>
+                            <span id="pressure-label">-</span>
+                        </div>
+                        <div class="executive-item">
+                            <label>Temperatura</label>
+                            <span id="temperature-label">-</span>
+                        </div>
+                    </div>
+               
+
+
                 <div class="section-header section-header-cielo">
                     <i class="ri-tools-line"></i>
                     <h3>Requisitos de apertura de área</h3>
@@ -170,7 +206,7 @@
                     </tbody>
                 </table>
                           
-            </div>
+            
 
 
 
@@ -185,36 +221,21 @@
 
             
 
-               <div class="executive-section area">
-                    <div class="section-header section-header-cielo">
-                        <i class="ri-flask-line"></i>
-                        <h3>Condiciones del Proceso</h3>
-                    </div>
-                    <div class="executive-grid">
-                        <div class="executive-item">
-                            <label>Fluido</label>
-                            <span id="fluid-label">-</span>
-                        </div>
-                        <div class="executive-item">
-                            <label>Presión</label>
-                            <span id="pressure-label">-</span>
-                        </div>
-                        <div class="executive-item">
-                            <label>Temperatura</label>
-                            <span id="temperature-label">-</span>
-                        </div>
-                    </div>
-                </div>
+          
 
                 
 
 
   <!-- Seccion supervisores -->
             <!-- Identificación de la fuente -->
-            <div class="executive-section supervisor">
-                <div class="section-header" style="background: #ffe600; color: #222; border-radius: 6px 6px 0 0; padding: 8px 16px;">
-                    <h3 style="margin: 0; font-size: 1.1em; font-weight: bold; letter-spacing: 1px;">IDENTIFICACIÓN DE LA FUENTE</h3>
-                </div>
+
+                         <div class="supervisor-box-header" style="margin-bottom: 18px; margin-top: 32px;">
+                                         <span>Formulario Seguridad Industrial</span>
+                                     </div>
+
+                                <div class="section-header" style="background: #ffe600; color: #222; border-radius: 6px 6px 0 0; padding: 8px 16px; margin-top: 18px;">
+                                        <h3 style="margin: 3px 0; font-size: 1.1em; font-weight: bold; letter-spacing: 1px;">IDENTIFICACIÓN DE LA FUENTE</h3>
+                                </div>
                 <form id="form-identificacion-fuente" style="margin:0;">
                     <table class="styled-table" style="margin-bottom: 0;">
                         <thead>
@@ -268,10 +289,17 @@
                                     </div>
                                 </td>
                             </tr>
+                                <tr>
+                                    <td>Nombre:</td>
+                                    <td colspan="4"><input type="text" id="nombre_firma" name="nombre_firma" style="width: 100%;" placeholder="Nombre de quien firma"></td>
+                                </tr>
+                                <tr>
+                                    <td>Firma:</td>
+                                </tr>
                         </tbody>
                     </table>
                 </form>
-            </div>
+           
 
 
 
@@ -280,7 +308,7 @@
 
 
                        <!-- Sección AST y Participantes -->
-                <div class="executive-section usuario">
+               
                     <div class="section-header">
                         <i class="ri-shield-check-line"></i>
                         <h3>AST - Análisis de Seguridad en el Trabajo</h3>
@@ -322,9 +350,9 @@
                             </ul>
                         </div>
                     </div>
-                </div>
+                
                <!-- Sección 4: Participantes -->
-                <div class="executive-section usuario">
+                
                     <div class="section-header">
                         <i class="ri-team-line"></i>
                         <h3>Personal Involucrado</h3>
@@ -344,7 +372,8 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
+             
+
                 <div class="executive-section" style="display: flex; gap: 24px; align-items: flex-end">
                     <div style="flex: 1">
                         <label for="responsable-aprobador" style="font-weight: 600; display: block; margin-bottom: 8px">
@@ -367,12 +396,12 @@
                 <div class="approval-section">
                     <div class="approval-stamps">
                         <div class="stamp">
-                            <div class="stamp-title">Supervisor:</div>
+                            <div class="stamp-title">Responsable del area:</div>
                             <div class="stamp-placeholder"></div>
                             <div class="stamp-name" id="stamp-aprobador"></div>
                         </div>
                         <div class="stamp">
-                            <div class="stamp-title">Categoría:</div>
+                            <div class="stamp-title">Operador del área:</div>
                             <div class="stamp-placeholder"></div>
                             <div class="stamp-name" id="stamp-encargado"></div>
                             <div class="stamp-date"></div>

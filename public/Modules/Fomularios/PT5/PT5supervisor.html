@@ -541,41 +541,66 @@
                         </div>
 
                          <!-- Modal de confirmación de autorización -->
-                        <div id="modalConfirmarAutorizar" class="modal-confirmar" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(44,62,80,0.25); z-index:1000; justify-content:center; align-items:center;">
-                            <div style="background:#fff; border-radius:12px; max-width:400px; width:90vw; padding:2em 1.5em; box-shadow:0 4px 24px rgba(44,62,80,0.18); display:flex; flex-direction:column; gap:1em;">
-                                <h3 style="margin:0 0 0.5em 0; font-size:1.2em; color:#2c3e50;">
-                                <i class="ri-check-double-line" style="margin-right:8px;"></i>Confirmar Autorización
-                                </h3>
-                                    <p>¿Estás seguro que deseas autorizar este permiso?</p>
-                                    <p>No tendrá opción para deshacer esta acción.</p>
-                                   <p>ID del Permiso: <strong id="modal-permit-id">-</strong></p>
+
+                          <div id="modalConfirmarAutorizar" class="modal-confirmar" style="display:none;">
+                        <div class="modal-confirmar-content">
+                            <div class="modal-confirmar-icon">
+                            <i class="ri-check-double-line"></i>
+                            </div>
+                            <h3>Confirmar Autorización</h3>
+                           <p class="modal-confirmar-warning">
+                            <i class="ri-alert-line" style="color:#e53935; font-size:1.3em; vertical-align:middle; margin-right:6px;"></i>
+                            ¿Estás seguro que deseas autorizar este permiso?
+                            </p>
+                              <p class="modal-confirmar-note">Esta acción no se podrá deshacer.</p>
+                          
+                            <div class="modal-confirmar-details">
+                              <p>ID del Permiso: <strong id="modal-permit-id">-</strong></p>
                                   <p>Tipo de Permiso: <strong id="modal-permit-type">-</strong></p>
                                    <p>Solicitante: <strong id="modal-solicitante">-</strong></p>
                                     <p>Departamento: <strong id="modal-departamento">-</strong></p>
-                                <div style="display:flex; justify-content:flex-end; gap:10px;">
-                                <button id="btnCancelarConfirmar" type="button" style="background:#eee; color:#333; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Cancelar</button>
-                                <button id="btnConfirmarAutorizar" type="button" style="background:#2c3e50; color:#fff; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Autorizar</button>
-                                </div>
+                                 
+                            </div>
+                            <div class="modal-confirmar-actions">
+                            <button id="btnCancelarConfirmar" type="button" class="btn-cancel">Cancelar</button>
+                            <button id="btnConfirmarAutorizar" type="button" class="btn-confirm">Autorizar</button>
                             </div>
                         </div>
+                        </div>
 
-                         <div id="modalConfirmarNoAutorizar" class="modal-confirmar" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(44,62,80,0.25); z-index:1000; justify-content:center; align-items:center;">
-                            <div style="background:#fff; border-radius:12px; max-width:400px; width:90vw; padding:2em 1.5em; box-shadow:0 4px 24px rgba(44,62,80,0.18); display:flex; flex-direction:column; gap:1em;">
-                                <h3 style="margin:0 0 0.5em 0; font-size:1.2em; color:#2c3e50;">
-                                <i class="ri-check-double-line" style="margin-right:8px;"></i>Confirmar No Autorización
-                                </h3>
-                                    <p>¿Estás seguro que deseas NO autorizar este permiso?</p>
-                                    <p>Esta acción no se podrá deshacer. Luego deberás ingresar el motivo del rechazo.</p>
-                                   <p>ID del Permiso: <strong id="modal-permit-id-no">-</strong></p>
+
+
+
+                        <div id="modalConfirmarNoAutorizar" class="modal-confirmar" style="display:none;">
+                            <div class="modal-confirmar-content">
+                                <div class="modal-confirmar-icon modal-noautorizar-icon">
+                                <i class="ri-close-circle-line"></i>
+                                </div>
+                                <h3>Confirmar No Autorización</h3>
+                               <p class="modal-confirmar-warning">
+                                <i class="ri-alert-line" style="color:#e53935; font-size:1.3em; vertical-align:middle; margin-right:6px;"></i>
+                                ¿Estás seguro que deseas <b>NO autorizar</b> este permiso?
+                                </p>
+                                <p class="modal-confirmar-note">Una vez autorizado, esta acción no se podrá deshacer. Luego deberás ingresar el motivo del rechazo.</p>
+                                <div class="modal-confirmar-details">
+                                <p>ID del Permiso: <strong id="modal-permit-id-no">-</strong></p>
                                   <p>Tipo de Permiso: <strong id="modal-permit-type-no">-</strong></p>
                                    <p>Solicitante: <strong id="modal-solicitante-no">-</strong></p>
                                     <p>Departamento: <strong id="modal-departamento-no">-</strong></p>
-                                <div style="display:flex; justify-content:flex-end; gap:10px;">
-                                <button id="btnCancelarConfirmarNo" type="button" style="background:#eee; color:#333; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Cancelar</button>
-                                <button id="btnConfirmarNoAutorizar" type="button" style="background:#c0392b; color:#fff; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">No Autorizar</button>
+                
+                            
+                               
+                                </div>
+                                <div class="modal-confirmar-actions">
+                                <button id="btnCancelarConfirmarNo" type="button" class="btn-cancel">Cancelar</button>
+                                <button id="btnConfirmarNoAutorizar" type="button" class="btn-noautorizar">No Autorizar</button>
                                 </div>
                             </div>
-                        </div>
+                            </div>
+
+                   
+
+                        
 
 
     </div>

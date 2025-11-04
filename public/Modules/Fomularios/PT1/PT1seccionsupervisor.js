@@ -33,6 +33,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 document.addEventListener("DOMContentLoaded", function () {
+  // Inicializa los listeners del modal de comentarios al cargar la página
+  setupModalComentario();
   // --- Lógica para el botón "Autorizar" ---
   const btnAutorizar = document.getElementById("btn-guardar-campos");
   if (btnAutorizar) {
@@ -75,7 +77,9 @@ document.addEventListener("DOMContentLoaded", function () {
         const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
         if (respEstatus.ok) {
           const permisoData = await respEstatus.json();
-          idEstatus = permisoData.id_estatus || (permisoData.data && permisoData.data.id_estatus);
+          idEstatus =
+            permisoData.id_estatus ||
+            (permisoData.data && permisoData.data.id_estatus);
         }
       } catch (err) {
         console.error("Error al consultar id_estatus:", err);
@@ -139,28 +143,56 @@ document.addEventListener("DOMContentLoaded", function () {
       // Validar ambos campos antes de mostrar el modal
       if (!validarSupervisorYCategoria()) return;
       // Rellenar campos del modal con datos canónicos si existen
-        const data = window.currentPermisoData || {};
-        const params = new URLSearchParams(window.location.search);
-        // ID: prefer prefijo (general.prefijo), then data.prefijo, then URL id
-        const idPermisoLocal = (data && ((data.general && (data.general.prefijo || data.general.prefijo_label)) || data.prefijo || (data.data && data.data.prefijo))) || params.get('id') || (data && (data.general && data.general.id || data.id)) || '-';
-        // Tipo: prefer data.tipo_permiso, then general.tipo_permiso, then detalles.tipo_actividad, fallback to tipo_mantenimiento
-        const tipo = (data && ((data.data && data.data.tipo_permiso) || (data.general && data.general.tipo_permiso) || (data.detalles && data.detalles.tipo_actividad) || (data.data && data.data.tipo_mantenimiento) || (data.general && data.general.tipo_mantenimiento))) || document.getElementById('activity-type-label')?.textContent || '-';
-        // Solicitante: prefer general.solicitante then detalles.solicitante
-        const solicitante = (data && (data.general && data.general.solicitante)) || (data && data.detalles && data.detalles.solicitante) || document.getElementById('nombre-solicitante-label')?.textContent || '-';
-        // Departamento: prefer detalles.departamento -> general.departamento -> detalles.planta -> general.planta -> DOM
-        const departamento = (data && ((data.detalles && data.detalles.departamento) || (data.general && data.general.departamento) || (data.detalles && data.detalles.planta) || (data.general && data.general.planta))) || document.getElementById('plant-label')?.textContent || document.getElementById('sucursal-label')?.textContent || '-';
+      const data = window.currentPermisoData || {};
+      const params = new URLSearchParams(window.location.search);
+      // ID: prefer prefijo (general.prefijo), then data.prefijo, then URL id
+      const idPermisoLocal =
+        (data &&
+          ((data.general &&
+            (data.general.prefijo || data.general.prefijo_label)) ||
+            data.prefijo ||
+            (data.data && data.data.prefijo))) ||
+        params.get("id") ||
+        (data && ((data.general && data.general.id) || data.id)) ||
+        "-";
+      // Tipo: prefer data.tipo_permiso, then general.tipo_permiso, then detalles.tipo_actividad, fallback to tipo_mantenimiento
+      const tipo =
+        (data &&
+          ((data.data && data.data.tipo_permiso) ||
+            (data.general && data.general.tipo_permiso) ||
+            (data.detalles && data.detalles.tipo_actividad) ||
+            (data.data && data.data.tipo_mantenimiento) ||
+            (data.general && data.general.tipo_mantenimiento))) ||
+        document.getElementById("activity-type-label")?.textContent ||
+        "-";
+      // Solicitante: prefer general.solicitante then detalles.solicitante
+      const solicitante =
+        (data && data.general && data.general.solicitante) ||
+        (data && data.detalles && data.detalles.solicitante) ||
+        document.getElementById("nombre-solicitante-label")?.textContent ||
+        "-";
+      // Departamento: prefer detalles.departamento -> general.departamento -> detalles.planta -> general.planta -> DOM
+      const departamento =
+        (data &&
+          ((data.detalles && data.detalles.departamento) ||
+            (data.general && data.general.departamento) ||
+            (data.detalles && data.detalles.planta) ||
+            (data.general && data.general.planta))) ||
+        document.getElementById("plant-label")?.textContent ||
+        document.getElementById("sucursal-label")?.textContent ||
+        "-";
 
       // Buscar modal existente o crear uno simple
-      let modal = document.getElementById('modalConfirmarAutorizar');
+      let modal = document.getElementById("modalConfirmarAutorizar");
       if (!modal) {
-        modal = document.createElement('div');
-        modal.id = 'modalConfirmarAutorizar';
-        modal.style.position = 'fixed';
-        modal.style.inset = '0';
-        modal.style.display = 'flex';
-        modal.style.justifyContent = 'center';
-        modal.style.alignItems = 'center';
-        modal.style.background = 'rgba(0,0,0,0.25)';
+        modal = document.createElement("div");
+        modal.id = "modalConfirmarAutorizar";
+        modal.style.position = "fixed";
+        modal.style.inset = "0";
+        modal.style.display = "flex";
+        modal.style.justifyContent = "center";
+        modal.style.alignItems = "center";
+        modal.style.background = "rgba(0,0,0,0.25)";
         modal.style.zIndex = 2000;
         modal.innerHTML = `
           <div style="background:#fff; border-radius:8px; padding:20px; max-width:450px; width:90%; box-shadow:0 8px 32px rgba(0,0,0,0.12);">
@@ -181,21 +213,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Rellenar los campos del modal
       try {
-        const elId = document.getElementById('modal-permit-id') || modal.querySelector('#modal-permit-id');
-        const elTipo = document.getElementById('modal-permit-type') || modal.querySelector('#modal-permit-type');
-        const elSolicitante = document.getElementById('modal-solicitante') || modal.querySelector('#modal-solicitante');
-        const elDepto = document.getElementById('modal-departamento') || modal.querySelector('#modal-departamento');
+        const elId =
+          document.getElementById("modal-permit-id") ||
+          modal.querySelector("#modal-permit-id");
+        const elTipo =
+          document.getElementById("modal-permit-type") ||
+          modal.querySelector("#modal-permit-type");
+        const elSolicitante =
+          document.getElementById("modal-solicitante") ||
+          modal.querySelector("#modal-solicitante");
+        const elDepto =
+          document.getElementById("modal-departamento") ||
+          modal.querySelector("#modal-departamento");
         if (elId) elId.textContent = idPermisoLocal;
         if (elTipo) elTipo.textContent = tipo;
         if (elSolicitante) elSolicitante.textContent = solicitante;
         if (elDepto) elDepto.textContent = departamento;
-      } catch (e) { console.warn('No se pudo rellenar modalConfirmarAutorizar:', e); }
+      } catch (e) {
+        console.warn("No se pudo rellenar modalConfirmarAutorizar:", e);
+      }
 
-      modal.style.display = 'flex';
+      modal.style.display = "flex";
 
       // Enlazar botones (asegurarnos de no duplicar handlers)
-      const btnConfirm = document.getElementById('btnConfirmarAutorizar');
-      const btnCancel = document.getElementById('btnCancelarConfirmar');
+      const btnConfirm = document.getElementById("btnConfirmarAutorizar");
+      const btnCancel = document.getElementById("btnCancelarConfirmar");
 
       function clearHandlers() {
         if (btnConfirm) btnConfirm.onclick = null;
@@ -204,27 +246,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (btnCancel) {
         btnCancel.onclick = function () {
-          modal.style.display = 'none';
+          modal.style.display = "none";
           clearHandlers();
         };
       }
 
       if (btnConfirm) {
         btnConfirm.onclick = async function () {
-          modal.style.display = 'none';
+          modal.style.display = "none";
           clearHandlers();
           // Ejecutar la autorización real
           try {
             // Reuse existing authorization flow: trigger click on original handler by calling the same async logic
             // We'll call the original logic function if present, else fallback to submitting directly here.
-            if (typeof ejecutarAutorizacionSupervisor === 'function') {
+            if (typeof ejecutarAutorizacionSupervisor === "function") {
               await ejecutarAutorizacionSupervisor();
             } else {
               // fallback: submit the original button's click handler by triggering it
-              btnAutorizar.removeEventListener('click', arguments.callee);
+              btnAutorizar.removeEventListener("click", arguments.callee);
               btnAutorizar.click();
             }
-          } catch (err) { console.error('Error al autorizar desde modal supervisor:', err); }
+          } catch (err) {
+            console.error("Error al autorizar desde modal supervisor:", err);
+          }
         };
       }
     });
@@ -252,29 +296,67 @@ document.addEventListener("DOMContentLoaded", function () {
       try {
         const data = window.currentPermisoData || {};
         // ID: prefer prefijo (general.prefijo) then data.prefijo then URL id
-        const idPermisoLocal = (data && ((data.general && (data.general.prefijo || data.general.prefijo_label)) || data.prefijo || (data.data && data.data.prefijo))) || idPermiso || '-';
+        const idPermisoLocal =
+          (data &&
+            ((data.general &&
+              (data.general.prefijo || data.general.prefijo_label)) ||
+              data.prefijo ||
+              (data.data && data.data.prefijo))) ||
+          idPermiso ||
+          "-";
         // Tipo: prefer data.tipo_permiso, then general.tipo_permiso, then detalles.tipo_actividad, fallback to tipo_mantenimiento
-        const tipo = (data && ((data.data && data.data.tipo_permiso) || (data.general && data.general.tipo_permiso) || (data.detalles && data.detalles.tipo_actividad) || (data.data && data.data.tipo_mantenimiento) || (data.general && data.general.tipo_mantenimiento))) || document.getElementById('activity-type-label')?.textContent || '-';
+        const tipo =
+          (data &&
+            ((data.data && data.data.tipo_permiso) ||
+              (data.general && data.general.tipo_permiso) ||
+              (data.detalles && data.detalles.tipo_actividad) ||
+              (data.data && data.data.tipo_mantenimiento) ||
+              (data.general && data.general.tipo_mantenimiento))) ||
+          document.getElementById("activity-type-label")?.textContent ||
+          "-";
         // Solicitante
-        const solicitante = (data && (data.general && data.general.solicitante)) || (data && data.detalles && data.detalles.solicitante) || document.getElementById('nombre-solicitante-label')?.textContent || '-';
+        const solicitante =
+          (data && data.general && data.general.solicitante) ||
+          (data && data.detalles && data.detalles.solicitante) ||
+          document.getElementById("nombre-solicitante-label")?.textContent ||
+          "-";
         // Departamento: prefer detalles.departamento -> general.departamento -> planta -> DOM
-        const departamento = (data && ((data.detalles && data.detalles.departamento) || (data.general && data.general.departamento) || (data.detalles && data.detalles.planta) || (data.general && data.general.planta))) || document.getElementById('plant-label')?.textContent || document.getElementById('sucursal-label')?.textContent || '-';
+        const departamento =
+          (data &&
+            ((data.detalles && data.detalles.departamento) ||
+              (data.general && data.general.departamento) ||
+              (data.detalles && data.detalles.planta) ||
+              (data.general && data.general.planta))) ||
+          document.getElementById("plant-label")?.textContent ||
+          document.getElementById("sucursal-label")?.textContent ||
+          "-";
 
-        const noModal = document.getElementById('modalConfirmarNoAutorizar');
+        const noModal = document.getElementById("modalConfirmarNoAutorizar");
         if (noModal) {
-          const elId = document.getElementById('modal-permit-id-no') || noModal.querySelector('#modal-permit-id-no');
-          const elTipo = document.getElementById('modal-permit-type-no') || noModal.querySelector('#modal-permit-type-no');
-          const elSolicitante = document.getElementById('modal-solicitante-no') || noModal.querySelector('#modal-solicitante-no');
-          const elDepto = document.getElementById('modal-departamento-no') || noModal.querySelector('#modal-departamento-no');
+          const elId =
+            document.getElementById("modal-permit-id-no") ||
+            noModal.querySelector("#modal-permit-id-no");
+          const elTipo =
+            document.getElementById("modal-permit-type-no") ||
+            noModal.querySelector("#modal-permit-type-no");
+          const elSolicitante =
+            document.getElementById("modal-solicitante-no") ||
+            noModal.querySelector("#modal-solicitante-no");
+          const elDepto =
+            document.getElementById("modal-departamento-no") ||
+            noModal.querySelector("#modal-departamento-no");
           if (elId) elId.textContent = idPermisoLocal;
           if (elTipo) elTipo.textContent = tipo;
           if (elSolicitante) elSolicitante.textContent = solicitante;
           if (elDepto) elDepto.textContent = departamento;
-          noModal.style.display = 'flex';
+          noModal.style.display = "flex";
           return; // mostramos confirmación primero
         }
       } catch (e) {
-        console.warn('No se pudo rellenar modalConfirmarNoAutorizar (supervisor):', e);
+        console.warn(
+          "No se pudo rellenar modalConfirmarNoAutorizar (supervisor):",
+          e
+        );
       }
 
       // Fallback: abrir directamente el modalComentario si no hay modalConfirmarNoAutorizar
@@ -419,24 +501,31 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Handlers globales para modalConfirmarNoAutorizar (supervisor)
-document.addEventListener('DOMContentLoaded', function () {
-  const btnCancelarConfirmarNo = document.getElementById('btnCancelarConfirmarNo');
-  const btnConfirmarNoAutorizar = document.getElementById('btnConfirmarNoAutorizar');
+document.addEventListener("DOMContentLoaded", function () {
+  const btnCancelarConfirmarNo = document.getElementById(
+    "btnCancelarConfirmarNo"
+  );
+  const btnConfirmarNoAutorizar = document.getElementById(
+    "btnConfirmarNoAutorizar"
+  );
   if (btnCancelarConfirmarNo) {
-    btnCancelarConfirmarNo.addEventListener('click', function () {
-      const noModal = document.getElementById('modalConfirmarNoAutorizar');
-      if (noModal) noModal.style.display = 'none';
+    btnCancelarConfirmarNo.addEventListener("click", function () {
+      const noModal = document.getElementById("modalConfirmarNoAutorizar");
+      if (noModal) noModal.style.display = "none";
     });
   }
   if (btnConfirmarNoAutorizar) {
-    btnConfirmarNoAutorizar.addEventListener('click', function () {
-      const noModal = document.getElementById('modalConfirmarNoAutorizar');
-      if (noModal) noModal.style.display = 'none';
-      const comentarioModal = document.getElementById('modalComentario');
+    btnConfirmarNoAutorizar.addEventListener("click", function () {
+      const noModal = document.getElementById("modalConfirmarNoAutorizar");
+      if (noModal) noModal.style.display = "none";
+      const comentarioModal = document.getElementById("modalComentario");
       if (comentarioModal) {
-        comentarioModal.style.display = 'flex';
-        const ta = document.getElementById('comentarioNoAutorizar');
-        if (ta) { ta.value = ''; ta.focus(); }
+        comentarioModal.style.display = "flex";
+        const ta = document.getElementById("comentarioNoAutorizar");
+        if (ta) {
+          ta.value = "";
+          ta.focus();
+        }
       }
     });
   }
@@ -565,7 +654,11 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((data) => {
         console.log("Datos recibidos para el permiso:", data);
         // Guardar globalmente para que los modales usen la misma fuente canónica que la vista de área
-        try { window.currentPermisoData = data; } catch (e) { /* ignore */ }
+        try {
+          window.currentPermisoData = data;
+        } catch (e) {
+          /* ignore */
+        }
         // Prefijo en el título y descripción del trabajo
         if (data && data.general) {
           const h3 = document.querySelector(".section-header h3");
@@ -742,3 +835,101 @@ document.addEventListener("DOMContentLoaded", function () {
       console.error("Error al obtener responsables de área:", err);
     });
 });
+
+function setupModalComentario() {
+  const modal = document.getElementById("modalComentario");
+  const btnCancelar = document.getElementById("btnCancelarComentario");
+  const btnGuardar = document.getElementById("btnGuardarComentario");
+  const textarea = document.getElementById("comentarioNoAutorizar");
+
+  if (!modal || !btnCancelar || !btnGuardar || !textarea) {
+    console.error("No se encontraron elementos del modal de comentarios");
+    return;
+  }
+
+  // Limpiar event listeners previos
+  btnCancelar.replaceWith(btnCancelar.cloneNode(true));
+  btnGuardar.replaceWith(btnGuardar.cloneNode(true));
+
+  // Obtener los nuevos elementos después del clon
+  const newBtnCancelar = document.getElementById("btnCancelarComentario");
+  const newBtnGuardar = document.getElementById("btnGuardarComentario");
+
+  // Event listener para Cancelar
+  newBtnCancelar.addEventListener("click", function () {
+    modal.style.display = "none";
+    textarea.value = "";
+  });
+
+  // Event listener para Guardar
+  newBtnGuardar.addEventListener("click", async function () {
+    const comentario = textarea.value.trim();
+    if (!comentario) {
+      alert("Debes escribir un motivo de rechazo.");
+      return;
+    }
+
+    try {
+      // Generar timestamp automático para rechazo supervisor PT1 (hora local)
+      const nowRechazoSupervisor = new Date();
+      const fechaHoraRechazoSupervisor = new Date(
+        nowRechazoSupervisor.getTime() -
+          nowRechazoSupervisor.getTimezoneOffset() * 60000
+      ).toISOString();
+      console.log(
+        "[NO AUTORIZAR SUPERVISOR PT1] Timestamp generado (hora local):",
+        fechaHoraRechazoSupervisor
+      );
+
+      await fetch("/api/autorizaciones/supervisor-categoria", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id_permiso: idPermiso,
+          supervisor,
+          categoria,
+          comentario_no_autorizar: comentario,
+          fecha_hora_supervisor: fechaHoraRechazoSupervisor,
+        }),
+      });
+    } catch (err) {
+      console.error("Error al actualizar supervisor y categoría:", err);
+    }
+    // 2. Consultar el id_estatus desde permisos_trabajo
+    let idEstatus = null;
+    try {
+      const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
+      if (respEstatus.ok) {
+        const permisoData = await respEstatus.json();
+        idEstatus =
+          permisoData.id_estatus ||
+          (permisoData.data && permisoData.data.id_estatus);
+      }
+    } catch (err) {
+      console.error("Error al consultar id_estatus:", err);
+    }
+    // 3. Actualizar el estatus a "no autorizado" y guardar el comentario en la tabla estatus
+    if (idEstatus) {
+      try {
+        await fetch("/api/estatus/no_autorizado", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id_estatus: idEstatus }),
+        });
+        // Guardar el comentario en la tabla estatus
+        await fetch("/api/estatus/comentario", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id_estatus: idEstatus, comentario }),
+        });
+      } catch (err) {
+        console.error("Error al actualizar estatus no autorizado:", err);
+      }
+    }
+    // 4. Cerrar el modal y mostrar mensaje de éxito
+    const modal = document.getElementById("modalComentario");
+    if (modal) modal.style.display = "none";
+    alert("Permiso no autorizado correctamente");
+    window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
+  });
+}

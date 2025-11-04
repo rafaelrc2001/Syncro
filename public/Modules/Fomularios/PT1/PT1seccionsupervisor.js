@@ -14,6 +14,89 @@ function validarSupervisorYCategoria() {
 }
 // Mostrar nombres de responsable y operador del área en la sección de aprobaciones
 document.addEventListener("DOMContentLoaded", function () {
+  // Asignar listeners del modal de comentarios una sola vez
+  const btnGuardarComentario = document.getElementById("btnGuardarComentario");
+  if (btnGuardarComentario) {
+    btnGuardarComentario.addEventListener("click", async function () {
+      const comentario = document
+        .getElementById("comentarioNoAutorizar")
+        .value.trim();
+      if (!comentario) {
+        alert("Debes escribir un motivo de rechazo.");
+        return;
+      }
+      const params = new URLSearchParams(window.location.search);
+      const idPermiso = params.get("id") || window.idPermisoActual;
+      const responsableInput = document.getElementById("responsable-aprobador");
+      const operadorInput = document.getElementById("responsable-aprobador2");
+      const supervisor = responsableInput ? responsableInput.value.trim() : "";
+      const categoria = operadorInput ? operadorInput.value.trim() : "";
+      if (!idPermiso) {
+        alert("No se pudo obtener el ID del permiso.");
+        return;
+      }
+      try {
+        const nowRechazoSupervisor = new Date();
+        const fechaHoraRechazoSupervisor = new Date(
+          nowRechazoSupervisor.getTime() -
+            nowRechazoSupervisor.getTimezoneOffset() * 60000
+        ).toISOString();
+        await fetch("/api/autorizaciones/supervisor-categoria", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id_permiso: idPermiso,
+            supervisor,
+            categoria,
+            comentario_no_autorizar: comentario,
+            fecha_hora_supervisor: fechaHoraRechazoSupervisor,
+          }),
+        });
+        // Consultar el id_estatus desde permisos_trabajo
+        let idEstatus = null;
+        try {
+          const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
+          if (respEstatus.ok) {
+            const permisoData = await respEstatus.json();
+            idEstatus =
+              permisoData.id_estatus ||
+              (permisoData.data && permisoData.data.id_estatus);
+          }
+        } catch (err) {
+          console.error("Error al consultar id_estatus:", err);
+        }
+        // Actualizar el estatus a "no autorizado" y guardar el comentario
+        if (idEstatus) {
+          await fetch("/api/estatus/no_autorizado", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id_estatus: idEstatus }),
+          });
+          await fetch("/api/estatus/comentario", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id_estatus: idEstatus, comentario }),
+          });
+        }
+        // Cerrar el modal y mostrar mensaje de éxito
+        document.getElementById("modalComentario").style.display = "none";
+        alert("Permiso no autorizado correctamente");
+        window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
+      } catch (err) {
+        console.error("Error al procesar el rechazo:", err);
+        alert("Error al procesar el rechazo. Intenta nuevamente.");
+      }
+    });
+  }
+  const btnCancelarComentario = document.getElementById(
+    "btnCancelarComentario"
+  );
+  if (btnCancelarComentario) {
+    btnCancelarComentario.addEventListener("click", function () {
+      document.getElementById("modalComentario").style.display = "none";
+      document.getElementById("comentarioNoAutorizar").value = "";
+    });
+  }
   const params = new URLSearchParams(window.location.search);
   const idPermiso = params.get("id");
   if (!idPermiso) return;

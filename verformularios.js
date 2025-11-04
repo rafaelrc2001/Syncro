@@ -297,6 +297,7 @@ WHERE pt.id_permiso = $1
     pa.arnes_completo_buen_estado,
     pa.suspender_trabajos_adyacentes,
     pa.numero_personas_autorizadas,
+      pa.cantidad_personas_autorizadas,
     pa.trabajadores_aptos_evaluacion,
     pa.requiere_barreras,
     pa.observaciones,

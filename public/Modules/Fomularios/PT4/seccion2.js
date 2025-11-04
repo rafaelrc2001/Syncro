@@ -1,4 +1,22 @@
 document.addEventListener("DOMContentLoaded", function () {
+  // Mostrar/ocultar campo de cantidad de personas autorizadas según respuesta
+  document.getElementsByName("lifeline7").forEach(function (radio) {
+    radio.addEventListener("change", function () {
+      var container = document.getElementById("input-lifeline7-container");
+      if (this.value === "SI" && this.checked) {
+        container.style.display = "block";
+        document.getElementById("input-lifeline7").focus();
+      } else {
+        container.style.display = "none";
+        document.getElementById("input-lifeline7").value = "";
+      }
+    });
+    // Estado inicial
+    if (radio.checked && radio.value === "SI") {
+      var container = document.getElementById("input-lifeline7-container");
+      container.style.display = "block";
+    }
+  });
   // Configurar hora actual por defecto
   const timeField = document.getElementById("start-time");
   if (timeField) {
@@ -195,11 +213,12 @@ document.addEventListener("DOMContentLoaded", function () {
   initEquipmentToggle();
 });
 
-
 // Mejorada: toggleInput ahora se enlaza automáticamente a los radios y muestra/oculta el campo según selección
 function toggleInput(name) {
   const radios = document.getElementsByName(name);
-  const inputContainer = document.getElementById("input-" + name + "-container");
+  const inputContainer = document.getElementById(
+    "input-" + name + "-container"
+  );
   let show = false;
   for (let i = 0; i < radios.length; i++) {
     if (radios[i].checked && radios[i].value === "SI") {
@@ -215,7 +234,6 @@ function toggleInput(name) {
 // Enlazar automáticamente a todos los grupos relevantes al cargar
 document.addEventListener("DOMContentLoaded", function () {
   // ...existing code...
-
 
   // Enlazar radios y contenedores según el HTML real
   // ¿El trabajo requiere escalera? (name="warning-signs", input-escalera-container)

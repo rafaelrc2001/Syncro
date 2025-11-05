@@ -64,10 +64,49 @@ document.addEventListener("DOMContentLoaded", function () {
             body: JSON.stringify({ id_estatus: idEstatus, comentario }),
           });
         }
-        // Cerrar el modal y mostrar mensaje de éxito
+        // Cerrar el modal de comentario y mostrar modal de confirmación para rechazo
         document.getElementById("modalComentario").style.display = "none";
-        alert("Permiso no autorizado correctamente");
-        window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
+        
+        // Crear y mostrar modal de confirmación para rechazo PT2
+        let rejectionConfirmationModal = document.getElementById("rejection-confirmation-modal");
+        if (!rejectionConfirmationModal) {
+          rejectionConfirmationModal = document.createElement("div");
+          rejectionConfirmationModal.id = "rejection-confirmation-modal";
+          rejectionConfirmationModal.style.display = "flex";
+          rejectionConfirmationModal.style.position = "fixed";
+          rejectionConfirmationModal.style.top = 0;
+          rejectionConfirmationModal.style.left = 0;
+          rejectionConfirmationModal.style.width = "100vw";
+          rejectionConfirmationModal.style.height = "100vh";
+          rejectionConfirmationModal.style.background = "rgba(44,62,80,0.25)";
+          rejectionConfirmationModal.style.zIndex = 1000;
+          rejectionConfirmationModal.style.justifyContent = "center";
+          rejectionConfirmationModal.style.alignItems = "center";
+          rejectionConfirmationModal.innerHTML = `
+            <div style="background:#fff; border-radius:12px; max-width:400px; width:90vw; padding:2em 1.5em; box-shadow:0 4px 24px rgba(44,62,80,0.18); display:flex; flex-direction:column; gap:1em; align-items:center;">
+              <h3 style="margin:0 0 0.5em 0; font-size:1.2em; color:#c0392b;"><i class="ri-close-circle-line" style="margin-right:8px;"></i>Permiso no autorizado correctamente</h3>
+              <div style="font-size:1em; color:#2c3e50; margin-bottom:1em;">El permiso de trabajo número: <span id="rejected-permit">${idPermiso || "-"}</span> ha sido rechazado</div>
+              <button id="rejection-modal-close-btn" style="background:#c0392b; color:#fff; border:none; border-radius:4px; padding:8px 24px; cursor:pointer; font-size:1em;">Cerrar</button>
+            </div>
+          `;
+          document.body.appendChild(rejectionConfirmationModal);
+        } else {
+          rejectionConfirmationModal.style.display = "flex";
+        }
+
+        const rejectedPermitNumber = document.getElementById("rejected-permit");
+        if (rejectedPermitNumber) rejectedPermitNumber.textContent = idPermiso || "-";
+
+        const rejectionModalCloseBtn = document.getElementById("rejection-modal-close-btn");
+        if (rejectionModalCloseBtn) {
+          rejectionModalCloseBtn.setAttribute("type", "button");
+          rejectionModalCloseBtn.onclick = function (e) {
+            e.preventDefault();
+            rejectionConfirmationModal.style.display = "none";
+            window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
+          };
+        }
+
       } catch (err) {
         console.error("Error al procesar el rechazo:", err);
         alert("Error al procesar el rechazo. Intenta nuevamente.");
@@ -988,11 +1027,49 @@ document.addEventListener("DOMContentLoaded", function () {
               console.error("Error al actualizar estatus no autorizado:", err);
             }
           }
-          // 4. Cerrar el modal y mostrar mensaje de éxito
+          // 4. Cerrar el modal de comentario y mostrar modal de confirmación para rechazo
           const modal = document.getElementById("modalComentario");
           if (modal) modal.style.display = "none";
-          alert("Permiso no autorizado correctamente");
-          window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
+          
+          // Crear y mostrar modal de confirmación para rechazo PT2
+          let rejectionConfirmationModal = document.getElementById("rejection-confirmation-modal");
+          if (!rejectionConfirmationModal) {
+            rejectionConfirmationModal = document.createElement("div");
+            rejectionConfirmationModal.id = "rejection-confirmation-modal";
+            rejectionConfirmationModal.style.display = "flex";
+            rejectionConfirmationModal.style.position = "fixed";
+            rejectionConfirmationModal.style.top = 0;
+            rejectionConfirmationModal.style.left = 0;
+            rejectionConfirmationModal.style.width = "100vw";
+            rejectionConfirmationModal.style.height = "100vh";
+            rejectionConfirmationModal.style.background = "rgba(44,62,80,0.25)";
+            rejectionConfirmationModal.style.zIndex = 1000;
+            rejectionConfirmationModal.style.justifyContent = "center";
+            rejectionConfirmationModal.style.alignItems = "center";
+            rejectionConfirmationModal.innerHTML = `
+              <div style="background:#fff; border-radius:12px; max-width:400px; width:90vw; padding:2em 1.5em; box-shadow:0 4px 24px rgba(44,62,80,0.18); display:flex; flex-direction:column; gap:1em; align-items:center;">
+                <h3 style="margin:0 0 0.5em 0; font-size:1.2em; color:#c0392b;"><i class="ri-close-circle-line" style="margin-right:8px;"></i>Permiso no autorizado correctamente</h3>
+                <div style="font-size:1em; color:#2c3e50; margin-bottom:1em;">El permiso de trabajo número: <span id="rejected-permit">${idPermiso || "-"}</span> ha sido rechazado</div>
+                <button id="rejection-modal-close-btn" style="background:#c0392b; color:#fff; border:none; border-radius:4px; padding:8px 24px; cursor:pointer; font-size:1em;">Cerrar</button>
+              </div>
+            `;
+            document.body.appendChild(rejectionConfirmationModal);
+          } else {
+            rejectionConfirmationModal.style.display = "flex";
+          }
+
+          const rejectedPermitNumber = document.getElementById("rejected-permit");
+          if (rejectedPermitNumber) rejectedPermitNumber.textContent = idPermiso || "-";
+
+          const rejectionModalCloseBtn = document.getElementById("rejection-modal-close-btn");
+          if (rejectionModalCloseBtn) {
+            rejectionModalCloseBtn.setAttribute("type", "button");
+            rejectionModalCloseBtn.onclick = function (e) {
+              e.preventDefault();
+              rejectionConfirmationModal.style.display = "none";
+              window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
+            };
+          }
         };
       }
       // Lógica para cerrar/cancelar el modal

@@ -66,6 +66,10 @@ function mostrarDatosImprimir(permiso) {
     permiso.numero_personas_autorizadas || "-"
   );
   setText(
+    "cantidad-personas-autorizadas-label",
+    permiso.cantidad_personas_autorizadas || "-"
+  );
+  setText(
     "trabajadores-aptos-evaluacion-label",
     permiso.trabajadores_aptos_evaluacion || "-"
   );

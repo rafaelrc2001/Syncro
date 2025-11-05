@@ -559,6 +559,10 @@ if (idPermiso) {
           d.numero_personas_autorizadas || "-"
         );
         setText(
+          "cantidad-personas-autorizadas-label",
+          d.cantidad_personas_autorizadas || "-"
+        );
+        setText(
           "trabajadores-aptos-evaluacion-label",
           d.trabajadores_aptos_evaluacion || "-"
         );

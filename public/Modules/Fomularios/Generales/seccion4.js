@@ -901,6 +901,9 @@ document.addEventListener("DOMContentLoaded", () => {
           const observaciones =
             document.getElementById("observations")?.value || "";
 
+          const cantidad_personas_autorizadas =
+            document.getElementById("input-personas-autorizadas")?.value || "";
+
           // Construir el objeto de datos para enviar
           const datosAltura = {
             id_permiso,
@@ -931,6 +934,7 @@ document.addEventListener("DOMContentLoaded", () => {
             observaciones,
             tipo_escalera,
             cual_acceso,
+            cantidad_personas_autorizadas,
           };
 
           // Imprimir en consola lo que se enviará

@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="dynamic-title">Permiso Fuentes</title>
+    <title>Permiso Fuentes</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
-            <link rel="stylesheet" href="/CSS/EstiloGeneral.css" />
+     <link rel="stylesheet" href="/CSS/EstiloGeneral.css" />
     <link rel="stylesheet" href="/CSS/EstiloImprimir.css">
     <link rel="stylesheet" href="/CSS/imprimir/EstiloImprimir-Base.css">
-    <link rel="stylesheet" href="/CSS/imprimir/EstiloImprimir-PT7.css">
+    
 
 </head>
 <body style="background: #f4f6fb; min-height: 100vh; margin: 0; font-family: 'Roboto', Arial, sans-serif;">
-    <div style="display: flex; justify-content: center; align-items: flex-start; min-height: 100vh;">
-        <section class="executive-section" style="max-width: 900px; width: 100%; margin: 40px 0; background: #fff; border-radius: 18px; box-shadow: 0 4px 24px rgba(44,62,80,0.10); padding: 2.5rem 2rem;">
-            <div class="company-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid #e3e6ea;">
+        <div style="display: flex; justify-content: center; align-items: flex-start; min-height: 100vh;">
+            <section class="form-section" data-section="2" style="max-width: 900px; width: 100%; margin: 40px 0; background: #fff; border-radius: 18px; box-shadow: 0 4px 24px rgba(44,62,80,0.10); padding: 2.5rem 2rem;">
+                <div class="company-header">
                 <div style="display: flex; align-items: center; gap: 1rem;">
                     <img src="/img/proagro.png" alt="Logo ProAgro" style="height: 60px; width: auto;">
                 </div>
@@ -29,49 +29,120 @@
          
             </div>
 
-            <div class="section-header">
-                <i class="ri-checkbox-circle-line"></i>
-                <h2>Permiso de Trabajo para Fuentes Radiactivas</h2>
-                 <h3 id="prefijo-label">-</h3>
-            </div>
-            <div class="executive-section usuario">
-                <div class="section-header">
-                    <i class="ri-information-line"></i>
-                    <h3>Datos generales</h3>
+                <div class="section-header header-centered">
+                    <i class="ri-checkbox-circle-line"></i>
+                    <h2>Permiso de Trabajo para Fuentes Radiactivas</h2>
+                    <h3 id="prefijo-label">NP-XXXXXX</h3>
                 </div>
-                <div class="executive-grid">
-                    <div class="executive-item">
-                        <label>Descripción del trabajo</label>
-                        <p id="descripcion-trabajo-label">-</p>
+                                       <div class="general-box-header">
+                                        <span>Información General</span>
+                                    </div>
+                                    <div  id="hora-creacion-header" style="text-align: center;">
+                                    <i class="ri-time-line"></i>
+                                    <h3>Hora de creación</h3>
+                                </div>
+                  <div class="executive-section " style="margin-bottom: 0; box-shadow: none; background: transparent; border: none;">
+                      
+                   
+                       <div class="executive-grid">
+                          <div class="executive-item">
+                              <label>Hora de inicio</label>
+                              <p id="start-time-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                              <label>Fecha</label>
+                              <p id="fecha-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                              <label>Tipo de actividad</label>
+                              <p id="activity-type-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                              <label>Planta o lugar de trabajo</label>
+                              <p id="plant-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                              <label>Descripción del trabajo</label>
+                              <p id="descripcion-trabajo-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                              <label>Empresa</label>
+                              <p id="empresa-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                            <label>Nombre de quien solicita</label>
+                            <p id="nombre-solicitante-label">-</p>
+                            </div>
+                                                    <div class="executive-item">
+                            <label>Sucursal</label>
+                            <p id="sucursal-label">-</p>
+                            </div>
+                            <div class="executive-item">
+                            <label>Contrato</label>
+                            <p id="contrato-label">-</p>
+                            </div>
+                          <div class="executive-item">
+                              <label>O.T. No.</label>
+                              <p id="work-order-label">-</p>
+                          </div>
+                      </div>
+                  </div>
+                
+                  <div class="executive-section ">
+                    <div class="section-header">
+                        <i class="ri-tools-line"></i>
+                        <h3>Equipo</h3>
                     </div>
-                    <div class="executive-item">
-                        <label>Tipo de mantenimiento</label>
-                        <p id="maintenance-type-label" class="highlight"></p>
-                    </div>
-                    <div class="executive-item">
-                        <label>O.T. No.</label>
-                        <p id="work-order-label"></p>
-                    </div>
-                    <div class="executive-item">
-                        <label>TAG</label>
-                        <p id="tag-label"></p>
-                    </div>
-                    <div class="executive-item">
-                        <label>Hora de inicio</label>
-                        <p id="start-time-label"></p>
-                    </div>
-                    <div class="executive-item">
-                        <label>Equipo</label>
-                        <p id="equipment-description-label"></p>
+                    <div class="executive-grid">
+                        
+                        <div class="executive-item">
+                            <label>Equipo a Intervenir</label>
+                            <p id="equipment-label">-</p>
+                        </div>
+                        <div class="executive-item">
+                            <label>TAG</label>
+                            <p id="tag-label">-</p>
+                        </div>
                     </div>
                 </div>
-            </div>
       
 
 
 
+                   <div class="area-box-header">
+                                         <span>Formulario Responsable Área</span>
+                     </div>
 
-            <div class="executive-section usuario">
+                       <div  id="hora-responsable-header" style="text-align: center;">
+                                    <i class="ri-time-line"></i>
+                                    <h3>Hora de autorización</h3>
+                    </div>
+
+
+       
+
+                        
+                    <div class="section-header section-header-cielo">
+                        <i class="ri-flask-line"></i>
+                        <h3>Condiciones del Proceso</h3>
+                    </div>
+                    <div class="executive-grid">
+                        <div class="executive-item">
+                            <label>Fluido</label>
+                            <span id="fluid-label">-</span>
+                        </div>
+                        <div class="executive-item">
+                            <label>Presión</label>
+                            <span id="pressure-label">-</span>
+                        </div>
+                        <div class="executive-item">
+                            <label>Temperatura</label>
+                            <span id="temperature-label">-</span>
+                        </div>
+                    </div>
+               
+
+
                 <div class="section-header section-header-cielo">
                     <i class="ri-tools-line"></i>
                     <h3>Requisitos de apertura de área</h3>
@@ -135,48 +206,23 @@
                     </tbody>
                 </table>
                           
-            </div>
-
-
-
-
-
-
-
-
-
-
-
-
-            
-
-               <div class="executive-section area">
-                    <div class="section-header section-header-cielo">
-                        <i class="ri-flask-line"></i>
-                        <h3>Condiciones del Proceso</h3>
-                    </div>
-                    <div class="executive-grid">
-                        <div class="executive-item">
-                            <label>Fluido</label>
-                            <span id="fluid-label">-</span>
-                        </div>
-                        <div class="executive-item">
-                            <label>Presión</label>
-                            <span id="pressure-label">-</span>
-                        </div>
-                        <div class="executive-item">
-                            <label>Temperatura</label>
-                            <span id="temperature-label">-</span>
-                        </div>
-                    </div>
-                </div>
 
                 
 
 
   <!-- Seccion supervisores -->
             <!-- Identificación de la fuente -->
-            <div class="executive-section">
+           
+
+                    <div class="supervisor-box-header" style="margin-bottom: 18px; margin-top: 32px;">
+                                         <span>Formulario Seguridad Industrial</span>
+                                     </div>
+                                       <div  id="hora-supervisor-header" style="text-align: center;">
+                                    <i class="ri-time-line"></i>
+                                    <h3>Hora de autorización</h3>
+                                </div>
+
+
                 <div class="section-header" style="background: #ffe600; color: #222; border-radius: 6px 6px 0 0; padding: 8px 16px;">
                     <h3 style="margin: 0; font-size: 1.1em; font-weight: bold; letter-spacing: 1px;">IDENTIFICACIÓN DE LA FUENTE</h3>
                 </div>
@@ -215,9 +261,21 @@
                                 <span id="fecha_dia-label">-</span> / <span id="fecha_mes-label">-</span> / <span id="fecha_anio-label">-</span>
                             </td>
                         </tr>
+                         </tr>
+                                <tr>
+                                    <td>Nombre:</td>
+                                      <td><span id="nombre_firma-label">-</span></td>
+                            <td colspan="3"><span id="nombre_firma_check-label"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Firma:</td>
+                                    <td colspan="4"><span id="firma_check-label"></span></td>
+                            </tr>
+
+
                     </tbody>
                 </table>
-            </div>
+            
 
 
 
@@ -226,7 +284,7 @@
 
 
                        <!-- Sección AST y Participantes -->
-                <div class="executive-section usuario">
+                
                     <div class="section-header">
                         <i class="ri-shield-check-line"></i>
                         <h3>AST - Análisis de Seguridad en el Trabajo</h3>
@@ -268,10 +326,10 @@
                             </ul>
                         </div>
                     </div>
-                </div>
+                
                <!-- Sección 4: Participantes -->
                       <!-- Sección 4: Participantes -->
-                <div class="executive-section usuario">
+               
                     <div class="section-header">
                         <i class="ri-team-line"></i>
                         <h3>Personal Involucrado</h3>
@@ -292,12 +350,12 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
+                
               
 
 
                 <!-- Sección 5: Aprobaciones -->
-           <div class="executive-section usuario">
+         
                     <div class="section-header">
                         <i class="ri-team-line"></i>
                         <h3>Responsables</h3>
@@ -316,7 +374,7 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
+                
                 
                 
 
@@ -351,7 +409,7 @@
 </body>
     
 </html>
-
-<script src="/Modules/Fomularios/PT7/PT7seccionimprimirseg.js"></script>
+   <script src="/Modules/Fomularios/Generales/fecha_hora.js"></script>
+<script src="/Modules/Fomularios/PT7/PT7seccionimprimir.js"></script>
 </body>
 </html>

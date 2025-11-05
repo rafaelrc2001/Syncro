@@ -98,23 +98,101 @@ function actualizarCamposFusionados() {
     "ot_numero"
   );
   aplicarCampoFusionado("tag-label", "tag", "tag", "tag");
+  setText(
+    "otro_permiso-label",
+    _verformulariosFetch.general.tipo_fuente_radiactiva || "-"
+  );
+  setText(
+    "cual_otro_permiso-label",
+    _verformulariosFetch.general.actividad_radiactiva || "-"
+  );
+  setText(
+    "barricadas_senalamientos-label",
+    _verformulariosFetch.general.numero_serial_fuente || "-"
+  );
+  setText(
+    "suspension_trabajos_cercano-label",
+    _verformulariosFetch.general.distancia_trabajo || "-"
+  );
+  setText(
+    "retiro_personal_ajeno-label",
+    _verformulariosFetch.general.tiempo_exposicion || "-"
+  );
+  setText(
+    "placa_dosimetro-label",
+    _verformulariosFetch.general.dosis_estimada || "-"
+  );
+  setText(
+    "limite_exposicion-label",
+    _verformulariosFetch.general.equipo_proteccion_radiologica || "-"
+  );
+  setText(
+    "letreros_advertencia-label",
+    _verformulariosFetch.general.dosimetros_personales || "-"
+  );
+  setText(
+    "advirtio_personal-label",
+    _verformulariosFetch.general.monitores_radiacion_area || "-"
+  );
+  setText(
+    "ubicacion_fuente_radioactiva-label",
+    _verformulariosFetch.general.senalizacion_area || "-"
+  );
+  setText(
+    "numero_personas_autorizadas-label",
+    _verformulariosFetch.general.barricadas || "-"
+  );
+  setText(
+    "tiempo_exposicion_permisible-label",
+    _verformulariosFetch.general.protocolo_emergencia || "-"
+  );
+  setText("fluid-label", _verformulariosFetch.general.fluido || "-");
+  setText("pressure-label", _verformulariosFetch.general.presion || "-");
+  setText("temperature-label", _verformulariosFetch.general.temperatura || "-");
 }
 
 // --- Lógica para el botón Autorizar (guardar identificación de la fuente y autorizar) ---
 const btnGuardarCampos = document.getElementById("btn-guardar-campos");
-if (btnGuardarCampos) {
-  btnGuardarCampos.addEventListener("click", async function () {
-    // 1. Obtener datos necesarios
+const modalConfirmarAutorizar = document.getElementById(
+  "modalConfirmarAutorizar"
+);
+const btnCancelarConfirmar = document.getElementById("btnCancelarConfirmar");
+const btnConfirmarAutorizar = document.getElementById("btnConfirmarAutorizar");
+
+if (btnGuardarCampos && modalConfirmarAutorizar) {
+  btnGuardarCampos.addEventListener("click", function () {
+    // Rellenar datos del modal
+    const params = new URLSearchParams(window.location.search);
+    const idPermiso = params.get("id") || "-";
+    document.getElementById("modal-permit-id").textContent = idPermiso;
+    document.getElementById("modal-permit-type").textContent =
+      _verformulariosFetch?.general?.tipo_permiso || "-";
+    document.getElementById("modal-solicitante").textContent =
+      _verformulariosFetch?.general?.solicitante || "-";
+    document.getElementById("modal-departamento").textContent =
+      _verformulariosFetch?.general?.departamento || "-";
+    modalConfirmarAutorizar.style.display = "flex";
+  });
+}
+
+if (btnCancelarConfirmar && modalConfirmarAutorizar) {
+  btnCancelarConfirmar.addEventListener("click", function () {
+    modalConfirmarAutorizar.style.display = "none";
+  });
+}
+
+// Lógica de autorización solo si el usuario confirma
+if (btnConfirmarAutorizar) {
+  btnConfirmarAutorizar.addEventListener("click", async function () {
+    if (modalConfirmarAutorizar) modalConfirmarAutorizar.style.display = "none";
+
     const params = new URLSearchParams(window.location.search);
     const idPermiso = params.get("id") || window.idPermisoActual;
     const supervisorInput = document.getElementById("responsable-aprobador");
     const categoriaInput = document.getElementById("responsable-aprobador2");
-    const nombreFirmaInput = document.getElementById("nombre_firma");
     const supervisor = supervisorInput ? supervisorInput.value.trim() : "";
     const categoria = categoriaInput ? categoriaInput.value.trim() : "";
-    const nombreFirma = nombreFirmaInput ? nombreFirmaInput.value.trim() : "";
 
-    // 2. Validaciones básicas
     if (!idPermiso) {
       alert("No se pudo obtener el ID del permiso.");
       return;
@@ -123,100 +201,60 @@ if (btnGuardarCampos) {
       alert("Debes seleccionar el nombre del supervisor.");
       return;
     }
-    if (!nombreFirma) {
-      alert("Debes ingresar el nombre de quien firma.");
-      return;
-    }
 
-    // 3. Guardar identificación de la fuente y nombre de quien firma
-    function getRadio(name) {
-      const checked = document.querySelector(`input[name='${name}']:checked`);
-      return checked ? checked.value : null;
-    }
-    function getInputValue(id) {
-      const input = document.getElementById(id);
-      return input ? input.value : null;
-    }
-    const payloadIdentificacion = {
-      marca_modelo: getInputValue("marca_modelo"),
-      marca_modelo_check: getRadio("marca_modelo_check"),
-      tipo_isotopo: getInputValue("tipo_isotopo"),
-      tipo_isotopo_check: getRadio("tipo_isotopo_check"),
-      numero_fuente: getInputValue("numero_fuente"),
-      numero_fuente_check: getRadio("numero_fuente_check"),
-      actividad_fuente: getInputValue("actividad_fuente"),
-      actividad_fuente_check: getRadio("actividad_fuente_check"),
-      fecha_dia: getInputValue("fecha_dia"),
-      fecha_mes: getInputValue("fecha_mes"),
-      fecha_anio: getInputValue("fecha_anio"),
-      tecnico_radialogo: nombreFirma, // Enviar el nombre de quien firma
-    };
     try {
-      const resp = await fetch(
-        `/api/radiactivas/identificacion_fuente/${idPermiso}`,
-        {
-          method: "PUT",
+      // Actualizar estatus (usa el endpoint correcto de tu backend)
+      let idEstatus = null;
+      const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
+      if (respEstatus.ok) {
+        const permisoData = await respEstatus.json();
+        idEstatus =
+          (permisoData.data && permisoData.data.id_estatus) ||
+          permisoData.id_estatus ||
+          null;
+      }
+
+      if (idEstatus) {
+        await fetch("/api/estatus/seguridad", {
+          method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payloadIdentificacion),
-        }
-      );
-      if (!resp.ok)
-        throw new Error("Error al guardar la identificación de la fuente");
-    } catch (err) {
-      alert(
-        "Error al guardar la identificación de la fuente. No se puede autorizar."
-      );
-      console.error("Error al guardar identificación de la fuente:", err);
-      return;
-    }
+          body: JSON.stringify({ id_estatus: idEstatus }),
+        });
+      }
 
-    // 4. Autorizar: actualizar supervisor/categoría y estatus
-    try {
-      // Actualizar supervisor y categoría
-      await fetch("/api/autorizaciones/supervisor-categoria", {
-        method: "PUT",
+      // Guardar autorización de área
+      const nowArea = new Date();
+      const fechaHoraAutorizacionArea = nowArea.toISOString();
+      await fetch("/api/autorizaciones/area", {
+        method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           id_permiso: idPermiso,
-          supervisor,
-          categoria,
-          fecha_hora_supervisor: new Date().toISOString(),
+          responsable_area: supervisor,
+          encargado_area: categoria,
+          fecha_hora_area: fechaHoraAutorizacionArea,
         }),
       });
 
-      // Consultar id_estatus
-      let idEstatus = null;
-      try {
-        const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
-        if (respEstatus.ok) {
-          const permisoData = await respEstatus.json();
-          idEstatus =
-            permisoData.id_estatus ||
-            (permisoData.data && permisoData.data.id_estatus);
-        }
-      } catch (err) {
-        console.error("Error al consultar id_estatus:", err);
+      // Mostrar modal de confirmación y redirigir
+      const confirmationModal = document.getElementById("confirmation-modal");
+      if (confirmationModal) confirmationModal.style.display = "flex";
+      const permitNumber = document.getElementById("generated-permit");
+      if (permitNumber) permitNumber.textContent = idPermiso || "-";
+      const modalClose = document.getElementById("modal-close-btn");
+      if (modalClose) {
+        modalClose.onclick = function () {
+          if (confirmationModal) confirmationModal.style.display = "none";
+          window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
+        };
+      } else {
+        window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
       }
-
-      // Actualizar estatus a "activo"
-      if (idEstatus) {
-        try {
-          await fetch("/api/estatus/activo", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ id_estatus: idEstatus }),
-          });
-        } catch (err) {
-          console.error("Error al actualizar estatus activo:", err);
-        }
-      }
-
-      window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
     } catch (err) {
       alert(
         "Error al autorizar el permiso. Revisa la consola para más detalles."
       );
-      console.error("[DEPURACIÓN] Error al autorizar el permiso:", err);
+      console.error("Error al autorizar el permiso:", err);
     }
   });
 }
@@ -344,85 +382,95 @@ if (btnRegresar) {
 const params = new URLSearchParams(window.location.search);
 const idPermiso = params.get("id");
 if (idPermiso) {
-  console.log("Consultando permiso de radiactivas con id:", idPermiso);
-  fetch(`/api/pt-radiacion/${idPermiso}`)
+  // --- NUEVA LÓGICA: SOLO CONSULTA /api/verformularios ---
+  fetch(`/api/verformularios?id=${encodeURIComponent(idPermiso)}`)
     .then((resp) => resp.json())
-    .then((data) => {
-      console.log("Respuesta de la API:", data);
-      if (data && data.success && data.data) {
-        const permiso = data.data;
-        console.log("Valores del permiso recibidos:", permiso);
-        // Guardar permiso en caché para fusión
-        _permisoFetch = permiso;
-        setText("maintenance-type-label", permiso.tipo_mantenimiento || "-");
-        setText("work-order-label", permiso.ot_numero || "-");
-        setText("tag-label", permiso.tag || "-");
-        setText("start-time-label", permiso.hora_inicio || "-");
+    .then((dataVF) => {
+      console.log("Respuesta completa de /api/verformularios:", dataVF);
+      // Guardar para fusión de campos
+      _verformulariosFetch = dataVF || {};
+      // Campos generales
+      if (dataVF && dataVF.general) {
+        setText("prefijo-label", dataVF.general.prefijo || "-");
         setText(
-          "equipment-description-label",
-          permiso.descripcion_equipo || "-"
+          "maintenance-type-label",
+          dataVF.general.tipo_mantenimiento ||
+            dataVF.general.tipo_permiso ||
+            "-"
+        );
+        setText("work-order-label", dataVF.general.ot_numero || "-");
+        setText("tag-label", dataVF.general.tag || "-");
+        setText("start-time-label", dataVF.general.hora_inicio || "-");
+        setText(
+          "descripcion-trabajo-label",
+          dataVF.general.descripcion_trabajo || "-"
+        );
+        setText("empresa-label", dataVF.general.empresa || "-");
+        setText(
+          "nombre-solicitante-label",
+          dataVF.general.solicitante || dataVF.general.nombre_solicitante || "-"
+        );
+        setText("sucursal-label", dataVF.general.sucursal || "-");
+        setText("contrato-label", dataVF.general.contrato || "-");
+        setText(
+          "plant-label",
+          dataVF.general.area || dataVF.general.departamento || "-"
         );
         setText(
-          "special-tools-label",
-          permiso.requiere_herramientas_especiales || "-"
+          "fecha-label",
+          dataVF.general.fecha || dataVF.general.fecha_creacion || "-"
         );
         setText(
-          "special-tools-type-label",
-          permiso.tipo_herramientas_especiales || "-"
-        );
-        setText("adequate-tools-label", permiso.herramientas_adecuadas || "-");
-        setText(
-          "pre-verification-label",
-          permiso.requiere_verificacion_previa || "-"
+          "otro_permiso-label",
+          dataVF.general.tipo_fuente_radiactiva || "-"
         );
         setText(
-          "risk-knowledge-label",
-          permiso.requiere_conocer_riesgos || "-"
+          "cual_otro_permiso-label",
+          dataVF.general.actividad_radiactiva || "-"
         );
-        setText(
-          "final-observations-label",
-          permiso.observaciones_medidas || "-"
-        );
-        setText("otro_permiso-label", permiso.tipo_fuente_radiactiva || "-");
-        setText("cual_otro_permiso-label", permiso.actividad_radiactiva || "-");
         setText(
           "barricadas_senalamientos-label",
-          permiso.numero_serial_fuente || "-"
+          dataVF.general.numero_serial_fuente || "-"
         );
         setText(
           "suspension_trabajos_cercano-label",
-          permiso.distancia_trabajo || "-"
+          dataVF.general.distancia_trabajo || "-"
         );
         setText(
           "retiro_personal_ajeno-label",
-          permiso.tiempo_exposicion || "-"
+          dataVF.general.tiempo_exposicion || "-"
         );
-        setText("placa_dosimetro-label", permiso.dosis_estimada || "-");
+        setText("placa_dosimetro-label", dataVF.general.dosis_estimada || "-");
         setText(
           "limite_exposicion-label",
-          permiso.equipo_proteccion_radiologica || "-"
+          dataVF.general.equipo_proteccion_radiologica || "-"
         );
         setText(
           "letreros_advertencia-label",
-          permiso.dosimetros_personales || "-"
+          dataVF.general.dosimetros_personales || "-"
         );
         setText(
           "advirtio_personal-label",
-          permiso.monitores_radiacion_area || "-"
+          dataVF.general.monitores_radiacion_area || "-"
         );
         setText(
           "ubicacion_fuente_radioactiva-label",
-          permiso.senalizacion_area || "-"
+          dataVF.general.senalizacion_area || "-"
         );
-        setText("numero_personas_autorizadas-label", permiso.barricadas || "-");
+        setText(
+          "numero_personas_autorizadas-label",
+          dataVF.general.barricadas || "-"
+        );
         setText(
           "tiempo_exposicion_permisible-label",
-          permiso.protocolo_emergencia || "-"
+          dataVF.general.protocolo_emergencia || "-"
         );
-        setText("fluid-label", permiso.fluido || "-");
-        setText("pressure-label", permiso.presion || "-");
-        setText("temperature-label", permiso.temperatura || "-");
-        // Radios de requisitos
+        setText("fluid-label", dataVF.general.fluido || "-");
+        setText("pressure-label", dataVF.general.presion || "-");
+        setText("temperature-label", dataVF.general.temperatura || "-");
+      }
+      // Radios de requisitos (si existen en detalles)
+      if (dataVF && dataVF.detalles) {
         const radios = [
           "fuera_operacion",
           "despresurizado_purgado",
@@ -440,57 +488,62 @@ if (idPermiso) {
           "tapar_purgas_drenajes",
         ];
         radios.forEach((name) => {
-          if (permiso[name]) {
+          if (dataVF.detalles[name]) {
             const radio = document.querySelector(
-              `input[name='${name}'][value='${permiso[name]}']`
+              `input[name='${name}'][value='${dataVF.detalles[name]}']`
             );
             if (radio) radio.checked = true;
           }
         });
-        // --- CONSULTA AST Y PARTICIPANTES DESDE VERFORMULARIOS ---
-        fetch(`/api/verformularios?id=${encodeURIComponent(idPermiso)}`)
-          .then((resp) => resp.json())
-          .then((dataVF) => {
-            if (dataVF && dataVF.ast) {
-              mostrarAST(dataVF.ast);
-            } else {
-              mostrarAST({});
-            }
-            if (dataVF && dataVF.actividades_ast) {
-              mostrarActividadesAST(dataVF.actividades_ast);
-            } else {
-              mostrarActividadesAST([]);
-            }
-            if (dataVF && dataVF.participantes_ast) {
-              mostrarParticipantesAST(dataVF.participantes_ast);
-            } else {
-              mostrarParticipantesAST([]);
-            }
-            // Guardar para fusión de campos
-            _verformulariosFetch = dataVF || {};
-            try {
-              actualizarCamposFusionados();
-            } catch (e) {
-              console.warn(
-                "actualizarCamposFusionados falló (verformularios):",
-                e
-              );
-            }
-          })
-          .catch((err) => {
-            console.warn(
-              "No se pudo obtener verformularios para AST/Participantes:",
-              err
-            );
-          });
-      } else {
-        alert(
-          "No se encontraron datos para este permiso o la API no respondió correctamente."
+      }
+
+      if (dataVF && dataVF.responsables_area) {
+        const selectSupervisor = document.getElementById(
+          "responsable-aprobador"
         );
+        const selectCategoria = document.getElementById(
+          "responsable-aprobador2"
+        );
+        const supervisorStamp = document.getElementById("stamp-aprobador");
+        const encargadoStamp = document.getElementById("stamp-encargado");
+        if (selectSupervisor)
+          selectSupervisor.value =
+            dataVF.responsables_area.responsable_area || "";
+        if (selectCategoria)
+          selectCategoria.value = dataVF.responsables_area.operador_area || "";
+        if (supervisorStamp)
+          supervisorStamp.textContent =
+            dataVF.responsables_area.responsable_area || "-";
+        if (encargadoStamp)
+          encargadoStamp.textContent =
+            dataVF.responsables_area.operador_area || "-";
+      }
+
+      // AST y Participantes
+      if (dataVF && dataVF.ast) {
+        mostrarAST(dataVF.ast);
+      } else {
+        mostrarAST({});
+      }
+      if (dataVF && dataVF.actividades_ast) {
+        mostrarActividadesAST(dataVF.actividades_ast);
+      } else {
+        mostrarActividadesAST([]);
+      }
+      if (dataVF && dataVF.participantes_ast) {
+        mostrarParticipantesAST(dataVF.participantes_ast);
+      } else {
+        mostrarParticipantesAST([]);
+      }
+      // Actualizar campos fusionados
+      try {
+        actualizarCamposFusionados();
+      } catch (e) {
+        console.warn("actualizarCamposFusionados falló (verformularios):", e);
       }
     })
     .catch((err) => {
-      console.error("Error al obtener datos del permiso:", err);
+      console.error("Error al obtener datos de /api/verformularios:", err);
       alert(
         "Error al obtener datos del permiso. Revisa la consola para más detalles."
       );
@@ -589,59 +642,34 @@ document.addEventListener("DOMContentLoaded", function () {
   // guardados en /api/autorizaciones/personas/:id (si existen)
   rellenarSupervisoresYCategorias();
 
-  async function rellenarSupervisoresYCategorias() {
-    try {
-      // Lógica para llenar selects y mostrar supervisor/categoría en los stamps
-      // 1. Llenar selects (puedes adaptar según tu backend)
-      // Ejemplo: fetch supervisores y categorías
-      const [respSupervisores, respCategorias] = await Promise.all([
-        fetch("/api/autorizaciones/supervisores"),
-        fetch("/api/autorizaciones/categorias"),
-      ]);
-      const supervisores = respSupervisores.ok
-        ? await respSupervisores.json()
-        : [];
-      const categorias = respCategorias.ok ? await respCategorias.json() : [];
-      const supervisorSelect = document.getElementById("responsable-aprobador");
-      const categoriaSelect = document.getElementById("responsable-aprobador2");
-      if (supervisorSelect && Array.isArray(supervisores)) {
-        supervisorSelect.innerHTML = "<option value=''>Selecciona</option>";
-        supervisores.forEach((s) => {
-          supervisorSelect.innerHTML += `<option value="${s.nombre}">${s.nombre}</option>`;
-        });
-      }
-      if (categoriaSelect && Array.isArray(categorias)) {
-        categoriaSelect.innerHTML = "<option value=''>Selecciona</option>";
-        categorias.forEach((c) => {
-          categoriaSelect.innerHTML += `<option value="${c.nombre}">${c.nombre}</option>`;
-        });
-      }
-      // 2. Consultar supervisor/categoría guardados en el permiso
-      if (idPermiso2) {
-        const respPersona = await fetch(
-          `/api/autorizaciones/personas/${idPermiso2}`
+  function rellenarSupervisoresYCategorias() {
+    fetch("/api/supervisores")
+      .then((resp) => resp.json())
+      .then((data) => {
+        const selectSupervisor = document.getElementById(
+          "responsable-aprobador"
         );
-        if (respPersona.ok) {
-          const dataPersona = await respPersona.json();
-          // Preseleccionar en los selects
-          if (supervisorSelect && dataPersona.supervisor) {
-            supervisorSelect.value = dataPersona.supervisor;
-          }
-          if (categoriaSelect && dataPersona.categoria) {
-            categoriaSelect.value = dataPersona.categoria;
-          }
-          // Mostrar en los stamps
-          setText("stamp-aprobador", dataPersona.supervisor || "-");
-          setText("stamp-encargado", dataPersona.categoria || "-");
-        } else {
-          // Si no hay datos, limpiar stamps
-          setText("stamp-aprobador", "-");
-          setText("stamp-encargado", "-");
+        if (selectSupervisor) {
+          selectSupervisor.innerHTML = "<option value=''>Selecciona</option>";
+          data.forEach((s) => {
+            selectSupervisor.innerHTML += `<option value="${s.nombre}">${s.nombre}</option>`;
+          });
         }
-      }
-    } catch (err) {
-      console.error("Error al rellenar supervisores/categorias:", err);
-    }
+      });
+
+    fetch("/api/categorias")
+      .then((resp) => resp.json())
+      .then((data) => {
+        const selectCategoria = document.getElementById(
+          "responsable-aprobador2"
+        );
+        if (selectCategoria) {
+          selectCategoria.innerHTML = "<option value=''>Selecciona</option>";
+          data.forEach((c) => {
+            selectCategoria.innerHTML += `<option value="${c.nombre}">${c.nombre}</option>`;
+          });
+        }
+      });
   }
   // Guardar requisitos
   const btnGuardar = document.getElementById("btn-guardar-requisitos");

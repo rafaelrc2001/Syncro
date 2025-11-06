@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Syncro</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Orbitron:wght@500;700&family=Roboto:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/CSS/EstiloGeneral.css" />
+    <link rel="stylesheet" href="/CSS/Estilo-Dash2.css">
+  </head>
+  <body>
+    <div class="app-container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <h2 class="logo-container">
+            <i class="ri-refresh-line logo-icon"></i>
+            <span class="logo-text">Syncro</span>
+          </h2>
+          <button class="collapse-btn">
+            <i class="ri-menu-line menu-icon"></i>
+            <i class="ri-arrow-right-s-line collapse-icon"></i>
+          </button>
+        </div>
+        <nav class="sidebar-nav">
+          <ul>
+            <li>
+              <a href="#"
+                ><i class="ri-pie-chart-2-line"></i> <span>Dashboard</span></a
+              >
+            </li>
+            <li>
+              <a href="#"
+                ><i class="ri-shield-user-line"></i>
+                <span>Autorizar Permisos</span></a
+              >
+            </li>
+          </ul>
+        </nav>
+        <div class="sidebar-footer">
+          <div class="user-profile">
+            <div class="avatar"></div>
+            <div class="user-info">
+              <span class="name"></span>
+              <span class="role">Supervisor</span>
+            </div>
+          </div>
+          <button class="logout-btn">
+            <i class="ri-logout-box-r-line"></i>
+          </button>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+         <header class="main-header">
+          <div class="header-content">
+            <div class="header-left-image">
+              <img
+                src="/img/proagro.png"
+                alt="Logo izquierdo"
+                class="header-logo"
+              />
+            </div>
+            <div class="header-center">
+              <h1>Sistema de control de permisos de trabajos</h1>
+              <div class="header-date" id="current-date"></div>
+            </div>
+            <div class="header-right-image">
+              <img
+                src="/img/pemex.png"
+                alt="Logo derecho"
+                class="header-logo"
+              />
+            </div>
+          </div>
+        </header>
+        </header>
+
+        <!-- Dashboard Grid: Gráficas Principales -->
+        <div class="dashboard-grid">
+          <!-- Gráfica de Tiempos de Autorización -->
+          <div class="chart-card large-chart">
+            <div class="chart-title">
+              <i
+                class="ri-time-line"
+                style="color: var(--naranja-seguridad)"
+              ></i>
+              Tiempos de Autorización
+            </div>
+            <div id="tiempos-chart" class="chart-container"></div>
+          </div>
+
+          <!-- Gráfica de Áreas -->
+          <div class="chart-card large-chart">
+            <div class="chart-title">
+              <i
+                class="ri-building-line"
+                style="color: var(--azul-petroleo)"
+              ></i>
+              Permisos por Área
+            </div>
+            <div id="areas-chart" class="chart-container"></div>
+          </div>
+        </div>
+
+        <!-- Gráficas Inferiores: Tipos y Estatus -->
+        <div class="charts-container">
+          <!-- Gráfica de Tipos -->
+          <div class="chart-card">
+            <div class="chart-title">
+              <i
+                class="ri-list-check"
+                style="color: var(--naranja-seguridad)"
+              ></i>
+              Permisos por Tipo
+            </div>
+            <div id="type-chart" class="chart-container"></div>
+          </div>
+
+          <!-- Gráfica de Estatus -->
+          <div class="chart-card">
+            <div class="chart-title">
+              <i class="ri-time-line" style="color: var(--verde-tecnico)"></i>
+              Permisos por Estatus
+            </div>
+            <div id="status-chart" class="chart-container"></div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+    <script src="/JS/supervisor/MenuSupervisor.js"></script>
+    <script src="/JS/generales/dash_jefe/Grafica-areas.js"></script>
+    <script src="/JS/generales/dash_jefe/Grafica-tipos.js"></script>
+    <script src="/JS/generales/dash_jefe/Graficas-estatus.js"></script>
+    <script src="/JS/generales/dash_jefe/Promedio.js"></script>
+
+
+  </body>
+</html>

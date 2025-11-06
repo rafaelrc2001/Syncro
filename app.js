@@ -1,4 +1,6 @@
 // Inicialización de app
+// Inicialización de app
+
 // ...existing code...
 // Endpoint de login de usuario departamento
 //Notas:
@@ -32,6 +34,8 @@ const exportarRouter = require("./exportar");
 const fechasAutorizacionRouter = require("./fechas_autorizacion_routes");
 
 const loginconsultaRouter = require("./loginconsulta");
+
+const graficasJefesRouter = require("./graficas/graficas_jefes/graficas_jefes");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -91,6 +95,7 @@ app.use("/api", graficaEstatusRouter); // Monta las rutas de graficas/endpoint_g
 app.use("/api", tablaPermisosRouter); // Monta las rutas de graficas/endpoint_tabla.js bajo el prefijo /api
 app.use("/api", exportarRouter); // Monta las rutas de exportar.js bajo /api (p.ej. /api/exportar-supervisor)
 app.use("/api", fechasAutorizacionRouter); // Monta las rutas de fechas de autorización
+app.use("/api/graficas_jefes", graficasJefesRouter);
 
 // ================= RUTAS DE TABLAS BASE =================
 const tablasBase = require("./tablasbase");

@@ -14,6 +14,7 @@
     />
     <link rel="stylesheet" href="/CSS/EstiloGeneral.css" />
     <link rel="stylesheet" href="/CSS/EstiloJefe.css" />
+    <link rel="stylesheet" href="/CSS/Estilo-Dash.css" />
   </head>
   <body>
     <div class="app-container">
@@ -81,21 +82,256 @@
       </aside>
 
       <!-- Main Content -->
+
       <main class="main-content">
-        <div class="dashboard-frame">
-          <div class="powerbi-fullscreen-container">
-            <iframe
-              title="Dashboard de PT"
-              src="https://app.powerbi.com/view?r=eyJrIjoiY2Q0NDBmNzktMmEzZC00OWJjLWFhOWYtODg0NTkzYWZiNzFiIiwidCI6IjM4NjliZjNkLTg2YTktNDI3Ni1hYzQzLTAyMTdiNmI5ZmFkOCJ9"
-              frameborder="0"
-              allowfullscreen="true"
-            >
-            </iframe>
+        <header class="main-header">
+          <div class="header-content">
+            <div class="header-left-image">
+              <img
+                src="/Graficas-cloude/Version1/img/proagro.png"
+                alt="Logo izquierdo"
+                class="header-logo"
+              />
+            </div>
+            <div class="header-center">
+              <h1>Sistema de control de permisos de trabajos</h1>
+              <div class="header-date" id="current-date"></div>
+            </div>
+            <div class="header-right-image">
+              <img
+                src="/Graficas-cloude/Version1/img/pemex.png"
+                alt="Logo derecho"
+                class="header-logo"
+              />
+            </div>
           </div>
-        </div>
+        </header>
+
+        <!-- Cards Section -->
+        <section class="cards-section">
+          <div class="card">
+            <div class="card-icon" style="background-color: #eceff1">
+              <i class="ri-file-list-2-line" style="color: #455a64"></i>
+            </div>
+            <div class="card-content">
+              <h3>Total de Permisos</h3>
+              <p class="count">247</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-icon" style="background-color: #fff8e1">
+              <i class="ri-alarm-warning-line" style="color: #ff8f00"></i>
+            </div>
+            <div class="card-content">
+              <h3>Por Autorizar</h3>
+              <p class="count">32</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-icon" style="background-color: #e8f5e9">
+              <i class="ri-check-line" style="color: #2e7d32"></i>
+            </div>
+            <div class="card-content">
+              <h3>Activos</h3>
+              <p class="count">170</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-icon" style="background-color: #e3f2fd">
+              <i class="ri-flag-line" style="color: #1565c0"></i>
+            </div>
+            <div class="card-content">
+              <h3>Terminados</h3>
+              <p class="count">198</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-icon" style="background-color: #ffebee">
+              <i class="ri-close-circle-line" style="color: #c62828"></i>
+            </div>
+            <div class="card-content">
+              <h3>No Autorizados</h3>
+              <p class="count">15</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Filtros Simplificados -->
+        <section class="filters-section">
+          <div class="search-bar-container">
+            <div class="search-bar">
+              <input type="text" placeholder="Buscar por folio,tipo..." />
+              <i class="ri-search-line"></i>
+            </div>
+          </div>
+          <div class="charts-btn-container">
+            <button class="btn secondary charts-btn">
+              <i class="ri-bar-chart-line"></i> Ver Gráficas
+            </button>
+          </div>
+        </section>
+
+        <!-- Tabla de Permisos -->
+        <section class="permits-table">
+          <div class="table-header">
+            <h3>Permisos de Trabajo</h3>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Permiso</th>
+                  <th>Tipo</th>
+                  <th>Actividad</th>
+                  <th>Solicitante</th>
+                  <th>Departamento</th>
+                  <th>Estatus</th>
+                  <th class="time-col" data-tooltip="Hora de creación">
+                    <i class="ri-time-line"></i> Creación
+                  </th>
+                  <th
+                    class="time-col"
+                    data-tooltip="Hora de autorización del área"
+                  >
+                    <i class="ri-building-line"></i> Área
+                  </th>
+                  <th
+                    class="time-col"
+                    data-tooltip="Hora de autorización de seguridad"
+                  >
+                    <i class="ri-shield-check-line"></i> Seguridad
+                  </th>
+                  <th
+                    class="time-col"
+                    data-tooltip="Tiempo total desde creación hasta activación"
+                  >
+                    <i class="ri-timer-line"></i> Total
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  data-tooltip="Supervisor: Juan Pérez | Responsable: Carlos López"
+                >
+                  <td>PM-2023-00145</td>
+                  <td>Trabajo en Altura</td>
+                  <td>Limpieza de fachada</td>
+                  <td>Roberto Silva</td>
+                  <td>Mantenimiento</td>
+                  <td><span class="status-badge active">Activo</span></td>
+                  <td>08:30 AM</td>
+                  <td>09:15 AM</td>
+                  <td>09:45 AM</td>
+                  <td>1h 15m</td>
+                </tr>
+                <tr
+                  data-tooltip="Supervisor: María García | Responsable: Ana Rodríguez"
+                >
+                  <td>PM-2023-00144</td>
+                  <td>Trabajo Eléctrico</td>
+                  <td>Instalación eléctrica</td>
+                  <td>Luis Mendoza</td>
+                  <td>Producción</td>
+                  <td><span class="status-badge pending">Pendiente</span></td>
+                  <td>09:00 AM</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                </tr>
+                <tr
+                  data-tooltip="Supervisor: Carlos López | Responsable: Pedro Navarro"
+                >
+                  <td>PM-2023-00143</td>
+                  <td>Espacios Confinados</td>
+                  <td>Inspección de tanque</td>
+                  <td>Miguel Ángel Torres</td>
+                  <td>Seguridad</td>
+                  <td><span class="status-badge completed">Terminado</span></td>
+                  <td>07:45 AM</td>
+                  <td>08:20 AM</td>
+                  <td>08:50 AM</td>
+                  <td>1h 5m</td>
+                </tr>
+                <tr
+                  data-tooltip="Supervisor: Ana Martínez | Responsable: Laura Sánchez"
+                >
+                  <td>PM-2023-00142</td>
+                  <td>Trabajo en Caliente</td>
+                  <td>Soldadura en tubería</td>
+                  <td>Jorge Hernández</td>
+                  <td>Mantenimiento</td>
+                  <td>
+                    <span class="status-badge wait-area">Espera área</span>
+                  </td>
+                  <td>02:15 PM</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                </tr>
+                <tr
+                  data-tooltip="Supervisor: Carlos López | Responsable: Ricardo Flores"
+                >
+                  <td>PM-2023-00141</td>
+                  <td>Trabajo Químico</td>
+                  <td>Manejo de reactivos</td>
+                  <td>Sofía Ramírez</td>
+                  <td>Calidad</td>
+                  <td>
+                    <span class="status-badge wait-security"
+                      >Espera seguridad</span
+                    >
+                  </td>
+                  <td>08:50 AM</td>
+                  <td>09:30 AM</td>
+                  <td>-</td>
+                  <td>-</td>
+                </tr>
+                <tr
+                  data-tooltip="Supervisor: Juan Pérez | Responsable: Patricia Castro"
+                >
+                  <td>PM-2023-00140</td>
+                  <td>Trabajo en Altura</td>
+                  <td>Reparación de iluminación</td>
+                  <td>Fernando Díaz</td>
+                  <td>Logística</td>
+                  <td><span class="status-badge canceled">Cancelado</span></td>
+                  <td>03:20 PM</td>
+                  <td>04:05 PM</td>
+                  <td>-</td>
+                  <td>-</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-footer">
+            <div class="pagination">
+              <button class="pagination-btn">
+                <i class="ri-arrow-left-s-line"></i>
+              </button>
+              <button class="pagination-btn active">1</button>
+              <button class="pagination-btn">2</button>
+              <button class="pagination-btn">3</button>
+              <button class="pagination-btn">...</button>
+              <button class="pagination-btn">10</button>
+              <button class="pagination-btn">
+                <i class="ri-arrow-right-s-line"></i>
+              </button>
+            </div>
+            <div class="records-counter">247 registros</div>
+          </div>
+        </section>
       </main>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
     <script src="/JS/jefe/MenuJefe.js"></script>
+    <script src="/JS/generales/dash_jefe/Grafica-areas.js"></script>
+    <script src="/JS/generales/dash_jefe/Grafica-tipos.js"></script>
+    <script src="/JS/generales/dash_jefe/Graficas-estatus.js"></script>
+    <script src="/JS/generales/dash_jefe/Promedio.js"></script>
   </body>
 </html>

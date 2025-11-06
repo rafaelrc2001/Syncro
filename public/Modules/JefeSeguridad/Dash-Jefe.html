@@ -88,7 +88,7 @@
           <div class="header-content">
             <div class="header-left-image">
               <img
-                src="/Graficas-cloude/Version1/img/proagro.png"
+                src="/img/proagro.png"
                 alt="Logo izquierdo"
                 class="header-logo"
               />
@@ -99,7 +99,7 @@
             </div>
             <div class="header-right-image">
               <img
-                src="/Graficas-cloude/Version1/img/pemex.png"
+                src="/img/pemex.png"
                 alt="Logo derecho"
                 class="header-logo"
               />
@@ -115,7 +115,7 @@
             </div>
             <div class="card-content">
               <h3>Total de Permisos</h3>
-              <p class="count">247</p>
+              <p class="count">-</p>
             </div>
           </div>
 
@@ -125,7 +125,7 @@
             </div>
             <div class="card-content">
               <h3>Por Autorizar</h3>
-              <p class="count">32</p>
+              <p class="count">-</p>
             </div>
           </div>
 
@@ -135,7 +135,7 @@
             </div>
             <div class="card-content">
               <h3>Activos</h3>
-              <p class="count">170</p>
+              <p class="count">-</p>
             </div>
           </div>
 
@@ -145,7 +145,7 @@
             </div>
             <div class="card-content">
               <h3>Terminados</h3>
-              <p class="count">198</p>
+              <p class="count">-</p>
             </div>
           </div>
 
@@ -155,7 +155,7 @@
             </div>
             <div class="card-content">
               <h3>No Autorizados</h3>
-              <p class="count">15</p>
+              <p class="count">-</p>
             </div>
           </div>
         </section>
@@ -169,9 +169,14 @@
             </div>
           </div>
           <div class="charts-btn-container">
-            <button class="btn secondary charts-btn">
-              <i class="ri-bar-chart-line"></i> Ver Gráficas
-            </button>
+            <div style="display: flex; gap: 12px">
+              <button id="btn-ver-graficas-1" class="btn secondary charts-btn">
+                <i class="ri-bar-chart-line"></i> Ver Gráficas
+              </button>
+              <button id="btn-ver-graficas-2" class="btn secondary charts-btn">
+                <i class="ri-bar-chart-line"></i> Ver Gráficas 2
+              </button>
+            </div>
           </div>
         </section>
 
@@ -214,96 +219,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr
-                  data-tooltip="Supervisor: Juan Pérez | Responsable: Carlos López"
-                >
-                  <td>PM-2023-00145</td>
-                  <td>Trabajo en Altura</td>
-                  <td>Limpieza de fachada</td>
-                  <td>Roberto Silva</td>
-                  <td>Mantenimiento</td>
-                  <td><span class="status-badge active">Activo</span></td>
-                  <td>08:30 AM</td>
-                  <td>09:15 AM</td>
-                  <td>09:45 AM</td>
-                  <td>1h 15m</td>
-                </tr>
-                <tr
-                  data-tooltip="Supervisor: María García | Responsable: Ana Rodríguez"
-                >
-                  <td>PM-2023-00144</td>
-                  <td>Trabajo Eléctrico</td>
-                  <td>Instalación eléctrica</td>
-                  <td>Luis Mendoza</td>
-                  <td>Producción</td>
-                  <td><span class="status-badge pending">Pendiente</span></td>
-                  <td>09:00 AM</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                </tr>
-                <tr
-                  data-tooltip="Supervisor: Carlos López | Responsable: Pedro Navarro"
-                >
-                  <td>PM-2023-00143</td>
-                  <td>Espacios Confinados</td>
-                  <td>Inspección de tanque</td>
-                  <td>Miguel Ángel Torres</td>
-                  <td>Seguridad</td>
-                  <td><span class="status-badge completed">Terminado</span></td>
-                  <td>07:45 AM</td>
-                  <td>08:20 AM</td>
-                  <td>08:50 AM</td>
-                  <td>1h 5m</td>
-                </tr>
-                <tr
-                  data-tooltip="Supervisor: Ana Martínez | Responsable: Laura Sánchez"
-                >
-                  <td>PM-2023-00142</td>
-                  <td>Trabajo en Caliente</td>
-                  <td>Soldadura en tubería</td>
-                  <td>Jorge Hernández</td>
-                  <td>Mantenimiento</td>
-                  <td>
-                    <span class="status-badge wait-area">Espera área</span>
-                  </td>
-                  <td>02:15 PM</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                </tr>
-                <tr
-                  data-tooltip="Supervisor: Carlos López | Responsable: Ricardo Flores"
-                >
-                  <td>PM-2023-00141</td>
-                  <td>Trabajo Químico</td>
-                  <td>Manejo de reactivos</td>
-                  <td>Sofía Ramírez</td>
-                  <td>Calidad</td>
-                  <td>
-                    <span class="status-badge wait-security"
-                      >Espera seguridad</span
-                    >
-                  </td>
-                  <td>08:50 AM</td>
-                  <td>09:30 AM</td>
-                  <td>-</td>
-                  <td>-</td>
-                </tr>
-                <tr
-                  data-tooltip="Supervisor: Juan Pérez | Responsable: Patricia Castro"
-                >
-                  <td>PM-2023-00140</td>
-                  <td>Trabajo en Altura</td>
-                  <td>Reparación de iluminación</td>
-                  <td>Fernando Díaz</td>
-                  <td>Logística</td>
-                  <td><span class="status-badge canceled">Cancelado</span></td>
-                  <td>03:20 PM</td>
-                  <td>04:05 PM</td>
-                  <td>-</td>
-                  <td>-</td>
-                </tr>
+                <!-- (Vacío: solo encabezado, sin filas) -->
               </tbody>
             </table>
           </div>
@@ -321,7 +237,7 @@
                 <i class="ri-arrow-right-s-line"></i>
               </button>
             </div>
-            <div class="records-counter">247 registros</div>
+            <div class="records-counter"></div>
           </div>
         </section>
       </main>
@@ -329,9 +245,12 @@
 
     <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
     <script src="/JS/jefe/MenuJefe.js"></script>
+    <script src="/JS/generales/dash_jefe/cards_jefes.js"></script>
     <script src="/JS/generales/dash_jefe/Grafica-areas.js"></script>
     <script src="/JS/generales/dash_jefe/Grafica-tipos.js"></script>
     <script src="/JS/generales/dash_jefe/Graficas-estatus.js"></script>
     <script src="/JS/generales/dash_jefe/Promedio.js"></script>
+
+    <script src="/Js/jefe/dash-jefe.js"></script>
   </body>
 </html>

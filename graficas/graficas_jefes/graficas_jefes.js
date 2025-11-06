@@ -21,7 +21,8 @@ router.get("/permisos-jefes", async (req, res) => {
 				sup.nombre AS supervisor,
 				cat.nombre AS categoria,
 				aut.fecha_hora_area,
-				aut.fecha_hora_supervisor
+				aut.fecha_hora_supervisor,
+				aut.responsable_area
 			FROM permisos_trabajo pt
 			INNER JOIN tipos_permisos tp ON pt.id_tipo_permiso = tp.id_tipo_permiso
 			INNER JOIN areas a ON pt.id_area = a.id_area

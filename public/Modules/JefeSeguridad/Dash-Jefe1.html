@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="/CSS/EstiloGeneral.css" />
     <link rel="stylesheet" href="/CSS/EstiloJefe.css" />
     <link rel="stylesheet" href="/CSS/Estilo-Dash2.css" />
+    <link rel="stylesheet" href="/CSS/Estilo-Dash.css" />
   </head>
   <body>
     <div class="app-container">
@@ -106,6 +107,25 @@
           </div>
         </header>
 
+        <section class="filters-section">
+          <div class="search-bar-container">
+            <div class="search-bar">
+              <input type="text" placeholder="Buscar por folio,tipo..." />
+              <i class="ri-search-line"></i>
+            </div>
+          </div>
+          <div class="charts-btn-container">
+            <div style="display: flex; gap: 12px">
+              <button id="btn-ver-graficas-3" class="btn secondary charts-btn">
+                <i class="ri-bar-chart-line"></i> Tabla
+              </button>
+              <button id="btn-ver-graficas-2" class="btn secondary charts-btn">
+                <i class="ri-bar-chart-line"></i> Ver Gráficas 2
+              </button>
+            </div>
+          </div>
+        </section>
+
         <!-- Dashboard Grid: Gráficas Principales -->
         <div class="dashboard-grid">
           <!-- Gráfica de Tiempos de Autorización -->
@@ -165,5 +185,6 @@
     <script src="/JS/generales/dash_jefe/Grafica-tipos.js"></script>
     <script src="/JS/generales/dash_jefe/Graficas-estatus.js"></script>
     <script src="/JS/generales/dash_jefe/Promedio.js"></script>
+    <script src="/Js/jefe/dash-jefe.js"></script>
   </body>
 </html>

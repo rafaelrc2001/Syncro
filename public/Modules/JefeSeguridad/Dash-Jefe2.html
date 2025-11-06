@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="/CSS/EstiloGeneral.css" />
     <link rel="stylesheet" href="/CSS/EstiloJefe.css" />
     <link rel="stylesheet" href="/CSS/Estilo-Dash3.css" />
+    <link rel="stylesheet" href="/CSS/Estilo-Dash.css" />
   </head>
   <body>
     <div class="app-container">
@@ -87,7 +88,7 @@
           <div class="header-content">
             <div class="header-left-image">
               <img
-                src="/Graficas-cloude/Version1/img/proagro.png"
+                src="/img/proagro.png"
                 alt="Logo izquierdo"
                 class="header-logo"
               />
@@ -98,13 +99,32 @@
             </div>
             <div class="header-right-image">
               <img
-                src="/Graficas-cloude/Version1/img/pemex.png"
+                src="/img/pemex.png"
                 alt="Logo derecho"
                 class="header-logo"
               />
             </div>
           </div>
         </header>
+
+        <section class="filters-section">
+          <div class="search-bar-container">
+            <div class="search-bar">
+              <input type="text" placeholder="Buscar por folio,tipo..." />
+              <i class="ri-search-line"></i>
+            </div>
+          </div>
+          <div class="charts-btn-container">
+            <div style="display: flex; gap: 12px">
+              <button id="btn-ver-graficas-1" class="btn secondary charts-btn">
+                <i class="ri-bar-chart-line"></i> Ver Gráficas
+              </button>
+              <button id="btn-ver-graficas-3" class="btn secondary charts-btn">
+                <i class="ri-bar-chart-line"></i> Tabla
+              </button>
+            </div>
+          </div>
+        </section>
 
         <!-- Dashboard Grid: 4 Gráficas -->
         <div class="dashboard-grid">
@@ -159,5 +179,6 @@
     <script src="/JS/generales/dash_jefe/Grafica-Cate.js"></script>
     <script src="/JS/generales/dash_jefe/Grafica-Solici.js"></script>
     <script src="/JS/generales/dash_jefe/Grafica-Sucur.js"></script>
+    <script src="/Js/jefe/dash-jefe.js"></script>
   </body>
 </html>

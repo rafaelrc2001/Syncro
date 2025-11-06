@@ -76,13 +76,7 @@ async function cargarTarjetasJefe() {
       counts[4].textContent = noAutorizados; // No Autorizados
 
       // Tooltips: mostrar desglose de estatus con explicación y formato visual (HTML)
-      const explicaciones = [
-        null,
-        "Permisos en espera de autorización por área o seguridad:",
-        "Permisos actualmente activos:",
-        "Permisos terminados (cancelado, cierre con incidentes, cierre con accidentes, cierre sin incidentes, terminado):",
-        "Permisos que no fueron autorizados:",
-      ];
+      const explicaciones = [null, "", "", "", ""];
       const tooltips = [
         null, // Total de Permisos no necesita desglose
         desglose.porAutorizar,
@@ -106,6 +100,45 @@ async function cargarTarjetasJefe() {
       function capitalizeWords(str) {
         return str.replace(/\b\w/g, (c) => c.toUpperCase());
       }
+
+      // Reasignar eventos de tooltip a los cards
+      document
+        .querySelectorAll(
+          ".cards-section .card[data-tooltip], .cards-section .card-content[data-tooltip]"
+        )
+        .forEach((element) => {
+          element.addEventListener("mouseenter", function (e) {
+            const tooltip = document.createElement("div");
+            tooltip.className = "custom-tooltip";
+            tooltip.innerHTML = this.getAttribute("data-tooltip");
+            document.body.appendChild(tooltip);
+
+            const rect = this.getBoundingClientRect();
+            const tooltipRect = tooltip.getBoundingClientRect();
+
+            // Posicionar tooltip centrado arriba del elemento
+            let left = rect.left + rect.width / 2 - tooltipRect.width / 2;
+            let top = rect.top - tooltipRect.height - 8;
+
+            // Ajustar si se sale de la pantalla
+            if (left < 10) left = 10;
+            if (left + tooltipRect.width > window.innerWidth - 10) {
+              left = window.innerWidth - tooltipRect.width - 10;
+            }
+            if (top < 10) top = rect.bottom + 8;
+
+            tooltip.style.left = left + "px";
+            tooltip.style.top = top + "px";
+
+            this.tooltip = tooltip;
+          });
+          element.addEventListener("mouseleave", function () {
+            if (this.tooltip) {
+              this.tooltip.remove();
+              this.tooltip = null;
+            }
+          });
+        });
     }
   } catch (err) {
     console.error("Error al cargar tarjetas jefe:", err);

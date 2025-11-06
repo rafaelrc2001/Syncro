@@ -127,7 +127,7 @@ function renderTablaPermisosJefe() {
     // Tooltip con supervisor y responsable de área
     const supervisor = permiso.supervisor || "No asignado";
     const responsableArea = permiso.responsable_area || "No asignado";
-    const tooltip = `<b>Supervisor:</b> ${supervisor}<br><b>Responsable de Área:</b> ${responsableArea}`;
+    const tooltip = `<b>SupervisorSeg:</b> ${supervisor}<br><b>ResponsableA.:</b> ${responsableArea}`;
     tbody.innerHTML += `
       <tr data-tooltip="${tooltip}">
         <td>${permiso.prefijo || permiso.id_permiso || "-"}</td>
@@ -144,6 +144,42 @@ function renderTablaPermisosJefe() {
     `;
   });
   renderPaginacionPermisosJefe();
+  // Reasignar eventos de tooltip a las filas nuevas
+  document
+    .querySelectorAll(".permits-table tbody tr[data-tooltip]")
+    .forEach((element) => {
+      element.addEventListener("mouseenter", function (e) {
+        const tooltip = document.createElement("div");
+        tooltip.className = "custom-tooltip";
+        tooltip.innerHTML = this.getAttribute("data-tooltip");
+        document.body.appendChild(tooltip);
+
+        const rect = this.getBoundingClientRect();
+        const tooltipRect = tooltip.getBoundingClientRect();
+
+        // Posicionar tooltip centrado arriba del elemento
+        let left = rect.left + rect.width / 2 - tooltipRect.width / 2;
+        let top = rect.top - tooltipRect.height - 8;
+
+        // Ajustar si se sale de la pantalla
+        if (left < 10) left = 10;
+        if (left + tooltipRect.width > window.innerWidth - 10) {
+          left = window.innerWidth - tooltipRect.width - 10;
+        }
+        if (top < 10) top = rect.bottom + 8;
+
+        tooltip.style.left = left + "px";
+        tooltip.style.top = top + "px";
+
+        this.tooltip = tooltip;
+      });
+      element.addEventListener("mouseleave", function () {
+        if (this.tooltip) {
+          this.tooltip.remove();
+          this.tooltip = null;
+        }
+      });
+    });
 }
 
 function renderPaginacionPermisosJefe() {

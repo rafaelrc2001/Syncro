@@ -901,11 +901,8 @@ document.addEventListener("DOMContentLoaded", () => {
           const observaciones =
             document.getElementById("observations")?.value || "";
 
-          let cantidad_personas_autorizadas = null;
-          if (numero_personas_autorizadas === "SI") {
-            cantidad_personas_autorizadas =
-              document.getElementById("input-lifeline7")?.value || null;
-          }
+          const cantidad_personas_autorizadas =
+            document.getElementById("input-personas-autorizadas")?.value || "";
 
           // Construir el objeto de datos para enviar
           const datosAltura = {
@@ -932,12 +929,12 @@ document.addEventListener("DOMContentLoaded", () => {
             arnes_completo_buen_estado,
             suspender_trabajos_adyacentes,
             numero_personas_autorizadas,
-            cantidad_personas_autorizadas,
             trabajadores_aptos_evaluacion,
             requiere_barreras,
             observaciones,
             tipo_escalera,
             cual_acceso,
+            cantidad_personas_autorizadas,
           };
 
           // Imprimir en consola lo que se enviará

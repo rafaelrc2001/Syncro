@@ -30,12 +30,12 @@ router.post("/pt_altura", async (req, res) => {
       arnes_completo_buen_estado,
       suspender_trabajos_adyacentes,
       numero_personas_autorizadas,
-      cantidad_personas_autorizadas,
       trabajadores_aptos_evaluacion,
       requiere_barreras,
       observaciones,
       tipo_escalera,
       cual_acceso,
+      cantidad_personas_autorizadas,
     } = req.body;
 
     const query = `INSERT INTO public.pt_altura (
@@ -63,12 +63,12 @@ router.post("/pt_altura", async (req, res) => {
             arnes_completo_buen_estado,
             suspender_trabajos_adyacentes,
             numero_personas_autorizadas,
-            cantidad_personas_autorizadas,
             trabajadores_aptos_evaluacion,
             requiere_barreras,
             observaciones,
             tipo_escalera,
-            cual_acceso
+            cual_acceso,
+            cantidad_personas_autorizadas
         ) VALUES (
             $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29, $30
         ) RETURNING *;`;
@@ -98,12 +98,12 @@ router.post("/pt_altura", async (req, res) => {
       arnes_completo_buen_estado,
       suspender_trabajos_adyacentes,
       numero_personas_autorizadas,
-      cantidad_personas_autorizadas,
       trabajadores_aptos_evaluacion,
       requiere_barreras,
       observaciones,
       tipo_escalera,
       cual_acceso,
+      cantidad_personas_autorizadas,
     ];
 
     const result = await db.query(query, values);

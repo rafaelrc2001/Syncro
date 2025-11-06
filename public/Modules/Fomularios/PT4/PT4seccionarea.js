@@ -561,7 +561,7 @@ if (idPermiso) {
         setText(
           "cantidad-personas-autorizadas-label",
           d.cantidad_personas_autorizadas || "-"
-        ); // <-- aquí
+        );
         setText(
           "trabajadores-aptos-evaluacion-label",
           d.trabajadores_aptos_evaluacion || "-"
@@ -865,10 +865,6 @@ document.addEventListener("DOMContentLoaded", function () {
           document.getElementById(
             "numero-personas-autorizadas-label"
           ).textContent = d.numero_personas_autorizadas || "-";
-          setText(
-            "cantidad-personas-autorizadas-label",
-            d.cantidad_personas_autorizadas || "-"
-          ); // <-- aquí
           setRadioLabel(
             "trabajadores-aptos-evaluacion",
             d.trabajadores_aptos_evaluacion

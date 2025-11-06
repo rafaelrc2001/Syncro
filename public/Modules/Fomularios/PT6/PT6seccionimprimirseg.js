@@ -102,7 +102,7 @@ async function agregarPersonaEnArea(idPermiso, persona) {
 const btnRegresar = document.getElementById("btn-regresar");
 if (btnRegresar) {
   btnRegresar.addEventListener("click", function () {
-    window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
+    window.location.href = "SupSeguridad/SupSeguridad.html";
   });
 }
 
@@ -115,16 +115,197 @@ if (comentarioDiv && idPermiso) {
   mostrarComentarioSiCorresponde(idPermiso, comentarioDiv);
 }
 
+let _permisoFetch = null;
+let _verformulariosFetch = null;
+
+function actualizarNivelTensionDesdeFuentes() {
+  // prioridad: pt-electrico (permiso) > verformularios.data > verformularios.general > '-'
+  const nivelDesdePermiso = _permisoFetch && _permisoFetch.nivel_tension;
+  const nivelDesdeVer =
+    _verformulariosFetch &&
+    ((_verformulariosFetch.data && _verformulariosFetch.data.nivel_tension) ||
+      (_verformulariosFetch.general &&
+        _verformulariosFetch.general.nivel_tension));
+
+  const valor = nivelDesdePermiso ?? nivelDesdeVer ?? "-";
+  console.log("[DEBUG] Nivel de tensión resuelto para impresión:", {
+    nivelDesdePermiso,
+    nivelDesdeVer,
+    valor,
+  });
+  setText("nivel_tension", valor);
+}
+
+// Helper reutilizable para mapear un campo desde varias fuentes
+function aplicarCampoFusionado(
+  domId,
+  propPermiso,
+  propVerData,
+  propVerGeneral
+) {
+  const vPerm = _permisoFetch && _permisoFetch[propPermiso];
+  const vVer =
+    _verformulariosFetch &&
+    ((_verformulariosFetch.data && _verformulariosFetch.data[propVerData]) ||
+      (_verformulariosFetch.general &&
+        _verformulariosFetch.general[propVerGeneral]));
+  const valor = vPerm ?? vVer ?? "-";
+  setText(domId, valor);
+}
+
+// Actualizar un conjunto de campos comunes en la impresión
+function actualizarCamposFusionados() {
+  // identificadores DOM vs propiedades en permiso/verformularios
+  aplicarCampoFusionado("prefijo-label", "prefijo", "prefijo", "prefijo");
+  aplicarCampoFusionado(
+    "start-time-label",
+    "hora_inicio",
+    "hora_inicio",
+    "hora_inicio"
+  );
+  aplicarCampoFusionado("fecha-label", "fecha", "fecha", "fecha");
+  aplicarCampoFusionado(
+    "activity-type-label",
+    "tipo_mantenimiento",
+    "tipo_mantenimiento",
+    "tipo_mantenimiento"
+  );
+  aplicarCampoFusionado("plant-label", "area", "area", "area");
+  aplicarCampoFusionado(
+    "descripcion-trabajo-label",
+    "descripcion_trabajo",
+    "descripcion_trabajo",
+    "descripcion_trabajo"
+  );
+  aplicarCampoFusionado(
+    "equipment-description-label",
+    "equipo_intervenir",
+    "equipo_intervenir",
+    "equipo_intervenir"
+  );
+  aplicarCampoFusionado("empresa-label", "empresa", "empresa", "empresa");
+  // solicitante puede estar en distintos nombres
+  const solicitantePerm =
+    _permisoFetch &&
+    (_permisoFetch.solicitante || _permisoFetch.nombre_solicitante);
+  const solicitanteVer =
+    _verformulariosFetch &&
+    ((_verformulariosFetch.data &&
+      (_verformulariosFetch.data.solicitante ||
+        _verformulariosFetch.data.nombre_solicitante)) ||
+      (_verformulariosFetch.general &&
+        (_verformulariosFetch.general.solicitante ||
+          _verformulariosFetch.general.nombre_solicitante)));
+  setText("nombre-solicitante-label", solicitantePerm ?? solicitanteVer ?? "-");
+  aplicarCampoFusionado("sucursal-label", "sucursal", "sucursal", "sucursal");
+  aplicarCampoFusionado("contrato-label", "contrato", "contrato", "contrato");
+  aplicarCampoFusionado(
+    "work-order-label",
+    "ot_numero",
+    "ot_numero",
+    "ot_numero"
+  );
+  aplicarCampoFusionado("tag-label", "tag", "tag", "tag");
+  // medidas / checks que ya estamos seteando desde permiso, asegurar fallback
+  aplicarCampoFusionado(
+    "equipo_desenergizado",
+    "equipo_desenergizado",
+    "equipo_desenergizado",
+    "equipo_desenergizado"
+  );
+  aplicarCampoFusionado(
+    "interruptores_abiertos",
+    "interruptores_abiertos",
+    "interruptores_abiertos",
+    "interruptores_abiertos"
+  );
+  aplicarCampoFusionado(
+    "ausencia_voltaje",
+    "verificar_ausencia_voltaje",
+    "verificar_ausencia_voltaje",
+    "verificar_ausencia_voltaje"
+  );
+  aplicarCampoFusionado(
+    "candados_intervencion",
+    "candados_equipo",
+    "candados_equipo",
+    "candados_equipo"
+  );
+  aplicarCampoFusionado(
+    "tarjetas_alerta_notificacion",
+    "tarjetas_alerta",
+    "tarjetas_alerta",
+    "tarjetas_alerta"
+  );
+  aplicarCampoFusionado(
+    "aviso_personal_area",
+    "aviso_personal_area",
+    "aviso_personal_area",
+    "aviso_personal_area"
+  );
+  aplicarCampoFusionado(
+    "tapetes_dielelectricos",
+    "tapetes_dielectricos",
+    "tapetes_dielectricos",
+    "tapetes_dielectricos"
+  );
+  aplicarCampoFusionado(
+    "herramienta_aislante",
+    "herramienta_aislante",
+    "herramienta_aislante",
+    "herramienta_aislante"
+  );
+  aplicarCampoFusionado(
+    "pertiga_telescopica",
+    "pertiga_telescopica",
+    "pertiga_telescopica",
+    "pertiga_telescopica"
+  );
+  aplicarCampoFusionado(
+    "equipo_proteccion_especial",
+    "equipo_proteccion_especial",
+    "equipo_proteccion_especial",
+    "equipo_proteccion_especial"
+  );
+  aplicarCampoFusionado(
+    "cual_equipo_proteccion",
+    "tipo_equipo_proteccion",
+    "tipo_equipo_proteccion",
+    "tipo_equipo_proteccion"
+  );
+  aplicarCampoFusionado(
+    "aterrizar_equipo_circuito",
+    "aterrizar_equipo",
+    "aterrizar_equipo",
+    "aterrizar_equipo"
+  );
+  aplicarCampoFusionado(
+    "instalar_barricadas_area",
+    "barricadas_area",
+    "barricadas_area",
+    "barricadas_area"
+  );
+  aplicarCampoFusionado(
+    "observaciones_medidas",
+    "observaciones_adicionales",
+    "observaciones_adicionales",
+    "observaciones_adicionales"
+  );
+  // nivel tensión (usa la función ya existente también)
+  actualizarNivelTensionDesdeFuentes();
+}
+
 if (idPermiso) {
   console.log("Consultando permiso de electrico con id:", idPermiso);
   fetch(`/api/pt-electrico/${idPermiso}`)
     .then((resp) => resp.json())
     .then((data) => {
-      console.log("Respuesta de la API:", data);
+      console.log("Respuesta de la API (pt-electrico):", data);
       // Mapear datos generales correctamente
       if (data && data.success && data.data) {
         const permiso = data.data;
-        console.log("Valores del permiso recibidos:", permiso);
+        _permisoFetch = permiso;
+        console.log("Valores del permiso recibidos (pt-electrico):", permiso);
 
         // Datos generales
         setText("maintenance-type-label", permiso.tipo_mantenimiento || "-");
@@ -266,8 +447,34 @@ if (idPermiso) {
           permiso.verifico_libranza_electrica === "SI" ? "si" : "no"
         );
 
-        // CONDICIONES ACTUALES DEL EQUIPO
+        // --- Mapear explícitamente los mismos campos que en supervisor ---
+        setText("prefijo-label", permiso.prefijo || "-");
+        setText("empresa-label", permiso.empresa || "-");
+        setText(
+          "nombre-solicitante-label",
+          permiso.solicitante || permiso.nombre_solicitante || "-"
+        );
+        setText("sucursal-label", permiso.sucursal || "-");
+        setText("contrato-label", permiso.contrato || "-");
+        setText("plant-label", permiso.area || "-");
+        setText("start-time-label", permiso.hora_inicio || "-");
+        setText("fecha-label", permiso.fecha || "-");
+        setText("work-order-label", permiso.ot_numero || "-");
+        setText("tag-label", permiso.tag || "-");
+        setText(
+          "descripcion-trabajo-label",
+          permiso.descripcion_trabajo || "-"
+        );
+        setText(
+          "equipment-description-label",
+          permiso.equipo_intervenir || "-"
+        );
         setText("nivel_tension", permiso.nivel_tension || "-");
+
+        // Después de poblar desde la respuesta de pt-electrico, sincronizar todos
+        // los campos comunes con la lógica de supervisor para evitar discrepancias
+        // entre la vista supervisor y la de impresión.
+        actualizarCamposFusionados();
       }
     })
     .catch((err) => {
@@ -510,6 +717,55 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
           mostrarParticipantesAST([]); // Limpia tabla si no hay datos
         }
+
+        // Además pedir verformularios (general + data) — esto puede contener nivel_tension en otro nodo
+        fetch(`/api/verformularios?id=${encodeURIComponent(idPermiso)}`)
+          .then((resp) => resp.json())
+          .then((vf) => {
+            console.log("Respuesta de verformularios (impresión):", vf);
+            _verformulariosFetch = vf || null;
+            // algunos endpoints devuelven nivel_tension en data o en general
+            // Mapear campos que a veces vienen en verformularios.general
+            if (vf && vf.general) {
+              if (document.getElementById("prefijo-label"))
+                document.getElementById("prefijo-label").textContent =
+                  vf.general.prefijo || "-";
+              if (document.getElementById("fecha-label"))
+                document.getElementById("fecha-label").textContent =
+                  vf.general.fecha || "-";
+            }
+            if (vf && vf.data) {
+              const detallesVF = vf.data;
+              if (document.getElementById("work-order-label"))
+                document.getElementById("work-order-label").textContent =
+                  detallesVF.ot_numero ||
+                  document.getElementById("work-order-label").textContent ||
+                  "-";
+              if (document.getElementById("tag-label"))
+                document.getElementById("tag-label").textContent =
+                  detallesVF.tag ||
+                  document.getElementById("tag-label").textContent ||
+                  "-";
+              if (document.getElementById("descripcion-trabajo-label"))
+                document.getElementById(
+                  "descripcion-trabajo-label"
+                ).textContent =
+                  detallesVF.descripcion_trabajo ||
+                  document.getElementById("descripcion-trabajo-label")
+                    .textContent ||
+                  "-";
+            }
+            // Finalmente resolver nivel_tension con prioridad y volver a
+            // sincronizar los campos comunes en caso de que verformularios
+            // aporte valores más completos.
+            actualizarCamposFusionados();
+          })
+          .catch((err) => {
+            console.warn(
+              "No se pudo obtener verformularios para impresión:",
+              err
+            );
+          });
       })
       .catch((err) => {
         console.error("Error al obtener datos del permiso:", err);

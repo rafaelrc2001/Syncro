@@ -315,7 +315,8 @@ WHERE pt.id_permiso = $1
     pa.viento_permitido,
     pa.escalera_condicion,
     pa.tipo_escalera,
-    pa.cual_acceso
+    pa.cual_acceso,
+    pa.cantidad_personas_autorizadas
   FROM permisos_trabajo pt
   INNER JOIN pt_altura pa ON pt.id_permiso = pa.id_permiso
   INNER JOIN sucursales s ON pt.id_sucursal = s.id_sucursal
@@ -446,6 +447,10 @@ WHERE pt.id_permiso = $1
         pr.protocolo_emergencia,
         pr.personal_autorizado,
         pr.observaciones_radiacion,
+        pr.fluido,
+        pr.presion,
+        pr.temperatura,
+        pr.tecnico_radialogo,
         TO_CHAR(pr.fecha_creacion, 'DD/MM/YYYY') AS fecha_creacion,
         TO_CHAR(pr.fecha_actualizacion, 'DD/MM/YYYY') AS fecha_actualizacion
     FROM permisos_trabajo pt

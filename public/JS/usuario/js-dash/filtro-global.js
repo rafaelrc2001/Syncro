@@ -140,8 +140,11 @@ class DashboardFilter {
     // Aplicar filtro de estado
     if (this.statusFilter !== "all") {
       filteredPermisos = filteredPermisos.filter((permiso) => {
-        const estado = (permiso.Estado || permiso.estado || "").toLowerCase();
-        switch (this.statusFilter) {
+        const estado = (permiso.Estado || permiso.estado || "")
+          .toLowerCase()
+          .trim();
+        const filtro = this.statusFilter.toLowerCase().trim();
+        switch (filtro) {
           case "active":
             return estado === "en espera del área";
           case "completed":
@@ -154,8 +157,15 @@ class DashboardFilter {
             return estado === "continua";
           case "wait-security":
             return estado === "terminado" || estado === "cancelado";
+          case "cierre sin incidentes":
+            return estado === "cierre sin incidentes";
+          case "cierre con incidentes":
+            return estado === "cierre con incidentes";
+          case "cierre con accidentes":
+            return estado === "cierre con accidentes";
           default:
-            return true;
+            // Si el filtro es un texto personalizado, comparar normalizado
+            return estado === filtro;
         }
       });
     }

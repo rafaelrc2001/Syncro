@@ -86,9 +86,33 @@ function actualizarCamposFusionados() {
   );
   aplicarCampoFusionado("tag-label", "tag", "tag", "tag");
 }
+
 const btnGuardarCampos = document.getElementById("btn-guardar-campos");
 if (btnGuardarCampos) {
-  btnGuardarCampos.addEventListener("click", async function () {
+  btnGuardarCampos.addEventListener("click", function (e) {
+    e.preventDefault();
+    // Rellenar los datos del modal si quieres
+    const modalConfirmarAutorizar = document.getElementById(
+      "modalConfirmarAutorizar"
+    );
+    if (modalConfirmarAutorizar) {
+      // Ejemplo para rellenar campos del modal:
+      document.getElementById("modal-permit-id").textContent =
+        document.getElementById("prefijo-label")?.textContent?.trim() || "-";
+      document.getElementById("modal-permit-type").textContent =
+        document.getElementById("activity-type-label")?.textContent || "-";
+      document.getElementById("modal-solicitante").textContent =
+        document.getElementById("nombre-solicitante-label")?.textContent || "-";
+      document.getElementById("modal-departamento").textContent =
+        document.getElementById("plant-label")?.textContent || "-";
+      modalConfirmarAutorizar.style.display = "flex";
+    }
+  });
+}
+
+const btnConfirmarAutorizar = document.getElementById("btnConfirmarAutorizar");
+if (btnConfirmarAutorizar) {
+  btnConfirmarAutorizar.addEventListener("click", async function () {
     // 1. Obtener datos necesarios
     const params = new URLSearchParams(window.location.search);
     const idPermiso = params.get("id") || window.idPermisoActual;
@@ -110,36 +134,34 @@ if (btnGuardarCampos) {
     }
 
     // 3. Guardar los campos/requisitos primero
-    // Utilidad para leer radios
     function getRadio(name) {
       const checked = document.querySelector(`input[name='${name}']:checked`);
       return checked ? checked.value : null;
     }
-    // Utilidad para leer inputs de texto/number
     function getInput(name) {
       const el = document.querySelector(`[name='${name}']`);
       return el ? el.value : null;
     }
 
-    // Construir payload con los campos que espera el backend
+    // Construir payload con los campos que espera el backend (PT7)
     const payload = {
-      tipo_fuente_radiactiva: getRadio("otro_permiso"), // Ajusta si tienes un campo específico
-      actividad_radiactiva: getInput("cual_otro_permiso"), // Ajusta si tienes un campo específico
-      numero_serial_fuente: getRadio("barricadas_senalamientos"), // Ajusta si tienes un campo específico
-      distancia_trabajo: getRadio("suspension_trabajos_cercano"), // Ajusta si tienes un campo específico
-      tiempo_exposicion: getRadio("retiro_personal_ajeno"), // Ajusta si tienes un campo específico
-      dosis_estimada: getRadio("placa_dosimetro"), // Ajusta si tienes un campo específico
-      equipo_proteccion_radiologica: getRadio("limite_exposicion"), // Ajusta si tienes un campo específico
-      dosimetros_personales: getRadio("letreros_advertencia"), // Ajusta si tienes un campo específico
-      monitores_radiacion_area: getRadio("advirtio_personal"), // Ajusta si tienes un campo específico
+      tipo_fuente_radiactiva: getRadio("otro_permiso"),
+      actividad_radiactiva: getInput("cual_otro_permiso"),
+      numero_serial_fuente: getRadio("barricadas_senalamientos"),
+      distancia_trabajo: getRadio("suspension_trabajos_cercano"),
+      tiempo_exposicion: getRadio("retiro_personal_ajeno"),
+      dosis_estimada: getRadio("placa_dosimetro"),
+      equipo_proteccion_radiologica: getRadio("limite_exposicion"),
+      dosimetros_personales: getRadio("letreros_advertencia"),
+      monitores_radiacion_area: getRadio("advirtio_personal"),
       senalizacion_area: getInput("ubicacion_fuente_radioactiva"),
       barricadas: getInput("numero_personas_autorizadas"),
       protocolo_emergencia: getInput("tiempo_exposicion_permisible"),
       personal_autorizado: "", // Si tienes un campo para esto, cámbialo
       observaciones_radiacion: "", // Si tienes un campo para esto, cámbialo
-      fluido: document.getElementById("fluid").value,
-      presion: document.getElementById("pressure").value,
-      temperatura: document.getElementById("temperature").value,
+      fluido: document.getElementById("fluid")?.value || "",
+      presion: document.getElementById("pressure")?.value || "",
+      temperatura: document.getElementById("temperature")?.value || "",
     };
 
     try {
@@ -151,15 +173,6 @@ if (btnGuardarCampos) {
           body: JSON.stringify(payload),
         }
       );
-      // Depuración: mostrar payload y respuesta
-      console.log("[PT7] payload (guardar campos):", payload);
-      let respJson = {};
-      try {
-        respJson = await resp.json();
-      } catch (e) {
-        console.warn("[PT7] no JSON en respuesta al guardar campos", e);
-      }
-      console.log("[PT7] respuesta guardar campos:", resp.status, respJson);
       if (!resp.ok) throw new Error("Error al guardar los requisitos");
     } catch (err) {
       alert("Error al guardar los campos/requisitos. No se puede autorizar.");
@@ -167,21 +180,14 @@ if (btnGuardarCampos) {
       return;
     }
 
-    // 4. Autorizar (igual que PT1)
+    // 4. Autorizar (igual que PT5/PT6)
     try {
       let idEstatus = null;
       try {
         const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
         if (respEstatus.ok) {
-          const permisoData = await respEstatus.json();
-          idEstatus =
-            permisoData.id_estatus ||
-            (permisoData.data && permisoData.data.id_estatus);
-        } else {
-          console.error(
-            "[DEPURACIÓN] Error al obtener id_estatus. Status:",
-            respEstatus.status
-          );
+          const dataEstatus = await respEstatus.json();
+          idEstatus = dataEstatus?.data?.id_estatus || null;
         }
       } catch (err) {
         console.error("[DEPURACIÓN] Error al consultar id_estatus:", err);
@@ -189,33 +195,34 @@ if (btnGuardarCampos) {
 
       if (idEstatus) {
         try {
-          const payloadEstatus = { id_estatus: idEstatus };
-          const respEstatus = await fetch("/api/estatus/seguridad", {
-            method: "POST",
+          await fetch(`/api/permisos-trabajo/estatus/${idPermiso}`, {
+            method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payloadEstatus),
+            body: JSON.stringify({ id_estatus: 2 }), // 2 = autorizado
           });
-          let data = {};
-          try {
-            data = await respEstatus.json();
-          } catch (e) {}
-          if (!respEstatus.ok) {
-            console.error(
-              "[DEPURACIÓN] Error en respuesta de estatus/seguridad:",
-              data
-            );
-          }
         } catch (err) {
-          console.error(
-            "[DEPURACIÓN] Excepción al actualizar estatus de seguridad:",
-            err
-          );
+          console.error("[DEPURACIÓN] Error al actualizar estatus:", err);
         }
       } else {
         console.warn(
           "[DEPURACIÓN] No se obtuvo id_estatus para actualizar estatus."
         );
       }
+
+      // Generar timestamp automático para autorización PT7 (hora local)
+      const nowArea = new Date();
+      const year = nowArea.getFullYear();
+      const month = String(nowArea.getMonth() + 1).padStart(2, "0");
+      const day = String(nowArea.getDate()).padStart(2, "0");
+      const hours = String(nowArea.getHours()).padStart(2, "0");
+      const minutes = String(nowArea.getMinutes()).padStart(2, "0");
+      const seconds = String(nowArea.getSeconds()).padStart(2, "0");
+      const milliseconds = String(nowArea.getMilliseconds()).padStart(3, "0");
+      const fechaHoraAutorizacionArea = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}`;
+      console.log(
+        "[AUTORIZAR PT7] Timestamp generado (hora local):",
+        fechaHoraAutorizacionArea
+      );
 
       await fetch("/api/autorizaciones/area", {
         method: "POST",
@@ -224,9 +231,33 @@ if (btnGuardarCampos) {
           id_permiso: idPermiso,
           responsable_area,
           encargado_area: operador_area,
+          fecha_hora_area: fechaHoraAutorizacionArea,
         }),
       });
-      window.location.href = "/Modules/Usuario/AutorizarPT.html";
+
+      // Mostrar modal de confirmación y número de permiso
+      const confirmationModal = document.getElementById("confirmation-modal");
+      if (confirmationModal) {
+        confirmationModal.style.display = "flex";
+      }
+      const permitNumber = document.getElementById("generated-permit");
+      const displayedPrefijo =
+        document.getElementById("prefijo-label")?.textContent?.trim() ||
+        window.currentPermisoData?.general?.prefijo ||
+        idPermiso;
+      if (permitNumber) {
+        permitNumber.textContent = displayedPrefijo || "-";
+      }
+
+      // El cierre del modal hará la redirección
+      const modalClose = document.getElementById("modal-close-btn");
+      if (modalClose) {
+        modalClose.onclick = function () {
+          window.location.href = "/Modules/Usuario/AutorizarPT.html";
+        };
+      } else {
+        window.location.href = "/Modules/Usuario/AutorizarPT.html";
+      }
     } catch (err) {
       alert(
         "Error al autorizar el permiso. Revisa la consola para más detalles."
@@ -236,6 +267,14 @@ if (btnGuardarCampos) {
         err
       );
     }
+  });
+}
+
+const btnCancelarConfirmar = document.getElementById("btnCancelarConfirmar");
+if (btnCancelarConfirmar) {
+  btnCancelarConfirmar.addEventListener("click", function () {
+    const modal = document.getElementById("modalConfirmarAutorizar");
+    if (modal) modal.style.display = "none";
   });
 }
 

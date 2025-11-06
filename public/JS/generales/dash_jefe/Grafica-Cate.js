@@ -67,38 +67,50 @@ function injectCategoriasChartStyles() {
     document.head.appendChild(styleSheet);
 }
 
-// Configuración de la gráfica de categorías
-function initCategoriasChart() {
-    // Inyectar estilos
-    injectCategoriasChartStyles();
 
-    // Datos de ejemplo para categorías
-    const categoriasData = {
-        categories: ['SAMP', 'APT', 'UREAS', 'AREA 6'],
-        values: [120, 85, 60, 45],
-        colors: ['#00BFA5', '#FF6F00', '#D32F2F', '#003B5C'],
-        icons: ['🔧', '⚡', '🧪', '🏭']
+// Procesar los datos del endpoint agrupando por categoría (ignorando mayúsculas, minúsculas y acentos)
+function processCategoriasData(data) {
+    const catCounts = {};
+    const catLabels = {};
+    data.forEach((item) => {
+        if (item.categoria) {
+            const normalized = item.categoria
+                .normalize("NFD")
+                .replace(/\p{Diacritic}/gu, "")
+                .toLowerCase();
+            catCounts[normalized] = (catCounts[normalized] || 0) + 1;
+            if (!catLabels[normalized]) {
+                catLabels[normalized] = item.categoria;
+            }
+        }
+    });
+    const categories = Object.values(catLabels);
+    const values = Object.keys(catLabels).map((key) => catCounts[key]);
+    // Paleta de colores y algunos íconos por defecto
+    const colors = [
+        '#00BFA5', '#FF6F00', '#D32F2F', '#003B5C', '#7B1FA2', '#FFC107', '#0097A7', '#C51162', '#43A047', '#F4511E'
+    ];
+    const icons = ['🔧', '⚡', '🧪', '🏭', '📦', '🛠️', '🚧', '🔬', '🧰', '🏗️'];
+    return {
+        categories,
+        values,
+        colors: categories.map((_, i) => colors[i % colors.length]),
+        icons: categories.map((_, i) => icons[i % icons.length])
     };
+}
 
-    // Inicializar gráfica
+function initCategoriasChart() {
+    injectCategoriasChartStyles();
     const categoriasChart = echarts.init(document.getElementById('categorias-chart'));
 
-    // Preparar datos para la gráfica de pastel
-    const pieData = categoriasData.categories.map((category, index) => ({
-        value: categoriasData.values[index],
-        name: `${categoriasData.icons[index]} ${category}`,
-        itemStyle: {
-            color: categoriasData.colors[index]
-        }
-    }));
-
-    // Configuración de la gráfica de pastel
+    // Configuración inicial vacía
     const categoriasOption = {
         tooltip: {
             trigger: 'item',
             formatter: function(params) {
-                const total = categoriasData.values.reduce((a, b) => a + b, 0);
-                const percentage = ((params.value / total) * 100).toFixed(1);
+                // El total se calcula dinámicamente
+                const total = params.series?.data?.reduce((a, b) => a + (b.value || 0), 0) || 0;
+                const percentage = total > 0 ? ((params.value / total) * 100).toFixed(1) : 0;
                 return `
                     <div style="font-weight: 600; margin-bottom: 5px;">
                         ${params.name}
@@ -123,7 +135,7 @@ function initCategoriasChart() {
         legend: {
             orient: 'horizontal',
             bottom: '0%',
-            data: categoriasData.categories.map((category, index) => `${categoriasData.icons[index]} ${category}`),
+            data: [],
             textStyle: {
                 color: '#4A4A4A',
                 fontSize: 11
@@ -132,7 +144,6 @@ function initCategoriasChart() {
             itemWidth: 12,
             itemHeight: 12,
             formatter: function(name) {
-                // Acortar nombres largos para la leyenda
                 if (name.length > 15) {
                     return name.substring(0, 12) + '...';
                 }
@@ -154,8 +165,8 @@ function initCategoriasChart() {
                 label: {
                     show: true,
                     formatter: function(params) {
-                        const total = categoriasData.values.reduce((a, b) => a + b, 0);
-                        const percentage = ((params.value / total) * 100).toFixed(1);
+                        const total = params.series?.data?.reduce((a, b) => a + (b.value || 0), 0) || 0;
+                        const percentage = total > 0 ? ((params.value / total) * 100).toFixed(1) : 0;
                         return `${params.name}: ${percentage}%`;
                     },
                     fontSize: 11,
@@ -178,7 +189,7 @@ function initCategoriasChart() {
                     length: 10,
                     length2: 5
                 },
-                data: pieData,
+                data: [],
                 animationType: 'scale',
                 animationEasing: 'elasticOut',
                 animationDelay: function (idx) {
@@ -187,42 +198,77 @@ function initCategoriasChart() {
             }
         ]
     };
-
-    // Aplicar configuración
     categoriasChart.setOption(categoriasOption);
 
-    // Hacer responsive
+    // Responsive
     window.addEventListener('resize', function() {
         categoriasChart.resize();
     });
 
     // Función para actualizar datos
     function updateCategoriasChart(newData) {
-        const updatedData = {
-            categories: newData.categories || categoriasData.categories,
-            values: newData.values || categoriasData.values,
-            colors: newData.colors || categoriasData.colors,
-            icons: newData.icons || categoriasData.icons
-        };
-
-        const updatedPieData = updatedData.categories.map((category, index) => ({
-            value: updatedData.values[index],
-            name: `${updatedData.icons[index]} ${category}`,
+        const pieData = newData.categories.map((category, index) => ({
+            value: newData.values[index],
+            name: `${newData.icons[index]} ${category}`,
             itemStyle: {
-                color: updatedData.colors[index]
+                color: newData.colors[index]
             }
         }));
-
-        const updatedOption = {
+        const total = newData.values.reduce((a, b) => a + b, 0);
+        categoriasChart.setOption({
             legend: {
-                data: updatedData.categories.map((category, index) => `${updatedData.icons[index]} ${category}`)
+                data: newData.categories.map((category, index) => `${newData.icons[index]} ${category}`)
             },
             series: [{
-                data: updatedPieData
-            }]
-        };
-        categoriasChart.setOption(updatedOption);
+                data: pieData,
+                label: {
+                    show: true,
+                    formatter: function(params) {
+                        const percentage = total > 0 ? ((params.value / total) * 100).toFixed(1) : 0;
+                        return `${params.name}: ${percentage}%`;
+                    },
+                    fontSize: 11,
+                    color: '#4A4A4A'
+                }
+            }],
+            tooltip: {
+                trigger: 'item',
+                formatter: function(params) {
+                    const percentage = total > 0 ? ((params.value / total) * 100).toFixed(1) : 0;
+                    return `
+                        <div style="font-weight: 600; margin-bottom: 5px;">
+                            ${params.name}
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 5px; margin-bottom: 3px;">
+                            <span style="display: inline-block; width: 10px; height: 10px; background: ${params.color}; border-radius: 50%;"></span>
+                            Cantidad: <strong>${params.value}</strong>
+                        </div>
+                        <div style="color: #666; font-size: 11px;">
+                            Porcentaje: ${percentage}%
+                        </div>
+                    `;
+                },
+                backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                borderColor: '#00BFA5',
+                borderWidth: 1,
+                textStyle: {
+                    color: '#1C1C1C',
+                    fontSize: 12
+                }
+            }
+        });
     }
+
+    // Obtener datos del endpoint y actualizar la gráfica
+    fetch('/api/graficas_jefes/permisos-jefes')
+        .then((response) => response.json())
+        .then((data) => {
+            const processed = processCategoriasData(data);
+            updateCategoriasChart(processed);
+        })
+        .catch((err) => {
+            console.error('Error al obtener datos de categorías:', err);
+        });
 
     // Retornar funciones públicas
     return {

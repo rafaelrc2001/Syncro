@@ -1,9 +1,9 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const db = require('../database');
+const db = require("../database");
 
 // Insertar nuevo registro en pt_altura
-router.post('/pt_altura', async (req, res) => {
+router.post("/pt_altura", async (req, res) => {
   try {
     const {
       id_permiso,
@@ -30,6 +30,7 @@ router.post('/pt_altura', async (req, res) => {
       arnes_completo_buen_estado,
       suspender_trabajos_adyacentes,
       numero_personas_autorizadas,
+      cantidad_personas_autorizadas,
       trabajadores_aptos_evaluacion,
       requiere_barreras,
       observaciones,
@@ -62,13 +63,14 @@ router.post('/pt_altura', async (req, res) => {
             arnes_completo_buen_estado,
             suspender_trabajos_adyacentes,
             numero_personas_autorizadas,
+            cantidad_personas_autorizadas,
             trabajadores_aptos_evaluacion,
             requiere_barreras,
             observaciones,
             tipo_escalera,
             cual_acceso
         ) VALUES (
-            $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29
+            $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29, $30
         ) RETURNING *;`;
 
     const values = [
@@ -96,25 +98,26 @@ router.post('/pt_altura', async (req, res) => {
       arnes_completo_buen_estado,
       suspender_trabajos_adyacentes,
       numero_personas_autorizadas,
+      cantidad_personas_autorizadas,
       trabajadores_aptos_evaluacion,
       requiere_barreras,
       observaciones,
       tipo_escalera,
-      cual_acceso
+      cual_acceso,
     ];
 
     const result = await db.query(query, values);
     res.status(201).json({ success: true, data: result.rows[0] });
   } catch (error) {
-    console.error('Error al insertar en pt_altura:', error);
+    console.error("Error al insertar en pt_altura:", error);
     res
       .status(500)
-      .json({ success: false, error: 'Error al insertar en pt_altura' });
+      .json({ success: false, error: "Error al insertar en pt_altura" });
   }
 });
 
 // Endpoint para consultar permiso de trabajo en altura por id
-router.get('/pt-altura/:id', async (req, res) => {
+router.get("/pt-altura/:id", async (req, res) => {
   const id_permiso = req.params.id;
   try {
     const result = await db.query(
@@ -124,34 +127,34 @@ router.get('/pt-altura/:id', async (req, res) => {
     if (result.rows.length === 0) {
       return res.status(404).json({
         success: false,
-        message: 'No se encontró apertura para este permiso (altura)',
+        message: "No se encontró apertura para este permiso (altura)",
       });
     }
     // Asegura que los campos fluido, presion y temperatura siempre estén presentes
     const row = result.rows[0];
     const respuesta = {
       ...row,
-      fluido: row.fluido || '',
-      presion: row.presion || '',
-      temperatura: row.temperatura || '',
+      fluido: row.fluido || "",
+      presion: row.presion || "",
+      temperatura: row.temperatura || "",
     };
-    console.log('Datos enviados al frontend:', respuesta);
+    console.log("Datos enviados al frontend:", respuesta);
     res.json({
       success: true,
       data: respuesta,
     });
   } catch (err) {
-    console.error('Error al consultar apertura de PT Altura:', err);
+    console.error("Error al consultar apertura de PT Altura:", err);
     res.status(500).json({
       success: false,
-      error: 'Error al consultar apertura de PT Altura',
-      details: process.env.NODE_ENV === 'development' ? err.message : undefined,
+      error: "Error al consultar apertura de PT Altura",
+      details: process.env.NODE_ENV === "development" ? err.message : undefined,
     });
   }
 });
 
 // Actualiza los requisitos del área para un permiso específico
-router.put('/pt-altura/requisitos_area/:id', async (req, res) => {
+router.put("/pt-altura/requisitos_area/:id", async (req, res) => {
   const id = req.params.id;
   const datos = req.body;
   try {
@@ -166,13 +169,13 @@ router.put('/pt-altura/requisitos_area/:id', async (req, res) => {
     );
     res.json({ success: true });
   } catch (error) {
-    console.error('Error al actualizar requisitos:', error);
-    res.status(500).json({ error: 'Error al actualizar requisitos' });
+    console.error("Error al actualizar requisitos:", error);
+    res.status(500).json({ error: "Error al actualizar requisitos" });
   }
 });
 
 // Actualiza los requisitos de riesgos para un permiso específico
-router.put('/altura/requisitos_supervisor/:id_permiso', async (req, res) => {
+router.put("/altura/requisitos_supervisor/:id_permiso", async (req, res) => {
   const id = req.params.id_permiso;
   const datos = req.body;
   try {
@@ -207,10 +210,10 @@ router.put('/altura/requisitos_supervisor/:id_permiso', async (req, res) => {
     );
     res.json({ success: true });
   } catch (error) {
-    console.error('Error al actualizar requisitos de riesgos:', error);
+    console.error("Error al actualizar requisitos de riesgos:", error);
     res
       .status(500)
-      .json({ error: 'Error al actualizar requisitos de riesgos' });
+      .json({ error: "Error al actualizar requisitos de riesgos" });
   }
 });
 

@@ -5,13 +5,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const btn3 = document.getElementById("btn-ver-graficas-3");
   if (btn1)
     btn1.onclick = () =>
-      (window.location.href = "/Modules/JefeSeguridad/dash-jefe1.html");
+      (window.location.href = "/Modules/JefeSeguridad/Dash-Jefe1.html");
   if (btn2)
     btn2.onclick = () =>
-      (window.location.href = "/Modules/JefeSeguridad/dash-jefe2.html");
+      (window.location.href = "/Modules/JefeSeguridad/Dash-Jefe2.html");
   if (btn3)
     btn3.onclick = () =>
-      (window.location.href = "/Modules/JefeSeguridad/dash-jefe.html");
+      (window.location.href = "/Modules/JefeSeguridad/Dash-Jefe.html");
 
   // Mostrar fecha actual
   function mostrarFecha() {

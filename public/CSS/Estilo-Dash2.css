@@ -337,8 +337,9 @@ h1, h2, h3, h4, h5, h6 {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
-    padding: 0 25px 25px;
+    padding: 10px 25px 25px; /* Agregado espacio superior de 40px para separar las filas */
     height: 380px;
+    margin-top: 10px; /* Margen adicional para mayor separación */
 }
 
 .chart-card {

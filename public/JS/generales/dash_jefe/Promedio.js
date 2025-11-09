@@ -73,6 +73,83 @@ function renderTiemposChartPage(tiemposChart, processed, page) {
   });
 }
 
+function renderTiemposChartWithScroll(tiemposChart, processed) {
+  // Configurar para mostrar 8 elementos inicialmente con scroll horizontal
+  tiemposChart.setOption({
+    legend: {
+      data: ['Creación → Área', 'Área → Supervisor', 'Tiempo Total'],
+      bottom: 35,
+      left: 'center',
+      itemGap: 20,
+      textStyle: {
+        fontSize: 11,
+        color: '#4A4A4A'
+      },
+      icon: 'rect',
+      itemWidth: 12,
+      itemHeight: 8
+    },
+    xAxis: { 
+      data: processed.permisos,
+      axisLabel: {
+        rotate: 0,
+        fontSize: 9,
+        interval: 0
+      }
+    },
+    series: [
+      { 
+        name: 'Creación → Área',
+        data: processed.tiemposCreacionArea,
+        color: '#003B5C',
+        type: 'bar'
+      },
+      { 
+        name: 'Área → Supervisor',
+        data: processed.tiemposAreaSupervisor,
+        color: '#FF6F00',
+        type: 'bar'
+      },
+      { 
+        name: 'Tiempo Total',
+        data: processed.tiemposTotales,
+        color: '#00BFA5',
+        type: 'line',
+        symbol: 'circle',
+        symbolSize: 6
+      },
+    ],
+    grid: {
+      left: 50,
+      right: 20,
+      bottom: 80,
+      top: 40
+    },
+    dataZoom: [
+      {
+        type: 'slider',
+        show: true,
+        xAxisIndex: [0],
+        start: 0,
+        end: Math.min(100, (8 / processed.permisos.length) * 100), // Mostrar 8 elementos inicialmente
+        bottom: 5,
+        height: 18,
+        borderColor: '#B0BEC5',
+        fillerColor: 'rgba(0, 59, 92, 0.2)',
+        handleStyle: {
+          color: '#003B5C'
+        }
+      },
+      {
+        type: 'inside',
+        xAxisIndex: [0],
+        start: 0,
+        end: Math.min(100, (8 / processed.permisos.length) * 100)
+      }
+    ]
+  });
+}
+
 function addTiemposChartPaginationControls(container, tiemposChart, processed) {
   let pagDiv = document.getElementById("tiempos-chart-pagination");
   if (!pagDiv) {
@@ -270,13 +347,8 @@ function initTiemposChart() {
             ).toFixed(1)
           : 0;
 
-      tiemposChartPage = 0;
-      renderTiemposChartPage(tiemposChart, processed, tiemposChartPage);
-      addTiemposChartPaginationControls(
-        document.getElementById("tiempos-chart"),
-        tiemposChart,
-        processed
-      );
+      // Usar scroll horizontal mostrando 5 elementos inicialmente
+      renderTiemposChartWithScroll(tiemposChart, processed);
 
       tiemposChart.setOption({
         title: {

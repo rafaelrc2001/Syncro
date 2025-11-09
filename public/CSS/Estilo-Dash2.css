@@ -450,3 +450,19 @@ h1, h2, h3, h4, h5, h6 {
         margin-bottom: 10px;
     }
 }
+
+/* Estilos para la gráfica de tiempos con scroll horizontal */
+#tiempos-chart .chart-container {
+    height: 100%;
+    min-height: 280px;
+    padding-bottom: 10px; /* Espacio para la barra de scroll */
+}
+
+/* Asegurar que el contenedor tenga suficiente espacio */
+#tiempos-chart {
+    height: 100%;
+}
+
+#tiempos-chart .chart-card {
+    padding-bottom: 15px; /* Espacio adicional para la barra de scroll */
+}

@@ -124,6 +124,60 @@ function renderTablaPermisosJefe() {
         }
       }
     }
+
+    // Lógica de badges para el estatus (igual que en tabla-jefe.js)
+    let estatusNorm = (permiso.estatus || "").toLowerCase().trim();
+    let badgeClass = "";
+    switch (estatusNorm) {
+      case "por autorizar":
+        badgeClass = "wait-area";
+        break;
+      case "espera area":
+        badgeClass = "wait-area2";
+        break;
+      case "en espera del área":
+        badgeClass = "wait-area3";
+        break;
+      case "activo":
+        badgeClass = "active";
+        break;
+      case "terminado":
+        badgeClass = "completed";
+        break;
+      case "cierre sin incidentes":
+        badgeClass = "cierre-sin-incidentes";
+        break;
+      case "cierre con incidentes":
+        badgeClass = "cierre-con-incidentes";
+        break;
+      case "cierre con accidentes":
+        badgeClass = "cierre-con-accidentes";
+        break;
+      case "completed":
+        badgeClass = "completed2";
+        break;
+      case "cancelado":
+        badgeClass = "canceled";
+        break;
+      case "canceled":
+        badgeClass = "canceled2";
+        break;
+      case "continua":
+        badgeClass = "continua";
+        break;
+      case "espera seguridad":
+        badgeClass = "wait-security";
+        break;
+      case "no autorizado":
+        badgeClass = "wait-security2";
+        break;
+      case "wait-security":
+        badgeClass = "wait-security3";
+        break;
+      default:
+        badgeClass = "";
+    }
+
     // Tooltip con supervisor y responsable de área
     const supervisor = permiso.supervisor || "No asignado";
     const responsableArea = permiso.responsable_area || "No asignado";
@@ -135,7 +189,7 @@ function renderTablaPermisosJefe() {
         <td>${permiso.descripcion || "-"}</td>
         <td>${permiso.solicitante || "-"}</td>
         <td>${permiso.departamento || "-"}</td>
-        <td>${permiso.estatus || "-"}</td>
+        <td><span class="status-badge${badgeClass ? " " + badgeClass : ""}">${permiso.estatus || "-"}</span></td>
         <td>${formatHoraJefe(permiso.fecha_hora)}</td>
         <td>${formatHoraJefe(permiso.fecha_hora_area)}</td>
         <td>${formatHoraJefe(permiso.fecha_hora_supervisor)}</td>

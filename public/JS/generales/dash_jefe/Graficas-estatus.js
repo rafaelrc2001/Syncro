@@ -137,6 +137,22 @@ function initStatusChart() {
       borderWidth: 1,
       textStyle: { color: "#1C1C1C", fontSize: 12 },
     },
+    title: {
+      text: '0',
+      subtext: 'Total ',
+      left: 'center',
+      top: '38%',
+      textStyle: {
+        fontSize: 32,
+        fontWeight: 'bold',
+        color: '#003B5C'
+      },
+      subtextStyle: {
+        fontSize: 12,
+        color: '#4A4A4A',
+        fontWeight: 'normal'
+      }
+    },
     legend: {
       orient: "horizontal",
       bottom: "0%",
@@ -217,6 +233,22 @@ function initStatusChart() {
     }));
     const total = newData.values.reduce((sum, v) => sum + v, 0);
     statusChart.setOption({
+      title: {
+        text: `${total}`,
+        subtext: 'Total ',
+        left: 'center',
+        top: '38%',
+        textStyle: {
+          fontSize: 32,
+          fontWeight: 'bold',
+          color: '#003B5C'
+        },
+        subtextStyle: {
+          fontSize: 12,
+          color: '#4A4A4A',
+          fontWeight: 'normal'
+        }
+      },
       legend: { data: newData.categories },
       series: [
         {

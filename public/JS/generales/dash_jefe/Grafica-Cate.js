@@ -162,6 +162,22 @@ function initCategoriasChart() {
         return name;
       },
     },
+    title: {
+      text: '0',
+      subtext: 'Total',
+      left: 'center',
+      top: '38%',
+      textStyle: {
+        fontSize: 32,
+        fontWeight: 'bold',
+        color: '#003B5C'
+      },
+      subtextStyle: {
+        fontSize: 12,
+        color: '#4A4A4A',
+        fontWeight: 'normal'
+      }
+    },
     series: [
       {
         name: "Categorías de Permisos",
@@ -230,6 +246,22 @@ function initCategoriasChart() {
     }));
     const total = newData.values.reduce((a, b) => a + b, 0);
     categoriasChart.setOption({
+      title: {
+        text: `${total}`,
+        subtext: 'Total ',
+        left: 'center',
+        top: '38%',
+        textStyle: {
+          fontSize: 32,
+          fontWeight: 'bold',
+          color: '#003B5C'
+        },
+        subtextStyle: {
+          fontSize: 12,
+          color: '#4A4A4A',
+          fontWeight: 'normal'
+        }
+      },
       legend: {
         data: newData.categories.map(
           (category, index) => `${newData.icons[index]} ${category}`

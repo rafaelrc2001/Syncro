@@ -68,11 +68,33 @@ function initSolicitantesChart() {
     },
     grid: {
       left: "30%",
-      right: "3%",
+      right: "8%",
       bottom: "3%",
       top: "5%",
       containLabel: false,
     },
+    dataZoom: [
+      {
+        type: 'slider',
+        show: true,
+        yAxisIndex: 0,
+        right: 5,
+        width: 18,
+        start: 0,
+        end: 100, // Se ajustará dinámicamente
+        borderColor: '#B0BEC5',
+        fillerColor: 'rgba(0, 59, 92, 0.2)',
+        handleStyle: {
+          color: '#003B5C'
+        }
+      },
+      {
+        type: 'inside',
+        yAxisIndex: 0,
+        start: 0,
+        end: 100 // Se ajustará dinámicamente
+      }
+    ],
     xAxis: {
       type: "value",
       name: "Cantidad",
@@ -135,8 +157,34 @@ function initSolicitantesChart() {
 
   // Función para actualizar datos
   function updateSolicitantesChart(newData) {
+    // Configurar el scroll para mostrar máximo 5 solicitantes inicialmente
+    const maxVisibleItems = 5;
+    const scrollEndPercentage = Math.min(100, (maxVisibleItems / newData.categories.length) * 100);
+    
     solicitantesChart.setOption({
       yAxis: { data: newData.categories },
+      dataZoom: [
+        {
+          type: 'slider',
+          show: true,
+          yAxisIndex: 0,
+          right: 5,
+          width: 18,
+          start: 0,
+          end: scrollEndPercentage,
+          borderColor: '#B0BEC5',
+          fillerColor: 'rgba(0, 59, 92, 0.2)',
+          handleStyle: {
+            color: '#003B5C'
+          }
+        },
+        {
+          type: 'inside',
+          yAxisIndex: 0,
+          start: 0,
+          end: scrollEndPercentage
+        }
+      ],
       series: [
         {
           data: newData.values.map((value, index) => ({

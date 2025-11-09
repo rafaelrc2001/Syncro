@@ -425,3 +425,19 @@ h1, h2, h3, h4, h5, h6 {
         margin-bottom: 10px;
     }
 }
+
+/* Estilos para la gráfica de solicitantes con scroll vertical */
+#solicitantes-chart .chart-container {
+    height: 100%;
+    min-height: 280px;
+    padding-right: 25px; /* Espacio para la barra de scroll vertical */
+}
+
+/* Asegurar que el contenedor tenga suficiente espacio */
+#solicitantes-chart {
+    height: 100%;
+}
+
+#solicitantes-chart .chart-card {
+    padding-right: 20px; /* Espacio adicional para la barra de scroll */
+}

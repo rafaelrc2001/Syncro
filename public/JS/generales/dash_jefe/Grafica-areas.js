@@ -57,7 +57,7 @@ function initAreasChart() {
     grid: {
       left: "5%",
       right: "5%",
-      bottom: "15%",
+      bottom: "25%",
       top: "5%",
       containLabel: true,
     },
@@ -69,12 +69,34 @@ function initAreasChart() {
       axisLabel: {
         rotate: 0,
         color: "#4A4A4A",
-        fontSize: 11,
+        fontSize: 10,
         fontWeight: 500,
         interval: 0,
         margin: 10,
       },
     },
+    dataZoom: [
+      {
+        type: 'slider',
+        show: true,
+        xAxisIndex: [0],
+        start: 0,
+        end: 100, // Se ajustará dinámicamente
+        bottom: 5,
+        height: 18,
+        borderColor: '#B0BEC5',
+        fillerColor: 'rgba(0, 59, 92, 0.2)',
+        handleStyle: {
+          color: '#003B5C'
+        }
+      },
+      {
+        type: 'inside',
+        xAxisIndex: [0],
+        start: 0,
+        end: 100 // Se ajustará dinámicamente
+      }
+    ],
     yAxis: {
       type: "value",
       name: "Cantidad",
@@ -100,8 +122,34 @@ function initAreasChart() {
 
   // Función para actualizar la gráfica
   function updateAreasChart(newData) {
+    // Configurar el scroll para mostrar máximo 5 áreas inicialmente
+    const maxVisibleAreas = 5;
+    const scrollEndPercentage = Math.min(100, (maxVisibleAreas / newData.categories.length) * 100);
+    
     const updatedOption = {
       xAxis: { data: newData.categories },
+      dataZoom: [
+        {
+          type: 'slider',
+          show: true,
+          xAxisIndex: [0],
+          start: 0,
+          end: scrollEndPercentage,
+          bottom: 5,
+          height: 18,
+          borderColor: '#B0BEC5',
+          fillerColor: 'rgba(0, 59, 92, 0.2)',
+          handleStyle: {
+            color: '#003B5C'
+          }
+        },
+        {
+          type: 'inside',
+          xAxisIndex: [0],
+          start: 0,
+          end: scrollEndPercentage
+        }
+      ],
       series: [
         {
           data: newData.values.map((value, index) => ({

@@ -482,3 +482,156 @@ h1, h2, h3, h4, h5, h6 {
 #areas-chart .chart-card {
     padding-bottom: 15px; /* Espacio adicional para la barra de scroll */
 }
+
+/* Estilos para el buscador del dashboard */
+.search-bar {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.search-bar input {
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.search-bar input:focus {
+    border-color: var(--naranja-seguridad);
+    box-shadow: 0 0 10px rgba(255, 111, 0, 0.2);
+    transform: scale(1.02);
+}
+
+.search-bar.searching {
+    animation: searchPulse 1.5s infinite;
+}
+
+@keyframes searchPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* Indicador de resultados de búsqueda */
+.search-results-indicator {
+    position: absolute;
+    top: -25px;
+    right: 0;
+    background: var(--verde-tecnico);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: 500;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.search-results-indicator.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.search-results-indicator.no-results {
+    background: var(--rojo-alerta);
+}
+
+/* Overlay para cuando no hay resultados */
+.no-results-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.no-results-overlay.show {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.no-results-message {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    max-width: 400px;
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+}
+
+.no-results-overlay.show .no-results-message {
+    transform: scale(1);
+}
+
+.no-results-message h3 {
+    color: var(--rojo-alerta);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.no-results-message p {
+    color: var(--gris-acero);
+    margin-bottom: 20px;
+}
+
+.no-results-message button {
+    background: var(--naranja-seguridad);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.no-results-message button:hover {
+    background: #e65100;
+    transform: translateY(-1px);
+}
+
+/* Animación para las tarjetas al actualizar */
+.card.updating {
+    animation: cardUpdate 0.6s ease;
+}
+
+@keyframes cardUpdate {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); background-color: rgba(255, 111, 0, 0.1); }
+    100% { transform: scale(1); }
+}
+
+/* Animación para las gráficas al actualizar */
+.chart-card.updating {
+    position: relative;
+    overflow: hidden;
+}
+
+.chart-card.updating::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 111, 0, 0.1), transparent);
+    animation: chartUpdate 1s ease;
+    z-index: 1;
+}
+
+@keyframes chartUpdate {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}

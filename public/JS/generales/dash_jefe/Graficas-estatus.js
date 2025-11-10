@@ -149,7 +149,7 @@ function initStatusChart() {
     title: {
       text: "0",
       subtext: "Total ",
-      left: "center",
+      left: "33%",
       top: "38%",
       textStyle: {
         fontSize: 32,
@@ -163,16 +163,17 @@ function initStatusChart() {
       },
     },
     legend: {
-      orient: "horizontal",
-      bottom: "0%",
+      orient: "vertical",
+      right: "10%",
+      top: "middle",
       data: [],
       textStyle: { color: "#4A4A4A", fontSize: 11 },
       itemGap: 15,
-      itemWidth: 12,
+      itemWidth: 15, // ancho aumentado
       itemHeight: 12,
       formatter: function (name) {
-        if (name.length > 15) {
-          return name.substring(0, 12) + "...";
+        if (name.length > 20) {
+          return name.substring(0, 20);
         }
         return name;
       },
@@ -182,7 +183,7 @@ function initStatusChart() {
         name: "Estatus de Permisos",
         type: "pie",
         radius: ["40%", "70%"],
-        center: ["50%", "45%"],
+        center: ["38%", "45%"],
         avoidLabelOverlap: false,
         itemStyle: {
           borderRadius: 10,
@@ -245,7 +246,7 @@ function initStatusChart() {
       title: {
         text: `${total}`,
         subtext: "Total ",
-        left: "center",
+        left: "33%",
         top: "38%",
         textStyle: {
           fontSize: 32,
@@ -258,7 +259,12 @@ function initStatusChart() {
           fontWeight: "normal",
         },
       },
-      legend: { data: newData.categories },
+      legend: {
+        data: newData.categories,
+        orient: "vertical",
+        right: "10%",
+        top: "middle",
+      },
       series: [
         {
           data: pieData,

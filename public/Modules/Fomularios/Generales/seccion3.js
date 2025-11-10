@@ -223,7 +223,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Avanzar al siguiente paso con un pequeño retraso para evitar problemas de sincronización
       setTimeout(() => {
         goToNextSection();
-      }, 400); // 400ms de espera
+      }, 500); // 400ms de espera
     } catch (error) {
       console.error("Error:", error);
       showNotification(

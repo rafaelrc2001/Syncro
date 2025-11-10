@@ -9,6 +9,7 @@
      <link rel="stylesheet" href="/CSS/EstiloGeneral.css" />
     <link rel="stylesheet" href="/CSS/EstiloImprimir.css">
     <link rel="stylesheet" href="/CSS/imprimir/EstiloImprimir-Base.css">
+    <link rel="stylesheet" href="/CSS/imprimir/EstiloImprimir-PT7.css">
     
 
 </head>
@@ -393,7 +394,28 @@
                     <button id="btn-salir-nuevo" class="btn btn-pt1 btn-salir-gris" type="button">
                         <i class="ri-logout-box-r-line" style="margin-right: 8px;"></i>Salir
                     </button>
+
+                 <!--      <div style="display: flex; gap: 16px;">
+                          <button 
+                            id="btn-cerrar-permiso" 
+                            class="btn btn-pt1 btn-guardar-azulpetroleo" 
+                            type="button"
+                        >
+                            <i class="ri-close-line" style="margin-right: 8px;"></i>
+                            Finalizar permiso
+                        </button>
+                    </div>-->
+
+
                     <div style="display: flex; gap: 16px;">
+                          <button 
+                            id="btn-cerrar-permiso" 
+                            class="btn btn-pt1 btn-guardar-azulpetroleo" 
+                            type="button">
+                        
+                            <i class="ri-close-line" style="margin-right: 8px;"></i>
+                            Finalizar permiso
+                        </button>
                         <button id="btn-imprimir-permiso" class="btn btn-pt1 btn-guardar-azulpetroleo" type="button">
                             <i class="ri-printer-line" style="margin-right: 8px;"></i>Imprimir Permiso
                         </button>
@@ -416,13 +438,56 @@
                                         </div>
 
 
+                                          <div id="modalCerrarPermiso" class="modal-comentario" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(44,62,80,0.25); z-index:1000; justify-content:center; align-items:center;">
+                                            <div style="background:#fff; border-radius:12px; max-width:400px; width:90vw; padding:2em 1.5em; box-shadow:0 4px 24px rgba(44,62,80,0.18); display:flex; flex-direction:column; gap:1em;">
+                                                <h3 style="margin:0 0 0.5em 0; font-size:1.2em; color:#2980b9;">
+                                                    <i class="ri-lock-2-line" style="margin-right:8px;"></i>Motivo de Cierre de Permiso
+                                                </h3>
+                                                <div style="margin-bottom: 1em;">
+                                                    <label style="display: block; margin-bottom: 0.5em; font-weight: 500; color: #2c3e50;">Selecciona el tipo de cierre:</label>
+                                                    <select id="tipoCierrePermiso" style="width:100%; padding:8px 12px; border:1px solid #d0d7de; border-radius:6px; font-size:14px; background:#fff;">
+                                                        <option value="">-- Seleccionar tipo de cierre --</option>
+                                                        <option value="cierre-sin-incidentes">Cierre sin incidentes</option>
+                                                        <option value="cierre-con-incidentes">Cierre con incidentes</option>
+                                                        <option value="cierre-con-accidentes">Cierre con accidentes</option>
+                                                        <option value="cancelado">Cancelado</option>
+                                                    </select>
+                                                </div>
+                                                <textarea id="comentarioCerrarPermiso" rows="4" style="width:100%; border:1px solid #d0d7de; border-radius:6px; padding:8px; resize:vertical;" placeholder="Escribe el motivo del cierre..."></textarea>
+                                                <div style="display:flex; justify-content:flex-end; gap:10px;">
+                                                    <button id="btnCancelarCerrarPermiso" type="button" style="background:#eee; color:#333; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Cancelar</button>
+                                                    <button id="btnGuardarCerrarPermiso" type="button" style="background:#2980b9; color:#fff; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Guardar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div id="modalCancelarPermisoUnico" class="modal-comentario" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(44,62,80,0.25); z-index:1000; justify-content:center; align-items:center;">
+                                                <div style="background:#fff; border-radius:12px; max-width:400px; width:90vw; padding:2em 1.5em; box-shadow:0 4px 24px rgba(44,62,80,0.18); display:flex; flex-direction:column; gap:1em;">
+                                                    <h3 style="margin:0 0 0.5em 0; font-size:1.2em; color:#c0392b;">
+                                                        <i class="ri-close-circle-line" style="margin-right:8px;"></i>Motivo de Cancelación de Permiso
+                                                    </h3>
+                                                    <textarea id="comentarioCancelarPermiso" rows="4" style="width:100%; border:1px solid #d0d7de; border-radius:6px; padding:8px; resize:vertical;" placeholder="Escribe el motivo de la cancelación..."></textarea>
+                                                    <div style="display:flex; justify-content:flex-end; gap:10px;">
+                                                        <button id="btnCancelarCancelarPermiso" type="button" style="background:#eee; color:#333; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Cancelar</button>
+                                                        <button id="btnGuardarCancelarPermiso" type="button" style="background:#c0392b; color:#fff; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Guardar</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+
+
     </div>
 </body>
     
 </html>
 
-<script src="/Modules/Fomularios/Generales/comentarios.js"></script>
-<script src="/Modules/Fomularios/Generales/fecha_hora.js"></script>
-<script src="/Modules/Fomularios/PT7/PT7seccionimprimir.js"></script>
+    <script src="/Modules/Fomularios/Generales/comentarios.js"></script>
+    <script src="/Modules/Fomularios/Generales/fecha_hora.js"></script>
+    <script src="/Modules/Fomularios/PT7/PT7seccionimprimir.js"></script>
+    <script src="/Modules/Fomularios/Generales/cancelar.js"></script>
+    <script src="/Modules/Fomularios/Generales/finalizadoemail.js"></script>
+    <script src="/Modules/Fomularios/Generales/terminar.js"></script>
+    <script src="/Modules/Fomularios/Generales/canceladoemail.js"></script>
 </body>
 </html>

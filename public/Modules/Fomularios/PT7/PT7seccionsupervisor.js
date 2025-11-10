@@ -162,9 +162,8 @@ const btnConfirmarAutorizar = document.getElementById("btnConfirmarAutorizar");
 if (btnGuardarCampos && modalConfirmarAutorizar) {
   btnGuardarCampos.addEventListener("click", function () {
     // Rellenar datos del modal
-    const params = new URLSearchParams(window.location.search);
-    const idPermiso = params.get("id") || "-";
-    document.getElementById("modal-permit-id").textContent = idPermiso;
+    const prefijo = _verformulariosFetch?.general?.prefijo || "-";
+    document.getElementById("modal-permit-id").textContent = prefijo;
     document.getElementById("modal-permit-type").textContent =
       _verformulariosFetch?.general?.tipo_permiso || "-";
     document.getElementById("modal-solicitante").textContent =
@@ -202,6 +201,99 @@ if (btnConfirmarAutorizar) {
       return;
     }
 
+    // 1. Guardar identificación de la fuente (antes de autorizar)
+    try {
+      // Obtener valores de los campos del formulario de identificación de la fuente
+      // Helper para radios: obtiene el valor seleccionado ("SI", "NO", "N/A" o "")
+      function getRadioValue(name) {
+        const checked = document.querySelector(`input[name='${name}']:checked`);
+        return checked ? checked.value : "";
+      }
+
+      const marca_modelo = document.getElementById("marca_modelo")?.value || "";
+      const marca_modelo_check = getRadioValue("marca_modelo_check");
+      const tipo_isotopo = document.getElementById("tipo_isotopo")?.value || "";
+      const tipo_isotopo_check = getRadioValue("tipo_isotopo_check");
+      const numero_fuente =
+        document.getElementById("numero_fuente")?.value || "";
+      const numero_fuente_check = getRadioValue("numero_fuente_check");
+      const actividad_fuente =
+        document.getElementById("actividad_fuente")?.value || "";
+      const actividad_fuente_check = getRadioValue("actividad_fuente_check");
+      const fecha_dia = document.getElementById("fecha_dia")?.value || "";
+      const fecha_mes = document.getElementById("fecha_mes")?.value || "";
+      const fecha_anio = document.getElementById("fecha_anio")?.value || "";
+      // El campo de firma en el HTML es "nombre_firma", pero en backend se espera "tecnico_radialogo"
+      const tecnico_radialogo =
+        document.getElementById("nombre_firma")?.value || "";
+      const payloadFuente = {
+        marca_modelo,
+        marca_modelo_check,
+        tipo_isotopo,
+        tipo_isotopo_check,
+        numero_fuente,
+        numero_fuente_check,
+        actividad_fuente,
+        actividad_fuente_check,
+        fecha_dia,
+        fecha_mes,
+        fecha_anio,
+        tecnico_radialogo,
+      };
+      const respFuente = await fetch(
+        `/api/radiactivas/identificacion_fuente/${idPermiso}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payloadFuente),
+        }
+      );
+      if (!respFuente.ok) {
+        alert(
+          "Error al guardar la identificación de la fuente. No se puede autorizar."
+        );
+        return;
+      }
+    } catch (err) {
+      alert(
+        "Error al guardar la identificación de la fuente. No se puede autorizar."
+      );
+      console.error("Error al guardar identificación de la fuente:", err);
+      return;
+    }
+
+    // 2. Guardar hora de autorización supervisor (igual que PT6)
+    try {
+      const nowSupervisor = new Date();
+      const year = nowSupervisor.getFullYear();
+      const month = String(nowSupervisor.getMonth() + 1).padStart(2, "0");
+      const day = String(nowSupervisor.getDate()).padStart(2, "0");
+      const hours = String(nowSupervisor.getHours()).padStart(2, "0");
+      const minutes = String(nowSupervisor.getMinutes()).padStart(2, "0");
+      const seconds = String(nowSupervisor.getSeconds()).padStart(2, "0");
+      const milliseconds = String(nowSupervisor.getMilliseconds()).padStart(
+        3,
+        "0"
+      );
+      const fechaHoraAutorizacionSupervisor = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}`;
+      await fetch("/api/autorizaciones/supervisor-categoria", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id_permiso: idPermiso,
+          supervisor: supervisor,
+          categoria: categoria,
+          fecha_hora_supervisor: fechaHoraAutorizacionSupervisor,
+        }),
+      });
+    } catch (err) {
+      console.error(
+        "Error al guardar la hora de autorización del supervisor:",
+        err
+      );
+    }
+
+    // 3. Autorizar (igual que antes)
     try {
       // Actualizar estatus (usa el endpoint correcto de tu backend)
       let idEstatus = null;
@@ -220,6 +312,16 @@ if (btnConfirmarAutorizar) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ id_estatus: idEstatus }),
         });
+        // Actualizar estatus a 'activo' (igual que PT6)
+        try {
+          await fetch("/api/estatus/activo", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id_estatus: idEstatus }),
+          });
+        } catch (err) {
+          console.error("Error al actualizar estatus activo:", err);
+        }
       }
 
       // Guardar autorización de área
@@ -271,12 +373,51 @@ if (btnNoAutorizar) {
       alert("Debes ingresar el nombre del responsable antes de rechazar.");
       return;
     }
-    const modal = document.getElementById("modalComentario");
-    if (modal) {
-      modal.style.display = "flex";
-      document.getElementById("comentarioNoAutorizar").value = "";
-    }
+    // Rellenar datos del modal de confirmación de NO autorización
+    const prefijo = _verformulariosFetch?.general?.prefijo || "-";
+    document.getElementById("modal-permit-id-no").textContent = prefijo;
+    document.getElementById("modal-permit-type-no").textContent =
+      _verformulariosFetch?.general?.tipo_permiso || "-";
+    document.getElementById("modal-solicitante-no").textContent =
+      _verformulariosFetch?.general?.solicitante || "-";
+    document.getElementById("modal-departamento-no").textContent =
+      _verformulariosFetch?.general?.departamento || "-";
+    const modalNoAutorizar = document.getElementById(
+      "modalConfirmarNoAutorizar"
+    );
+    if (modalNoAutorizar) modalNoAutorizar.style.display = "flex";
   });
+
+  // Lógica para cancelar el modal de confirmación de NO autorización
+  const btnCancelarConfirmarNo = document.getElementById(
+    "btnCancelarConfirmarNo"
+  );
+  if (btnCancelarConfirmarNo) {
+    btnCancelarConfirmarNo.addEventListener("click", function () {
+      const modalNoAutorizar = document.getElementById(
+        "modalConfirmarNoAutorizar"
+      );
+      if (modalNoAutorizar) modalNoAutorizar.style.display = "none";
+    });
+  }
+
+  // Lógica para confirmar NO autorización (abrir modal de comentario)
+  const btnConfirmarNoAutorizar = document.getElementById(
+    "btnConfirmarNoAutorizar"
+  );
+  if (btnConfirmarNoAutorizar) {
+    btnConfirmarNoAutorizar.addEventListener("click", function () {
+      const modalNoAutorizar = document.getElementById(
+        "modalConfirmarNoAutorizar"
+      );
+      if (modalNoAutorizar) modalNoAutorizar.style.display = "none";
+      const modal = document.getElementById("modalComentario");
+      if (modal) {
+        modal.style.display = "flex";
+        document.getElementById("comentarioNoAutorizar").value = "";
+      }
+    });
+  }
 
   // Lógica para cerrar/cancelar el modal
   const btnCancelarComentario = document.getElementById(
@@ -308,15 +449,37 @@ if (btnNoAutorizar) {
         return;
       }
       try {
-        // Guardar comentario y responsable en la tabla de autorizaciones
-        await fetch("/api/autorizaciones/area", {
-          method: "POST",
+        // Guardar hora de rechazo supervisor (igual que PT6)
+        const nowRechazoSupervisor = new Date();
+        const year = nowRechazoSupervisor.getFullYear();
+        const month = String(nowRechazoSupervisor.getMonth() + 1).padStart(
+          2,
+          "0"
+        );
+        const day = String(nowRechazoSupervisor.getDate()).padStart(2, "0");
+        const hours = String(nowRechazoSupervisor.getHours()).padStart(2, "0");
+        const minutes = String(nowRechazoSupervisor.getMinutes()).padStart(
+          2,
+          "0"
+        );
+        const seconds = String(nowRechazoSupervisor.getSeconds()).padStart(
+          2,
+          "0"
+        );
+        const milliseconds = String(
+          nowRechazoSupervisor.getMilliseconds()
+        ).padStart(3, "0");
+        const fechaHoraRechazoSupervisor = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}`;
+        // Guardar comentario, responsable y hora de rechazo en la tabla de autorizaciones
+        await fetch("/api/autorizaciones/supervisor-categoria", {
+          method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             id_permiso: idPermiso,
-            responsable_area,
-            encargado_area: operador_area,
+            supervisor: responsable_area,
+            categoria: operador_area,
             comentario_no_autorizar: comentario,
+            fecha_hora_supervisor: fechaHoraRechazoSupervisor,
           }),
         });
         // Consultar el id_estatus desde permisos_trabajo

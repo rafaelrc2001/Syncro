@@ -403,7 +403,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Filters Section Simplificada */
 .filters-section {
-    padding: 0 25px 15px;
+    padding: 0 25px 5px;
     display: flex;
     gap: 15px;
     align-items: center;
@@ -443,7 +443,7 @@ h1, h2, h3, h4, h5, h6 {
 .search-bar-container {
     display: flex;
     align-items: center;
-    height: 75px;
+    height: 45px;
 }
 
 .search-bar {
@@ -487,7 +487,7 @@ h1, h2, h3, h4, h5, h6 {
     margin-left: auto;
     display: flex;
     align-items: center;
-    height: 75px;
+    height: 45px;
 }
 
 .btn {

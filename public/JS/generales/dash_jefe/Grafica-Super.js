@@ -21,16 +21,21 @@ function processSupervisoresData(data) {
   const values = Object.keys(supLabels).map((key) => supCounts[key]);
   // Paleta de colores
   const colors = [
-    "#D32F2F",
-    "#FF6F00",
-    "#FFC107",
-    "#003B5C",
-    "#00BFA5",
-    "#7B1FA2",
-    "#0097A7",
-    "#C51162",
-    "#43A047",
-    "#F4511E",
+    "#00BFA5", // verde aqua
+    "#FF6F00", // naranja
+    "#FFC107", // amarillo
+    "#D32F2F", // rojo
+    "#003B5C", // azul petróleo
+    "#7B1FA2", // morado
+    "#1976D2", // azul
+    "#388E3C", // verde
+    "#F06292", // rosa
+    "#8D6E63", // marrón
+    "#C2185B", // magenta
+    "#0097A7", // cian oscuro
+    "#FBC02D", // amarillo fuerte
+    "#455A64", // gris oscuro
+    "#AED581", // verde claro
   ];
   return {
     categories,

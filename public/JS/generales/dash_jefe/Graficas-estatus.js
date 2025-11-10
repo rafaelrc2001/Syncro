@@ -92,12 +92,21 @@ function processStatusData(data) {
   const categories = Object.values(statusLabels);
   const values = Object.keys(statusLabels).map((key) => statusCounts[key]);
   const colors = [
-    "#00BFA5",
-    "#FF6F00",
-    "#FFC107",
-    "#D32F2F",
-    "#003B5C",
-    "#7B1FA2",
+    "#00BFA5", // verde aqua
+    "#FF6F00", // naranja
+    "#FFC107", // amarillo
+    "#D32F2F", // rojo
+    "#003B5C", // azul petróleo
+    "#7B1FA2", // morado
+    "#1976D2", // azul
+    "#388E3C", // verde
+    "#F06292", // rosa
+    "#8D6E63", // marrón
+    "#C2185B", // magenta
+    "#0097A7", // cian oscuro
+    "#FBC02D", // amarillo fuerte
+    "#455A64", // gris oscuro
+    "#AED581", // verde claro
   ];
   return {
     categories,
@@ -138,20 +147,20 @@ function initStatusChart() {
       textStyle: { color: "#1C1C1C", fontSize: 12 },
     },
     title: {
-      text: '0',
-      subtext: 'Total ',
-      left: 'center',
-      top: '38%',
+      text: "0",
+      subtext: "Total ",
+      left: "center",
+      top: "38%",
       textStyle: {
         fontSize: 32,
-        fontWeight: 'bold',
-        color: '#003B5C'
+        fontWeight: "bold",
+        color: "#003B5C",
       },
       subtextStyle: {
         fontSize: 12,
-        color: '#4A4A4A',
-        fontWeight: 'normal'
-      }
+        color: "#4A4A4A",
+        fontWeight: "normal",
+      },
     },
     legend: {
       orient: "horizontal",
@@ -235,19 +244,19 @@ function initStatusChart() {
     statusChart.setOption({
       title: {
         text: `${total}`,
-        subtext: 'Total ',
-        left: 'center',
-        top: '38%',
+        subtext: "Total ",
+        left: "center",
+        top: "38%",
         textStyle: {
           fontSize: 32,
-          fontWeight: 'bold',
-          color: '#003B5C'
+          fontWeight: "bold",
+          color: "#003B5C",
         },
         subtextStyle: {
           fontSize: 12,
-          color: '#4A4A4A',
-          fontWeight: 'normal'
-        }
+          color: "#4A4A4A",
+          fontWeight: "normal",
+        },
       },
       legend: { data: newData.categories },
       series: [

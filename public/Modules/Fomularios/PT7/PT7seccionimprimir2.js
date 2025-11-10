@@ -125,6 +125,18 @@ document.addEventListener("DOMContentLoaded", function () {
     title.textContent = "Permiso Energia Electrica " + valor;
     document.title = title.textContent;
   }
+
+  // Mostrar comentario de rechazo si corresponde
+  const params = new URLSearchParams(window.location.search);
+  const idPermiso = params.get("id");
+  const comentarioDiv = document.getElementById("comentarios-permiso");
+  if (
+    idPermiso &&
+    comentarioDiv &&
+    typeof mostrarComentarioSiCorresponde === "function"
+  ) {
+    mostrarComentarioSiCorresponde(idPermiso, comentarioDiv);
+  }
 });
 
 function esperarImagenes() {

@@ -125,6 +125,18 @@ document.addEventListener("DOMContentLoaded", function () {
     title.textContent = "Permiso Energia Electrica " + valor;
     document.title = title.textContent;
   }
+
+  // Mostrar comentario de rechazo si corresponde
+  const params = new URLSearchParams(window.location.search);
+  const idPermiso = params.get("id");
+  const comentarioDiv = document.getElementById("comentarios-permiso");
+  if (
+    idPermiso &&
+    comentarioDiv &&
+    typeof mostrarComentarioSiCorresponde === "function"
+  ) {
+    mostrarComentarioSiCorresponde(idPermiso, comentarioDiv);
+  }
 });
 
 function esperarImagenes() {
@@ -210,7 +222,7 @@ async function agregarPersonaEnArea(idPermiso, persona) {
 const btnRegresar = document.getElementById("btn-regresar");
 if (btnRegresar) {
   btnRegresar.addEventListener("click", function () {
-    window.location.href = "/Modules/Usuario/AutorizarPT.html";
+    window.location.href = "/Modules/JefeSeguridad/JefeSeguridad.html";
   });
 }
 
@@ -631,7 +643,7 @@ document.addEventListener("DOMContentLoaded", function () {
 const btnSalirNuevo = document.getElementById("btn-salir-nuevo");
 if (btnSalirNuevo) {
   btnSalirNuevo.addEventListener("click", function () {
-    window.location.href = "/Modules/Usuario/AutorizarPT.html";
+    window.location.href = "/Modules/JefeSeguridad/JefeSeguridad.html";
   });
 }
 

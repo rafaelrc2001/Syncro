@@ -186,8 +186,10 @@ if (btnConfirmarAutorizar) {
       try {
         const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
         if (respEstatus.ok) {
-          const dataEstatus = await respEstatus.json();
-          idEstatus = dataEstatus?.data?.id_estatus || null;
+          const permisoData = await respEstatus.json();
+          idEstatus =
+            permisoData.id_estatus ||
+            (permisoData.data && permisoData.data.id_estatus);
         }
       } catch (err) {
         console.error("[DEPURACIÓN] Error al consultar id_estatus:", err);
@@ -195,13 +197,26 @@ if (btnConfirmarAutorizar) {
 
       if (idEstatus) {
         try {
-          await fetch(`/api/permisos-trabajo/estatus/${idPermiso}`, {
-            method: "PUT",
+          const payloadEstatus = { id_estatus: idEstatus };
+          const respEstatus = await fetch("/api/estatus/seguridad", {
+            method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ id_estatus: 2 }), // 2 = autorizado
+            body: JSON.stringify(payloadEstatus),
           });
+          let data = {};
+          try {
+            data = await respEstatus.json();
+          } catch (e) {}
+          if (!respEstatus.ok)
+            console.error(
+              "[DEPURACIÓN] Error en respuesta de estatus/seguridad:",
+              data
+            );
         } catch (err) {
-          console.error("[DEPURACIÓN] Error al actualizar estatus:", err);
+          console.error(
+            "[DEPURACIÓN] Excepción al actualizar estatus de seguridad:",
+            err
+          );
         }
       } else {
         console.warn(

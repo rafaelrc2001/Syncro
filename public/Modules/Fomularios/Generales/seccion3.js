@@ -216,14 +216,53 @@ document.addEventListener("DOMContentLoaded", () => {
 
       showNotification("success", "Datos guardados correctamente");
 
-      // Reemplazar el event listener para solo navegar
-      btnSaveParticipants.removeEventListener("click", handleInsertAndNavigate);
-      btnSaveParticipants.addEventListener("click", goToNextSection);
+      // Esperar confirmación de que los participantes están en la base de datos antes de avanzar
+      const id_estatus = sessionStorage.getItem("id_estatus");
+      let retries = 0;
+      const maxRetries = 8; // ~8 segundos máximo
+      const delay = 1000; // 1 segundo entre intentos
 
-      // Avanzar al siguiente paso con un pequeño retraso para evitar problemas de sincronización
-      setTimeout(() => {
-        goToNextSection();
-      }, 500); // 400ms de espera
+      async function checkParticipantsInserted() {
+        try {
+          const checkResp = await fetch(
+            `/api/ast-participan/estatus/${id_estatus}`
+          );
+          const checkJson = await checkResp.json();
+          if (
+            checkJson.success &&
+            Array.isArray(checkJson.data) &&
+            checkJson.data.length >= participants.length
+          ) {
+            // Ya están insertados, avanzar
+            btnSaveParticipants.removeEventListener(
+              "click",
+              handleInsertAndNavigate
+            );
+            btnSaveParticipants.addEventListener("click", goToNextSection);
+            goToNextSection();
+          } else if (retries < maxRetries) {
+            retries++;
+            setTimeout(checkParticipantsInserted, delay);
+          } else {
+            showNotification(
+              "error",
+              "No se pudo confirmar la inserción de los participantes en la base de datos. Intente de nuevo."
+            );
+          }
+        } catch (err) {
+          if (retries < maxRetries) {
+            retries++;
+            setTimeout(checkParticipantsInserted, delay);
+          } else {
+            showNotification(
+              "error",
+              "Error al verificar la inserción de participantes: " + err.message
+            );
+          }
+        }
+      }
+
+      checkParticipantsInserted();
     } catch (error) {
       console.error("Error:", error);
       showNotification(

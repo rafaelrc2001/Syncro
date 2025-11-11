@@ -368,4 +368,32 @@ router.get("/api/participantes", async (req, res) => {
   console.log("[DEBUG] Entrando a /api/participantes");
 });
 
+// Endpoint para consultar participantes por id_estatus (confirmación de inserción)
+router.get("/ast-participan/estatus/:id_estatus", async (req, res) => {
+  const id_estatus = parseInt(req.params.id_estatus, 10);
+  if (!Number.isInteger(id_estatus) || id_estatus <= 0) {
+    return res.status(400).json({
+      success: false,
+      error: "id_estatus inválido",
+    });
+  }
+  try {
+    const result = await db.query(
+      "SELECT * FROM ast_participan WHERE id_estatus = $1",
+      [id_estatus]
+    );
+    res.json({
+      success: true,
+      data: result.rows,
+    });
+  } catch (err) {
+    console.error("Error en la base de datos:", err);
+    res.status(500).json({
+      success: false,
+      error: "Error al consultar participantes",
+      details: process.env.NODE_ENV === "development" ? err.message : undefined,
+    });
+  }
+});
+
 module.exports = router;

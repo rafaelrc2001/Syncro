@@ -209,85 +209,54 @@
         </div>
 
         <!-- Tabla de Dimensiones -->
-        <div class="comparative-table">
-            <div class="table-header">
-                <h3><i class="ri-table-2"></i>DIMENSIONES Y TERRENO</h3>
-            </div>
-            <div class="table-grid dimensions-grid">
-                <div class="table-cell header">
-                    <strong>Parámetro</strong>
-                </div>
-                <div class="table-cell header">
-                    <strong>Valor (metros)</strong>
-                </div>
-                
-                <div class="table-cell">
-                    <label>Profundidad Media</label>
-                </div>
-                <div class="table-cell">
-                    <div class="input-group">
-                        <input type="number" id="profundidad-media" name="profundidad-media" 
-                               step="0.1" placeholder="0.0" class="input-with-unit" min="0">
-                        <span class="unit">m</span>
-                    </div>
-                </div>
+                <div class="comparative-table">
+                        <div class="table-header">
+                                <h3><i class="ri-table-2"></i>DIMENSIONES Y TERRENO</h3>
+                        </div>
+                        <div class="table-grid dimensions-grid" style="grid-template-columns: 1fr 1fr 1fr 1fr 1fr;">
+                                <!-- Cabecera -->
+                                <div class="table-cell header"><strong>Profundidad Media</strong></div>
+                                <div class="table-cell">
+                                    <input type="number" id="profundidad-media" name="profundidad-media" step="0.1" placeholder="0.0" class="input-with-unit" min="0">
+                                </div>
+                                <div class="table-cell"><span class="unit">m</span></div>
+                                <div class="table-cell header"><strong>Profundidad Máxima</strong></div>
+                                <div class="table-cell">
+                                    <input type="number" id="profundidad-maxima" name="profundidad-maxima" step="0.1" placeholder="0.0" class="input-with-unit" min="0">
+                                    <span class="unit">m</span>
+                                </div>
 
-                <div class="table-cell">
-                    <label>Profundidad Máxima</label>
-                </div>
-                <div class="table-cell">
-                    <div class="input-group">
-                        <input type="number" id="profundidad-maxima" name="profundidad-maxima" 
-                               step="0.1" placeholder="0.0" class="input-with-unit" min="0">
-                        <span class="unit">m</span>
-                    </div>
-                </div>
+                                <div class="table-cell header"><strong>Anchura</strong></div>
+                                <div class="table-cell">
+                                    <input type="number" id="anchura" name="anchura" step="0.1" placeholder="0.0" class="input-with-unit" min="0">
+                                </div>
+                                <div class="table-cell"><span class="unit">m</span></div>
+                                <div class="table-cell header"><strong>Longitud</strong></div>
+                                <div class="table-cell">
+                                    <input type="number" id="longitud" name="longitud" step="0.1" placeholder="0.0" class="input-with-unit" min="0">
+                                    <span class="unit">m</span>
+                                </div>
 
-                <div class="table-cell">
-                    <label>Anchura</label>
+                                <div class="table-cell header"><strong>Tipo de Terreno</strong></div>
+                                <div class="table-cell" style="grid-column: span 4;">
+                                    <input type="text" id="tipo-terreno" name="tipo-terreno" class="table-input" placeholder="Ej: Arcilloso, Rocoso, Arenoso">
+                                </div>
+                        </div>
                 </div>
-                <div class="table-cell">
-                    <div class="input-group">
-                        <input type="number" id="anchura" name="anchura" 
-                               step="0.1" placeholder="0.0" class="input-with-unit" min="0">
-                        <span class="unit">m</span>
-                    </div>
-                </div>
-
-                <div class="table-cell">
-                    <label>Longitud</label>
-                </div>
-                <div class="table-cell">
-                    <div class="input-group">
-                        <input type="number" id="longitud" name="longitud" 
-                               step="0.1" placeholder="0.0" class="input-with-unit" min="0">
-                        <span class="unit">m</span>
-                    </div>
-                </div>
-                
-                <div class="table-cell">
-                    <label>Tipo de Terreno</label>
-                </div>
-                <div class="table-cell">
-                    <input type="text" id="tipo-terreno" name="tipo-terreno" 
-                           class="table-input" placeholder="Ej: Arcilloso, Rocoso, Arenoso">
-                </div>
-            </div>
-        </div>
 
         <!-- Tabla de Instalaciones Subterráneas -->
         <div class="comparative-table">
             <div class="table-header">
                 <h3><i class="ri-road-map-line"></i>INSTALACIONES SUBTERRÁNEAS AFECTADAS</h3>
             </div>
-            <div class="table-grid installations-grid">
+            <div class="table-grid installations-grid" style="grid-template-columns: 2fr 1fr 2fr 2fr 1.5fr;">
                 <!-- Cabecera -->
                 <div class="table-cell header">TIPO DE INSTALACIÓN</div>
                 <div class="table-cell header">SI/NO</div>
-                <div class="table-cell header">UNIDAD</div>
+                <div class="table-cell header">UNIDAD / TIPO</div>
                 <div class="table-cell header">COMPROBADO POR</div>
                 <div class="table-cell header">FECHA</div>
-                
+
                 <!-- Tubería de Gas -->
                 <div class="table-cell installation-type">
                     <strong>TUBERÍA DE GAS</strong>
@@ -307,18 +276,15 @@
                     </div>
                 </div>
                 <div class="table-cell">
-                    <input type="text" id="gas-tipo" name="gas-tipo" 
-                           class="table-input" placeholder="Tipo de gas: Ej:Natural, Propano" disabled>
+                    <input type="text" id="gas-tipo" name="gas-tipo" class="table-input" placeholder="Tipo de gas: Ej:Natural, Propano" disabled>
                 </div>
                 <div class="table-cell">
-                    <input type="text" id="tuberia-gas-comprobado" name="tuberia-gas-comprobado" 
-                           class="table-input" placeholder="Nombre" disabled>
+                    <input type="text" id="tuberia-gas-comprobado" name="tuberia-gas-comprobado" class="table-input" placeholder="Nombre" disabled>
                 </div>
                 <div class="table-cell">
-                    <label for="permit-date"></label>
-                    <input type="date" id="permit-date" name="permit-date" required>
+                    <input type="date" id="permit-date-gas" name="permit-date-gas" required>
                 </div>
-                
+
                 <!-- Línea Eléctrica -->
                 <div class="table-cell installation-type">
                     <strong>LÍNEA ELÉCTRICA</strong>
@@ -337,24 +303,19 @@
                         </label>
                     </div>
                 </div>
-
                 <div class="table-cell">
                     <div class="input-group">
-                        <input type="number" id="linea-electrica-voltaje" name="linea-electrica-voltaje" 
-                            step="0.1" placeholder="0.0" class="input-with-unit" min="0">
+                        <input type="number" id="linea-electrica-voltaje" name="linea-electrica-voltaje" step="0.1" placeholder="0.0" class="input-with-unit" min="0">
                         <span class="unit">v</span>
                     </div>
                 </div>
+                <div class="table-cell">
+                    <input type="text" id="linea-electrica-comprobado" name="linea-electrica-comprobado" class="table-input" placeholder="Nombre" disabled>
+                </div>
+                <div class="table-cell">
+                    <input type="date" id="permit-date-electrica" name="permit-date-electrica" required>
+                </div>
 
-                <div class="table-cell">
-                    <input type="text" id="linea-electrica-comprobado" name="linea-electrica-comprobado" 
-                           class="table-input" placeholder="Nombre" disabled>
-                </div>
-                <div class="table-cell">
-                    <label for="permit-date"></label>
-                    <input type="date" id="permit-date" name="permit-date" required>
-                </div>
-                
                 <!-- Tubería Contra Incendios -->
                 <div class="table-cell installation-type">
                     <strong>TUBERÍA C. INCENDIOS</strong>
@@ -375,20 +336,17 @@
                 </div>
                 <div class="table-cell">
                     <div class="input-group">
-                        <input type="number" id="tuberia-incendios-presion" name="tuberia-incendios-presion" 
-                            step="0.1" placeholder="0.0" class="input-with-unit" min="0" disabled>
+                        <input type="number" id="tuberia-incendios-presion" name="tuberia-incendios-presion" step="0.1" placeholder="0.0" class="input-with-unit" min="0" disabled>
                         <span class="unit">Kg/cm²</span>
                     </div>
                 </div>
                 <div class="table-cell">
-                    <input type="text" id="tuberia-incendios-comprobado" name="tuberia-incendios-comprobado" 
-                           class="table-input" placeholder="Nombre" disabled>
+                    <input type="text" id="tuberia-incendios-comprobado" name="tuberia-incendios-comprobado" class="table-input" placeholder="Nombre" disabled>
                 </div>
                 <div class="table-cell">
-                    <label for="permit-date"></label>
-                    <input type="date" id="permit-date" name="permit-date" required>
+                    <input type="date" id="permit-date-incendios" name="permit-date-incendios" required>
                 </div>
-                
+
                 <!-- Alcantarillado -->
                 <div class="table-cell installation-type">
                     <strong>ALCANTARILLADO</strong>
@@ -407,24 +365,19 @@
                         </label>
                     </div>
                 </div>
-
                 <div class="table-cell">
                     <div class="input-group">
-                        <input type="number" id="alcantarillado-diametro" name="alcantarillado-diametro" 
-                               step="0.1" placeholder="0.0" class="input-with-unit" min="0">
+                        <input type="number" id="alcantarillado-diametro" name="alcantarillado-diametro" step="0.1" placeholder="0.0" class="input-with-unit" min="0">
                         <span class="unit">m</span>
                     </div>
                 </div>
+                <div class="table-cell">
+                    <input type="text" id="alcantarillado-comprobado" name="alcantarillado-comprobado" class="table-input" placeholder="Nombre" disabled>
+                </div>
+                <div class="table-cell">
+                    <input type="date" id="permit-date-alcantarillado" name="permit-date-alcantarillado" required>
+                </div>
 
-                <div class="table-cell">
-                    <input type="text" id="alcantarillado-comprobado" name="alcantarillado-comprobado" 
-                           class="table-input" placeholder="Nombre" disabled>
-                </div>
-                <div class="table-cell">
-                    <label for="permit-date"></label>
-                    <input type="date" id="permit-date" name="permit-date" required>
-                </div>
-                
                 <!-- Otras Instalaciones -->
                 <div class="table-cell installation-type">
                     <strong>OTRAS INSTALACIONES</strong>
@@ -444,16 +397,13 @@
                     </div>
                 </div>
                 <div class="table-cell">
-                    <input type="text" id="otras-instalaciones-tipo" name="otras-instalaciones-tipo" 
-                           class="table-input" placeholder="Especificar: Tipo de Instalación" disabled>
+                    <input type="text" id="otras-instalaciones-tipo" name="otras-instalaciones-tipo" class="table-input" placeholder="Especificar: Tipo de Instalación" disabled>
                 </div>
                 <div class="table-cell">
-                    <input type="text" id="otras-instalaciones-comprobado" name="otras-instalaciones-comprobado" 
-                           class="table-input" placeholder="Nombre" disabled>
+                    <input type="text" id="otras-instalaciones-comprobado" name="otras-instalaciones-comprobado" class="table-input" placeholder="Nombre" disabled>
                 </div>
                 <div class="table-cell">
-                    <label for="permit-date"></label>
-                    <input type="date" id="permit-date" name="permit-date" required>
+                    <input type="date" id="permit-date-otras" name="permit-date-otras" required>
                 </div>
             </div>
         </div>
@@ -475,18 +425,17 @@
                 <h3><i class="ri-shield-flash-line"></i>RIESGOS Y MEDIDAS PREVENTIVAS</h3>
                 <p>DERRUMBAMIENTO Y DESPRENDIMIENTO</p>
             </div>
-            <div class="table-grid stability-grid">
+            <div class="table-grid stability-grid" style="grid-template-columns: 2fr 1fr 1fr 2fr;">
+                <!-- Cabecera -->
                 <div class="table-cell header">TIPOS DE RIESGOS Y MEDIDAS PREVENTIVAS</div>
                 <div class="table-cell header">SI/NO</div>
                 <div class="table-cell header">UNIDAD DE MEDIDA</div>
                 <div class="table-cell header">PARÁMETROS TÉCNICOS</div>
-                
+
                 <!-- Talud -->
                 <div class="table-cell">
                     <strong>SE REQUIERE TALUD</strong>
-                    <div class="measure-description">
-                        Inclinación del terreno para prevenir derrumbes
-                    </div>
+                    <div class="measure-description">Inclinación del terreno para prevenir derrumbes</div>
                 </div>
                 <div class="table-cell">
                     <div class="radio-group compact">
@@ -502,31 +451,20 @@
                         </label>
                     </div>
                 </div>
-
+                <div class="table-cell">
+                    <span class="unit">°</span>
+                </div>
                 <div class="table-cell">
                     <div class="input-group">
                         <label>Ángulo de Talud:</label>
-                        <input type="number" id="angulo-talud" name="angulo-talud" 
-                               step="0.1" placeholder="0.0" class="input-with-unit" min="0">
-                        <span class="unit">°</span>
+                        <input type="number" id="angulo-talud" name="angulo-talud" step="0.1" placeholder="0.0" class="input-with-unit" min="0">
                     </div>
                 </div>
 
-                <div class="table-cell">
-                    <div class="input-group">
-                        <label>A partir de:</label>
-                        <input type="number" id="longitud-meseta" name="longitud-meseta" 
-                               step="0.1" placeholder="0.0" class="input-with-unit" min="0">
-                        <span class="unit">m</span>
-                    </div>
-                </div>
-                
                 <!-- Bermas -->
                 <div class="table-cell">
                     <strong>SE REQUIEREN BERMAS</strong>
-                    <div class="measure-description">
-                        Plataformas horizontales entre niveles de excavación
-                    </div>
+                    <div class="measure-description">Plataformas horizontales entre niveles de excavación</div>
                 </div>
                 <div class="table-cell">
                     <div class="radio-group compact">
@@ -542,31 +480,37 @@
                         </label>
                     </div>
                 </div>
-
+                <div class="table-cell">
+                    <span class="unit">m</span>
+                </div>
                 <div class="table-cell">
                     <div class="input-group">
                         <label>Longitud de meseta:</label>
-                        <input type="number" id="longitud-meseta" name="longitud-meseta" 
-                               step="0.1" placeholder="0.0" class="input-with-unit" min="0">
-                        <span class="unit">m</span>
+                        <input type="number" id="longitud-meseta" name="longitud-meseta" step="0.1" placeholder="0.0" class="input-with-unit" min="0">
                     </div>
                 </div>
 
+                <!-- Bermas Altura -->
+                <div class="table-cell">
+                    <span></span>
+                </div>
+                <div class="table-cell">
+                    <span></span>
+                </div>
+                <div class="table-cell">
+                    <span class="unit">m</span>
+                </div>
                 <div class="table-cell">
                     <div class="input-group">
                         <label>Alturas de Contrameseta:</label>
-                        <input type="number" id="alturas-contrameseta" name="alturas-contrameseta" 
-                               step="0.1" placeholder="0.0" class="input-with-unit" min="0">
-                        <span class="unit">m</span>
+                        <input type="number" id="alturas-contrameseta" name="alturas-contrameseta" step="0.1" placeholder="0.0" class="input-with-unit" min="0">
                     </div>
                 </div>
-                
+
                 <!-- Entibación -->
                 <div class="table-cell">
                     <strong>SE REQUIERE ENTIBACIÓN</strong>
-                    <div class="measure-description">
-                        Sistema de soporte para paredes de excavación
-                    </div>
+                    <div class="measure-description">Sistema de soporte para paredes de excavación</div>
                 </div>
                 <div class="table-cell">
                     <div class="radio-group compact">
@@ -583,6 +527,9 @@
                     </div>
                 </div>
                 <div class="table-cell">
+                    <span></span>
+                </div>
+                <div class="table-cell">
                     <select id="tipo-entibacion" name="tipo-entibacion" class="table-input" disabled>
                         <option value="" selected>Seleccione...</option>
                         <option value="Ligera">Ligera</option>
@@ -590,18 +537,13 @@
                         <option value="Cuajada">Cuajada</option>
                         <option value="Otros">Otros</option>
                     </select>
-                </div>
-                <div class="table-cell">
-                    <input type="text" id="especificacion-entibacion" name="especificacion-entibacion" 
-                           class="table-input" placeholder="Condiciones específicas del terreno" disabled>
+                    <input type="text" id="especificacion-entibacion" name="especificacion-entibacion" class="table-input" placeholder="Condiciones específicas del terreno" disabled style="margin-top: 4px;">
                 </div>
 
                 <!-- Otros Requerimientos -->
                 <div class="table-cell">
                     <strong>OTROS REQUERIMIENTOS</strong>
-                    <div class="measure-description">
-                        Otros tipos de riesgos y medidas preventivas
-                    </div>
+                    <div class="measure-description">Otros tipos de riesgos y medidas preventivas</div>
                 </div>
                 <div class="table-cell">
                     <div class="radio-group compact">
@@ -617,12 +559,11 @@
                         </label>
                     </div>
                 </div>
-                <div class="table-cell" colspan="2">
-                    <input type="text" id="otros-requerimientos-detalle" name="otros-requerimientos-detalle" 
-                           class="table-input" placeholder="Especificar:" disabled>
+                <div class="table-cell">
+                    <span></span>
                 </div>
                 <div class="table-cell">
-                    <strong></strong>
+                    <input type="text" id="otros-requerimientos-detalle" name="otros-requerimientos-detalle" class="table-input" placeholder="Especificar:" disabled>
                 </div>
 
                 <!-- Distancia de Seguridad al borde -->
@@ -630,24 +571,31 @@
                     <strong>DISTANCIA DE SEGURIDAD AL BORDE</strong>
                 </div>
                 <div class="table-cell">
-                    <strong></strong>
+                    <span></span>
                 </div>
-                
+                <div class="table-cell">
+                    <span class="unit">m</span>
+                </div>
                 <div class="table-cell">
                     <div class="input-group">
                         <label>Para solicitaciones estáticas:</label>
-                        <input type="number" id="distancia-estatica" name="distancia-estatica|" 
-                               step="0.1" placeholder="0.0" class="input-with-unit" min="0">
-                        <span class="unit">m</span>
+                        <input type="number" id="distancia-estatica" name="distancia-estatica|" step="0.1" placeholder="0.0" class="input-with-unit" min="0">
                     </div>
                 </div>
 
                 <div class="table-cell">
+                    <span></span>
+                </div>
+                <div class="table-cell">
+                    <span></span>
+                </div>
+                <div class="table-cell">
+                    <span class="unit">m</span>
+                </div>
+                <div class="table-cell">
                     <div class="input-group">
                         <label>Para solicitaciones dinámicas:</label>
-                        <input type="number" id="distancia-dinamica" name="distancia-dinamica" 
-                               step="0.1" placeholder="0.0" class="input-with-unit" min="0">
-                        <span class="unit">m</span>
+                        <input type="number" id="distancia-dinamica" name="distancia-dinamica" step="0.1" placeholder="0.0" class="input-with-unit" min="0">
                     </div>
                 </div>
             </div>
@@ -658,12 +606,13 @@
             <div class="table-header">
                 <h3><i class="ri-shield-check-line"></i> CAÍDA DE PERSONAS Y VEHÍCULOS AL INTERIOR</h3>
             </div>
-            <div class="table-grid protection-grid">
-                <div class="table-cell header"></div>
+            <div class="table-grid protection-grid" style="grid-template-columns: 2fr 1fr 2fr 2fr;">
+                <!-- Cabecera -->
+                <div class="table-cell header">RIESGO / PROTECCIÓN</div>
                 <div class="table-cell header">SI/NO</div>
-                <div class="table-cell header">TIPO DE BALIZAMIENTO ESPECÍFICO</div>
-                <div class="table-cell header"></div>
-                
+                <div class="table-cell header">DETALLE / TIPO</div>
+                <div class="table-cell header">PARÁMETRO</div>
+
                 <!-- Balizamiento -->
                 <div class="table-cell">
                     <strong>LA EXCAVACIÓN REQUIERE DE BALIZAMIENTO</strong>
@@ -682,18 +631,16 @@
                         </label>
                     </div>
                 </div>
-
+                <div class="table-cell">
+                    <span class="unit">m</span>
+                </div>
                 <div class="table-cell">
                     <div class="input-group">
                         <label>Distancia del balizamiento al borde:</label>
-                        <input type="number" id="distancia-balizamiento" name="distancia-balizamiento" 
-                               step="0.1" placeholder="0.0" class="input-with-unit" min="0">
-                        <span class="unit">m</span>
+                        <input type="number" id="distancia-balizamiento" name="distancia-balizamiento" step="0.1" placeholder="0.0" class="input-with-unit" min="0">
                     </div>
                 </div>
 
-                <div class="table-cell"></div>
-                
                 <!-- Protección Rígida -->
                 <div class="table-cell">
                     <strong>SE REQUIERE PROTECCIÓN RÍGIDA RESISTENTE</strong>
@@ -712,19 +659,16 @@
                         </label>
                     </div>
                 </div>
-
-
+                <div class="table-cell">
+                    <span class="unit">m</span>
+                </div>
                 <div class="table-cell">
                     <div class="input-group">
                         <label>Distancia de la protección al borde:</label>
-                        <input type="number" id="distancia-proteccion" name="distancia-proteccion" 
-                               step="0.1" placeholder="0.0" class="input-with-unit" min="0">
-                        <span class="unit">m</span>
+                        <input type="number" id="distancia-proteccion" name="distancia-proteccion" step="0.1" placeholder="0.0" class="input-with-unit" min="0">
                     </div>
                 </div>
-                
-                <div class="table-cell"></div>
-                
+
                 <!-- Señalización -->
                 <div class="table-cell">
                     <strong>SE REQUIERE SEÑALIZACIÓN ESPECIAL</strong>
@@ -744,8 +688,7 @@
                     </div>
                 </div>
                 <div class="table-cell">
-                    <input type="text" id="tipo-senalizacion" name="tipo-senalizacion" 
-                           class="table-input" placeholder="Especificar:" disabled>
+                    <input type="text" id="tipo-senalizacion" name="tipo-senalizacion" class="table-input" placeholder="Especificar:" disabled>
                 </div>
                 <div class="table-cell"></div>
 
@@ -768,17 +711,18 @@
                     </div>
                 </div>
                 <div class="table-cell">
-                    <input type="text" id="tipo-proteccion-anticaida" name="tipo-proteccion-anticaida" 
-                           class="table-input" placeholder="Tipo de Protección:" disabled>
+                    <input type="text" id="tipo-proteccion-anticaida" name="tipo-proteccion-anticaida" class="table-input" placeholder="Tipo de Protección:" disabled>
                 </div>
                 <div class="table-cell"></div>
+
+                <!-- Anclaje -->
                 <div class="table-cell">
                     <strong>ANCLAJE</strong>
                 </div>
                 <div class="table-cell"></div>
+                <div class="table-cell"></div>
                 <div class="table-cell">
-                    <input type="text" id="tipo-senalizacion" name="tipo-senalizacion" 
-                           class="table-input" placeholder="" disabled>
+                    <input type="text" id="tipo-senalizacion" name="tipo-senalizacion" class="table-input" placeholder="" disabled>
                 </div>
             </div>
         </div>

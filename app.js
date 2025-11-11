@@ -32,7 +32,9 @@ const graficaEstatusRouter = require("./graficas/endpoint_grafica_estatus");
 const tablaPermisosRouter = require("./graficas/endpoint_tabla");
 const exportarRouter = require("./exportar");
 const fechasAutorizacionRouter = require("./fechas_autorizacion_routes");
-
+const formularioIzajeRouter = require("./formulariospt3-10/formulario_izaje");
+const formularioCestaRouter = require("./formulariospt3-10/formulario_cesta");
+const formularioExcavacionRouter = require("./formulariospt3-10/formulario_excavacion");
 const loginconsultaRouter = require("./loginconsulta");
 
 const graficasJefesRouter = require("./graficas/graficas_jefes/graficas_jefes");
@@ -96,6 +98,9 @@ app.use("/api", tablaPermisosRouter); // Monta las rutas de graficas/endpoint_ta
 app.use("/api", exportarRouter); // Monta las rutas de exportar.js bajo /api (p.ej. /api/exportar-supervisor)
 app.use("/api", fechasAutorizacionRouter); // Monta las rutas de fechas de autorización
 app.use("/api/graficas_jefes", graficasJefesRouter);
+app.use("/api", formularioIzajeRouter);
+app.use("/api", formularioCestaRouter);
+app.use("/api", formularioExcavacionRouter);
 
 // ================= RUTAS DE TABLAS BASE =================
 const tablasBase = require("./tablasbase");

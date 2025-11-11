@@ -6,607 +6,632 @@
     <title>Syncro - Nuevo Permiso Completo</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+  <!--  <link rel="stylesheet" href="/CSS/EstiloFormularios.css"> -->
+    <link rel="stylesheet" href="P-CEIZCSS.css">
     <link rel="stylesheet" href="/CSS/EstiloFormularios.css">
 </head>
 <body>
     <div class="app-container">
-        <!-- Sidebar (igual al existente) -->
-        <aside class="sidebar">
-            <!-- Contenido del sidebar igual al original -->
-        </aside>
+      <!-- Sidebar (igual al existente) -->
+      <aside class="sidebar">
+        <!-- Contenido del sidebar igual al original -->
+      </aside>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <header class="main-header">
-                <h1><span style="font-size: 1.5rem;">🧰</span> Nuevo Permiso de Trabajo Completo</h1>
-                <div class="header-actions">
-                    <button class="btn secondary" id="back-btn">
-                        <i class="ri-arrow-left-line"></i> Volver
-                    </button>
+      <!-- Main Content -->
+      <main class="main-content">
+        <header class="main-header">
+          <h1>
+            <span style="font-size: 1.5rem">🧰</span> Permiso de Trabajo con  Cesta Izada.
+          </h1>
+          <div class="header-actions">
+            <button class="btn secondary" id="back-btn">
+              <i class="ri-arrow-left-line"></i> Volver
+            </button>
+          </div>
+        </header>
+
+        <!-- Progress Steps -->
+        <div class="progress-container">
+          <div class="progress-steps">
+            <div class="step active" data-step="1">
+              <div class="step-number">1</div>
+              <div class="step-title">Encabezado</div>
+            </div>
+            <div class="step" data-step="2">
+              <div class="step-number">2</div>
+              <div id="PermisoNP" class="step-title">
+                Permiso de Cesta Izada.
+              </div>
+            </div>
+            <div class="step" data-step="3">
+              <div class="step-number">3</div>
+              <div class="step-title">Participantes</div>
+            </div>
+            <div class="step" data-step="4">
+              <div class="step-number">4</div>
+              <div class="step-title">AST</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Sections -->
+        <form id="complete-permit-form">
+          <!-- Sección 1: Encabezado -->
+          <section class="form-section active" data-section="1">
+            <div class="form-container">
+              <div class="form-header">
+                <div class="form-icon">
+                  <i class="ri-file-text-line"></i>
                 </div>
-            </header>
+                <div>
+                  <h2>Información General del Permiso</h2>
+                  <p>Complete los datos básicos del permiso</p>
+                </div>
+              </div>
 
-            <!-- Progress Steps -->
-            <div class="progress-container">
-                <div class="progress-steps">
-                    <div class="step active" data-step="1">
-                        <div class="step-number">1</div>
-                        <div class="step-title">Encabezado</div>
+              <div class="form-grid">
+                <!--    <div class="form-group">
+                                <label for="permit-number">Número de Permiso</label>
+                                <input type="text" id="permit-number" name="permit-number" readonly value="GSI-SI-FO-002-XXXX">
+                            </div>
+                        -->
+                <div class="form-group">
+                  <label for="permit-date">Fecha</label>
+                  <input
+                    type="date"
+                    id="permit-date"
+                    name="permit-date"
+                    required
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="company">Empresa</label>
+                  <input type="text" id="company" name="company" required />
+                </div>
+
+                <div class="form-group">
+                  <label for="subcontract">Subcontrata</label>
+                  <input
+                    type="text"
+                    id="subcontract"
+                    name="subcontract"
+                    value="PRO-AGROINDUSTRIA"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="area">Sucursal</label>
+                  <div class="select-wrapper">
+                    <select id="sucursal" name="sucursal" required>
+                      <option value="" disabled selected>
+                        Seleccione una sucursal
+                      </option>
+                    </select>
+                    <i class="ri-arrow-down-s-line select-arrow"></i>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="plant">Planta o lugar de trabajo</label>
+                  <div class="autocomplete-container">
+                    <input
+                      type="text"
+                      id="plant"
+                      name="plant"
+                      required
+                      placeholder="Escriba para buscar..."
+                      class="autocomplete-input"
+                      autocomplete="off"
+                    />
+                    <div
+                      id="plant-suggestions"
+                      class="autocomplete-suggestions"
+                    ></div>
+                    <input type="hidden" id="plant-value" name="plant-value" />
+                    <input
+                      type="hidden"
+                      id="plant-id-hidden"
+                      name="plant-id-hidden"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="applicant">Nombre de quien solicita</label>
+                  <input
+                    type="text"
+                    id="applicant"
+                    name="applicant"
+                    required
+                    class="compact"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="work-description">Descripción del trabajo</label>
+                  <textarea
+                    id="work-description"
+                    name="work-description"
+                    rows="2"
+                    required
+                  ></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label for="contract-number"
+                    >Número de contrato
+                    <span style="font-weight: normal; color: #888"
+                      >(opcional, solo si lo tienen)</span
+                    ></label
+                  >
+                  <input
+                    type="text"
+                    id="contract-number"
+                    name="contract-number"
+                    class="compact"
+                    placeholder="Ingrese el número de contrato si aplica"
+                  />
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button
+                  type="button"
+                  id="seccion1"
+                  class="btn primary next-step"
+                  data-next="2"
+                >
+                  Siguiente <i class="ri-arrow-right-line"></i>
+                </button>
+              </div>
+            </div>
+            <!-- Fin Sección 1: Encabezado -->
+          </section>
+
+<!-- Sección 2: Permiso de Cesta Izada -->
+   
+ <!-- Sección 2: Dimensiones e Instalaciones - CORREGIDA -->
+<section class="form-section" data-section="2">
+    <div class="form-container">
+
+        <div class="form-header">
+            <div class="form-icon">
+                <i class="ri-ruler-2-line"></i>
+            </div>
+            <div>
+                <h2>Permiso de Trabajo de Cesta Suspendida con Grúa</h2>
+                <p>Complete los detalles técnicos y medidas de seguridad</p>
+            </div>
+        </div>
+
+        <!-- Datos de la Grúa -->
+        <div class="comparative-table">
+            <div class="table-header">
+                <h3><i class="ri-flashlight-line"></i>DATOS DE LA GRÚA</h3>
+            </div>
+            <div class="table-grid" style="grid-template-columns: 2fr 1fr 2fr;">
+                <div class="table-cell">
+                    <strong>IDENTIFICACIÓN DE LA GRÚA:</strong>
+                    <input type="text" id="identificacion-grua" name="identificacion-grua" 
+                           class="table-input" placeholder="" disabled>
+                </div>
+                <div class="table-cell">
+                    <strong>PERTENECIENTE A LA EMPRESA:</strong>
+                    <input type="text" id="perteneciente-empresa" name="perteneciente-empresa" 
+                           class="table-input" placeholder="" disabled>
+                </div>
+                <div class="table-cell">
+                    <strong>IDENTIFICACIÓN DE LA CESTA:</strong>
+                    <input type="text" id="identificacion-cesta" name="identificacion-cesta" 
+                           class="table-input" placeholder="" disabled>
+                </div>
+                <div class="table-cell">
+                    <strong>PERTENECIENTE A LA EMPRESA:</strong>
+                    <input type="text" id="perteneciente-empresa" name="perteneciente-empresa" 
+                           class="table-input" placeholder="" disabled>
+                </div>
+                <div class="table-cell">
+                    <label>PESO DE LA CESTA:</label>
+                    <div class="input-group">
+                        <input type="number" id="peso-cesta" name="peso-cesta" 
+                               step="0.1" placeholder="0.0" class="input-with-unit" min="0">
+                        <span class="unit">kg</span>
                     </div>
-                    <div class="step" data-step="2">
-                        <div class="step-number">2</div>
-                        <div id="PermisoNP"class="step-title">Permiso No Peligroso</div>
+                </div>
+                <div class="table-cell">
+                    <label>CARGA MÁXIMA DE LA CESTA:</label>
+                    <div class="input-group">
+                        <input type="number" id="carga-maxima-cesta" name="carga-maxima-cesta" 
+                               step="0.1" placeholder="0.0" class="input-with-unit" min="0">
+                        <span class="unit">kg</span>
                     </div>
-                    <div class="step" data-step="3">
-                        <div class="step-number">3</div>
-                        <div class="step-title">Participantes</div>
+                </div>
+                <div class="table-cell">
+                    <label for="permit-date">ÚLTIMA REVISIÓN:</label>
+                    <input type="date" id="permit-date" name="permit-date" required>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Condiciones de Elevación -->
+        <div class="comparative-table">
+            <div class="table-header">
+                <h3><i class="ri-table-2"></i>CONDICIONES DE ELEVACIÓN</h3>
+            </div>
+            <div class="checkbox-group">
+            <div class="table-cell">
+                <label class="checkbox-option">
+                    <input type="checkbox" name="asentamiento" value="1" disabled>
+                    <span class="checkbox-custom"></span>
+                    ASENTAMIENTO
+                </label>
+                <label class="checkbox-option">
+                    <input type="checkbox" name="calzado" value="1" disabled>
+                    <span class="checkbox-custom"></span>
+                    CALZADO
+                </label>
+                <label class="checkbox-option">
+                    <input type="checkbox" name="nivelacion" value="1" disabled>
+                    <span class="checkbox-custom"></span>
+                    NIVELACIÓN
+                </label>
+                <label class="checkbox-option">
+                    <input type="checkbox" name="ext-gatos" value="1" disabled>
+                    <span class="checkbox-custom"></span>
+                    EXT. GATOS
+                </label>
+                <input type="text" id="se-utiliza-plumin" name="se-utiliza-plumin" 
+                           class="table-input" placeholder="Especificar" disabled>
+            </div>
+                    <div class="table-cell">
+                                <strong>¿SE UTILIZA PLUMÍN?</strong>
+                            <label class="radio-option">
+                                <input type="radio" name="se-utiliza-plumin" value="si">
+                                <span class="radio-custom"></span>
+                                SI
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="se-utiliza-plumin" value="no" checked>
+                                <span class="radio-custom"></span>
+                                NO
+                            </label>
+                            <strong>EN CASO AFIRMATIVO, ESPECIFICAR PLUMÍN:</strong>
+                    <input type="text" id="especificar-plumin" name="especificar-plumin" 
+                           class="table-input" placeholder="" disabled>
+                </div>
+                <div class="table-cell">
+                    <strong>LONGITUD DE LA PLUMA</strong>
+                    <div class="input-group">
+                        <input type="number" id="longitud-pluma" name="longitud-pluma" 
+                               step="0.1" placeholder="0.0" class="input-with-unit" min="0">
+                        <span class="unit">m</span>
                     </div>
-                    <div class="step" data-step="4">
-                        <div class="step-number">4</div>
-                        <div class="step-title">AST</div>
+                </div>
+                <div class="table-cell">
+                    <strong>RADIO DE TRABAJO:</strong>
+                    <div class="input-group">
+                        <input type="number" id="radio-trabajo" name="radio-trabajo" 
+                               step="0.1" placeholder="0.0" class="input-with-unit" min="0">
+                        <span class="unit">m</span>
+                    </div>
+                </div>
+                <div class="table-cell">
+                    <strong>CARGA SEGURA EN DIAGRAMA DE CARGAS:</strong>
+                    <div class="input-group">
+                        <input type="number" id="carga-segura" name="carga-segura" 
+                               step="0.1" placeholder="0.0" class="input-with-unit" min="0">
+                        <span class="unit">Ton</span>
+                    </div>
+                </div>
+                <div class="table-cell">
+                    <strong>PESO DE LA CARGA:</strong>
+                    <div class="input-group">
+                        <input type="number" id="peso-carga" name="peso-carga" 
+                               step="0.1" placeholder="0.0" class="input-with-unit" min="0">
+                        <span class="unit">kg</span>
+                    </div>
+                </div>
+                <div class="table-cell">
+                    <strong>PESO DEL GANCHO Y ELEMENTOS AUXILIARES</strong>
+                    <div class="input-group">
+                        <input type="number" id="peso-gancho-elementos" name="peso-gancho-elementos" 
+                               step="0.1" placeholder="0.0" class="input-with-unit" min="0">
+                        <span class="unit">kg</span>
+                    </div>
+                </div>
+                <div class="table-cell">
+                    <strong>CARGA DE TRABAJO:</strong>
+                    <div class="input-group">
+                        <input type="number" id="carga-de-trabajo" name="carga-de-trabajo" 
+                               step="0.1" placeholder="0.0" class="input-with-unit" min="0">
+                        <span class="unit">Ton</span>
+                    </div>
+                </div>
+                <div class="table-cell">
+                        <strong>RELACIÓN CARGA DE TRABAJO / CARGA SEGURA EN DIAGRAMA DE CARGAS:</strong>
+                    <label class="checkbox-option">
+                        <input type="text" id="especificar-plumin" name="especificar-plumin" 
+                           class="table-input" placeholder="" disabled>
+                        menor que 0.5
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabla de Prueba Previa a Suspensión -->
+    <div class="comparative-table">
+            <div class="table-header">
+                <h3><i class="ri-table-2"></i>PRUEBA PREVIA A SUSPENSIÓN</h3>
+            </div>
+            <div class="table-cell">
+                <div class="checkbox-group">
+                    <div class="table-cell">
+                        <strong>CARGA DE PRUEBA = 1.25 x Carga Máxima de la Cesta =</strong>
+                        <div class="input-group">
+                            <input type="number" id="carga-prueba" name="carga-prueba" 
+                               step="0.1" placeholder="0.0" class="input-with-unit" min="0">
+                            <span class="unit">kg</span>
+                        </div>
+                    </div>
+                    <div class="table-cell">
+                        <strong>PRUEBA DE SUSPENSIÓN DE LA CESTA CON LA CARGA DE PRUEBA, DURANTE CINCO MINUTOS, EN TODAS LAS POSICIONES DE TRABAJO.</strong>
+                        <div class="radio-group compact">
+                                <strong>PRUEBA REALIZADA:</strong>
+                            <label class="radio-option">
+                                <input type="radio" name="prueba-realizada" value="si">
+                                <span class="radio-custom"></span>
+                                SI
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="prueba-realizada" value="no" checked>
+                                <span class="radio-custom"></span>
+                                NO
+                            </label>
+                        </div>
+                        <div class="table-cell">
+                            <strong>PRUEBA PRESENCIADA POR:</strong>
+                            <input type="text" id="prueba-presenciada-por" name="prueba-presenciada-por" 
+                                class="table-input" placeholder="" disabled>
+                        </div>
+                        <div class="table-cell">
+                            <strong>FIRMA:</strong>
+                            <input type="text" id="firma" name="firma" 
+                                class="table-input" placeholder="" disabled>
+                        </div>
+                        <div class="table-cell">
+                            <strong>FECHA:</strong>
+                            <input type="date" id="permit-date" name="permit-date" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <!-- Tabla de Dimensiones -->
+        <div class="comparative-table">
+            <div class="table-header">
+                <h3><i class="ri-table-2"></i>MEDIDAS DE SEGURIDAD PREVIAS</h3>
+            </div>
+            <div class="table-cell">
+            <div class="checkbox-group">
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="mascaras-escape" value="1" disabled>
+                        <span class="checkbox-custom"></span>
+                        MÁSCARAS DE ESCAPE EN LA CESTA
+                        <input type="text" id="mascaras-escape" name="mascaras-escape" 
+                                class="table-input" placeholder="Especificar máscaras y filtros" disabled 
+                                style="margin-left: 10px; width: 300px;">
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="equipo-proteccion" value="1" disabled>
+                        <span class="checkbox-custom"></span>
+                        EQUIPO DE PROTECCIÓN EN LA CESTA
+                        <input type="text" id="equipo-proteccion" name="equipo-proteccion" 
+                                class="table-input" placeholder="Especificar" disabled 
+                                style="margin-left: 10px; width: 300px;">
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="equipo-contra-incendios" value="1" disabled>
+                        <span class="checkbox-custom"></span>
+                        EQUIPO DE CONTRA-INCENDIOS EN LA CESTA
+                        <input type="text" id="equipo-contra-incendios" name="equipo-contra-incendios" 
+                                class="table-input" placeholder="Especificar" disabled 
+                                style="margin-left: 10px; width: 300px;">
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="final-carrera" value="1" disabled>
+                        <span class="checkbox-custom"></span>
+                        FINAL DE CARRERA DEL ORGANO DE APREHENSIÓN EN POSICIÓN DE INTERRUMPIR EL MOVIMIENTO EN CASO DE ACTIVACIÓN.
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="otras-medidas" value="1" disabled>
+                        <span class="checkbox-custom"></span>
+                        OTRAS MEDIDAS DE SEGURIDAD
+                        <input type="text" id="otras-medidas" name="otras-medidas" 
+                                class="table-input" placeholder="Especificar" disabled 
+                                style="margin-left: 10px; width: 300px;">
+                    </label>
+                </div>
+            </div>
+        </div>
+
+            <!-- Apartado de Observaciones -->
+            <div class="comparative-table">
+                <div class="table-header">
+                    <h3><i class="ri-edit-line"></i> OBSERVACIONES GENERALES</h3>
+                </div>
+                <div class="table-grid" style="grid-template-columns: 1fr;">
+                    <div class="table-cell">
+                        <textarea id="observaciones-generales" name="observaciones-generales" 
+                                rows="4" placeholder="Escriba aquí sus observaciones generales sobre la excavación..." 
+                                class="table-input"></textarea>
                     </div>
                 </div>
             </div>
 
-            <!-- Form Sections -->
-            <form id="complete-permit-form">
-                <!-- Sección 1: Encabezado -->
-                <section class="form-section active" data-section="1">
-                    <div class="form-container">
-                        <div class="form-header">
-                            <div class="form-icon">
-                                <i class="ri-file-text-line"></i>
-                            </div>
-                            <div>
-                                <h2>Información General del Permiso</h2>
-                                <p>Complete los datos básicos del permiso</p>
-                            </div>
+
+
+            <div class="form-actions">
+                <button type="button" class="btn secondary prev-step" data-prev="1">
+                    <i class="ri-arrow-left-line"></i> Anterior
+                </button>
+                <button type="button" class="btn primary next-step" data-next="3">
+                    Siguiente <i class="ri-arrow-right-line"></i>
+                </button>
+            </div>
+        </div>
+</section>
+  
+                 <!-- Sección 3: Participantes -->
+             <section class="form-section" data-section="3">
+                <div class="form-container">
+                    <div class="form-header">
+                        <div class="form-icon" style="background: linear-gradient(135deg, #2196F3 0%, #0D47A1 100%);">
+                            <i class="ri-team-line"></i>
                         </div>
-
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label for="permit-number">Número de Permiso</label>
-                                <input type="text" id="permit-number" name="permit-number" readonly value="GSI-SI-FO-002-XXXX">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="permit-date">Fecha</label>
-                                <input type="date" id="permit-date" name="permit-date" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="company">Empresa</label>
-                                <input type="text" id="company" name="company" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="subcontract">Subcontrata</label>
-                                <input type="text" id="subcontract" name="subcontract" value="PRO-AGROINDUSTRIA">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="area">Sucursal</label>
-                                <div class="select-wrapper">
-                                    <select id="area" name="area" required>
-                                        <option value="" disabled selected>Seleccione una sucursal</option>
-                                        <option value="area6">Área 6</option>
-                                        <option value="pajaritos">Pajaritos</option>
-                                    </select>
-                                    <i class="ri-arrow-down-s-line select-arrow"></i>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="work-description">Descripción del trabajo</label>
-                                <textarea id="work-description" name="work-description" rows="2" required></textarea>
-                            </div>
-
-                             <div class="form-group">
-                            <label for="contract-number">Número de contrato <span style="font-weight:normal;color:#888;">(opcional, solo si lo tienen)</span></label>
-                            <input type="text" id="contract-number" name="contract-number" class="compact" placeholder="Ingrese el número de contrato si aplica">
-                        </div>
-                        
-                        </div>
-
-                        <div class="form-actions">
-                            <button type="button" class="btn secondary" id="cancel-btn">
-                                <i class="ri-close-line"></i> Cancelar
-                            </button>
-                            <button type="button" class="btn primary next-step" data-next="2">
-                                Siguiente <i class="ri-arrow-right-line"></i>
-                            </button>
+                        <div>
+                            <h2>Personal Participante</h2>
+                            <p>Registre a todas las personas involucradas</p>
                         </div>
                     </div>
-                </section>
 
+                    <div class="participants-table">
+                        <div class="participants-header">
+                            <div>No.</div>
+                            <div>Nombre</div>
+                            <div>No. Credencial</div>
+                            <div>Cargo</div>
+                            <div>Función</div>
+                            <div>Acciones</div>
+                        </div>
+
+                        <div class="participant-row" data-index="1">
+                            <div class="participant-number">1</div>
+                            <div class="participant-field">
+                                <input type="text" name="participant-name-1" required>
+                            </div>
+                            <div class="participant-field">
+                                <input type="text" name="participant-credential-1" required>
+                            </div>
+                            <div class="participant-field">
+                                <input type="text" name="participant-position-1" required>
+                            </div>
+                            <div class="participant-field">
+                                <select name="participant-role-1" required>
+                                    <option value="">Seleccione...</option>
+                                    <option value="PARTICIPA">Participa</option>
+                                    <option value="REVISA">Revisa</option>
+                                    <option value="ANALIZA">Analiza</option>
+                                    <option value="AUTORIZA">Autoriza</option>
+                                </select>
+                            </div>
+                            <div class="participant-actions">
+                                <button type="button" class="action-btn remove-participant" title="Eliminar">
+                                    <i class="ri-delete-bin-line"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn secondary" id="add-participant">
+                        <i class="ri-user-add-line"></i> Añadir Participante
+                    </button>
+
+                    <div class="form-section-title">
+                        <i class="ri-shield-user-line"></i>
+                        <h3>Equipo de Protección Personal</h3>
+                    </div>
+
+                    <div class="form-group">
+                        <textarea id="ppe-required" name="ppe-required" rows="2" placeholder="Describa el EPP requerido"></textarea>
+                    </div>
+
+                    <div class="form-section-title">
+                        <i class="ri-tools-line"></i>
+                        <h3>Maquinaria, Equipo y Herramientas</h3>
+                    </div>
+
+                    <div class="form-group">
+                        <textarea id="equipment-tools" name="equipment-tools" rows="2" placeholder="Liste maquinaria y herramientas a utilizar"></textarea>
+                    </div>
+
+                    <div class="form-section-title">
+                        <i class="ri-box-line"></i>
+                        <h3>Materiales y Accesorios</h3>
+                    </div>
+
+                    <div class="form-group">
+                        <textarea id="materials" name="materials" rows="2" placeholder="Liste materiales y accesorios necesarios"></textarea>
+                    </div>
                 
-
-
-
-                <!-- Sección 2: Permiso para Trabajar desde Cesta Suspendida con Grúa -->
-                    <section class="form-section" data-section="2">
-                        <div class="form-container">
-                            <div class="form-header">
-                                <div class="form-icon" style="background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);">
-                                    <i class="ri-crane-line"></i>
-                                </div>
-                                <div>
-                                    <h2>Permiso para Trabajar desde Cesta Suspendida con Grúa</h2>
-                                    <p>Complete los detalles específicos para trabajos en altura con grúa</p>
-                                </div>
-                            </div>
-
-                            <!-- Información general -->
-                            <div class="form-section-title">
-                                <i class="ri-file-text-line"></i>
-                                <h3>Información General</h3>
-                            </div>
-
-                            <div class="form-grid">
-                                <div class="form-group">
-                                    <label for="project">Proyecto</label>
-                                    <input type="text" id="project" name="project" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="subcontract">Subcontrata</label>
-                                    <input type="text" id="subcontract" name="subcontract" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="work-description">Trabajo a realizar y lugar (concretar lo más posible)</label>
-                                    <textarea id="work-description" name="work-description" rows="3" required></textarea>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="permit-date">Fecha</label>
-                                    <input type="date" id="permit-date" name="permit-date" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="permit-number">No. Permiso</label>
-                                    <input type="text" id="permit-number" name="permit-number" readonly value="GSI-SI-FO-045-XXXX">
-                                </div>
-                            </div>
-
-                            <!-- Datos de la grúa y cesta -->
-                            <div class="form-section-title">
-                                <i class="ri-crane-line"></i>
-                                <h3>Datos de la Grúa y Cesta</h3>
-                            </div>
-
-                            <div class="form-grid">
-                                <div class="form-group">
-                                    <label for="crane-id">Identificación de la grúa</label>
-                                    <input type="text" id="crane-id" name="crane-id" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="crane-company">Perteneciente a la empresa</label>
-                                    <input type="text" id="crane-company" name="crane-company" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="basket-id">Identificación de la cesta</label>
-                                    <input type="text" id="basket-id" name="basket-id" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="basket-company">Perteneciente a la empresa</label>
-                                    <input type="text" id="basket-company" name="basket-company" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="basket-weight">Peso de la cesta (kg)</label>
-                                    <input type="number" id="basket-weight" name="basket-weight" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="max-load">Carga máxima de la cesta (kg)</label>
-                                    <input type="number" id="max-load" name="max-load" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="last-review">Última revisión</label>
-                                    <input type="date" id="last-review" name="last-review" required>
-                                </div>
-                            </div>
-
-                            <!-- Condiciones de elevación -->
-                            <div class="form-section-title">
-                                <i class="ri-arrow-up-line"></i>
-                                <h3>Condiciones de Elevación</h3>
-                            </div>
-
-                            <div class="form-grid">
-                                <div class="form-group">
-                                    <label for="settlement">Asentamiento</label>
-                                    <input type="text" id="settlement" name="settlement" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="shoring">Calzado</label>
-                                    <input type="text" id="shoring" name="shoring" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="leveling">Nivelación</label>
-                                    <input type="text" id="leveling" name="leveling" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="outriggers">Extensión de gatos</label>
-                                    <input type="text" id="outriggers" name="outriggers" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>¿Se utiliza plomín?</label>
-                                    <div class="radio-group compact">
-                                        <label class="radio-option">
-                                            <input type="radio" name="use-plummet" value="SI" required>
-                                            <span class="radio-custom"></span>
-                                            SI
-                                        </label>
-                                        <label class="radio-option">
-                                            <input type="radio" name="use-plummet" value="NO">
-                                            <span class="radio-custom"></span>
-                                            NO
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <div class="form-group" id="plummet-details-group" style="display: none;">
-                                    <label for="plummet-details">Especificar plomín</label>
-                                    <input type="text" id="plummet-details" name="plummet-details">
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="boom-length">Longitud de la pluma (metros)</label>
-                                    <input type="number" step="0.01" id="boom-length" name="boom-length" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="safe-load">Carga segura en diagrama de cargas (ton)</label>
-                                    <input type="number" step="0.01" id="safe-load" name="safe-load" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="work-radius">Radio de trabajo (metros)</label>
-                                    <input type="number" step="0.01" id="work-radius" name="work-radius" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="load-weight">Peso de la carga (kg, incluyendo ocupantes)</label>
-                                    <input type="number" id="load-weight" name="load-weight" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="work-load">Carga de trabajo (ton)</label>
-                                    <input type="number" step="0.01" id="work-load" name="work-load" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="hook-weight">Peso del gancho y elementos auxiliares (kg)</label>
-                                    <input type="number" id="hook-weight" name="hook-weight" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="load-ratio">Relación carga de trabajo / carga segura</label>
-                                    <div class="radio-group compact">
-                                        <label class="radio-option">
-                                            <input type="radio" name="load-ratio" value="<0.5" required>
-                                            <span class="radio-custom"></span>
-                                            < 0.5
-                                        </label>
-                                        <label class="radio-option">
-                                            <input type="radio" name="load-ratio" value="0.5-0.8">
-                                            <span class="radio-custom"></span>
-                                            0.5 - 0.8
-                                        </label>
-                                        <label class="radio-option">
-                                            <input type="radio" name="load-ratio" value=">0.8">
-                                            <span class="radio-custom"></span>
-                                            > 0.8
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Prueba previa a suspensión -->
-                            <div class="form-section-title">
-                                <i class="ri-test-tube-line"></i>
-                                <h3>Prueba Previa a Suspensión</h3>
-                            </div>
-
-                            <div class="form-grid">
-                                <div class="form-group">
-                                    <label for="test-load">Carga de prueba = 1.25 x Carga Máxima de la Cesta (kg)</label>
-                                    <input type="number" id="test-load" name="test-load" readonly>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Prueba realizada</label>
-                                    <div class="radio-group compact">
-                                        <label class="radio-option">
-                                            <input type="radio" name="test-performed" value="SI" required>
-                                            <span class="radio-custom"></span>
-                                            SI
-                                        </label>
-                                        <label class="radio-option">
-                                            <input type="radio" name="test-performed" value="NO">
-                                            <span class="radio-custom"></span>
-                                            NO
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="test-witness">Prueba presenciada por</label>
-                                    <input type="text" id="test-witness" name="test-witness" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="test-date">Fecha de prueba</label>
-                                    <input type="date" id="test-date" name="test-date">
-                                </div>
-                            </div>
-
-                            <!-- Medidas de seguridad previas -->
-                            <div class="form-section-title">
-                                <i class="ri-shield-check-line"></i>
-                                <h3>Medidas de Seguridad Previas</h3>
-                            </div>
-
-                            <div class="form-grid">
-                                <div class="form-group">
-                                    <label for="escape-masks">Máscaras de escape en la cesta (especificar máscaras y filtros)</label>
-                                    <textarea id="escape-masks" name="escape-masks" rows="2"></textarea>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="protection-equipment">Equipo de protección en la cesta (especificar)</label>
-                                    <textarea id="protection-equipment" name="protection-equipment" rows="2"></textarea>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="fire-equipment">Equipo de contra-incendios en la cesta (especificar)</label>
-                                    <textarea id="fire-equipment" name="fire-equipment" rows="2"></textarea>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="safety-measures">Otras medidas de seguridad (especificar)</label>
-                                    <textarea id="safety-measures" name="safety-measures" rows="2"></textarea>
-                                </div>
-                            </div>
-
-                            <!-- Observaciones -->
-                            <div class="form-group">
-                                <label for="observations">Observaciones</label>
-                                <textarea id="observations" name="observations" rows="3"></textarea>
-                            </div>
-
-                            <!-- Responsables -->
-                            <div class="form-section-title">
-                                <i class="ri-user-star-line"></i>
-                                <h3>Responsables</h3>
-                            </div>
-
-                            <div class="form-grid">
-                                <div class="form-group">
-                                    <label for="operations-supervisor">Supervisor de Operaciones</label>
-                                    <input type="text" id="operations-supervisor" name="operations-supervisor" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="safety-supervisor">Supervisor de Seguridad del Área</label>
-                                    <input type="text" id="safety-supervisor" name="safety-supervisor" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="crane-operator">Gruísta</label>
-                                    <input type="text" id="crane-operator" name="crane-operator" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="rigger">Maniobrista</label>
-                                    <input type="text" id="rigger" name="rigger" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="basket-personnel">Personal en la Cesta</label>
-                                    <input type="text" id="basket-personnel" name="basket-personnel" required>
-                                </div>
-                            </div>
-
-                            <div class="form-actions">
-                                <button type="button" class="btn secondary prev-step" data-prev="1">
-                                    <i class="ri-arrow-left-line"></i> Anterior
-                                </button>
-                                <button type="button" class="btn primary next-step" data-next="3">
-                                    Siguiente <i class="ri-arrow-right-line"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </section>
-
-                    <script>
-                    // Mostrar/ocultar campo de detalles del plomín según selección
-                    document.querySelectorAll('input[name="use-plummet"]').forEach(radio => {
-                        radio.addEventListener('change', function() {
-                            const detailsGroup = document.getElementById('plummet-details-group');
-                            detailsGroup.style.display = this.value === 'SI' ? 'block' : 'none';
-                            if (this.value === 'SI') {
-                                document.getElementById('plummet-details').required = true;
-                            } else {
-                                document.getElementById('plummet-details').required = false;
-                            }
-                        });
-                    });
-
-                    // Calcular automáticamente la carga de prueba
-                    document.getElementById('max-load').addEventListener('input', function() {
-                        const maxLoad = parseFloat(this.value);
-                        if (!isNaN(maxLoad)) {
-                            const testLoad = maxLoad * 1.25;
-                            document.getElementById('test-load').value = testLoad.toFixed(2);
-                        }
-                    });
-                    </script>
-
-                <!-- Sección 3: Participantes -->
-                <section class="form-section" data-section="3">
-                    <div class="form-container">
-                        <div class="form-header">
-                            <div class="form-icon" style="background: linear-gradient(135deg, #2196F3 0%, #0D47A1 100%);">
-                                <i class="ri-team-line"></i>
-                            </div>
-                            <div>
-                                <h2>Personal Participante</h2>
-                                <p>Registre a todas las personas involucradas</p>
-                            </div>
-                        </div>
-
-                        <div class="participants-table">
-                            <div class="participants-header">
-                                <div>No.</div>
-                                <div>Nombre</div>
-                                <div>No. Credencial</div>
-                                <div>Cargo</div>
-                                <div>Función</div>
-                                <div>Acciones</div>
-                            </div>
-
-                            <div class="participant-row" data-index="1">
-                                <div class="participant-number">1</div>
-                                <div class="participant-field">
-                                    <input type="text" name="participant-name-1" required>
-                                </div>
-                                <div class="participant-field">
-                                    <input type="text" name="participant-credential-1">
-                                </div>
-                                <div class="participant-field">
-                                    <input type="text" name="participant-position-1">
-                                </div>
-                                <div class="participant-field">
-                                    <select name="participant-role-1" required>
-                                        <option value="">Seleccione...</option>
-                                        <option value="PARTICIPA">Participa</option>
-                                        <option value="REVISA">Revisa</option>
-                                        <option value="ANALIZA">Analiza</option>
-                                        <option value="AUTORIZA">Autoriza</option>
-                                    </select>
-                                </div>
-                                <div class="participant-actions">
-                                    <button type="button" class="action-btn remove-participant" title="Eliminar">
-                                        <i class="ri-delete-bin-line"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <button type="button" class="btn secondary" id="add-participant">
-                            <i class="ri-user-add-line"></i> Añadir Participante
+                    <div class="form-actions">
+                        <button type="button" class="btn secondary prev-step" data-prev="2">
+                            <i class="ri-arrow-left-line"></i> Anterior
                         </button>
-
-                        <div class="form-section-title">
-                            <i class="ri-shield-user-line"></i>
-                            <h3>Equipo de Protección Personal</h3>
-                        </div>
-
-                        <div class="form-group">
-                            <textarea id="ppe-required" name="ppe-required" rows="2" placeholder="Describa el EPP requerido"></textarea>
-                        </div>
-
-                        <div class="form-section-title">
-                            <i class="ri-tools-line"></i>
-                            <h3>Maquinaria, Equipo y Herramientas</h3>
-                        </div>
-
-                        <div class="form-group">
-                            <textarea id="equipment-tools" name="equipment-tools" rows="2" placeholder="Liste maquinaria y herramientas a utilizar"></textarea>
-                        </div>
-
-                        <div class="form-section-title">
-                            <i class="ri-box-line"></i>
-                            <h3>Materiales y Accesorios</h3>
-                        </div>
-
-                        <div class="form-group">
-                            <textarea id="materials" name="materials" rows="2" placeholder="Liste materiales y accesorios necesarios"></textarea>
-                        </div>
-                    
-                        <div class="form-actions">
-                            <button type="button" class="btn secondary prev-step" data-prev="2">
-                                <i class="ri-arrow-left-line"></i> Anterior
-                            </button>
-                            <button type="button" class="btn primary next-step" data-next="4">
-                                Siguiente <i class="ri-arrow-right-line"></i>
-                            </button>
-                        </div>
-                    
-                </section>
+                        <button type="button" id="btn-save-participants" class="btn primary next-step" data-next="4">
+                            Siguiente <i class="ri-arrow-right-line"></i>
+                        </button>
+                    </div>
+                
+            </section>
 
 <!-- Sección 4: AST -->
-                <section class="form-section" data-section="4">
-                    <div class="form-container">
-                        <div class="form-header">
-                            <div class="form-icon" style="background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);">
-                                <i class="ri-alert-line"></i>
-                            </div>
-                            <div>
-                                <h2>Análisis de Seguridad en el Trabajo (AST)</h2>
-                                <p>Describa las actividades y riesgos asociados</p>
-                            </div>
+            <section class="form-section" data-section="4">
+                <div class="form-container">
+                    <div class="form-header">
+                        <div class="form-icon" style="background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);">
+                            <i class="ri-alert-line"></i>
                         </div>
+                        <div>
+                            <h2>Análisis de Seguridad en el Trabajo (AST)</h2>
+                            <p>Describa las actividades y riesgos asociados</p>
+                        </div>
+                    </div>
 
-                        <div class="ast-activities extended">
-                            <div class="ast-table-header">
-                                <div>No.</div>
-                                <div>Secuencia de la Actividad</div>
-                                <div>Personal Ejecutor</div>
-                                <div>Peligros Potenciales</div>
-                                <div>Acciones Preventivas</div>
-                                <div>Responsable</div>
-                                <div>Acciones</div>
-                            </div>
-                        
-                            <div class="ast-activity" data-index="1">
-                                <div class="ast-activity-number">1</div>
-                                <div class="ast-activity-field">
-                                    <textarea name="ast-activity-1" rows="2"></textarea>
-                                </div>
-                                <div class="ast-activity-field">
-                                    <select name="ast-personnel-1">
-                                        <option value="">-- Seleccione --</option>
-                                        <option value="juan">Juan Pérez</option>
-                                        <option value="maria">María López</option>
-                                        <option value="carlos">Carlos Gómez</option>
-                                        <option value="ana">Ana Martínez</option>
-                                    </select>
-                                </div>
-                                <div class="ast-activity-field">
-                                    <textarea name="ast-hazards-1" rows="2"></textarea>
-                                </div>
-                                <div class="ast-activity-field">
-                                    <textarea name="ast-preventions-1" rows="2"></textarea>
-                                </div>
-                                <div class="ast-activity-field">
-                                    <select name="ast-personnel-1">
-                                        <option value="">-- Seleccione --</option>
-                                        <option value="juan">Juan Pérez</option>
-                                        <option value="maria">María López</option>
-                                        <option value="carlos">Carlos Gómez</option>
-                                        <option value="ana">Ana Martínez</option>
-                                    </select>
-                                </div>
-                                <div class="ast-activities-actions">
-                                    <button type="button" class="action-btn remove-participant" title="Eliminar">
-                                        <i class="ri-delete-bin-line"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            
+                    <div class="ast-activities extended">
+                        <div class="ast-table-header">
+                            <div>No.</div>
+                            <div>Secuencia de la Actividad</div>
+                            <div>Personal Ejecutor</div>
+                            <div>Peligros Potenciales</div>
+                            <div>Acciones Preventivas</div>
+                            <div>Responsable</div>
+                            <div>Acciones</div>
                         </div>
+                    
+                        <div class="ast-activity" data-index="1">
+                            <div class="ast-activity-number">1</div>
+                            <div class="ast-activity-field">
+                                <textarea name="ast-activity-1" rows="2"></textarea>
+                            </div>
+                            <div class="ast-activity-field">
+                                <select name="ast-personnel-1" required>
+                                    <option value="">-- Seleccione --</option>
+                                </select>
+                            </div> 
+                            <div class="ast-activity-field">
+                                <textarea name="ast-hazards-1" rows="2" required></textarea>
+                            </div>
+                            <div class="ast-activity-field">
+                                <textarea name="ast-preventions-1" rows="2"></textarea>
+                            </div>
+                            <div class="ast-activity-field">
+                                <select name="ast-responsible-1" required>
+                                    <option value="">-- Seleccione --</option>
+                                </select>
+                            </div>
+                            <div class="ast-activities-actions">
+                                <button type="button" class="action-btn remove-participant" title="Eliminar">
+                                    <i class="ri-delete-bin-line"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
                         
 
                         <button type="button" class="btn secondary" id="add-activity">
@@ -620,9 +645,7 @@
                             <button type="submit" class="btn primary">
                                 <i class="ri-save-line"></i> Guardar Permiso Completo
                             </button>
-                            <button type="button" class="btn tertiary" id="print-complete-btn">
-                                <i class="ri-printer-line"></i> Vista de Impresión
-                            </button>
+                           
                         </div>
                         
                     </div>
@@ -633,7 +656,6 @@
             </form>
         </main>
     </div>
-
     <!-- Modal de confirmación -->
     <div class="modal" id="confirmation-modal">
         <div class="modal-content">
@@ -644,16 +666,15 @@
             <p>El permiso de trabajo con AST ha sido registrado en el sistema con el número: <strong id="generated-permit">GSI-SI-FO-002-XXXX</strong></p>
             <div class="modal-actions">
                 <button class="btn secondary" id="modal-close-btn">Cerrar</button>
-                <button class="btn primary" id="modal-print-btn">
-                    <i class="ri-printer-line"></i> Imprimir
-                </button>
+               
             </div>
         </div>
     </div>
 
+       <script src="/Modules/Fomularios/Generales/fecha_hora.js"></script>
     <script src="/Modules/Fomularios/Generales/email.js"></script>
     <script src="/Modules/Fomularios/Generales/seccion1.js"></script>
-    <script src="/Modules/Fomularios/PT9/seccion2.js"></script>
+    <script src="/Modules/Fomularios/pt9/seccion2.js"></script>
     <script src="/Modules/Fomularios/Generales/seccion3.js"></script>
     <script src="/Modules/Fomularios/Generales/seccion4.js"></script>
     <script src="/Modules/Fomularios/Generales/navegacion.js"></script>

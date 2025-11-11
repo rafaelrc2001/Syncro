@@ -6,8 +6,13 @@
     <title>Syncro - Nuevo Permiso Completo</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
-  <!--  <link rel="stylesheet" href="/CSS/EstiloFormularios.css"> -->
-    <link rel="stylesheet" href="P-IZHICSS.css">
+
+   <!-- <link rel="stylesheet" href="/CSS/EstiloFormularios.css">-->
+   <!-- <link rel="stylesheet" href="P-IZHICSS.css">-->
+
+     <link rel="stylesheet" href="/CSS/EstiloFormularios.css">
+     <link rel="stylesheet" href="/CSS/prueba.css">
+      
     
 </head>
 <body>
@@ -205,11 +210,37 @@
               </div>
           </div>
 
+
+          
+
+           <div class="comparative-table">
+              <div class="table-header" >
+                  <h3><i class="ri-flashlight-line"></i>DATOS </h3>
+              </div>
+              <div class="table-grid" style="grid-template-columns: 1fr 1fr; gap: 1rem;">
+                  <div class="table-cell">
+                      <label for="duracion-inicio"><strong>Duración prevista (inicio):</strong></label>
+                      <input type="datetime-local" id="duracion-inicio" name="duracion-inicio" class="table-input" required>
+                  </div>
+                  <div class="table-cell">
+                      <label for="duracion-fin"><strong>Duración prevista (fin):</strong></label>
+                      <input type="datetime-local" id="duracion-fin" name="duracion-fin" class="table-input" required>
+                  </div>
+              </div>
+              <div class="table-grid" style="grid-template-columns: 1fr;">
+                  <div class="table-cell">
+                      <label for="responsable-operacion"><strong>Responsable de la operación de la empresa solicitante:</strong></label>
+                      <input type="text" id="responsable-operacion" name="responsable-operacion" class="table-input" required placeholder="Nombre completo del responsable">
+                  </div>
+              </div>
+            </div>
+
           <!-- Trabajos en Proximidad de Líneas en Carga -->
           <div class="comparative-table">
               <div class="table-header">
                   <h3><i class="ri-flashlight-line"></i>DATOS DE LA GRÚA O CAMIÓN GRÚA</h3>
               </div>
+              
               <div class="table-grid" style="grid-template-columns: 2fr 1fr 2fr;">
                   <div class="table-cell">
                       <strong>EMPRESA:</strong>
@@ -557,7 +588,7 @@
                   </div>
               </div>
           </div>
-      </div>
+      
 
       <!-- Tabla de Dimensiones -->
           <div class="comparative-table">
@@ -607,6 +638,7 @@
               </div>
           </div>
 
+      
           <!-- Apartado de Observaciones -->
           <div class="comparative-table">
               <div class="table-header">
@@ -629,8 +661,7 @@
                   Siguiente <i class="ri-arrow-right-line"></i>
               </button>
           </div>
-      </div>
-      </div>
+
   </section>
 
                  <!-- Sección 3: Participantes -->
@@ -819,7 +850,7 @@
         </div>
     </div>
 
-       <script src="/Modules/Fomularios/Generales/fecha_hora.js"></script>
+    <script src="/Modules/Fomularios/Generales/fecha_hora.js"></script>
     <script src="/Modules/Fomularios/Generales/email.js"></script>
     <script src="/Modules/Fomularios/Generales/seccion1.js"></script>
     <script src="/Modules/Fomularios/pt8/seccion2.js"></script>

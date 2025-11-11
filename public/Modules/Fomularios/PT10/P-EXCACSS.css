@@ -74,9 +74,10 @@ body {
 
 .main-content {
     flex: 1;
-    max-width: 1400px;
+    padding: 1rem;
+    max-width: 1200px;
     margin: 0 auto;
-    position: relative;
+    overflow-y: auto;
 }
 
 .main-content::before {
@@ -206,14 +207,11 @@ body {
 }
 
 .form-container {
-    background: var(--blanco-puro);
-    border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-section);
-    padding: var(--space-2xl);
-    margin-bottom: var(--space-xl);
-    position: relative;
-    overflow: hidden;
-    border: 1px solid rgba(10, 46, 90, 0.08);
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    padding: 1rem;
+    margin-bottom: 1rem;
 }
 
 .form-container::before {
@@ -825,11 +823,11 @@ body {
 }
 
 .form-container {
-    background: var(--blanco-puro);
-    border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-section);
-    padding: var(--space-2xl);
-    margin-bottom: var(--space-xl);
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    padding: 1rem;
+    margin-bottom: 1rem;
     position: relative;
     overflow: hidden;
     border: 1px solid rgba(10, 46, 90, 0.08);

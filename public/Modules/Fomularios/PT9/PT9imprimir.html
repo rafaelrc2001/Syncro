@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Permiso Cesta Izada</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+     <link rel="stylesheet" href="/CSS/EstiloGeneral.css" />
+    <link rel="stylesheet" href="/CSS/EstiloImprimir.css">
+    <link rel="stylesheet" href="/CSS/imprimir/EstiloImprimir-Base.css">
+    <link rel="stylesheet" href="/CSS/imprimir/EstiloImprimir-PT8.css">
+    
+
+</head>
+<body style="background: #f4f6fb; min-height: 100vh; margin: 0; font-family: 'Roboto', Arial, sans-serif;">
+        <div style="display: flex; justify-content: center; align-items: flex-start; min-height: 100vh;">
+            <section class="form-section" data-section="2" style="max-width: 900px; width: 100%; margin: 40px 0; background: #fff; border-radius: 18px; box-shadow: 0 4px 24px rgba(44,62,80,0.10); padding: 2.5rem 2rem;">
+                <div class="company-header">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <img src="/img/proagro.png" alt="Logo ProAgro" style="height: 60px; width: auto;">
+                </div>
+                <div style="text-align: center; flex-grow: 1;">
+                    <h1 style="margin: 0; color: #2c3e50; font-size: 1.5rem; font-weight: 600;">SISTEMA DE PERMISOS DE TRABAJO</h1>
+                    <p style="margin: 0.5rem 0 0 0; color: #7f8c8d; font-size: 0.9rem;">Gestión Integral de Seguridad Laboral</p>
+                </div>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                    <img src="/img/pemex.png" alt="Logo PEMEX" style="height: 60px; width: auto;">
+                </div>
+         
+            </div>
+
+                <div class="section-header header-centered">
+                    <i class="ri-checkbox-circle-line"></i>
+                    <h2>Permiso de Trabajo Cesta Izada</h2>
+                    <h3 id="prefijo-label">NP-XXXXXX</h3>
+                </div>
+                                       <div class="general-box-header">
+                                        <span>Información General</span>
+                                    </div>
+                                    <div  id="hora-creacion-header" style="text-align: center;">
+                                    <i class="ri-time-line"></i>
+                                    <h3>Hora de creación</h3>
+                                </div>
+                  <div class="executive-section " style="margin-bottom: 0; box-shadow: none; background: transparent; border: none;">
+                      
+                   
+                       <div class="executive-grid">
+                          <div class="executive-item">
+                              <label>Hora de inicio</label>
+                              <p id="start-time-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                              <label>Fecha</label>
+                              <p id="fecha-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                              <label>Tipo de actividad</label>
+                              <p id="activity-type-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                              <label>Planta o lugar de trabajo</label>
+                              <p id="plant-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                              <label>Descripción del trabajo</label>
+                              <p id="descripcion-trabajo-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                              <label>Empresa</label>
+                              <p id="empresa-label">-</p>
+                          </div>
+                          <div class="executive-item">
+                            <label>Nombre de quien solicita</label>
+                            <p id="nombre-solicitante-label">-</p>
+                            </div>
+                                                    <div class="executive-item">
+                            <label>Sucursal</label>
+                            <p id="sucursal-label">-</p>
+                            </div>
+                            <div class="executive-item">
+                            <label>Contrato</label>
+                            <p id="contrato-label">-</p>
+                            </div>
+                          <div class="executive-item">
+                              <label>O.T. No.</label>
+                              <p id="work-order-label">-</p>
+                          </div>
+                      </div>
+                  </div>
+                
+                  <div class="executive-section ">
+                    <div class="section-header">
+                        <i class="ri-tools-line"></i>
+                        <h3>Equipo</h3>
+                    </div>
+                    <div class="executive-grid">
+                        
+                        <div class="executive-item">
+                            <label>Equipo a Intervenir</label>
+                            <p id="equipment-label">-</p>
+                        </div>
+                        <div class="executive-item">
+                            <label>TAG</label>
+                            <p id="tag-label">-</p>
+                        </div>
+                    </div>
+                </div>
+      
+
+
+
+                   <div class="area-box-header">
+                                         <span>Formulario Responsable Área</span>
+                     </div>
+
+                       <div  id="hora-responsable-header" style="text-align: center;">
+                                    <i class="ri-time-line"></i>
+                                    <h3>Hora de autorización</h3>
+                    </div>
+
+
+       
+
+                        <!-- Vista: Permiso de Trabajo de Cesta Suspendida con Grúa (Solo Lectura) -->
+
+                        <!-- Vista: Permiso de Trabajo de Cesta Suspendida con Grúa (Solo Lectura, formato tipo formulario) -->
+                        <section class="form-section" data-section="vista-pt9">
+                          <div class="form-header">
+                            <div class="form-icon">
+                              <i class="ri-ruler-2-line"></i>
+                            </div>
+                            <div>
+                              <h2>Permiso de Trabajo de Cesta Suspendida con Grúa</h2>
+                              <p>Detalles técnicos y medidas de seguridad</p>
+                            </div>
+                          </div>
+                          <!-- Bloque: Datos de la Grúa y Cesta -->
+                          <div class="executive-section">
+                            <div class="section-header">
+                              <i class="ri-flashlight-line"></i>
+                              <h3>Datos de la Grúa y Cesta</h3>
+                            </div>
+                            <div class="executive-grid">
+                              <div class="executive-item">
+                                <label>Identificación de la Grúa</label>
+                                <p id="view-identificacion-grua">-</p>
+                              </div>
+                              <div class="executive-item">
+                                <label>Perteneciente a la Empresa (Grúa)</label>
+                                <p id="view-perteneciente-empresa-grua">-</p>
+                              </div>
+                              <div class="executive-item">
+                                <label>Identificación de la Cesta</label>
+                                <p id="view-identificacion-cesta">-</p>
+                              </div>
+                              <div class="executive-item">
+                                <label>Perteneciente a la Empresa (Cesta)</label>
+                                <p id="view-perteneciente-empresa-cesta">-</p>
+                              </div>
+                              <div class="executive-item">
+                                <label>Peso de la Cesta</label>
+                                <p id="view-peso-cesta">-</p>
+                              </div>
+                              <div class="executive-item">
+                                <label>Carga Máxima de la Cesta</label>
+                                <p id="view-carga-maxima-cesta">-</p>
+                              </div>
+                              <div class="executive-item">
+                                <label>Última Revisión</label>
+                                <p id="view-ultima-revision-cesta">-</p>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- Bloque: Condiciones de Elevación -->
+                          <div class="executive-section">
+                            <div class="section-header">
+                              <i class="ri-table-2"></i>
+                              <h3>Condiciones de Elevación</h3>
+                            </div>
+                            <div class="executive-grid">
+                              <div class="executive-item">
+                                <label>Asentamiento</label>
+                                <p id="view-asentamiento">-</p>
+                              </div>
+                              <div class="executive-item">
+                                <label>Calzado</label>
+                                <p id="view-calzado">-</p>
+                              </div>
+                              <div class="executive-item">
+                                <label>Nivelación</label>
+                                <p id="view-nivelacion">-</p>
+                              </div>
+                              <div class="executive-item">
+                                <label>Ext. Gatos</label>
+                                <p id="view-ext-gatos">-</p>
+                              </div>
+                              <div class="executive-item">
+                                <label>¿Se utiliza plumín?</label>
+                                <p id="view-utiliza-plumin">-</p>
+                              </div>
+                              <div class="executive-item">
+                                <label>Especificar plumín</label>
+                                <p id="view-especificar-plumin">-</p>
+                              </div>
+                              <div class="executive-item">
+                                <label>Longitud de la Pluma (m)</label>
+                                <p id="view-longitud-pluma">-</p>
+                              </div>
+                              <div class="executive-item">
+                                <label>Radio de Trabajo (m)</label>
+                                <p id="view-radio-trabajo">-</p>
+                              </div>
+                              <div class="executive-item">
+                                <label>Carga Segura en Diagrama de Cargas (Ton)</label>
+                                <p id="view-carga-segura">-</p>
+                              </div>
+                              <div class="executive-item">
+                                <label>Peso de la Carga (kg)</label>
+                                <p id="view-peso-carga">-</p>
+                              </div>
+                              <div class="executive-item">
+                                <label>Peso del Gancho y Elementos Auxiliares (kg)</label>
+                                <p id="view-peso-gancho-elementos">-</p>
+                              </div>
+                              <div class="executive-item">
+                                <label>Carga de Trabajo (Ton)</label>
+                                <p id="view-carga-de-trabajo">-</p>
+                              </div>
+                              <div class="executive-item">
+                                <label>Relación Carga de Trabajo / Carga Segura</label>
+                                <p id="view-relacion-carga-segura">-</p>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- Bloque: Prueba Previa a Suspensión -->
+                          <div class="executive-section">
+                            <div class="section-header">
+                              <i class="ri-table-2"></i>
+                              <h3>Prueba Previa a Suspensión</h3>
+                            </div>
+                            <div class="executive-grid">
+                              <div class="executive-item">
+                                <label>Carga de Prueba (kg)</label>
+                                <p id="view-carga-prueba">-</p>
+                              </div>
+                              <div class="executive-item">
+                                <label>Prueba Realizada</label>
+                                <p id="view-prueba-realizada">-</p>
+                              </div>
+                              <div class="executive-item">
+                                <label>Prueba Presenciada por</label>
+                                <p id="view-prueba-presenciada-por">-</p>
+                              </div>
+                              <div class="executive-item">
+                                <label>Firma</label>
+                                <p id="view-firma">-</p>
+                              </div>
+                              <div class="executive-item">
+                                <label>Fecha</label>
+                                <p id="view-fecha-prueba">-</p>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- Bloque: Medidas de Seguridad Previas -->
+                          <div class="executive-section">
+                            <div class="section-header">
+                              <i class="ri-table-2"></i>
+                              <h3>Medidas de Seguridad Previas</h3>
+                            </div>
+                            <div class="executive-grid">
+                              <div class="executive-item">
+                                <label>Máscaras de Escape en la Cesta</label>
+                                <p id="view-mascaras-escape">-</p>
+                              </div>
+                              <div class="executive-item">
+                                <label>Equipo de Protección en la Cesta</label>
+                                <p id="view-equipo-proteccion">-</p>
+                              </div>
+                              <div class="executive-item">
+                                <label>Equipo de Contra-Incendios en la Cesta</label>
+                                <p id="view-equipo-contra-incendios">-</p>
+                              </div>
+                              <div class="executive-item">
+                                <label>Final de Carrera</label>
+                                <p id="view-final-carrera">-</p>
+                              </div>
+                              <div class="executive-item">
+                                <label>Otras Medidas de Seguridad</label>
+                                <p id="view-otras-medidas">-</p>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- Bloque: Observaciones Generales -->
+                          <div class="executive-section">
+                            <div class="section-header">
+                              <i class="ri-edit-line"></i>
+                              <h3>Observaciones Generales</h3>
+                            </div>
+                            <div class="executive-grid">
+                              <div class="executive-item" style="grid-column: span 2;">
+                                <label>Observaciones</label>
+                                <p id="view-observaciones-generales">-</p>
+                              </div>
+                            </div>
+                          </div>
+                        </section>
+                  
+
+
+             
+                      
+                
+
+
+  <!-- Seccion supervisores -->
+            <!-- Identificación de la fuente -->
+           
+
+                    <div class="supervisor-box-header" style="margin-bottom: 18px; margin-top: 32px;">
+                                         <span>Formulario Seguridad Industrial</span>
+                                     </div>
+                                       <div  id="hora-supervisor-header" style="text-align: center;">
+                                    <i class="ri-time-line"></i>
+                                    <h3>Hora de autorización</h3>
+                                </div>
+
+
+               
+            
+
+
+
+
+
+
+
+                       <!-- Sección AST y Participantes -->
+                
+                    <div class="section-header">
+                        <i class="ri-shield-check-line"></i>
+                        <h3>AST - Análisis de Seguridad en el Trabajo</h3>
+                    </div>
+                    <div class="ast-summary">
+                        <table class="ast-table">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Secuencia de la Actividad</th>
+                                    <th>Personal Ejecutor</th>
+                                    <th>Peligros Potenciales</th>
+                                    <th>Acciones Preventivas</th>
+                                    <th>Responsable</th>
+                                </tr>
+                            </thead>
+                            <tbody id="modal-ast-actividades-body">
+                                <!-- Actividades AST dinámicas -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="safety-grid">
+                        <div class="safety-item">
+                            <h4><i class="ri-shield-user-line"></i> EPP Requerido</h4>
+                            <ul class="safety-list" id="modal-epp-list">
+                                <li></li>
+                            </ul>
+                        </div>
+                        <div class="safety-item">
+                            <h4><i class="ri-tools-line"></i> Maquinaria y Herramientas</h4>
+                            <ul class="safety-list" id="modal-maquinaria-list">
+                                <li></li>
+                            </ul>
+                        </div>
+                        <div class="safety-item">
+                            <h4><i class="ri-box-line"></i> Materiales y Accesorios</h4>
+                            <ul class="safety-list" id="modal-materiales-list">
+                                <li></li>
+                            </ul>
+                        </div>
+                    </div>
+                
+               <!-- Sección 4: Participantes -->
+                      <!-- Sección 4: Participantes -->
+               
+                    <div class="section-header">
+                        <i class="ri-team-line"></i>
+                        <h3>Personal Involucrado</h3>
+                    </div>
+                    <div class="ast-summary">
+                        <table class="ast-table ast-table-participantes" id="tabla-participantes">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Función</th>
+                                    <th>Credencial</th>
+                                    <th>Cargo</th>
+                                    <th>Firma</th>
+                                </tr>
+                            </thead>
+                            <tbody id="modal-ast-participantes-body">
+                                <!-- Participantes AST dinámicos -->
+                            </tbody>
+                        </table>
+                    </div>
+                
+              
+              
+
+
+                <!-- Sección 5: Aprobaciones -->
+         
+                    <div class="section-header">
+                        <i class="ri-team-line"></i>
+                        <h3>Responsables</h3>
+                    </div>
+                    <div class="ast-summary">
+                         <table class="ast-table ast-table-responsables">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Cargo</th>
+                                    <th>Firma</th>                                
+                                </tr>
+                            </thead>
+                            <tbody id="modal-ast-responsable-body">
+                                <!-- Participantes AST dinámicos -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="comentarios-permiso" style="display:none; margin-top:2em;">
+                        <div style="background:#fff; border-radius:10px; box-shadow:0 2px 8px rgba(44,62,80,0.08); padding:1.2em 1.5em; ">
+                            <span style="font-size:1.05em; font-weight:600; color:#2b3d4f; display:block; margin-bottom:0.7em;">
+                            <i class="ri-chat-3-line" style="margin-right:7px;"></i>Comentario:
+                            </span>
+                            <p id="comentario-texto" style="margin:0; color:#2c3e50; font-size:1em; font-weight:500; word-break:break-word;">-</p>
+                        </div>
+                    </div>
+                
+                
+                
+                
+
+                  <div class="button-group" style="display: flex; justify-content: space-between; margin-top: 48px; gap: 16px;">
+                    <button id="btn-salir-nuevo" class="btn btn-pt1 btn-salir-gris" type="button">
+                        <i class="ri-logout-box-r-line" style="margin-right: 8px;"></i>Salir
+                    </button>
+
+                 <!--      <div style="display: flex; gap: 16px;">
+                          <button 
+                            id="btn-cerrar-permiso" 
+                            class="btn btn-pt1 btn-guardar-azulpetroleo" 
+                            type="button"
+                        >
+                            <i class="ri-close-line" style="margin-right: 8px;"></i>
+                            Finalizar permiso
+                        </button>
+                    </div>-->
+
+
+                    <div style="display: flex; gap: 16px;">
+                          <button 
+                            id="btn-cerrar-permiso" 
+                            class="btn btn-pt1 btn-guardar-azulpetroleo" 
+                            type="button">
+                        
+                            <i class="ri-close-line" style="margin-right: 8px;"></i>
+                            Finalizar permiso
+                        </button>
+                        <button id="btn-imprimir-permiso" class="btn btn-pt1 btn-guardar-azulpetroleo" type="button">
+                            <i class="ri-printer-line" style="margin-right: 8px;"></i>Imprimir Permiso
+                        </button>
+                    </div>
+                </div>
+                
+        </section>
+
+
+        <!-- Modal para motivo de no autorización -->
+                                        <div id="modalComentario" class="modal-comentario" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(44,62,80,0.25); z-index:1000; justify-content:center; align-items:center;">
+                                            <div style="background:#fff; border-radius:12px; max-width:400px; width:90vw; padding:2em 1.5em; box-shadow:0 4px 24px rgba(44,62,80,0.18); display:flex; flex-direction:column; gap:1em;">
+                                                <h3 style="margin:0 0 0.5em 0; font-size:1.2em; color:#c0392b;"><i class="ri-close-circle-line" style="margin-right:8px;"></i>Motivo de No Autorización</h3>
+                                                <textarea id="comentarioNoAutorizar" rows="4" style="width:100%; border:1px solid #d0d7de; border-radius:6px; padding:8px; resize:vertical;" placeholder="Escribe el motivo del rechazo..."></textarea>
+                                                <div style="display:flex; justify-content:flex-end; gap:10px;">
+                                                    <button id="btnCancelarComentario" type="button" style="background:#eee; color:#333; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Cancelar</button>
+                                                    <button id="btnGuardarComentario" type="button" style="background:#c0392b; color:#fff; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Guardar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                          <div id="modalCerrarPermiso" class="modal-comentario" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(44,62,80,0.25); z-index:1000; justify-content:center; align-items:center;">
+                                            <div style="background:#fff; border-radius:12px; max-width:400px; width:90vw; padding:2em 1.5em; box-shadow:0 4px 24px rgba(44,62,80,0.18); display:flex; flex-direction:column; gap:1em;">
+                                                <h3 style="margin:0 0 0.5em 0; font-size:1.2em; color:#2980b9;">
+                                                    <i class="ri-lock-2-line" style="margin-right:8px;"></i>Motivo de Cierre de Permiso
+                                                </h3>
+                                                <div style="margin-bottom: 1em;">
+                                                    <label style="display: block; margin-bottom: 0.5em; font-weight: 500; color: #2c3e50;">Selecciona el tipo de cierre:</label>
+                                                    <select id="tipoCierrePermiso" style="width:100%; padding:8px 12px; border:1px solid #d0d7de; border-radius:6px; font-size:14px; background:#fff;">
+                                                        <option value="">-- Seleccionar tipo de cierre --</option>
+                                                        <option value="cierre-sin-incidentes">Cierre sin incidentes</option>
+                                                        <option value="cierre-con-incidentes">Cierre con incidentes</option>
+                                                        <option value="cierre-con-accidentes">Cierre con accidentes</option>
+                                                        <option value="cancelado">Cancelado</option>
+                                                    </select>
+                                                </div>
+                                                <textarea id="comentarioCerrarPermiso" rows="4" style="width:100%; border:1px solid #d0d7de; border-radius:6px; padding:8px; resize:vertical;" placeholder="Escribe el motivo del cierre..."></textarea>
+                                                <div style="display:flex; justify-content:flex-end; gap:10px;">
+                                                    <button id="btnCancelarCerrarPermiso" type="button" style="background:#eee; color:#333; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Cancelar</button>
+                                                    <button id="btnGuardarCerrarPermiso" type="button" style="background:#2980b9; color:#fff; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Guardar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div id="modalCancelarPermisoUnico" class="modal-comentario" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(44,62,80,0.25); z-index:1000; justify-content:center; align-items:center;">
+                                                <div style="background:#fff; border-radius:12px; max-width:400px; width:90vw; padding:2em 1.5em; box-shadow:0 4px 24px rgba(44,62,80,0.18); display:flex; flex-direction:column; gap:1em;">
+                                                    <h3 style="margin:0 0 0.5em 0; font-size:1.2em; color:#c0392b;">
+                                                        <i class="ri-close-circle-line" style="margin-right:8px;"></i>Motivo de Cancelación de Permiso
+                                                    </h3>
+                                                    <textarea id="comentarioCancelarPermiso" rows="4" style="width:100%; border:1px solid #d0d7de; border-radius:6px; padding:8px; resize:vertical;" placeholder="Escribe el motivo de la cancelación..."></textarea>
+                                                    <div style="display:flex; justify-content:flex-end; gap:10px;">
+                                                        <button id="btnCancelarCancelarPermiso" type="button" style="background:#eee; color:#333; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Cancelar</button>
+                                                        <button id="btnGuardarCancelarPermiso" type="button" style="background:#c0392b; color:#fff; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Guardar</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+
+
+    </div>
+</body>
+    
+</html>
+
+    <script src="/Modules/Fomularios/Generales/comentarios.js"></script>
+    <script src="/Modules/Fomularios/Generales/fecha_hora.js"></script>
+    <script src="/Modules/Fomularios/PT9/PT9seccionimprimir.js"></script>
+    <script src="/Modules/Fomularios/Generales/cancelar.js"></script>
+    <script src="/Modules/Fomularios/Generales/finalizadoemail.js"></script>
+    <script src="/Modules/Fomularios/Generales/terminar.js"></script>
+    <script src="/Modules/Fomularios/Generales/canceladoemail.js"></script>
+</body>
+</html>

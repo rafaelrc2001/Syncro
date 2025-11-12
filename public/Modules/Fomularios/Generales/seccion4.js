@@ -206,6 +206,15 @@ document.addEventListener("DOMContentLoaded", () => {
       const contrato =
         document.getElementById("contract-number")?.value || null;
 
+      // Validación rápida: no permitir enviar si falta la hora
+      const horaInput = document.getElementById("start-time");
+      if (horaInput && !horaInput.value) {
+        alert(
+          "Por favor, selecciona una hora de inicio antes de enviar el formulario."
+        );
+        e.preventDefault();
+        return;
+      }
       try {
         // === Validar sección 4
         const section4 = document.querySelector(
@@ -767,7 +776,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ot_numero,
             tag,
             hora_inicio,
-            equipo_intervenir:
+            equipo_intervencion:
               document.getElementById("equipment")?.value || "", // <--- CAMBIA AQUÍ
             avisos_trabajos: warning_signs,
             iluminacion_prueba_explosion: explosion_proof_lighting,
@@ -987,7 +996,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ot_numero,
             tag,
             hora_inicio,
-            equipo_intervenir: equipo_intervencion,
+            equipo_intervencion: equipo_intervencion,
             empresa,
             descripcion_trabajo,
             nombre_solicitante, // <-- NUEVO
@@ -1095,7 +1104,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ot_numero,
             tag,
             hora_inicio,
-            equipo_intervenir: equipo_intervencion,
+            equipo_intervencion: equipo_intervencion,
             empresa,
             descripcion_trabajo,
             nombre_solicitante,
@@ -1157,7 +1166,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const fecha = document.getElementById("permit-date")?.value || "";
           const hora_inicio = fecha ? `${fecha} ${hora}` : hora;
           // Leer correctamente el campo de equipo a intervenir
-          const equipo_intervenir =
+          const equipo_intervencion =
             document.getElementById("equipment")?.value || "";
           const empresa = document.getElementById("company")?.value || "";
           const descripcion_trabajo =
@@ -1216,7 +1225,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ot_numero,
             tag,
             hora_inicio,
-            equipo_intervenir,
+            equipo_intervencion,
             empresa,
             descripcion_trabajo,
             nombre_solicitante,
@@ -1263,11 +1272,800 @@ document.addEventListener("DOMContentLoaded", () => {
           // FIN BLOQUE: Insertar PT Fuentes Radioactivas
           // ==============================
         } else if (tipoFormulario === 8) {
-          // Lógica para formulario 8
+          // ==============================
+          // INICIO BLOQUE: Insertar PT Izaje
+          // ==============================
+
+          // Recoge los valores de los campos del formulario de Izaje
+          let tipo_mantenimiento =
+            document.getElementById("maintenance-type")?.value || "";
+          if (tipo_mantenimiento === "OTRO") {
+            const otroInput = document.getElementById("other-maintenance");
+            if (otroInput && otroInput.value.trim()) {
+              tipo_mantenimiento = otroInput.value.trim();
+            }
+          }
+          const ot_numero = document.getElementById("work-order")?.value || "";
+          const tag = document.getElementById("tag")?.value || "";
+          const hora = document.getElementById("start-time")?.value || "";
+          const fecha = document.getElementById("permit-date")?.value || "";
+          const duracionInicio =
+            document.getElementById("duracion-inicio")?.value || "";
+          const hora_inicio = duracionInicio
+            ? duracionInicio.split("T")[1]
+            : "";
+
+          const hora_inicio_prevista = duracionInicio
+            ? duracionInicio.split("T")[1]
+            : "";
+
+          const duracionFin =
+            document.getElementById("duracion-fin")?.value || "";
+          const hora_fin_prevista = duracionFin
+            ? duracionFin.split("T")[1]
+            : "";
+
+          const equipo_intervenir =
+            document.getElementById("equipment")?.value || "";
+          const descripcion_trabajo =
+            document.getElementById("work-description")?.value || "";
+          const nombre_solicitante =
+            document.getElementById("applicant")?.value || "";
+          const empresa = document.getElementById("company")?.value || "";
+
+          // DATOS 1
+          const responsable_operacion =
+            document.getElementById("responsable-operacion")?.value || "";
+
+          // DATOS 2
+
+          const empresa_grua =
+            document.getElementById("empresa-grua")?.value || "";
+          const identificacion_grua =
+            document.getElementById("identificacion-grua")?.value || "";
+
+          // DATOS DEL OPERADOR
+          // ELEMENTOS AUXILIARES DE IZADO
+          const estrobos_eslingas =
+            document.querySelectorAll('input[name="licencia-operador"]')[0]
+              ?.checked || false;
+          const grilletes =
+            document.querySelectorAll('input[name="licencia-operador"]')[1]
+              ?.checked || false;
+          const otros_elementos_auxiliares =
+            document.querySelectorAll('input[name="licencia-operador"]')[2]
+              ?.checked || false;
+          const especificacion_otros_elementos =
+            document.getElementById("otros-elementos")?.value || "";
+          const requiere_eslingado_especifico =
+            document.querySelectorAll('input[name="licencia-operador"]')[3]
+              ?.checked || false;
+          const especificacion_eslingado =
+            document.getElementById("licencia-operador")?.value || "";
+
+          // CONFIGURACIÓN Y CARGA
+          // Todos los radios usan name="tuberia-gas" y se diferencian por posición visual, así que tomamos el seleccionado
+          const extension_gatos =
+            document.querySelector('input[name="tuberia-gas"]:checked')
+              ?.value || "";
+          const sobre_ruedas = extension_gatos; // mismo grupo de radios
+          const especificacion_sobre_ruedas =
+            document.getElementById("otros-elementos")?.value || "";
+          const utiliza_plumin_si = extension_gatos; // mismo grupo de radios
+          const especificacion_plumin =
+            document.getElementById("otros-elementos")?.value || "";
+          const longitud_pluma =
+            document.getElementById("longitud-pluma")?.value || "";
+          const radio_trabajo =
+            document.getElementById("radio-trabajo")?.value || "";
+          const contrapeso = document.getElementById("contrapeso")?.value || "";
+          const sector_trabajo =
+            document.querySelector('input[name="sector-trabajo"]:checked')
+              ?.value || "";
+          const carga_segura_diagrama =
+            document.getElementById("carga-segura")?.value || "";
+          const peso_carga = document.getElementById("peso-carga")?.value || "";
+          const determinada_por =
+            document.getElementById("determinada-por")?.value || "";
+          const carga_trabajo =
+            document.getElementById("carga-de-trabajo")?.value || "";
+          const peso_gancho_eslingas =
+            document.getElementById("peso-carga")?.value || "";
+          const relacion_carga_carga_segura =
+            document.getElementById("especificar-plumin")?.value || "";
+
+          // Comprobaciones (checkboxes)
+          const asentamiento =
+            document.querySelectorAll(
+              'input[name="medida-declaracion-conformidad"]'
+            )[1]?.checked || false;
+          // Definir campos faltantes para evitar ReferenceError
+          const tipo_licencia =
+            document.getElementById("tipo-licencia")?.value || "";
+          const comentarios_operador =
+            document.getElementById("comentarios-operador")?.value || "";
+          const nombre_operador =
+            document.getElementById("nombre-operador")?.value || "";
+          const empresa_operador =
+            document.getElementById("empresa-operador")?.value || "";
+          // Licencia operador: radio y texto
+          const licencia_operador =
+            document.getElementById("licencia-operador")?.value || "";
+          // Para radio, ejemplo: SI/NO
+          const numero_licencia = licencia_operador; // Si hay un número, se toma del input
+          const fecha_emision_licencia =
+            document.getElementById("permit-date")?.value || "";
+          const vigencia_licencia =
+            document.getElementById("vigencia")?.value || "";
+          // --- Definición de variables PT Izaje ---
+          // Checkboxes de medidas principales
+          const declaracion_conformidad =
+            document.querySelector(
+              'input[name="medida-declaracion-conformidad"]'
+            )?.checked || false;
+          const inspeccion_periodica =
+            document.querySelector('input[name="medida-inspeccion-periodica"]')
+              ?.checked || false;
+          const mantenimiento_preventivo =
+            document.querySelector(
+              'input[name="medida-mantenimiento-preventivo"]'
+            )?.checked || false;
+          const inspeccion_diaria =
+            document.querySelector('input[name="medida-inspeccion-diaria"]')
+              ?.checked || false;
+          const diagrama_cargas =
+            document.querySelector('input[name="medida-diagrama-cargas"]')
+              ?.checked || false;
+          const libro_instrucciones =
+            document.querySelector('input[name="medida-libro-instrucciones"]')
+              ?.checked || false;
+          const limitador_carga =
+            document.querySelector('input[name="medida-limitador-carga"]')
+              ?.checked || false;
+          const final_carrera =
+            document.querySelector('input[name="medida-final-carrera"]')
+              ?.checked || false;
+
+          // DATOS DEL OPERADOR
+          // ...variables ya definidas arriba, eliminar duplicados...
+          const calzado =
+            Array.from(
+              document.querySelectorAll(
+                'input[type="checkbox"][name="medida-inspeccion-periodica"]'
+              )
+            )[0]?.checked || false;
+          const extension_gatos_check =
+            Array.from(
+              document.querySelectorAll(
+                'input[type="checkbox"][name="medida-mantenimiento-preventivo"]'
+              )
+            )[0]?.checked || false;
+          const nivelacion =
+            Array.from(
+              document.querySelectorAll(
+                'input[type="checkbox"][name="medida-inspeccion-diaria"]'
+              )
+            )[0]?.checked || false;
+          const contrapeso_check =
+            Array.from(
+              document.querySelectorAll(
+                'input[type="checkbox"][name="medida-diagrama-cargas"]'
+              )
+            )[0]?.checked || false;
+          const sector_trabajo_check =
+            Array.from(
+              document.querySelectorAll(
+                'input[type="checkbox"][name="medida-libro-instrucciones"]'
+              )
+            )[0]?.checked || false;
+          const comprobado_por =
+            document.getElementById("comprobado-por")?.value || "";
+
+          // MEDIDAS DE SEGURIDAD PREVIAS
+          const balizamiento_operacion =
+            Array.from(
+              document.querySelectorAll(
+                'input[type="checkbox"][name="licencia-operador"]'
+              )
+            )[4]?.checked || false;
+          const reunion_previa =
+            Array.from(
+              document.querySelectorAll(
+                'input[type="checkbox"][name="licencia-operador"]'
+              )
+            )[5]?.checked || false;
+          const especificacion_reunion_previa =
+            document.getElementById("reunion-previa")?.value || "";
+          const presentacion_supervisor =
+            Array.from(
+              document.querySelectorAll(
+                'input[type="checkbox"][name="licencia-operador"]'
+              )
+            )[6]?.checked || false;
+          const nombre_supervisor =
+            document.getElementById("presentacion-supervisor")?.value || "";
+          const permiso_adicional =
+            Array.from(
+              document.querySelectorAll(
+                'input[type="checkbox"][name="licencia-operador"]'
+              )
+            )[7]?.checked || false;
+          const especificacion_permiso_adicional =
+            document.getElementById("permiso-adicional")?.value || "";
+          const otras_medidas_seguridad =
+            Array.from(
+              document.querySelectorAll(
+                'input[type="checkbox"][name="licencia-operador"]'
+              )
+            )[8]?.checked || false;
+          const especificacion_otras_medidas =
+            document.getElementById("otras-medidas")?.value || "";
+
+          // Observaciones generales
+          const observaciones_generales =
+            document.getElementById("observaciones-generales")?.value || "";
+
+          // Construye el objeto de datos para enviar
+          const datosIzaje = {
+            id_permiso,
+            tipo_mantenimiento,
+            ot_numero,
+            tag,
+            hora_inicio,
+            equipo_intervenir,
+            descripcion_trabajo,
+            nombre_solicitante,
+            empresa,
+            hora_inicio_prevista,
+            responsable_operacion,
+            hora_fin_prevista,
+            empresa_grua,
+            identificacion_grua,
+            declaracion_conformidad,
+            inspeccion_periodica,
+            mantenimiento_preventivo,
+            inspeccion_diaria,
+            diagrama_cargas,
+            libro_instrucciones,
+            limitador_carga,
+            final_carrera,
+            nombre_operador,
+            empresa_operador,
+            licencia_operador,
+            numero_licencia,
+            fecha_emision_licencia,
+            vigencia_licencia,
+            tipo_licencia,
+            comentarios_operador,
+            estrobos_eslingas,
+            grilletes,
+            otros_elementos_auxiliares,
+            especificacion_otros_elementos,
+            requiere_eslingado_especifico,
+            especificacion_eslingado,
+            extension_gatos,
+            sobre_ruedas,
+            especificacion_sobre_ruedas,
+            utiliza_plumin_si,
+            especificacion_plumin,
+            longitud_pluma,
+            radio_trabajo,
+            contrapeso,
+            sector_trabajo,
+            carga_segura_diagrama,
+            peso_carga,
+            determinada_por,
+            carga_trabajo,
+            peso_gancho_eslingas,
+            relacion_carga_carga_segura,
+            asentamiento,
+            calzado,
+            extension_gatos_check,
+            nivelacion,
+            contrapeso_check,
+            sector_trabajo_check,
+            comprobado_por,
+            balizamiento_operacion,
+            reunion_previa,
+            especificacion_reunion_previa,
+            presentacion_supervisor,
+            nombre_supervisor,
+            permiso_adicional,
+            especificacion_permiso_adicional,
+            otras_medidas_seguridad,
+            especificacion_otras_medidas,
+            observaciones_generales,
+          };
+
+          // Imprime en consola lo que se enviará
+          console.log("[DEBUG] Datos a enviar PT Izaje:", datosIzaje);
+
+          // Enviar los datos al backend
+          const izajeResponse = await fetch("/api/pt_izaje", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(datosIzaje),
+          });
+          const izajeResult = await izajeResponse.json();
+          if (!izajeResponse.ok || !izajeResult.success)
+            throw new Error(izajeResult.error || "Error al guardar PT Izaje");
+
+          // ==============================
+          // FIN BLOQUE: Insertar PT Izaje
+          // ==============================
         } else if (tipoFormulario === 9) {
-          // Lógica para formulario 9
+          // ==============================
+          // INICIO BLOQUE: Insertar PT Cesta Izada
+          // ==============================
+
+          // DATOS GENERALES
+          let tipo_mantenimiento =
+            document.getElementById("maintenance-type")?.value || "";
+          if (tipo_mantenimiento === "OTRO") {
+            const otroInput = document.getElementById("other-maintenance");
+            if (otroInput && otroInput.value.trim()) {
+              tipo_mantenimiento = otroInput.value.trim();
+            }
+          }
+          const ot_numero = document.getElementById("work-order")?.value || "";
+          const tag = document.getElementById("tag")?.value || "";
+          const hora = document.getElementById("start-time")?.value || "";
+          const fecha = document.getElementById("permit-date")?.value || "";
+          // Ajuste: solo la hora en formato HH:mm o HH:mm:ss y nunca enviar ''
+          let hora_inicio = null;
+          if (hora && hora.includes(":")) {
+            hora_inicio =
+              hora.split("T").length > 1 ? hora.split("T")[1] : hora;
+          }
+          const equipo_intervenir =
+            document.getElementById("equipment")?.value || "";
+          const descripcion_trabajo =
+            document.getElementById("work-description")?.value || "";
+          const nombre_solicitante =
+            document.getElementById("applicant")?.value || "";
+          const empresa = document.getElementById("company")?.value || "";
+
+          // DATOS DE LA GRÚA Y CESTA
+          const identificacion_grua_cesta =
+            document.getElementById("identificacion-grua")?.value || "";
+          const empresa_grua_cesta =
+            document.getElementById("perteneciente-empresa")?.value || "";
+          const identificacion_cesta =
+            document.getElementById("identificacion-cesta")?.value || "";
+          const empresa_cesta =
+            document.getElementById("perteneciente-empresa")?.value || "";
+          const peso_cesta = document.getElementById("peso-cesta")?.value || "";
+          const carga_maxima_cesta =
+            document.getElementById("carga-maxima-cesta")?.value || "";
+          const ultima_revision_cesta =
+            document.getElementById("permit-date")?.value || "";
+
+          // CONDICIONES DE ELEVACIÓN
+          // (Si tienes checkboxes, deberás obtener su estado con .checked)
+          const condicion = ""; // Puedes concatenar los checks activos si lo necesitas
+          const especificacion_ext_gatos =
+            document.getElementById("se-utiliza-plumin")?.value || "";
+          const utiliza_plumin_cesta =
+            document.querySelector('input[name="se-utiliza-plumin"]:checked')
+              ?.value || "";
+          const especificacion_plumin_cesta =
+            document.getElementById("especificar-plumin")?.value || "";
+          const longitud_pluma_cesta =
+            document.getElementById("longitud-pluma")?.value || "";
+          const radio_trabajo_cesta =
+            document.getElementById("radio-trabajo")?.value || "";
+          const carga_segura_cesta =
+            document.getElementById("carga-segura")?.value || "";
+          const peso_carga_cesta =
+            document.getElementById("peso-carga")?.value || "";
+          const peso_gancho_elementos =
+            document.getElementById("peso-gancho-elementos")?.value || "";
+          const carga_trabajo_cesta =
+            document.getElementById("carga-de-trabajo")?.value || "";
+          const relacion_carga_segura_cesta =
+            document.getElementById("especificar-plumin")?.value || "";
+
+          // PRUEBA PREVIA A SUSPENSIÓN
+          const carga_prueba =
+            document.getElementById("carga-prueba")?.value || "";
+          const prueba_realizada =
+            document.querySelector('input[name="prueba-realizada"]:checked')
+              ?.value || "";
+          const prueba_presenciada_por =
+            document.getElementById("prueba-presenciada-por")?.value || "";
+          const firma_prueba = document.getElementById("firma")?.value || "";
+          const fecha_prueba =
+            document.getElementById("permit-date")?.value || "";
+
+          // MEDIDAS DE SEGURIDAD PREVIAS
+          const mascaras_escape_cesta =
+            document.getElementById("mascaras-escape")?.value || "";
+          const especificacion_mascaras =
+            document.getElementById("especificacion-mascaras")?.value || "";
+          const equipo_proteccion_cesta =
+            document.getElementById("equipo-proteccion")?.value || "";
+          const especificacion_equipo_proteccion =
+            document.getElementById("especificacion-equipo-proteccion")
+              ?.value || "";
+          const equipo_contra_incendios_cesta =
+            document.getElementById("equipo-contra-incendios")?.value || "";
+          const especificacion_equipo_incendios =
+            document.getElementById("especificacion-equipo-incendios")?.value ||
+            "";
+          const final_carrera_cesta = ""; // Si tienes un checkbox, usa .checked
+          const otras_medidas_cesta =
+            document.getElementById("otras-medidas")?.value || "";
+          const especificacion_otras_medidas_cesta =
+            document.getElementById("especificacion-otras-medidas-cesta")
+              ?.value || "";
+
+          // OBSERVACIONES
+          const observaciones_generales_cesta =
+            document.getElementById("observaciones-generales")?.value || "";
+
+          // Construir el objeto de datos para enviar
+          const datosCesta = {
+            id_permiso,
+            tipo_mantenimiento,
+            ot_numero,
+            tag,
+            hora_inicio,
+            equipo_intervenir,
+            descripcion_trabajo,
+            nombre_solicitante,
+            empresa,
+            identificacion_grua_cesta,
+            empresa_grua_cesta,
+            identificacion_cesta,
+            carga_maxima_cesta,
+            empresa_cesta,
+            peso_cesta,
+            ultima_revision_cesta,
+            condicion,
+            especificacion_ext_gatos,
+            utiliza_plumin_cesta,
+            especificacion_plumin_cesta,
+            longitud_pluma_cesta,
+            radio_trabajo_cesta,
+            carga_segura_cesta,
+            peso_carga_cesta,
+            peso_gancho_elementos,
+            carga_trabajo_cesta,
+            relacion_carga_segura_cesta,
+            carga_prueba,
+            prueba_realizada,
+            prueba_presenciada_por,
+            firma_prueba,
+            fecha_prueba,
+            mascaras_escape_cesta,
+            especificacion_mascaras,
+            equipo_proteccion_cesta,
+            especificacion_equipo_proteccion,
+            equipo_contra_incendios_cesta,
+            especificacion_equipo_incendios,
+            final_carrera_cesta,
+            otras_medidas_cesta,
+            especificacion_otras_medidas_cesta,
+            observaciones_generales_cesta,
+          };
+
+          // Imprimir en consola lo que se enviará
+          console.log("[DEBUG] Datos a enviar PT Cesta Izada:", datosCesta);
+
+          // Enviar los datos al backend
+          const cestaResponse = await fetch("/api/cesta", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(datosCesta),
+          });
+          const cestaResult = await cestaResponse.json();
+          if (!cestaResponse.ok || !cestaResult.success)
+            throw new Error(
+              cestaResult.error || "Error al guardar PT Cesta Izada"
+            );
+
+          // ==============================
+          // FIN BLOQUE: Insertar PT Cesta Izada
+          // ==============================
         } else if (tipoFormulario === 10) {
-          // Lógica para formulario 10
+          // ==============================
+          // INICIO BLOQUE: Insertar PT Excavación/Perforación
+          // ==============================
+
+          // Información general
+          let tipo_mantenimiento =
+            document.getElementById("maintenance-type")?.value || "";
+          if (tipo_mantenimiento === "OTRO") {
+            const otroInput = document.getElementById("other-maintenance");
+            if (otroInput && otroInput.value.trim()) {
+              tipo_mantenimiento = otroInput.value.trim();
+            }
+          }
+          const ot_numero = document.getElementById("work-order")?.value || "";
+          const tag = document.getElementById("tag")?.value || "";
+          const hora = document.getElementById("start-time")?.value || "";
+          // Ajuste: solo la hora en formato HH:mm o HH:mm:ss y nunca enviar ''
+          let hora_inicio = null;
+          if (hora && hora.includes(":")) {
+            hora_inicio =
+              hora.split("T").length > 1 ? hora.split("T")[1] : hora;
+          }
+          const equipo_intervencion =
+            document.getElementById("equipment")?.value || "";
+          const descripcion_trabajo =
+            document.getElementById("work-description")?.value || "";
+          const nombre_solicitante =
+            document.getElementById("applicant")?.value || "";
+          const empresa = document.getElementById("company")?.value || "";
+
+          // Dimensiones y Terreno
+          const profundidad_media =
+            document.getElementById("profundidad-media")?.value || "";
+          const profundidad_maxima =
+            document.getElementById("profundidad-maxima")?.value || "";
+          const anchura = document.getElementById("anchura")?.value || "";
+          const longitud = document.getElementById("longitud")?.value || "";
+          const tipo_terreno =
+            document.getElementById("tipo-terreno")?.value || "";
+
+          // Instalaciones Subterráneas
+          const tuberia_gas =
+            document.querySelector('input[name="tuberia-gas"]:checked')
+              ?.value || "";
+          const gas_tipo = document.getElementById("gas-tipo")?.value || "";
+          const tuberia_gas_comprobado =
+            document.getElementById("tuberia-gas-comprobado")?.value || "";
+          const permit_date_gas =
+            document.getElementById("permit-date-gas")?.value || "";
+
+          const linea_electrica =
+            document.querySelector('input[name="linea-electrica"]:checked')
+              ?.value || "";
+          const linea_electrica_voltaje =
+            document.getElementById("linea-electrica-voltaje")?.value || "";
+          const linea_electrica_comprobado =
+            document.getElementById("linea-electrica-comprobado")?.value || "";
+          const permit_date_electrica =
+            document.getElementById("permit-date-electrica")?.value || "";
+
+          const tuberia_incendios =
+            document.querySelector('input[name="tuberia-incendios"]:checked')
+              ?.value || "";
+          const tuberia_incendios_presion =
+            document.getElementById("tuberia-incendios-presion")?.value || "";
+          const tuberia_incendios_comprobado =
+            document.getElementById("tuberia-incendios-comprobado")?.value ||
+            "";
+          const permit_date_incendios =
+            document.getElementById("permit-date-incendios")?.value || "";
+
+          const alcantarillado =
+            document.querySelector('input[name="alcantarillado"]:checked')
+              ?.value || "";
+          const alcantarillado_diametro =
+            document.getElementById("alcantarillado-diametro")?.value || "";
+          const alcantarillado_comprobado =
+            document.getElementById("alcantarillado-comprobado")?.value || "";
+          const permit_date_alcantarillado =
+            document.getElementById("permit-date-alcantarillado")?.value || "";
+
+          const otras_instalaciones =
+            document.querySelector('input[name="otras-instalaciones"]:checked')
+              ?.value || "";
+          const otras_instalaciones_tipo =
+            document.getElementById("otras-instalaciones-tipo")?.value || "";
+          const otras_instalaciones_comprobado =
+            document.getElementById("otras-instalaciones-comprobado")?.value ||
+            "";
+          const permit_date_otras =
+            document.getElementById("permit-date-otras")?.value || "";
+
+          // Riesgos y Medidas Preventivas
+          const requiere_talud =
+            document.querySelector('input[name="requiere-talud"]:checked')
+              ?.value || "";
+          const angulo_talud =
+            document.getElementById("angulo-talud")?.value || "";
+          const requiere_bermas =
+            document.querySelector('input[name="requiere-bermas"]:checked')
+              ?.value || "";
+          const longitud_meseta =
+            document.getElementById("longitud-meseta")?.value || "";
+          const alturas_contrameseta =
+            document.getElementById("alturas-contrameseta")?.value || "";
+          const requiere_entibacion =
+            document.querySelector('input[name="requiere-entibacion"]:checked')
+              ?.value || "";
+          const tipo_entibacion =
+            document.getElementById("tipo-entibacion")?.value || "";
+          const especificacion_entibacion =
+            document.getElementById("especificacion-entibacion")?.value || "";
+          const otros_requerimientos =
+            document.querySelector('input[name="otros-requerimientos"]:checked')
+              ?.value || "";
+          const otros_requerimientos_detalle =
+            document.getElementById("otros-requerimientos-detalle")?.value ||
+            "";
+          const distancia_estatica =
+            document.getElementById("distancia-estatica")?.value || "";
+          const distancia_dinamica =
+            document.getElementById("distancia-dinamica")?.value || "";
+
+          // Caída de Personas y Vehículos al Interior
+          const requiere_balizamiento =
+            document.querySelector(
+              'input[name="requiere-balizamiento"]:checked'
+            )?.value || "";
+          const distancia_balizamiento =
+            document.getElementById("distancia-balizamiento")?.value || "";
+          const requiere_proteccion_rigida =
+            document.querySelector(
+              'input[name="requiere-proteccion-rigida"]:checked'
+            )?.value || "";
+          const distancia_proteccion =
+            document.getElementById("distancia-proteccion")?.value || "";
+          const requiere_senalizacion =
+            document.querySelector(
+              'input[name="requiere-senalizacion"]:checked'
+            )?.value || "";
+          const tipo_senalizacion =
+            document.getElementById("tipo-senalizacion")?.value || "";
+          const requiere_proteccion_anticaida =
+            document.querySelector(
+              'input[name="requiere-proteccion-anticaida"]:checked'
+            )?.value || "";
+          const tipo_proteccion_anticaida =
+            document.getElementById("tipo-proteccion-anticaida")?.value || "";
+
+          // Atmósfera Peligrosa
+          const espacio_confinado =
+            document.querySelector('input[name="espacio-confinado"]:checked')
+              ?.value || "";
+
+          // Trabajos en Proximidad de Líneas en Carga
+          const excavacion_manual =
+            document.querySelector('input[name="excavacion-manual"]:checked')
+              ?.value || "";
+          const medidas_excavacion =
+            document.getElementById("medidas-excavacion")?.value || "";
+          // Medidas adicionales (checkboxes)
+          const medida_herramienta_antichispa =
+            document.querySelector(
+              'input[name="medida-herramienta-antichispa"]'
+            )?.checked || false;
+          const medida_guantes_dielectrico =
+            document.querySelector('input[name="medida-guantes-dielectrico"]')
+              ?.checked || false;
+          const medida_epp_especial =
+            document.querySelector('input[name="medida-epp-especial"]')
+              ?.checked || false;
+          const medida_otros_lineas =
+            document.querySelector('input[name="medida-otros-lineas"]')
+              ?.checked || false;
+          const otros_medidas_lineas =
+            document.getElementById("otros-medidas-lineas")?.value || "";
+
+          // Medidas Adicionales (checkboxes)
+          const medida_bloqueo_fisico =
+            document.getElementById("medida-bloqueo-fisico")?.checked || false;
+          const bloqueo_fisico_detalle =
+            document.getElementById("bloqueo-fisico-detalle")?.value || "";
+          const medida_drenar_limpiar =
+            document.querySelector('input[name="medida-drenar-limpiar"]')
+              ?.checked || false;
+          const medida_atmosfera_inerte =
+            document.querySelector('input[name="medida-atmosfera-inerte"]')
+              ?.checked || false;
+          const medida_vigilante =
+            document.getElementById("medida-vigilante")?.checked || false;
+          const vigilante_detalle =
+            document.getElementById("vigilante-detalle")?.value || "";
+          const medida_otras_adicionales =
+            document.getElementById("medida-otras-adicionales")?.checked ||
+            false;
+          const otras_adicionales_detalle =
+            document.getElementById("otras-adicionales-detalle")?.value || "";
+
+          // Observaciones
+          const observaciones_generales =
+            document.getElementById("observaciones-generales")?.value || "";
+
+          // Construir el objeto de datos para enviar
+          const datosExcavacion = {
+            id_permiso,
+            tipo_mantenimiento,
+            ot_numero,
+            tag,
+            hora_inicio,
+            equipo_intervencion,
+            descripcion_trabajo,
+            nombre_solicitante,
+            empresa,
+            profundidad_media,
+            profundidad_maxima,
+            anchura,
+            longitud,
+            tipo_terreno,
+            tuberia_gas,
+            gas_tipo,
+            tuberia_gas_comprobado,
+            permit_date_gas,
+            linea_electrica,
+            linea_electrica_voltaje,
+            linea_electrica_comprobado,
+            permit_date_electrica,
+            tuberia_incendios,
+            tuberia_incendios_presion,
+            tuberia_incendios_comprobado,
+            permit_date_incendios,
+            alcantarillado,
+            alcantarillado_diametro,
+            alcantarillado_comprobado,
+            permit_date_alcantarillado,
+            otras_instalaciones,
+            otras_instalaciones_tipo,
+            otras_instalaciones_comprobado,
+            permit_date_otras,
+            requiere_talud,
+            angulo_talud,
+            requiere_bermas,
+            longitud_meseta,
+            alturas_contrameseta,
+            requiere_entibacion,
+            tipo_entibacion,
+            especificacion_entibacion,
+            otros_requerimientos,
+            otros_requerimientos_detalle,
+            distancia_estatica,
+            distancia_dinamica,
+            requiere_balizamiento,
+            distancia_balizamiento,
+            requiere_proteccion_rigida,
+            distancia_proteccion,
+            requiere_senalizacion,
+            tipo_senalizacion,
+            requiere_proteccion_anticaida,
+            tipo_proteccion_anticaida,
+            espacio_confinado,
+            excavacion_manual,
+            medidas_excavacion,
+            medida_herramienta_antichispa,
+            medida_guantes_dielectrico,
+            medida_epp_especial,
+            medida_otros_lineas,
+            otros_medidas_lineas,
+            medida_bloqueo_fisico,
+            bloqueo_fisico_detalle,
+            medida_drenar_limpiar,
+            medida_atmosfera_inerte,
+            medida_vigilante,
+            vigilante_detalle,
+            medida_otras_adicionales,
+            otras_adicionales_detalle,
+            observaciones_generales,
+          };
+
+          // Imprimir en consola lo que se enviará
+          console.log(
+            "[DEBUG] Datos a enviar PT Excavación/Perforación:",
+            datosExcavacion
+          );
+
+          // Enviar los datos al backend
+          const excavacionResponse = await fetch("/api/excavacion", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(datosExcavacion),
+          });
+          const excavacionResult = await excavacionResponse.json();
+          if (!excavacionResponse.ok || !excavacionResult.success)
+            throw new Error(
+              excavacionResult.error ||
+                "Error al guardar PT Excavación/Perforación"
+            );
+          // ==============================
+          // FIN BLOQUE: Insertar PT Excavación/Perforación
+          // ==============================
         }
         // ... repite hasta el tipo 10 ...
         else if (tipoFormulario === 11) {

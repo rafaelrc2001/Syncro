@@ -13,25 +13,28 @@ router.get("/exportar-supervisor", async (req, res) => {
     pt.prefijo,
     tp.nombre AS tipo_permiso,
     DATE(pt.fecha_hora) AS fecha,
-    COALESCE(
-        TO_CHAR(ptnp.hora_inicio, 'HH24:MI'), 
-        TO_CHAR(pta.hora_inicio, 'HH24:MI'), 
-        TO_CHAR(ptc.hora_inicio, 'HH24:MI'), 
-        TO_CHAR(ptf.hora_inicio, 'HH24:MI'), 
-        TO_CHAR(pte.hora_inicio, 'HH24:MI'), 
-        TO_CHAR(ptr.hora_inicio, 'HH24:MI'), 
-        TO_CHAR(pta2.hora_inicio, 'HH24:MI')
-    ) AS hora_inicio,
-    COALESCE(ptnp.tipo_mantenimiento, pta.tipo_mantenimiento, ptc.tipo_mantenimiento, ptf.tipo_mantenimiento, pte.tipo_mantenimiento, ptr.tipo_mantenimiento, pta2.tipo_mantenimiento) AS tipo_actividad,
-    a.nombre AS planta_lugar_trabajo,
-    COALESCE(ptnp.descripcion_trabajo, pta.descripcion_trabajo, ptc.descripcion_trabajo, ptf.descripcion_trabajo, pte.descripcion_trabajo, ptr.descripcion_trabajo, pta2.descripcion_trabajo) AS descripcion_trabajo,
-    COALESCE(ptnp.empresa, pta.empresa, ptc.empresa, ptf.empresa, pte.empresa, ptr.empresa, pta2.empresa) AS empresa,
-    COALESCE(ptnp.nombre_solicitante, pta.nombre_solicitante, ptc.nombre_solicitante, ptf.nombre_solicitante, pte.nombre_solicitante, ptr.nombre_solicitante, pta2.nombre_solicitante) AS nombre_solicitante,
+  COALESCE(
+    TO_CHAR(ptnp.hora_inicio, 'HH24:MI'), 
+    TO_CHAR(pta.hora_inicio, 'HH24:MI'), 
+    TO_CHAR(ptc.hora_inicio, 'HH24:MI'), 
+    TO_CHAR(ptf.hora_inicio, 'HH24:MI'), 
+    TO_CHAR(pte.hora_inicio, 'HH24:MI'), 
+    TO_CHAR(ptr.hora_inicio, 'HH24:MI'), 
+    TO_CHAR(pta2.hora_inicio, 'HH24:MI'),
+    TO_CHAR(pti.hora_inicio, 'HH24:MI'),
+    TO_CHAR(ptce.hora_inicio, 'HH24:MI'),
+    TO_CHAR(ptexc.hora_inicio, 'HH24:MI')
+  ) AS hora_inicio,
+  COALESCE(ptnp.tipo_mantenimiento, pta.tipo_mantenimiento, ptc.tipo_mantenimiento, ptf.tipo_mantenimiento, pte.tipo_mantenimiento, ptr.tipo_mantenimiento, pta2.tipo_mantenimiento, pti.tipo_mantenimiento, ptce.tipo_mantenimiento, ptexc.tipo_mantenimiento) AS tipo_actividad,
+  a.nombre AS planta_lugar_trabajo,
+  COALESCE(ptnp.descripcion_trabajo, pta.descripcion_trabajo, ptc.descripcion_trabajo, ptf.descripcion_trabajo, pte.descripcion_trabajo, ptr.descripcion_trabajo, pta2.descripcion_trabajo, pti.descripcion_trabajo, ptce.descripcion_trabajo, ptexc.descripcion_trabajo) AS descripcion_trabajo,
+  COALESCE(ptnp.empresa, pta.empresa, ptc.empresa, ptf.empresa, pte.empresa, ptr.empresa, pta2.empresa, pti.empresa, ptce.empresa, ptexc.empresa) AS empresa,
+  COALESCE(ptnp.nombre_solicitante, pta.nombre_solicitante, ptc.nombre_solicitante, ptf.nombre_solicitante, pte.nombre_solicitante, ptr.nombre_solicitante, pta2.nombre_solicitante, pti.nombre_solicitante, ptce.nombre_solicitante, ptexc.nombre_solicitante) AS nombre_solicitante,
     s.nombre AS sucursal,
     pt.contrato,
-    COALESCE(ptnp.ot_no, pta.ot_numero, ptc.ot_numero, ptf.ot_numero, pte.ot_numero, ptr.ot_numero, pta2.ot_numero) AS ot_numero,
-    COALESCE(ptnp.equipo_intervencion, pta.descripcion_equipo, ptc.equipo_intervenir, ptf.equipo_intervenir, pte.equipo_intervenir, ptr.equipo_intervenir, pta2.equipo_intervenir) AS equipo_intervenir,
-    COALESCE(ptnp.tag, pta.tag, ptc.tag, ptf.tag, pte.tag, ptr.tag, pta2.tag) AS tag,
+  COALESCE(ptnp.ot_no, pta.ot_numero, ptc.ot_numero, ptf.ot_numero, pte.ot_numero, ptr.ot_numero, pta2.ot_numero, pti.ot_numero, ptce.ot_numero, ptexc.ot_numero) AS ot_numero,
+  COALESCE(ptnp.equipo_intervencion, pta.descripcion_equipo, ptc.equipo_intervenir, ptf.equipo_intervenir, pte.equipo_intervenir, ptr.equipo_intervenir, pta2.equipo_intervenir, pti.equipo_intervenir, ptce.equipo_intervenir, ptexc.equipo_intervenir) AS equipo_intervenir,
+  COALESCE(ptnp.tag, pta.tag, ptc.tag, ptf.tag, pte.tag, ptr.tag, pta2.tag, pti.tag, ptce.tag, ptexc.tag) AS tag,
     az.responsable_area,
     sup.nombre AS responsable_seguridad,
     az.operador_area AS operador_responsable,
@@ -50,6 +53,9 @@ LEFT JOIN pt_fuego ptf ON pt.id_permiso = ptf.id_permiso
 LEFT JOIN pt_electrico pte ON pt.id_permiso = pte.id_permiso
 LEFT JOIN pt_radiacion ptr ON pt.id_permiso = ptr.id_permiso
 LEFT JOIN pt_altura pta2 ON pt.id_permiso = pta2.id_permiso
+LEFT JOIN pt_izaje pti ON pt.id_permiso = pti.id_permiso
+LEFT JOIN pt_cesta ptce ON pt.id_permiso = ptce.id_permiso
+LEFT JOIN pt_excavacion ptexc ON pt.id_permiso = ptexc.id_permiso
 LEFT JOIN autorizaciones az ON pt.id_permiso = az.id_permiso
 LEFT JOIN supervisores sup ON az.id_supervisor = sup.id_supervisor
 WHERE (
@@ -59,7 +65,10 @@ WHERE (
     OR ptf.id_permiso IS NOT NULL 
     OR pte.id_permiso IS NOT NULL 
     OR ptr.id_permiso IS NOT NULL 
-    OR pta2.id_permiso IS NOT NULL
+  OR pta2.id_permiso IS NOT NULL
+  OR pti.id_permiso IS NOT NULL
+  OR ptce.id_permiso IS NOT NULL
+  OR ptexc.id_permiso IS NOT NULL
 )
 `;
 
@@ -135,26 +144,29 @@ router.get("/exportar-autorizar/:id_departamento", async (req, res) => {
     pt.prefijo,
     tp.nombre AS tipo_permiso,
     DATE(pt.fecha_hora) AS fecha,
-    COALESCE(
-        TO_CHAR(ptnp.hora_inicio, 'HH24:MI'), 
-        TO_CHAR(pta.hora_inicio, 'HH24:MI'), 
-        TO_CHAR(ptc.hora_inicio, 'HH24:MI'), 
-        TO_CHAR(ptf.hora_inicio, 'HH24:MI'), 
-        TO_CHAR(pte.hora_inicio, 'HH24:MI'), 
-        TO_CHAR(ptr.hora_inicio, 'HH24:MI'), 
-        TO_CHAR(pta2.hora_inicio, 'HH24:MI'),
-        TO_CHAR(pt.fecha_hora, 'HH24:MI')
-    ) AS hora_inicio,
-    COALESCE(ptnp.tipo_mantenimiento, pta.tipo_mantenimiento, ptc.tipo_mantenimiento, ptf.tipo_mantenimiento, pte.tipo_mantenimiento, ptr.tipo_mantenimiento, pta2.tipo_mantenimiento, '') AS tipo_actividad,
-    a.nombre AS planta_lugar_trabajo,
-    COALESCE(ptnp.descripcion_trabajo, pta.descripcion_trabajo, ptc.descripcion_trabajo, ptf.descripcion_trabajo, pte.descripcion_trabajo, ptr.descripcion_trabajo, pta2.descripcion_trabajo, '') AS descripcion_trabajo,
-    COALESCE(ptnp.empresa, pta.empresa, ptc.empresa, ptf.empresa, pte.empresa, ptr.empresa, pta2.empresa, '') AS empresa,
-    COALESCE(ptnp.nombre_solicitante, pta.nombre_solicitante, ptc.nombre_solicitante, ptf.nombre_solicitante, pte.nombre_solicitante, ptr.nombre_solicitante, pta2.nombre_solicitante, '') AS nombre_solicitante,
+  COALESCE(
+    TO_CHAR(ptnp.hora_inicio, 'HH24:MI'), 
+    TO_CHAR(pta.hora_inicio, 'HH24:MI'), 
+    TO_CHAR(ptc.hora_inicio, 'HH24:MI'), 
+    TO_CHAR(ptf.hora_inicio, 'HH24:MI'), 
+    TO_CHAR(pte.hora_inicio, 'HH24:MI'), 
+    TO_CHAR(ptr.hora_inicio, 'HH24:MI'), 
+    TO_CHAR(pta2.hora_inicio, 'HH24:MI'),
+    TO_CHAR(pti.hora_inicio, 'HH24:MI'),
+    TO_CHAR(ptce.hora_inicio, 'HH24:MI'),
+    TO_CHAR(ptexc.hora_inicio, 'HH24:MI'),
+    TO_CHAR(pt.fecha_hora, 'HH24:MI')
+  ) AS hora_inicio,
+  COALESCE(ptnp.tipo_mantenimiento, pta.tipo_mantenimiento, ptc.tipo_mantenimiento, ptf.tipo_mantenimiento, pte.tipo_mantenimiento, ptr.tipo_mantenimiento, pta2.tipo_mantenimiento, pti.tipo_mantenimiento, ptce.tipo_mantenimiento, ptexc.tipo_mantenimiento, '') AS tipo_actividad,
+  a.nombre AS planta_lugar_trabajo,
+  COALESCE(ptnp.descripcion_trabajo, pta.descripcion_trabajo, ptc.descripcion_trabajo, ptf.descripcion_trabajo, pte.descripcion_trabajo, ptr.descripcion_trabajo, pta2.descripcion_trabajo, pti.descripcion_trabajo, ptce.descripcion_trabajo, ptexc.descripcion_trabajo, '') AS descripcion_trabajo,
+  COALESCE(ptnp.empresa, pta.empresa, ptc.empresa, ptf.empresa, pte.empresa, ptr.empresa, pta2.empresa, pti.empresa, ptce.empresa, ptexc.empresa, '') AS empresa,
+  COALESCE(ptnp.nombre_solicitante, pta.nombre_solicitante, ptc.nombre_solicitante, ptf.nombre_solicitante, pte.nombre_solicitante, ptr.nombre_solicitante, pta2.nombre_solicitante, pti.nombre_solicitante, ptce.nombre_solicitante, ptexc.nombre_solicitante, '') AS nombre_solicitante,
     COALESCE(s.nombre, '') AS sucursal,
     COALESCE(pt.contrato::text, '') AS contrato,
-    COALESCE(ptnp.ot_no, pta.ot_numero, ptc.ot_numero, ptf.ot_numero, pte.ot_numero, ptr.ot_numero, pta2.ot_numero, '') AS ot_numero,
-    COALESCE(ptnp.equipo_intervencion, pta.descripcion_equipo, ptc.equipo_intervenir, ptf.equipo_intervenir, pte.equipo_intervenir, ptr.equipo_intervenir, pta2.equipo_intervenir, '') AS equipo_intervenir,
-    COALESCE(ptnp.tag, pta.tag, ptc.tag, ptf.tag, pte.tag, ptr.tag, pta2.tag, '') AS tag,
+  COALESCE(ptnp.ot_no, pta.ot_numero, ptc.ot_numero, ptf.ot_numero, pte.ot_numero, ptr.ot_numero, pta2.ot_numero, pti.ot_numero, ptce.ot_numero, ptexc.ot_numero, '') AS ot_numero,
+  COALESCE(ptnp.equipo_intervencion, pta.descripcion_equipo, ptc.equipo_intervenir, ptf.equipo_intervenir, pte.equipo_intervenir, ptr.equipo_intervenir, pta2.equipo_intervenir, pti.equipo_intervenir, ptce.equipo_intervenir, ptexc.equipo_intervenir, '') AS equipo_intervenir,
+  COALESCE(ptnp.tag, pta.tag, ptc.tag, ptf.tag, pte.tag, ptr.tag, pta2.tag, pti.tag, ptce.tag, ptexc.tag, '') AS tag,
     COALESCE(az.responsable_area, '') AS responsable_area,
     COALESCE(sup.nombre, '') AS responsable_seguridad,
     COALESCE(az.operador_area, '') AS operador_responsable,
@@ -173,6 +185,9 @@ LEFT JOIN pt_fuego ptf ON pt.id_permiso = ptf.id_permiso
 LEFT JOIN pt_electrico pte ON pt.id_permiso = pte.id_permiso
 LEFT JOIN pt_radiacion ptr ON pt.id_permiso = ptr.id_permiso
 LEFT JOIN pt_altura pta2 ON pt.id_permiso = pta2.id_permiso
+LEFT JOIN pt_izaje pti ON pt.id_permiso = pti.id_permiso
+LEFT JOIN pt_cesta ptce ON pt.id_permiso = ptce.id_permiso
+LEFT JOIN pt_excavacion ptexc ON pt.id_permiso = ptexc.id_permiso
 LEFT JOIN autorizaciones az ON pt.id_permiso = az.id_permiso
 LEFT JOIN supervisores sup ON az.id_supervisor = sup.id_supervisor
 WHERE a.id_departamento = $1\n`;
@@ -189,7 +204,10 @@ WHERE a.id_departamento = $1\n`;
         OR ptf.id_permiso IS NOT NULL 
         OR pte.id_permiso IS NOT NULL 
         OR ptr.id_permiso IS NOT NULL 
-        OR pta2.id_permiso IS NOT NULL
+      OR pta2.id_permiso IS NOT NULL
+      OR pti.id_permiso IS NOT NULL
+      OR ptce.id_permiso IS NOT NULL
+      OR ptexc.id_permiso IS NOT NULL
       )\n`;
     }
 
@@ -276,25 +294,28 @@ router.get("/exportar-crear/:id_departamento", async (req, res) => {
         tp.nombre AS tipo_permiso,
         DATE(pt.fecha_hora) AS fecha,
         COALESCE(
-            TO_CHAR(ptnp.hora_inicio, 'HH24:MI'), 
-            TO_CHAR(pta.hora_inicio, 'HH24:MI'), 
-            TO_CHAR(ptc.hora_inicio, 'HH24:MI'), 
-            TO_CHAR(ptf.hora_inicio, 'HH24:MI'), 
-            TO_CHAR(pte.hora_inicio, 'HH24:MI'), 
-            TO_CHAR(ptr.hora_inicio, 'HH24:MI'), 
-            TO_CHAR(pta2.hora_inicio, 'HH24:MI'),
-            TO_CHAR(pt.fecha_hora, 'HH24:MI')
+      TO_CHAR(ptnp.hora_inicio, 'HH24:MI'), 
+      TO_CHAR(pta.hora_inicio, 'HH24:MI'), 
+      TO_CHAR(ptc.hora_inicio, 'HH24:MI'), 
+      TO_CHAR(ptf.hora_inicio, 'HH24:MI'), 
+      TO_CHAR(pte.hora_inicio, 'HH24:MI'), 
+      TO_CHAR(ptr.hora_inicio, 'HH24:MI'), 
+      TO_CHAR(pta2.hora_inicio, 'HH24:MI'),
+      TO_CHAR(pti.hora_inicio, 'HH24:MI'),
+      TO_CHAR(ptce.hora_inicio, 'HH24:MI'),
+      TO_CHAR(ptexc.hora_inicio, 'HH24:MI'),
+      TO_CHAR(pt.fecha_hora, 'HH24:MI')
         ) AS hora_inicio,
-        COALESCE(ptnp.tipo_mantenimiento, pta.tipo_mantenimiento, ptc.tipo_mantenimiento, ptf.tipo_mantenimiento, pte.tipo_mantenimiento, ptr.tipo_mantenimiento, pta2.tipo_mantenimiento, '') AS tipo_actividad,
-        a.nombre AS planta_lugar_trabajo,
-        COALESCE(ptnp.descripcion_trabajo, pta.descripcion_trabajo, ptc.descripcion_trabajo, ptf.descripcion_trabajo, pte.descripcion_trabajo, ptr.descripcion_trabajo, pta2.descripcion_trabajo, '') AS descripcion_trabajo,
-        COALESCE(ptnp.empresa, pta.empresa, ptc.empresa, ptf.empresa, pte.empresa, ptr.empresa, pta2.empresa, '') AS empresa,
-        COALESCE(ptnp.nombre_solicitante, pta.nombre_solicitante, ptc.nombre_solicitante, ptf.nombre_solicitante, pte.nombre_solicitante, ptr.nombre_solicitante, pta2.nombre_solicitante, '') AS nombre_solicitante,
+  COALESCE(ptnp.tipo_mantenimiento, pta.tipo_mantenimiento, ptc.tipo_mantenimiento, ptf.tipo_mantenimiento, pte.tipo_mantenimiento, ptr.tipo_mantenimiento, pta2.tipo_mantenimiento, pti.tipo_mantenimiento, ptce.tipo_mantenimiento, ptexc.tipo_mantenimiento, '') AS tipo_actividad,
+  a.nombre AS planta_lugar_trabajo,
+  COALESCE(ptnp.descripcion_trabajo, pta.descripcion_trabajo, ptc.descripcion_trabajo, ptf.descripcion_trabajo, pte.descripcion_trabajo, ptr.descripcion_trabajo, pta2.descripcion_trabajo, pti.descripcion_trabajo, ptce.descripcion_trabajo, ptexc.descripcion_trabajo, '') AS descripcion_trabajo,
+  COALESCE(ptnp.empresa, pta.empresa, ptc.empresa, ptf.empresa, pte.empresa, ptr.empresa, pta2.empresa, pti.empresa, ptce.empresa, ptexc.empresa, '') AS empresa,
+  COALESCE(ptnp.nombre_solicitante, pta.nombre_solicitante, ptc.nombre_solicitante, ptf.nombre_solicitante, pte.nombre_solicitante, ptr.nombre_solicitante, pta2.nombre_solicitante, pti.nombre_solicitante, ptce.nombre_solicitante, ptexc.nombre_solicitante, '') AS nombre_solicitante,
         COALESCE(s.nombre, '') AS sucursal,
         COALESCE(pt.contrato::text, '') AS contrato,
-        COALESCE(ptnp.ot_no, pta.ot_numero, ptc.ot_numero, ptf.ot_numero, pte.ot_numero, ptr.ot_numero, pta2.ot_numero, '') AS ot_numero,
-        COALESCE(ptnp.equipo_intervencion, pta.descripcion_equipo, ptc.equipo_intervenir, ptf.equipo_intervenir, pte.equipo_intervenir, ptr.equipo_intervenir, pta2.equipo_intervenir, '') AS equipo_intervenir,
-        COALESCE(ptnp.tag, pta.tag, ptc.tag, ptf.tag, pte.tag, ptr.tag, pta2.tag, '') AS tag,
+  COALESCE(ptnp.ot_no, pta.ot_numero, ptc.ot_numero, ptf.ot_numero, pte.ot_numero, ptr.ot_numero, pta2.ot_numero, pti.ot_numero, ptce.ot_numero, ptexc.ot_numero, '') AS ot_numero,
+  COALESCE(ptnp.equipo_intervencion, pta.descripcion_equipo, ptc.equipo_intervenir, ptf.equipo_intervenir, pte.equipo_intervenir, ptr.equipo_intervenir, pta2.equipo_intervenir, pti.equipo_intervenir, ptce.equipo_intervenir, ptexc.equipo_intervenir, '') AS equipo_intervenir,
+  COALESCE(ptnp.tag, pta.tag, ptc.tag, ptf.tag, pte.tag, ptr.tag, pta2.tag, pti.tag, ptce.tag, ptexc.tag, '') AS tag,
         COALESCE(az.responsable_area, '') AS responsable_area,
         COALESCE(sup.nombre, '') AS responsable_seguridad,
         COALESCE(az.operador_area, '') AS operador_responsable,
@@ -312,7 +333,10 @@ router.get("/exportar-crear/:id_departamento", async (req, res) => {
     LEFT JOIN pt_fuego ptf ON pt.id_permiso = ptf.id_permiso
     LEFT JOIN pt_electrico pte ON pt.id_permiso = pte.id_permiso
     LEFT JOIN pt_radiacion ptr ON pt.id_permiso = ptr.id_permiso
-    LEFT JOIN pt_altura pta2 ON pt.id_permiso = pta2.id_permiso
+  LEFT JOIN pt_altura pta2 ON pt.id_permiso = pta2.id_permiso
+  LEFT JOIN pt_izaje pti ON pt.id_permiso = pti.id_permiso
+  LEFT JOIN pt_cesta ptce ON pt.id_permiso = ptce.id_permiso
+  LEFT JOIN pt_excavacion ptexc ON pt.id_permiso = ptexc.id_permiso
     LEFT JOIN autorizaciones az ON pt.id_permiso = az.id_permiso
     LEFT JOIN supervisores sup ON az.id_supervisor = sup.id_supervisor
     WHERE  a.id_departamento = $1\n`;
@@ -329,7 +353,10 @@ router.get("/exportar-crear/:id_departamento", async (req, res) => {
         OR ptf.id_permiso IS NOT NULL 
         OR pte.id_permiso IS NOT NULL 
         OR ptr.id_permiso IS NOT NULL 
-        OR pta2.id_permiso IS NOT NULL
+  OR pta2.id_permiso IS NOT NULL
+  OR pti.id_permiso IS NOT NULL
+  OR ptce.id_permiso IS NOT NULL
+  OR ptexc.id_permiso IS NOT NULL
       )\n`;
     }
 

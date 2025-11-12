@@ -298,7 +298,11 @@ function mostrarPermisosFiltrados(filtro) {
       } else if (tipoPermiso === "PT con Fuentes Radioactivas") {
         window.location.href = `/Modules/Fomularios/PT7/PT7area.html?id=${idPermiso}`;
       } else if (tipoPermiso === "PT para Izaje con Hiab con Grúa") {
-        window.location.href = `/Modules/Fomularios/PT8/PT8area.html?id=${idPermiso}`;
+        window.location.href = `/Modules/Fomularios/PT8/PT8area.html?tipo=PT8&id=${idPermiso}`;
+      } else if (tipoPermiso === "PT con Cesta Izada") {
+        window.location.href = `/Modules/Fomularios/PT9/PT9area.html?tipo=PT9&id=${idPermiso}`;
+      } else if (tipoPermiso === "PT de Excavación") {
+        window.location.href = `/Modules/Fomularios/PT10/PT10area.html?tipo=PT10&id=${idPermiso}`;
       } else {
         window.location.href = `/Modules/Fomularios/OTRO/OTROarea.html?id=${idPermiso}`;
       }
@@ -330,6 +334,10 @@ function mostrarPermisosFiltrados(filtro) {
         window.location.href = `/Modules/Fomularios/PT7/PT7imprimir2.html?tipo=PT7&id=${idPermiso}`;
       } else if (tipoPermiso === "PT para Izaje con Hiab con Grúa") {
         window.location.href = `/Modules/Fomularios/PT8/PT8imprimir2.html?tipo=PT8&id=${idPermiso}`;
+      } else if (tipoPermiso === "PT con Cesta Izada") {
+        window.location.href = `/Modules/Fomularios/PT9/PT9imprimir2.html?tipo=PT9&id=${idPermiso}`;
+      } else if (tipoPermiso === "PT de Excavación") {
+        window.location.href = `/Modules/Fomularios/PT10/PT10imprimir2.html?tipo=PT10&id=${idPermiso}`;
       } else {
         window.location.href = `/JS/usuario/LogicaImprimir.html?tipo=OTRO&id=${idPermiso}`;
       }

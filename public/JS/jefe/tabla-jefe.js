@@ -94,6 +94,10 @@ function asignarEventosVer() {
           window.location.href = `/Modules/Fomularios/PT7/PT7imprimirsup.html?tipo=PT7&id=${idPermiso}`;
         } else if (tipoPermiso === "PT para Izaje con Hiab con Grúa") {
           window.location.href = `/Modules/Fomularios/PT8/PT8imprimirsup.html?tipo=PT8&id=${idPermiso}`;
+        } else if (tipoPermiso === "PT con Cesta Izada") {
+          window.location.href = `/Modules/Fomularios/PT9/PT9imprimirsup.html?tipo=PT9&id=${idPermiso}`;
+        } else if (tipoPermiso === "PT de Excavación") {
+          window.location.href = `/Modules/Fomularios/PT10/PT10imprimirsup.html?tipo=PT10&id=${idPermiso}`;
         } else {
           // fallback a la misma página de impresión genérica usada en crearpt
           window.location.href = `/JS/usuario/LogicaImprimir.html?tipo=OTRO&id=${idPermiso}`;
@@ -342,10 +346,10 @@ function formatearFecha(fechaISO) {
   if (isNaN(fecha.getTime())) return "Fecha inválida";
   // Mostrar en UTC igual que en la base de datos
   const year = fecha.getUTCFullYear();
-  const month = String(fecha.getUTCMonth() + 1).padStart(2, '0');
-  const day = String(fecha.getUTCDate()).padStart(2, '0');
-  const hour = String(fecha.getUTCHours()).padStart(2, '0');
-  const minute = String(fecha.getUTCMinutes()).padStart(2, '0');
+  const month = String(fecha.getUTCMonth() + 1).padStart(2, "0");
+  const day = String(fecha.getUTCDate()).padStart(2, "0");
+  const hour = String(fecha.getUTCHours()).padStart(2, "0");
+  const minute = String(fecha.getUTCMinutes()).padStart(2, "0");
   return `${day}/${month}/${year}, ${hour}:${minute}`;
 }
 

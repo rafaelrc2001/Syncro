@@ -463,6 +463,251 @@ WHERE pt.id_permiso = $1
 `;
       resultGeneral = await pool.query(queryGeneralRadiacion, [id]);
       resultDetalles = { rows: [] };
+    } else if (tipo_permiso === "PT para Izaje con Hiab con Grúa") {
+      console.log("Entrando a bloque PT para Izaje con Hiab con Grúa");
+      const queryGeneralIzaje = `
+        SELECT 
+          pt.id_permiso,
+          TO_CHAR(pt.fecha_hora, 'DD/MM/YYYY') AS fecha,
+          pt.prefijo,
+          tp.nombre AS tipo_permiso,
+          pt.contrato,
+          pi.empresa,
+          s.nombre AS sucursal,
+          a.nombre AS area,
+          d.nombre AS departamento,
+          pi.nombre_solicitante,
+          pi.descripcion_trabajo,
+          pi.tipo_mantenimiento,
+          pi.ot_numero,
+          pi.tag,
+          TO_CHAR(pi.hora_inicio, 'HH24:MI') AS hora_inicio,
+          pi.equipo_intervenir,
+          pi.hora_inicio_prevista,
+          pi.responsable_operacion,
+          pi.hora_fin_prevista,
+          pi.empresa_grua,
+          pi.identificacion_grua,
+          pi.declaracion_conformidad,
+          pi.inspeccion_periodica,
+          pi.mantenimiento_preventivo,
+          pi.inspeccion_diaria,
+          pi.diagrama_cargas,
+          pi.libro_instrucciones,
+          pi.limitador_carga,
+          pi.final_carrera,
+          pi.nombre_operador,
+          pi.empresa_operador,
+          pi.licencia_operador,
+          pi.numero_licencia,
+          TO_CHAR(pi.fecha_emision_licencia, 'DD/MM/YYYY') AS fecha_emision_licencia,
+          pi.vigencia_licencia,
+          pi.tipo_licencia,
+          pi.comentarios_operador,
+          pi.estrobos_eslingas,
+          pi.grilletes,
+          pi.otros_elementos_auxiliares,
+          pi.especificacion_otros_elementos,
+          pi.requiere_eslingado_especifico,
+          pi.especificacion_eslingado,
+          pi.extension_gatos,
+          pi.sobre_ruedas,
+          pi.especificacion_sobre_ruedas,
+          pi.utiliza_plumin_si,
+          pi.especificacion_plumin,
+          pi.longitud_pluma,
+          pi.radio_trabajo,
+          pi.contrapeso,
+          pi.sector_trabajo,
+          pi.carga_segura_diagrama,
+          pi.peso_carga,
+          pi.determinada_por,
+          pi.carga_trabajo,
+          pi.peso_gancho_eslingas,
+          pi.relacion_carga_carga_segura,
+          pi.asentamiento,
+          pi.calzado,
+          pi.extension_gatos_check,
+          pi.nivelacion,
+          pi.contrapeso_check,
+          pi.sector_trabajo_check,
+          pi.comprobado_por,
+          pi.balizamiento_operacion,
+          pi.reunion_previa,
+          pi.especificacion_reunion_previa,
+          pi.presentacion_supervisor,
+          pi.nombre_supervisor,
+          pi.permiso_adicional,
+          pi.especificacion_permiso_adicional,
+          pi.otras_medidas_seguridad,
+          pi.especificacion_otras_medidas,
+          pi.observaciones_generales
+        FROM permisos_trabajo pt
+        INNER JOIN pt_izaje pi ON pt.id_permiso = pi.id_permiso
+        INNER JOIN sucursales s ON pt.id_sucursal = s.id_sucursal
+        INNER JOIN areas a ON pt.id_area = a.id_area
+        INNER JOIN departamentos d ON pt.id_departamento = d.id_departamento
+        INNER JOIN tipos_permisos tp ON pt.id_tipo_permiso = tp.id_tipo_permiso
+        WHERE pt.id_permiso = $1
+      `;
+      resultGeneral = await pool.query(queryGeneralIzaje, [id]);
+      resultDetalles = { rows: [] };
+    } else if (tipo_permiso === "PT con Cesta Izada") {
+      console.log("Entrando a bloque PT con Cesta Izada");
+      const queryGeneralCesta = `
+        SELECT 
+          pt.id_permiso,
+          TO_CHAR(pt.fecha_hora, 'DD/MM/YYYY') AS fecha,
+          pt.prefijo,
+          tp.nombre AS tipo_permiso,
+          pt.contrato,
+          pc.empresa,
+          s.nombre AS sucursal,
+          a.nombre AS area,
+          d.nombre AS departamento,
+          pc.nombre_solicitante,
+          pc.descripcion_trabajo,
+          pc.tipo_mantenimiento,
+          pc.ot_numero,
+          pc.tag,
+          TO_CHAR(pc.hora_inicio, 'HH24:MI') AS hora_inicio,
+          pc.equipo_intervenir,
+          pc.identificacion_grua_cesta,
+          pc.empresa_grua_cesta,
+          pc.identificacion_cesta,
+          pc.carga_maxima_cesta,
+          pc.empresa_cesta,
+          pc.peso_cesta,
+          TO_CHAR(pc.ultima_revision_cesta, 'DD/MM/YYYY') AS ultima_revision_cesta,
+          pc.condicion,
+          pc.especificacion_ext_gatos,
+          pc.utiliza_plumin_cesta,
+          pc.especificacion_plumin_cesta,
+          pc.longitud_pluma_cesta,
+          pc.radio_trabajo_cesta,
+          pc.carga_segura_cesta,
+          pc.peso_carga_cesta,
+          pc.peso_gancho_elementos,
+          pc.carga_trabajo_cesta,
+          pc.relacion_carga_segura_cesta,
+          pc.carga_prueba,
+          pc.prueba_realizada,
+          pc.prueba_presenciada_por,
+          pc.firma_prueba,
+          TO_CHAR(pc.fecha_prueba, 'DD/MM/YYYY') AS fecha_prueba,
+          pc.mascaras_escape_cesta,
+          pc.especificacion_mascaras,
+          pc.equipo_proteccion_cesta,
+          pc.especificacion_equipo_proteccion,
+          pc.equipo_contra_incendios_cesta,
+          pc.especificacion_equipo_incendios,
+          pc.final_carrera_cesta,
+          pc.otras_medidas_cesta,
+          pc.especificacion_otras_medidas_cesta,
+          pc.observaciones_generales_cesta
+        FROM permisos_trabajo pt
+        INNER JOIN pt_cesta pc ON pt.id_permiso = pc.id_permiso
+        INNER JOIN sucursales s ON pt.id_sucursal = s.id_sucursal
+        INNER JOIN areas a ON pt.id_area = a.id_area
+        INNER JOIN departamentos d ON pt.id_departamento = d.id_departamento
+        INNER JOIN tipos_permisos tp ON pt.id_tipo_permiso = tp.id_tipo_permiso
+        WHERE pt.id_permiso = $1
+      `;
+      resultGeneral = await pool.query(queryGeneralCesta, [id]);
+      resultDetalles = { rows: [] };
+    } else if (tipo_permiso === "PT de Excavacion") {
+      console.log("Entrando a bloque PT de Excavacion");
+      const queryGeneralExcavacion = `
+        SELECT 
+          pt.id_permiso,
+          TO_CHAR(pt.fecha_hora, 'DD/MM/YYYY') AS fecha,
+          pt.prefijo,
+          tp.nombre AS tipo_permiso,
+          pt.contrato,
+          pe.empresa,
+          s.nombre AS sucursal,
+          a.nombre AS area,
+          d.nombre AS departamento,
+          pe.nombre_solicitante,
+          pe.descripcion_trabajo,
+          pe.tipo_mantenimiento,
+          pe.ot_numero,
+          pe.tag,
+          TO_CHAR(pe.hora_inicio, 'HH24:MI') AS hora_inicio,
+          pe.equipo_intervenir,
+          pe.profundidad_media,
+          pe.profundidad_maxima,
+          pe.anchura,
+          pe.longitud,
+          pe.tipo_terreno,
+          pe.tuberia_gas,
+          pe.tipo_gas,
+          pe.comprobado_gas,
+          TO_CHAR(pe.fecha_gas, 'DD/MM/YYYY') AS fecha_gas,
+          pe.linea_electrica,
+          pe.voltaje_linea,
+          pe.comprobado_electrica,
+          TO_CHAR(pe.fecha_electrica, 'DD/MM/YYYY') AS fecha_electrica,
+          pe.tuberia_incendios,
+          pe.presion_incendios,
+          pe.comprobado_incendios,
+          TO_CHAR(pe.fecha_incendios, 'DD/MM/YYYY') AS fecha_incendios,
+          pe.alcantarillado,
+          pe.diametro_alcantarillado,
+          pe.comprobado_alcantarillado,
+          TO_CHAR(pe.fecha_alcantarillado, 'DD/MM/YYYY') AS fecha_alcantarillado,
+          pe.otras_instalaciones,
+          pe.especificacion_otras_instalaciones,
+          pe.comprobado_otras,
+          TO_CHAR(pe.fecha_otras, 'DD/MM/YYYY') AS fecha_otras,
+          pe.requiere_talud,
+          pe.angulo_talud,
+          pe.requiere_bermas,
+          pe.longitud_meseta,
+          pe.altura_contrameseta,
+          pe.requiere_entibacion,
+          pe.tipo_entibacion,
+          pe.condiciones_terreno_entibacion,
+          pe.otros_requerimientos,
+          pe.especificacion_otros_requerimientos,
+          pe.distancia_seguridad_estatica,
+          pe.distancia_seguridad_dinamica,
+          pe.requiere_balizamiento,
+          pe.distancia_balizamiento,
+          pe.requiere_proteccion_rigida,
+          pe.distancia_proteccion_rigida,
+          pe.requiere_senalizacion_especial,
+          pe.especificacion_senalizacion,
+          pe.requiere_proteccion_anticaida,
+          pe.tipo_proteccion_anticaida,
+          pe.tipo_anclaje,
+          pe.excavacion_espacio_confinado,
+          pe.excavacion_manual_aproximacion,
+          pe.medidas_aproximacion,
+          pe.herramienta_antichispa,
+          pe.guantes_calzado_dielectrico,
+          pe.epp_especial,
+          pe.otras_medidas_especiales,
+          pe.especificacion_otras_medidas_especiales,
+          pe.aplicar_bloqueo_fisico,
+          pe.especificacion_bloqueo_fisico,
+          pe.drenar_limpiar_lavar,
+          pe.inundar_anegar_atmosfera_inerte,
+          pe.vigilante_continuo,
+          pe.especificacion_vigilante_continuo,
+          pe.otras_medidas_adicionales,
+          pe.especificacion_otras_medidas_adicionales,
+          pe.observaciones_generales_excavacion
+        FROM permisos_trabajo pt
+        INNER JOIN pt_excavacion pe ON pt.id_permiso = pe.id_permiso
+        INNER JOIN sucursales s ON pt.id_sucursal = s.id_sucursal
+        INNER JOIN areas a ON pt.id_area = a.id_area
+        INNER JOIN departamentos d ON pt.id_departamento = d.id_departamento
+        INNER JOIN tipos_permisos tp ON pt.id_tipo_permiso = tp.id_tipo_permiso
+        WHERE pt.id_permiso = $1
+      `;
+      resultGeneral = await pool.query(queryGeneralExcavacion, [id]);
+      resultDetalles = { rows: [] };
     } else {
       console.log("Tipo de permiso no soportado:", tipo_permiso);
       return res.status(400).json({ error: "Tipo de permiso no soportado" });

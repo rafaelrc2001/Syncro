@@ -1,3 +1,187 @@
+// --- Lógica para el botón "No Autorizar" (idéntica a PT8) ---
+document.addEventListener("DOMContentLoaded", function () {
+  const btnNoAutorizar = document.getElementById("btn-no-autorizar");
+  if (btnNoAutorizar) {
+    btnNoAutorizar.addEventListener("click", function () {
+      const responsableInput = document.getElementById("responsable-aprobador");
+      const responsable_area = responsableInput
+        ? responsableInput.value.trim()
+        : "";
+      if (!responsable_area) {
+        alert("Debes ingresar el nombre del responsable antes de rechazar.");
+        return;
+      }
+      const noModal = document.getElementById("modalConfirmarNoAutorizar");
+      if (noModal) {
+        noModal.style.display = "flex";
+      } else {
+        const modal = document.getElementById("modalComentario");
+        if (modal) {
+          modal.style.display = "flex";
+          const ta = document.getElementById("comentarioNoAutorizar");
+          if (ta) ta.value = "";
+        }
+      }
+    });
+
+    // --- FUNCIONALIDAD PARA BOTONES DEL MODAL DE CONFIRMACIÓN DE NO AUTORIZAR ---
+    const modalConfirmarNoAutorizar = document.getElementById(
+      "modalConfirmarNoAutorizar"
+    );
+    if (modalConfirmarNoAutorizar) {
+      const btnCancelarConfirmarNo = modalConfirmarNoAutorizar.querySelector(
+        "#btnCancelarConfirmarNo"
+      );
+      if (btnCancelarConfirmarNo) {
+        btnCancelarConfirmarNo.addEventListener("click", function () {
+          modalConfirmarNoAutorizar.style.display = "none";
+        });
+      }
+      const btnConfirmarNoAutorizar = modalConfirmarNoAutorizar.querySelector(
+        "#btnConfirmarNoAutorizar"
+      );
+      if (btnConfirmarNoAutorizar) {
+        btnConfirmarNoAutorizar.addEventListener("click", function () {
+          modalConfirmarNoAutorizar.style.display = "none";
+          const modalComentario = document.getElementById("modalComentario");
+          if (modalComentario) {
+            modalComentario.style.display = "flex";
+            const ta = document.getElementById("comentarioNoAutorizar");
+            if (ta) ta.value = "";
+          }
+        });
+      }
+    }
+
+    // Lógica para cerrar/cancelar el modal de comentario
+    const btnCancelarComentario = document.getElementById(
+      "btnCancelarComentario"
+    );
+    if (btnCancelarComentario) {
+      btnCancelarComentario.addEventListener("click", function () {
+        const modal = document.getElementById("modalComentario");
+        if (modal) modal.style.display = "none";
+      });
+    }
+
+    // Lógica para guardar el comentario y actualizar estatus a No Autorizado
+    const btnGuardarComentario = document.getElementById(
+      "btnGuardarComentario"
+    );
+    if (btnGuardarComentario) {
+      btnGuardarComentario.addEventListener("click", async function () {
+        const comentario = document
+          .getElementById("comentarioNoAutorizar")
+          .value.trim();
+        const responsableInput = document.getElementById(
+          "responsable-aprobador"
+        );
+        const operadorInput = document.getElementById("responsable-aprobador2");
+        const responsable_area = responsableInput
+          ? responsableInput.value.trim()
+          : "";
+        const operador_area = operadorInput ? operadorInput.value.trim() : "";
+        const params = new URLSearchParams(window.location.search);
+        const idPermiso = params.get("id") || window.idPermisoActual;
+        if (!comentario) return;
+        if (!idPermiso) return;
+        if (!responsable_area) return;
+        try {
+          const nowRechazo = new Date();
+          const fechaHoraRechazo = new Date(
+            nowRechazo.getTime() - nowRechazo.getTimezoneOffset() * 60000
+          ).toISOString();
+          await fetch("/api/autorizaciones/area", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              id_permiso: idPermiso,
+              responsable_area,
+              encargado_area: operador_area,
+              comentario_no_autorizar: comentario,
+              fecha_hora_area: fechaHoraRechazo,
+            }),
+          });
+
+          let idEstatus = null;
+          const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
+          if (respEstatus.ok) {
+            const permisoData = await respEstatus.json();
+            idEstatus =
+              permisoData.id_estatus ||
+              (permisoData.data && permisoData.data.id_estatus);
+          }
+          if (idEstatus) {
+            await fetch("/api/estatus/no_autorizado", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ id_estatus: idEstatus }),
+            });
+            await fetch("/api/estatus/comentario", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ id_estatus: idEstatus, comentario }),
+            });
+          }
+          const modal = document.getElementById("modalComentario");
+          if (modal) modal.style.display = "none";
+          window.location.href = "/Modules/Usuario/AutorizarPT.html";
+        } catch (err) {
+          alert("Error al rechazar el permiso.");
+          console.error("Error al rechazar:", err);
+        }
+      });
+    }
+  }
+});
+
+// --- Lógica para el botón "Autorizar" (idéntica a PT8) ---
+document.addEventListener("DOMContentLoaded", function () {
+  const btnAutorizar = document.getElementById("btn-guardar-campos");
+  if (btnAutorizar) {
+    btnAutorizar.addEventListener("click", async function () {
+      const params = new URLSearchParams(window.location.search);
+      const idPermiso = params.get("id") || window.idPermisoActual;
+      const responsableInput = document.getElementById("responsable-aprobador");
+      const responsable_area = responsableInput
+        ? responsableInput.value.trim()
+        : "";
+      if (!idPermiso) {
+        alert("No se pudo obtener el ID del permiso.");
+        return;
+      }
+      if (!responsable_area) {
+        alert("Debes ingresar el nombre del responsable del área.");
+        if (responsableInput) responsableInput.focus();
+        return;
+      }
+      try {
+        let idEstatus = null;
+        const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
+        if (respEstatus.ok) {
+          const permisoData = await respEstatus.json();
+          idEstatus =
+            permisoData.id_estatus ||
+            (permisoData.data && permisoData.data.id_estatus);
+        }
+        if (idEstatus) {
+          await fetch("/api/estatus/seguridad", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id_estatus: idEstatus }),
+          });
+          alert("Permiso autorizado correctamente.");
+          window.location.href = "/Modules/Usuario/AutorizarPT.html";
+        } else {
+          alert("No se pudo obtener el estatus del permiso.");
+        }
+      } catch (err) {
+        alert("Error al autorizar el permiso.");
+        console.error("Error al autorizar:", err);
+      }
+    });
+  }
+});
 document.addEventListener("DOMContentLoaded", function () {
   // --- FUNCION DE MAPEADO PARA VISTA-PT9 (Cesta) ---
   function mostrarDatosImprimirPT9(general) {

@@ -1,73 +1,188 @@
+// --- Lógica para el botón "No Autorizar" (idéntica a PT8/PT9) ---
 document.addEventListener("DOMContentLoaded", function () {
-  // --- FUNCION DE MAPEADO PARA VISTA-PT9 (Cesta) ---
-  function mostrarDatosImprimirPT9(general) {
-    // Bloque: Datos Generales (encabezado del formulario) usando los mismos IDs que el HTML (como en PT8)
-    setText("start-time-label", general.hora_inicio);
-    setText("fecha-label", general.fecha);
-    setText("activity-type-label", general.tipo_mantenimiento);
-    setText("plant-label", general.area);
-    setText("descripcion-trabajo-label", general.descripcion_trabajo);
-    setText("empresa-label", general.empresa);
-    setText("nombre-solicitante-label", general.nombre_solicitante);
-    setText("sucursal-label", general.sucursal);
-    setText("contrato-label", general.contrato);
-    setText("work-order-label", general.ot_numero);
-    setText("equipment-label", general.equipo_intervenir);
-    setText("tag-label", general.tag);
+  const btnNoAutorizar = document.getElementById("btn-no-autorizar");
+  if (btnNoAutorizar) {
+    btnNoAutorizar.addEventListener("click", function () {
+      const responsableInput = document.getElementById("responsable-aprobador");
+      const responsable_area = responsableInput
+        ? responsableInput.value.trim()
+        : "";
+      if (!responsable_area) {
+        alert("Debes ingresar el nombre del responsable antes de rechazar.");
+        return;
+      }
+      const noModal = document.getElementById("modalConfirmarNoAutorizar");
+      if (noModal) {
+        noModal.style.display = "flex";
+      } else {
+        const modal = document.getElementById("modalComentario");
+        if (modal) {
+          modal.style.display = "flex";
+          const ta = document.getElementById("comentarioNoAutorizar");
+          if (ta) ta.value = "";
+        }
+      }
+    });
 
-    // Bloque: Datos de la Grúa y Cesta
-    setText("view-identificacion-grua", general.identificacion_grua_cesta);
-    setText("view-perteneciente-empresa-grua", general.empresa_grua_cesta);
-    setText("view-identificacion-cesta", general.identificacion_cesta);
-    setText("view-perteneciente-empresa-cesta", general.empresa_cesta);
-    setText("view-peso-cesta", general.peso_cesta);
-    setText("view-carga-maxima-cesta", general.carga_maxima_cesta);
-    setText("view-ultima-revision-cesta", general.ultima_revision_cesta);
-
-    // Bloque: Condiciones de Elevación
-    setText("view-asentamiento", general.asentamiento);
-    setText("view-calzado", general.calzado);
-    setText("view-nivelacion", general.nivelacion);
-    setText("view-ext-gatos", general.especificacion_ext_gatos);
-    setText("view-utiliza-plumin", general.utiliza_plumin_cesta);
-    setText("view-especificar-plumin", general.especificacion_plumin_cesta);
-    setText("view-longitud-pluma", general.longitud_pluma_cesta);
-    setText("view-radio-trabajo", general.radio_trabajo_cesta);
-    setText("view-carga-segura", general.carga_segura_cesta);
-    setText("view-peso-carga", general.peso_carga_cesta);
-    setText("view-peso-gancho-elementos", general.peso_gancho_elementos);
-    setText("view-carga-de-trabajo", general.carga_trabajo_cesta);
-    setText("view-relacion-carga-segura", general.relacion_carga_segura_cesta);
-
-    // Bloque: Prueba Previa a Suspensión
-    setText("view-carga-prueba", general.carga_prueba);
-    setText("view-prueba-realizada", general.prueba_realizada);
-    setText("view-prueba-presenciada-por", general.prueba_presenciada_por);
-    setText("view-firma", general.firma_prueba);
-    setText("view-fecha-prueba", general.fecha_prueba);
-
-    // Bloque: Medidas de Seguridad Previas
-    setText("view-mascaras-escape", general.mascaras_escape_cesta);
-    setText("view-equipo-proteccion", general.equipo_proteccion_cesta);
-    setText(
-      "view-equipo-contra-incendios",
-      general.equipo_contra_incendios_cesta
+    // --- FUNCIONALIDAD PARA BOTONES DEL MODAL DE CONFIRMACIÓN DE NO AUTORIZAR ---
+    const modalConfirmarNoAutorizar = document.getElementById(
+      "modalConfirmarNoAutorizar"
     );
-    setText("view-final-carrera", general.final_carrera_cesta);
-    setText("view-otras-medidas", general.otras_medidas_cesta);
+    if (modalConfirmarNoAutorizar) {
+      const btnCancelarConfirmarNo = modalConfirmarNoAutorizar.querySelector(
+        "#btnCancelarConfirmarNo"
+      );
+      if (btnCancelarConfirmarNo) {
+        btnCancelarConfirmarNo.addEventListener("click", function () {
+          modalConfirmarNoAutorizar.style.display = "none";
+        });
+      }
+      const btnConfirmarNoAutorizar = modalConfirmarNoAutorizar.querySelector(
+        "#btnConfirmarNoAutorizar"
+      );
+      if (btnConfirmarNoAutorizar) {
+        btnConfirmarNoAutorizar.addEventListener("click", function () {
+          modalConfirmarNoAutorizar.style.display = "none";
+          const modalComentario = document.getElementById("modalComentario");
+          if (modalComentario) {
+            modalComentario.style.display = "flex";
+            const ta = document.getElementById("comentarioNoAutorizar");
+            if (ta) ta.value = "";
+          }
+        });
+      }
+    }
 
-    // Bloque: Observaciones Generales
-    setText(
-      "view-observaciones-generales",
-      general.observaciones_generales_cesta
+    // Lógica para cerrar/cancelar el modal de comentario
+    const btnCancelarComentario = document.getElementById(
+      "btnCancelarComentario"
     );
-  }
+    if (btnCancelarComentario) {
+      btnCancelarComentario.addEventListener("click", function () {
+        const modal = document.getElementById("modalComentario");
+        if (modal) modal.style.display = "none";
+      });
+    }
 
-  // Utilidad para setear texto
-  function setText(id, value) {
-    const el = document.getElementById(id);
-    if (el) el.textContent = value != null && value !== "" ? value : "-";
+    // Lógica para guardar el comentario y actualizar estatus a No Autorizado
+    const btnGuardarComentario = document.getElementById(
+      "btnGuardarComentario"
+    );
+    if (btnGuardarComentario) {
+      btnGuardarComentario.addEventListener("click", async function () {
+        const comentario = document
+          .getElementById("comentarioNoAutorizar")
+          .value.trim();
+        const responsableInput = document.getElementById(
+          "responsable-aprobador"
+        );
+        const operadorInput = document.getElementById("responsable-aprobador2");
+        const responsable_area = responsableInput
+          ? responsableInput.value.trim()
+          : "";
+        const operador_area = operadorInput ? operadorInput.value.trim() : "";
+        const params = new URLSearchParams(window.location.search);
+        const idPermiso = params.get("id") || window.idPermisoActual;
+        if (!comentario) return;
+        if (!idPermiso) return;
+        if (!responsable_area) return;
+        try {
+          const nowRechazo = new Date();
+          const fechaHoraRechazo = new Date(
+            nowRechazo.getTime() - nowRechazo.getTimezoneOffset() * 60000
+          ).toISOString();
+          await fetch("/api/autorizaciones/area", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              id_permiso: idPermiso,
+              responsable_area,
+              encargado_area: operador_area,
+              comentario_no_autorizar: comentario,
+              fecha_hora_area: fechaHoraRechazo,
+            }),
+          });
+
+          let idEstatus = null;
+          const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
+          if (respEstatus.ok) {
+            const permisoData = await respEstatus.json();
+            idEstatus =
+              permisoData.id_estatus ||
+              (permisoData.data && permisoData.data.id_estatus);
+          }
+          if (idEstatus) {
+            await fetch("/api/estatus/no_autorizado", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ id_estatus: idEstatus }),
+            });
+            await fetch("/api/estatus/comentario", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ id_estatus: idEstatus, comentario }),
+            });
+          }
+          const modal = document.getElementById("modalComentario");
+          if (modal) modal.style.display = "none";
+          window.location.href = "/Modules/Usuario/AutorizarPT.html";
+        } catch (err) {
+          alert("Error al rechazar el permiso.");
+          console.error("Error al rechazar:", err);
+        }
+      });
+    }
   }
+});
+
+// --- Lógica para el botón "Autorizar" (idéntica a PT8/PT9) ---
+document.addEventListener("DOMContentLoaded", function () {
+  const btnAutorizar = document.getElementById("btn-guardar-campos");
+  if (btnAutorizar) {
+    btnAutorizar.addEventListener("click", async function () {
+      const params = new URLSearchParams(window.location.search);
+      const idPermiso = params.get("id") || window.idPermisoActual;
+      const responsableInput = document.getElementById("responsable-aprobador");
+      const responsable_area = responsableInput
+        ? responsableInput.value.trim()
+        : "";
+      if (!idPermiso) {
+        alert("No se pudo obtener el ID del permiso.");
+        return;
+      }
+      if (!responsable_area) {
+        alert("Debes ingresar el nombre del responsable del área.");
+        if (responsableInput) responsableInput.focus();
+        return;
+      }
+      try {
+        let idEstatus = null;
+        const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
+        if (respEstatus.ok) {
+          const permisoData = await respEstatus.json();
+          idEstatus =
+            permisoData.id_estatus ||
+            (permisoData.data && permisoData.data.id_estatus);
+        }
+        if (idEstatus) {
+          await fetch("/api/estatus/seguridad", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id_estatus: idEstatus }),
+          });
+          alert("Permiso autorizado correctamente.");
+          window.location.href = "/Modules/Usuario/AutorizarPT.html";
+        } else {
+          alert("No se pudo obtener el estatus del permiso.");
+        }
+      } catch (err) {
+        alert("Error al autorizar el permiso.");
+        console.error("Error al autorizar:", err);
+      }
+    });
+  }
+});
+document.addEventListener("DOMContentLoaded", function () {
   // --- INICIALIZACIÓN DE LOGOS ---
   function inicializarLogos() {
     const companyHeader = document.querySelector(".company-header");
@@ -182,15 +297,280 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((resp) => resp.json())
       .then((data) => {
         console.log("Datos recibidos para el permiso:", data);
-        // Prefijo en el título
+        // --- Mapeo centralizado al estilo PT4/PT5/PT6 ---
+        function setText(id, value) {
+          const el = document.getElementById(id);
+          if (el) el.textContent = value ?? "-";
+        }
+
+        function mostrarDatosImprimir(general) {
+          // Encabezado y generales (mapeo igual que PT8/PT9)
+          setText("prefijo-label", general.prefijo);
+          setText("start-time-label", general.hora_inicio);
+          setText("fecha-label", general.fecha);
+          setText("activity-type-label", general.tipo_mantenimiento);
+          setText("plant-label", general.area);
+          setText("descripcion-trabajo-label", general.descripcion_trabajo);
+          setText("empresa-label", general.empresa);
+          setText("nombre-solicitante-label", general.nombre_solicitante);
+          setText("sucursal-label", general.sucursal);
+          setText("contrato-label", general.contrato);
+          setText("work-order-label", general.ot_numero);
+          setText("equipment-label", general.equipo_intervenir);
+          setText("tag-label", general.tag);
+
+          // --- MAPEO DE DATOS DE EXCAVACIÓN (PT10) ---
+          setText("vista-profundidad-media", general.profundidad_media);
+          setText("vista-profundidad-maxima", general.profundidad_maxima);
+          setText("vista-anchura", general.anchura);
+          setText("vista-longitud", general.longitud);
+          setText("vista-tipo-terreno", general.tipo_terreno);
+
+          setText("vista-tuberia-gas", general.tuberia_gas);
+          setText("vista-gas-tipo", general.tipo_gas);
+          setText("vista-tuberia-gas-comprobado", general.comprobado_gas);
+          setText("vista-permit-date-gas", general.fecha_gas);
+          setText("vista-linea-electrica", general.linea_electrica);
+          setText("vista-linea-electrica-voltaje", general.voltaje_linea);
+          setText(
+            "vista-linea-electrica-comprobado",
+            general.comprobado_electrica
+          );
+          setText("vista-permit-date-electrica", general.fecha_electrica);
+          setText("vista-tuberia-incendios", general.tuberia_incendios);
+          setText("vista-tuberia-incendios-presion", general.presion_incendios);
+          setText(
+            "vista-tuberia-incendios-comprobado",
+            general.comprobado_incendios
+          );
+          setText("vista-permit-date-incendios", general.fecha_incendios);
+          setText("vista-alcantarillado", general.alcantarillado);
+          setText(
+            "vista-alcantarillado-diametro",
+            general.diametro_alcantarillado
+          );
+          setText(
+            "vista-alcantarillado-comprobado",
+            general.comprobado_alcantarillado
+          );
+          setText(
+            "vista-permit-date-alcantarillado",
+            general.fecha_alcantarillado
+          );
+          setText("vista-otras-instalaciones", general.otras_instalaciones);
+          setText(
+            "vista-otras-instalaciones-tipo",
+            general.especificacion_otras_instalaciones
+          );
+          setText(
+            "vista-otras-instalaciones-comprobado",
+            general.comprobado_otras
+          );
+          setText("vista-permit-date-otras", general.fecha_otras);
+
+          setText("vista-requiere-talud", general.requiere_talud);
+          setText("vista-angulo-talud", general.angulo_talud);
+          setText("vista-requiere-bermas", general.requiere_bermas);
+          setText("vista-longitud-meseta", general.longitud_meseta);
+          setText("vista-alturas-contrameseta", general.altura_contrameseta);
+          setText("vista-requiere-entibacion", general.requiere_entibacion);
+          setText("vista-tipo-entibacion", general.tipo_entibacion);
+          setText(
+            "vista-especificacion-entibacion",
+            general.condiciones_terreno_entibacion
+          );
+          setText("vista-otros-requerimientos", general.otros_requerimientos);
+          setText(
+            "vista-otros-requerimientos-detalle",
+            general.especificacion_otros_requerimientos
+          );
+          setText(
+            "vista-distancia-estatica",
+            general.distancia_seguridad_estatica
+          );
+          setText(
+            "vista-distancia-dinamica",
+            general.distancia_seguridad_dinamica
+          );
+
+          setText("vista-requiere-balizamiento", general.requiere_balizamiento);
+          setText(
+            "vista-distancia-balizamiento",
+            general.distancia_balizamiento
+          );
+          setText(
+            "vista-requiere-proteccion-rigida",
+            general.requiere_proteccion_rigida
+          );
+          setText(
+            "vista-distancia-proteccion",
+            general.distancia_proteccion_rigida
+          );
+          setText(
+            "vista-requiere-senalizacion",
+            general.requiere_senalizacion_especial
+          );
+          setText(
+            "vista-tipo-senalizacion",
+            general.especificacion_senalizacion
+          );
+          setText(
+            "vista-requiere-proteccion-anticaida",
+            general.requiere_proteccion_anticaida
+          );
+          setText(
+            "vista-tipo-proteccion-anticaida",
+            general.tipo_proteccion_anticaida
+          );
+          setText("vista-anclaje", general.tipo_anclaje);
+
+          setText(
+            "vista-espacio-confinado",
+            general.excavacion_espacio_confinado
+          );
+
+          setText(
+            "vista-excavacion-manual",
+            general.excavacion_manual_aproximacion
+          );
+          setText("vista-medidas-excavacion", general.medidas_aproximacion);
+          setText(
+            "vista-medida-herramienta-antichispa",
+            general.herramienta_antichispa
+          );
+          setText(
+            "vista-medida-guantes-dielectrico",
+            general.guantes_calzado_dielectrico
+          );
+          setText("vista-medida-epp-especial", general.epp_especial);
+          setText(
+            "vista-medida-otros-lineas",
+            general.otras_medidas_especiales
+          );
+
+          setText(
+            "vista-medida-bloqueo-fisico",
+            general.aplicar_bloqueo_fisico
+          );
+          setText(
+            "vista-bloqueo-fisico-detalle",
+            general.especificacion_bloqueo_fisico
+          );
+          setText("vista-medida-drenar-limpiar", general.drenar_limpiar_lavar);
+          setText(
+            "vista-medida-atmosfera-inerte",
+            general.inundar_anegar_atmosfera_inerte
+          );
+          setText("vista-medida-vigilante", general.vigilante_continuo);
+          setText(
+            "vista-vigilante-detalle",
+            general.especificacion_vigilante_continuo
+          );
+          setText(
+            "vista-medida-otras-adicionales",
+            general.otras_medidas_adicionales
+          );
+          setText(
+            "vista-otras-adicionales-detalle",
+            general.especificacion_otras_medidas_adicionales
+          );
+
+          setText(
+            "vista-observaciones-generales",
+            general.observaciones_generales_excavacion
+          );
+        }
+
+        // Usar la función centralizada para mostrar los datos
         if (data && data.general) {
+          mostrarDatosImprimir(data.general);
           document.querySelector(".section-header h3").textContent =
             data.general.prefijo || "NP-XXXXXX";
           document.title =
-            "Permiso Cesta Izada" +
+            "Permiso de Trabajo excavacion." +
             (data.general.prefijo ? " - " + data.general.prefijo : "");
-          mostrarDatosImprimirPT9(data.general);
         }
+
+        // Campos generales PT2
+        if (data && data.data) {
+          const detalles = data.data;
+          if (document.getElementById("maintenance-type-label"))
+            document.getElementById("maintenance-type-label").textContent =
+              detalles.tipo_mantenimiento || "-";
+          if (document.getElementById("work-order-label"))
+            document.getElementById("work-order-label").textContent =
+              detalles.ot_numero || "-";
+          if (document.getElementById("tag-label"))
+            document.getElementById("tag-label").textContent =
+              detalles.tag || "-";
+          if (document.getElementById("start-time-label"))
+            document.getElementById("start-time-label").textContent =
+              detalles.hora_inicio || "-";
+          if (document.getElementById("equipment-description-label"))
+            document.getElementById("equipment-description-label").textContent =
+              detalles.descripcion_equipo || "-";
+          if (document.getElementById("special-tools-label"))
+            document.getElementById("special-tools-label").textContent =
+              detalles.requiere_herramientas_especiales || "-";
+
+          if (document.getElementById("what-special-tools-label"))
+            document.getElementById("what-special-tools-label").textContent =
+              data.general.tipo_herramientas_especiales || "-";
+
+          if (document.getElementById("adequate-tools-label"))
+            document.getElementById("adequate-tools-label").textContent =
+              detalles.herramientas_adecuadas || "-";
+          if (document.getElementById("pre-verification-label"))
+            document.getElementById("pre-verification-label").textContent =
+              detalles.requiere_verificacion_previa || "-";
+          if (document.getElementById("risk-knowledge-label"))
+            document.getElementById("risk-knowledge-label").textContent =
+              detalles.requiere_conocer_riesgos || "-";
+          if (document.getElementById("final-observations-label"))
+            document.getElementById("final-observations-label").textContent =
+              detalles.observaciones_medidas || "-";
+
+          // Requisitos para Administrar los Riesgos desde data.data
+          if (document.getElementById("resp-special-protection"))
+            document.getElementById("resp-special-protection").textContent =
+              detalles.proteccion_especial_recomendada || "-";
+          if (document.getElementById("resp-skin-protection"))
+            document.getElementById("resp-skin-protection").textContent =
+              detalles.proteccion_piel_cuerpo || "-";
+          if (document.getElementById("resp-respiratory-protection"))
+            document.getElementById("resp-respiratory-protection").textContent =
+              detalles.proteccion_respiratoria || "-";
+          if (document.getElementById("resp-eye-protection"))
+            document.getElementById("resp-eye-protection").textContent =
+              detalles.proteccion_ocular || "-";
+          if (document.getElementById("resp-fire-protection"))
+            document.getElementById("resp-fire-protection").textContent =
+              detalles.proteccion_contraincendio || "-";
+          if (document.getElementById("fire-protection-type"))
+            document.getElementById("fire-protection-type").textContent =
+              detalles.tipo_proteccion_contraincendio || "-";
+          if (document.getElementById("resp-barriers-required"))
+            document.getElementById("resp-barriers-required").textContent =
+              detalles.instalacion_barreras || "-";
+          if (document.getElementById("observations"))
+            document.getElementById("observations").textContent =
+              detalles.observaciones_riesgos || "-";
+
+          // Registro de Pruebas Requeridas desde data.data
+          if (document.getElementById("valor-co2"))
+            document.getElementById("valor-co2").textContent =
+              detalles.co2_nivel || "-";
+          if (document.getElementById("valor-amonico"))
+            document.getElementById("valor-amonico").textContent =
+              detalles.nh3_nivel || "-";
+          if (document.getElementById("valor-oxigeno"))
+            document.getElementById("valor-oxigeno").textContent =
+              detalles.oxigeno_nivel || "-";
+          if (document.getElementById("valor-lel"))
+            document.getElementById("valor-lel").textContent =
+              detalles.lel_nivel || "-";
+        }
+
         // Rellenar AST y Participantes igual que PT1
         if (data && data.ast) {
           mostrarAST(data.ast);

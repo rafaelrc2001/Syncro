@@ -1326,20 +1326,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
           // DATOS DEL OPERADOR
           // ELEMENTOS AUXILIARES DE IZADO
-          const estrobos_eslingas =
-            document.querySelectorAll('input[name="licencia-operador"]')[0]
-              ?.checked || false;
-          const grilletes =
-            document.querySelectorAll('input[name="licencia-operador"]')[1]
-              ?.checked || false;
-          const otros_elementos_auxiliares =
-            document.querySelectorAll('input[name="licencia-operador"]')[2]
-              ?.checked || false;
+          const estrobos_eslingas = document.querySelectorAll(
+            'input[name="licencia-operador"]'
+          )[0]?.checked
+            ? "si"
+            : "no";
+          const grilletes = document.querySelectorAll(
+            'input[name="licencia-operador"]'
+          )[1]?.checked
+            ? "si"
+            : "no";
+          const otros_elementos_auxiliares = document.querySelectorAll(
+            'input[name="licencia-operador"]'
+          )[2]?.checked
+            ? "si"
+            : "no";
           const especificacion_otros_elementos =
             document.getElementById("otros-elementos")?.value || "";
-          const requiere_eslingado_especifico =
-            document.querySelectorAll('input[name="licencia-operador"]')[3]
-              ?.checked || false;
+          const requiere_eslingado_especifico = document.querySelectorAll(
+            'input[name="licencia-operador"]'
+          )[3]?.checked
+            ? "si"
+            : "no";
           const especificacion_eslingado =
             document.getElementById("licencia-operador")?.value || "";
 
@@ -1375,10 +1383,11 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("especificar-plumin")?.value || "";
 
           // Comprobaciones (checkboxes)
-          const asentamiento =
-            document.querySelectorAll(
-              'input[name="medida-declaracion-conformidad"]'
-            )[1]?.checked || false;
+          const asentamiento = document.querySelectorAll(
+            'input[name="medida-declaracion-conformidad"]'
+          )[1]?.checked
+            ? "si"
+            : "no";
           // Definir campos faltantes para evitar ReferenceError
           const tipo_licencia =
             document.getElementById("tipo-licencia")?.value || "";
@@ -1390,114 +1399,140 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("empresa-operador")?.value || "";
           // Licencia operador: radio y texto
           const licencia_operador =
-            document.getElementById("licencia-operador")?.value || "";
-          // Para radio, ejemplo: SI/NO
-          const numero_licencia = licencia_operador; // Si hay un número, se toma del input
+            document.querySelector(
+              'input[name="licencia-operador-si-no"]:checked'
+            )?.value || "";
+          const numero_licencia =
+            document.getElementById("numero-licencia")?.value || "";
           const fecha_emision_licencia =
             document.getElementById("permit-date")?.value || "";
           const vigencia_licencia =
             document.getElementById("vigencia")?.value || "";
           // --- Definición de variables PT Izaje ---
           // Checkboxes de medidas principales
-          const declaracion_conformidad =
-            document.querySelector(
-              'input[name="medida-declaracion-conformidad"]'
-            )?.checked || false;
-          const inspeccion_periodica =
-            document.querySelector('input[name="medida-inspeccion-periodica"]')
-              ?.checked || false;
-          const mantenimiento_preventivo =
-            document.querySelector(
-              'input[name="medida-mantenimiento-preventivo"]'
-            )?.checked || false;
-          const inspeccion_diaria =
-            document.querySelector('input[name="medida-inspeccion-diaria"]')
-              ?.checked || false;
-          const diagrama_cargas =
-            document.querySelector('input[name="medida-diagrama-cargas"]')
-              ?.checked || false;
-          const libro_instrucciones =
-            document.querySelector('input[name="medida-libro-instrucciones"]')
-              ?.checked || false;
-          const limitador_carga =
-            document.querySelector('input[name="medida-limitador-carga"]')
-              ?.checked || false;
-          const final_carrera =
-            document.querySelector('input[name="medida-final-carrera"]')
-              ?.checked || false;
+          const declaracion_conformidad = document.querySelector(
+            'input[name="medida-declaracion-conformidad"]'
+          )?.checked
+            ? "si"
+            : "no";
+          const inspeccion_periodica = document.querySelector(
+            'input[name="medida-inspeccion-periodica"]'
+          )?.checked
+            ? "si"
+            : "no";
+          const mantenimiento_preventivo = document.querySelector(
+            'input[name="medida-mantenimiento-preventivo"]'
+          )?.checked
+            ? "si"
+            : "no";
+          const inspeccion_diaria = document.querySelector(
+            'input[name="medida-inspeccion-diaria"]'
+          )?.checked
+            ? "si"
+            : "no";
+          const diagrama_cargas = document.querySelector(
+            'input[name="medida-diagrama-cargas"]'
+          )?.checked
+            ? "si"
+            : "no";
+          const libro_instrucciones = document.querySelector(
+            'input[name="medida-libro-instrucciones"]'
+          )?.checked
+            ? "si"
+            : "no";
+          const limitador_carga = document.querySelector(
+            'input[name="medida-limitador-carga"]'
+          )?.checked
+            ? "si"
+            : "no";
+          const final_carrera = document.querySelector(
+            'input[name="medida-final-carrera"]'
+          )?.checked
+            ? "si"
+            : "no";
 
           // DATOS DEL OPERADOR
           // ...variables ya definidas arriba, eliminar duplicados...
-          const calzado =
-            Array.from(
-              document.querySelectorAll(
-                'input[type="checkbox"][name="medida-inspeccion-periodica"]'
-              )
-            )[0]?.checked || false;
-          const extension_gatos_check =
-            Array.from(
-              document.querySelectorAll(
-                'input[type="checkbox"][name="medida-mantenimiento-preventivo"]'
-              )
-            )[0]?.checked || false;
-          const nivelacion =
-            Array.from(
-              document.querySelectorAll(
-                'input[type="checkbox"][name="medida-inspeccion-diaria"]'
-              )
-            )[0]?.checked || false;
-          const contrapeso_check =
-            Array.from(
-              document.querySelectorAll(
-                'input[type="checkbox"][name="medida-diagrama-cargas"]'
-              )
-            )[0]?.checked || false;
-          const sector_trabajo_check =
-            Array.from(
-              document.querySelectorAll(
-                'input[type="checkbox"][name="medida-libro-instrucciones"]'
-              )
-            )[0]?.checked || false;
+          const calzado = Array.from(
+            document.querySelectorAll(
+              'input[type="checkbox"][name="medida-inspeccion-periodica"]'
+            )
+          )[0]?.checked
+            ? "si"
+            : "no";
+          const extension_gatos_check = Array.from(
+            document.querySelectorAll(
+              'input[type="checkbox"][name="medida-mantenimiento-preventivo"]'
+            )
+          )[0]?.checked
+            ? "si"
+            : "no";
+          const nivelacion = Array.from(
+            document.querySelectorAll(
+              'input[type="checkbox"][name="medida-inspeccion-diaria"]'
+            )
+          )[0]?.checked
+            ? "si"
+            : "no";
+          const contrapeso_check = Array.from(
+            document.querySelectorAll(
+              'input[type="checkbox"][name="medida-diagrama-cargas"]'
+            )
+          )[0]?.checked
+            ? "si"
+            : "no";
+          const sector_trabajo_check = Array.from(
+            document.querySelectorAll(
+              'input[type="checkbox"][name="medida-libro-instrucciones"]'
+            )
+          )[0]?.checked
+            ? "si"
+            : "no";
           const comprobado_por =
             document.getElementById("comprobado-por")?.value || "";
 
           // MEDIDAS DE SEGURIDAD PREVIAS
-          const balizamiento_operacion =
-            Array.from(
-              document.querySelectorAll(
-                'input[type="checkbox"][name="licencia-operador"]'
-              )
-            )[4]?.checked || false;
-          const reunion_previa =
-            Array.from(
-              document.querySelectorAll(
-                'input[type="checkbox"][name="licencia-operador"]'
-              )
-            )[5]?.checked || false;
+          const balizamiento_operacion = Array.from(
+            document.querySelectorAll(
+              'input[type="checkbox"][name="licencia-operador"]'
+            )
+          )[4]?.checked
+            ? "si"
+            : "no";
+          const reunion_previa = Array.from(
+            document.querySelectorAll(
+              'input[type="checkbox"][name="licencia-operador"]'
+            )
+          )[5]?.checked
+            ? "si"
+            : "no";
           const especificacion_reunion_previa =
             document.getElementById("reunion-previa")?.value || "";
-          const presentacion_supervisor =
-            Array.from(
-              document.querySelectorAll(
-                'input[type="checkbox"][name="licencia-operador"]'
-              )
-            )[6]?.checked || false;
+          const presentacion_supervisor = Array.from(
+            document.querySelectorAll(
+              'input[type="checkbox"][name="licencia-operador"]'
+            )
+          )[6]?.checked
+            ? "si"
+            : "no";
           const nombre_supervisor =
             document.getElementById("presentacion-supervisor")?.value || "";
-          const permiso_adicional =
-            Array.from(
-              document.querySelectorAll(
-                'input[type="checkbox"][name="licencia-operador"]'
-              )
-            )[7]?.checked || false;
+          const permiso_adicional = Array.from(
+            document.querySelectorAll(
+              'input[type="checkbox"][name="licencia-operador"]'
+            )
+          )[7]?.checked
+            ? "si"
+            : "no";
           const especificacion_permiso_adicional =
             document.getElementById("permiso-adicional")?.value || "";
-          const otras_medidas_seguridad =
-            Array.from(
-              document.querySelectorAll(
-                'input[type="checkbox"][name="licencia-operador"]'
-              )
-            )[8]?.checked || false;
+          const otras_medidas_seguridad = Array.from(
+            document.querySelectorAll(
+              'input[type="checkbox"][name="licencia-operador"]'
+            )
+          )[8]?.checked
+            ? "si"
+            : "no";
           const especificacion_otras_medidas =
             document.getElementById("otras-medidas")?.value || "";
 
@@ -1664,6 +1699,9 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("carga-de-trabajo")?.value || "";
           const relacion_carga_segura_cesta =
             document.getElementById("especificar-plumin")?.value || "";
+
+          const peso_gancho_eslingas =
+            document.getElementById("peso-gancho-eslingas")?.value || "";
 
           // PRUEBA PREVIA A SUSPENSIÓN
           const carga_prueba =

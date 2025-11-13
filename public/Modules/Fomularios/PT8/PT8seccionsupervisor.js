@@ -1,73 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // --- FUNCION DE MAPEADO PARA VISTA-PT9 (Cesta) ---
-  function mostrarDatosImprimirPT9(general) {
-    // Bloque: Datos Generales (encabezado del formulario) usando los mismos IDs que el HTML (como en PT8)
-    setText("start-time-label", general.hora_inicio);
-    setText("fecha-label", general.fecha);
-    setText("activity-type-label", general.tipo_mantenimiento);
-    setText("plant-label", general.area);
-    setText("descripcion-trabajo-label", general.descripcion_trabajo);
-    setText("empresa-label", general.empresa);
-    setText("nombre-solicitante-label", general.nombre_solicitante);
-    setText("sucursal-label", general.sucursal);
-    setText("contrato-label", general.contrato);
-    setText("work-order-label", general.ot_numero);
-    setText("equipment-label", general.equipo_intervenir);
-    setText("tag-label", general.tag);
-
-    // Bloque: Datos de la Grúa y Cesta
-    setText("view-identificacion-grua", general.identificacion_grua_cesta);
-    setText("view-perteneciente-empresa-grua", general.empresa_grua_cesta);
-    setText("view-identificacion-cesta", general.identificacion_cesta);
-    setText("view-perteneciente-empresa-cesta", general.empresa_cesta);
-    setText("view-peso-cesta", general.peso_cesta);
-    setText("view-carga-maxima-cesta", general.carga_maxima_cesta);
-    setText("view-ultima-revision-cesta", general.ultima_revision_cesta);
-
-    // Bloque: Condiciones de Elevación
-    setText("view-asentamiento", general.asentamiento);
-    setText("view-calzado", general.calzado);
-    setText("view-nivelacion", general.nivelacion);
-    setText("view-ext-gatos", general.especificacion_ext_gatos);
-    setText("view-utiliza-plumin", general.utiliza_plumin_cesta);
-    setText("view-especificar-plumin", general.especificacion_plumin_cesta);
-    setText("view-longitud-pluma", general.longitud_pluma_cesta);
-    setText("view-radio-trabajo", general.radio_trabajo_cesta);
-    setText("view-carga-segura", general.carga_segura_cesta);
-    setText("view-peso-carga", general.peso_carga_cesta);
-    setText("view-peso-gancho-elementos", general.peso_gancho_elementos);
-    setText("view-carga-de-trabajo", general.carga_trabajo_cesta);
-    setText("view-relacion-carga-segura", general.relacion_carga_segura_cesta);
-
-    // Bloque: Prueba Previa a Suspensión
-    setText("view-carga-prueba", general.carga_prueba);
-    setText("view-prueba-realizada", general.prueba_realizada);
-    setText("view-prueba-presenciada-por", general.prueba_presenciada_por);
-    setText("view-firma", general.firma_prueba);
-    setText("view-fecha-prueba", general.fecha_prueba);
-
-    // Bloque: Medidas de Seguridad Previas
-    setText("view-mascaras-escape", general.mascaras_escape_cesta);
-    setText("view-equipo-proteccion", general.equipo_proteccion_cesta);
-    setText(
-      "view-equipo-contra-incendios",
-      general.equipo_contra_incendios_cesta
-    );
-    setText("view-final-carrera", general.final_carrera_cesta);
-    setText("view-otras-medidas", general.otras_medidas_cesta);
-
-    // Bloque: Observaciones Generales
-    setText(
-      "view-observaciones-generales",
-      general.observaciones_generales_cesta
-    );
-  }
-
-  // Utilidad para setear texto
-  function setText(id, value) {
-    const el = document.getElementById(id);
-    if (el) el.textContent = value != null && value !== "" ? value : "-";
-  }
   // --- INICIALIZACIÓN DE LOGOS ---
   function inicializarLogos() {
     const companyHeader = document.querySelector(".company-header");
@@ -182,15 +113,230 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((resp) => resp.json())
       .then((data) => {
         console.log("Datos recibidos para el permiso:", data);
-        // Prefijo en el título
+        // --- Mapeo centralizado al estilo PT4/PT5/PT6 ---
+        function setText(id, value) {
+          const el = document.getElementById(id);
+          if (el) el.textContent = value ?? "-";
+        }
+
+        function mostrarDatosImprimir(general) {
+          // Encabezado y generales
+          setText("prefijo-label", general.prefijo);
+          setText("start-time-label", general.hora_inicio);
+          setText("fecha-label", general.fecha);
+          setText("activity-type-label", general.tipo_mantenimiento);
+          setText("plant-label", general.area);
+          setText("descripcion-trabajo-label", general.descripcion_trabajo);
+          setText("empresa-label", general.empresa);
+          setText(
+            "nombre-solicitante-label",
+            general.solicitante || general.nombre_solicitante
+          );
+          setText("sucursal-label", general.sucursal);
+          setText("contrato-label", general.contrato);
+          setText("work-order-label", general.ot_numero);
+          setText("equipment-label", general.equipo_intervenir);
+          setText("tag-label", general.tag);
+
+          // Área Solicitante y campos view-
+          setText("view-duracion-inicio", general.hora_inicio_prevista);
+          setText("view-duracion-fin", general.hora_fin_prevista);
+          setText("view-responsable-operacion", general.responsable_operacion);
+          setText("view-empresa-grua", general.empresa_grua);
+          setText("view-identificacion-grua", general.identificacion_grua);
+          setText(
+            "view-declaracion-conformidad",
+            general.declaracion_conformidad
+          );
+          setText("view-inspeccion-periodica", general.inspeccion_periodica);
+          setText(
+            "view-mantenimiento-preventivo",
+            general.mantenimiento_preventivo
+          );
+          setText("view-inspeccion-diaria", general.inspeccion_diaria);
+          setText("view-diagrama-cargas", general.diagrama_cargas);
+          setText("view-libro-instrucciones", general.libro_instrucciones);
+          setText("view-limitador-carga", general.limitador_carga);
+          setText("view-final-carrera", general.final_carrera);
+          setText("view-nombre-operador", general.nombre_operador);
+          setText("view-empresa-operador", general.empresa_operador);
+          setText("view-licencia-operador", general.licencia_operador);
+          setText(
+            "view-fecha-emision-licencia",
+            general.fecha_emision_licencia
+          );
+          setText("view-vigencia-licencia", general.vigencia_licencia);
+          setText("view-tipo-licencia", general.tipo_licencia);
+          setText("view-comentarios-operador", general.comentarios_operador);
+          setText("view-estrobos-eslingas", general.estrobos_eslingas);
+          setText("view-grilletes", general.grilletes);
+          setText(
+            "view-otros-elementos-auxiliares",
+            general.otros_elementos_auxiliares
+          );
+          setText(
+            "view-especificacion-otros-elementos",
+            general.especificacion_otros_elementos
+          );
+          setText(
+            "view-requiere-eslingado-especifico",
+            general.requiere_eslingado_especifico
+          );
+          setText(
+            "view-especificacion-eslingado",
+            general.especificacion_eslingado
+          );
+          setText("view-extension-gatos", general.extension_gatos);
+          setText("view-sobre-ruedas", general.sobre_ruedas);
+          setText(
+            "view-especificacion-sobre-ruedas",
+            general.especificacion_sobre_ruedas
+          );
+          setText("view-utiliza-plumin", general.utiliza_plumin_si);
+          setText("view-especificacion-plumin", general.especificacion_plumin);
+          setText("view-longitud-pluma", general.longitud_pluma);
+          setText("view-radio-trabajo", general.radio_trabajo);
+          setText("view-contrapeso", general.contrapeso);
+          setText("view-sector-trabajo", general.sector_trabajo);
+          setText("view-carga-segura-diagrama", general.carga_segura_diagrama);
+          setText("view-peso-carga", general.peso_carga);
+          setText("view-determinada-por", general.determinada_por);
+          setText("view-carga-trabajo", general.carga_trabajo);
+          setText("view-peso-gancho-eslingas", general.peso_gancho_eslingas);
+          setText(
+            "view-relacion-carga-carga-segura",
+            general.relacion_carga_carga_segura
+          );
+          setText("view-asentamiento", general.asentamiento);
+          setText("view-calzado", general.calzado);
+          setText("view-extension-gatos-check", general.extension_gatos_check);
+          setText("view-nivelacion", general.nivelacion);
+          setText("view-contrapeso-check", general.contrapeso_check);
+          setText("view-sector-trabajo-check", general.sector_trabajo_check);
+          setText("view-comprobado-por", general.comprobado_por);
+          setText(
+            "view-balizamiento-operacion",
+            general.balizamiento_operacion
+          );
+          setText("view-reunion-previa", general.reunion_previa);
+          setText(
+            "view-especificacion-reunion-previa",
+            general.especificacion_reunion_previa
+          );
+          setText(
+            "view-presentacion-supervisor",
+            general.presentacion_supervisor
+          );
+          setText("view-nombre-supervisor", general.nombre_supervisor);
+          setText("view-permiso-adicional", general.permiso_adicional);
+          setText(
+            "view-especificacion-permiso-adicional",
+            general.especificacion_permiso_adicional
+          );
+          setText(
+            "view-otras-medidas-seguridad",
+            general.otras_medidas_seguridad
+          );
+          setText(
+            "view-especificacion-otras-medidas",
+            general.especificacion_otras_medidas
+          );
+          setText(
+            "view-observaciones-generales",
+            general.observaciones_generales
+          );
+        }
+
+        // Usar la función centralizada para mostrar los datos
         if (data && data.general) {
+          mostrarDatosImprimir(data.general);
           document.querySelector(".section-header h3").textContent =
             data.general.prefijo || "NP-XXXXXX";
           document.title =
-            "Permiso Cesta Izada" +
+            "Permiso de Trabajo Izaje,Hiab,grua." +
             (data.general.prefijo ? " - " + data.general.prefijo : "");
-          mostrarDatosImprimirPT9(data.general);
         }
+
+        // Campos generales PT2
+        if (data && data.data) {
+          const detalles = data.data;
+          if (document.getElementById("maintenance-type-label"))
+            document.getElementById("maintenance-type-label").textContent =
+              detalles.tipo_mantenimiento || "-";
+          if (document.getElementById("work-order-label"))
+            document.getElementById("work-order-label").textContent =
+              detalles.ot_numero || "-";
+          if (document.getElementById("tag-label"))
+            document.getElementById("tag-label").textContent =
+              detalles.tag || "-";
+          if (document.getElementById("start-time-label"))
+            document.getElementById("start-time-label").textContent =
+              detalles.hora_inicio || "-";
+          if (document.getElementById("equipment-description-label"))
+            document.getElementById("equipment-description-label").textContent =
+              detalles.descripcion_equipo || "-";
+          if (document.getElementById("special-tools-label"))
+            document.getElementById("special-tools-label").textContent =
+              detalles.requiere_herramientas_especiales || "-";
+
+          if (document.getElementById("what-special-tools-label"))
+            document.getElementById("what-special-tools-label").textContent =
+              data.general.tipo_herramientas_especiales || "-";
+
+          if (document.getElementById("adequate-tools-label"))
+            document.getElementById("adequate-tools-label").textContent =
+              detalles.herramientas_adecuadas || "-";
+          if (document.getElementById("pre-verification-label"))
+            document.getElementById("pre-verification-label").textContent =
+              detalles.requiere_verificacion_previa || "-";
+          if (document.getElementById("risk-knowledge-label"))
+            document.getElementById("risk-knowledge-label").textContent =
+              detalles.requiere_conocer_riesgos || "-";
+          if (document.getElementById("final-observations-label"))
+            document.getElementById("final-observations-label").textContent =
+              detalles.observaciones_medidas || "-";
+
+          // Requisitos para Administrar los Riesgos desde data.data
+          if (document.getElementById("resp-special-protection"))
+            document.getElementById("resp-special-protection").textContent =
+              detalles.proteccion_especial_recomendada || "-";
+          if (document.getElementById("resp-skin-protection"))
+            document.getElementById("resp-skin-protection").textContent =
+              detalles.proteccion_piel_cuerpo || "-";
+          if (document.getElementById("resp-respiratory-protection"))
+            document.getElementById("resp-respiratory-protection").textContent =
+              detalles.proteccion_respiratoria || "-";
+          if (document.getElementById("resp-eye-protection"))
+            document.getElementById("resp-eye-protection").textContent =
+              detalles.proteccion_ocular || "-";
+          if (document.getElementById("resp-fire-protection"))
+            document.getElementById("resp-fire-protection").textContent =
+              detalles.proteccion_contraincendio || "-";
+          if (document.getElementById("fire-protection-type"))
+            document.getElementById("fire-protection-type").textContent =
+              detalles.tipo_proteccion_contraincendio || "-";
+          if (document.getElementById("resp-barriers-required"))
+            document.getElementById("resp-barriers-required").textContent =
+              detalles.instalacion_barreras || "-";
+          if (document.getElementById("observations"))
+            document.getElementById("observations").textContent =
+              detalles.observaciones_riesgos || "-";
+
+          // Registro de Pruebas Requeridas desde data.data
+          if (document.getElementById("valor-co2"))
+            document.getElementById("valor-co2").textContent =
+              detalles.co2_nivel || "-";
+          if (document.getElementById("valor-amonico"))
+            document.getElementById("valor-amonico").textContent =
+              detalles.nh3_nivel || "-";
+          if (document.getElementById("valor-oxigeno"))
+            document.getElementById("valor-oxigeno").textContent =
+              detalles.oxigeno_nivel || "-";
+          if (document.getElementById("valor-lel"))
+            document.getElementById("valor-lel").textContent =
+              detalles.lel_nivel || "-";
+        }
+
         // Rellenar AST y Participantes igual que PT1
         if (data && data.ast) {
           mostrarAST(data.ast);

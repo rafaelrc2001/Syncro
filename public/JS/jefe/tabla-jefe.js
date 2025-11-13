@@ -96,7 +96,7 @@ function asignarEventosVer() {
           window.location.href = `/Modules/Fomularios/PT8/PT8imprimirsup.html?tipo=PT8&id=${idPermiso}`;
         } else if (tipoPermiso === "PT con Cesta Izada") {
           window.location.href = `/Modules/Fomularios/PT9/PT9imprimirsup.html?tipo=PT9&id=${idPermiso}`;
-        } else if (tipoPermiso === "PT de Excavación") {
+        } else if (tipoPermiso === "PT de Excavacion") {
           window.location.href = `/Modules/Fomularios/PT10/PT10imprimirsup.html?tipo=PT10&id=${idPermiso}`;
         } else {
           // fallback a la misma página de impresión genérica usada en crearpt

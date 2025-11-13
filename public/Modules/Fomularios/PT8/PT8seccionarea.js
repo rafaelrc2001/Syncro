@@ -1,3 +1,199 @@
+// --- Lógica para el botón "No Autorizar" (adaptada de PT1seccionarea.js para PT8) ---
+document.addEventListener("DOMContentLoaded", function () {
+  const btnNoAutorizar = document.getElementById("btn-no-autorizar");
+  if (btnNoAutorizar) {
+    btnNoAutorizar.addEventListener("click", function () {
+      // 1. Validar nombre del responsable antes de abrir el modal de comentario
+      const responsableInput = document.getElementById("responsable-aprobador");
+      const responsable_area = responsableInput
+        ? responsableInput.value.trim()
+        : "";
+      if (!responsable_area) {
+        alert("Debes ingresar el nombre del responsable antes de rechazar.");
+        return;
+      }
+      // Mostrar un modal de confirmación para 'No Autorizar' antes de pedir el motivo
+      const noModal = document.getElementById("modalConfirmarNoAutorizar");
+      if (noModal) {
+        noModal.style.display = "flex";
+      } else {
+        // Fallback: abrir directamente el modalComentario
+        const modal = document.getElementById("modalComentario");
+        if (modal) {
+          modal.style.display = "flex";
+          const ta = document.getElementById("comentarioNoAutorizar");
+          if (ta) ta.value = "";
+        }
+      }
+    });
+
+    // --- FUNCIONALIDAD PARA BOTONES DEL MODAL DE CONFIRMACIÓN DE NO AUTORIZAR ---
+    const modalConfirmarNoAutorizar = document.getElementById(
+      "modalConfirmarNoAutorizar"
+    );
+    if (modalConfirmarNoAutorizar) {
+      // Botón Cancelar
+      const btnCancelarConfirmarNo = modalConfirmarNoAutorizar.querySelector(
+        "#btnCancelarConfirmarNo"
+      );
+      if (btnCancelarConfirmarNo) {
+        btnCancelarConfirmarNo.addEventListener("click", function () {
+          modalConfirmarNoAutorizar.style.display = "none";
+        });
+      }
+      // Botón No Autorizar (rojo)
+      const btnConfirmarNoAutorizar = modalConfirmarNoAutorizar.querySelector(
+        "#btnConfirmarNoAutorizar"
+      );
+      if (btnConfirmarNoAutorizar) {
+        btnConfirmarNoAutorizar.addEventListener("click", function () {
+          modalConfirmarNoAutorizar.style.display = "none";
+          const modalComentario = document.getElementById("modalComentario");
+          if (modalComentario) {
+            modalComentario.style.display = "flex";
+            const ta = document.getElementById("comentarioNoAutorizar");
+            if (ta) ta.value = "";
+          }
+        });
+      }
+    }
+
+    // Lógica para cerrar/cancelar el modal
+    const btnCancelarComentario = document.getElementById(
+      "btnCancelarComentario"
+    );
+    if (btnCancelarComentario) {
+      btnCancelarComentario.addEventListener("click", function () {
+        const modal = document.getElementById("modalComentario");
+        if (modal) modal.style.display = "none";
+      });
+    }
+
+    // Lógica para guardar el comentario y actualizar estatus a No Autorizado (patrón igual que autorizar)
+    const btnGuardarComentario = document.getElementById(
+      "btnGuardarComentario"
+    );
+    if (btnGuardarComentario) {
+      btnGuardarComentario.addEventListener("click", async function () {
+        const comentario = document
+          .getElementById("comentarioNoAutorizar")
+          .value.trim();
+        const responsableInput = document.getElementById(
+          "responsable-aprobador"
+        );
+        const operadorInput = document.getElementById("responsable-aprobador2");
+        const responsable_area = responsableInput
+          ? responsableInput.value.trim()
+          : "";
+        const operador_area = operadorInput ? operadorInput.value.trim() : "";
+        const params = new URLSearchParams(window.location.search);
+        const idPermiso = params.get("id") || window.idPermisoActual;
+        if (!comentario) return;
+        if (!idPermiso) return;
+        if (!responsable_area) return;
+        try {
+          // Guardar comentario y responsable en la tabla de autorizaciones (opcional, si aplica)
+          const nowRechazo = new Date();
+          const fechaHoraRechazo = new Date(
+            nowRechazo.getTime() - nowRechazo.getTimezoneOffset() * 60000
+          ).toISOString();
+          await fetch("/api/autorizaciones/area", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              id_permiso: idPermiso,
+              responsable_area,
+              encargado_area: operador_area,
+              comentario_no_autorizar: comentario,
+              fecha_hora_area: fechaHoraRechazo,
+            }),
+          });
+
+          // Obtener id_estatus y actualizar a no autorizado
+          let idEstatus = null;
+          const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
+          if (respEstatus.ok) {
+            const permisoData = await respEstatus.json();
+            idEstatus =
+              permisoData.id_estatus ||
+              (permisoData.data && permisoData.data.id_estatus);
+          }
+          if (idEstatus) {
+            await fetch("/api/estatus/no_autorizado", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ id_estatus: idEstatus }),
+            });
+            await fetch("/api/estatus/comentario", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ id_estatus: idEstatus, comentario }),
+            });
+          }
+          // Cerrar el modal y mostrar mensaje de éxito
+          const modal = document.getElementById("modalComentario");
+          if (modal) modal.style.display = "none";
+          window.location.href = "/Modules/Usuario/AutorizarPT.html";
+        } catch (err) {
+          alert("Error al rechazar el permiso.");
+          console.error("Error al rechazar:", err);
+        }
+      });
+    }
+  }
+});
+// --- Lógica para el botón "Autorizar" (adaptada de PT1seccionarea.js para PT8) ---
+document.addEventListener("DOMContentLoaded", function () {
+  const btnAutorizar = document.getElementById("btn-guardar-campos");
+  if (btnAutorizar) {
+    btnAutorizar.addEventListener("click", async function () {
+      // 1. Obtener datos necesarios
+      const params = new URLSearchParams(window.location.search);
+      const idPermiso = params.get("id") || window.idPermisoActual;
+      const responsableInput = document.getElementById("responsable-aprobador");
+      const responsable_area = responsableInput
+        ? responsableInput.value.trim()
+        : "";
+
+      // 2. Validaciones básicas
+      if (!idPermiso) {
+        alert("No se pudo obtener el ID del permiso.");
+        return;
+      }
+      if (!responsable_area) {
+        alert("Debes ingresar el nombre del responsable del área.");
+        if (responsableInput) responsableInput.focus();
+        return;
+      }
+
+      // 3. Obtener id_estatus y autorizar igual que otros permisos
+      try {
+        let idEstatus = null;
+        const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
+        if (respEstatus.ok) {
+          const permisoData = await respEstatus.json();
+          idEstatus =
+            permisoData.id_estatus ||
+            (permisoData.data && permisoData.data.id_estatus);
+        }
+        if (idEstatus) {
+          await fetch("/api/estatus/seguridad", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id_estatus: idEstatus }),
+          });
+          alert("Permiso autorizado correctamente.");
+          window.location.href = "/Modules/Usuario/AutorizarPT.html";
+        } else {
+          alert("No se pudo obtener el estatus del permiso.");
+        }
+      } catch (err) {
+        alert("Error al autorizar el permiso.");
+        console.error("Error al autorizar:", err);
+      }
+    });
+  }
+});
 document.addEventListener("DOMContentLoaded", function () {
   // --- INICIALIZACIÓN DE LOGOS ---
   function inicializarLogos() {
@@ -120,7 +316,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         function mostrarDatosImprimir(general) {
-          // Encabezado y generales (mapeo igual que PT8/PT9)
+          // Encabezado y generales
           setText("prefijo-label", general.prefijo);
           setText("start-time-label", general.hora_inicio);
           setText("fecha-label", general.fecha);
@@ -128,172 +324,122 @@ document.addEventListener("DOMContentLoaded", function () {
           setText("plant-label", general.area);
           setText("descripcion-trabajo-label", general.descripcion_trabajo);
           setText("empresa-label", general.empresa);
-          setText("nombre-solicitante-label", general.nombre_solicitante);
+          setText(
+            "nombre-solicitante-label",
+            general.solicitante || general.nombre_solicitante
+          );
           setText("sucursal-label", general.sucursal);
           setText("contrato-label", general.contrato);
           setText("work-order-label", general.ot_numero);
           setText("equipment-label", general.equipo_intervenir);
           setText("tag-label", general.tag);
 
-          // --- MAPEO DE DATOS DE EXCAVACIÓN (PT10) ---
-          setText("vista-profundidad-media", general.profundidad_media);
-          setText("vista-profundidad-maxima", general.profundidad_maxima);
-          setText("vista-anchura", general.anchura);
-          setText("vista-longitud", general.longitud);
-          setText("vista-tipo-terreno", general.tipo_terreno);
-
-          setText("vista-tuberia-gas", general.tuberia_gas);
-          setText("vista-gas-tipo", general.tipo_gas);
-          setText("vista-tuberia-gas-comprobado", general.comprobado_gas);
-          setText("vista-permit-date-gas", general.fecha_gas);
-          setText("vista-linea-electrica", general.linea_electrica);
-          setText("vista-linea-electrica-voltaje", general.voltaje_linea);
+          // Área Solicitante y campos view-
+          setText("view-duracion-inicio", general.hora_inicio_prevista);
+          setText("view-duracion-fin", general.hora_fin_prevista);
+          setText("view-responsable-operacion", general.responsable_operacion);
+          setText("view-empresa-grua", general.empresa_grua);
+          setText("view-identificacion-grua", general.identificacion_grua);
           setText(
-            "vista-linea-electrica-comprobado",
-            general.comprobado_electrica
+            "view-declaracion-conformidad",
+            general.declaracion_conformidad
           );
-          setText("vista-permit-date-electrica", general.fecha_electrica);
-          setText("vista-tuberia-incendios", general.tuberia_incendios);
-          setText("vista-tuberia-incendios-presion", general.presion_incendios);
+          setText("view-inspeccion-periodica", general.inspeccion_periodica);
           setText(
-            "vista-tuberia-incendios-comprobado",
-            general.comprobado_incendios
+            "view-mantenimiento-preventivo",
+            general.mantenimiento_preventivo
           );
-          setText("vista-permit-date-incendios", general.fecha_incendios);
-          setText("vista-alcantarillado", general.alcantarillado);
+          setText("view-inspeccion-diaria", general.inspeccion_diaria);
+          setText("view-diagrama-cargas", general.diagrama_cargas);
+          setText("view-libro-instrucciones", general.libro_instrucciones);
+          setText("view-limitador-carga", general.limitador_carga);
+          setText("view-final-carrera", general.final_carrera);
+          setText("view-nombre-operador", general.nombre_operador);
+          setText("view-empresa-operador", general.empresa_operador);
+          setText("view-licencia-operador", general.licencia_operador);
           setText(
-            "vista-alcantarillado-diametro",
-            general.diametro_alcantarillado
+            "view-fecha-emision-licencia",
+            general.fecha_emision_licencia
           );
+          setText("view-vigencia-licencia", general.vigencia_licencia);
+          setText("view-tipo-licencia", general.tipo_licencia);
+          setText("view-comentarios-operador", general.comentarios_operador);
+          setText("view-estrobos-eslingas", general.estrobos_eslingas);
+          setText("view-grilletes", general.grilletes);
           setText(
-            "vista-alcantarillado-comprobado",
-            general.comprobado_alcantarillado
-          );
-          setText(
-            "vista-permit-date-alcantarillado",
-            general.fecha_alcantarillado
-          );
-          setText("vista-otras-instalaciones", general.otras_instalaciones);
-          setText(
-            "vista-otras-instalaciones-tipo",
-            general.especificacion_otras_instalaciones
+            "view-otros-elementos-auxiliares",
+            general.otros_elementos_auxiliares
           );
           setText(
-            "vista-otras-instalaciones-comprobado",
-            general.comprobado_otras
-          );
-          setText("vista-permit-date-otras", general.fecha_otras);
-
-          setText("vista-requiere-talud", general.requiere_talud);
-          setText("vista-angulo-talud", general.angulo_talud);
-          setText("vista-requiere-bermas", general.requiere_bermas);
-          setText("vista-longitud-meseta", general.longitud_meseta);
-          setText("vista-alturas-contrameseta", general.altura_contrameseta);
-          setText("vista-requiere-entibacion", general.requiere_entibacion);
-          setText("vista-tipo-entibacion", general.tipo_entibacion);
-          setText(
-            "vista-especificacion-entibacion",
-            general.condiciones_terreno_entibacion
-          );
-          setText("vista-otros-requerimientos", general.otros_requerimientos);
-          setText(
-            "vista-otros-requerimientos-detalle",
-            general.especificacion_otros_requerimientos
+            "view-especificacion-otros-elementos",
+            general.especificacion_otros_elementos
           );
           setText(
-            "vista-distancia-estatica",
-            general.distancia_seguridad_estatica
+            "view-requiere-eslingado-especifico",
+            general.requiere_eslingado_especifico
           );
           setText(
-            "vista-distancia-dinamica",
-            general.distancia_seguridad_dinamica
+            "view-especificacion-eslingado",
+            general.especificacion_eslingado
           );
-
-          setText("vista-requiere-balizamiento", general.requiere_balizamiento);
+          setText("view-extension-gatos", general.extension_gatos);
+          setText("view-sobre-ruedas", general.sobre_ruedas);
           setText(
-            "vista-distancia-balizamiento",
-            general.distancia_balizamiento
+            "view-especificacion-sobre-ruedas",
+            general.especificacion_sobre_ruedas
           );
+          setText("view-utiliza-plumin", general.utiliza_plumin_si);
+          setText("view-especificacion-plumin", general.especificacion_plumin);
+          setText("view-longitud-pluma", general.longitud_pluma);
+          setText("view-radio-trabajo", general.radio_trabajo);
+          setText("view-contrapeso", general.contrapeso);
+          setText("view-sector-trabajo", general.sector_trabajo);
+          setText("view-carga-segura-diagrama", general.carga_segura_diagrama);
+          setText("view-peso-carga", general.peso_carga);
+          setText("view-determinada-por", general.determinada_por);
+          setText("view-carga-trabajo", general.carga_trabajo);
+          setText("view-peso-gancho-eslingas", general.peso_gancho_eslingas);
           setText(
-            "vista-requiere-proteccion-rigida",
-            general.requiere_proteccion_rigida
+            "view-relacion-carga-carga-segura",
+            general.relacion_carga_carga_segura
           );
+          setText("view-asentamiento", general.asentamiento);
+          setText("view-calzado", general.calzado);
+          setText("view-extension-gatos-check", general.extension_gatos_check);
+          setText("view-nivelacion", general.nivelacion);
+          setText("view-contrapeso-check", general.contrapeso_check);
+          setText("view-sector-trabajo-check", general.sector_trabajo_check);
+          setText("view-comprobado-por", general.comprobado_por);
           setText(
-            "vista-distancia-proteccion",
-            general.distancia_proteccion_rigida
+            "view-balizamiento-operacion",
+            general.balizamiento_operacion
           );
+          setText("view-reunion-previa", general.reunion_previa);
           setText(
-            "vista-requiere-senalizacion",
-            general.requiere_senalizacion_especial
-          );
-          setText(
-            "vista-tipo-senalizacion",
-            general.especificacion_senalizacion
-          );
-          setText(
-            "vista-requiere-proteccion-anticaida",
-            general.requiere_proteccion_anticaida
-          );
-          setText(
-            "vista-tipo-proteccion-anticaida",
-            general.tipo_proteccion_anticaida
-          );
-          setText("vista-anclaje", general.tipo_anclaje);
-
-          setText(
-            "vista-espacio-confinado",
-            general.excavacion_espacio_confinado
-          );
-
-          setText(
-            "vista-excavacion-manual",
-            general.excavacion_manual_aproximacion
-          );
-          setText("vista-medidas-excavacion", general.medidas_aproximacion);
-          setText(
-            "vista-medida-herramienta-antichispa",
-            general.herramienta_antichispa
+            "view-especificacion-reunion-previa",
+            general.especificacion_reunion_previa
           );
           setText(
-            "vista-medida-guantes-dielectrico",
-            general.guantes_calzado_dielectrico
+            "view-presentacion-supervisor",
+            general.presentacion_supervisor
           );
-          setText("vista-medida-epp-especial", general.epp_especial);
+          setText("view-nombre-supervisor", general.nombre_supervisor);
+          setText("view-permiso-adicional", general.permiso_adicional);
           setText(
-            "vista-medida-otros-lineas",
-            general.otras_medidas_especiales
-          );
-
-          setText(
-            "vista-medida-bloqueo-fisico",
-            general.aplicar_bloqueo_fisico
+            "view-especificacion-permiso-adicional",
+            general.especificacion_permiso_adicional
           );
           setText(
-            "vista-bloqueo-fisico-detalle",
-            general.especificacion_bloqueo_fisico
-          );
-          setText("vista-medida-drenar-limpiar", general.drenar_limpiar_lavar);
-          setText(
-            "vista-medida-atmosfera-inerte",
-            general.inundar_anegar_atmosfera_inerte
-          );
-          setText("vista-medida-vigilante", general.vigilante_continuo);
-          setText(
-            "vista-vigilante-detalle",
-            general.especificacion_vigilante_continuo
+            "view-otras-medidas-seguridad",
+            general.otras_medidas_seguridad
           );
           setText(
-            "vista-medida-otras-adicionales",
-            general.otras_medidas_adicionales
+            "view-especificacion-otras-medidas",
+            general.especificacion_otras_medidas
           );
           setText(
-            "vista-otras-adicionales-detalle",
-            general.especificacion_otras_medidas_adicionales
-          );
-
-          setText(
-            "vista-observaciones-generales",
-            general.observaciones_generales_excavacion
+            "view-observaciones-generales",
+            general.observaciones_generales
           );
         }
 
@@ -303,7 +449,7 @@ document.addEventListener("DOMContentLoaded", function () {
           document.querySelector(".section-header h3").textContent =
             data.general.prefijo || "NP-XXXXXX";
           document.title =
-            "Permiso de Trabajo excavacion." +
+            "Permiso de Trabajo Izaje,Hiab,grua." +
             (data.general.prefijo ? " - " + data.general.prefijo : "");
         }
 
@@ -414,333 +560,6 @@ document.addEventListener("DOMContentLoaded", function () {
       window.location.href = "/Modules/Usuario/CrearPT.html";
     });
   }
-
-  // ============================
-  // FUNCIONALIDAD DE PDF PROFESIONAL
-  // ============================
-
-  /**
-   * Función para recolectar todos los datos del formulario PT8 (Izaje)
-   */
-  function recolectarDatosPT8() {
-    // Solo los campos relevantes para PT8 (ajusta los IDs según tu HTML de Izaje)
-    const datos = {
-      tipo_izaje:
-        document.getElementById("tipo-izaje-label")?.textContent || "-",
-      equipo_a_izar:
-        document.getElementById("equipo-a-izar-label")?.textContent || "-",
-      capacidad: document.getElementById("capacidad-label")?.textContent || "-",
-      operador: document.getElementById("operador-label")?.textContent || "-",
-      supervisor:
-        document.getElementById("supervisor-label")?.textContent || "-",
-      fecha: document.getElementById("fecha-label")?.textContent || "-",
-      hora_inicio:
-        document.getElementById("start-time-label")?.textContent || "-",
-      descripcion_trabajo:
-        document.getElementById("descripcion-trabajo-label")?.textContent ||
-        "-",
-      // Agrega aquí todos los campos de seguridad, checklist, etc. propios de PT8
-      // Ejemplo:
-      checklist_gancho:
-        document.getElementById("checklist-gancho-label")?.textContent || "-",
-      checklist_eslinga:
-        document.getElementById("checklist-eslinga-label")?.textContent || "-",
-      observaciones:
-        document.getElementById("observaciones-label")?.textContent || "-",
-      // Participantes y AST
-      ast_activities: window.astActivities || [],
-      personal_involucrado: window.personalInvolucrado || [],
-      epp_requerido: window.astData?.epp_requerido || "-",
-      maquinaria_herramientas: window.astData?.maquinaria_herramientas || "-",
-      material_accesorios: window.astData?.material_accesorios || "-",
-    };
-    return datos;
-  }
-
-  /**
-   * Función para generar PDF profesional
-   */
-  async function generarPDFProfesional() {
-    try {
-      // Mostrar mensaje de carga
-      const mensajeCarga = mostrarMensajeCarga("Generando PDF profesional...");
-
-      // Recolectar datos del formulario de PT8 (Izaje)
-      const datosPT8 = recolectarDatosPT8();
-
-      // Hacer petición al servidor para generar PDF de PT8 (ajusta el endpoint si es necesario)
-      const response = await fetch("/api/pt8/generate-pdf", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(datosPT8),
-      });
-
-      if (!response.ok) {
-        throw new Error(`Error del servidor: ${response.status}`);
-      }
-
-      // Obtener el PDF como blob
-      const pdfBlob = await response.blob();
-
-      // Crear URL para descargar
-      const pdfUrl = URL.createObjectURL(pdfBlob);
-
-      // Obtener nombre del archivo desde headers o usar por defecto
-      const contentDisposition = response.headers.get("Content-Disposition");
-
-      let filename = "PT8_Izaje.pdf";
-
-      if (contentDisposition) {
-        const filenameMatch = contentDisposition.match(/filename="(.+)"/);
-        if (filenameMatch) {
-          filename = filenameMatch[1];
-        }
-      }
-
-      // Crear enlace temporal para descargar
-      const link = document.createElement("a");
-      link.href = pdfUrl;
-      link.download = filename;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-
-      // Limpiar URL temporal
-      URL.revokeObjectURL(pdfUrl);
-
-      // Remover mensaje de carga
-      removerMensajeCarga(mensajeCarga);
-
-      // Mostrar mensaje de éxito
-      mostrarMensajeExito("PDF generado y descargado exitosamente");
-    } catch (error) {
-      console.error("Error al generar PDF:", error);
-
-      // Remover mensaje de carga si existe
-      const mensajeCarga = document.getElementById("mensaje-carga");
-      if (mensajeCarga) {
-        removerMensajeCarga(mensajeCarga);
-      }
-
-      // Mostrar error al usuario
-      mostrarMensajeError(
-        "Error al generar el PDF. Intentando con impresión tradicional..."
-      );
-
-      // Fallback a impresión tradicional
-      setTimeout(() => {
-        imprimirPermisoTradicional();
-      }, 2000);
-    }
-  }
-
-  /**
-   * Función para asegurar que todas las imágenes estén cargadas
-   */
-  function esperarImagenes() {
-    return new Promise((resolve) => {
-      const imagenes = document.querySelectorAll(".company-header img");
-      if (imagenes.length === 0) {
-        resolve();
-        return;
-      }
-
-      let imagenesRestantes = imagenes.length;
-
-      imagenes.forEach((img) => {
-        if (img.complete && img.naturalHeight !== 0) {
-          imagenesRestantes--;
-          if (imagenesRestantes === 0) {
-            resolve();
-          }
-        } else {
-          img.onload = () => {
-            imagenesRestantes--;
-            if (imagenesRestantes === 0) {
-              resolve();
-            }
-          };
-          img.onerror = () => {
-            imagenesRestantes--;
-            if (imagenesRestantes === 0) {
-              resolve();
-            }
-          };
-        }
-      });
-
-      // Timeout de seguridad en caso de que las imágenes no carguen
-      setTimeout(() => {
-        resolve();
-      }, 3000);
-    });
-  }
-
-  /**
-   * Función de impresión tradicional (fallback)
-   */
-  async function imprimirPermisoTradicional() {
-    try {
-      // Esperar a que las imágenes se carguen completamente
-      await esperarImagenes();
-
-      // Ejecutar impresión tradicional del navegador
-      window.print();
-    } catch (error) {
-      console.error("Error al imprimir:", error);
-      alert(
-        "Ocurrió un error al preparar la impresión. Por favor, inténtalo nuevamente."
-      );
-    }
-  }
-
-  /**
-   * Función principal de impresión (directo sin ventanas emergentes)
-   */
-  function imprimirPermiso() {
-    // Ir directo a impresión tradicional sin ventanas emergentes
-    imprimirPermisoTradicional();
-  }
-
-  /**
-   * Funciones auxiliares para mensajes
-   */
-  function mostrarMensajeCarga(mensaje) {
-    const mensajeCarga = document.createElement("div");
-    mensajeCarga.id = "mensaje-carga";
-    mensajeCarga.style.cssText = `
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: #003B5C;
-      color: white;
-      padding: 20px 30px;
-      border-radius: 8px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-      z-index: 10000;
-      font-family: 'Roboto', sans-serif;
-      text-align: center;
-    `;
-    mensajeCarga.innerHTML = `
-      <i class="ri-file-pdf-line" style="font-size: 24px; margin-bottom: 10px; display: block;"></i>
-      ${mensaje}
-      <div style="margin-top: 10px;">
-        <div style="width: 30px; height: 30px; border: 3px solid rgba(255,255,255,0.3); border-top: 3px solid white; border-radius: 50%; margin: 0 auto; animation: spin 1s linear infinite;"></div>
-      </div>
-      <style>
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-      </style>
-    `;
-
-    document.body.appendChild(mensajeCarga);
-    return mensajeCarga;
-  }
-
-  function removerMensajeCarga(mensaje) {
-    if (mensaje && mensaje.parentNode) {
-      mensaje.parentNode.removeChild(mensaje);
-    }
-  }
-
-  function mostrarMensajeExito(mensaje) {
-    const mensajeExito = document.createElement("div");
-    mensajeExito.style.cssText = `
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: #28a745;
-      color: white;
-      padding: 15px 20px;
-      border-radius: 6px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      z-index: 10001;
-      font-family: 'Roboto', sans-serif;
-      animation: slideIn 0.3s ease-out;
-    `;
-    mensajeExito.innerHTML = `
-      <i class="ri-check-line" style="margin-right: 8px;"></i>
-      ${mensaje}
-    `;
-
-    document.body.appendChild(mensajeExito);
-
-    setTimeout(() => {
-      if (mensajeExito.parentNode) {
-        mensajeExito.parentNode.removeChild(mensajeExito);
-      }
-    }, 3000);
-  }
-
-  function mostrarMensajeError(mensaje) {
-    const mensajeError = document.createElement("div");
-    mensajeError.style.cssText = `
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: #dc3545;
-      color: white;
-      padding: 15px 20px;
-      border-radius: 6px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      z-index: 10001;
-      font-family: 'Roboto', sans-serif;
-      animation: slideIn 0.3s ease-out;
-    `;
-    mensajeError.innerHTML = `
-      <i class="ri-error-warning-line" style="margin-right: 8px;"></i>
-      ${mensaje}
-    `;
-
-    document.body.appendChild(mensajeError);
-
-    setTimeout(() => {
-      if (mensajeError.parentNode) {
-        mensajeError.parentNode.removeChild(mensajeError);
-      }
-    }, 5000);
-  }
-
-  // Event listener para el botón de imprimir
-  // --- CONFIGURACIÓN DEFINITIVA PARA ELIMINAR ENCABEZADOS ---
-
-  // Función que muestra las instrucciones exactas para eliminar encabezados
-
-  // Interceptar Ctrl+P para mostrar instrucciones
-  // Elimina o comenta este bloque para que Ctrl+P funcione normal
-  // document.addEventListener("keydown", function (e) {
-  //   if ((e.ctrlKey || e.metaKey) && e.key === "p") {
-  //     e.preventDefault();
-  //     mostrarInstruccionesImpresion();
-  //   }
-  // });
-
-  // Modifica el botón de imprimir para que imprima directo sin instrucciones
-  const btnImprimir = document.getElementById("btn-imprimir-permiso");
-  if (btnImprimir) {
-    btnImprimir.addEventListener("click", function (e) {
-      e.preventDefault();
-      imprimirPermiso(); // Imprime directo, sin confirmación ni instrucciones
-    });
-
-    btnImprimir.style.transition = "all 0.3s ease";
-    btnImprimir.addEventListener("mouseenter", function () {
-      this.style.transform = "translateY(-2px)";
-      this.style.boxShadow = "0 6px 20px rgba(0,59,92,0.3)";
-    });
-
-    btnImprimir.addEventListener("mouseleave", function () {
-      this.style.transform = "translateY(0)";
-      this.style.boxShadow = "";
-    });
-  }
-
-  console.log("Funcionalidad de PDF PT8 (Izaje) inicializada correctamente");
 });
 
 // Lógica para mostrar el modal de cierre de permiso y guardar el comentario

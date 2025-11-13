@@ -236,7 +236,7 @@ function mostrarPermisosFiltrados(filtro) {
           window.location.href = `/Modules/Fomularios/PT8/PT8imprimir.html?tipo=PT8&id=${idPermiso}`;
         } else if (tipoPermiso === "PT con Cesta Izada") {
           window.location.href = `/Modules/Fomularios/PT9/PT9imprimir.html?tipo=PT9&id=${idPermiso}`;
-        } else if (tipoPermiso === "PT de Excavación") {
+        } else if (tipoPermiso === "PT de Excavacion") {
           window.location.href = `/Modules/Fomularios/PT10/PT10imprimir.html?tipo=PT10&id=${idPermiso}`;
         } else {
           window.location.href = `/JS/usuario/LogicaImprimir.html?tipo=OTRO&id=${idPermiso}`;
@@ -565,7 +565,7 @@ if (tableBody) {
         window.location.href = `/Modules/Fomularios/PT8/PT8supervisor.html?id=${idPermiso}`;
       } else if (tipoPermiso === "PT con Cesta Izada") {
         window.location.href = `/Modules/Fomularios/PT9/PT9supervisor.html?id=${idPermiso}`;
-      } else if (tipoPermiso === "PT de Excavación") {
+      } else if (tipoPermiso === "PT de Excavacion") {
         window.location.href = `/Modules/Fomularios/PT10/PT10supervisor.html?id=${idPermiso}`;
       } else {
         window.location.href = `/Modules/Fomularios/OTRO/OTROsupervisor.html?id=${idPermiso}`;

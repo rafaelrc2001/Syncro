@@ -1,3 +1,165 @@
+// --- Mostrar nombres de Supervisor y Responsable Área en la sección de aprobaciones ---
+document.addEventListener("DOMContentLoaded", function () {
+  const params = new URLSearchParams(window.location.search);
+  const idPermiso = params.get("id");
+  if (!idPermiso) return;
+  fetch(`/api/autorizaciones/personas/${idPermiso}`)
+    .then((res) => res.json())
+    .then((data) => {
+      if (data && data.success && data.data) {
+        const responsable = document.getElementById("stamp-encargado");
+        const supervisor = document.getElementById("stamp-aprobador");
+        if (responsable)
+          responsable.textContent = data.data.responsable_area || "-";
+        if (supervisor)
+          supervisor.textContent = data.data.nombre_supervisor || "-";
+      }
+    })
+    .catch((err) => {
+      console.error("Error al obtener responsables de área:", err);
+    });
+});
+// --- Rellenar selects de supervisor y categoría (igual que otros permisos) ---
+function rellenarSupervisoresYCategorias() {
+  fetch("/api/supervisores")
+    .then((resp) => resp.json())
+    .then((data) => {
+      const selectSupervisor = document.getElementById("responsable-aprobador");
+      if (selectSupervisor) {
+        selectSupervisor.innerHTML =
+          '<option value="" disabled selected>Seleccione un supervisor...</option>';
+        (Array.isArray(data) ? data : data.supervisores).forEach((sup) => {
+          const option = document.createElement("option");
+          option.value = sup.nombre || sup;
+          option.textContent = sup.nombre || sup;
+          selectSupervisor.appendChild(option);
+        });
+      }
+    });
+
+  fetch("/api/categorias")
+    .then((resp) => resp.json())
+    .then((data) => {
+      const selectCategoria = document.getElementById("responsable-aprobador2");
+      if (selectCategoria) {
+        selectCategoria.innerHTML =
+          '<option value="" disabled selected>Seleccione una categoría...</option>';
+        (Array.isArray(data) ? data : data.categorias).forEach((cat) => {
+          const option = document.createElement("option");
+          option.value = cat.nombre || cat;
+          option.textContent = cat.nombre || cat;
+          selectCategoria.appendChild(option);
+        });
+      }
+    });
+}
+
+// Ejecutar al cargar la página
+document.addEventListener("DOMContentLoaded", function () {
+  rellenarSupervisoresYCategorias();
+});
+// --- Lógica para el botón "No Autorizar" SOLO ACTUALIZA ESTATUS (no envía datos adicionales) ---
+document.addEventListener("DOMContentLoaded", function () {
+  const btnNoAutorizar = document.getElementById("btn-no-autorizar");
+  if (btnNoAutorizar) {
+    btnNoAutorizar.addEventListener("click", async function (e) {
+      e.preventDefault();
+      // Leer el id del permiso de la URL
+      const params = new URLSearchParams(window.location.search);
+      const idPermiso = params.get("id") || window.idPermisoActual;
+      if (!idPermiso) {
+        alert("No se pudo obtener el ID del permiso.");
+        return;
+      }
+
+      // Consultar el id_estatus desde permisos_trabajo
+      let idEstatus = null;
+      try {
+        const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
+        if (respEstatus.ok) {
+          const permisoData = await respEstatus.json();
+          idEstatus =
+            permisoData.id_estatus ||
+            (permisoData.data && permisoData.data.id_estatus);
+        }
+      } catch (err) {
+        console.error("Error al consultar id_estatus:", err);
+      }
+      if (!idEstatus) {
+        alert("No se pudo obtener el estatus del permiso.");
+        return;
+      }
+
+      // Actualizar el estatus a 'no autorizado' (solo eso)
+      try {
+        await fetch("/api/estatus/no_autorizado", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id_estatus: idEstatus }),
+        });
+      } catch (err) {
+        console.error("Error al actualizar estatus a no autorizado:", err);
+        alert("Error al actualizar el estatus del permiso.");
+        return;
+      }
+
+      // Mostrar modal de confirmación o redirigir
+      alert("Permiso marcado como NO AUTORIZADO.");
+      window.location.href = "/Modules/Usuario/CrearPT.html";
+    });
+  }
+});
+// --- Lógica para el botón "Autorizar" SOLO ACTUALIZA ESTATUS (no envía datos adicionales) ---
+document.addEventListener("DOMContentLoaded", function () {
+  const btnAutorizar = document.getElementById("btn-guardar-campos");
+  if (btnAutorizar) {
+    btnAutorizar.addEventListener("click", async function (e) {
+      e.preventDefault();
+      // Leer el id del permiso de la URL
+      const params = new URLSearchParams(window.location.search);
+      const idPermiso = params.get("id") || window.idPermisoActual;
+      if (!idPermiso) {
+        alert("No se pudo obtener el ID del permiso.");
+        return;
+      }
+
+      // Consultar el id_estatus desde permisos_trabajo
+      let idEstatus = null;
+      try {
+        const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
+        if (respEstatus.ok) {
+          const permisoData = await respEstatus.json();
+          idEstatus =
+            permisoData.id_estatus ||
+            (permisoData.data && permisoData.data.id_estatus);
+        }
+      } catch (err) {
+        console.error("Error al consultar id_estatus:", err);
+      }
+      if (!idEstatus) {
+        alert("No se pudo obtener el estatus del permiso.");
+        return;
+      }
+
+      // Actualizar el estatus a 'activo' (solo eso)
+      try {
+        await fetch("/api/estatus/activo", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id_estatus: idEstatus }),
+        });
+      } catch (err) {
+        console.error("Error al actualizar estatus activo:", err);
+        alert("Error al actualizar el estatus del permiso.");
+        return;
+      }
+
+      // Mostrar modal de confirmación o redirigir
+      alert("Permiso autorizado exitosamente.");
+      window.location.href = "/Modules/Usuario/CrearPT.html";
+    });
+  }
+});
 document.addEventListener("DOMContentLoaded", function () {
   // --- INICIALIZACIÓN DE LOGOS ---
   function inicializarLogos() {
@@ -364,333 +526,6 @@ document.addEventListener("DOMContentLoaded", function () {
       window.location.href = "/Modules/Usuario/CrearPT.html";
     });
   }
-
-  // ============================
-  // FUNCIONALIDAD DE PDF PROFESIONAL
-  // ============================
-
-  /**
-   * Función para recolectar todos los datos del formulario PT8 (Izaje)
-   */
-  function recolectarDatosPT8() {
-    // Solo los campos relevantes para PT8 (ajusta los IDs según tu HTML de Izaje)
-    const datos = {
-      tipo_izaje:
-        document.getElementById("tipo-izaje-label")?.textContent || "-",
-      equipo_a_izar:
-        document.getElementById("equipo-a-izar-label")?.textContent || "-",
-      capacidad: document.getElementById("capacidad-label")?.textContent || "-",
-      operador: document.getElementById("operador-label")?.textContent || "-",
-      supervisor:
-        document.getElementById("supervisor-label")?.textContent || "-",
-      fecha: document.getElementById("fecha-label")?.textContent || "-",
-      hora_inicio:
-        document.getElementById("start-time-label")?.textContent || "-",
-      descripcion_trabajo:
-        document.getElementById("descripcion-trabajo-label")?.textContent ||
-        "-",
-      // Agrega aquí todos los campos de seguridad, checklist, etc. propios de PT8
-      // Ejemplo:
-      checklist_gancho:
-        document.getElementById("checklist-gancho-label")?.textContent || "-",
-      checklist_eslinga:
-        document.getElementById("checklist-eslinga-label")?.textContent || "-",
-      observaciones:
-        document.getElementById("observaciones-label")?.textContent || "-",
-      // Participantes y AST
-      ast_activities: window.astActivities || [],
-      personal_involucrado: window.personalInvolucrado || [],
-      epp_requerido: window.astData?.epp_requerido || "-",
-      maquinaria_herramientas: window.astData?.maquinaria_herramientas || "-",
-      material_accesorios: window.astData?.material_accesorios || "-",
-    };
-    return datos;
-  }
-
-  /**
-   * Función para generar PDF profesional
-   */
-  async function generarPDFProfesional() {
-    try {
-      // Mostrar mensaje de carga
-      const mensajeCarga = mostrarMensajeCarga("Generando PDF profesional...");
-
-      // Recolectar datos del formulario de PT8 (Izaje)
-      const datosPT8 = recolectarDatosPT8();
-
-      // Hacer petición al servidor para generar PDF de PT8 (ajusta el endpoint si es necesario)
-      const response = await fetch("/api/pt8/generate-pdf", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(datosPT8),
-      });
-
-      if (!response.ok) {
-        throw new Error(`Error del servidor: ${response.status}`);
-      }
-
-      // Obtener el PDF como blob
-      const pdfBlob = await response.blob();
-
-      // Crear URL para descargar
-      const pdfUrl = URL.createObjectURL(pdfBlob);
-
-      // Obtener nombre del archivo desde headers o usar por defecto
-      const contentDisposition = response.headers.get("Content-Disposition");
-
-      let filename = "PT8_Izaje.pdf";
-
-      if (contentDisposition) {
-        const filenameMatch = contentDisposition.match(/filename="(.+)"/);
-        if (filenameMatch) {
-          filename = filenameMatch[1];
-        }
-      }
-
-      // Crear enlace temporal para descargar
-      const link = document.createElement("a");
-      link.href = pdfUrl;
-      link.download = filename;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-
-      // Limpiar URL temporal
-      URL.revokeObjectURL(pdfUrl);
-
-      // Remover mensaje de carga
-      removerMensajeCarga(mensajeCarga);
-
-      // Mostrar mensaje de éxito
-      mostrarMensajeExito("PDF generado y descargado exitosamente");
-    } catch (error) {
-      console.error("Error al generar PDF:", error);
-
-      // Remover mensaje de carga si existe
-      const mensajeCarga = document.getElementById("mensaje-carga");
-      if (mensajeCarga) {
-        removerMensajeCarga(mensajeCarga);
-      }
-
-      // Mostrar error al usuario
-      mostrarMensajeError(
-        "Error al generar el PDF. Intentando con impresión tradicional..."
-      );
-
-      // Fallback a impresión tradicional
-      setTimeout(() => {
-        imprimirPermisoTradicional();
-      }, 2000);
-    }
-  }
-
-  /**
-   * Función para asegurar que todas las imágenes estén cargadas
-   */
-  function esperarImagenes() {
-    return new Promise((resolve) => {
-      const imagenes = document.querySelectorAll(".company-header img");
-      if (imagenes.length === 0) {
-        resolve();
-        return;
-      }
-
-      let imagenesRestantes = imagenes.length;
-
-      imagenes.forEach((img) => {
-        if (img.complete && img.naturalHeight !== 0) {
-          imagenesRestantes--;
-          if (imagenesRestantes === 0) {
-            resolve();
-          }
-        } else {
-          img.onload = () => {
-            imagenesRestantes--;
-            if (imagenesRestantes === 0) {
-              resolve();
-            }
-          };
-          img.onerror = () => {
-            imagenesRestantes--;
-            if (imagenesRestantes === 0) {
-              resolve();
-            }
-          };
-        }
-      });
-
-      // Timeout de seguridad en caso de que las imágenes no carguen
-      setTimeout(() => {
-        resolve();
-      }, 3000);
-    });
-  }
-
-  /**
-   * Función de impresión tradicional (fallback)
-   */
-  async function imprimirPermisoTradicional() {
-    try {
-      // Esperar a que las imágenes se carguen completamente
-      await esperarImagenes();
-
-      // Ejecutar impresión tradicional del navegador
-      window.print();
-    } catch (error) {
-      console.error("Error al imprimir:", error);
-      alert(
-        "Ocurrió un error al preparar la impresión. Por favor, inténtalo nuevamente."
-      );
-    }
-  }
-
-  /**
-   * Función principal de impresión (directo sin ventanas emergentes)
-   */
-  function imprimirPermiso() {
-    // Ir directo a impresión tradicional sin ventanas emergentes
-    imprimirPermisoTradicional();
-  }
-
-  /**
-   * Funciones auxiliares para mensajes
-   */
-  function mostrarMensajeCarga(mensaje) {
-    const mensajeCarga = document.createElement("div");
-    mensajeCarga.id = "mensaje-carga";
-    mensajeCarga.style.cssText = `
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: #003B5C;
-      color: white;
-      padding: 20px 30px;
-      border-radius: 8px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-      z-index: 10000;
-      font-family: 'Roboto', sans-serif;
-      text-align: center;
-    `;
-    mensajeCarga.innerHTML = `
-      <i class="ri-file-pdf-line" style="font-size: 24px; margin-bottom: 10px; display: block;"></i>
-      ${mensaje}
-      <div style="margin-top: 10px;">
-        <div style="width: 30px; height: 30px; border: 3px solid rgba(255,255,255,0.3); border-top: 3px solid white; border-radius: 50%; margin: 0 auto; animation: spin 1s linear infinite;"></div>
-      </div>
-      <style>
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-      </style>
-    `;
-
-    document.body.appendChild(mensajeCarga);
-    return mensajeCarga;
-  }
-
-  function removerMensajeCarga(mensaje) {
-    if (mensaje && mensaje.parentNode) {
-      mensaje.parentNode.removeChild(mensaje);
-    }
-  }
-
-  function mostrarMensajeExito(mensaje) {
-    const mensajeExito = document.createElement("div");
-    mensajeExito.style.cssText = `
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: #28a745;
-      color: white;
-      padding: 15px 20px;
-      border-radius: 6px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      z-index: 10001;
-      font-family: 'Roboto', sans-serif;
-      animation: slideIn 0.3s ease-out;
-    `;
-    mensajeExito.innerHTML = `
-      <i class="ri-check-line" style="margin-right: 8px;"></i>
-      ${mensaje}
-    `;
-
-    document.body.appendChild(mensajeExito);
-
-    setTimeout(() => {
-      if (mensajeExito.parentNode) {
-        mensajeExito.parentNode.removeChild(mensajeExito);
-      }
-    }, 3000);
-  }
-
-  function mostrarMensajeError(mensaje) {
-    const mensajeError = document.createElement("div");
-    mensajeError.style.cssText = `
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: #dc3545;
-      color: white;
-      padding: 15px 20px;
-      border-radius: 6px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      z-index: 10001;
-      font-family: 'Roboto', sans-serif;
-      animation: slideIn 0.3s ease-out;
-    `;
-    mensajeError.innerHTML = `
-      <i class="ri-error-warning-line" style="margin-right: 8px;"></i>
-      ${mensaje}
-    `;
-
-    document.body.appendChild(mensajeError);
-
-    setTimeout(() => {
-      if (mensajeError.parentNode) {
-        mensajeError.parentNode.removeChild(mensajeError);
-      }
-    }, 5000);
-  }
-
-  // Event listener para el botón de imprimir
-  // --- CONFIGURACIÓN DEFINITIVA PARA ELIMINAR ENCABEZADOS ---
-
-  // Función que muestra las instrucciones exactas para eliminar encabezados
-
-  // Interceptar Ctrl+P para mostrar instrucciones
-  // Elimina o comenta este bloque para que Ctrl+P funcione normal
-  // document.addEventListener("keydown", function (e) {
-  //   if ((e.ctrlKey || e.metaKey) && e.key === "p") {
-  //     e.preventDefault();
-  //     mostrarInstruccionesImpresion();
-  //   }
-  // });
-
-  // Modifica el botón de imprimir para que imprima directo sin instrucciones
-  const btnImprimir = document.getElementById("btn-imprimir-permiso");
-  if (btnImprimir) {
-    btnImprimir.addEventListener("click", function (e) {
-      e.preventDefault();
-      imprimirPermiso(); // Imprime directo, sin confirmación ni instrucciones
-    });
-
-    btnImprimir.style.transition = "all 0.3s ease";
-    btnImprimir.addEventListener("mouseenter", function () {
-      this.style.transform = "translateY(-2px)";
-      this.style.boxShadow = "0 6px 20px rgba(0,59,92,0.3)";
-    });
-
-    btnImprimir.addEventListener("mouseleave", function () {
-      this.style.transform = "translateY(0)";
-      this.style.boxShadow = "";
-    });
-  }
-
-  console.log("Funcionalidad de PDF PT8 (Izaje) inicializada correctamente");
 });
 
 // Lógica para mostrar el modal de cierre de permiso y guardar el comentario

@@ -28,7 +28,8 @@ document.addEventListener("DOMContentLoaded", function () {
     setText("view-asentamiento", general.asentamiento);
     setText("view-calzado", general.calzado);
     setText("view-nivelacion", general.nivelacion);
-    setText("view-ext-gatos", general.especificacion_ext_gatos);
+    setText("view-ext-gatos", general.ext_gatos);
+    setText("view-especificar-gatos", general.especificacion_ext_gatos);
     setText("view-utiliza-plumin", general.utiliza_plumin_cesta);
     setText("view-especificar-plumin", general.especificacion_plumin_cesta);
     setText("view-longitud-pluma", general.longitud_pluma_cesta);

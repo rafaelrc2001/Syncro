@@ -231,6 +231,13 @@
                                 <label for="work-order">O.T. No.</label>
                                 <input type="text" id="work-order" name="work-order" class="table-input compact">
                             </div>
+                              <div class="table-cell">
+                                    
+                                        <label for="start-time">Hora de inicio</label>
+                                        <input type="time" id="start-time" name="start-time" required class="compact">
+                                    
+                                </div>
+                            
                             <div class="table-cell">
                                 <label for="equipment">Equipo a Intervenir</label>
                                 <input type="text" id="equipment" name="equipment" class="table-input compact">
@@ -239,6 +246,8 @@
                                 <label for="tag">TAG</label>
                                 <input type="text" id="tag" name="tag" class="table-input compact">
                             </div>
+
+
                         </div>
 
 
@@ -575,7 +584,7 @@
                   <div class="table-cell">
                           <strong>RELACIÓN CARGA DE TRABAJO / CARGA SEGURA EN DIAGRAMA DE CARGAS:</strong>
                       <label class="checkbox-option">
-                          <input type="text" id="especificar-plumin" name="especificar-plumin" 
+                          <input type="text" id="relacion-carga-trabajo" name="relacion-carga-trabajo" 
                             class="table-input" placeholder="" >
                           menor que 0.75
                       </label>
@@ -584,32 +593,32 @@
                       <strong>Marcar con (✔️) la comprobación de:</strong>
                       <div class="checkbox-group">
                           <label class="checkbox-option">
-                              <input type="checkbox" name="medida-declaracion-conformidad" value="1" >
+                              <input type="checkbox" id="asentamiento-check" name="asentamiento-check" value="1" >
                               <span class="checkbox-custom"></span>
                               ASENTAMIENTO
                           </label>
                           <label class="checkbox-option">
-                              <input type="checkbox" name="medida-inspeccion-periodica" value="1" >
+                              <input type="checkbox" id="calzado-check" name="calzado-check" value="1" >
                               <span class="checkbox-custom"></span>
                               CALZADO
                           </label>
                           <label class="checkbox-option">
-                              <input type="checkbox" name="medida-mantenimiento-preventivo" value="1" >
+                              <input type="checkbox" id="extension-gatos-check" name="extension-gatos-check" value="1" >
                               <span class="checkbox-custom"></span>
                               EXTENSIÓN DE GATOS
                           </label>
                           <label class="checkbox-option">
-                              <input type="checkbox" name="medida-inspeccion-diaria" value="1" >
+                              <input type="checkbox" id="nivelacion-check" name="nivelacion-check" value="1" >
                               <span class="checkbox-custom"></span>
                               NIVELACIÓN
                           </label>
                           <label class="checkbox-option">
-                              <input type="checkbox" name="medida-diagrama-cargas" value="1" >
+                              <input type="checkbox" id="contrapeso-check" name="contrapeso-check" value="1" >
                               <span class="checkbox-custom"></span>
                               CONTRAPESO
                           </label>
                           <label class="checkbox-option">
-                              <input type="checkbox" name="medida-libro-instrucciones" value="1" >
+                              <input type="checkbox" id="sector-trabajo-check" name="sector-trabajo-check" value="1" >
                               <span class="checkbox-custom"></span>
                               SECTOR DE TRABAJO
                           </label>

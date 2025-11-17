@@ -87,22 +87,20 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!idPermiso) return;
         if (!responsable_area) return;
         try {
+          // Generar timestamp para rechazo (hora local)
           const nowRechazo = new Date();
-          const fechaHoraRechazo = new Date(
-            nowRechazo.getTime() - nowRechazo.getTimezoneOffset() * 60000
-          ).toISOString();
-          await fetch("/api/autorizaciones/area", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              id_permiso: idPermiso,
-              responsable_area,
-              encargado_area: operador_area,
-              comentario_no_autorizar: comentario,
-              fecha_hora_area: fechaHoraRechazo,
-            }),
-          });
+          const year = nowRechazo.getFullYear();
+          const month = String(nowRechazo.getMonth() + 1).padStart(2, "0");
+          const day = String(nowRechazo.getDate()).padStart(2, "0");
+          const hours = String(nowRechazo.getHours()).padStart(2, "0");
+          const minutes = String(nowRechazo.getMinutes()).padStart(2, "0");
+          const seconds = String(nowRechazo.getSeconds()).padStart(2, "0");
+          const milliseconds = String(nowRechazo.getMilliseconds()).padStart(3, "0");
+          const fechaHoraRechazo = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}`;
 
+          console.log("[NO AUTORIZAR PT9] Timestamp generado:", fechaHoraRechazo);
+
+          // Obtener id_estatus primero
           let idEstatus = null;
           const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
           if (respEstatus.ok) {
@@ -111,41 +109,67 @@ document.addEventListener("DOMContentLoaded", function () {
               permisoData.id_estatus ||
               (permisoData.data && permisoData.data.id_estatus);
           }
+
           if (idEstatus) {
+            // 1. Actualizar estatus a "no_autorizado"
             await fetch("/api/estatus/no_autorizado", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ id_estatus: idEstatus }),
             });
+
+            // 2. Guardar comentario de rechazo
             await fetch("/api/estatus/comentario", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ id_estatus: idEstatus, comentario }),
             });
+
+            // 3. Insertar en autorizaciones con el comentario
+            await fetch("/api/autorizaciones/area", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                id_permiso: idPermiso,
+                responsable_area,
+                encargado_area: operador_area,
+                comentario_no_autorizar: comentario,
+                fecha_hora_area: fechaHoraRechazo,
+              }),
+            });
+
+            const modal = document.getElementById("modalComentario");
+            if (modal) modal.style.display = "none";
+            alert("Permiso rechazado correctamente.");
+            window.location.href = "/Modules/Usuario/AutorizarPT.html";
+          } else {
+            alert("No se pudo obtener el estatus del permiso.");
           }
-          const modal = document.getElementById("modalComentario");
-          if (modal) modal.style.display = "none";
-          window.location.href = "/Modules/Usuario/AutorizarPT.html";
         } catch (err) {
           alert("Error al rechazar el permiso.");
-          console.error("Error al rechazar:", err);
+          console.error("Error al rechazar PT9:", err);
         }
       });
     }
   }
 });
 
-// --- Lógica para el botón "Autorizar" (idéntica a PT8) ---
+// --- Lógica para el botón "Autorizar" (corregida siguiendo patrón de PT7/PT8) ---
 document.addEventListener("DOMContentLoaded", function () {
   const btnAutorizar = document.getElementById("btn-guardar-campos");
   if (btnAutorizar) {
     btnAutorizar.addEventListener("click", async function () {
+      // 1. Obtener datos necesarios
       const params = new URLSearchParams(window.location.search);
       const idPermiso = params.get("id") || window.idPermisoActual;
       const responsableInput = document.getElementById("responsable-aprobador");
+      const operadorInput = document.getElementById("responsable-aprobador2");
       const responsable_area = responsableInput
         ? responsableInput.value.trim()
         : "";
+      const operador_area = operadorInput ? operadorInput.value.trim() : "";
+
+      // 2. Validaciones básicas
       if (!idPermiso) {
         alert("No se pudo obtener el ID del permiso.");
         return;
@@ -155,6 +179,8 @@ document.addEventListener("DOMContentLoaded", function () {
         if (responsableInput) responsableInput.focus();
         return;
       }
+
+      // 3. Obtener id_estatus y autorizar
       try {
         let idEstatus = null;
         const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
@@ -164,12 +190,40 @@ document.addEventListener("DOMContentLoaded", function () {
             permisoData.id_estatus ||
             (permisoData.data && permisoData.data.id_estatus);
         }
+
         if (idEstatus) {
+          // Actualizar estatus a "seguridad" (esperando autorización de supervisor)
           await fetch("/api/estatus/seguridad", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ id_estatus: idEstatus }),
           });
+
+          // Generar timestamp para autorización de área (hora local)
+          const nowArea = new Date();
+          const year = nowArea.getFullYear();
+          const month = String(nowArea.getMonth() + 1).padStart(2, "0");
+          const day = String(nowArea.getDate()).padStart(2, "0");
+          const hours = String(nowArea.getHours()).padStart(2, "0");
+          const minutes = String(nowArea.getMinutes()).padStart(2, "0");
+          const seconds = String(nowArea.getSeconds()).padStart(2, "0");
+          const milliseconds = String(nowArea.getMilliseconds()).padStart(3, "0");
+          const fechaHoraAutorizacionArea = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}`;
+
+          console.log("[AUTORIZAR PT9] Timestamp generado:", fechaHoraAutorizacionArea);
+
+          // Insertar en tabla autorizaciones
+          await fetch("/api/autorizaciones/area", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              id_permiso: idPermiso,
+              responsable_area,
+              encargado_area: operador_area,
+              fecha_hora_area: fechaHoraAutorizacionArea,
+            }),
+          });
+
           alert("Permiso autorizado correctamente.");
           window.location.href = "/Modules/Usuario/AutorizarPT.html";
         } else {
@@ -177,7 +231,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       } catch (err) {
         alert("Error al autorizar el permiso.");
-        console.error("Error al autorizar:", err);
+        console.error("Error al autorizar PT9:", err);
       }
     });
   }

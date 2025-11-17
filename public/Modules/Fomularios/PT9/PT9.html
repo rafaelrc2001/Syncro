@@ -213,34 +213,36 @@
             <div class="table-header">
                 <h3><i class="ri-flashlight-line"></i>DATOS Generales</h3>
             </div>
-            <div class="table-grid" style="grid-template-columns: 2fr 1fr 2fr;">
-
-               <div class="table-grid" style="grid-template-columns: 1fr 1fr 1fr 1fr; gap: 1rem;">
-                            <div class="table-cell">
-                                <label for="maintenance-type">Tipo de mantenimiento</label>
-                                <select id="maintenance-type" name="maintenance-type" class="table-input">
-                                    <option value="" disabled selected>Seleccione un tipo</option>
-                                    <option value="PREDICTIVO">PREDICTIVO</option>
-                                    <option value="PREVENTIVO">PREVENTIVO</option>
-                                    <option value="CORRECTIVO">CORRECTIVO</option>
-                                    <option value="APOYO">APOYO</option>
-                                    <option value="OTRO">OTRO</option>
-                                </select>
-                            </div>
-                            <div class="table-cell">
-                                <label for="work-order">O.T. No.</label>
-                                <input type="text" id="work-order" name="work-order" class="table-input compact">
-                            </div>
-                            <div class="table-cell">
-                                <label for="equipment">Equipo a Intervenir</label>
-                                <input type="text" id="equipment" name="equipment" class="table-input compact">
-                            </div>
-                            <div class="table-cell">
-                                <label for="tag">TAG</label>
-                                <input type="text" id="tag" name="tag" class="table-input compact">
-                            </div>
-                        </div>
-
+            <div class="table-grid" style="grid-template-columns: 1fr 1fr 1fr 1fr; gap: 1rem;">
+                <div class="table-cell">
+                    <label for="maintenance-type">Tipo de mantenimiento</label>
+                    <select id="maintenance-type" name="maintenance-type" class="table-input">
+                        <option value="" disabled selected>Seleccione un tipo</option>
+                        <option value="PREDICTIVO">PREDICTIVO</option>
+                        <option value="PREVENTIVO">PREVENTIVO</option>
+                        <option value="CORRECTIVO">CORRECTIVO</option>
+                        <option value="APOYO">APOYO</option>
+                        <option value="OTRO">OTRO</option>
+                    </select>
+                </div>
+                <div class="table-cell">
+                    <label for="work-order">O.T. No.</label>
+                    <input type="text" id="work-order" name="work-order" class="table-input compact">
+                </div>
+                  <div class="table-cell">
+                                    
+                                        <label for="start-time">Hora de inicio</label>
+                                        <input type="time" id="start-time" name="start-time" required class="compact">
+                                    
+                                </div>
+                <div class="table-cell">
+                    <label for="equipment">Equipo a Intervenir</label>
+                    <input type="text" id="equipment" name="equipment" class="table-input compact">
+                </div>
+                <div class="table-cell">
+                    <label for="tag">TAG</label>
+                    <input type="text" id="tag" name="tag" class="table-input compact">
+                </div>
             </div>
         </div>
 

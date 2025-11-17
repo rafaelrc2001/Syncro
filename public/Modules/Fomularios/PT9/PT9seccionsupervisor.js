@@ -1,6 +1,172 @@
+// --- Mostrar nombres de Supervisor y Responsable Área en la sección de aprobaciones ---
+document.addEventListener("DOMContentLoaded", function () {
+  const params = new URLSearchParams(window.location.search);
+  const idPermiso = params.get("id");
+  if (!idPermiso) return;
+  fetch(`/api/autorizaciones/personas/${idPermiso}`)
+    .then((res) => res.json())
+    .then((data) => {
+      if (data && data.success && data.data) {
+        const responsable = document.getElementById("stamp-encargado");
+        const supervisor = document.getElementById("stamp-aprobador");
+        if (responsable)
+          responsable.textContent = data.data.responsable_area || "-";
+        if (supervisor)
+          supervisor.textContent = data.data.nombre_supervisor || "-";
+      }
+    })
+    .catch((err) => {
+      console.error("Error al obtener responsables de área:", err);
+    });
+});
+
+// --- Rellenar selects de supervisor y categoría (igual que otros permisos) ---
+function rellenarSupervisoresYCategorias() {
+  fetch("/api/supervisores")
+    .then((resp) => resp.json())
+    .then((data) => {
+      const selectSupervisor = document.getElementById("responsable-aprobador");
+      if (selectSupervisor) {
+        selectSupervisor.innerHTML =
+          '<option value="" disabled selected>Seleccione un supervisor...</option>';
+        (Array.isArray(data) ? data : data.supervisores).forEach((sup) => {
+          const option = document.createElement("option");
+          option.value = sup.nombre || sup;
+          option.textContent = sup.nombre || sup;
+          selectSupervisor.appendChild(option);
+        });
+      }
+    });
+
+  fetch("/api/categorias")
+    .then((resp) => resp.json())
+    .then((data) => {
+      const selectCategoria = document.getElementById("responsable-aprobador2");
+      if (selectCategoria) {
+        selectCategoria.innerHTML =
+          '<option value="" disabled selected>Seleccione una categoría...</option>';
+        (Array.isArray(data) ? data : data.categorias).forEach((cat) => {
+          const option = document.createElement("option");
+          option.value = cat.nombre || cat;
+          option.textContent = cat.nombre || cat;
+          selectCategoria.appendChild(option);
+        });
+      }
+    });
+}
+
+// Ejecutar al cargar la página
+document.addEventListener("DOMContentLoaded", function () {
+  rellenarSupervisoresYCategorias();
+});
+
+// --- Lógica para el botón "No Autorizar" SOLO ACTUALIZA ESTATUS (no envía datos adicionales) ---
+document.addEventListener("DOMContentLoaded", function () {
+  const btnNoAutorizar = document.getElementById("btn-no-autorizar");
+  if (btnNoAutorizar) {
+    btnNoAutorizar.addEventListener("click", async function (e) {
+      e.preventDefault();
+      // Leer el id del permiso de la URL
+      const params = new URLSearchParams(window.location.search);
+      const idPermiso = params.get("id") || window.idPermisoActual;
+      if (!idPermiso) {
+        alert("No se pudo obtener el ID del permiso.");
+        return;
+      }
+
+      // Consultar el id_estatus desde permisos_trabajo
+      let idEstatus = null;
+      try {
+        const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
+        if (respEstatus.ok) {
+          const permisoData = await respEstatus.json();
+          idEstatus =
+            permisoData.id_estatus ||
+            (permisoData.data && permisoData.data.id_estatus);
+        }
+      } catch (err) {
+        console.error("Error al consultar id_estatus:", err);
+      }
+      if (!idEstatus) {
+        alert("No se pudo obtener el estatus del permiso.");
+        return;
+      }
+
+      // Actualizar el estatus a 'no autorizado' (solo eso)
+      try {
+        await fetch("/api/estatus/no_autorizado", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id_estatus: idEstatus }),
+        });
+      } catch (err) {
+        console.error("Error al actualizar estatus a no autorizado:", err);
+        alert("Error al actualizar el estatus del permiso.");
+        return;
+      }
+
+      // Mostrar modal de confirmación o redirigir
+      alert("Permiso marcado como NO AUTORIZADO.");
+      window.location.href = "/Modules/Usuario/CrearPT.html";
+    });
+  }
+});
+
+// --- Lógica para el botón "Autorizar" SOLO ACTUALIZA ESTATUS (no envía datos adicionales) ---
+document.addEventListener("DOMContentLoaded", function () {
+  const btnAutorizar = document.getElementById("btn-guardar-campos");
+  if (btnAutorizar) {
+    btnAutorizar.addEventListener("click", async function (e) {
+      e.preventDefault();
+      // Leer el id del permiso de la URL
+      const params = new URLSearchParams(window.location.search);
+      const idPermiso = params.get("id") || window.idPermisoActual;
+      if (!idPermiso) {
+        alert("No se pudo obtener el ID del permiso.");
+        return;
+      }
+
+      // Consultar el id_estatus desde permisos_trabajo
+      let idEstatus = null;
+      try {
+        const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
+        if (respEstatus.ok) {
+          const permisoData = await respEstatus.json();
+          idEstatus =
+            permisoData.id_estatus ||
+            (permisoData.data && permisoData.data.id_estatus);
+        }
+      } catch (err) {
+        console.error("Error al consultar id_estatus:", err);
+      }
+      if (!idEstatus) {
+        alert("No se pudo obtener el estatus del permiso.");
+        return;
+      }
+
+      // Actualizar el estatus a 'activo' (solo eso)
+      try {
+        await fetch("/api/estatus/activo", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id_estatus: idEstatus }),
+        });
+      } catch (err) {
+        console.error("Error al actualizar estatus activo:", err);
+        alert("Error al actualizar el estatus del permiso.");
+        return;
+      }
+
+      // Mostrar modal de confirmación o redirigir
+      alert("Permiso autorizado exitosamente.");
+      window.location.href = "/Modules/Usuario/CrearPT.html";
+    });
+  }
+});
+
 document.addEventListener("DOMContentLoaded", function () {
   // --- FUNCION DE MAPEADO PARA VISTA-PT9 (Cesta) ---
-  function mostrarDatosImprimirPT9(general) {
+    function mostrarDatosImprimirPT9(general) {
     // Bloque: Datos Generales (encabezado del formulario) usando los mismos IDs que el HTML (como en PT8)
     setText("start-time-label", general.hora_inicio);
     setText("fecha-label", general.fecha);
@@ -28,7 +194,8 @@ document.addEventListener("DOMContentLoaded", function () {
     setText("view-asentamiento", general.asentamiento);
     setText("view-calzado", general.calzado);
     setText("view-nivelacion", general.nivelacion);
-    setText("view-ext-gatos", general.especificacion_ext_gatos);
+    setText("view-ext-gatos", general.ext_gatos);
+    setText("view-especificar-gatos", general.especificacion_ext_gatos);
     setText("view-utiliza-plumin", general.utiliza_plumin_cesta);
     setText("view-especificar-plumin", general.especificacion_plumin_cesta);
     setText("view-longitud-pluma", general.longitud_pluma_cesta);

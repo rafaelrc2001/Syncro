@@ -1289,11 +1289,11 @@ document.addEventListener("DOMContentLoaded", () => {
           const tag = document.getElementById("tag")?.value || "";
           const hora = document.getElementById("start-time")?.value || "";
           const fecha = document.getElementById("permit-date")?.value || "";
+          // Usar el campo start-time para hora_inicio, igual que otros formularios
+          const hora_inicio = fecha && hora ? `${fecha} ${hora}` : (fecha ? `${fecha} 00:00` : hora);
+          
           const duracionInicio =
             document.getElementById("duracion-inicio")?.value || "";
-          const hora_inicio = duracionInicio
-            ? duracionInicio.split("T")[1]
-            : "";
 
           const hora_inicio_prevista = duracionInicio
             ? duracionInicio.split("T")[1]
@@ -1352,16 +1352,20 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("licencia-operador")?.value || "";
 
           // CONFIGURACIÓN Y CARGA
-          // Todos los radios usan name="tuberia-gas" y se diferencian por posición visual, así que tomamos el seleccionado
+          // Capturar extensión de gatos y sobre ruedas por separado
           const extension_gatos =
-            document.querySelector('input[name="tuberia-gas"]:checked')
+            document.querySelector('input[name="extension-gatos"]:checked')
               ?.value || "";
-          const sobre_ruedas = extension_gatos; // mismo grupo de radios
+          const sobre_ruedas =
+            document.querySelector('input[name="sobre-ruedas"]:checked')
+              ?.value || "";
           const especificacion_sobre_ruedas =
-            document.getElementById("otros-elementos")?.value || "";
-          const utiliza_plumin_si = extension_gatos; // mismo grupo de radios
+            document.getElementById("otros-elementos-sobre-ruedas")?.value || "";
+          const utiliza_plumin_si =
+            document.querySelector('input[name="se-utiliza-plumin"]:checked')
+              ?.value || "";
           const especificacion_plumin =
-            document.getElementById("otros-elementos")?.value || "";
+            document.getElementById("especificar-plumin")?.value || "";
           const longitud_pluma =
             document.getElementById("longitud-pluma")?.value || "";
           const radio_trabajo =
@@ -1378,21 +1382,16 @@ document.addEventListener("DOMContentLoaded", () => {
           const carga_trabajo =
             document.getElementById("carga-de-trabajo")?.value || "";
           const peso_gancho_eslingas =
-            document.getElementById("peso-carga")?.value || "";
+            document.getElementById("peso-gancho-eslingas")?.value || "";
           const relacion_carga_carga_segura =
-            document.getElementById("especificar-plumin")?.value || "";
+            document.getElementById("relacion-carga-trabajo")?.value || "";
 
           // Comprobaciones (checkboxes)
-          const asentamiento = document.querySelectorAll(
-            'input[name="medida-declaracion-conformidad"]'
-          )[1]?.checked
+          const asentamiento = document.getElementById("asentamiento-check")?.checked
             ? "si"
             : "no";
           // Definir campos faltantes para evitar ReferenceError
-          const tipo_licencia =
-            document.getElementById("tipo-licencia")?.value || "";
-          const comentarios_operador =
-            document.getElementById("comentarios-operador")?.value || "";
+          
           const nombre_operador =
             document.getElementById("nombre-operador")?.value || "";
           const empresa_operador =
@@ -1408,6 +1407,10 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("permit-date")?.value || "";
           const vigencia_licencia =
             document.getElementById("vigencia")?.value || "";
+          const tipo_licencia =
+            document.getElementById("tipo")?.value || "";
+          const comentarios_operador =
+            document.getElementById("comentarios")?.value || "";
           // --- Definición de variables PT Izaje ---
           // Checkboxes de medidas principales
           const declaracion_conformidad = document.querySelector(
@@ -1453,39 +1456,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
           // DATOS DEL OPERADOR
           // ...variables ya definidas arriba, eliminar duplicados...
-          const calzado = Array.from(
-            document.querySelectorAll(
-              'input[type="checkbox"][name="medida-inspeccion-periodica"]'
-            )
-          )[0]?.checked
+          const calzado = document.getElementById("calzado-check")?.checked
             ? "si"
             : "no";
-          const extension_gatos_check = Array.from(
-            document.querySelectorAll(
-              'input[type="checkbox"][name="medida-mantenimiento-preventivo"]'
-            )
-          )[0]?.checked
+          const extension_gatos_check = document.getElementById("extension-gatos-check")?.checked
             ? "si"
             : "no";
-          const nivelacion = Array.from(
-            document.querySelectorAll(
-              'input[type="checkbox"][name="medida-inspeccion-diaria"]'
-            )
-          )[0]?.checked
+          const nivelacion = document.getElementById("nivelacion-check")?.checked
             ? "si"
             : "no";
-          const contrapeso_check = Array.from(
-            document.querySelectorAll(
-              'input[type="checkbox"][name="medida-diagrama-cargas"]'
-            )
-          )[0]?.checked
+          const contrapeso_check = document.getElementById("contrapeso-check")?.checked
             ? "si"
             : "no";
-          const sector_trabajo_check = Array.from(
-            document.querySelectorAll(
-              'input[type="checkbox"][name="medida-libro-instrucciones"]'
-            )
-          )[0]?.checked
+          const sector_trabajo_check = document.getElementById("sector-trabajo-check")?.checked
             ? "si"
             : "no";
           const comprobado_por =
@@ -1646,11 +1629,14 @@ document.addEventListener("DOMContentLoaded", () => {
           const tag = document.getElementById("tag")?.value || "";
           const hora = document.getElementById("start-time")?.value || "";
           const fecha = document.getElementById("permit-date")?.value || "";
-          // Ajuste: solo la hora en formato HH:mm o HH:mm:ss y nunca enviar ''
-          let hora_inicio = null;
-          if (hora && hora.includes(":")) {
-            hora_inicio =
-              hora.split("T").length > 1 ? hora.split("T")[1] : hora;
+          // Crear formato válido para la base de datos
+          let hora_inicio = "";
+          if (fecha && hora) {
+            hora_inicio = `${fecha} ${hora}`;
+          } else if (fecha) {
+            hora_inicio = `${fecha} 00:00`;
+          } else if (hora) {
+            hora_inicio = hora;
           }
           const equipo_intervenir =
             document.getElementById("equipment")?.value || "";
@@ -1676,7 +1662,12 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("permit-date")?.value || "";
 
           // CONDICIONES DE ELEVACIÓN
-          // (Si tienes checkboxes, deberás obtener su estado con .checked)
+          // Capturar checkboxes de condiciones de elevación
+          const asentamiento = document.querySelector('input[name="asentamiento"]:checked') ? "SI" : "NO";
+          const calzado = document.querySelector('input[name="calzado"]:checked') ? "SI" : "NO";
+          const nivelacion = document.querySelector('input[name="nivelacion"]:checked') ? "SI" : "NO";
+          const ext_gatos = document.querySelector('input[name="ext-gatos"]:checked') ? "SI" : "NO";
+          
           const condicion = ""; // Puedes concatenar los checks activos si lo necesitas
           const especificacion_ext_gatos =
             document.getElementById("se-utiliza-plumin")?.value || "";
@@ -1715,27 +1706,20 @@ document.addEventListener("DOMContentLoaded", () => {
           const fecha_prueba =
             document.getElementById("permit-date")?.value || "";
 
-          // MEDIDAS DE SEGURIDAD PREVIAS
-          const mascaras_escape_cesta =
-            document.getElementById("mascaras-escape")?.value || "";
-          const especificacion_mascaras =
-            document.getElementById("especificacion-mascaras")?.value || "";
-          const equipo_proteccion_cesta =
-            document.getElementById("equipo-proteccion")?.value || "";
-          const especificacion_equipo_proteccion =
-            document.getElementById("especificacion-equipo-proteccion")
-              ?.value || "";
-          const equipo_contra_incendios_cesta =
-            document.getElementById("equipo-contra-incendios")?.value || "";
-          const especificacion_equipo_incendios =
-            document.getElementById("especificacion-equipo-incendios")?.value ||
-            "";
-          const final_carrera_cesta = ""; // Si tienes un checkbox, usa .checked
-          const otras_medidas_cesta =
-            document.getElementById("otras-medidas")?.value || "";
-          const especificacion_otras_medidas_cesta =
-            document.getElementById("especificacion-otras-medidas-cesta")
-              ?.value || "";
+          // MEDIDAS DE SEGURIDAD PREVIAS - Capturar checkboxes correctamente
+          const mascaras_escape_cesta = document.querySelector('input[name="mascaras-escape"][type="checkbox"]')?.checked ? "si" : "no";
+          const especificacion_mascaras = document.getElementById("mascaras-escape")?.value || "";
+          
+          const equipo_proteccion_cesta = document.querySelector('input[name="equipo-proteccion"][type="checkbox"]')?.checked ? "si" : "no";
+          const especificacion_equipo_proteccion = document.getElementById("equipo-proteccion")?.value || "";
+          
+          const equipo_contra_incendios_cesta = document.querySelector('input[name="equipo-contra-incendios"][type="checkbox"]')?.checked ? "si" : "no";
+          const especificacion_equipo_incendios = document.getElementById("equipo-contra-incendios")?.value || "";
+          
+          const final_carrera_cesta = document.querySelector('input[name="final-carrera"][type="checkbox"]')?.checked ? "si" : "no";
+          
+          const otras_medidas_cesta = document.querySelector('input[name="otras-medidas"][type="checkbox"]')?.checked ? "si" : "no";
+          const especificacion_otras_medidas_cesta = document.getElementById("otras-medidas")?.value || "";
 
           // OBSERVACIONES
           const observaciones_generales_cesta =
@@ -1760,6 +1744,10 @@ document.addEventListener("DOMContentLoaded", () => {
             peso_cesta,
             ultima_revision_cesta,
             condicion,
+            asentamiento,
+            calzado,
+            nivelacion,
+            ext_gatos,
             especificacion_ext_gatos,
             utiliza_plumin_cesta,
             especificacion_plumin_cesta,

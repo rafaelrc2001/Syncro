@@ -151,9 +151,11 @@ document.addEventListener("DOMContentLoaded", function () {
       const params = new URLSearchParams(window.location.search);
       const idPermiso = params.get("id") || window.idPermisoActual;
       const responsableInput = document.getElementById("responsable-aprobador");
+      const operadorInput = document.getElementById("responsable-aprobador2");
       const responsable_area = responsableInput
         ? responsableInput.value.trim()
         : "";
+      const operador_area = operadorInput ? operadorInput.value.trim() : "";
 
       // 2. Validaciones básicas
       if (!idPermiso) {
@@ -177,6 +179,23 @@ document.addEventListener("DOMContentLoaded", function () {
             (permisoData.data && permisoData.data.id_estatus);
         }
         if (idEstatus) {
+          // Guardar responsable del área antes de autorizar
+          const nowAutorizacion = new Date();
+          const fechaHoraAutorizacion = new Date(
+            nowAutorizacion.getTime() - nowAutorizacion.getTimezoneOffset() * 60000
+          ).toISOString();
+
+          await fetch("/api/autorizaciones/area", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              id_permiso: idPermiso,
+              responsable_area,
+              encargado_area: operador_area,
+              fecha_hora_area: fechaHoraAutorizacion,
+            }),
+          });
+
           await fetch("/api/estatus/seguridad", {
             method: "POST",
             headers: { "Content-Type": "application/json" },

@@ -7,12 +7,12 @@ document.addEventListener("DOMContentLoaded", function () {
     .then((res) => res.json())
     .then((data) => {
       if (data && data.success && data.data) {
-        const responsable = document.getElementById("stamp-encargado");
-        const supervisor = document.getElementById("stamp-aprobador");
+        const responsable = document.getElementById("nombre-responsable-area");
+        const operador = document.getElementById("nombre-operador-area");
         if (responsable)
           responsable.textContent = data.data.responsable_area || "-";
-        if (supervisor)
-          supervisor.textContent = data.data.nombre_supervisor || "-";
+        if (operador)
+          operador.textContent = data.data.operador_area || "-";
       }
     })
     .catch((err) => {

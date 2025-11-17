@@ -231,6 +231,10 @@
                                     <option value="OTRO">OTRO</option>
                                 </select>
                             </div>
+                                                          <div class="table-cell" id="other-maintenance-container" style="display:none;">
+    <label for="other-maintenance">Otro (especifique)</label>
+    <input type="text" id="other-maintenance" name="other-maintenance" class="compact">
+</div>
                             <div class="table-cell">
                                 <label for="work-order">O.T. No.</label>
                                 <input type="text" id="work-order" name="work-order" class="table-input compact">
@@ -628,7 +632,7 @@
                 <div class="table-cell">
                     <div class="input-group">
                         <label>Para solicitaciones estáticas:</label>
-                        <input type="number" id="distancia-estatica" name="distancia-estatica|" step="0.1" placeholder="0.0" class="input-with-unit" min="0">
+                        <input type="number" id="distancia-estatica" name="distancia-estatica" step="0.1" placeholder="0.0" class="input-with-unit" min="0">
                     </div>
                 </div>
 
@@ -771,7 +775,7 @@
                 <div class="table-cell"></div>
                 <div class="table-cell"></div>
                 <div class="table-cell">
-                    <input type="text" id="tipo-senalizacion" name="tipo-senalizacion" class="table-input" placeholder="" >
+                    <input type="text" id="tipo-anclaje" name="tipo-anclaje" class="table-input" placeholder="Especificar tipo de anclaje" >
                 </div>
             </div>
         </div>
@@ -838,22 +842,22 @@
                     <strong>OTRAS MEDIDAS, ESPECIFICAR:</strong>
                     <div class="checkbox-group">
                         <label class="checkbox-option">
-                            <input type="checkbox" name="medida-herramienta-antichispa" value="1" >
+                            <input type="checkbox" id="medida-herramienta-antichispa" name="medida-herramienta-antichispa" value="1" >
                             <span class="checkbox-custom"></span>
                             Herramienta antichispa
                         </label>
                         <label class="checkbox-option">
-                            <input type="checkbox" name="medida-guantes-dielectrico" value="1" >
+                            <input type="checkbox" id="medida-guantes-dielectrico" name="medida-guantes-dielectrico" value="1" >
                             <span class="checkbox-custom"></span>
                             Guantes y calzado dieléctrico
                         </label>
                         <label class="checkbox-option">
-                            <input type="checkbox" name="medida-epp-especial" value="1" >
+                            <input type="checkbox" id="medida-epp-especial" name="medida-epp-especial" value="1" >
                             <span class="checkbox-custom"></span>
                             EPP especial
                         </label>
                         <label class="checkbox-option">
-                            <input type="checkbox" name="medida-otros-lineas" value="1" >
+                            <input type="checkbox" id="medida-otros-lineas" name="medida-otros-lineas" value="1" >
                             <span class="checkbox-custom"></span>
                             Otros, especificar:
                             <input type="text" id="otros-medidas-lineas" name="otros-medidas-lineas" 
@@ -882,12 +886,12 @@
                                    style="margin-left: 10px; width: 400px;">
                         </label>
                         <label class="checkbox-option">
-                            <input type="checkbox" name="medida-drenar-limpiar" value="1">
+                            <input type="checkbox" id="medida-drenar-limpiar" name="medida-drenar-limpiar" value="1">
                             <span class="checkbox-custom"></span>
                             Drenar y Limpiar o Lavar
                         </label>
                         <label class="checkbox-option">
-                            <input type="checkbox" name="medida-atmosfera-inerte" value="1">
+                            <input type="checkbox" id="medida-atmosfera-inerte" name="medida-atmosfera-inerte" value="1">
                             <span class="checkbox-custom"></span>
                             Inundar o Anegar o Crear Atmósfera Inerte
                         </label>

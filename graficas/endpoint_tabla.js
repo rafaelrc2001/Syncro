@@ -21,7 +21,10 @@ router.get("/tabla-permisos/:id_departamento", async (req, res) => {
 								ptf.descripcion_trabajo, 
 								pte.descripcion_trabajo, 
 								ptr.descripcion_trabajo, 
-								pta2.descripcion_trabajo
+								pta2.descripcion_trabajo,
+								pti.descripcion_trabajo,
+								ptex.descripcion_trabajo,
+								ptce.descripcion_trabajo
 						) AS Actividad,
 						s.nombre AS Supervisor,
 						e.estatus AS Estado
@@ -38,12 +41,16 @@ router.get("/tabla-permisos/:id_departamento", async (req, res) => {
 				LEFT JOIN pt_electrico pte ON pt.id_permiso = pte.id_permiso
 				LEFT JOIN pt_radiacion ptr ON pt.id_permiso = ptr.id_permiso
 				LEFT JOIN pt_altura pta2 ON pt.id_permiso = pta2.id_permiso
+				LEFT JOIN pt_izaje pti ON pt.id_permiso = pti.id_permiso
+				LEFT JOIN pt_excavacion ptex ON pt.id_permiso = ptex.id_permiso
+				LEFT JOIN pt_cesta ptce ON pt.id_permiso = ptce.id_permiso
 								WHERE pt.id_departamento = $1
 									AND (ptnp.id_permiso IS NOT NULL OR pta.id_permiso IS NOT NULL 
 									 OR ptc.id_permiso IS NOT NULL OR ptf.id_permiso IS NOT NULL 
 									 OR pte.id_permiso IS NOT NULL OR ptr.id_permiso IS NOT NULL 
-									 OR pta2.id_permiso IS NOT NULL)
-								GROUP BY pt.id_permiso, tp.nombre, a.nombre, s.nombre, e.estatus, pt.prefijo, pt.contrato, ptnp.descripcion_trabajo, pta.descripcion_trabajo, ptc.descripcion_trabajo, ptf.descripcion_trabajo, pte.descripcion_trabajo, ptr.descripcion_trabajo, pta2.descripcion_trabajo
+									 OR pta2.id_permiso IS NOT NULL OR pti.id_permiso IS NOT NULL
+									 OR ptex.id_permiso IS NOT NULL OR ptce.id_permiso IS NOT NULL)
+								GROUP BY pt.id_permiso, tp.nombre, a.nombre, s.nombre, e.estatus, pt.prefijo, pt.contrato, ptnp.descripcion_trabajo, pta.descripcion_trabajo, ptc.descripcion_trabajo, ptf.descripcion_trabajo, pte.descripcion_trabajo, ptr.descripcion_trabajo, pta2.descripcion_trabajo, pti.descripcion_trabajo, ptex.descripcion_trabajo, ptce.descripcion_trabajo
 								ORDER BY pt.fecha_hora DESC;
 			`,
       [id_departamento]

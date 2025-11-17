@@ -1943,6 +1943,10 @@ document.addEventListener("DOMContentLoaded", () => {
           const tipo_proteccion_anticaida =
             document.getElementById("tipo-proteccion-anticaida")?.value || "";
 
+          // Anclaje
+          const tipo_anclaje =
+            document.getElementById("tipo-anclaje")?.value || "";
+
           // Atmósfera Peligrosa
           const espacio_confinado =
             document.querySelector('input[name="espacio-confinado"]:checked')
@@ -1958,37 +1962,37 @@ document.addEventListener("DOMContentLoaded", () => {
           const medida_herramienta_antichispa =
             document.querySelector(
               'input[name="medida-herramienta-antichispa"]'
-            )?.checked || false;
+            )?.checked ? "SI" : "NO";
           const medida_guantes_dielectrico =
             document.querySelector('input[name="medida-guantes-dielectrico"]')
-              ?.checked || false;
+              ?.checked ? "SI" : "NO";
           const medida_epp_especial =
             document.querySelector('input[name="medida-epp-especial"]')
-              ?.checked || false;
+              ?.checked ? "SI" : "NO";
           const medida_otros_lineas =
             document.querySelector('input[name="medida-otros-lineas"]')
-              ?.checked || false;
+              ?.checked ? "SI" : "NO";
           const otros_medidas_lineas =
             document.getElementById("otros-medidas-lineas")?.value || "";
 
           // Medidas Adicionales (checkboxes)
           const medida_bloqueo_fisico =
-            document.getElementById("medida-bloqueo-fisico")?.checked || false;
+            document.getElementById("medida-bloqueo-fisico")?.checked ? "SI" : "NO";
           const bloqueo_fisico_detalle =
             document.getElementById("bloqueo-fisico-detalle")?.value || "";
           const medida_drenar_limpiar =
             document.querySelector('input[name="medida-drenar-limpiar"]')
-              ?.checked || false;
+              ?.checked ? "SI" : "NO";
           const medida_atmosfera_inerte =
             document.querySelector('input[name="medida-atmosfera-inerte"]')
-              ?.checked || false;
+              ?.checked ? "SI" : "NO";
           const medida_vigilante =
-            document.getElementById("medida-vigilante")?.checked || false;
+            document.getElementById("medida-vigilante")?.checked ? "SI" : "NO";
           const vigilante_detalle =
             document.getElementById("vigilante-detalle")?.value || "";
           const medida_otras_adicionales =
-            document.getElementById("medida-otras-adicionales")?.checked ||
-            false;
+            document.getElementById("medida-otras-adicionales")?.checked ?
+            "SI" : "NO";
           const otras_adicionales_detalle =
             document.getElementById("otras-adicionales-detalle")?.value || "";
 
@@ -1996,14 +2000,14 @@ document.addEventListener("DOMContentLoaded", () => {
           const observaciones_generales =
             document.getElementById("observaciones-generales")?.value || "";
 
-          // Construir el objeto de datos para enviar
+          // Construir el objeto de datos para enviar (nombres ajustados a la base de datos)
           const datosExcavacion = {
             id_permiso,
             tipo_mantenimiento,
             ot_numero,
             tag,
             hora_inicio,
-            equipo_intervencion,
+            equipo_intervenir: equipo_intervencion, // Corregido nombre
             descripcion_trabajo,
             nombre_solicitante,
             empresa,
@@ -2013,62 +2017,63 @@ document.addEventListener("DOMContentLoaded", () => {
             longitud,
             tipo_terreno,
             tuberia_gas,
-            gas_tipo,
-            tuberia_gas_comprobado,
-            permit_date_gas,
+            tipo_gas: gas_tipo, // Corregido nombre
+            comprobado_gas: tuberia_gas_comprobado, // Corregido nombre
+            fecha_gas: permit_date_gas, // Corregido nombre
             linea_electrica,
-            linea_electrica_voltaje,
-            linea_electrica_comprobado,
-            permit_date_electrica,
+            voltaje_linea: linea_electrica_voltaje, // Corregido nombre
+            comprobado_electrica: linea_electrica_comprobado, // Corregido nombre
+            fecha_electrica: permit_date_electrica, // Corregido nombre
             tuberia_incendios,
-            tuberia_incendios_presion,
-            tuberia_incendios_comprobado,
-            permit_date_incendios,
+            presion_incendios: tuberia_incendios_presion, // Corregido nombre
+            comprobado_incendios: tuberia_incendios_comprobado, // Corregido nombre
+            fecha_incendios: permit_date_incendios, // Corregido nombre
             alcantarillado,
-            alcantarillado_diametro,
-            alcantarillado_comprobado,
-            permit_date_alcantarillado,
+            diametro_alcantarillado: alcantarillado_diametro, // Corregido nombre
+            comprobado_alcantarillado: alcantarillado_comprobado, // Corregido nombre
+            fecha_alcantarillado: permit_date_alcantarillado, // Corregido nombre
             otras_instalaciones,
-            otras_instalaciones_tipo,
-            otras_instalaciones_comprobado,
-            permit_date_otras,
+            especificacion_otras_instalaciones: otras_instalaciones_tipo, // Corregido nombre
+            comprobado_otras: otras_instalaciones_comprobado, // Corregido nombre
+            fecha_otras: permit_date_otras, // Corregido nombre
             requiere_talud,
             angulo_talud,
             requiere_bermas,
             longitud_meseta,
-            alturas_contrameseta,
+            altura_contrameseta: alturas_contrameseta, // Corregido nombre
             requiere_entibacion,
             tipo_entibacion,
-            especificacion_entibacion,
+            condiciones_terreno_entibacion: especificacion_entibacion, // Corregido nombre
             otros_requerimientos,
-            otros_requerimientos_detalle,
-            distancia_estatica,
-            distancia_dinamica,
+            especificacion_otros_requerimientos: otros_requerimientos_detalle, // Corregido nombre
+            distancia_seguridad_estatica: distancia_estatica, // Corregido nombre
+            distancia_seguridad_dinamica: distancia_dinamica, // Corregido nombre
             requiere_balizamiento,
             distancia_balizamiento,
             requiere_proteccion_rigida,
-            distancia_proteccion,
-            requiere_senalizacion,
-            tipo_senalizacion,
+            distancia_proteccion_rigida: distancia_proteccion, // Corregido nombre
+            requiere_senalizacion_especial: requiere_senalizacion, // Corregido nombre
+            especificacion_senalizacion: tipo_senalizacion, // Corregido nombre
             requiere_proteccion_anticaida,
             tipo_proteccion_anticaida,
-            espacio_confinado,
-            excavacion_manual,
-            medidas_excavacion,
-            medida_herramienta_antichispa,
-            medida_guantes_dielectrico,
-            medida_epp_especial,
-            medida_otros_lineas,
-            otros_medidas_lineas,
-            medida_bloqueo_fisico,
-            bloqueo_fisico_detalle,
-            medida_drenar_limpiar,
-            medida_atmosfera_inerte,
-            medida_vigilante,
-            vigilante_detalle,
-            medida_otras_adicionales,
-            otras_adicionales_detalle,
-            observaciones_generales,
+            tipo_anclaje,
+            excavacion_espacio_confinado: espacio_confinado, // Corregido nombre
+            excavacion_manual_aproximacion: excavacion_manual, // Corregido nombre
+            medidas_aproximacion: medidas_excavacion, // Corregido nombre
+            herramienta_antichispa: medida_herramienta_antichispa, // Corregido nombre
+            guantes_calzado_dielectrico: medida_guantes_dielectrico, // Corregido nombre
+            epp_especial: medida_epp_especial, // Corregido nombre
+            otras_medidas_especiales: medida_otros_lineas, // Corregido nombre
+            especificacion_otras_medidas_especiales: otros_medidas_lineas, // Corregido nombre
+            aplicar_bloqueo_fisico: medida_bloqueo_fisico, // Corregido nombre
+            especificacion_bloqueo_fisico: bloqueo_fisico_detalle, // Corregido nombre
+            drenar_limpiar_lavar: medida_drenar_limpiar, // Corregido nombre
+            inundar_anegar_atmosfera_inerte: medida_atmosfera_inerte, // Corregido nombre
+            vigilante_continuo: medida_vigilante, // Corregido nombre
+            especificacion_vigilante_continuo: vigilante_detalle, // Corregido nombre
+            otras_medidas_adicionales: medida_otras_adicionales, // Corregido nombre
+            especificacion_otras_medidas_adicionales: otras_adicionales_detalle, // Corregido nombre
+            observaciones_generales_excavacion: observaciones_generales, // Corregido nombre
           };
 
           // Imprimir en consola lo que se enviará

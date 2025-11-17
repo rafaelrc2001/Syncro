@@ -20,11 +20,15 @@ router.get("/permisos-tipo/:id_departamento", async (req, res) => {
         LEFT JOIN pt_electrico pte ON pt.id_permiso = pte.id_permiso
         LEFT JOIN pt_radiacion ptr ON pt.id_permiso = ptr.id_permiso
         LEFT JOIN pt_altura pta2 ON pt.id_permiso = pta2.id_permiso
+        LEFT JOIN pt_izaje pti ON pt.id_permiso = pti.id_permiso
+        LEFT JOIN pt_excavacion ptex ON pt.id_permiso = ptex.id_permiso
+        LEFT JOIN pt_cesta ptce ON pt.id_permiso = ptce.id_permiso
         WHERE pt.id_departamento = $1
           AND (ptnp.id_permiso IS NOT NULL OR pta.id_permiso IS NOT NULL 
                OR ptc.id_permiso IS NOT NULL OR ptf.id_permiso IS NOT NULL 
                OR pte.id_permiso IS NOT NULL OR ptr.id_permiso IS NOT NULL 
-               OR pta2.id_permiso IS NOT NULL)
+               OR pta2.id_permiso IS NOT NULL OR pti.id_permiso IS NOT NULL
+               OR ptex.id_permiso IS NOT NULL OR ptce.id_permiso IS NOT NULL)
         GROUP BY tp.nombre
         ORDER BY tp.nombre;
       `,

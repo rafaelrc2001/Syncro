@@ -13,9 +13,9 @@ router.get("/permisos-jefes", async (req, res) => {
 				tp.nombre AS tipo_permiso,
 				d.nombre AS departamento,
 				s.nombre AS sucursal,
-				COALESCE(ptnp.descripcion_trabajo, pta.descripcion_trabajo, ptc.descripcion_trabajo, ptf.descripcion_trabajo, pte.descripcion_trabajo, ptr.descripcion_trabajo, pta2.descripcion_trabajo) AS descripcion,
+				COALESCE(ptnp.descripcion_trabajo, pta.descripcion_trabajo, ptc.descripcion_trabajo, ptf.descripcion_trabajo, pte.descripcion_trabajo, ptr.descripcion_trabajo, pta2.descripcion_trabajo, pti.descripcion_trabajo, ptex.descripcion_trabajo, ptce.descripcion_trabajo) AS descripcion,
 				a.nombre AS area,
-				COALESCE(ptnp.nombre_solicitante, pta.nombre_solicitante, ptc.nombre_solicitante, ptf.nombre_solicitante, pte.nombre_solicitante, ptr.nombre_solicitante, pta2.nombre_solicitante) AS solicitante,
+				COALESCE(ptnp.nombre_solicitante, pta.nombre_solicitante, ptc.nombre_solicitante, ptf.nombre_solicitante, pte.nombre_solicitante, ptr.nombre_solicitante, pta2.nombre_solicitante, pti.nombre_solicitante, ptex.nombre_solicitante, ptce.nombre_solicitante) AS solicitante,
 				pt.fecha_hora,
 				e.estatus,
 				sup.nombre AS supervisor,
@@ -39,6 +39,9 @@ router.get("/permisos-jefes", async (req, res) => {
 			LEFT JOIN pt_electrico pte ON pt.id_permiso = pte.id_permiso
 			LEFT JOIN pt_radiacion ptr ON pt.id_permiso = ptr.id_permiso
 			LEFT JOIN pt_altura pta2 ON pt.id_permiso = pta2.id_permiso
+			LEFT JOIN pt_izaje pti ON pt.id_permiso = pti.id_permiso
+			LEFT JOIN pt_excavacion ptex ON pt.id_permiso = ptex.id_permiso
+			LEFT JOIN pt_cesta ptce ON pt.id_permiso = ptce.id_permiso
 			WHERE ptnp.id_permiso IS NOT NULL 
 			   OR pta.id_permiso IS NOT NULL 
 			   OR ptc.id_permiso IS NOT NULL 
@@ -46,6 +49,9 @@ router.get("/permisos-jefes", async (req, res) => {
 			   OR pte.id_permiso IS NOT NULL 
 			   OR ptr.id_permiso IS NOT NULL 
 			   OR pta2.id_permiso IS NOT NULL
+			   OR pti.id_permiso IS NOT NULL
+			   OR ptex.id_permiso IS NOT NULL
+			   OR ptce.id_permiso IS NOT NULL
 			ORDER BY pt.fecha_hora DESC;
 		`;
     const { rows } = await db.query(query);

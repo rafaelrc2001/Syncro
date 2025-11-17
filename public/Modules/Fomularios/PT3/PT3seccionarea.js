@@ -911,6 +911,19 @@ document.getElementById("modal-close-btn").onclick = function () {
       modalConfirmarNoAutorizar.style.display = "none";
     });
   }
+
+  // *** FALTABA ESTE HANDLER: Botón "Continuar" del modal No Autorizar ***
+  const btnConfirmarNoAutorizar = document.getElementById("btnConfirmarNoAutorizar");
+  if (btnConfirmarNoAutorizar && modalConfirmarNoAutorizar) {
+    btnConfirmarNoAutorizar.addEventListener("click", function () {
+      // Cerrar modal de confirmación y abrir modal de comentario
+      modalConfirmarNoAutorizar.style.display = "none";
+      const modalComentario = document.getElementById("modalComentario");
+      if (modalComentario) {
+        modalComentario.style.display = "flex";
+      }
+    });
+  }
 })();
 
 // Listener para el botón "Continuar" del modal de confirmación (Autorizar)

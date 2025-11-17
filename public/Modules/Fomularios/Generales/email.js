@@ -10,6 +10,9 @@ window.n8nFormHandler = async function () {
     5: "PT Fuego",
     6: "PT Electrico",
     7: "PT Radiactivas",
+    8: "PT Cesta",
+    9: "PT Grúa",
+    10: "PT Excavacion",
     // Agrega más si tienes más tipos
   };
 
@@ -78,7 +81,7 @@ window.n8nFormHandler = async function () {
 
   // Enviar datos a n8n
   const response = await fetch(
-     "https://7mhxkntt-5678.usw3.devtunnels.ms/webhook/formulario-PT",
+    // "https://7mhxkntt-5678.usw3.devtunnels.ms/webhook/formulario-PT",
     {
       method: "POST",
       headers: {

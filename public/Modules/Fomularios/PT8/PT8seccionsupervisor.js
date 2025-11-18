@@ -58,108 +58,310 @@ function rellenarSupervisoresYCategorias() {
 document.addEventListener("DOMContentLoaded", function () {
   rellenarSupervisoresYCategorias();
 });
-// --- Lógica para el botón "No Autorizar" SOLO ACTUALIZA ESTATUS (no envía datos adicionales) ---
+// --- Lógica para el botón "No Autorizar" con modal de confirmación (igual que PT6/PT7) ---
 document.addEventListener("DOMContentLoaded", function () {
   const btnNoAutorizar = document.getElementById("btn-no-autorizar");
   if (btnNoAutorizar) {
-    btnNoAutorizar.addEventListener("click", async function (e) {
-      e.preventDefault();
-      // Leer el id del permiso de la URL
-      const params = new URLSearchParams(window.location.search);
-      const idPermiso = params.get("id") || window.idPermisoActual;
-      if (!idPermiso) {
-        alert("No se pudo obtener el ID del permiso.");
+    btnNoAutorizar.addEventListener("click", function () {
+      const responsableInput = document.getElementById("responsable-aprobador");
+      const supervisor = responsableInput ? responsableInput.value.trim() : "";
+      if (!supervisor) {
+        alert("Debes seleccionar un supervisor antes de rechazar.");
         return;
       }
-
-      // Consultar el id_estatus desde permisos_trabajo
-      let idEstatus = null;
-      try {
-        const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
-        if (respEstatus.ok) {
-          const permisoData = await respEstatus.json();
-          idEstatus =
-            permisoData.id_estatus ||
-            (permisoData.data && permisoData.data.id_estatus);
+      
+      // Mostrar modal de confirmación para 'No Autorizar'
+      const noModal = document.getElementById("modalConfirmarNoAutorizar");
+      if (noModal) {
+        // Rellenar datos del modal de no autorización
+        try {
+          const params = new URLSearchParams(window.location.search);
+          const idPermiso = params.get("id") || window.idPermisoActual;
+          
+          const noModalPermitId = noModal.querySelector("#modal-permit-id-no, [id*='permit-id']");
+          const noModalPermitType = noModal.querySelector("#modal-permit-type-no, [id*='permit-type']");
+          const noModalSolicitante = noModal.querySelector("#modal-solicitante-no, [id*='solicitante']");
+          const noModalDepartamento = noModal.querySelector("#modal-departamento-no, [id*='departamento']");
+          
+          if (noModalPermitId) {
+            noModalPermitId.textContent = 
+              document.getElementById("prefijo-label")?.textContent?.trim() || idPermiso || "-";
+          }
+          if (noModalPermitType) {
+            noModalPermitType.textContent = 
+              document.getElementById("activity-type-label")?.textContent || "Permiso de Trabajo en Altura/Izaje";
+          }
+          if (noModalSolicitante) {
+            noModalSolicitante.textContent = 
+              document.getElementById("nombre-solicitante-label")?.textContent || "-";
+          }
+          if (noModalDepartamento) {
+            noModalDepartamento.textContent = 
+              document.getElementById("plant-label")?.textContent || "-";
+          }
+        } catch (err) {
+          console.warn("No se pudieron rellenar los campos del modal de no autorización:", err);
         }
-      } catch (err) {
-        console.error("Error al consultar id_estatus:", err);
+        
+        noModal.style.display = "flex";
+      } else {
+        // Fallback: abrir directamente el modalComentario
+        const modal = document.getElementById("modalComentario");
+        if (modal) {
+          modal.style.display = "flex";
+          const input = document.getElementById("comentarioNoAutorizar");
+          if (input) input.focus();
+        }
       }
-      if (!idEstatus) {
-        alert("No se pudo obtener el estatus del permiso.");
-        return;
-      }
-
-      // Actualizar el estatus a 'no autorizado' (solo eso)
-      try {
-        await fetch("/api/estatus/no_autorizado", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ id_estatus: idEstatus }),
-        });
-      } catch (err) {
-        console.error("Error al actualizar estatus a no autorizado:", err);
-        alert("Error al actualizar el estatus del permiso.");
-        return;
-      }
-
-      // Mostrar modal de confirmación o redirigir
-      alert("Permiso marcado como NO AUTORIZADO.");
-      window.location.href = "/Modules/Usuario/CrearPT.html";
     });
+
+    // --- FUNCIONALIDAD PARA BOTONES DEL MODAL DE CONFIRMACIÓN DE NO AUTORIZAR ---
+    const modalConfirmarNoAutorizar = document.getElementById("modalConfirmarNoAutorizar");
+    if (modalConfirmarNoAutorizar) {
+      // Botón Cancelar
+      const btnCancelarConfirmarNo = modalConfirmarNoAutorizar.querySelector("#btnCancelarConfirmarNo");
+      if (btnCancelarConfirmarNo) {
+        btnCancelarConfirmarNo.addEventListener("click", function () {
+          modalConfirmarNoAutorizar.style.display = "none";
+        });
+      }
+      
+      // Botón No Autorizar (rojo)
+      const btnConfirmarNoAutorizar = modalConfirmarNoAutorizar.querySelector("#btnConfirmarNoAutorizar");
+      if (btnConfirmarNoAutorizar) {
+        btnConfirmarNoAutorizar.addEventListener("click", function () {
+          modalConfirmarNoAutorizar.style.display = "none";
+          const modalComentario = document.getElementById("modalComentario");
+          if (modalComentario) {
+            modalComentario.style.display = "flex";
+            const ta = document.getElementById("comentarioNoAutorizar");
+            if (ta) ta.value = "";
+          }
+        });
+      }
+    }
+
+    // Lógica para cerrar/cancelar el modal de comentario
+    const btnCancelarComentario = document.getElementById("btnCancelarComentario");
+    if (btnCancelarComentario) {
+      btnCancelarComentario.addEventListener("click", function () {
+        const modal = document.getElementById("modalComentario");
+        if (modal) modal.style.display = "none";
+      });
+    }
+
+    // Lógica para guardar el comentario y actualizar estatus a No Autorizado
+    const btnGuardarComentario = document.getElementById("btnGuardarComentario");
+    if (btnGuardarComentario) {
+      btnGuardarComentario.addEventListener("click", async function () {
+        const comentario = document.getElementById("comentarioNoAutorizar").value.trim();
+        const params = new URLSearchParams(window.location.search);
+        const idPermiso = params.get("id") || window.idPermisoActual;
+        
+        if (!comentario) {
+          alert("Debes escribir un comentario.");
+          return;
+        }
+        if (!idPermiso) {
+          alert("No se pudo obtener el ID del permiso.");
+          return;
+        }
+        
+        try {
+          // Obtener id_estatus y actualizar a no autorizado
+          let idEstatus = null;
+          const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
+          if (respEstatus.ok) {
+            const permisoData = await respEstatus.json();
+            idEstatus = permisoData.id_estatus || (permisoData.data && permisoData.data.id_estatus);
+          }
+          
+          if (idEstatus) {
+            await fetch("/api/estatus/no_autorizado", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ id_estatus: idEstatus }),
+            });
+            
+            await fetch("/api/estatus/comentario", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ id_estatus: idEstatus, comentario }),
+            });
+          }
+          
+          // Cerrar el modal y mostrar mensaje de éxito
+          const modal = document.getElementById("modalComentario");
+          if (modal) modal.style.display = "none";
+          alert("Permiso rechazado correctamente.");
+          window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
+        } catch (err) {
+          alert("Error al rechazar el permiso.");
+          console.error("Error al rechazar:", err);
+        }
+      });
+    }
   }
 });
-// --- Lógica para el botón "Autorizar" SOLO ACTUALIZA ESTATUS (no envía datos adicionales) ---
+// --- Lógica para el botón "Autorizar" con modal de confirmación (igual que PT6/PT7) ---
 document.addEventListener("DOMContentLoaded", function () {
   const btnAutorizar = document.getElementById("btn-guardar-campos");
   if (btnAutorizar) {
-    btnAutorizar.addEventListener("click", async function (e) {
+    btnAutorizar.addEventListener("click", function (e) {
       e.preventDefault();
-      // Leer el id del permiso de la URL
-      const params = new URLSearchParams(window.location.search);
-      const idPermiso = params.get("id") || window.idPermisoActual;
-      if (!idPermiso) {
-        alert("No se pudo obtener el ID del permiso.");
+      
+      // Validar supervisor seleccionado
+      const responsableInput = document.getElementById("responsable-aprobador");
+      const supervisor = responsableInput ? responsableInput.value.trim() : "";
+      if (!supervisor) {
+        alert("Debes seleccionar un supervisor antes de autorizar.");
+        if (responsableInput) responsableInput.focus();
         return;
       }
-
-      // Consultar el id_estatus desde permisos_trabajo
-      let idEstatus = null;
-      try {
-        const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
-        if (respEstatus.ok) {
-          const permisoData = await respEstatus.json();
-          idEstatus =
-            permisoData.id_estatus ||
-            (permisoData.data && permisoData.data.id_estatus);
+      
+      // Mostrar modal de confirmación de autorización
+      const modalConfirmarAutorizar = document.getElementById("modalConfirmarAutorizar");
+      if (modalConfirmarAutorizar) {
+        // Rellenar datos del modal
+        try {
+          const params = new URLSearchParams(window.location.search);
+          const idPermiso = params.get("id") || window.idPermisoActual;
+          
+          document.getElementById("modal-permit-id").textContent = 
+            document.getElementById("prefijo-label")?.textContent?.trim() || idPermiso || "-";
+          document.getElementById("modal-permit-type").textContent = 
+            document.getElementById("activity-type-label")?.textContent || "Permiso de Trabajo en Altura/Izaje";
+          document.getElementById("modal-solicitante").textContent = 
+            document.getElementById("nombre-solicitante-label")?.textContent || "-";
+          document.getElementById("modal-departamento").textContent = 
+            document.getElementById("plant-label")?.textContent || "-";
+        } catch (err) {
+          console.warn("No se pudieron rellenar los campos del modal:", err);
         }
-      } catch (err) {
-        console.error("Error al consultar id_estatus:", err);
+        
+        modalConfirmarAutorizar.style.display = "flex";
+      } else {
+        // Fallback: ejecutar autorización directamente si no hay modal
+        ejecutarAutorizacionSupervisorPT8();
       }
-      if (!idEstatus) {
-        alert("No se pudo obtener el estatus del permiso.");
-        return;
-      }
-
-      // Actualizar el estatus a 'activo' (solo eso)
-      try {
-        await fetch("/api/estatus/activo", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ id_estatus: idEstatus }),
-        });
-      } catch (err) {
-        console.error("Error al actualizar estatus activo:", err);
-        alert("Error al actualizar el estatus del permiso.");
-        return;
-      }
-
-      // Mostrar modal de confirmación o redirigir
-      alert("Permiso autorizado exitosamente.");
-      window.location.href = "/Modules/Usuario/CrearPT.html";
+    });
+  }
+  
+  // Botón "Continuar" dentro del modal de confirmación
+  const btnConfirmarAutorizar = document.getElementById("btnConfirmarAutorizar");
+  if (btnConfirmarAutorizar) {
+    btnConfirmarAutorizar.addEventListener("click", function () {
+      const modal = document.getElementById("modalConfirmarAutorizar");
+      if (modal) modal.style.display = "none";
+      ejecutarAutorizacionSupervisorPT8();
+    });
+  }
+  
+  // Botón "Cancelar" dentro del modal de confirmación
+  const btnCancelarConfirmar = document.getElementById("btnCancelarConfirmar");
+  if (btnCancelarConfirmar) {
+    btnCancelarConfirmar.addEventListener("click", function () {
+      const modal = document.getElementById("modalConfirmarAutorizar");
+      if (modal) modal.style.display = "none";
     });
   }
 });
+
+// Función para ejecutar la autorización de PT8 supervisor
+async function ejecutarAutorizacionSupervisorPT8() {
+  // 1. Obtener datos necesarios
+  const params = new URLSearchParams(window.location.search);
+  const idPermiso = params.get("id") || window.idPermisoActual;
+  const responsableInput = document.getElementById("responsable-aprobador");
+  const operadorInput = document.getElementById("responsable-aprobador2");
+  const supervisor = responsableInput ? responsableInput.value.trim() : "";
+  const categoria = operadorInput ? operadorInput.value.trim() : "";
+
+  // 2. Validaciones básicas
+  if (!idPermiso) {
+    alert("No se pudo obtener el ID del permiso.");
+    return;
+  }
+  if (!supervisor) {
+    alert("Debes seleccionar un supervisor.");
+    if (responsableInput) responsableInput.focus();
+    return;
+  }
+
+  try {
+    // 3. Generar timestamp para autorización supervisor
+    const nowSupervisor = new Date();
+    const year = nowSupervisor.getFullYear();
+    const month = String(nowSupervisor.getMonth() + 1).padStart(2, "0");
+    const day = String(nowSupervisor.getDate()).padStart(2, "0");
+    const hours = String(nowSupervisor.getHours()).padStart(2, "0");
+    const minutes = String(nowSupervisor.getMinutes()).padStart(2, "0");
+    const seconds = String(nowSupervisor.getSeconds()).padStart(2, "0");
+    const milliseconds = String(nowSupervisor.getMilliseconds()).padStart(3, "0");
+    const fechaHoraAutorizacionSupervisor = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}`;
+    
+    console.log("[AUTORIZAR SUPERVISOR PT8] Timestamp generado (hora local):", fechaHoraAutorizacionSupervisor);
+
+    // 4. Actualizar supervisor y categoría en autorizaciones
+    await fetch("/api/autorizaciones/supervisor-categoria", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id_permiso: idPermiso,
+        supervisor: supervisor,
+        categoria: categoria,
+        fecha_hora_supervisor: fechaHoraAutorizacionSupervisor,
+      }),
+    });
+
+    // 5. Consultar id_estatus
+    let idEstatus = null;
+    const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
+    if (respEstatus.ok) {
+      const permisoData = await respEstatus.json();
+      idEstatus = permisoData.id_estatus || (permisoData.data && permisoData.data.id_estatus);
+    }
+
+    // 6. Actualizar estatus a "activo"
+    if (idEstatus) {
+      await fetch("/api/estatus/activo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id_estatus: idEstatus }),
+      });
+    }
+
+    // 7. Mostrar modal de confirmación de autorización exitosa
+    const confirmationModal = document.getElementById("confirmation-modal");
+    if (confirmationModal) {
+      confirmationModal.style.display = "flex";
+    }
+    
+    // 8. Mostrar número de permiso en el modal
+    const permitNumber = document.getElementById("generated-permit");
+    const displayedPrefijo = document.getElementById("prefijo-label")?.textContent?.trim() || idPermiso;
+    if (permitNumber) {
+      permitNumber.textContent = displayedPrefijo;
+    }
+
+    // 9. Configurar redirección al cerrar modal
+    const modalClose = document.getElementById("modal-close-btn");
+    if (modalClose) {
+      modalClose.onclick = function () {
+        window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
+      };
+    } else {
+      // Fallback: redirección automática después de 3 segundos
+      setTimeout(() => {
+        window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
+      }, 3000);
+    }
+    
+  } catch (err) {
+    alert("Error al autorizar el permiso. Revisa la consola para más detalles.");
+    console.error("[DEPURACIÓN] Error al autorizar PT8 supervisor:", err);
+  }
+}
 document.addEventListener("DOMContentLoaded", function () {
   // --- INICIALIZACIÓN DE LOGOS ---
   function inicializarLogos() {
@@ -523,7 +725,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnSalir = document.getElementById("btn-salir-nuevo");
   if (btnSalir) {
     btnSalir.addEventListener("click", function () {
-      window.location.href = "/Modules/Usuario/CrearPT.html";
+      window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
     });
   }
 });

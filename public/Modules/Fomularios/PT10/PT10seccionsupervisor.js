@@ -109,16 +109,37 @@ document.addEventListener("DOMContentLoaded", function () {
       // Mostrar modal de confirmación de NO autorización
       const modal = document.getElementById("modalConfirmarNoAutorizar");
       if (modal) {
-        modal.style.display = "flex";
-        
-        // Actualizar información en el modal (el ID del permiso)
-        const params = new URLSearchParams(window.location.search);
-        const idPermiso = params.get("id");
-        const permisoIdSpan = document.getElementById("modal-permit-id-no");
-        
-        if (permisoIdSpan && idPermiso) {
-          permisoIdSpan.textContent = idPermiso;
+        // Rellenar datos del modal de no autorización
+        try {
+          const params = new URLSearchParams(window.location.search);
+          const idPermiso = params.get("id") || window.idPermisoActual;
+          
+          const noModalPermitId = modal.querySelector("#modal-permit-id-no, [id*='permit-id']");
+          const noModalPermitType = modal.querySelector("#modal-permit-type-no, [id*='permit-type']");
+          const noModalSolicitante = modal.querySelector("#modal-solicitante-no, [id*='solicitante']");
+          const noModalDepartamento = modal.querySelector("#modal-departamento-no, [id*='departamento']");
+          
+          if (noModalPermitId) {
+            noModalPermitId.textContent = 
+              document.getElementById("prefijo-label")?.textContent?.trim() || idPermiso || "-";
+          }
+          if (noModalPermitType) {
+            noModalPermitType.textContent = 
+              document.getElementById("activity-type-label")?.textContent || "Permiso de Trabajo de Excavación";
+          }
+          if (noModalSolicitante) {
+            noModalSolicitante.textContent = 
+              document.getElementById("nombre-solicitante-label")?.textContent || "-";
+          }
+          if (noModalDepartamento) {
+            noModalDepartamento.textContent = 
+              document.getElementById("plant-label")?.textContent || "-";
+          }
+        } catch (err) {
+          console.warn("No se pudieron rellenar los campos del modal de no autorización:", err);
         }
+        
+        modal.style.display = "flex";
       } else {
         console.warn("Modal de confirmación de NO autorización no encontrado");
         alert("No se puede mostrar la confirmación. Verifique la interfaz.");
@@ -216,6 +237,32 @@ document.addEventListener("DOMContentLoaded", function () {
           return;
         }
 
+        // Generar timestamp para registro del rechazo
+        const nowSupervisor = new Date();
+        const year = nowSupervisor.getFullYear();
+        const month = String(nowSupervisor.getMonth() + 1).padStart(2, "0");
+        const day = String(nowSupervisor.getDate()).padStart(2, "0");
+        const hours = String(nowSupervisor.getHours()).padStart(2, "0");
+        const minutes = String(nowSupervisor.getMinutes()).padStart(2, "0");
+        const seconds = String(nowSupervisor.getSeconds()).padStart(2, "0");
+        const milliseconds = String(nowSupervisor.getMilliseconds()).padStart(3, "0");
+        const fechaHoraRechazoSupervisor = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}`;
+        
+        console.log("[RECHAZAR SUPERVISOR PT10] Timestamp generado (hora local):", fechaHoraRechazoSupervisor);
+
+        // Actualizar supervisor y categoría en autorizaciones antes del rechazo
+        const categoriaInput = document.getElementById("responsable-aprobador2");
+        await fetch("/api/autorizaciones/supervisor-categoria", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id_permiso: idPermiso,
+            supervisor: supervisorNombre,
+            categoria: categoriaInput?.value?.trim() || "",
+            fecha_hora_supervisor: fechaHoraRechazoSupervisor,
+          }),
+        });
+
         // Guardar el comentario
         const respComentario = await fetch("/api/estatus/comentario", {
           method: "POST",
@@ -248,7 +295,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         alert("Permiso rechazado exitosamente con comentario guardado.");
-        window.location.href = "/Modules/Usuario/CrearPT.html";
+        window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
 
       } catch (err) {
         console.error("Error al rechazar permiso:", err);
@@ -282,16 +329,24 @@ document.addEventListener("DOMContentLoaded", function () {
       // Mostrar modal de confirmación de autorización
       const modal = document.getElementById("modalConfirmarAutorizar");
       if (modal) {
-        modal.style.display = "flex";
-        
-        // Actualizar información en el modal (el ID del permiso)
-        const params = new URLSearchParams(window.location.search);
-        const idPermiso = params.get("id");
-        const permisoIdSpan = document.getElementById("modal-permit-id");
-        
-        if (permisoIdSpan && idPermiso) {
-          permisoIdSpan.textContent = idPermiso;
+        // Rellenar datos del modal
+        try {
+          const params = new URLSearchParams(window.location.search);
+          const idPermiso = params.get("id") || window.idPermisoActual;
+          
+          document.getElementById("modal-permit-id").textContent = 
+            document.getElementById("prefijo-label")?.textContent?.trim() || idPermiso || "-";
+          document.getElementById("modal-permit-type").textContent = 
+            document.getElementById("activity-type-label")?.textContent || "Permiso de Trabajo de Excavación";
+          document.getElementById("modal-solicitante").textContent = 
+            document.getElementById("nombre-solicitante-label")?.textContent || "-";
+          document.getElementById("modal-departamento").textContent = 
+            document.getElementById("plant-label")?.textContent || "-";
+        } catch (err) {
+          console.warn("No se pudieron rellenar los campos del modal:", err);
         }
+        
+        modal.style.display = "flex";
       } else {
         console.warn("Modal de confirmación de autorización no encontrado");
         alert("No se puede mostrar la confirmación. Verifique la interfaz.");
@@ -354,30 +409,68 @@ document.addEventListener("DOMContentLoaded", function () {
           return;
         }
 
-        // Obtener el supervisor seleccionado para el registro
-        const supervisorNombre = supervisorInput ? supervisorInput.value.trim() : "";
+        // Generar timestamp para autorización supervisor
+        const nowSupervisor = new Date();
+        const year = nowSupervisor.getFullYear();
+        const month = String(nowSupervisor.getMonth() + 1).padStart(2, "0");
+        const day = String(nowSupervisor.getDate()).padStart(2, "0");
+        const hours = String(nowSupervisor.getHours()).padStart(2, "0");
+        const minutes = String(nowSupervisor.getMinutes()).padStart(2, "0");
+        const seconds = String(nowSupervisor.getSeconds()).padStart(2, "0");
+        const milliseconds = String(nowSupervisor.getMilliseconds()).padStart(3, "0");
+        const fechaHoraAutorizacionSupervisor = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}`;
+        
+        console.log("[AUTORIZAR SUPERVISOR PT10] Timestamp generado (hora local):", fechaHoraAutorizacionSupervisor);
 
-        // Actualizar el estatus a 'activo' e incluir el supervisor
-        const respActivo = await fetch("/api/estatus/activo", {
-          method: "POST",
+        // Actualizar supervisor y categoría en autorizaciones
+        await fetch("/api/autorizaciones/supervisor-categoria", {
+          method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ 
-            id_estatus: idEstatus,
-            supervisor: supervisorNombre 
+          body: JSON.stringify({
+            id_permiso: idPermiso,
+            supervisor: supervisorInput.value.trim(),
+            categoria: categoriaInput.value.trim(),
+            fecha_hora_supervisor: fechaHoraAutorizacionSupervisor,
           }),
         });
 
-        if (!respActivo.ok) {
-          throw new Error("Error al actualizar estatus activo");
-        }
+        // Actualizar el estatus a 'activo'
+        await fetch("/api/estatus/activo", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id_estatus: idEstatus }),
+        });
 
-        // Cerrar modal y mostrar éxito
+        // Cerrar modal de confirmación
         if (modal) {
           modal.style.display = "none";
         }
         
-        alert("Permiso autorizado exitosamente.");
-        window.location.href = "/Modules/Usuario/CrearPT.html";
+        // Mostrar modal de confirmación de autorización exitosa
+        const confirmationModal = document.getElementById("confirmation-modal");
+        if (confirmationModal) {
+          confirmationModal.style.display = "flex";
+        }
+        
+        // Mostrar número de permiso en el modal
+        const permitNumber = document.getElementById("generated-permit");
+        const displayedPrefijo = document.getElementById("prefijo-label")?.textContent?.trim() || idPermiso;
+        if (permitNumber) {
+          permitNumber.textContent = displayedPrefijo;
+        }
+
+        // Configurar redirección al cerrar modal
+        const modalClose = document.getElementById("modal-close-btn");
+        if (modalClose) {
+          modalClose.onclick = function () {
+            window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
+          };
+        } else {
+          // Fallback: redirección automática después de 3 segundos
+          setTimeout(() => {
+            window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
+          }, 3000);
+        }
         
       } catch (err) {
         console.error("Error al autorizar permiso:", err);
@@ -800,7 +893,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnSalir = document.getElementById("btn-salir-nuevo");
   if (btnSalir) {
     btnSalir.addEventListener("click", function () {
-      window.location.href = "/Modules/Usuario/CrearPT.html";
+      window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
     });
   }
 

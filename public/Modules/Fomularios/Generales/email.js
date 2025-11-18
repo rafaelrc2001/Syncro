@@ -10,7 +10,7 @@ window.n8nFormHandler = async function () {
     5: "PT Fuego",
     6: "PT Electrico",
     7: "PT Radiactivas",
-    8: "PT Cesta",
+    8: "PT de Izaje con Hiab, Grúa.",
     9: "PT Grúa",
     10: "PT Excavacion",
     // Agrega más si tienes más tipos

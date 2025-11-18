@@ -397,9 +397,15 @@ if (idPermiso) {
           "identifico_equipo_respuesta",
           respuestaTexto(permiso.identifico_equipo)
         );
+
+        function mostrarVerificacion(valor) {
+          if (valor === "SI") return "si";
+          if (valor === "NO") return "no";
+          return "-";
+        }
         setText(
           "verifico_identifico_equipo",
-          permiso.verifico_identifico_equipo === "SI" ? "si" : "no"
+          mostrarVerificacion(permiso.verifico_identifico_equipo)
         );
 
         setText(
@@ -408,7 +414,7 @@ if (idPermiso) {
         );
         setText(
           "verifico_fuera_operacion_desenergizado",
-          permiso.verifico_fuera_operacion_desenergizado === "SI" ? "si" : "no"
+          mostrarVerificacion(permiso.verifico_fuera_operacion_desenergizado)
         );
 
         setText(
@@ -417,7 +423,7 @@ if (idPermiso) {
         );
         setText(
           "verifico_candado_etiqueta",
-          permiso.verifico_candado_etiqueta === "SI" ? "si" : "no"
+          mostrarVerificacion(permiso.verifico_candado_etiqueta)
         );
 
         setText(
@@ -426,7 +432,7 @@ if (idPermiso) {
         );
         setText(
           "verifico_suspender_adyacentes",
-          permiso.verifico_suspender_adyacentes === "SI" ? "si" : "no"
+          mostrarVerificacion(permiso.verifico_suspender_adyacentes)
         );
 
         setText(
@@ -435,7 +441,7 @@ if (idPermiso) {
         );
         setText(
           "verifico_area_limpia_libre_obstaculos",
-          permiso.verifico_area_limpia_libre_obstaculos === "SI" ? "si" : "no"
+          mostrarVerificacion(permiso.verifico_area_limpia_libre_obstaculos)
         );
 
         setText(
@@ -444,7 +450,7 @@ if (idPermiso) {
         );
         setText(
           "verifico_libranza_electrica",
-          permiso.verifico_libranza_electrica === "SI" ? "si" : "no"
+          mostrarVerificacion(permiso.verifico_libranza_electrica)
         );
 
         // --- Mapear explícitamente los mismos campos que en supervisor ---

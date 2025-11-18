@@ -1290,8 +1290,8 @@ document.addEventListener("DOMContentLoaded", () => {
           const hora = document.getElementById("start-time")?.value || "";
           const fecha = document.getElementById("permit-date")?.value || "";
           // Usar el campo start-time para hora_inicio, igual que otros formularios
-          const hora_inicio = fecha && hora ? `${fecha} ${hora}` : (fecha ? `${fecha} 00:00` : hora);
-          
+          const hora_inicio =
+            document.getElementById("start-time")?.value || "08:00";
           const duracionInicio =
             document.getElementById("duracion-inicio")?.value || "";
 
@@ -1360,7 +1360,8 @@ document.addEventListener("DOMContentLoaded", () => {
             document.querySelector('input[name="sobre-ruedas"]:checked')
               ?.value || "";
           const especificacion_sobre_ruedas =
-            document.getElementById("otros-elementos-sobre-ruedas")?.value || "";
+            document.getElementById("otros-elementos-sobre-ruedas")?.value ||
+            "";
           const utiliza_plumin_si =
             document.querySelector('input[name="se-utiliza-plumin"]:checked')
               ?.value || "";
@@ -1387,11 +1388,12 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("relacion-carga-trabajo")?.value || "";
 
           // Comprobaciones (checkboxes)
-          const asentamiento = document.getElementById("asentamiento-check")?.checked
+          const asentamiento = document.getElementById("asentamiento-check")
+            ?.checked
             ? "si"
             : "no";
           // Definir campos faltantes para evitar ReferenceError
-          
+
           const nombre_operador =
             document.getElementById("nombre-operador")?.value || "";
           const empresa_operador =
@@ -1407,8 +1409,7 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("permit-date")?.value || "";
           const vigencia_licencia =
             document.getElementById("vigencia")?.value || "";
-          const tipo_licencia =
-            document.getElementById("tipo")?.value || "";
+          const tipo_licencia = document.getElementById("tipo")?.value || "";
           const comentarios_operador =
             document.getElementById("comentarios")?.value || "";
           // --- Definición de variables PT Izaje ---
@@ -1459,16 +1460,22 @@ document.addEventListener("DOMContentLoaded", () => {
           const calzado = document.getElementById("calzado-check")?.checked
             ? "si"
             : "no";
-          const extension_gatos_check = document.getElementById("extension-gatos-check")?.checked
+          const extension_gatos_check = document.getElementById(
+            "extension-gatos-check"
+          )?.checked
             ? "si"
             : "no";
-          const nivelacion = document.getElementById("nivelacion-check")?.checked
+          const nivelacion = document.getElementById("nivelacion-check")
+            ?.checked
             ? "si"
             : "no";
-          const contrapeso_check = document.getElementById("contrapeso-check")?.checked
+          const contrapeso_check = document.getElementById("contrapeso-check")
+            ?.checked
             ? "si"
             : "no";
-          const sector_trabajo_check = document.getElementById("sector-trabajo-check")?.checked
+          const sector_trabajo_check = document.getElementById(
+            "sector-trabajo-check"
+          )?.checked
             ? "si"
             : "no";
           const comprobado_por =
@@ -1663,11 +1670,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
           // CONDICIONES DE ELEVACIÓN
           // Capturar checkboxes de condiciones de elevación
-          const asentamiento = document.querySelector('input[name="asentamiento"]:checked') ? "SI" : "NO";
-          const calzado = document.querySelector('input[name="calzado"]:checked') ? "SI" : "NO";
-          const nivelacion = document.querySelector('input[name="nivelacion"]:checked') ? "SI" : "NO";
-          const ext_gatos = document.querySelector('input[name="ext-gatos"]:checked') ? "SI" : "NO";
-          
+          const asentamiento = document.querySelector(
+            'input[name="asentamiento"]:checked'
+          )
+            ? "SI"
+            : "NO";
+          const calzado = document.querySelector(
+            'input[name="calzado"]:checked'
+          )
+            ? "SI"
+            : "NO";
+          const nivelacion = document.querySelector(
+            'input[name="nivelacion"]:checked'
+          )
+            ? "SI"
+            : "NO";
+          const ext_gatos = document.querySelector(
+            'input[name="ext-gatos"]:checked'
+          )
+            ? "SI"
+            : "NO";
+
           const condicion = ""; // Puedes concatenar los checks activos si lo necesitas
           const especificacion_ext_gatos =
             document.getElementById("se-utiliza-plumin")?.value || "";
@@ -1707,19 +1730,43 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("permit-date")?.value || "";
 
           // MEDIDAS DE SEGURIDAD PREVIAS - Capturar checkboxes correctamente
-          const mascaras_escape_cesta = document.querySelector('input[name="mascaras-escape"][type="checkbox"]')?.checked ? "si" : "no";
-          const especificacion_mascaras = document.getElementById("mascaras-escape")?.value || "";
-          
-          const equipo_proteccion_cesta = document.querySelector('input[name="equipo-proteccion"][type="checkbox"]')?.checked ? "si" : "no";
-          const especificacion_equipo_proteccion = document.getElementById("equipo-proteccion")?.value || "";
-          
-          const equipo_contra_incendios_cesta = document.querySelector('input[name="equipo-contra-incendios"][type="checkbox"]')?.checked ? "si" : "no";
-          const especificacion_equipo_incendios = document.getElementById("equipo-contra-incendios")?.value || "";
-          
-          const final_carrera_cesta = document.querySelector('input[name="final-carrera"][type="checkbox"]')?.checked ? "si" : "no";
-          
-          const otras_medidas_cesta = document.querySelector('input[name="otras-medidas"][type="checkbox"]')?.checked ? "si" : "no";
-          const especificacion_otras_medidas_cesta = document.getElementById("otras-medidas")?.value || "";
+          const mascaras_escape_cesta = document.querySelector(
+            'input[name="mascaras-escape"][type="checkbox"]'
+          )?.checked
+            ? "si"
+            : "no";
+          const especificacion_mascaras =
+            document.getElementById("mascaras-escape")?.value || "";
+
+          const equipo_proteccion_cesta = document.querySelector(
+            'input[name="equipo-proteccion"][type="checkbox"]'
+          )?.checked
+            ? "si"
+            : "no";
+          const especificacion_equipo_proteccion =
+            document.getElementById("equipo-proteccion")?.value || "";
+
+          const equipo_contra_incendios_cesta = document.querySelector(
+            'input[name="equipo-contra-incendios"][type="checkbox"]'
+          )?.checked
+            ? "si"
+            : "no";
+          const especificacion_equipo_incendios =
+            document.getElementById("equipo-contra-incendios")?.value || "";
+
+          const final_carrera_cesta = document.querySelector(
+            'input[name="final-carrera"][type="checkbox"]'
+          )?.checked
+            ? "si"
+            : "no";
+
+          const otras_medidas_cesta = document.querySelector(
+            'input[name="otras-medidas"][type="checkbox"]'
+          )?.checked
+            ? "si"
+            : "no";
+          const especificacion_otras_medidas_cesta =
+            document.getElementById("otras-medidas")?.value || "";
 
           // OBSERVACIONES
           const observaciones_generales_cesta =
@@ -1959,40 +2006,58 @@ document.addEventListener("DOMContentLoaded", () => {
           const medidas_excavacion =
             document.getElementById("medidas-excavacion")?.value || "";
           // Medidas adicionales (checkboxes)
-          const medida_herramienta_antichispa =
-            document.querySelector(
-              'input[name="medida-herramienta-antichispa"]'
-            )?.checked ? "SI" : "NO";
-          const medida_guantes_dielectrico =
-            document.querySelector('input[name="medida-guantes-dielectrico"]')
-              ?.checked ? "SI" : "NO";
-          const medida_epp_especial =
-            document.querySelector('input[name="medida-epp-especial"]')
-              ?.checked ? "SI" : "NO";
-          const medida_otros_lineas =
-            document.querySelector('input[name="medida-otros-lineas"]')
-              ?.checked ? "SI" : "NO";
+          const medida_herramienta_antichispa = document.querySelector(
+            'input[name="medida-herramienta-antichispa"]'
+          )?.checked
+            ? "SI"
+            : "NO";
+          const medida_guantes_dielectrico = document.querySelector(
+            'input[name="medida-guantes-dielectrico"]'
+          )?.checked
+            ? "SI"
+            : "NO";
+          const medida_epp_especial = document.querySelector(
+            'input[name="medida-epp-especial"]'
+          )?.checked
+            ? "SI"
+            : "NO";
+          const medida_otros_lineas = document.querySelector(
+            'input[name="medida-otros-lineas"]'
+          )?.checked
+            ? "SI"
+            : "NO";
           const otros_medidas_lineas =
             document.getElementById("otros-medidas-lineas")?.value || "";
 
           // Medidas Adicionales (checkboxes)
-          const medida_bloqueo_fisico =
-            document.getElementById("medida-bloqueo-fisico")?.checked ? "SI" : "NO";
+          const medida_bloqueo_fisico = document.getElementById(
+            "medida-bloqueo-fisico"
+          )?.checked
+            ? "SI"
+            : "NO";
           const bloqueo_fisico_detalle =
             document.getElementById("bloqueo-fisico-detalle")?.value || "";
-          const medida_drenar_limpiar =
-            document.querySelector('input[name="medida-drenar-limpiar"]')
-              ?.checked ? "SI" : "NO";
-          const medida_atmosfera_inerte =
-            document.querySelector('input[name="medida-atmosfera-inerte"]')
-              ?.checked ? "SI" : "NO";
-          const medida_vigilante =
-            document.getElementById("medida-vigilante")?.checked ? "SI" : "NO";
+          const medida_drenar_limpiar = document.querySelector(
+            'input[name="medida-drenar-limpiar"]'
+          )?.checked
+            ? "SI"
+            : "NO";
+          const medida_atmosfera_inerte = document.querySelector(
+            'input[name="medida-atmosfera-inerte"]'
+          )?.checked
+            ? "SI"
+            : "NO";
+          const medida_vigilante = document.getElementById("medida-vigilante")
+            ?.checked
+            ? "SI"
+            : "NO";
           const vigilante_detalle =
             document.getElementById("vigilante-detalle")?.value || "";
-          const medida_otras_adicionales =
-            document.getElementById("medida-otras-adicionales")?.checked ?
-            "SI" : "NO";
+          const medida_otras_adicionales = document.getElementById(
+            "medida-otras-adicionales"
+          )?.checked
+            ? "SI"
+            : "NO";
           const otras_adicionales_detalle =
             document.getElementById("otras-adicionales-detalle")?.value || "";
 

@@ -411,7 +411,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnSalir = document.getElementById("btn-salir-nuevo");
   if (btnSalir) {
     btnSalir.addEventListener("click", function () {
-      window.location.href = "/Modules/Usuario/CrearPT.html";
+      window.location.href = "../../JefeSeguridad/JefeSeguridad.html";
     });
   }
 
@@ -883,7 +883,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Cerrar el modal y mostrar mensaje de éxito
         modalCerrarPermiso.style.display = "none";
         alert(mensajeExito);
-        window.location.href = "/Modules/Usuario/CrearPT.html";
+        window.location.href = "../../JefeSeguridad/JefeSeguridad.html";
       } catch (err) {
         console.error("Error completo:", err);
         alert("Error al guardar el comentario de cierre o actualizar estatus.");

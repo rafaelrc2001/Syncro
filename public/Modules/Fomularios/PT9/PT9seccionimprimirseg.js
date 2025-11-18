@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   // --- FUNCION DE MAPEADO PARA VISTA-PT9 (Cesta) ---
-    function mostrarDatosImprimirPT9(general) {
+  function mostrarDatosImprimirPT9(general) {
     // Bloque: Datos Generales (encabezado del formulario) usando los mismos IDs que el HTML (como en PT8)
     setText("start-time-label", general.hora_inicio);
     setText("fecha-label", general.fecha);
@@ -216,7 +216,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnSalir = document.getElementById("btn-salir-nuevo");
   if (btnSalir) {
     btnSalir.addEventListener("click", function () {
-      window.location.href = "/Modules/Usuario/CrearPT.html";
+      window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
     });
   }
 
@@ -688,7 +688,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Cerrar el modal y mostrar mensaje de éxito
         modalCerrarPermiso.style.display = "none";
         alert(mensajeExito);
-        window.location.href = "/Modules/Usuario/CrearPT.html";
+        window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
       } catch (err) {
         console.error("Error completo:", err);
         alert("Error al guardar el comentario de cierre o actualizar estatus.");

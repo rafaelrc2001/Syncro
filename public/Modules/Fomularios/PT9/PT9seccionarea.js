@@ -17,33 +17,48 @@ document.addEventListener("DOMContentLoaded", function () {
         try {
           const params = new URLSearchParams(window.location.search);
           const idPermiso = params.get("id") || window.idPermisoActual;
-          
+
           // Buscar elementos del modal de no autorización y rellenarlos
-          const noModalPermitId = noModal.querySelector("#modal-permit-id-no, [id*='permit-id']");
-          const noModalPermitType = noModal.querySelector("#modal-permit-type-no, [id*='permit-type']");
-          const noModalSolicitante = noModal.querySelector("#modal-solicitante-no, [id*='solicitante']");
-          const noModalDepartamento = noModal.querySelector("#modal-departamento-no, [id*='departamento']");
-          
+          const noModalPermitId = noModal.querySelector(
+            "#modal-permit-id-no, [id*='permit-id']"
+          );
+          const noModalPermitType = noModal.querySelector(
+            "#modal-permit-type-no, [id*='permit-type']"
+          );
+          const noModalSolicitante = noModal.querySelector(
+            "#modal-solicitante-no, [id*='solicitante']"
+          );
+          const noModalDepartamento = noModal.querySelector(
+            "#modal-departamento-no, [id*='departamento']"
+          );
+
           if (noModalPermitId) {
-            noModalPermitId.textContent = 
-              document.getElementById("prefijo-label")?.textContent?.trim() || idPermiso || "-";
+            noModalPermitId.textContent =
+              document.getElementById("prefijo-label")?.textContent?.trim() ||
+              idPermiso ||
+              "-";
           }
           if (noModalPermitType) {
-            noModalPermitType.textContent = 
-              document.getElementById("activity-type-label")?.textContent || "Permiso de Trabajo con Cesta";
+            noModalPermitType.textContent =
+              document.getElementById("activity-type-label")?.textContent ||
+              "Permiso de Trabajo con Cesta";
           }
           if (noModalSolicitante) {
-            noModalSolicitante.textContent = 
-              document.getElementById("nombre-solicitante-label")?.textContent || "-";
+            noModalSolicitante.textContent =
+              document.getElementById("nombre-solicitante-label")
+                ?.textContent || "-";
           }
           if (noModalDepartamento) {
-            noModalDepartamento.textContent = 
+            noModalDepartamento.textContent =
               document.getElementById("plant-label")?.textContent || "-";
           }
         } catch (err) {
-          console.warn("No se pudieron rellenar los campos del modal de no autorización:", err);
+          console.warn(
+            "No se pudieron rellenar los campos del modal de no autorización:",
+            err
+          );
         }
-        
+
         noModal.style.display = "flex";
       } else {
         const modal = document.getElementById("modalComentario");
@@ -126,10 +141,16 @@ document.addEventListener("DOMContentLoaded", function () {
           const hours = String(nowRechazo.getHours()).padStart(2, "0");
           const minutes = String(nowRechazo.getMinutes()).padStart(2, "0");
           const seconds = String(nowRechazo.getSeconds()).padStart(2, "0");
-          const milliseconds = String(nowRechazo.getMilliseconds()).padStart(3, "0");
+          const milliseconds = String(nowRechazo.getMilliseconds()).padStart(
+            3,
+            "0"
+          );
           const fechaHoraRechazo = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}`;
 
-          console.log("[NO AUTORIZAR PT9] Timestamp generado:", fechaHoraRechazo);
+          console.log(
+            "[NO AUTORIZAR PT9] Timestamp generado:",
+            fechaHoraRechazo
+          );
 
           // Obtener id_estatus primero
           let idEstatus = null;
@@ -191,36 +212,46 @@ document.addEventListener("DOMContentLoaded", function () {
   if (btnAutorizar) {
     btnAutorizar.addEventListener("click", function (e) {
       e.preventDefault();
-      
+
       // Validar nombre del responsable antes de mostrar modal
       const responsableInput = document.getElementById("responsable-aprobador");
-      const responsable_area = responsableInput ? responsableInput.value.trim() : "";
+      const responsable_area = responsableInput
+        ? responsableInput.value.trim()
+        : "";
       if (!responsable_area) {
-        alert("Debes ingresar el nombre del responsable del área antes de autorizar.");
+        alert(
+          "Debes ingresar el nombre del responsable del área antes de autorizar."
+        );
         if (responsableInput) responsableInput.focus();
         return;
       }
-      
+
       // Mostrar modal de confirmación de autorización
-      const modalConfirmarAutorizar = document.getElementById("modalConfirmarAutorizar");
+      const modalConfirmarAutorizar = document.getElementById(
+        "modalConfirmarAutorizar"
+      );
       if (modalConfirmarAutorizar) {
         // Rellenar datos del modal
         try {
           const params = new URLSearchParams(window.location.search);
           const idPermiso = params.get("id") || window.idPermisoActual;
-          
-          document.getElementById("modal-permit-id").textContent = 
-            document.getElementById("prefijo-label")?.textContent?.trim() || idPermiso || "-";
-          document.getElementById("modal-permit-type").textContent = 
-            document.getElementById("activity-type-label")?.textContent || "Permiso de Trabajo con Cesta";
-          document.getElementById("modal-solicitante").textContent = 
-            document.getElementById("nombre-solicitante-label")?.textContent || "-";
-          document.getElementById("modal-departamento").textContent = 
+
+          document.getElementById("modal-permit-id").textContent =
+            document.getElementById("prefijo-label")?.textContent?.trim() ||
+            idPermiso ||
+            "-";
+          document.getElementById("modal-permit-type").textContent =
+            document.getElementById("activity-type-label")?.textContent ||
+            "Permiso de Trabajo con Cesta";
+          document.getElementById("modal-solicitante").textContent =
+            document.getElementById("nombre-solicitante-label")?.textContent ||
+            "-";
+          document.getElementById("modal-departamento").textContent =
             document.getElementById("plant-label")?.textContent || "-";
         } catch (err) {
           console.warn("No se pudieron rellenar los campos del modal:", err);
         }
-        
+
         modalConfirmarAutorizar.style.display = "flex";
       } else {
         // Fallback: ejecutar autorización directamente si no hay modal
@@ -228,9 +259,11 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
-  
+
   // Botón "Continuar" dentro del modal de confirmación
-  const btnConfirmarAutorizar = document.getElementById("btnConfirmarAutorizar");
+  const btnConfirmarAutorizar = document.getElementById(
+    "btnConfirmarAutorizar"
+  );
   if (btnConfirmarAutorizar) {
     btnConfirmarAutorizar.addEventListener("click", function () {
       const modal = document.getElementById("modalConfirmarAutorizar");
@@ -238,7 +271,7 @@ document.addEventListener("DOMContentLoaded", function () {
       ejecutarAutorizacionPT9();
     });
   }
-  
+
   // Botón "Cancelar" dentro del modal de confirmación
   const btnCancelarConfirmar = document.getElementById("btnCancelarConfirmar");
   if (btnCancelarConfirmar) {
@@ -256,7 +289,9 @@ async function ejecutarAutorizacionPT9() {
   const idPermiso = params.get("id") || window.idPermisoActual;
   const responsableInput = document.getElementById("responsable-aprobador");
   const operadorInput = document.getElementById("responsable-aprobador2");
-  const responsable_area = responsableInput ? responsableInput.value.trim() : "";
+  const responsable_area = responsableInput
+    ? responsableInput.value.trim()
+    : "";
   const operador_area = operadorInput ? operadorInput.value.trim() : "";
 
   // 2. Validaciones básicas
@@ -274,94 +309,154 @@ async function ejecutarAutorizacionPT9() {
   try {
     let idEstatus = null;
     console.log("[DEPURACIÓN PT9] Consultando permiso con ID:", idPermiso);
-    
+
     const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
-    console.log("[DEPURACIÓN PT9] Status de consulta permiso:", respEstatus.status);
-    
+    console.log(
+      "[DEPURACIÓN PT9] Status de consulta permiso:",
+      respEstatus.status
+    );
+
     if (respEstatus.ok) {
       const dataEstatus = await respEstatus.json();
       console.log("[DEPURACIÓN PT9] Datos completos del permiso:", dataEstatus);
-      
+
       // Intentar obtener id_estatus de diferentes estructuras posibles
       if (dataEstatus && dataEstatus.data && dataEstatus.data.id_estatus) {
         idEstatus = dataEstatus.data.id_estatus;
-        console.log("[DEPURACIÓN PT9] id_estatus encontrado en dataEstatus.data.id_estatus:", idEstatus);
+        console.log(
+          "[DEPURACIÓN PT9] id_estatus encontrado en dataEstatus.data.id_estatus:",
+          idEstatus
+        );
       } else if (dataEstatus && dataEstatus.id_estatus) {
         idEstatus = dataEstatus.id_estatus;
-        console.log("[DEPURACIÓN PT9] id_estatus encontrado en dataEstatus.id_estatus:", idEstatus);
-      } else if (dataEstatus && dataEstatus.general && dataEstatus.general.id_estatus) {
+        console.log(
+          "[DEPURACIÓN PT9] id_estatus encontrado en dataEstatus.id_estatus:",
+          idEstatus
+        );
+      } else if (
+        dataEstatus &&
+        dataEstatus.general &&
+        dataEstatus.general.id_estatus
+      ) {
         idEstatus = dataEstatus.general.id_estatus;
-        console.log("[DEPURACIÓN PT9] id_estatus encontrado en dataEstatus.general.id_estatus:", idEstatus);
+        console.log(
+          "[DEPURACIÓN PT9] id_estatus encontrado en dataEstatus.general.id_estatus:",
+          idEstatus
+        );
       } else {
-        console.error("[DEPURACIÓN PT9] No se encontró id_estatus en ninguna estructura. Estructura recibida:", Object.keys(dataEstatus || {}));
-        
+        console.error(
+          "[DEPURACIÓN PT9] No se encontró id_estatus en ninguna estructura. Estructura recibida:",
+          Object.keys(dataEstatus || {})
+        );
+
         // Intentar buscar id_estatus en cualquier lugar del objeto
-        function buscarIdEstatus(obj, path = '') {
+        function buscarIdEstatus(obj, path = "") {
           for (const key in obj) {
-            if (key === 'id_estatus' && obj[key]) {
-              console.log(`[DEPURACIÓN PT9] id_estatus encontrado en ${path}${key}:`, obj[key]);
+            if (key === "id_estatus" && obj[key]) {
+              console.log(
+                `[DEPURACIÓN PT9] id_estatus encontrado en ${path}${key}:`,
+                obj[key]
+              );
               return obj[key];
             }
-            if (typeof obj[key] === 'object' && obj[key] !== null) {
+            if (typeof obj[key] === "object" && obj[key] !== null) {
               const resultado = buscarIdEstatus(obj[key], `${path}${key}.`);
               if (resultado) return resultado;
             }
           }
           return null;
         }
-        
+
         idEstatus = buscarIdEstatus(dataEstatus);
       }
     } else {
-      console.error("[DEPURACIÓN PT9] Error HTTP al obtener permiso:", respEstatus.status, respEstatus.statusText);
-      alert(`Error al consultar el permiso: ${respEstatus.status} ${respEstatus.statusText}`);
+      console.error(
+        "[DEPURACIÓN PT9] Error HTTP al obtener permiso:",
+        respEstatus.status,
+        respEstatus.statusText
+      );
+      alert(
+        `Error al consultar el permiso: ${respEstatus.status} ${respEstatus.statusText}`
+      );
       return;
     }
 
     if (idEstatus) {
-      console.log("[DEPURACIÓN PT9] Actualizando estatus con id_estatus:", idEstatus);
+      console.log(
+        "[DEPURACIÓN PT9] Actualizando estatus con id_estatus:",
+        idEstatus
+      );
       try {
         const payloadEstatus = { id_estatus: idEstatus };
-        console.log("[DEPURACIÓN PT9] Payload para estatus/seguridad:", payloadEstatus);
-        
+        console.log(
+          "[DEPURACIÓN PT9] Payload para estatus/seguridad:",
+          payloadEstatus
+        );
+
         const respEstatus = await fetch("/api/estatus/seguridad", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payloadEstatus),
         });
-        
-        console.log("[DEPURACIÓN PT9] Status de respuesta:", respEstatus.status);
-        
+
+        console.log(
+          "[DEPURACIÓN PT9] Status de respuesta:",
+          respEstatus.status
+        );
+
         let data = {};
         try {
           data = await respEstatus.json();
           console.log("[DEPURACIÓN PT9] Respuesta del servidor:", data);
         } catch (e) {
-          console.error("[DEPURACIÓN PT9] Error al parsear JSON de respuesta:", e);
+          console.error(
+            "[DEPURACIÓN PT9] Error al parsear JSON de respuesta:",
+            e
+          );
         }
-        
+
         if (!respEstatus.ok) {
-          console.error("[DEPURACIÓN PT9] Error HTTP en estatus/seguridad:", respEstatus.status, data);
-          alert(`Error al actualizar estatus: ${data.message || data.error || 'Error desconocido'}`);
+          console.error(
+            "[DEPURACIÓN PT9] Error HTTP en estatus/seguridad:",
+            respEstatus.status,
+            data
+          );
+          alert(
+            `Error al actualizar estatus: ${
+              data.message || data.error || "Error desconocido"
+            }`
+          );
           return;
         }
-        
+
         if (data.success === false) {
           console.error("[DEPURACIÓN PT9] API reportó fallo:", data);
-          alert(`Error al actualizar estatus: ${data.message || data.error || 'Error desconocido'}`);
+          alert(
+            `Error al actualizar estatus: ${
+              data.message || data.error || "Error desconocido"
+            }`
+          );
           return;
         }
-        
-        console.log("[DEPURACIÓN PT9] Estatus actualizado exitosamente a 'A espera de Seguridad'");
-        
+
+        console.log(
+          "[DEPURACIÓN PT9] Estatus actualizado exitosamente a 'A espera de Seguridad'"
+        );
       } catch (err) {
-        console.error("[DEPURACIÓN PT9] Excepción al actualizar estatus de seguridad:", err);
+        console.error(
+          "[DEPURACIÓN PT9] Excepción al actualizar estatus de seguridad:",
+          err
+        );
         alert(`Error de conexión al actualizar estatus: ${err.message}`);
         return;
       }
     } else {
-      console.error("[DEPURACIÓN PT9] No se obtuvo id_estatus para actualizar estatus.");
-      alert("No se pudo obtener el ID de estatus del permiso. No se puede autorizar.");
+      console.error(
+        "[DEPURACIÓN PT9] No se obtuvo id_estatus para actualizar estatus."
+      );
+      alert(
+        "No se pudo obtener el ID de estatus del permiso. No se puede autorizar."
+      );
       return;
     }
 
@@ -375,8 +470,11 @@ async function ejecutarAutorizacionPT9() {
     const seconds = String(nowArea.getSeconds()).padStart(2, "0");
     const milliseconds = String(nowArea.getMilliseconds()).padStart(3, "0");
     const fechaHoraAutorizacionArea = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}`;
-    
-    console.log("[AUTORIZAR PT9] Timestamp generado (hora local):", fechaHoraAutorizacionArea);
+
+    console.log(
+      "[AUTORIZAR PT9] Timestamp generado (hora local):",
+      fechaHoraAutorizacionArea
+    );
 
     // 5. Registrar autorización en base de datos
     await fetch("/api/autorizaciones/area", {
@@ -395,10 +493,12 @@ async function ejecutarAutorizacionPT9() {
     if (confirmationModal) {
       confirmationModal.style.display = "flex";
     }
-    
+
     // 7. Mostrar número de permiso en el modal
     const permitNumber = document.getElementById("generated-permit");
-    const displayedPrefijo = document.getElementById("prefijo-label")?.textContent?.trim() || idPermiso;
+    const displayedPrefijo =
+      document.getElementById("prefijo-label")?.textContent?.trim() ||
+      idPermiso;
     if (permitNumber) {
       permitNumber.textContent = displayedPrefijo;
     }
@@ -415,9 +515,10 @@ async function ejecutarAutorizacionPT9() {
         window.location.href = "/Modules/Usuario/AutorizarPT.html";
       }, 3000);
     }
-    
   } catch (err) {
-    alert("Error al autorizar el permiso. Revisa la consola para más detalles.");
+    alert(
+      "Error al autorizar el permiso. Revisa la consola para más detalles."
+    );
     console.error("[DEPURACIÓN] Error al autorizar PT9:", err);
   }
 }
@@ -638,7 +739,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnSalir = document.getElementById("btn-salir-nuevo");
   if (btnSalir) {
     btnSalir.addEventListener("click", function () {
-      window.location.href = "/Modules/Usuario/CrearPT.html";
+      window.location.href = "/Modules/Usuario/AutorizarPT.html";
     });
   }
 
@@ -1110,7 +1211,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Cerrar el modal y mostrar mensaje de éxito
         modalCerrarPermiso.style.display = "none";
         alert(mensajeExito);
-        window.location.href = "/Modules/Usuario/CrearPT.html";
+        window.location.href = "/Modules/Usuario/AutorizarPT.html";
       } catch (err) {
         console.error("Error completo:", err);
         alert("Error al guardar el comentario de cierre o actualizar estatus.");

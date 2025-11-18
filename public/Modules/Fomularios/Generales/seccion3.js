@@ -222,7 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const maxRetries = 8; // ~8 segundos máximo
       const delay = 1000; // 1 segundo entre intentos
 
-      async function checkParticipantsInserted() {
+      async function checkParticipantsInsertedAndPopulate() {
         try {
           const checkResp = await fetch(
             `/api/ast-participan/estatus/${id_estatus}`
@@ -233,7 +233,12 @@ document.addEventListener("DOMContentLoaded", () => {
             Array.isArray(checkJson.data) &&
             checkJson.data.length >= participants.length
           ) {
-            // Ya están insertados, avanzar
+            // Llama a poblarSelectParticipantes antes de avanzar
+            if (typeof window.poblarSelectParticipantes === "function") {
+              await window.poblarSelectParticipantes();
+            } else if (typeof poblarSelectParticipantes === "function") {
+              await poblarSelectParticipantes();
+            }
             btnSaveParticipants.removeEventListener(
               "click",
               handleInsertAndNavigate
@@ -242,7 +247,7 @@ document.addEventListener("DOMContentLoaded", () => {
             goToNextSection();
           } else if (retries < maxRetries) {
             retries++;
-            setTimeout(checkParticipantsInserted, delay);
+            setTimeout(checkParticipantsInsertedAndPopulate, delay);
           } else {
             showNotification(
               "error",
@@ -252,7 +257,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (err) {
           if (retries < maxRetries) {
             retries++;
-            setTimeout(checkParticipantsInserted, delay);
+            setTimeout(checkParticipantsInsertedAndPopulate, delay);
           } else {
             showNotification(
               "error",
@@ -262,7 +267,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
 
-      checkParticipantsInserted();
+      checkParticipantsInsertedAndPopulate();
     } catch (error) {
       console.error("Error:", error);
       showNotification(

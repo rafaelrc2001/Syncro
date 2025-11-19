@@ -30,7 +30,7 @@ router.get("/departamento/nombre", async (req, res) => {
 router.get("/sucursales", async (req, res) => {
   try {
     const result = await db.query(
-      "SELECT id_sucursal, nombre FROM sucursales ORDER BY nombre ASC"
+      "SELECT id_sucursal, nombre FROM sucursales WHERE visibilidad = true ORDER BY nombre ASC"
     );
     res.json(result.rows);
   } catch (err) {
@@ -44,8 +44,15 @@ router.get("/sucursales", async (req, res) => {
 // Endpoint para obtener todas las áreas
 router.get("/areas", async (req, res) => {
   try {
+    // Solo áreas visibles y con relaciones visibles
     const result = await db.query(
-      "SELECT id_area, nombre FROM areas ORDER BY nombre ASC"
+      `SELECT a.id_area, a.nombre
+      FROM areas a
+      INNER JOIN departamentos d ON a.id_departamento = d.id_departamento AND d.visibilidad = true
+      -- JOIN eliminado: no existe relación directa entre áreas y sucursales
+      -- JOIN eliminado: no existe relación directa entre áreas y categorias_seguridad
+      WHERE a.visibilidad = true
+      ORDER BY a.nombre ASC`
     );
     res.json(result.rows);
   } catch (err) {
@@ -80,7 +87,7 @@ router.get("/participantes", async (req, res) => {
 router.get("/departamentos", async (req, res) => {
   try {
     const result = await db.query(
-      "SELECT id_departamento, nombre FROM departamentos ORDER BY nombre ASC"
+      "SELECT id_departamento, nombre FROM departamentos WHERE visibilidad = true ORDER BY nombre ASC"
     );
     res.json(result.rows);
   } catch (err) {
@@ -125,8 +132,13 @@ router.get("/correo-area", async (req, res) => {
 // Endpoint para obtener todos los supervisores
 router.get("/supervisores", async (req, res) => {
   try {
+    // Solo supervisores visibles y con relaciones visibles
     const result = await db.query(
-      "SELECT id_supervisor, nombre FROM supervisores ORDER BY nombre ASC"
+      `SELECT s.id_supervisor, s.nombre
+      FROM supervisores s
+      INNER JOIN departamentos d ON s.id_departamento = d.id_departamento AND d.visibilidad = true
+      WHERE s.visibilidad = true
+      ORDER BY s.nombre ASC`
     );
     res.json(result.rows);
   } catch (err) {
@@ -141,7 +153,7 @@ router.get("/supervisores", async (req, res) => {
 router.get("/categorias", async (req, res) => {
   try {
     const result = await db.query(
-      "SELECT id_categoria, nombre FROM categorias_seguridad ORDER BY nombre ASC"
+      "SELECT id_categoria, nombre FROM categorias_seguridad WHERE visibilidad = true ORDER BY nombre ASC"
     );
     res.json(result.rows);
   } catch (err) {

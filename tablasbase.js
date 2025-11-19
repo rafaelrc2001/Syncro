@@ -4,7 +4,7 @@ const db = require("./database");
 exports.getCategorias = async (req, res) => {
   try {
     const result = await db.query(
-      "SELECT id_categoria as id, nombre FROM categorias_seguridad"
+      "SELECT id_categoria as id, nombre FROM categorias_seguridad WHERE visibilidad = true"
     );
     res.json(result.rows);
   } catch (err) {
@@ -94,15 +94,13 @@ exports.hideCategoria = async (req, res) => {
 // ================= AREAS =================
 exports.getAreas = async (req, res) => {
   try {
-    const result = await db.query("SELECT id_area as id, nombre FROM areas");
-    res.json(result.rows);
-  } catch (err) {
-    console.error("Error al obtener áreas:", err);
-    res.status(500).json({ error: "Error al obtener las áreas" });
-  }
-  try {
     const result = await db.query(
-      "SELECT id_area as id, nombre, id_departamento FROM areas"
+      `SELECT a.id_area as id, a.nombre, a.id_departamento
+       FROM areas a
+       INNER JOIN departamentos d ON a.id_departamento = d.id_departamento AND d.visibilidad = true
+       INNER JOIN categorias_seguridad c ON a.id_categoria = c.id_categoria AND c.visibilidad = true
+       INNER JOIN sucursales s ON a.id_sucursal = s.id_sucursal AND s.visibilidad = true
+       WHERE a.visibilidad = true`
     );
     res.json(result.rows);
   } catch (err) {
@@ -255,7 +253,7 @@ exports.hideArea = async (req, res) => {
 exports.getSucursales = async (req, res) => {
   try {
     const result = await db.query(
-      "SELECT id_sucursal as id, nombre FROM sucursales"
+      "SELECT id_sucursal as id, nombre FROM sucursales WHERE visibilidad = true"
     );
     res.json(result.rows);
   } catch (err) {
@@ -404,7 +402,7 @@ exports.hideSucursal = async (req, res) => {
 exports.getDepartamentos = async (req, res) => {
   try {
     const result = await db.query(
-      "SELECT id_departamento as id, nombre, correo, extension FROM departamentos"
+      "SELECT id_departamento as id, nombre, correo, extension FROM departamentos WHERE visibilidad = true"
     );
     res.json(result.rows);
   } catch (err) {
@@ -589,7 +587,7 @@ exports.hideDepartamento = async (req, res) => {
 exports.getSupervisores = async (req, res) => {
   try {
     const result = await db.query(
-      "SELECT id_supervisor as id, nombre, correo, extension, usuario FROM supervisores"
+      "SELECT id_supervisor as id, nombre, correo, extension, usuario FROM supervisores WHERE visibilidad = true"
     );
     res.json(result.rows);
   } catch (err) {

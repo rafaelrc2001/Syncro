@@ -1,288 +1,336 @@
 // URL base de la API
-const API_URL = '/api';
+const API_URL = "/api";
 
 // Función para mostrar notificaciones
-function showNotification(message, type = 'success') {
-    alert(message); // Muestra un popup simple como en los otros archivos
+function showNotification(message, type = "success") {
+  alert(message); // Muestra un popup simple como en los otros archivos
 }
 
 // Variables para paginación y búsqueda
 let categoriasGlobal = [];
 let paginaActual = 1;
 const registrosPorPagina = 5;
-let terminoBusqueda = '';
-const paginacionContainer = document.getElementById('paginacion-container');
-const searchInput = document.getElementById('search-bar');
+let terminoBusqueda = "";
+const paginacionContainer = document.getElementById("paginacion-container");
+const searchInput = document.getElementById("search-bar");
 
 // Función para cargar las categorías desde la API
 async function loadCategorias() {
-    try {
-        const response = await fetch(`${API_URL}/categorias`);
-        if (!response.ok) throw new Error('Error al cargar las categorías');
-        categoriasGlobal = await response.json();
-        renderizarTablaCategorias();
-    } catch (error) {
-        console.error('Error al cargar categorías:', error);
-        showNotification('Error al cargar las categorías', 'error');
-    }
+  try {
+    const response = await fetch(`${API_URL}/categorias`);
+    if (!response.ok) throw new Error("Error al cargar las categorías");
+    categoriasGlobal = await response.json();
+    renderizarTablaCategorias();
+  } catch (error) {
+    console.error("Error al cargar categorías:", error);
+    showNotification("Error al cargar las categorías", "error");
+  }
 }
 
 // Event listener para búsqueda
 if (searchInput) {
-    searchInput.addEventListener('input', function() {
-        terminoBusqueda = searchInput.value;
-        paginaActual = 1;
-        renderizarTablaCategorias();
-    });
+  searchInput.addEventListener("input", function () {
+    terminoBusqueda = searchInput.value;
+    paginaActual = 1;
+    renderizarTablaCategorias();
+  });
 }
 
 // Renderizar tabla con paginación y búsqueda
 function renderizarTablaCategorias() {
-    // Si usas módulos, importa filtrarPorBusqueda y obtenerPagina
-    // const filtradas = filtrarPorBusqueda(categoriasGlobal, terminoBusqueda, ['nombre']);
-    // const pagina = obtenerPagina(filtradas, paginaActual, registrosPorPagina);
-    // ---
-    // Como ejemplo sin import, replico la lógica aquí:
-    let filtradas = categoriasGlobal;
-    if (terminoBusqueda) {
-        const lowerTerm = terminoBusqueda.toLowerCase();
-        filtradas = categoriasGlobal.filter(cat =>
-            (cat.nombre || '').toLowerCase().includes(lowerTerm)
-        );
-    }
-    const inicio = (paginaActual - 1) * registrosPorPagina;
-    const pagina = filtradas.slice(inicio, inicio + registrosPorPagina);
+  // Si usas módulos, importa filtrarPorBusqueda y obtenerPagina
+  // const filtradas = filtrarPorBusqueda(categoriasGlobal, terminoBusqueda, ['nombre']);
+  // const pagina = obtenerPagina(filtradas, paginaActual, registrosPorPagina);
+  // ---
+  // Como ejemplo sin import, replico la lógica aquí:
+  let filtradas = categoriasGlobal;
+  if (terminoBusqueda) {
+    const lowerTerm = terminoBusqueda.toLowerCase();
+    filtradas = categoriasGlobal.filter((cat) =>
+      (cat.nombre || "").toLowerCase().includes(lowerTerm)
+    );
+  }
+  const inicio = (paginaActual - 1) * registrosPorPagina;
+  const pagina = filtradas.slice(inicio, inicio + registrosPorPagina);
 
-    const tableBody = document.querySelector('#table-body');
-    tableBody.innerHTML = '';
-    pagina.forEach(categoria => {
-        const row = document.createElement('tr');
-        row.dataset.id = categoria.id;
-        row.innerHTML = `
+  const tableBody = document.querySelector("#table-body");
+  tableBody.innerHTML = "";
+  pagina.forEach((categoria) => {
+    const row = document.createElement("tr");
+    row.dataset.id = categoria.id;
+    row.innerHTML = `
             <td>${categoria.nombre}</td>
             <td class="actions-cell">
                 <button class="action-btn edit" data-id="${categoria.id}"><i class="ri-edit-line"></i></button>
                 <button class="action-btn delete" data-id="${categoria.id}"><i class="ri-delete-bin-line"></i></button>
             </td>
         `;
-        tableBody.appendChild(row);
-    });
-    // Actualizar contador
-    document.getElementById('records-count').textContent = filtradas.length;
-    // Renderizar paginación
-    renderizarPaginacion(filtradas.length);
+    tableBody.appendChild(row);
+  });
+  // Actualizar contador
+  document.getElementById("records-count").textContent = filtradas.length;
+  // Renderizar paginación
+  renderizarPaginacion(filtradas.length);
 }
 
 // Renderizar controles de paginación
 function renderizarPaginacion(totalRegistros) {
-    if (!paginacionContainer) return;
-    paginacionContainer.innerHTML = '';
-    const totalPaginas = Math.ceil(totalRegistros / registrosPorPagina);
-    if (totalPaginas <= 1) return;
-    // Botón anterior
-    const btnPrev = document.createElement('button');
-    btnPrev.className = 'pagination-btn';
-    btnPrev.innerHTML = '<i class="ri-arrow-left-s-line"></i>';
-    btnPrev.disabled = paginaActual === 1;
-    btnPrev.addEventListener('click', () => {
-        if (paginaActual > 1) {
-            paginaActual--;
-            renderizarTablaCategorias();
-        }
-    });
-    paginacionContainer.appendChild(btnPrev);
-    // Botones de página
-    for (let i = 1; i <= totalPaginas; i++) {
-        const btn = document.createElement('button');
-        btn.className = 'pagination-btn' + (i === paginaActual ? ' active' : '');
-        btn.textContent = i;
-        btn.addEventListener('click', () => {
-            paginaActual = i;
-            renderizarTablaCategorias();
-        });
-        paginacionContainer.appendChild(btn);
+  if (!paginacionContainer) return;
+  paginacionContainer.innerHTML = "";
+  const totalPaginas = Math.ceil(totalRegistros / registrosPorPagina);
+  if (totalPaginas <= 1) return;
+  // Botón anterior
+  const btnPrev = document.createElement("button");
+  btnPrev.className = "pagination-btn";
+  btnPrev.innerHTML = '<i class="ri-arrow-left-s-line"></i>';
+  btnPrev.disabled = paginaActual === 1;
+  btnPrev.addEventListener("click", () => {
+    if (paginaActual > 1) {
+      paginaActual--;
+      renderizarTablaCategorias();
     }
-    // Botón siguiente
-    const btnNext = document.createElement('button');
-    btnNext.className = 'pagination-btn';
-    btnNext.innerHTML = '<i class="ri-arrow-right-s-line"></i>';
-    btnNext.disabled = paginaActual === totalPaginas || totalPaginas === 0;
-    btnNext.addEventListener('click', () => {
-        if (paginaActual < totalPaginas) {
-            paginaActual++;
-            renderizarTablaCategorias();
-        }
+  });
+  paginacionContainer.appendChild(btnPrev);
+  // Botones de página
+  for (let i = 1; i <= totalPaginas; i++) {
+    const btn = document.createElement("button");
+    btn.className = "pagination-btn" + (i === paginaActual ? " active" : "");
+    btn.textContent = i;
+    btn.addEventListener("click", () => {
+      paginaActual = i;
+      renderizarTablaCategorias();
     });
-    paginacionContainer.appendChild(btnNext);
+    paginacionContainer.appendChild(btn);
+  }
+  // Botón siguiente
+  const btnNext = document.createElement("button");
+  btnNext.className = "pagination-btn";
+  btnNext.innerHTML = '<i class="ri-arrow-right-s-line"></i>';
+  btnNext.disabled = paginaActual === totalPaginas || totalPaginas === 0;
+  btnNext.addEventListener("click", () => {
+    if (paginaActual < totalPaginas) {
+      paginaActual++;
+      renderizarTablaCategorias();
+    }
+  });
+  paginacionContainer.appendChild(btnNext);
 }
 
 // Función para crear o actualizar una categoría
 async function saveCategoria(id, nombre) {
-    const url = id ? `${API_URL}/categorias/${id}` : `${API_URL}/categorias`;
-    const method = id ? 'PUT' : 'POST';
-    
-    try {
-        const response = await fetch(url, {
-            method: method,
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ nombre })
-        });
-        
-        if (!response.ok) throw new Error('Error al guardar la categoría');
-        
-        const result = await response.json();
-        showNotification(`Categoría ${id ? 'actualizada' : 'creada'} exitosamente`);
-        loadCategorias(); // Recargar la lista
-        return result;
-        
-    } catch (error) {
-        console.error('Error al guardar categoría:', error);
-        showNotification('Error al guardar la categoría', 'error');
-        throw error;
-    }
+  const url = id ? `${API_URL}/categorias/${id}` : `${API_URL}/categorias`;
+  const method = id ? "PUT" : "POST";
+
+  try {
+    const response = await fetch(url, {
+      method: method,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ nombre }),
+    });
+
+    if (!response.ok) throw new Error("Error al guardar la categoría");
+
+    const result = await response.json();
+    showNotification(`Categoría ${id ? "actualizada" : "creada"} exitosamente`);
+    loadCategorias(); // Recargar la lista
+    return result;
+  } catch (error) {
+    console.error("Error al guardar categoría:", error);
+    showNotification("Error al guardar la categoría", "error");
+    throw error;
+  }
 }
 
 // Función para eliminar una categoría
 async function deleteCategoria(id) {
-    try {
-        const response = await fetch(`${API_URL}/categorias/${id}`, {
-            method: 'DELETE'
-        });
-        
-        if (!response.ok) throw new Error('Error al eliminar la categoría');
-        
-        showNotification('Categoría eliminada exitosamente');
-        loadCategorias(); // Recargar la lista
-        
-    } catch (error) {
-        console.error('Error al eliminar categoría:', error);
-        showNotification('Error al eliminar la categoría', 'error');
-        throw error;
-    }
+  try {
+    const response = await fetch(`${API_URL}/categorias/${id}`, {
+      method: "DELETE",
+    });
+
+    if (!response.ok) throw new Error("Error al eliminar la categoría");
+
+    showNotification("Categoría eliminada exitosamente");
+    loadCategorias(); // Recargar la lista
+  } catch (error) {
+    console.error("Error al eliminar categoría:", error);
+    showNotification("Error al eliminar la categoría", "error");
+    throw error;
+  }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Elementos del DOM
-    const registerBtn = document.getElementById('register-categoria-btn');
-    const modal = document.getElementById('categoria-modal');
-    const closeModalBtn = document.querySelector('.close-modal');
-    const cancelBtn = document.querySelector('.cancel-btn');
-    const categoriaForm = document.getElementById('categoria-form');
-    let isEditing = false;
-    let currentId = null;
+document.addEventListener("DOMContentLoaded", function () {
+  // Elementos del DOM
+  const registerBtn = document.getElementById("register-categoria-btn");
+  const modal = document.getElementById("categoria-modal");
+  const closeModalBtn = document.querySelector(".close-modal");
+  const cancelBtn = document.querySelector(".cancel-btn");
+  const categoriaForm = document.getElementById("categoria-form");
+  let isEditing = false;
+  let currentId = null;
 
-    // Cargar categorías al iniciar
-    loadCategorias();
+  // Cargar categorías al iniciar
+  loadCategorias();
 
-    // Abrir modal para nueva categoría
-    if (registerBtn) {
-        registerBtn.addEventListener('click', function() {
-            isEditing = false;
-            currentId = null;
-            document.querySelector('.modal-header h3').innerHTML = '<i class="ri-list-check"></i> Registrar Nueva Categoría';
-            document.querySelector('.modal-body button[type="submit"]').innerHTML = '<i class="ri-save-line"></i> Registrar';
-            categoriaForm.reset();
-            modal.classList.add('active');
-        });
+  // Abrir modal para nueva categoría
+  if (registerBtn) {
+    registerBtn.addEventListener("click", function () {
+      isEditing = false;
+      currentId = null;
+      document.querySelector(".modal-header h3").innerHTML =
+        '<i class="ri-list-check"></i> Registrar Nueva Categoría';
+      document.querySelector('.modal-body button[type="submit"]').innerHTML =
+        '<i class="ri-save-line"></i> Registrar';
+      categoriaForm.reset();
+      modal.classList.add("active");
+    });
+  }
+
+  // Cerrar modal
+  function closeModal() {
+    modal.classList.remove("active");
+    categoriaForm.reset();
+  }
+
+  if (closeModalBtn) closeModalBtn.addEventListener("click", closeModal);
+  if (cancelBtn) cancelBtn.addEventListener("click", closeModal);
+
+  // Cerrar modal al hacer clic fuera
+  modal.addEventListener("click", function (e) {
+    if (e.target === modal) closeModal();
+  });
+
+  // Enviar formulario
+  if (categoriaForm) {
+    categoriaForm.addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const nombre = document.getElementById("categoria-name").value.trim();
+      if (!nombre) {
+        showNotification("El nombre de la categoría es requerido", "error");
+        return;
+      }
+
+      try {
+        await saveCategoria(currentId, nombre);
+        closeModal();
+      } catch (error) {
+        // El error ya se maneja en la función saveCategoria
+      }
+    });
+  }
+
+  // --- MODAL DE ADVERTENCIA PARA ELIMINAR CATEGORÍA ---
+  let idCategoriaAEliminar = null;
+  let deleteWarningModal = document.getElementById("delete-warning-modal");
+  let cancelDeleteBtn = document.getElementById("cancel-delete-btn");
+  let confirmDeleteBtn = document.getElementById("confirm-delete-btn");
+
+  if (!deleteWarningModal) {
+    deleteWarningModal = document.createElement("div");
+    deleteWarningModal.id = "delete-warning-modal";
+    deleteWarningModal.className = "modal";
+    deleteWarningModal.innerHTML = `
+          <div class="modal-content warning-modal-content">
+            <div class="modal-header warning-modal-header">
+              <h3><i class="ri-error-warning-line warning-icon"></i> Advertencia</h3>
+            </div>
+            <div class="modal-body warning-modal-body">
+              <p class="warning-text">
+                ¡Esta acción <b>no tiene vuelta atrás</b>!<br>¿Estás seguro de que deseas <span style='color:#c0392b;font-weight:bold;'>eliminar</span> este registro?
+              </p>
+            </div>
+            <div class="modal-footer warning-modal-footer">
+              <button id="cancel-delete-btn" class="cancel-btn warning-cancel">Cancelar</button>
+              <button id="confirm-delete-btn" class="delete-btn warning-delete">Eliminar</button>
+            </div>
+          </div>
+        `;
+    document.body.appendChild(deleteWarningModal);
+    cancelDeleteBtn = document.getElementById("cancel-delete-btn");
+    confirmDeleteBtn = document.getElementById("confirm-delete-btn");
+  }
+
+  if (cancelDeleteBtn) {
+    cancelDeleteBtn.addEventListener("click", function () {
+      deleteWarningModal.classList.remove("active");
+      idCategoriaAEliminar = null;
+    });
+  }
+  if (confirmDeleteBtn) {
+    confirmDeleteBtn.addEventListener("click", async function () {
+      if (idCategoriaAEliminar) {
+        await deleteCategoria(idCategoriaAEliminar);
+      }
+      deleteWarningModal.classList.remove("active");
+      idCategoriaAEliminar = null;
+    });
+  }
+
+  // Manejar clics en botones de editar y eliminar
+  document.addEventListener("click", async function (e) {
+    const editBtn = e.target.closest(".action-btn.edit");
+    const deleteBtn = e.target.closest(".action-btn.delete");
+
+    // Botón de editar
+    if (editBtn) {
+      e.preventDefault();
+      const row = editBtn.closest("tr");
+      currentId = row.dataset.id;
+      const categoriaName = row.querySelector("td:first-child").textContent;
+
+      document.getElementById("categoria-name").value = categoriaName;
+      document.querySelector(".modal-header h3").innerHTML =
+        '<i class="ri-edit-line"></i> Editar Categoría';
+      document.querySelector('.modal-body button[type="submit"]').innerHTML =
+        '<i class="ri-save-line"></i> Guardar Cambios';
+      modal.classList.add("active");
     }
 
-    // Cerrar modal
-    function closeModal() {
-        modal.classList.remove('active');
-        categoriaForm.reset();
+    // Botón de eliminar
+    if (deleteBtn) {
+      e.preventDefault();
+      const row = deleteBtn.closest("tr");
+      const id = row.dataset.id;
+      idCategoriaAEliminar = id;
+      deleteWarningModal.classList.add("active");
     }
+  });
 
-    if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
-    if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
+  // Update MenuJefe.js functionality for this page
+  const currentPath = window.location.pathname.toLowerCase();
+  const menuRoutes = {
+    dashboard: "/Modules/JefeSeguridad/Dash-Jefe.html",
+    "autorizar permisos": "/Modules/JefeSeguridad/JefeSeguridad.html",
+    área: "/Modules/JefeSeguridad/CrearArea.html",
+    categoria: "/Modules/JefeSeguridad/CrearCategoria.html",
+    sucursal: "/Modules/JefeSeguridad/CrearSucursal.html",
+    departamento: "/Modules/JefeSeguridad/CrearDepartamento.html",
+    supervisor: "/Modules/JefeSeguridad/CrearSupervisor.html",
+  };
 
-    // Cerrar modal al hacer clic fuera
-    modal.addEventListener('click', function(e) {
-        if (e.target === modal) closeModal();
-    });
+  // Mark active menu item
+  const menuItems = document.querySelectorAll(".sidebar-nav a");
+  menuItems.forEach((item) => {
+    const menuText = item.querySelector("span")?.textContent.toLowerCase();
+    if (!menuText) return;
 
-    // Enviar formulario
-    if (categoriaForm) {
-        categoriaForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const nombre = document.getElementById('categoria-name').value.trim();
-            if (!nombre) {
-                showNotification('El nombre de la categoría es requerido', 'error');
-                return;
-            }
-            
-            try {
-                await saveCategoria(currentId, nombre);
-                closeModal();
-            } catch (error) {
-                // El error ya se maneja en la función saveCategoria
-            }
-        });
+    if (
+      menuRoutes[menuText] &&
+      menuRoutes[menuText].toLowerCase() === currentPath
+    ) {
+      item.parentElement.classList.add("active");
+
+      // If it's a submenu, open the parent menu
+      const submenuItem = item.closest(".submenu");
+      if (submenuItem) {
+        const parentMenu = submenuItem.closest(".has-submenu");
+        if (parentMenu) {
+          parentMenu.classList.add("active");
+        }
+      }
     }
-
-    // Manejar clics en botones de editar y eliminar
-    document.addEventListener('click', async function(e) {
-        const editBtn = e.target.closest('.action-btn.edit');
-        const deleteBtn = e.target.closest('.action-btn.delete');
-        
-        // Botón de editar
-        if (editBtn) {
-            e.preventDefault();
-            const row = editBtn.closest('tr');
-            currentId = row.dataset.id;
-            const categoriaName = row.querySelector('td:first-child').textContent;
-            
-            document.getElementById('categoria-name').value = categoriaName;
-            document.querySelector('.modal-header h3').innerHTML = '<i class="ri-edit-line"></i> Editar Categoría';
-            document.querySelector('.modal-body button[type="submit"]').innerHTML = '<i class="ri-save-line"></i> Guardar Cambios';
-            modal.classList.add('active');
-        }
-        
-        // Botón de eliminar
-        if (deleteBtn) {
-            e.preventDefault();
-            if (confirm('¿Estás seguro que deseas eliminar esta categoría?')) {
-                const row = deleteBtn.closest('tr');
-                const id = row.dataset.id;
-                await deleteCategoria(id);
-                recordsCount.textContent = currentCount - 1;
-                
-                alert('Categoria eliminada exitosamente');
-            }
-        }
-    });
-
-    // Update MenuJefe.js functionality for this page
-    const currentPath = window.location.pathname.toLowerCase();
-    const menuRoutes = {
-        'dashboard': '/Modules/JefeSeguridad/Dash-Jefe.html',
-        'autorizar permisos': '/Modules/JefeSeguridad/JefeSeguridad.html',
-        'área': '/Modules/JefeSeguridad/CrearArea.html',
-        'categoria': '/Modules/JefeSeguridad/CrearCategoria.html',
-        'sucursal': '/Modules/JefeSeguridad/CrearSucursal.html',
-        'departamento': '/Modules/JefeSeguridad/CrearDepartamento.html',
-        'supervisor': '/Modules/JefeSeguridad/CrearSupervisor.html'
-    };
-
-    // Mark active menu item
-    const menuItems = document.querySelectorAll('.sidebar-nav a');
-    menuItems.forEach(item => {
-        const menuText = item.querySelector('span')?.textContent.toLowerCase();
-        if (!menuText) return;
-        
-        if (menuRoutes[menuText] && menuRoutes[menuText].toLowerCase() === currentPath) {
-            item.parentElement.classList.add('active');
-            
-            // If it's a submenu, open the parent menu
-            const submenuItem = item.closest('.submenu');
-            if (submenuItem) {
-                const parentMenu = submenuItem.closest('.has-submenu');
-                if (parentMenu) {
-                    parentMenu.classList.add('active');
-                }
-            }
-        }
-    });
+  });
 });

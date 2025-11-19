@@ -167,6 +167,34 @@
       </div>
     </div>
 
+    <!-- Modal de advertencia para eliminar -->
+    <!-- Modal de advertencia para eliminar -->
+    <div id="delete-warning-modal" class="modal" style="z-index: 9999">
+      <div class="modal-content warning-modal-content">
+        <div class="modal-header warning-modal-header">
+          <h3>
+            <i class="ri-error-warning-line warning-icon"></i> Advertencia
+          </h3>
+        </div>
+        <div class="modal-body warning-modal-body">
+          <p class="warning-text">
+            ¡Esta acción <b>no tiene vuelta atrás</b>!<br />¿Estás seguro de que
+            deseas
+            <span style="color: #c0392b; font-weight: bold">eliminar</span> este
+            registro?
+          </p>
+        </div>
+        <div class="modal-footer warning-modal-footer">
+          <button id="cancel-delete-btn" class="cancel-btn warning-cancel">
+            Cancelar
+          </button>
+          <button id="confirm-delete-btn" class="delete-btn warning-delete">
+            Eliminar
+          </button>
+        </div>
+      </div>
+    </div>
+
     <script src="/JS/jefe/MenuJefe.js"></script>
     <script src="/JS/jefe/crear-categoria.js"></script>
   </body>

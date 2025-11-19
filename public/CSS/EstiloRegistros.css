@@ -649,3 +649,86 @@ section.table-container-crud {
     }
 }
 
+
+
+
+ /* Modal de advertencia mejorado */
+ 
+ /* Modal de advertencia mejorado */
+ 
+ /* Modal de advertencia mejorado */
+ 
+ /* Modal de advertencia mejorado */
+
+ /* Modal de advertencia mejorado */
+      #delete-warning-modal .warning-modal-content {
+        max-width: 440px;
+        min-width: 340px;
+        background: #fff6f6;
+        border: 2.5px solid #c0392b;
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(192, 57, 43, 0.18);
+        padding: 0;
+        font-family: "Montserrat", "Roboto", Arial, sans-serif;
+      }
+      #delete-warning-modal .warning-modal-header {
+        background: #c0392b;
+        color: #fff;
+        border-radius: 14px 14px 0 0;
+        padding: 18px 24px 10px 24px;
+        display: flex;
+        align-items: center;
+      }
+      #delete-warning-modal .warning-icon {
+        color: #fff;
+        font-size: 2.1rem;
+        margin-right: 10px;
+        vertical-align: middle;
+      }
+      #delete-warning-modal .warning-modal-body {
+        padding: 24px 28px 10px 28px;
+        font-size: 1.15rem;
+        color: #b03a2e;
+        text-align: center;
+      }
+      #delete-warning-modal .warning-text {
+        font-size: 1.13rem;
+        line-height: 1.6;
+      }
+      #delete-warning-modal .warning-modal-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        padding: 18px 28px 18px 28px;
+        border-top: 1px solid #f5b7b1;
+        border-radius: 0 0 14px 14px;
+        background: #fff6f6;
+      }
+      #delete-warning-modal .warning-cancel {
+        background: #fff;
+        color: #c0392b;
+        border: 1.5px solid #c0392b;
+        border-radius: 6px;
+        padding: 8px 18px;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: background 0.2s, color 0.2s;
+      }
+      #delete-warning-modal .warning-cancel:hover {
+        background: #f9eaea;
+        color: #922b21;
+      }
+      #delete-warning-modal .warning-delete {
+        background: #c0392b;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 18px;
+        font-weight: 600;
+        font-size: 1rem;
+        box-shadow: 0 2px 8px rgba(192, 57, 43, 0.08);
+        transition: background 0.2s;
+      }
+      #delete-warning-modal .warning-delete:hover {
+        background: #922b21;
+      }

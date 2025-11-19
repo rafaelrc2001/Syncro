@@ -84,13 +84,13 @@ function formatHoraJefe(fecha) {
   if (!fecha) return "-";
   const d = new Date(fecha);
   if (isNaN(d)) return "-";
-  // Mostrar hora en UTC igual que en tabla-supervisor.js
-  let h = d.getUTCHours();
-  const m = d.getUTCMinutes().toString().padStart(2, "0");
-  const ampm = h >= 12 ? "PM" : "AM";
-  h = h % 12;
-  h = h ? h : 12;
-  return `${h}:${m} ${ampm} UTC`;
+  // Mostrar fecha y hora en UTC, formato: 19/11/2025, 13:19
+  const day = String(d.getUTCDate()).padStart(2, "0");
+  const month = String(d.getUTCMonth() + 1).padStart(2, "0");
+  const year = d.getUTCFullYear();
+  const hour = String(d.getUTCHours()).padStart(2, "0");
+  const min = String(d.getUTCMinutes()).padStart(2, "0");
+  return `${day}/${month}/${year}, ${hour}:${min}`;
 }
 
 function renderTablaPermisosJefe() {

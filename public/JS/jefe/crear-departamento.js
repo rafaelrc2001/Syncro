@@ -224,28 +224,19 @@ document.addEventListener("DOMContentLoaded", function () {
       if (idDepartamentoAEliminar) {
         try {
           const response = await fetch(
-            `${API_URL}/departamentos/${idDepartamentoAEliminar}`,
+            `${API_URL}/departamentos/hide/${idDepartamentoAEliminar}`,
             {
-              method: "DELETE",
+              method: "PUT",
             }
           );
           if (!response.ok) {
             const errorData = await response.json();
-            if (errorData.error && errorData.error.includes("relacion")) {
-              alert(
-                "No se puede eliminar el departamento porque tiene registros relacionados."
-              );
-            } else {
-              throw new Error(
-                errorData.error || "Error al eliminar el departamento"
-              );
-            }
-            deleteWarningModal.classList.remove("active");
-            idDepartamentoAEliminar = null;
-            return;
+            throw new Error(
+              errorData.error || "Error al eliminar el departamento"
+            );
           }
           await cargarDepartamentos();
-          alert("Departamento eliminado exitosamente");
+          alert("Departamento ocultado correctamente");
         } catch (error) {
           alert("Error al eliminar el departamento: " + error.message);
         }

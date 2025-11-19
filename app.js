@@ -110,6 +110,7 @@ app.get("/api/categorias", tablasBase.getCategorias);
 app.post("/api/categorias", tablasBase.createCategoria);
 app.put("/api/categorias/:id", tablasBase.updateCategoria);
 app.delete("/api/categorias/:id", tablasBase.deleteCategoria);
+app.put("/api/categorias/hide/:id", tablasBase.hideCategoria);
 
 // AREAS
 app.get("/api/areas", tablasBase.getAreas);
@@ -117,6 +118,7 @@ app.get("/api/areas/:id", tablasBase.getAreaById);
 app.post("/api/areas", tablasBase.createArea);
 app.put("/api/areas/:id", tablasBase.updateArea);
 app.delete("/api/areas/:id", tablasBase.deleteArea);
+app.put("/api/areas/hide/:id", tablasBase.hideArea);
 
 // SUCURSALES
 app.get("/api/sucursales", tablasBase.getSucursales);
@@ -124,6 +126,7 @@ app.get("/api/sucursales/:id", tablasBase.getSucursalById);
 app.post("/api/sucursales", tablasBase.createSucursal);
 app.put("/api/sucursales/:id", tablasBase.updateSucursal);
 app.delete("/api/sucursales/:id", tablasBase.deleteSucursal);
+app.put("/api/sucursales/hide/:id", tablasBase.hideSucursal);
 
 // DEPARTAMENTOS
 app.get("/api/departamentos", tablasBase.getDepartamentos);
@@ -131,6 +134,7 @@ app.get("/api/departamentos/:id", tablasBase.getDepartamentoById);
 app.post("/api/departamentos", tablasBase.createDepartamento);
 app.put("/api/departamentos/:id", tablasBase.updateDepartamento);
 app.delete("/api/departamentos/:id", tablasBase.deleteDepartamento);
+app.put("/api/departamentos/hide/:id", tablasBase.hideDepartamento);
 
 // SUPERVISORES
 app.get("/api/supervisores_base", tablasBase.getSupervisores);
@@ -138,6 +142,7 @@ app.get("/api/supervisores/:id", tablasBase.getSupervisorById);
 app.post("/api/supervisores", tablasBase.createSupervisor);
 app.put("/api/supervisores/:id", tablasBase.updateSupervisor);
 app.delete("/api/supervisores/:id", tablasBase.deleteSupervisor);
+app.put("/api/supervisores/hide/:id", tablasBase.hideSupervisor);
 
 app.get("/api/areas", tablasBase.getAreas);
 app.get("/api/areas/:id", tablasBase.getAreaById);

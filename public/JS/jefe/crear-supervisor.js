@@ -230,9 +230,9 @@ document.addEventListener("DOMContentLoaded", function () {
       if (idSupervisorAEliminar) {
         try {
           const response = await fetch(
-            `${API_URL}/supervisores/${idSupervisorAEliminar}`,
+            `${API_URL}/supervisores/hide/${idSupervisorAEliminar}`,
             {
-              method: "DELETE",
+              method: "PUT",
             }
           );
           if (!response.ok) {
@@ -242,7 +242,7 @@ document.addEventListener("DOMContentLoaded", function () {
             );
           }
           await cargarSupervisores();
-          alert("Supervisor eliminado exitosamente");
+          alert("Supervisor ocultado exitosamente");
         } catch (error) {
           alert("Error al eliminar el supervisor: " + error.message);
         }

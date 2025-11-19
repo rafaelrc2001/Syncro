@@ -281,15 +281,18 @@ document.addEventListener("DOMContentLoaded", function () {
     confirmDeleteBtn.addEventListener("click", async function () {
       if (idAreaAEliminar) {
         try {
-          const response = await fetch(`${API_URL}/areas/${idAreaAEliminar}`, {
-            method: "DELETE",
-          });
+          const response = await fetch(
+            `${API_URL}/areas/hide/${idAreaAEliminar}`,
+            {
+              method: "PUT",
+            }
+          );
           if (!response.ok) {
             const error = await response.json();
             throw new Error(error.error || "Error al eliminar el área");
           }
           await cargarAreas();
-          alert("Área eliminada correctamente");
+          alert("Área ocultada correctamente");
         } catch (error) {
           alert("Error al eliminar el área: " + error.message);
         }

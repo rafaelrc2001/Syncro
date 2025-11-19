@@ -56,13 +56,17 @@ function renderizarTablaCategorias() {
   const tableBody = document.querySelector("#table-body");
   tableBody.innerHTML = "";
   pagina.forEach((categoria) => {
+    const id =
+      categoria.id_categoria !== undefined
+        ? categoria.id_categoria
+        : categoria.id;
     const row = document.createElement("tr");
-    row.dataset.id = categoria.id;
+    row.dataset.id = id;
     row.innerHTML = `
             <td>${categoria.nombre}</td>
             <td class="actions-cell">
-                <button class="action-btn edit" data-id="${categoria.id}"><i class="ri-edit-line"></i></button>
-                <button class="action-btn delete" data-id="${categoria.id}"><i class="ri-delete-bin-line"></i></button>
+                <button class="action-btn edit" data-id="${id}"><i class="ri-edit-line"></i></button>
+                <button class="action-btn delete" data-id="${id}"><i class="ri-delete-bin-line"></i></button>
             </td>
         `;
     tableBody.appendChild(row);
@@ -143,20 +147,20 @@ async function saveCategoria(id, nombre) {
   }
 }
 
-// Función para eliminar una categoría
-async function deleteCategoria(id) {
+// Función para ocultar (hide) una categoría
+async function hideCategoria(id) {
   try {
-    const response = await fetch(`${API_URL}/categorias/${id}`, {
-      method: "DELETE",
+    const response = await fetch(`${API_URL}/categorias/hide/${id}`, {
+      method: "PUT",
     });
 
-    if (!response.ok) throw new Error("Error al eliminar la categoría");
+    if (!response.ok) throw new Error("Error al ocultar la categoría");
 
-    showNotification("Categoría eliminada exitosamente");
+    showNotification("Categoría ocultada exitosamente");
     loadCategorias(); // Recargar la lista
   } catch (error) {
-    console.error("Error al eliminar categoría:", error);
-    showNotification("Error al eliminar la categoría", "error");
+    console.error("Error al ocultar categoría:", error);
+    showNotification("Error al ocultar la categoría", "error");
     throw error;
   }
 }
@@ -239,12 +243,12 @@ document.addEventListener("DOMContentLoaded", function () {
             </div>
             <div class="modal-body warning-modal-body">
               <p class="warning-text">
-                ¡Esta acción <b>no tiene vuelta atrás</b>!<br>¿Estás seguro de que deseas <span style='color:#c0392b;font-weight:bold;'>eliminar</span> este registro?
+                ¡Esta acción <b>no tiene vuelta atrás</b>!<br>¿Estás seguro de que deseas <span style='color:#c0392b;font-weight:bold;'>ocultar</span> este registro?
               </p>
             </div>
             <div class="modal-footer warning-modal-footer">
               <button id="cancel-delete-btn" class="cancel-btn warning-cancel">Cancelar</button>
-              <button id="confirm-delete-btn" class="delete-btn warning-delete">Eliminar</button>
+              <button id="confirm-delete-btn" class="delete-btn warning-delete">Ocultar</button>
             </div>
           </div>
         `;
@@ -262,7 +266,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (confirmDeleteBtn) {
     confirmDeleteBtn.addEventListener("click", async function () {
       if (idCategoriaAEliminar) {
-        await deleteCategoria(idCategoriaAEliminar);
+        await hideCategoria(idCategoriaAEliminar);
       }
       deleteWarningModal.classList.remove("active");
       idCategoriaAEliminar = null;
@@ -289,7 +293,7 @@ document.addEventListener("DOMContentLoaded", function () {
       modal.classList.add("active");
     }
 
-    // Botón de eliminar
+    // Botón de ocultar (antes eliminar)
     if (deleteBtn) {
       e.preventDefault();
       const row = deleteBtn.closest("tr");

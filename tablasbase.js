@@ -1,14 +1,15 @@
-
-const db = require('./database');
+const db = require("./database");
 
 // ================= CATEGORIAS =================
 exports.getCategorias = async (req, res) => {
   try {
-    const result = await db.query('SELECT id_categoria as id, nombre FROM categorias_seguridad');
+    const result = await db.query(
+      "SELECT id_categoria as id, nombre FROM categorias_seguridad"
+    );
     res.json(result.rows);
   } catch (err) {
-    console.error('Error al obtener categorías:', err);
-    res.status(500).json({ error: 'Error al obtener las categorías' });
+    console.error("Error al obtener categorías:", err);
+    res.status(500).json({ error: "Error al obtener las categorías" });
   }
 };
 
@@ -16,13 +17,13 @@ exports.createCategoria = async (req, res) => {
   const { nombre } = req.body;
   try {
     const result = await db.query(
-      'INSERT INTO categorias_seguridad(nombre) VALUES($1) RETURNING id_categoria as id, nombre',
+      "INSERT INTO categorias_seguridad(nombre) VALUES($1) RETURNING id_categoria as id, nombre",
       [nombre]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
-    console.error('Error al crear categoría:', err);
-    res.status(500).json({ error: 'Error al crear la categoría' });
+    console.error("Error al crear categoría:", err);
+    res.status(500).json({ error: "Error al crear la categoría" });
   }
 };
 
@@ -31,89 +32,127 @@ exports.updateCategoria = async (req, res) => {
   const { nombre } = req.body;
   try {
     const result = await db.query(
-      'UPDATE categorias_seguridad SET nombre = $1 WHERE id_categoria = $2 RETURNING id_categoria as id, nombre',
+      "UPDATE categorias_seguridad SET nombre = $1 WHERE id_categoria = $2 RETURNING id_categoria as id, nombre",
       [nombre, id]
     );
     if (result.rowCount === 0) {
-      return res.status(404).json({ error: 'Categoría no encontrada' });
+      return res.status(404).json({ error: "Categoría no encontrada" });
     }
     res.json(result.rows[0]);
   } catch (err) {
-    console.error('Error al actualizar categoría:', err);
-    res.status(500).json({ error: 'Error al actualizar la categoría' });
+    console.error("Error al actualizar categoría:", err);
+    res.status(500).json({ error: "Error al actualizar la categoría" });
   }
 };
 
 exports.deleteCategoria = async (req, res) => {
   const { id } = req.params;
   try {
-    const result = await db.query('DELETE FROM categorias_seguridad WHERE id_categoria = $1 RETURNING *', [id]);
+    const result = await db.query(
+      "DELETE FROM categorias_seguridad WHERE id_categoria = $1 RETURNING *",
+      [id]
+    );
     if (result.rowCount === 0) {
-      return res.status(404).json({ error: 'Categoría no encontrada' });
+      return res.status(404).json({ error: "Categoría no encontrada" });
     }
-    res.json({ message: 'Categoría eliminada correctamente' });
+    res.json({ message: "Categoría eliminada correctamente" });
   } catch (err) {
-    console.error('Error al eliminar categoría:', err);
-    res.status(500).json({ error: 'Error al eliminar la categoría' });
+    console.error("Error al eliminar categoría:", err);
+    res.status(500).json({ error: "Error al eliminar la categoría" });
+  }
+};
+
+// "Eliminado lógico" de categoría: pone visibilidad en false
+exports.hideCategoria = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await db.query(
+      "UPDATE categorias_seguridad SET visibilidad = false WHERE id_categoria = $1 RETURNING id_categoria as id, nombre, visibilidad",
+      [id]
+    );
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: "Categoría no encontrada" });
+    }
+    res.json({
+      message: "Categoría ocultada correctamente",
+      updated: result.rows[0],
+    });
+  } catch (err) {
+    console.error("Error al eliminar categoría:", {
+      message: err.message,
+      code: err.code,
+      detail: err.detail,
+      stack: err.stack,
+    });
+    res.status(500).json({
+      error: "Error al eliminar la categoría",
+      details: err.message,
+    });
   }
 };
 
 // ================= AREAS =================
 exports.getAreas = async (req, res) => {
   try {
-    const result = await db.query('SELECT id_area as id, nombre FROM areas');
+    const result = await db.query("SELECT id_area as id, nombre FROM areas");
     res.json(result.rows);
   } catch (err) {
-    console.error('Error al obtener áreas:', err);
-    res.status(500).json({ error: 'Error al obtener las áreas' });
+    console.error("Error al obtener áreas:", err);
+    res.status(500).json({ error: "Error al obtener las áreas" });
   }
-    try {
-      const result = await db.query('SELECT id_area as id, nombre, id_departamento FROM areas');
-      res.json(result.rows);
-    } catch (err) {
-      console.error('Error al obtener áreas:', err);
-      res.status(500).json({ error: 'Error al obtener las áreas' });
-    }
+  try {
+    const result = await db.query(
+      "SELECT id_area as id, nombre, id_departamento FROM areas"
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error("Error al obtener áreas:", err);
+    res.status(500).json({ error: "Error al obtener las áreas" });
+  }
 };
 
 exports.getAreaById = async (req, res) => {
   const { id } = req.params;
-  console.log('[getAreaById] id recibido:', id);
+  console.log("[getAreaById] id recibido:", id);
   // Validar que id sea un entero válido
   const idInt = parseInt(id, 10);
   if (isNaN(idInt)) {
-    console.warn('[getAreaById] ID de área inválido:', id);
-    return res.status(400).json({ error: 'ID de área inválido' });
+    console.warn("[getAreaById] ID de área inválido:", id);
+    return res.status(400).json({ error: "ID de área inválido" });
   }
   try {
-    const result = await db.query('SELECT id_area as id, nombre, id_departamento FROM areas WHERE id_area = $1', [idInt]);
+    const result = await db.query(
+      "SELECT id_area as id, nombre, id_departamento FROM areas WHERE id_area = $1",
+      [idInt]
+    );
     if (result.rows.length === 0) {
-      console.warn('[getAreaById] Área no encontrada para id:', idInt);
-      return res.status(404).json({ error: 'Área no encontrada' });
+      console.warn("[getAreaById] Área no encontrada para id:", idInt);
+      return res.status(404).json({ error: "Área no encontrada" });
     }
-    console.log('[getAreaById] Área encontrada:', result.rows[0]);
+    console.log("[getAreaById] Área encontrada:", result.rows[0]);
     res.json(result.rows[0]);
   } catch (err) {
-    console.error('Error al obtener el área:', err);
-    res.status(500).json({ error: 'Error al obtener el área' });
+    console.error("Error al obtener el área:", err);
+    res.status(500).json({ error: "Error al obtener el área" });
   }
 };
 
 exports.createArea = async (req, res) => {
   const { nombre, id_departamento } = req.body;
   if (!nombre) {
-    return res.status(400).json({ error: 'El nombre del área es requerido' });
+    return res.status(400).json({ error: "El nombre del área es requerido" });
   }
   if (!id_departamento) {
-    return res.status(400).json({ error: 'El departamento es requerido' });
+    return res.status(400).json({ error: "El departamento es requerido" });
   }
   try {
-    const query = 'INSERT INTO areas(nombre, id_departamento) VALUES($1, $2) RETURNING id_area as id, nombre, id_departamento';
+    const query =
+      "INSERT INTO areas(nombre, id_departamento) VALUES($1, $2) RETURNING id_area as id, nombre, id_departamento";
     const result = await db.query(query, [nombre, id_departamento]);
     res.status(201).json(result.rows[0]);
   } catch (err) {
-    console.error('Error al crear área:', err);
-    res.status(500).json({ error: 'Error al crear el área' });
+    console.error("Error al crear área:", err);
+    res.status(500).json({ error: "Error al crear el área" });
   }
 };
 
@@ -121,29 +160,29 @@ exports.updateArea = async (req, res) => {
   const { id } = req.params;
   const { nombre, id_departamento } = req.body;
   if (!nombre) {
-    return res.status(400).json({ error: 'El nombre del área es requerido' });
+    return res.status(400).json({ error: "El nombre del área es requerido" });
   }
   if (!id_departamento) {
-    return res.status(400).json({ error: 'El departamento es requerido' });
+    return res.status(400).json({ error: "El departamento es requerido" });
   }
   try {
     const result = await db.query(
-      'UPDATE areas SET nombre = $1, id_departamento = $2 WHERE id_area = $3 RETURNING id_area as id, nombre, id_departamento',
+      "UPDATE areas SET nombre = $1, id_departamento = $2 WHERE id_area = $3 RETURNING id_area as id, nombre, id_departamento",
       [nombre, id_departamento, id]
     );
     if (result.rowCount === 0) {
-      return res.status(404).json({ error: 'Área no encontrada' });
+      return res.status(404).json({ error: "Área no encontrada" });
     }
     res.json(result.rows[0]);
   } catch (err) {
-    console.error('Error al actualizar área:', {
+    console.error("Error al actualizar área:", {
       message: err.message,
       code: err.code,
-      detail: err.detail
+      detail: err.detail,
     });
-    res.status(500).json({ 
-      error: 'Error al actualizar el área',
-      details: err.message 
+    res.status(500).json({
+      error: "Error al actualizar el área",
+      details: err.message,
     });
   }
 };
@@ -152,32 +191,62 @@ exports.deleteArea = async (req, res) => {
   const { id } = req.params;
   try {
     const result = await db.query(
-      'DELETE FROM areas WHERE id_area = $1 RETURNING id_area as id, nombre',
+      "DELETE FROM areas WHERE id_area = $1 RETURNING id_area as id, nombre",
       [id]
     );
     if (result.rowCount === 0) {
-      return res.status(404).json({ error: 'Área no encontrada' });
+      return res.status(404).json({ error: "Área no encontrada" });
     }
-    res.json({ 
-      message: 'Área eliminada correctamente',
-      deleted: result.rows[0]
+    res.json({
+      message: "Área eliminada correctamente",
+      deleted: result.rows[0],
     });
   } catch (err) {
-    console.error('Error al eliminar área:', {
+    console.error("Error al eliminar área:", {
       message: err.message,
       code: err.code,
       detail: err.detail,
-      stack: err.stack
+      stack: err.stack,
     });
-    if (err.code === '23503') {
-      return res.status(400).json({ 
-        error: 'No se puede eliminar el área porque tiene registros relacionados',
-        details: err.detail
+    if (err.code === "23503") {
+      return res.status(400).json({
+        error:
+          "No se puede eliminar el área porque tiene registros relacionados",
+        details: err.detail,
       });
     }
-    res.status(500).json({ 
-      error: 'Error al eliminar el área',
-      details: err.message 
+    res.status(500).json({
+      error: "Error al eliminar el área",
+      details: err.message,
+    });
+  }
+};
+
+// "Eliminado lógico" de área: pone visibilidad en false
+exports.hideArea = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await db.query(
+      "UPDATE areas SET visibilidad = false WHERE id_area = $1 RETURNING id_area as id, nombre, visibilidad",
+      [id]
+    );
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: "Área no encontrada" });
+    }
+    res.json({
+      message: "Área ocultada correctamente",
+      updated: result.rows[0],
+    });
+  } catch (err) {
+    console.error("Error al eliminar área:", {
+      message: err.message,
+      code: err.code,
+      detail: err.detail,
+      stack: err.stack,
+    });
+    res.status(500).json({
+      error: "Error al eliminar el área",
+      details: err.message,
     });
   }
 };
@@ -185,46 +254,54 @@ exports.deleteArea = async (req, res) => {
 // ================= SUCURSALES =================
 exports.getSucursales = async (req, res) => {
   try {
-    const result = await db.query('SELECT id_sucursal as id, nombre FROM sucursales');
+    const result = await db.query(
+      "SELECT id_sucursal as id, nombre FROM sucursales"
+    );
     res.json(result.rows);
   } catch (err) {
-    console.error('Error al obtener sucursales:', err);
-    res.status(500).json({ error: 'Error al obtener las sucursales' });
+    console.error("Error al obtener sucursales:", err);
+    res.status(500).json({ error: "Error al obtener las sucursales" });
   }
 };
 
 exports.getSucursalById = async (req, res) => {
   const { id } = req.params;
   try {
-    const result = await db.query('SELECT id_sucursal as id, nombre FROM sucursales WHERE id_sucursal = $1', [id]);
+    const result = await db.query(
+      "SELECT id_sucursal as id, nombre FROM sucursales WHERE id_sucursal = $1",
+      [id]
+    );
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Sucursal no encontrada' });
+      return res.status(404).json({ error: "Sucursal no encontrada" });
     }
     res.json(result.rows[0]);
   } catch (err) {
-    console.error('Error al obtener la sucursal:', err);
-    res.status(500).json({ error: 'Error al obtener la sucursal' });
+    console.error("Error al obtener la sucursal:", err);
+    res.status(500).json({ error: "Error al obtener la sucursal" });
   }
 };
 
 exports.createSucursal = async (req, res) => {
   const { nombre } = req.body;
   if (!nombre) {
-    return res.status(400).json({ error: 'El nombre de la sucursal es requerido' });
+    return res
+      .status(400)
+      .json({ error: "El nombre de la sucursal es requerido" });
   }
   try {
-    const query = 'INSERT INTO sucursales(nombre) VALUES($1) RETURNING id_sucursal as id, nombre';
+    const query =
+      "INSERT INTO sucursales(nombre) VALUES($1) RETURNING id_sucursal as id, nombre";
     const result = await db.query(query, [nombre]);
     res.status(201).json(result.rows[0]);
   } catch (err) {
-    console.error('Error al crear sucursal:', {
+    console.error("Error al crear sucursal:", {
       message: err.message,
       code: err.code,
-      detail: err.detail
+      detail: err.detail,
     });
-    res.status(500).json({ 
-      error: 'Error al crear la sucursal',
-      details: err.message 
+    res.status(500).json({
+      error: "Error al crear la sucursal",
+      details: err.message,
     });
   }
 };
@@ -233,26 +310,28 @@ exports.updateSucursal = async (req, res) => {
   const { id } = req.params;
   const { nombre } = req.body;
   if (!nombre) {
-    return res.status(400).json({ error: 'El nombre de la sucursal es requerido' });
+    return res
+      .status(400)
+      .json({ error: "El nombre de la sucursal es requerido" });
   }
   try {
     const result = await db.query(
-      'UPDATE sucursales SET nombre = $1 WHERE id_sucursal = $2 RETURNING id_sucursal as id, nombre',
+      "UPDATE sucursales SET nombre = $1 WHERE id_sucursal = $2 RETURNING id_sucursal as id, nombre",
       [nombre, id]
     );
     if (result.rowCount === 0) {
-      return res.status(404).json({ error: 'Sucursal no encontrada' });
+      return res.status(404).json({ error: "Sucursal no encontrada" });
     }
     res.json(result.rows[0]);
   } catch (err) {
-    console.error('Error al actualizar sucursal:', {
+    console.error("Error al actualizar sucursal:", {
       message: err.message,
       code: err.code,
-      detail: err.detail
+      detail: err.detail,
     });
-    res.status(500).json({ 
-      error: 'Error al actualizar la sucursal',
-      details: err.message 
+    res.status(500).json({
+      error: "Error al actualizar la sucursal",
+      details: err.message,
     });
   }
 };
@@ -261,32 +340,62 @@ exports.deleteSucursal = async (req, res) => {
   const { id } = req.params;
   try {
     const result = await db.query(
-      'DELETE FROM sucursales WHERE id_sucursal = $1 RETURNING id_sucursal as id, nombre',
+      "DELETE FROM sucursales WHERE id_sucursal = $1 RETURNING id_sucursal as id, nombre",
       [id]
     );
     if (result.rowCount === 0) {
-      return res.status(404).json({ error: 'Sucursal no encontrada' });
+      return res.status(404).json({ error: "Sucursal no encontrada" });
     }
-    res.json({ 
-      message: 'Sucursal eliminada correctamente',
-      deleted: result.rows[0]
+    res.json({
+      message: "Sucursal eliminada correctamente",
+      deleted: result.rows[0],
     });
   } catch (err) {
-    console.error('Error al eliminar sucursal:', {
+    console.error("Error al eliminar sucursal:", {
       message: err.message,
       code: err.code,
       detail: err.detail,
-      stack: err.stack
+      stack: err.stack,
     });
-    if (err.code === '23503') {
-      return res.status(400).json({ 
-        error: 'No se puede eliminar la sucursal porque tiene registros relacionados',
-        details: err.detail
+    if (err.code === "23503") {
+      return res.status(400).json({
+        error:
+          "No se puede eliminar la sucursal porque tiene registros relacionados",
+        details: err.detail,
       });
     }
-    res.status(500).json({ 
-      error: 'Error al eliminar la sucursal',
-      details: err.message 
+    res.status(500).json({
+      error: "Error al eliminar la sucursal",
+      details: err.message,
+    });
+  }
+};
+
+// "Eliminado lógico" de sucursal: pone visibilidad en false
+exports.hideSucursal = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await db.query(
+      "UPDATE sucursales SET visibilidad = false WHERE id_sucursal = $1 RETURNING id_sucursal as id, nombre, visibilidad",
+      [id]
+    );
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: "Sucursal no encontrada" });
+    }
+    res.json({
+      message: "Sucursal ocultada correctamente",
+      updated: result.rows[0],
+    });
+  } catch (err) {
+    console.error("Error al eliminar sucursal:", {
+      message: err.message,
+      code: err.code,
+      detail: err.detail,
+      stack: err.stack,
+    });
+    res.status(500).json({
+      error: "Error al eliminar la sucursal",
+      details: err.message,
     });
   }
 };
@@ -294,11 +403,13 @@ exports.deleteSucursal = async (req, res) => {
 // ================= DEPARTAMENTOS =================
 exports.getDepartamentos = async (req, res) => {
   try {
-    const result = await db.query('SELECT id_departamento as id, nombre, correo, extension FROM departamentos');
+    const result = await db.query(
+      "SELECT id_departamento as id, nombre, correo, extension FROM departamentos"
+    );
     res.json(result.rows);
   } catch (err) {
-    console.error('Error al obtener departamentos:', err);
-    res.status(500).json({ error: 'Error al obtener los departamentos' });
+    console.error("Error al obtener departamentos:", err);
+    res.status(500).json({ error: "Error al obtener los departamentos" });
   }
 };
 
@@ -306,27 +417,29 @@ exports.getDepartamentoById = async (req, res) => {
   const { id } = req.params;
   const idInt = parseInt(id, 10);
   if (isNaN(idInt)) {
-    return res.status(400).json({ error: 'ID de departamento inválido' });
+    return res.status(400).json({ error: "ID de departamento inválido" });
   }
   try {
     const result = await db.query(
-      'SELECT id_departamento as id, nombre, correo, extension FROM departamentos WHERE id_departamento = $1', 
+      "SELECT id_departamento as id, nombre, correo, extension FROM departamentos WHERE id_departamento = $1",
       [idInt]
     );
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Departamento no encontrado' });
+      return res.status(404).json({ error: "Departamento no encontrado" });
     }
     res.json(result.rows[0]);
   } catch (err) {
-    console.error('Error al obtener el departamento:', err);
-    res.status(500).json({ error: 'Error al obtener el departamento' });
+    console.error("Error al obtener el departamento:", err);
+    res.status(500).json({ error: "Error al obtener el departamento" });
   }
 };
 
 exports.createDepartamento = async (req, res) => {
   const { nombre, correo, extension, contraseña } = req.body;
   if (!nombre || !contraseña) {
-    return res.status(400).json({ error: 'El nombre y la contraseña son campos requeridos' });
+    return res
+      .status(400)
+      .json({ error: "El nombre y la contraseña son campos requeridos" });
   }
   try {
     const query = `
@@ -334,17 +447,22 @@ exports.createDepartamento = async (req, res) => {
       VALUES($1, $2, $3, $4) 
       RETURNING id_departamento as id, nombre, correo, extension
     `;
-    const result = await db.query(query, [nombre, correo || null, extension || null, contraseña]);
+    const result = await db.query(query, [
+      nombre,
+      correo || null,
+      extension || null,
+      contraseña,
+    ]);
     res.status(201).json(result.rows[0]);
   } catch (err) {
-    console.error('Error al crear departamento:', {
+    console.error("Error al crear departamento:", {
       message: err.message,
       code: err.code,
-      detail: err.detail
+      detail: err.detail,
     });
-    res.status(500).json({ 
-      error: 'Error al crear el departamento',
-      details: err.message 
+    res.status(500).json({
+      error: "Error al crear el departamento",
+      details: err.message,
     });
   }
 };
@@ -353,7 +471,9 @@ exports.updateDepartamento = async (req, res) => {
   const { id } = req.params;
   const { nombre, correo, extension, contraseña } = req.body;
   if (!nombre) {
-    return res.status(400).json({ error: 'El nombre del departamento es requerido' });
+    return res
+      .status(400)
+      .json({ error: "El nombre del departamento es requerido" });
   }
   try {
     let query;
@@ -377,18 +497,18 @@ exports.updateDepartamento = async (req, res) => {
     }
     const result = await db.query(query, params);
     if (result.rowCount === 0) {
-      return res.status(404).json({ error: 'Departamento no encontrado' });
+      return res.status(404).json({ error: "Departamento no encontrado" });
     }
     res.json(result.rows[0]);
   } catch (err) {
-    console.error('Error al actualizar departamento:', {
+    console.error("Error al actualizar departamento:", {
       message: err.message,
       code: err.code,
-      detail: err.detail
+      detail: err.detail,
     });
-    res.status(500).json({ 
-      error: 'Error al actualizar el departamento',
-      details: err.message 
+    res.status(500).json({
+      error: "Error al actualizar el departamento",
+      details: err.message,
     });
   }
 };
@@ -397,36 +517,70 @@ exports.deleteDepartamento = async (req, res) => {
   const { id } = req.params;
   const idInt = parseInt(id, 10);
   if (isNaN(idInt)) {
-    return res.status(400).json({ error: 'ID de departamento inválido' });
+    return res.status(400).json({ error: "ID de departamento inválido" });
   }
   try {
     const result = await db.query(
-      'DELETE FROM departamentos WHERE id_departamento = $1 RETURNING id_departamento as id, nombre',
+      "DELETE FROM departamentos WHERE id_departamento = $1 RETURNING id_departamento as id, nombre",
       [idInt]
     );
     if (result.rowCount === 0) {
-      return res.status(404).json({ error: 'Departamento no encontrado' });
+      return res.status(404).json({ error: "Departamento no encontrado" });
     }
-    res.json({ 
-      message: 'Departamento eliminado correctamente',
-      deleted: result.rows[0]
+    res.json({
+      message: "Departamento eliminado correctamente",
+      deleted: result.rows[0],
     });
   } catch (err) {
-    console.error('Error al eliminar departamento:', {
+    console.error("Error al eliminar departamento:", {
       message: err.message,
       code: err.code,
       detail: err.detail,
-      stack: err.stack
+      stack: err.stack,
     });
-    if (err.code === '23503') {
-      return res.status(400).json({ 
-        error: 'No se puede eliminar el departamento porque tiene registros relacionados',
-        details: err.detail
+    if (err.code === "23503") {
+      return res.status(400).json({
+        error:
+          "No se puede eliminar el departamento porque tiene registros relacionados",
+        details: err.detail,
       });
     }
-    res.status(500).json({ 
-      error: 'Error al eliminar el departamento',
-      details: err.message 
+    res.status(500).json({
+      error: "Error al eliminar el departamento",
+      details: err.message,
+    });
+  }
+};
+
+// "Eliminado lógico" de departamento: pone visibilidad en false
+exports.hideDepartamento = async (req, res) => {
+  const { id } = req.params;
+  const idInt = parseInt(id, 10);
+  if (isNaN(idInt)) {
+    return res.status(400).json({ error: "ID de departamento inválido" });
+  }
+  try {
+    const result = await db.query(
+      "UPDATE departamentos SET visibilidad = false WHERE id_departamento = $1 RETURNING id_departamento as id, nombre, visibilidad",
+      [idInt]
+    );
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: "Departamento no encontrado" });
+    }
+    res.json({
+      message: "Departamento ocultado correctamente",
+      updated: result.rows[0],
+    });
+  } catch (err) {
+    console.error("Error al eliminar departamento:", {
+      message: err.message,
+      code: err.code,
+      detail: err.detail,
+      stack: err.stack,
+    });
+    res.status(500).json({
+      error: "Error al eliminar el departamento",
+      details: err.message,
     });
   }
 };
@@ -434,11 +588,13 @@ exports.deleteDepartamento = async (req, res) => {
 // ================= SUPERVISORES =================
 exports.getSupervisores = async (req, res) => {
   try {
-  const result = await db.query('SELECT id_supervisor as id, nombre, correo, extension, usuario FROM supervisores');
+    const result = await db.query(
+      "SELECT id_supervisor as id, nombre, correo, extension, usuario FROM supervisores"
+    );
     res.json(result.rows);
   } catch (err) {
-    console.error('Error al obtener supervisores:', err);
-    res.status(500).json({ error: 'Error al obtener los supervisores' });
+    console.error("Error al obtener supervisores:", err);
+    res.status(500).json({ error: "Error al obtener los supervisores" });
   }
 };
 
@@ -446,23 +602,25 @@ exports.getSupervisorById = async (req, res) => {
   const { id } = req.params;
   try {
     const result = await db.query(
-  'SELECT id_supervisor as id, nombre, correo, extension, usuario FROM supervisores WHERE id_supervisor = $1', 
+      "SELECT id_supervisor as id, nombre, correo, extension, usuario FROM supervisores WHERE id_supervisor = $1",
       [id]
     );
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Supervisor no encontrado' });
+      return res.status(404).json({ error: "Supervisor no encontrado" });
     }
     res.json(result.rows[0]);
   } catch (err) {
-    console.error('Error al obtener el supervisor:', err);
-    res.status(500).json({ error: 'Error al obtener el supervisor' });
+    console.error("Error al obtener el supervisor:", err);
+    res.status(500).json({ error: "Error al obtener el supervisor" });
   }
 };
 
 exports.createSupervisor = async (req, res) => {
   const { nombre, correo, extension, usuario, contraseña } = req.body;
   if (!nombre || !contraseña) {
-    return res.status(400).json({ error: 'El nombre y la contraseña son campos requeridos' });
+    return res
+      .status(400)
+      .json({ error: "El nombre y la contraseña son campos requeridos" });
   }
   try {
     const query = `
@@ -470,17 +628,23 @@ exports.createSupervisor = async (req, res) => {
       VALUES($1, $2, $3, $4, $5) 
       RETURNING id_supervisor as id, nombre, correo, extension, usuario
     `;
-    const result = await db.query(query, [nombre, correo || null, extension || null, usuario || null, contraseña]);
+    const result = await db.query(query, [
+      nombre,
+      correo || null,
+      extension || null,
+      usuario || null,
+      contraseña,
+    ]);
     res.status(201).json(result.rows[0]);
   } catch (err) {
-    console.error('Error al crear supervisor:', {
+    console.error("Error al crear supervisor:", {
       message: err.message,
       code: err.code,
-      detail: err.detail
+      detail: err.detail,
     });
-    res.status(500).json({ 
-      error: 'Error al crear el supervisor',
-      details: err.message 
+    res.status(500).json({
+      error: "Error al crear el supervisor",
+      details: err.message,
     });
   }
 };
@@ -489,7 +653,9 @@ exports.updateSupervisor = async (req, res) => {
   const { id } = req.params;
   const { nombre, correo, extension, usuario, contraseña } = req.body;
   if (!nombre) {
-    return res.status(400).json({ error: 'El nombre del supervisor es requerido' });
+    return res
+      .status(400)
+      .json({ error: "El nombre del supervisor es requerido" });
   }
   try {
     let query;
@@ -501,7 +667,14 @@ exports.updateSupervisor = async (req, res) => {
         WHERE id_supervisor = $6 
         RETURNING id_supervisor as id, nombre, correo, extension, usuario
       `;
-      params = [nombre, correo || null, extension || null, usuario || null, contraseña, id];
+      params = [
+        nombre,
+        correo || null,
+        extension || null,
+        usuario || null,
+        contraseña,
+        id,
+      ];
     } else {
       query = `
         UPDATE supervisores 
@@ -513,18 +686,18 @@ exports.updateSupervisor = async (req, res) => {
     }
     const result = await db.query(query, params);
     if (result.rowCount === 0) {
-      return res.status(404).json({ error: 'Supervisor no encontrado' });
+      return res.status(404).json({ error: "Supervisor no encontrado" });
     }
     res.json(result.rows[0]);
   } catch (err) {
-    console.error('Error al actualizar supervisor:', {
+    console.error("Error al actualizar supervisor:", {
       message: err.message,
       code: err.code,
-      detail: err.detail
+      detail: err.detail,
     });
-    res.status(500).json({ 
-      error: 'Error al actualizar el supervisor',
-      details: err.message 
+    res.status(500).json({
+      error: "Error al actualizar el supervisor",
+      details: err.message,
     });
   }
 };
@@ -533,32 +706,62 @@ exports.deleteSupervisor = async (req, res) => {
   const { id } = req.params;
   try {
     const result = await db.query(
-      'DELETE FROM supervisores WHERE id_supervisor = $1 RETURNING id_supervisor as id, nombre',
+      "DELETE FROM supervisores WHERE id_supervisor = $1 RETURNING id_supervisor as id, nombre",
       [id]
     );
     if (result.rowCount === 0) {
-      return res.status(404).json({ error: 'Supervisor no encontrado' });
+      return res.status(404).json({ error: "Supervisor no encontrado" });
     }
-    res.json({ 
-      message: 'Supervisor eliminado correctamente',
-      deleted: result.rows[0]
+    res.json({
+      message: "Supervisor eliminado correctamente",
+      deleted: result.rows[0],
     });
   } catch (err) {
-    console.error('Error al eliminar supervisor:', {
+    console.error("Error al eliminar supervisor:", {
       message: err.message,
       code: err.code,
       detail: err.detail,
-      stack: err.stack
+      stack: err.stack,
     });
-    if (err.code === '23503') {
-      return res.status(400).json({ 
-        error: 'No se puede eliminar el supervisor porque tiene registros relacionados',
-        details: err.detail
+    if (err.code === "23503") {
+      return res.status(400).json({
+        error:
+          "No se puede eliminar el supervisor porque tiene registros relacionados",
+        details: err.detail,
       });
     }
-    res.status(500).json({ 
-      error: 'Error al eliminar el supervisor',
-      details: err.message 
+    res.status(500).json({
+      error: "Error al eliminar el supervisor",
+      details: err.message,
+    });
+  }
+};
+
+// "Eliminado lógico" de supervisor: pone visibilidad en false
+exports.hideSupervisor = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await db.query(
+      "UPDATE supervisores SET visibilidad = false WHERE id_supervisor = $1 RETURNING id_supervisor as id, nombre, visibilidad",
+      [id]
+    );
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: "Supervisor no encontrado" });
+    }
+    res.json({
+      message: "Supervisor ocultado correctamente",
+      updated: result.rows[0],
+    });
+  } catch (err) {
+    console.error("Error al eliminar supervisor:", {
+      message: err.message,
+      code: err.code,
+      detail: err.detail,
+      stack: err.stack,
+    });
+    res.status(500).json({
+      error: "Error al eliminar el supervisor",
+      details: err.message,
     });
   }
 };

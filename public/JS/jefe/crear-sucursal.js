@@ -212,9 +212,9 @@ document.addEventListener("DOMContentLoaded", function () {
       if (idSucursalAEliminar) {
         try {
           const response = await fetch(
-            `${API_URL}/sucursales/${idSucursalAEliminar}`,
+            `${API_URL}/sucursales/hide/${idSucursalAEliminar}`,
             {
-              method: "DELETE",
+              method: "PUT",
             }
           );
           if (!response.ok) {
@@ -222,7 +222,7 @@ document.addEventListener("DOMContentLoaded", function () {
             throw new Error(errorData.error || "Error al eliminar la sucursal");
           }
           await cargarSucursales();
-          alert("Sucursal eliminada exitosamente");
+          alert("Sucursal ocultada exitosamente");
         } catch (error) {
           alert("Error al eliminar la sucursal: " + error.message);
         }

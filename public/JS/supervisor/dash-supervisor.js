@@ -84,12 +84,13 @@ function formatHoraJefe(fecha) {
   if (!fecha) return "-";
   const d = new Date(fecha);
   if (isNaN(d)) return "-";
-  let h = d.getHours();
-  const m = d.getMinutes().toString().padStart(2, "0");
+  // Mostrar hora en UTC igual que en tabla-supervisor.js
+  let h = d.getUTCHours();
+  const m = d.getUTCMinutes().toString().padStart(2, "0");
   const ampm = h >= 12 ? "PM" : "AM";
   h = h % 12;
   h = h ? h : 12;
-  return `${h}:${m} ${ampm}`;
+  return `${h}:${m} ${ampm} UTC`;
 }
 
 function renderTablaPermisosJefe() {
@@ -189,7 +190,9 @@ function renderTablaPermisosJefe() {
         <td>${permiso.descripcion || "-"}</td>
         <td>${permiso.solicitante || "-"}</td>
         <td>${permiso.departamento || "-"}</td>
-        <td><span class="status-badge${badgeClass ? " " + badgeClass : ""}">${permiso.estatus || "-"}</span></td>
+        <td><span class="status-badge${badgeClass ? " " + badgeClass : ""}">${
+      permiso.estatus || "-"
+    }</span></td>
         <td>${formatHoraJefe(permiso.fecha_hora)}</td>
         <td>${formatHoraJefe(permiso.fecha_hora_area)}</td>
         <td>${formatHoraJefe(permiso.fecha_hora_supervisor)}</td>

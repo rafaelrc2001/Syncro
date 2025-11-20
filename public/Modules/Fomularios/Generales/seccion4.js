@@ -1043,7 +1043,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const fecha = document.getElementById("permit-date")?.value || "";
           const hora_inicio = fecha ? `${fecha} ${hora}` : hora;
           // Leer correctamente el campo de equipo a intervenir
-          const equipo_intervencion =
+          const equipo_intervenir =
             document.getElementById("equipment")?.value || "";
           const empresa = document.getElementById("company")?.value || "";
           const descripcion_trabajo =
@@ -1104,7 +1104,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ot_numero,
             tag,
             hora_inicio,
-            equipo_intervencion: equipo_intervencion,
+            equipo_intervenir,
             empresa,
             descripcion_trabajo,
             nombre_solicitante,
@@ -1225,7 +1225,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ot_numero,
             tag,
             hora_inicio,
-            equipo_intervencion,
+            equipo_intervenir,
             empresa,
             descripcion_trabajo,
             nombre_solicitante,

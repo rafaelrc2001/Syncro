@@ -29,7 +29,8 @@ ALTER TABLE sucursales ADD COLUMN visibilidad BOOLEAN DEFAULT TRUE;
 
 
 
-
+ALTER TABLE pt_excavacion 
+ADD COLUMN numero_permiso_confinado VARCHAR(50);
 
 
 

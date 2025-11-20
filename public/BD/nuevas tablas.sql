@@ -243,6 +243,7 @@ CREATE TABLE pt_excavacion (
 
     -- parte 5
     excavacion_espacio_confinado VARCHAR(5),
+    numero_permiso_confinado VARCHAR(50),
     
     excavacion_manual_aproximacion VARCHAR(5),
     medidas_aproximacion TEXT,

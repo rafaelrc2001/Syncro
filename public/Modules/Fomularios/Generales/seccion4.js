@@ -1998,6 +1998,8 @@ document.addEventListener("DOMContentLoaded", () => {
           const espacio_confinado =
             document.querySelector('input[name="espacio-confinado"]:checked')
               ?.value || "";
+          const numero_permiso_confinado = 
+            document.getElementById("numero-permiso-confinado")?.value || "";
 
           // Trabajos en Proximidad de Líneas en Carga
           const excavacion_manual =
@@ -2123,6 +2125,7 @@ document.addEventListener("DOMContentLoaded", () => {
             tipo_proteccion_anticaida,
             tipo_anclaje,
             excavacion_espacio_confinado: espacio_confinado, // Corregido nombre
+            numero_permiso_confinado: numero_permiso_confinado,
             excavacion_manual_aproximacion: excavacion_manual, // Corregido nombre
             medidas_aproximacion: medidas_excavacion, // Corregido nombre
             herramienta_antichispa: medida_herramienta_antichispa, // Corregido nombre

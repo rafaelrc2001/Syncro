@@ -62,6 +62,7 @@ router.post("/excavacion", async (req, res) => {
       tipo_proteccion_anticaida,
       tipo_anclaje,
       excavacion_espacio_confinado,
+      numero_permiso_confinado,
       excavacion_manual_aproximacion,
       medidas_aproximacion,
       herramienta_antichispa,
@@ -137,6 +138,7 @@ router.post("/excavacion", async (req, res) => {
       "tipo_proteccion_anticaida",
       "tipo_anclaje",
       "excavacion_espacio_confinado",
+      "numero_permiso_confinado",
       "excavacion_manual_aproximacion",
       "medidas_aproximacion",
       "herramienta_antichispa",
@@ -211,6 +213,7 @@ router.post("/excavacion", async (req, res) => {
       tipo_proteccion_anticaida,
       tipo_anclaje,
       excavacion_espacio_confinado,
+      numero_permiso_confinado,
       excavacion_manual_aproximacion,
       medidas_aproximacion,
       herramienta_antichispa,
@@ -250,7 +253,7 @@ INSERT INTO pt_excavacion (
   requiere_proteccion_rigida, distancia_proteccion_rigida,
   requiere_senalizacion_especial, especificacion_senalizacion,
   requiere_proteccion_anticaida, tipo_proteccion_anticaida, tipo_anclaje,
-  excavacion_espacio_confinado,
+  excavacion_espacio_confinado, numero_permiso_confinado,
   excavacion_manual_aproximacion, medidas_aproximacion,
   herramienta_antichispa, guantes_calzado_dielectrico, epp_especial, otras_medidas_especiales, especificacion_otras_medidas_especiales,
   aplicar_bloqueo_fisico, especificacion_bloqueo_fisico, drenar_limpiar_lavar, inundar_anegar_atmosfera_inerte, vigilante_continuo, especificacion_vigilante_continuo, otras_medidas_adicionales, especificacion_otras_medidas_adicionales, observaciones_generales_excavacion
@@ -271,10 +274,10 @@ INSERT INTO pt_excavacion (
   $49,$50,
   $51,$52,
   $53,$54,$55,
-  $56,
-  $57,$58,
-  $59,$60,$61,$62,$63,
-  $64,$65,$66,$67,$68,$69,$70,$71,$72
+  $56,$57,
+  $58,$59,
+  $60,$61,$62,$63,$64,
+  $65,$66,$67,$68,$69,$70,$71,$72,$73
 ) RETURNING id;
 `;
 

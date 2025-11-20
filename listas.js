@@ -136,7 +136,6 @@ router.get("/supervisores", async (req, res) => {
     const result = await db.query(
       `SELECT s.id_supervisor, s.nombre
       FROM supervisores s
-      INNER JOIN departamentos d ON s.id_departamento = d.id_departamento AND d.visibilidad = true
       WHERE s.visibilidad = true
       ORDER BY s.nombre ASC`
     );

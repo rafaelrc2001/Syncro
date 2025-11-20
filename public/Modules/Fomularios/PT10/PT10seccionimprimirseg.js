@@ -245,6 +245,11 @@ document.addEventListener("DOMContentLoaded", function () {
             general.excavacion_espacio_confinado
           );
 
+           setText(
+            "vista-numero-permiso-confinado",
+            general.numero_permiso_confinado
+          );
+
           setText(
             "vista-excavacion-manual",
             general.excavacion_manual_aproximacion

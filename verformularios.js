@@ -686,6 +686,7 @@ WHERE pt.id_permiso = $1
           pe.tipo_proteccion_anticaida,
           pe.tipo_anclaje,
           pe.excavacion_espacio_confinado,
+          pe.numero_permiso_confinado,
           pe.excavacion_manual_aproximacion,
           pe.medidas_aproximacion,
           pe.herramienta_antichispa,

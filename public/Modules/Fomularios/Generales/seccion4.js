@@ -1166,7 +1166,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const fecha = document.getElementById("permit-date")?.value || "";
           const hora_inicio = fecha ? `${fecha} ${hora}` : hora;
           // Leer correctamente el campo de equipo a intervenir
-          const equipo_intervencion =
+          const equipo_intervenir =
             document.getElementById("equipment")?.value || "";
           const empresa = document.getElementById("company")?.value || "";
           const descripcion_trabajo =
@@ -1998,7 +1998,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const espacio_confinado =
             document.querySelector('input[name="espacio-confinado"]:checked')
               ?.value || "";
-          const numero_permiso_confinado = 
+          const numero_permiso_confinado =
             document.getElementById("numero-permiso-confinado")?.value || "";
 
           // Trabajos en Proximidad de Líneas en Carga

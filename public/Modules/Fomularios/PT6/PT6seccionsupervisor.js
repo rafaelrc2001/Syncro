@@ -37,26 +37,8 @@ async function ejecutarGuardarYAutorizarPT6() {
     const input = document.getElementById(id);
     return input ? input.value : null;
   }
-  // Construir payload con los nombres correctos del backend
-  const payload = {
-    identifico_equipo: getRadio("identifico_equipo"),
-    verifico_identifico_equipo: getCheckbox("verifico_identifico_equipo"),
-    fuera_operacion_desenergizado: getRadio("fuera_operacion_desenergizado"),
-    verifico_fuera_operacion_desenergizado: getCheckbox(
-      "verifico_fuera_operacion_desenergizado"
-    ),
-    candado_etiqueta: getRadio("candado_etiqueta"),
-    verifico_candado_etiqueta: getCheckbox("verifico_candado_etiqueta"),
-    suspender_adyacentes: getRadio("suspender_adyacentes"),
-    verifico_suspender_adyacentes: getCheckbox("verifico_suspender_adyacentes"),
-    area_limpia_libre_obstaculos: getRadio("area_limpia_libre_obstaculos"),
-    verifico_area_limpia_libre_obstaculos: getCheckbox(
-      "verifico_area_limpia_libre_obstaculos"
-    ),
-    libranza_electrica: getRadio("libranza_electrica"),
-    verifico_libranza_electrica: getCheckbox("verifico_libranza_electrica"),
-    nivel_tension: getInputValue("nivel_tension"),
-  };
+
+  // Solo construir el payload del supervisor (NO los datos del área)
   // Guardar medidas/requisitos del supervisor (nuevo formulario)
   const formMedidas = document.getElementById("form-medidas-riesgos");
   let payloadMedidas = {};
@@ -72,23 +54,11 @@ async function ejecutarGuardarYAutorizarPT6() {
     };
   }
   try {
-    // Guardar requisitos generales
+    // Guardar SOLO las medidas/requisitos del supervisor (NO los del área)
     console.log(
-      "[DEPURACIÓN] Enviando requisitos_area payload (supervisor):",
-      payload
+      "[DEPURACIÓN] Enviando requisitos_supervisor payload:",
+      payloadMedidas
     );
-    const resp = await fetch(`/api/pt-electrico/requisitos_area/${idPermiso}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    console.log(
-      "[DEPURACIÓN] Respuesta requisitos_area (supervisor) status:",
-      resp.status
-    );
-    if (!resp.ok) throw new Error("Error al guardar los requisitos");
-
-    // Guardar medidas/requisitos del supervisor
     const respMedidas = await fetch(
       `/api/electrico/requisitos_supervisor/${idPermiso}`,
       {
@@ -96,6 +66,10 @@ async function ejecutarGuardarYAutorizarPT6() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payloadMedidas),
       }
+    );
+    console.log(
+      "[DEPURACIÓN] Respuesta requisitos_supervisor status:",
+      respMedidas.status
     );
     if (!respMedidas.ok)
       throw new Error("Error al guardar las medidas del supervisor");

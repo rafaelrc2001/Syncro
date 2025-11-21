@@ -224,7 +224,7 @@ if (btnConfirmarAutorizar) {
         );
       }
 
-      // Generar timestamp automático para autorización PT7 (hora local)
+      // Generar timestamp para autorización
       const nowArea = new Date();
       const year = nowArea.getFullYear();
       const month = String(nowArea.getMonth() + 1).padStart(2, "0");
@@ -234,10 +234,6 @@ if (btnConfirmarAutorizar) {
       const seconds = String(nowArea.getSeconds()).padStart(2, "0");
       const milliseconds = String(nowArea.getMilliseconds()).padStart(3, "0");
       const fechaHoraAutorizacionArea = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}`;
-      console.log(
-        "[AUTORIZAR PT7] Timestamp generado (hora local):",
-        fechaHoraAutorizacionArea
-      );
 
       await fetch("/api/autorizaciones/area", {
         method: "POST",
@@ -425,7 +421,7 @@ if (btnNoAutorizar) {
       }
       
       try {
-        // Generar timestamp automático para autorización PT7 (hora local)
+        // Generar timestamp para autorización
         const nowArea = new Date();
         const year = nowArea.getFullYear();
         const month = String(nowArea.getMonth() + 1).padStart(2, "0");

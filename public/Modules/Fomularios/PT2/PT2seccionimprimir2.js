@@ -142,8 +142,8 @@ document.addEventListener("DOMContentLoaded", function () {
               data.general.requiere_herramientas_especiales || "-";
 
           if (document.getElementById("what-special-tools-label"))
-          document.getElementById("what-special-tools-label").textContent =
-          data.general.tipo_herramientas_especiales || "-";
+            document.getElementById("what-special-tools-label").textContent =
+              data.general.tipo_herramientas_especiales || "-";
           if (document.getElementById("adequate-tools-label"))
             document.getElementById("adequate-tools-label").textContent =
               data.general.herramientas_adecuadas || "-";
@@ -301,8 +301,8 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("special-tools-label").textContent =
               detalles.requiere_herramientas_especiales || "-";
           if (document.getElementById("what-special-tools-label"))
-          document.getElementById("what-special-tools-label").textContent =
-          data.general.tipo_herramientas_especiales || "-";
+            document.getElementById("what-special-tools-label").textContent =
+              data.general.tipo_herramientas_especiales || "-";
           if (document.getElementById("adequate-tools-label"))
             document.getElementById("adequate-tools-label").textContent =
               detalles.herramientas_adecuadas || "-";
@@ -870,7 +870,7 @@ function llenarTablaResponsables(idPermiso) {
         const filas = [
           { nombre: data.responsable_area, cargo: "Responsable de área" },
           { nombre: data.operador_area, cargo: "Operador del área" },
-          { nombre: data.nombre_supervisor, cargo: "Supervisor" },
+          { nombre: data.nombre_supervisor, cargo: "Supervisor de Seguridad" },
         ];
 
         let hayAlMenosUno = false;

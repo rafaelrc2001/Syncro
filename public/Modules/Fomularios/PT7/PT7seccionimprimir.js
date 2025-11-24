@@ -641,8 +641,12 @@ document.addEventListener("DOMContentLoaded", function () {
   // --- LÓGICA PARA CERRAR PERMISO ---
   var btnCerrarPermiso = document.getElementById("btn-cerrar-permiso");
   var modalCerrarPermiso = document.getElementById("modalCerrarPermiso");
-  var btnCancelarCerrarPermiso = document.getElementById("btnCancelarCerrarPermiso");
-  var btnGuardarCerrarPermiso = document.getElementById("btnGuardarCerrarPermiso");
+  var btnCancelarCerrarPermiso = document.getElementById(
+    "btnCancelarCerrarPermiso"
+  );
+  var btnGuardarCerrarPermiso = document.getElementById(
+    "btnGuardarCerrarPermiso"
+  );
 
   if (btnCerrarPermiso && modalCerrarPermiso) {
     btnCerrarPermiso.addEventListener("click", function () {
@@ -657,7 +661,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (btnGuardarCerrarPermiso && modalCerrarPermiso) {
     btnGuardarCerrarPermiso.addEventListener("click", async function () {
-      var comentario = document.getElementById("comentarioCerrarPermiso").value.trim();
+      var comentario = document
+        .getElementById("comentarioCerrarPermiso")
+        .value.trim();
       var tipoCierre = document.getElementById("tipoCierrePermiso").value;
       if (!comentario) {
         alert("Debes escribir el motivo del cierre.");
@@ -678,7 +684,9 @@ document.addEventListener("DOMContentLoaded", function () {
         const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
         if (respEstatus.ok) {
           const permisoData = await respEstatus.json();
-          idEstatus = permisoData.id_estatus || (permisoData.data && permisoData.data.id_estatus);
+          idEstatus =
+            permisoData.id_estatus ||
+            (permisoData.data && permisoData.data.id_estatus);
         }
       } catch (err) {
         console.error("Error al consultar id_estatus:", err);
@@ -696,11 +704,13 @@ document.addEventListener("DOMContentLoaded", function () {
           break;
         case "cierre-con-incidentes":
           endpoint = "/api/estatus/cierre_con_incidentes";
-          mensajeExito = "Permiso cerrado con incidentes registrado exitosamente.";
+          mensajeExito =
+            "Permiso cerrado con incidentes registrado exitosamente.";
           break;
         case "cierre-con-accidentes":
           endpoint = "/api/estatus/cierre_con_accidentes";
-          mensajeExito = "Permiso cerrado con accidentes registrado exitosamente.";
+          mensajeExito =
+            "Permiso cerrado con accidentes registrado exitosamente.";
           break;
         case "cancelado":
           endpoint = "/api/estatus/cancelado";
@@ -717,7 +727,9 @@ document.addEventListener("DOMContentLoaded", function () {
           body: JSON.stringify({ id_estatus: idEstatus, comentario }),
         });
         let dataComentario = {};
-        try { dataComentario = await respComentario.json(); } catch (e) {}
+        try {
+          dataComentario = await respComentario.json();
+        } catch (e) {}
         if (!dataComentario.success) {
           alert("No se pudo guardar el comentario de cierre.");
           return;
@@ -729,9 +741,15 @@ document.addEventListener("DOMContentLoaded", function () {
           body: JSON.stringify(payloadEstatus),
         });
         let dataEstatus = {};
-        try { dataEstatus = await respEstatus.json(); } catch (e) {}
+        try {
+          dataEstatus = await respEstatus.json();
+        } catch (e) {}
         if (!respEstatus.ok || !dataEstatus.success) {
-          alert(`No se pudo actualizar el estatus. Error: ${dataEstatus.error || "Desconocido"}`);
+          alert(
+            `No se pudo actualizar el estatus. Error: ${
+              dataEstatus.error || "Desconocido"
+            }`
+          );
           return;
         }
         if (window.n8nFormHandler) {
@@ -770,7 +788,7 @@ function llenarTablaResponsables(idPermiso) {
         const filas = [
           { nombre: data.responsable_area, cargo: "Responsable de área" },
           { nombre: data.operador_area, cargo: "Operador del área" },
-          { nombre: data.nombre_supervisor, cargo: "Supervisor" },
+          { nombre: data.nombre_supervisor, cargo: "Supervisor de Seguridad" },
         ];
 
         let hayResponsables = false;

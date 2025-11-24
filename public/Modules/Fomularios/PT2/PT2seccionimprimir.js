@@ -142,8 +142,8 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("special-tools-label").textContent =
               data.general.requiere_herramientas_especiales || "-";
           if (document.getElementById("what-special-tools-label"))
-          document.getElementById("what-special-tools-label").textContent =
-          data.general.tipo_herramientas_especiales || "-";
+            document.getElementById("what-special-tools-label").textContent =
+              data.general.tipo_herramientas_especiales || "-";
           if (document.getElementById("adequate-tools-label"))
             document.getElementById("adequate-tools-label").textContent =
               data.general.herramientas_adecuadas || "-";
@@ -302,8 +302,8 @@ document.addEventListener("DOMContentLoaded", function () {
               detalles.requiere_herramientas_especiales || "-";
 
           if (document.getElementById("what-special-tools-label"))
-          document.getElementById("what-special-tools-label").textContent =
-          data.general.tipo_herramientas_especiales || "-";
+            document.getElementById("what-special-tools-label").textContent =
+              data.general.tipo_herramientas_especiales || "-";
 
           if (document.getElementById("adequate-tools-label"))
             document.getElementById("adequate-tools-label").textContent =
@@ -411,13 +411,13 @@ document.addEventListener("DOMContentLoaded", function () {
         "-",
 
       // Medidas para administrar riesgos
-    
-  // ...otros campos...
-  special_tools:
-    document.getElementById("special-tools-label")?.textContent || "-",
-  what_special_tools:
-    document.getElementById("what-special-tools-label")?.textContent || "-",
-  // ...otros campos...
+
+      // ...otros campos...
+      special_tools:
+        document.getElementById("special-tools-label")?.textContent || "-",
+      what_special_tools:
+        document.getElementById("what-special-tools-label")?.textContent || "-",
+      // ...otros campos...
 
       adequate_tools:
         document.getElementById("adequate-tools-label")?.textContent || "-",
@@ -465,8 +465,6 @@ document.addEventListener("DOMContentLoaded", function () {
       tapar_purgas_drenajes:
         document.getElementById("resp-tapar-purgas-drenajes")?.textContent ||
         "-",
-
-
 
       // Condiciones del proceso
       fluid: document.getElementById("fluid")?.textContent || "-",
@@ -1004,7 +1002,7 @@ function llenarTablaResponsables(idPermiso) {
         const filas = [
           { nombre: data.responsable_area, cargo: "Responsable de área" },
           { nombre: data.operador_area, cargo: "Operador del área" },
-          { nombre: data.nombre_supervisor, cargo: "Supervisor" },
+          { nombre: data.nombre_supervisor, cargo: "Supervisor de Seguridad" },
         ];
 
         let hayAlMenosUno = false;

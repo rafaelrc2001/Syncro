@@ -471,7 +471,7 @@ function llenarTablaResponsables(idPermiso) {
         const filas = [
           { nombre: data.responsable_area, cargo: "Responsable de área" },
           { nombre: data.operador_area, cargo: "Operador del área" },
-          { nombre: data.nombre_supervisor, cargo: "Supervisor" },
+          { nombre: data.nombre_supervisor, cargo: "Supervisor de Seguridad" },
         ];
 
         let hayAlMenosUno = false;

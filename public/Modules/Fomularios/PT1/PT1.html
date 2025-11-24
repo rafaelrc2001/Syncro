@@ -243,6 +243,59 @@
                             </div>
                         </div>
 
+                        <div class="form-section-title" style="margin-top:2rem;">
+    <i class="ri-checkbox-multiple-line"></i>
+    <h3>Lista de verificación previa al trabajo</h3>
+</div>
+<div class="form-group" style="padding:0;">
+    <table class="verificacion-table" style="width:100%;border-collapse:collapse;">
+        <thead>
+            <tr style="background:#f3f3f3;">
+                <th colspan="4" style="text-align:left;padding:8px;font-weight:600;">Lista de verificación previa al trabajo.</th>
+            </tr>
+            <tr style="background:#fafafa;">
+                <th style="width:70%;text-align:left;padding:8px;"></th>
+                <th style="width:10%;text-align:center;">SI</th>
+                <th style="width:10%;text-align:center;">NO</th>
+                <th style="width:10%;text-align:center;">N/A</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="padding:8px;">¿El personal cuenta con el equipo de protección personal adecuado para efectuar el trabajo?</td>
+                <td style="text-align:center;">
+                    <input type="radio" name="epp" value="SI" required>
+                </td>
+                <td style="text-align:center;">
+                    <input type="radio" name="epp" value="NO">
+                </td>
+                <td style="text-align:center;">
+                    <input type="radio" name="epp" value="N/A">
+                </td>
+            </tr>
+            <tr>
+                <td style="padding:8px;">¿Las herramientas están en buen estado y son las adecuadas para efectuar el trabajo?</td>
+                <td style="text-align:center;">
+                    <input type="radio" name="herramientas" value="SI" required>
+                </td>
+                <td style="text-align:center;">
+                    <input type="radio" name="herramientas" value="NO">
+                </td>
+                <td style="text-align:center;">
+                    <input type="radio" name="herramientas" value="N/A">
+                </td>
+            </tr>
+            <tr>
+                <td style="padding:8px;font-weight:600;">Observaciones:</td>
+                <td colspan="3" style="padding:8px;">
+                    <textarea name="observaciones" rows="2" style="width:100%;resize:vertical;" placeholder="Escriba observaciones aquí..."></textarea>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
 
                     
                            <div class="form-actions" id="permiso-np-actions">

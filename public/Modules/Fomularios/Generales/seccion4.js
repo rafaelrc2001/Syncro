@@ -425,6 +425,15 @@ document.addEventListener("DOMContentLoaded", () => {
           const equipo_intervencion =
             document.getElementById("equipment")?.value || "";
           // CREA el objeto una sola vez
+          const verificacion_epp =
+            document.querySelector('input[name="epp"]:checked')?.value || "";
+          const verificacion_herramientas =
+            document.querySelector('input[name="herramientas"]:checked')
+              ?.value || "";
+          const verificacion_observaciones =
+            document.querySelector('textarea[name="observaciones"]')?.value ||
+            "";
+
           const datosNoPeligroso = {
             id_permiso,
             nombre_solicitante: nombre_solicitante || "",
@@ -455,6 +464,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 ?.value || "",
             observaciones_analisis_previo:
               document.getElementById("pre-work-observations")?.value || "",
+            verificacion_epp,
+            verificacion_herramientas,
+            verificacion_observaciones,
           };
 
           // Ahora sí puedes imprimir el objeto y enviarlo

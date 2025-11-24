@@ -45,7 +45,11 @@ ADD COLUMN numero_permiso_confinado VARCHAR(50);
 
 
 
-
+24-11-2025
+ALTER TABLE pt_no_peligroso
+ADD COLUMN verificacion_epp VARCHAR(10),
+ADD COLUMN verificacion_herramientas VARCHAR(10),
+ADD COLUMN verificacion_observaciones TEXT;
 
 
 

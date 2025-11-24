@@ -29,6 +29,9 @@ router.post("/pt-no-peligroso", async (req, res) => {
     area_circundante_riesgo,
     necesita_supervision,
     observaciones_analisis_previo,
+    verificacion_epp,
+    verificacion_herramientas,
+    verificacion_observaciones,
   } = req.body;
 
   // Mostrar por consola los datos recibidos
@@ -52,8 +55,9 @@ router.post("/pt-no-peligroso", async (req, res) => {
     const result = await db.query(
       `INSERT INTO pt_no_peligroso (
         id_permiso, nombre_solicitante, descripcion_trabajo, tipo_mantenimiento, ot_no, equipo_intervencion, hora_inicio, tag, fluido, presion, temperatura, empresa,
-        trabajo_area_riesgo_controlado, necesita_entrega_fisica, necesita_ppe_adicional, area_circundante_riesgo, necesita_supervision, observaciones_analisis_previo
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)
+        trabajo_area_riesgo_controlado, necesita_entrega_fisica, necesita_ppe_adicional, area_circundante_riesgo, necesita_supervision, observaciones_analisis_previo,
+        verificacion_epp, verificacion_herramientas, verificacion_observaciones
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21)
       RETURNING *`,
       [
         id_permiso,
@@ -74,6 +78,9 @@ router.post("/pt-no-peligroso", async (req, res) => {
         area_circundante_riesgo || null,
         necesita_supervision || null,
         observaciones_analisis_previo || null,
+        verificacion_epp || null,
+        verificacion_herramientas || null,
+        verificacion_observaciones || null,
       ]
     );
     res.status(201).json({

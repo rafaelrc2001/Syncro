@@ -117,7 +117,7 @@ function asignarEventosVer() {
           if (bloqueNoPeligroso) bloqueNoPeligroso.style.display = "none";
           if (
             data.general &&
-            data.general.tipo_permiso === "PT para Apertura Equipo Línea"
+            data.general.tipo_permiso === "PT para Apertura Equipo o Línea"
           ) {
             document.getElementById("modal-especifica").innerHTML =
               renderApertura(data.general);
@@ -285,7 +285,7 @@ function mostrarPermisosFiltrados(filtro) {
 
       if (tipoPermiso === "PT No Peligroso") {
         window.location.href = `/Modules/Fomularios/PT1/PT1area.html?id=${idPermiso}`;
-      } else if (tipoPermiso === "PT para Apertura Equipo Línea") {
+      } else if (tipoPermiso === "PT para Apertura Equipo o Línea") {
         window.location.href = `/Modules/Fomularios/PT2/PT2area.html?id=${idPermiso}`;
       } else if (tipoPermiso === "PT de Entrada a Espacio Confinado") {
         window.location.href = `/Modules/Fomularios/PT3/PT3area.html?id=${idPermiso}`;
@@ -320,7 +320,7 @@ function mostrarPermisosFiltrados(filtro) {
 
       if (tipoPermiso === "PT No Peligroso") {
         window.location.href = `/Modules/Fomularios/PT1/PT1imprimir2.html?tipo=PT1&id=${idPermiso}`;
-      } else if (tipoPermiso === "PT para Apertura Equipo Línea") {
+      } else if (tipoPermiso === "PT para Apertura Equipo o Línea") {
         window.location.href = `/Modules/Fomularios/PT2/PT2imprimir2.html?tipo=PT2&id=${idPermiso}`;
       } else if (tipoPermiso === "PT de Entrada a Espacio Confinado") {
         window.location.href = `/Modules/Fomularios/PT3/PT3imprimir2.html?tipo=PT3&id=${idPermiso}`;
@@ -729,7 +729,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 const permisoHandlers = {
-  "PT para Apertura Equipo Línea": {
+  "PT para Apertura Equipo o Línea": {
     render: (data) => {
       document.getElementById("modal-especifica").innerHTML = renderApertura(
         data.general

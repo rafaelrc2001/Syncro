@@ -220,7 +220,7 @@ function mostrarPermisosFiltrados(filtro) {
 
         if (tipoPermiso === "PT No Peligroso") {
           window.location.href = `/Modules/Fomularios/PT1/PT1imprimir.html?tipo=PT1&id=${idPermiso}`;
-        } else if (tipoPermiso === "PT para Apertura Equipo Línea") {
+        } else if (tipoPermiso === "PT para Apertura Equipo o Línea") {
           window.location.href = `/Modules/Fomularios/PT2/PT2imprimir.html?tipo=PT2&id=${idPermiso}`;
         } else if (tipoPermiso === "PT de Entrada a Espacio Confinado") {
           window.location.href = `/Modules/Fomularios/PT3/PT3imprimir.html?tipo=PT3&id=${idPermiso}`;
@@ -549,7 +549,7 @@ if (tableBody) {
       const idPermiso = viewBtn ? viewBtn.getAttribute("data-idpermiso") : "";
       if (tipoPermiso === "PT No Peligroso") {
         window.location.href = `/Modules/Fomularios/PT1/PT1supervisor.html?id=${idPermiso}`;
-      } else if (tipoPermiso === "PT para Apertura Equipo Línea") {
+      } else if (tipoPermiso === "PT para Apertura Equipo o Línea") {
         window.location.href = `/Modules/Fomularios/PT2/PT2supervisor.html?id=${idPermiso}`;
       } else if (tipoPermiso === "PT de Entrada a Espacio Confinado") {
         window.location.href = `/Modules/Fomularios/PT3/PT3supervisor.html?id=${idPermiso}`;
@@ -585,7 +585,7 @@ if (tableBody) {
 
       if (tipoPermiso === "PT No Peligroso") {
         window.location.href = `/Modules/Fomularios/PT1/PT1imprimirseg.html?tipo=PT1&id=${idPermiso}`;
-      } else if (tipoPermiso === "PT para Apertura Equipo Línea") {
+      } else if (tipoPermiso === "PT para Apertura Equipo o Línea") {
         window.location.href = `/Modules/Fomularios/PT2/PT2imprimirseg.html?tipo=PT2&id=${idPermiso}`;
       } else if (tipoPermiso === "PT de Entrada a Espacio Confinado") {
         window.location.href = `/Modules/Fomularios/PT3/PT3imprimirseg.html?tipo=PT3&id=${idPermiso}`;

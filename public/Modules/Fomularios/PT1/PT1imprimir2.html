@@ -20,7 +20,7 @@
                     <img src="/img/proagro.png" alt="Logo ProAgro" style="height: 60px; width: auto;">
                 </div>
                 <div style="text-align: center; flex-grow: 1;">
-                    <h1 style="margin: 0; color: #2c3e50; font-size: 1.5rem; font-weight: 600;">SISTEMA DE PERMISOS DE TRABAJO</h1>
+                    <h1 style="margin: 0; color: #2b3d4f; font-size: 1.5rem; font-weight: 600;">SISTEMA DE PERMISOS DE TRABAJO</h1>
                     <p style="margin: 0.5rem 0 0 0; color: #7f8c8d; font-size: 0.9rem;">Gestión Integral de Seguridad Laboral</p>
                 </div>
                     <div style="display: flex; align-items: center; gap: 1rem;">
@@ -113,15 +113,65 @@
                 </div>
 
 
-                <div class="area-box-header">
-                     <span>Formulario Responsable Área</span>
+            <div class="usuario-box-header">
+                     <span>Formulario Area Solicitante</span> 
+            </div>
+
+
+                        <!-- Lista de verificación previa al trabajo -->
+                <div class="executive-section">
+                    <div class="section-header">
+                        <i class="ri-checkbox-multiple-line"></i>
+                        <h3 class="pt1-section-title">Lista de Verificación Previa al Trabajo</h3>
+                    </div>
+                    <table class="styled-table pt1-analisis-table" style="width:100%; background:#fff; border-radius:8px; overflow:hidden;">
+                        <thead>
+                            <tr>
+                                <th style="text-align:left;">Pregunta</th>
+                                <th class="centered">Respuesta</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>¿El personal cuenta con el equipo de protección personal adecuado para efectuar el trabajo?</td>
+                                <td class="centered"><span id="resp-epp" class="pt1-response-highlight">-</span></td>
+                            </tr>
+                            <tr>
+                                <td>¿Las herramientas están en buen estado y son las adecuadas para efectuar el trabajo?</td>
+                                <td class="centered"><span id="resp-herramientas" class="pt1-response-highlight">-</span></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight:600;">Observaciones:</td>
+                                <td style="padding:8px;">
+                                    <p id="verificacion-observaciones" class="pt1-observaciones" style="margin:0; min-height:38px;">-</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
 
 
-                    <div  id="hora-responsable-header" style="text-align: center;">
+
+
+
+
+            <div class="area-box-header">
+                 <span>Formulario Responsable Área</span>
+             </div>
+
+                 
+
+                <div  id="hora-responsable-header" style="text-align: center;">
                                     <i class="ri-time-line"></i>
                                     <h3>Hora de autorización</h3>
                     </div>
+
+
+
+
+
+
+                    
 
                 <div class="executive-section ">
                     <div class="section-header">
@@ -186,11 +236,15 @@
                     </form>
                 </div>
 
-
-                  <div  id="hora-supervisor-header" style="text-align: center;">
+    
+  <div class="supervisor-box-header">
+                             <span>Formulario Seguridad Industrial</span>
+                         </div>
+                           <div  id="hora-supervisor-header" style="text-align: center;">
                                     <i class="ri-time-line"></i>
                                     <h3>Hora de autorización</h3>
                                 </div>
+
 
                 <!-- Sección AST y Participantes -->
                 <div class="executive-section ">
@@ -282,6 +336,7 @@
                     </div>
                 </div>
 
+
                 <div id="comentarios-permiso" style="display:none; margin-top:2em;">
                 <div style="background:#fff; border-radius:10px; box-shadow:0 2px 8px rgba(44,62,80,0.08); padding:1.2em 1.5em; ">
                     <span style="font-size:1.05em; font-weight:600; color:#2b3d4f; display:block; margin-bottom:0.7em;">
@@ -290,6 +345,12 @@
                     <p id="comentario-texto" style="margin:0; color:#2c3e50; font-size:1em; font-weight:500; word-break:break-word;">-</p>
                 </div>
                 </div>
+
+
+
+            
+
+
                 
 
                 <!-- Botones de acción -->
@@ -298,9 +359,20 @@
                         <i class="ri-logout-box-r-line" style="margin-right: 8px;"></i>Salir
                     </button>
 
-                    
+                 <!--      <div style="display: flex; gap: 16px;">
+                          <button 
+                            id="btn-cerrar-permiso" 
+                            class="btn btn-pt1 btn-guardar-azulpetroleo" 
+                            type="button"
+                        >
+                            <i class="ri-close-line" style="margin-right: 8px;"></i>
+                            Finalizar permiso
+                        </button>
+                    </div>-->
+
 
                     <div style="display: flex; gap: 16px;">
+                    
                         <button id="btn-imprimir-permiso" class="btn btn-pt1 btn-guardar-azulpetroleo" type="button">
                             <i class="ri-printer-line" style="margin-right: 8px;"></i>Imprimir Permiso
                         </button>
@@ -331,6 +403,16 @@
                                                 <h3 style="margin:0 0 0.5em 0; font-size:1.2em; color:#2980b9;">
                                                     <i class="ri-lock-2-line" style="margin-right:8px;"></i>Motivo de Cierre de Permiso
                                                 </h3>
+                                                <div style="margin-bottom: 1em;">
+                                                    <label style="display: block; margin-bottom: 0.5em; font-weight: 500; color: #2c3e50;">Selecciona el tipo de cierre:</label>
+                                                    <select id="tipoCierrePermiso" style="width:100%; padding:8px 12px; border:1px solid #d0d7de; border-radius:6px; font-size:14px; background:#fff;">
+                                                        <option value="">-- Seleccionar tipo de cierre --</option>
+                                                        <option value="cierre-sin-incidentes">Cierre sin incidentes</option>
+                                                        <option value="cierre-con-incidentes">Cierre con incidentes</option>
+                                                        <option value="cierre-con-accidentes">Cierre con accidentes</option>
+                                                        <option value="cancelado">Cancelado</option>
+                                                    </select>
+                                                </div>
                                                 <textarea id="comentarioCerrarPermiso" rows="4" style="width:100%; border:1px solid #d0d7de; border-radius:6px; padding:8px; resize:vertical;" placeholder="Escribe el motivo del cierre..."></textarea>
                                                 <div style="display:flex; justify-content:flex-end; gap:10px;">
                                                     <button id="btnCancelarCerrarPermiso" type="button" style="background:#eee; color:#333; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Cancelar</button>
@@ -354,6 +436,8 @@
                                                 </div>
                                             </div>
 
+                                         
+
 
         
 </body>
@@ -362,11 +446,12 @@
 
 
 
+
      <!-- <script src="/Modules/Fomularios/PT1/PT1.js"></script>-->
 
      <script src="/Modules/Fomularios/Generales/comentarios.js"></script>
      <script src="/Modules/Fomularios/Generales/fecha_hora.js"></script>
-     <script src="/Modules/Fomularios/PT1/PT1seccionimprimir2.js"></script>
+     <script src="/Modules/Fomularios/PT1/PT1seccionimprimir-unificado.js"></script>
         
 </body>
 </html>

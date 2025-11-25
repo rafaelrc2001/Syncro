@@ -602,6 +602,22 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("pre-work-observations").textContent =
               data.detalles.observaciones_analisis_previo || "-";
 
+          // Mapear datos de verificación previa al trabajo
+          const respEpp = document.getElementById("resp-epp");
+          if (respEpp) {
+            respEpp.textContent = general.verificacion_epp || "-";
+          }
+
+          const respHerramientas = document.getElementById("resp-herramientas");
+          if (respHerramientas) {
+            respHerramientas.textContent = general.verificacion_herramientas || "-";
+          }
+
+          const verificacionObs = document.getElementById("verificacion-observaciones");
+          if (verificacionObs) {
+            verificacionObs.textContent = general.verificacion_observaciones || "-";
+          }
+
           // Rellenar AST y Participantes
           mostrarAST(data.ast);
           mostrarActividadesAST(data.actividades_ast);

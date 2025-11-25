@@ -80,7 +80,7 @@ function asignarEventosVer() {
       try {
         if (tipoPermiso === "PT No Peligroso") {
           window.location.href = `/Modules/Fomularios/PT1/PT1imprimirsup.html?tipo=PT1&id=${idPermiso}`;
-        } else if (tipoPermiso === "PT para Apertura Equipo Línea") {
+        } else if (tipoPermiso === "PT para Apertura Equipo o Línea") {
           window.location.href = `/Modules/Fomularios/PT2/PT2imprimirsup.html?tipo=PT2&id=${idPermiso}`;
         } else if (tipoPermiso === "PT de Entrada a Espacio Confinado") {
           window.location.href = `/Modules/Fomularios/PT3/PT3imprimirsup.html?tipo=PT3&id=${idPermiso}`;

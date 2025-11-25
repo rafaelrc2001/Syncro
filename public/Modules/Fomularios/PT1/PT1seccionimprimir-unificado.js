@@ -32,10 +32,23 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       }
     });
+
   const btnSalir = document.getElementById("btn-salir-nuevo");
   if (btnSalir) {
     btnSalir.addEventListener("click", function () {
-      window.location.href = "../../JefeSeguridad/JefeSeguridad.html";
+      // Detectar la ruta de redirección según el archivo HTML actual
+      const currentPage = window.location.pathname;
+      let redirectUrl = "/Modules/SupSeguridad/SupSeguridad.html"; // Por defecto
+      
+      if (currentPage.includes("PT1imprimir2.html")) {
+        redirectUrl = "/Modules/Usuario/AutorizarPT.html";
+      } else if (currentPage.includes("PT1imprimirsup.html")) {
+        redirectUrl = "/Modules/SupSeguridad/SupSeguridad.html";
+      } else if (currentPage.includes("PT1imprimirseg.html")) {
+        redirectUrl = "/Modules/SupSeguridad/SupSeguridad.html";
+      }
+      
+      window.location.href = redirectUrl;
     });
   }
 });
@@ -102,23 +115,35 @@ function consultarPersonasAutorizacion(idPermiso) {
         console.log("Datos de autorización cargados:", data);
       } else {
         console.log("No se encontraron autorizaciones para este permiso");
-        // Los elementos ya tienen "-" por defecto, no necesitamos cambiar nada
       }
     })
     .catch((err) => {
       console.error("Error al consultar personas de autorización:", err);
-      // Los elementos ya tienen "-" por defecto en caso de error
     });
 }
 
-// Nuevo botón salir: vuelve a AutorizarPT.html
+// Nuevo botón salir: detecta la página actual y redirige apropiadamente
 const btnSalirNuevo = document.getElementById("btn-salir-nuevo");
 if (btnSalirNuevo) {
   btnSalirNuevo.addEventListener("click", function (e) {
     e.preventDefault();
-    window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
+    
+    // Detectar la ruta de redirección según el archivo HTML actual
+    const currentPage = window.location.pathname;
+    let redirectUrl = "/Modules/SupSeguridad/SupSeguridad.html"; // Por defecto
+    
+    if (currentPage.includes("PT1imprimir2.html")) {
+      redirectUrl = "/Modules/Usuario/AutorizarPT.html";
+    } else if (currentPage.includes("PT1imprimirsup.html")) {
+      redirectUrl = "/Modules/SupSeguridad/SupSeguridad.html";
+    } else if (currentPage.includes("PT1imprimirseg.html")) {
+      redirectUrl = "/Modules/SupSeguridad/SupSeguridad.html";
+    }
+    
+    window.location.href = redirectUrl;
   });
 }
+
 // Mostrar solo la sección 2 al cargar y ocultar las demás
 document.addEventListener("DOMContentLoaded", function () {
   // --- FUNCIONES PARA RELLENAR AST Y PARTICIPANTES ---
@@ -166,13 +191,13 @@ document.addEventListener("DOMContentLoaded", function () {
         actividades.forEach((act) => {
           const tr = document.createElement("tr");
           tr.innerHTML = `
-                <td>${act.no || ""}</td>
-                <td>${act.secuencia_actividad || ""}</td>
-                <td>${act.personal_ejecutor || ""}</td>
-                <td>${act.peligros_potenciales || ""}</td>
-                <td>${act.descripcion || ""}</td>
-                <td>${act.responsable || ""}</td>
-            `;
+            <td>${act.no || ""}</td>
+            <td>${act.secuencia_actividad || ""}</td>
+            <td>${act.personal_ejecutor || ""}</td>
+            <td>${act.peligros_potenciales || ""}</td>
+            <td>${act.descripcion || ""}</td>
+            <td>${act.responsable || ""}</td>
+          `;
           tbody.appendChild(tr);
         });
       }
@@ -187,12 +212,12 @@ document.addEventListener("DOMContentLoaded", function () {
         participantes.forEach((p) => {
           const tr = document.createElement("tr");
           tr.innerHTML = `
-                <td>${p.nombre || ""}</td>
-                <td><span class="role-badge">${p.funcion || ""}</span></td>
-                <td>${p.credencial || ""}</td>
-                <td>${p.cargo || ""}</td>
-                <td> </td>
-            `;
+            <td>${p.nombre || ""}</td>
+            <td><span class="role-badge">${p.funcion || ""}</span></td>
+            <td>${p.credencial || ""}</td>
+            <td>${p.cargo || ""}</td>
+            <td> </td>
+          `;
           tbody.appendChild(tr);
         });
       }
@@ -209,19 +234,41 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // Botón regresar: vuelve a AutorizarPT.html
+  // Botón regresar: detecta la página actual y redirige apropiadamente
   const btnRegresar = document.getElementById("btn-regresar");
   if (btnRegresar) {
     btnRegresar.addEventListener("click", function () {
-      window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
+      const currentPage = window.location.pathname;
+      let redirectUrl = "/Modules/SupSeguridad/SupSeguridad.html"; // Por defecto
+      
+      if (currentPage.includes("PT1imprimir2.html")) {
+        redirectUrl = "/Modules/Usuario/AutorizarPT.html";
+      } else if (currentPage.includes("PT1imprimirsup.html")) {
+        redirectUrl = "/Modules/SupSeguridad/SupSeguridad.html";
+      } else if (currentPage.includes("PT1imprimirseg.html")) {
+        redirectUrl = "/Modules/SupSeguridad/SupSeguridad.html";
+      }
+      
+      window.location.href = redirectUrl;
     });
   }
 
-  // Botón salir: vuelve a AutorizarPT.html
+  // Botón salir: detecta la página actual y redirige apropiadamente
   const btnSalir = document.getElementById("btn-salir");
   if (btnSalir) {
     btnSalir.addEventListener("click", function () {
-      window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
+      const currentPage = window.location.pathname;
+      let redirectUrl = "/Modules/SupSeguridad/SupSeguridad.html"; // Por defecto
+      
+      if (currentPage.includes("PT1imprimir2.html")) {
+        redirectUrl = "/Modules/Usuario/AutorizarPT.html";
+      } else if (currentPage.includes("PT1imprimirsup.html")) {
+        redirectUrl = "/Modules/SupSeguridad/SupSeguridad.html";
+      } else if (currentPage.includes("PT1imprimirseg.html")) {
+        redirectUrl = "/Modules/SupSeguridad/SupSeguridad.html";
+      }
+      
+      window.location.href = redirectUrl;
     });
   }
 
@@ -233,6 +280,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (comentarioDiv && idPermiso) {
     mostrarComentarioSiCorresponde(idPermiso, comentarioDiv);
   }
+
   if (idPermiso) {
     // Llamar a la API para obtener los datos del permiso
     fetch(`/api/verformularios?id=${encodeURIComponent(idPermiso)}`)
@@ -253,15 +301,6 @@ document.addEventListener("DOMContentLoaded", function () {
         if (data && (data.detalles || data.general)) {
           const detalles = data.detalles || {};
           const general = data.general || {};
-
-          document.getElementById("empresa-label").textContent =
-            detalles.empresa || general.empresa || "-";
-          document.getElementById("nombre-solicitante-label").textContent =
-            detalles.solicitante || general.solicitante || "-";
-          document.getElementById("sucursal-label").textContent =
-            detalles.sucursal || general.sucursal || "-";
-          document.getElementById("contrato-label").textContent =
-            detalles.contrato || general.contrato || "-";
 
           document.getElementById("start-time-label").textContent =
             detalles.horario ||
@@ -390,6 +429,22 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("pre-work-observations").textContent =
               data.detalles.observaciones_analisis_previo || "-";
 
+          // Mapear datos de verificación previa al trabajo
+          const respEpp = document.getElementById("resp-epp");
+          if (respEpp) {
+            respEpp.textContent = general.verificacion_epp || "-";
+          }
+
+          const respHerramientas = document.getElementById("resp-herramientas");
+          if (respHerramientas) {
+            respHerramientas.textContent = general.verificacion_herramientas || "-";
+          }
+
+          const verificacionObs = document.getElementById("verificacion-observaciones");
+          if (verificacionObs) {
+            verificacionObs.textContent = general.verificacion_observaciones || "-";
+          }
+
           // Rellenar AST y Participantes
           mostrarAST(data.ast);
           mostrarActividadesAST(data.actividades_ast);
@@ -397,7 +452,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
           // Consultar y rellenar datos de autorización
           consultarPersonasAutorizacion(idPermiso);
-          llenarTablaResponsables(idPermiso); // <-- AGREGA ESTA LÍNEA
+          llenarTablaResponsables(idPermiso);
 
           // Aplicar estilos dinámicos PT1
           aplicarEstilosPT1();
@@ -421,11 +476,6 @@ document.addEventListener("DOMContentLoaded", function () {
  */
 async function imprimirPermisoTradicional() {
   try {
-    // Esperar a que las imágenes se carguen completamente (si tienes logos)
-    // Si no tienes logos, puedes omitir esta parte
-    // await esperarImagenes();
-
-    // Ejecutar impresión tradicional del navegador
     window.print();
   } catch (error) {
     console.error("Error al imprimir:", error);
@@ -435,14 +485,6 @@ async function imprimirPermisoTradicional() {
   }
 }
 
-// Interceptar Ctrl+P para mostrar instrucciones
-// document.addEventListener("keydown", function (e) {
-//   if ((e.ctrlKey || e.metaKey) && e.key === "p") {
-//     e.preventDefault();
-//     mostrarInstruccionesImpresion();
-//   }
-// });
-
 const botonImprimir = document.getElementById("btn-imprimir-permiso");
 if (botonImprimir) {
   botonImprimir.addEventListener(
@@ -450,10 +492,10 @@ if (botonImprimir) {
     function (e) {
       e.preventDefault();
       e.stopPropagation();
-      window.print(); // Imprime directamente sin mostrar instrucciones
+      window.print();
     },
     true
-  ); // true para capturar el evento antes que otros listeners
+  );
 
   // Indicador visual al botón
   botonImprimir.style.transition = "all 0.3s ease";
@@ -477,7 +519,7 @@ function llenarTablaResponsables(idPermiso) {
       const tbody = document.getElementById("modal-ast-responsable-body");
       if (!tbody) return;
 
-      tbody.innerHTML = ""; // Limpia la tabla antes de llenarla
+      tbody.innerHTML = "";
 
       if (result.success && result.data) {
         const data = result.data;
@@ -501,7 +543,6 @@ function llenarTablaResponsables(idPermiso) {
           }
         });
 
-        // Si alguna fila no tiene nombre, igual la mostramos con N/A
         filas.forEach((fila) => {
           if (!fila.nombre || fila.nombre.trim() === "") {
             const tr = document.createElement("tr");
@@ -514,14 +555,12 @@ function llenarTablaResponsables(idPermiso) {
           }
         });
 
-        // Si no hay responsables, muestra mensaje
         if (!hayResponsables) {
           const tr = document.createElement("tr");
           tr.innerHTML = `<td colspan="3">Sin responsables registrados</td>`;
           tbody.appendChild(tr);
         }
       } else {
-        // Si no hay datos, muestra mensaje
         const tr = document.createElement("tr");
         tr.innerHTML = `<td colspan="3">Sin responsables registrados</td>`;
         tbody.appendChild(tr);
@@ -530,316 +569,4 @@ function llenarTablaResponsables(idPermiso) {
     .catch((err) => {
       console.error("Error al consultar personas de autorización:", err);
     });
-}
-
-// --- Lógica para el botón "Autorizar" del Supervisor ---
-const btnAutorizarSupervisor = document.getElementById(
-  "btn-guardar-campos-supervisor"
-);
-if (btnAutorizarSupervisor) {
-  btnAutorizarSupervisor.addEventListener("click", async function () {
-    // 1. Obtener datos necesarios
-    const params = new URLSearchParams(window.location.search);
-    const idPermiso = params.get("id") || window.idPermisoActual;
-    const supervisorInput = document.getElementById("responsable-aprobador");
-    const categoriaInput = document.getElementById("responsable-aprobador2");
-    const nombre_supervisor = supervisorInput
-      ? supervisorInput.value.trim()
-      : "";
-    const categoria_supervisor = categoriaInput
-      ? categoriaInput.value.trim()
-      : "";
-
-    // 2. Validaciones básicas
-    if (!idPermiso) {
-      alert("No se pudo obtener el ID del permiso.");
-      return;
-    }
-    if (!nombre_supervisor) {
-      alert("Debes seleccionar un supervisor.");
-      if (supervisorInput) supervisorInput.focus();
-      return;
-    }
-
-    // 3. Insertar autorización de supervisor vía API
-    try {
-      // Generar timestamp automático para autorización supervisor PT1 (hora local)
-      const nowSupervisor = new Date();
-      const fechaHoraAutorizacionSupervisor = new Date(
-        nowSupervisor.getTime() - nowSupervisor.getTimezoneOffset() * 60000
-      ).toISOString();
-      console.log(
-        "[AUTORIZAR SUPERVISOR PT1] Timestamp generado (hora local):",
-        fechaHoraAutorizacionSupervisor
-      );
-
-      // Actualizar autorización de supervisor
-      const respSupervisor = await fetch("/api/autorizaciones/supervisor", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          id_permiso: idPermiso,
-          nombre_supervisor,
-          categoria_supervisor,
-          fecha_hora_supervisor: fechaHoraAutorizacionSupervisor,
-        }),
-      });
-
-      if (!respSupervisor.ok) {
-        throw new Error(
-          `Error ${respSupervisor.status}: ${respSupervisor.statusText}`
-        );
-      }
-
-      // --- Consultar y actualizar estatus ---
-      let idEstatus = null;
-      try {
-        const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
-        if (respEstatus.ok) {
-          const permisoData = await respEstatus.json();
-          idEstatus =
-            permisoData.id_estatus ||
-            (permisoData.data && permisoData.data.id_estatus);
-          console.log(
-            "[AUTORIZAR SUPERVISOR PT1] idEstatus obtenido:",
-            idEstatus
-          );
-        }
-      } catch (err) {
-        console.error(
-          "[AUTORIZAR SUPERVISOR PT1] Error al consultar id_estatus:",
-          err
-        );
-      }
-
-      // Actualizar estatus si se obtuvo el id_estatus
-      if (idEstatus) {
-        try {
-          const payloadEstatus = { id_estatus: idEstatus };
-          console.log(
-            "[AUTORIZAR SUPERVISOR PT1] Enviando a /api/estatus/autorizado:",
-            payloadEstatus
-          );
-          const respEstatus = await fetch("/api/estatus/autorizado", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payloadEstatus),
-          });
-
-          if (respEstatus.ok) {
-            console.log(
-              "[AUTORIZAR SUPERVISOR PT1] Estatus actualizado exitosamente"
-            );
-          } else {
-            console.error(
-              "[AUTORIZAR SUPERVISOR PT1] Error al actualizar estatus:",
-              respEstatus.status
-            );
-          }
-        } catch (err) {
-          console.error(
-            "[AUTORIZAR SUPERVISOR PT1] Excepción al actualizar estatus:",
-            err
-          );
-        }
-      }
-
-      // Mostrar modal de confirmación o redirigir
-      alert("Permiso autorizado exitosamente por el supervisor.");
-      window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
-    } catch (err) {
-      console.error(
-        "[AUTORIZAR SUPERVISOR PT1] Error al insertar autorización:",
-        err
-      );
-      alert(
-        "Error al procesar la autorización. Por favor, inténtalo de nuevo."
-      );
-    }
-  });
-}
-
-// --- Lógica para el botón "No Autorizar" del Supervisor ---
-const btnNoAutorizarSupervisor = document.getElementById(
-  "btn-no-autorizar-supervisor"
-);
-if (btnNoAutorizarSupervisor) {
-  btnNoAutorizarSupervisor.addEventListener("click", function () {
-    // 1. Validar supervisor seleccionado
-    const supervisorInput = document.getElementById("responsable-aprobador");
-    const nombre_supervisor = supervisorInput
-      ? supervisorInput.value.trim()
-      : "";
-    if (!nombre_supervisor) {
-      alert("Debes seleccionar un supervisor antes de rechazar.");
-      return;
-    }
-
-    // Mostrar el modal para capturar el comentario de rechazo
-    const modal = document.getElementById("modalComentarioSupervisor");
-    if (modal) {
-      modal.style.display = "flex";
-      const comentarioInput = document.getElementById(
-        "comentarioNoAutorizarSupervisor"
-      );
-      if (comentarioInput) comentarioInput.value = "";
-    }
-  });
-
-  // Lógica para cerrar/cancelar el modal de supervisor
-  const btnCancelarComentarioSupervisor = document.getElementById(
-    "btnCancelarComentarioSupervisor"
-  );
-  if (btnCancelarComentarioSupervisor) {
-    btnCancelarComentarioSupervisor.addEventListener("click", function () {
-      const modal = document.getElementById("modalComentarioSupervisor");
-      if (modal) modal.style.display = "none";
-    });
-  }
-
-  // Lógica para guardar el comentario y actualizar estatus a No Autorizado por Supervisor
-  const btnGuardarComentarioSupervisor = document.getElementById(
-    "btnGuardarComentarioSupervisor"
-  );
-  if (btnGuardarComentarioSupervisor) {
-    btnGuardarComentarioSupervisor.addEventListener("click", async function () {
-      const comentario = document
-        .getElementById("comentarioNoAutorizarSupervisor")
-        .value.trim();
-      const supervisorInput = document.getElementById("responsable-aprobador");
-      const categoriaInput = document.getElementById("responsable-aprobador2");
-      const nombre_supervisor = supervisorInput
-        ? supervisorInput.value.trim()
-        : "";
-      const categoria_supervisor = categoriaInput
-        ? categoriaInput.value.trim()
-        : "";
-      const params = new URLSearchParams(window.location.search);
-      const idPermiso = params.get("id") || window.idPermisoActual;
-
-      if (!comentario) {
-        alert("Debes ingresar un comentario.");
-        return;
-      }
-      if (!idPermiso) {
-        alert("No se pudo obtener el ID del permiso.");
-        return;
-      }
-      if (!nombre_supervisor) {
-        alert("Debes seleccionar un supervisor.");
-        return;
-      }
-
-      try {
-        // Generar timestamp automático para rechazo supervisor PT1 (hora local)
-        const nowRechazoSupervisor = new Date();
-        const fechaHoraRechazoSupervisor = new Date(
-          nowRechazoSupervisor.getTime() -
-            nowRechazoSupervisor.getTimezoneOffset() * 60000
-        ).toISOString();
-        console.log(
-          "[NO AUTORIZAR SUPERVISOR PT1] Timestamp generado (hora local):",
-          fechaHoraRechazoSupervisor
-        );
-
-        // 1. Guardar comentario y supervisor en la tabla de autorizaciones
-        const respSupervisor = await fetch("/api/autorizaciones/supervisor", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            id_permiso: idPermiso,
-            nombre_supervisor,
-            categoria_supervisor,
-            comentario_no_autorizar: comentario,
-            fecha_hora_supervisor: fechaHoraRechazoSupervisor,
-          }),
-        });
-
-        if (!respSupervisor.ok) {
-          throw new Error(
-            `Error ${respSupervisor.status}: ${respSupervisor.statusText}`
-          );
-        }
-
-        // 2. Consultar el id_estatus desde permisos_trabajo
-        let idEstatus = null;
-        try {
-          const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
-          if (respEstatus.ok) {
-            const permisoData = await respEstatus.json();
-            idEstatus =
-              permisoData.id_estatus ||
-              (permisoData.data && permisoData.data.id_estatus);
-            console.log(
-              "[NO AUTORIZAR SUPERVISOR PT1] idEstatus obtenido:",
-              idEstatus
-            );
-          }
-        } catch (err) {
-          console.error(
-            "[NO AUTORIZAR SUPERVISOR PT1] Error al consultar id_estatus:",
-            err
-          );
-        }
-
-        // 3. Actualizar el estatus a 'no autorizado' y guardar el comentario
-        if (idEstatus) {
-          try {
-            const payloadEstatus = { id_estatus: idEstatus };
-            console.log(
-              "[NO AUTORIZAR SUPERVISOR PT1] Enviando a /api/estatus/no_autorizado:",
-              payloadEstatus
-            );
-            const respEstatus = await fetch("/api/estatus/no_autorizado", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(payloadEstatus),
-            });
-
-            if (respEstatus.ok) {
-              console.log(
-                "[NO AUTORIZAR SUPERVISOR PT1] Estatus actualizado a No Autorizado"
-              );
-
-              // Guardar el comentario en la tabla estatus
-              const respComentario = await fetch("/api/estatus/comentario", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ id_estatus: idEstatus, comentario }),
-              });
-
-              if (respComentario.ok) {
-                console.log(
-                  "[NO AUTORIZAR SUPERVISOR PT1] Comentario guardado exitosamente"
-                );
-              }
-            } else {
-              throw new Error("Error al actualizar estatus");
-            }
-          } catch (err) {
-            console.error(
-              "[NO AUTORIZAR SUPERVISOR PT1] Error al actualizar estatus:",
-              err
-            );
-            throw err;
-          }
-        } else {
-          throw new Error("No se pudo obtener id_estatus");
-        }
-
-        // 4. Cerrar el modal y mostrar mensaje de éxito
-        const modal = document.getElementById("modalComentarioSupervisor");
-        if (modal) modal.style.display = "none";
-
-        alert("Permiso rechazado exitosamente por el supervisor.");
-        window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
-      } catch (err) {
-        console.error(
-          "[NO AUTORIZAR SUPERVISOR PT1] Error en el proceso de rechazo:",
-          err
-        );
-        alert("Error al procesar el rechazo. Por favor, inténtalo de nuevo.");
-      }
-    });
-  }
 }

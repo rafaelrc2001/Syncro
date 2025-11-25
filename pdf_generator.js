@@ -52,7 +52,7 @@ class PT2PDFGenerator {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PT2 - Permiso de Trabajo para Apertura Equipo Línea</title>
+    <title>PT2 - Permiso de Trabajo para Apertura Equipo o Línea</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
     <style>
@@ -300,7 +300,7 @@ class PT2PDFGenerator {
         <!-- TÍTULO PRINCIPAL -->
         <div class="section-header" style="margin-bottom: 20pt;">
             <i class="ri-checkbox-circle-line"></i>
-            <h2>Permiso de Trabajo para Apertura Equipo Línea</h2>
+            <h2>Permiso de Trabajo para Apertura Equipo o Línea</h2>
         </div>
 
         <!-- DATOS GENERALES -->
@@ -634,7 +634,7 @@ class PT2PDFGenerator {
         //displayHeaderFooter: false,
         headerTemplate: `
                     <div style="font-size: 8pt; width: 100%; text-align: center; color: #666;">
-                        PT2 - Permiso de Trabajo para Apertura Equipo Línea
+                        PT2 - Permiso de Trabajo para Apertura Equipo o Línea
                     </div>
                 `,
         footerTemplate: `

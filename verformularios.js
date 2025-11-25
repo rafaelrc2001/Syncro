@@ -41,7 +41,10 @@ router.get("/verformularios", async (req, res) => {
                     ptnp.necesita_ppe_adicional,
                     ptnp.area_circundante_riesgo,
                     ptnp.necesita_supervision,
-                    ptnp.observaciones_analisis_previo
+                    ptnp.observaciones_analisis_previo,
+                    ptnp.verificacion_epp,
+                    ptnp.verificacion_herramientas,
+                    ptnp.verificacion_observaciones
                 FROM permisos_trabajo pt
                 INNER JOIN pt_no_peligroso ptnp ON pt.id_permiso = ptnp.id_permiso
                 INNER JOIN sucursales s ON pt.id_sucursal = s.id_sucursal
@@ -68,15 +71,18 @@ router.get("/verformularios", async (req, res) => {
                     pnp.necesita_ppe_adicional,
                     pnp.area_circundante_riesgo,
                     pnp.necesita_supervision,
-                    pnp.observaciones_analisis_previo
+                    pnp.observaciones_analisis_previo,
+                    pnp.verificacion_epp,
+                    pnp.verificacion_herramientas,
+                    pnp.verificacion_observaciones
                 FROM permisos_trabajo pt
                 LEFT JOIN pt_no_peligroso pnp ON pt.id_permiso = pnp.id_permiso
                 LEFT JOIN areas a ON pt.id_area = a.id_area
                 WHERE pt.id_permiso = $1
             `;
       resultDetalles = await pool.query(queryDetallesNoPeligroso, [id]);
-    } else if (tipo_permiso === "PT para Apertura Equipo Línea") {
-      console.log("Entrando a bloque PT para Apertura Equipo Línea");
+    } else if (tipo_permiso === "PT para Apertura Equipo o Línea") {
+      console.log("Entrando a bloque PT para Apertura Equipo o Línea");
       // Consulta correcta para pt_apertura
 
       // ...existing code...

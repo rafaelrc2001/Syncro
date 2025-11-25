@@ -237,7 +237,7 @@ function mostrarPermisosFiltrados(filtro) {
 
       if (tipoPermiso === "PT No Peligroso") {
         window.location.href = `/Modules/Fomularios/PT1/PT1imprimir.html?tipo=PT1&id=${idPermiso}`;
-      } else if (tipoPermiso === "PT para Apertura Equipo Línea") {
+      } else if (tipoPermiso === "PT para Apertura Equipo o Línea") {
         window.location.href = `/Modules/Fomularios/PT2/PT2imprimir.html?tipo=PT2&id=${idPermiso}`;
       } else if (tipoPermiso === "PT de Entrada a Espacio Confinado") {
         window.location.href = `/Modules/Fomularios/PT3/PT3imprimir.html?tipo=PT3&id=${idPermiso}`;
@@ -734,7 +734,7 @@ if (btnCancelarEnviar) {
 }
 
 const permisoRenderers = {
-  "PT para Apertura Equipo Línea": renderApertura,
+  "PT para Apertura Equipo o Línea": renderApertura,
   // Aquí agregas más tipos en el futuro
 };
 

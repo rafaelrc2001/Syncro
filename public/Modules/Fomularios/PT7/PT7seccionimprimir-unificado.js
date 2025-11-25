@@ -319,6 +319,9 @@ if (idPermiso) {
         setText("fluid-label", permiso.fluido || "-");
         setText("pressure-label", permiso.presion || "-");
         setText("temperature-label", permiso.temperatura || "-");
+
+        setText("observaciones_generales", permiso.observaciones || "-");
+
         // Radios de requisitos
         const radios = [
           "fuera_operacion",
@@ -403,7 +406,9 @@ document.addEventListener("DOMContentLoaded", function () {
       }
       // Utilidad para leer radios
       function getRadio(name) {
-        return document.querySelector(`input[name="${name}"]:checked`)?.value || null;
+        return (
+          document.querySelector(`input[name="${name}"]:checked`)?.value || null
+        );
       }
       // Construir payload
       const payload = {
@@ -442,7 +447,9 @@ document.addEventListener("DOMContentLoaded", function () {
           const err = await response.json();
           console.error("Error en la actualización:", err);
           alert(
-            `Error al actualizar requisitos: ${err.message || "Error desconocido"}`
+            `Error al actualizar requisitos: ${
+              err.message || "Error desconocido"
+            }`
           );
         }
       } catch (err) {
@@ -599,7 +606,10 @@ document.addEventListener("DOMContentLoaded", function () {
             "special-tools-type-label",
             permiso.tipo_herramientas_especiales || "-"
           );
-          setText("adequate-tools-label", permiso.herramientas_adecuadas || "-");
+          setText(
+            "adequate-tools-label",
+            permiso.herramientas_adecuadas || "-"
+          );
           setText(
             "pre-verification-label",
             permiso.requiere_verificacion_previa || "-"

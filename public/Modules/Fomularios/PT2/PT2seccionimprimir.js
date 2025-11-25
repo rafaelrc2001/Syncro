@@ -156,6 +156,7 @@ document.addEventListener("DOMContentLoaded", function () {
           if (document.getElementById("final-observations-label"))
             document.getElementById("final-observations-label").textContent =
               data.general.observaciones_medidas || "-";
+
           // ...agrega aquí más campos si los necesitas...
           // Mapeo de datos generales y equipo para imprimirseg
           if (data && data.general) {
@@ -163,36 +164,64 @@ document.addEventListener("DOMContentLoaded", function () {
               document.getElementById("start-time-label").textContent =
                 data.general.hora_inicio || "-";
             if (document.getElementById("fecha-label"))
-              document.getElementById("fecha-label").textContent =
-                data.general.fecha || "-";
-            if (document.getElementById("activity-type-label"))
-              document.getElementById("activity-type-label").textContent =
-                data.general.tipo_mantenimiento || "-";
-            if (document.getElementById("plant-label"))
-              document.getElementById("plant-label").textContent =
-                data.general.area || "-";
-            if (document.getElementById("descripcion-trabajo-label"))
-              document.getElementById("descripcion-trabajo-label").textContent =
-                data.general.descripcion_trabajo || "-";
-            if (document.getElementById("empresa-label"))
-              document.getElementById("empresa-label").textContent =
-                data.general.empresa || "-";
-            if (document.getElementById("nombre-solicitante-label"))
-              document.getElementById("nombre-solicitante-label").textContent =
-                data.general.solicitante || "-";
-            if (document.getElementById("sucursal-label"))
-              document.getElementById("sucursal-label").textContent =
-                data.general.sucursal || "-";
-            if (document.getElementById("contrato-label"))
-              document.getElementById("contrato-label").textContent =
-                data.general.contrato || "-";
-            if (document.getElementById("work-order-label"))
-              document.getElementById("work-order-label").textContent =
-                data.general.ot_numero || "-";
-            // Sección Equipo
-            if (document.getElementById("equipment-intervene-label"))
-              document.getElementById("equipment-intervene-label").textContent =
-                data.general.tiene_equipo_intervenir ? "SI" : "NO";
+              if (document.getElementById("nombre-fuera-operacion"))
+                // Mapeo de los nuevos campos *_nombre para requisitos de apertura (formato 'nombre-...')
+                document.getElementById("nombre-fuera-operacion").textContent =
+                  data.general.fuera_operacion_nombre || "-";
+            if (document.getElementById("nombre-despresurizado-purgado"))
+              document.getElementById(
+                "nombre-despresurizado-purgado"
+              ).textContent = data.general.despresurizado_purgado_nombre || "-";
+            if (document.getElementById("nombre-necesita-aislamiento"))
+              document.getElementById(
+                "nombre-necesita-aislamiento"
+              ).textContent = data.general.necesita_aislamiento_nombre || "-";
+            if (document.getElementById("nombre-con-valvulas"))
+              document.getElementById("nombre-con-valvulas").textContent =
+                data.general.con_valvulas_nombre || "-";
+            if (document.getElementById("nombre-con-juntas-ciegas"))
+              document.getElementById("nombre-con-juntas-ciegas").textContent =
+                data.general.con_juntas_ciegas_nombre || "-";
+            if (document.getElementById("nombre-producto-entrampado"))
+              document.getElementById(
+                "nombre-producto-entrampado"
+              ).textContent = data.general.producto_entrampado_nombre || "-";
+            if (document.getElementById("nombre-requiere-lavado"))
+              document.getElementById("nombre-requiere-lavado").textContent =
+                data.general.requiere_lavado_nombre || "-";
+            if (document.getElementById("nombre-requiere-neutralizado"))
+              document.getElementById(
+                "nombre-requiere-neutralizado"
+              ).textContent = data.general.requiere_neutralizado_nombre || "-";
+            if (document.getElementById("nombre-requiere-vaporizado"))
+              document.getElementById(
+                "nombre-requiere-vaporizado"
+              ).textContent = data.general.requiere_vaporizado_nombre || "-";
+            if (document.getElementById("nombre-suspender-trabajos-adyacentes"))
+              document.getElementById(
+                "nombre-suspender-trabajos-adyacentes"
+              ).textContent =
+                data.general.suspender_trabajos_adyacentes_nombre || "-";
+            if (document.getElementById("nombre-acordonar-area"))
+              document.getElementById("nombre-acordonar-area").textContent =
+                data.general.acordonar_area_nombre || "-";
+            if (document.getElementById("nombre-prueba-gas-toxico-inflamable"))
+              document.getElementById(
+                "nombre-prueba-gas-toxico-inflamable"
+              ).textContent =
+                data.general.prueba_gas_toxico_inflamable_nombre || "-";
+            if (
+              document.getElementById("nombre-equipo-electrico-desenergizado")
+            )
+              document.getElementById(
+                "nombre-equipo-electrico-desenergizado"
+              ).textContent =
+                data.general.equipo_electrico_desenergizado_nombre || "-";
+            if (document.getElementById("nombre-tapar-purgas-drenajes"))
+              document.getElementById(
+                "nombre-tapar-purgas-drenajes"
+              ).textContent = data.general.tapar_purgas_drenajes_nombre || "-";
+            data.general.tiene_equipo_intervenir ? "SI" : "NO";
             if (document.getElementById("equipment-label"))
               document.getElementById("equipment-label").textContent =
                 data.general.tiene_equipo_intervenir || "-";
@@ -282,6 +311,20 @@ document.addEventListener("DOMContentLoaded", function () {
         // Campos generales PT2
         if (data && data.data) {
           const detalles = data.data;
+
+          if (document.getElementById("valor-gas-lel"))
+            document.getElementById("valor-gas-lel").textContent =
+              detalles.gas_lel || "-";
+          if (document.getElementById("valor-gas-co2"))
+            document.getElementById("valor-gas-co2").textContent =
+              detalles.gas_co2 || "-";
+          if (document.getElementById("valor-gas-nh3"))
+            document.getElementById("valor-gas-nh3").textContent =
+              detalles.gas_nh3 || "-";
+          if (document.getElementById("valor-gas-oxigeno"))
+            document.getElementById("valor-gas-oxigeno").textContent =
+              detalles.gas_oxigeno || "-";
+
           if (document.getElementById("maintenance-type-label"))
             document.getElementById("maintenance-type-label").textContent =
               detalles.tipo_mantenimiento || "-";
@@ -343,6 +386,20 @@ document.addEventListener("DOMContentLoaded", function () {
           if (document.getElementById("observations"))
             document.getElementById("observations").textContent =
               detalles.observaciones_riesgos || "-";
+
+          // ...dentro del fetch, cuando tienes el objeto detalles...
+          if (document.getElementById("valor-gas-lel"))
+            document.getElementById("valor-gas-lel").textContent =
+              detalles.gas_lel || "-";
+          if (document.getElementById("valor-gas-co2"))
+            document.getElementById("valor-gas-co2").textContent =
+              detalles.gas_co2 || "-";
+          if (document.getElementById("valor-gas-nh3"))
+            document.getElementById("valor-gas-nh3").textContent =
+              detalles.gas_nh3 || "-";
+          if (document.getElementById("valor-gas-oxigeno"))
+            document.getElementById("valor-gas-oxigeno").textContent =
+              detalles.gas_oxigeno || "-";
 
           // Registro de Pruebas Requeridas desde data.data
           if (document.getElementById("valor-co2"))

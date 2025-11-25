@@ -146,6 +146,12 @@ function actualizarCamposFusionados() {
     "tiempo_exposicion_permisible-label",
     _verformulariosFetch.general.protocolo_emergencia || "-"
   );
+
+  setText(
+    "observaciones_generales",
+    _verformulariosFetch.general.observaciones || "-"
+  );
+
   setText("fluid-label", _verformulariosFetch.general.fluido || "-");
   setText("pressure-label", _verformulariosFetch.general.presion || "-");
   setText("temperature-label", _verformulariosFetch.general.temperatura || "-");
@@ -628,10 +634,14 @@ if (idPermiso) {
           "tiempo_exposicion_permisible-label",
           dataVF.general.protocolo_emergencia || "-"
         );
+
+        // Mostrar valor de observaciones
+
         setText("fluid-label", dataVF.general.fluido || "-");
         setText("pressure-label", dataVF.general.presion || "-");
         setText("temperature-label", dataVF.general.temperatura || "-");
       }
+
       // Radios de requisitos (si existen en detalles)
       if (dataVF && dataVF.detalles) {
         const radios = [

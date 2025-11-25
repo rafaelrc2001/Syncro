@@ -308,6 +308,9 @@ if (idPermiso) {
           permiso.protocolo_emergencia || "-"
         );
 
+        // Mostrar valor de observaciones
+        setText("observaciones_generales", permiso.observaciones || "-");
+
         // Mostrar valores de condiciones del proceso (solo lectura)
         setText("fluid-label", permiso.fluido || "-");
         setText("pressure-label", permiso.presion || "-");

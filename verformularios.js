@@ -88,74 +88,87 @@ router.get("/verformularios", async (req, res) => {
       // ...existing code...
       const queryGeneralApertura = `
     SELECT 
-        pt.id_permiso,
-        TO_CHAR(pt.fecha_hora, 'DD/MM/YYYY') AS fecha,
-        pt.prefijo,
-        tp.nombre AS tipo_permiso,
-        pt.contrato,
-        pa.empresa,
-        s.nombre AS sucursal,
-        a.nombre AS area, 
-        d.nombre AS departamento,
-        pa.nombre_solicitante AS solicitante,
-        pa.descripcion_trabajo,
-        pa.tipo_mantenimiento,
-        pa.ot_numero,
-        pa.tag,
-        TO_CHAR(pa.hora_inicio, 'HH24:MI') AS hora_inicio,
-        pa.fluido,
-        pa.presion,
-        pa.temperatura,
-        pa.antecedentes,
-        pa.requiere_herramientas_especiales,
-        pa.tipo_herramientas_especiales,
-        pa.herramientas_adecuadas,
-        pa.requiere_verificacion_previa,
-        pa.requiere_conocer_riesgos,
-        pa.observaciones_medidas,
-        pa.fuera_operacion,
-        pa.despresurizado_purgado,
-        pa.necesita_aislamiento,
-        pa.con_valvulas,
-        pa.con_juntas_ciegas,
-        pa.producto_entrampado,
-        pa.requiere_lavado,
-        pa.requiere_neutralizado,
-        pa.requiere_vaporizado,
-        pa.suspender_trabajos_adyacentes,
-        pa.acordonar_area,
-        pa.prueba_gas_toxico_inflamable,
-        pa.equipo_electrico_desenergizado,
-        pa.tapar_purgas_drenajes,
-        pa.proteccion_especial_recomendada,
-        pa.proteccion_piel_cuerpo,
-        pa.proteccion_respiratoria,
-        pa.proteccion_ocular,
-        pa.proteccion_contraincendio,
-        pa.tipo_proteccion_contraincendio,
-        pa.instalacion_barreras,
-        pa.observaciones_riesgos,
-        pa.co2_nivel,
-        pa.nh3_nivel,
-        pa.oxigeno_nivel,
-        pa.lel_nivel,
-        pa.aprobado_co2,
-        pa.aprobado_nh3,
-        pa.aprobado_oxigeno,
-        pa.aprobado_lel,
-        -- Columnas comentadas temporalmente hasta verificar esquema de BD
-        -- pa.aprobado_co2,
-        -- pa.aprobado_nh3,
-        -- pa.aprobado_oxigeno,
-        -- pa.aprobado_lel,
-        pa.tiene_equipo_intervenir
-    FROM permisos_trabajo pt
-    INNER JOIN pt_apertura pa ON pt.id_permiso = pa.id_permiso
-    INNER JOIN sucursales s ON pt.id_sucursal = s.id_sucursal
-    INNER JOIN areas a ON pt.id_area = a.id_area
-    INNER JOIN departamentos d ON pt.id_departamento = d.id_departamento
-    INNER JOIN tipos_permisos tp ON pt.id_tipo_permiso = tp.id_tipo_permiso
-    WHERE pt.id_permiso = $1
+    pt.id_permiso,
+    TO_CHAR(pt.fecha_hora, 'DD/MM/YYYY') AS fecha,
+    pt.prefijo,
+    tp.nombre AS tipo_permiso,
+    pt.contrato,
+    pa.empresa,
+    s.nombre AS sucursal,
+    a.nombre AS area, 
+    d.nombre AS departamento,
+    pa.nombre_solicitante AS solicitante,
+    pa.descripcion_trabajo,
+    pa.tipo_mantenimiento,
+    pa.ot_numero,
+    pa.tag,
+    TO_CHAR(pa.hora_inicio, 'HH24:MI') AS hora_inicio,
+    pa.fluido,
+    pa.presion,
+    pa.temperatura,
+    pa.antecedentes,
+    pa.requiere_herramientas_especiales,
+    pa.tipo_herramientas_especiales,
+    pa.herramientas_adecuadas,
+    pa.requiere_verificacion_previa,
+    pa.requiere_conocer_riesgos,
+    pa.observaciones_medidas,
+    pa.fuera_operacion,
+    pa.fuera_operacion_nombre,
+    pa.despresurizado_purgado,
+    pa.despresurizado_purgado_nombre,
+    pa.necesita_aislamiento,
+    pa.necesita_aislamiento_nombre,
+    pa.con_valvulas,
+    pa.con_valvulas_nombre,
+    pa.con_juntas_ciegas,
+    pa.con_juntas_ciegas_nombre,
+    pa.producto_entrampado,
+    pa.producto_entrampado_nombre,
+    pa.requiere_lavado,
+    pa.requiere_lavado_nombre,
+    pa.requiere_neutralizado,
+    pa.requiere_neutralizado_nombre,
+    pa.requiere_vaporizado,
+    pa.requiere_vaporizado_nombre,
+    pa.suspender_trabajos_adyacentes,
+    pa.suspender_trabajos_adyacentes_nombre,
+    pa.acordonar_area,
+    pa.acordonar_area_nombre,
+    pa.prueba_gas_toxico_inflamable,
+    pa.prueba_gas_toxico_inflamable_nombre,
+    pa.equipo_electrico_desenergizado,
+    pa.equipo_electrico_desenergizado_nombre,
+    pa.tapar_purgas_drenajes,
+    pa.tapar_purgas_drenajes_nombre,
+    pa.proteccion_especial_recomendada,
+    pa.proteccion_piel_cuerpo,
+    pa.proteccion_respiratoria,
+    pa.proteccion_ocular,
+    pa.proteccion_contraincendio,
+    pa.tipo_proteccion_contraincendio,
+    pa.instalacion_barreras,
+    pa.observaciones_riesgos,
+    pa.co2_nivel,
+    pa.nh3_nivel,
+    pa.oxigeno_nivel,
+    pa.lel_nivel,
+    pa.aprobado_co2,
+    pa.aprobado_nh3,
+    pa.aprobado_oxigeno,
+    pa.aprobado_lel,
+    pa.gas_lel,
+    pa.gas_co2,
+    pa.gas_nh3,
+    pa.gas_oxigeno,
+    pa.tiene_equipo_intervenir
+FROM permisos_trabajo pt
+INNER JOIN pt_apertura pa ON pt.id_permiso = pa.id_permiso
+INNER JOIN sucursales s ON pt.id_sucursal = s.id_sucursal
+INNER JOIN areas a ON pt.id_area = a.id_area
+INNER JOIN departamentos d ON pt.id_departamento = d.id_departamento
+INNER JOIN tipos_permisos tp ON pt.id_tipo_permiso = tp.id_tipo_permiso
+WHERE pt.id_permiso = $1
 `;
       // ...existing code...
       resultGeneral = await pool.query(queryGeneralApertura, [id]);
@@ -421,7 +434,7 @@ WHERE pt.id_permiso = $1
       // Consulta para pt_radiacion
 
       const queryGeneralRadiacion = `
-    SELECT 
+      SELECT 
         pt.id_permiso,
         TO_CHAR(pt.fecha_hora, 'DD/MM/YYYY') AS fecha,
         pt.prefijo,
@@ -457,16 +470,17 @@ WHERE pt.id_permiso = $1
         pr.presion,
         pr.temperatura,
         pr.tecnico_radialogo,
+        pr.observaciones, -- Nuevo campo agregado
         TO_CHAR(pr.fecha_creacion, 'DD/MM/YYYY') AS fecha_creacion,
         TO_CHAR(pr.fecha_actualizacion, 'DD/MM/YYYY') AS fecha_actualizacion
-    FROM permisos_trabajo pt
-    INNER JOIN pt_radiacion pr ON pt.id_permiso = pr.id_permiso
-    INNER JOIN sucursales s ON pt.id_sucursal = s.id_sucursal
-    INNER JOIN areas a ON pt.id_area = a.id_area
-    INNER JOIN departamentos d ON pt.id_departamento = d.id_departamento
-    INNER JOIN tipos_permisos tp ON pt.id_tipo_permiso = tp.id_tipo_permiso
-    WHERE pt.id_permiso = $1
-`;
+      FROM permisos_trabajo pt
+      INNER JOIN pt_radiacion pr ON pt.id_permiso = pr.id_permiso
+      INNER JOIN sucursales s ON pt.id_sucursal = s.id_sucursal
+      INNER JOIN areas a ON pt.id_area = a.id_area
+      INNER JOIN departamentos d ON pt.id_departamento = d.id_departamento
+      INNER JOIN tipos_permisos tp ON pt.id_tipo_permiso = tp.id_tipo_permiso
+      WHERE pt.id_permiso = $1
+    `;
       resultGeneral = await pool.query(queryGeneralRadiacion, [id]);
       resultDetalles = { rows: [] };
     } else if (tipo_permiso === "PT para Izaje con Hiab con Grúa") {

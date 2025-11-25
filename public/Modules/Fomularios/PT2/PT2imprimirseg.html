@@ -208,72 +208,112 @@
                         <div class="executive-section">
                             <div class="section-header section-header-cielo">
                                 <i class="ri-tools-line"></i>
-                                <h3>Requisitos de apertura de área</h3>
+                                <h3>Análisis de requisitos para efectuar el trabajo</h3>
                             </div>
-                      <table class="styled-table" id="tabla-requisitos-apertura-area">
+                                 <table class="styled-table" id="tabla-requisitos-apertura-area">
     <thead class="thead-nopeligroso">
         <tr>
             <th class="requisito-apertura">Requisito</th>
             <th class="respuesta-apertura">Respuesta</th>
+            <th>Verificó Cada Punto Físicamente en Campo</th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td class="requisito-apertura">¿Debe de estar fuera de operación el equipo o línea?</td>
             <td class="respuesta-apertura centered"><span id="resp-fuera-operacion">-</span></td>
+            <td class="centered"><span id="nombre-fuera-operacion">-</span></td>
         </tr>
         <tr>
             <td class="requisito-apertura">¿Debe estar despresionado y purgado?</td>
             <td class="respuesta-apertura centered"><span id="resp-despresurizado-purgado">-</span></td>
+            <td class="centered"><span id="nombre-despresurizado-purgado">-</span></td>
         </tr>
         <tr>
             <td class="requisito-apertura">¿Es necesario aislarlo?</td>
             <td class="respuesta-apertura centered"><span id="resp-necesita-aislamiento">-</span></td>
+            <td class="centered"><span id="nombre-necesita-aislamiento">-</span></td>
         </tr>
         <tr>
             <td class="requisito-apertura">¿Con válvulas?</td>
             <td class="respuesta-apertura centered"><span id="resp-con-valvulas">-</span></td>
+            <td class="centered"><span id="nombre-con-valvulas">-</span></td>
         </tr>
         <tr>
             <td class="requisito-apertura">¿Con juntas ciegas?</td>
             <td class="respuesta-apertura centered"><span id="resp-con-juntas-ciegas">-</span></td>
+            <td class="centered"><span id="nombre-con-juntas-ciegas">-</span></td>
         </tr>
         <tr>
             <td class="requisito-apertura">¿Pudo quedar producto entrampado?</td>
             <td class="respuesta-apertura centered"><span id="resp-producto-entrampado">-</span></td>
+            <td class="centered"><span id="nombre-producto-entrampado">-</span></td>
         </tr>
         <tr>
             <td class="requisito-apertura">¿El equipo y/o línea requiere lavado?</td>
             <td class="respuesta-apertura centered"><span id="resp-requiere-lavado">-</span></td>
+            <td class="centered"><span id="nombre-requiere-lavado">-</span></td>
         </tr>
         <tr>
             <td class="requisito-apertura">¿El equipo y/o línea requiere neutralizado?</td>
             <td class="respuesta-apertura centered"><span id="resp-requiere-neutralizado">-</span></td>
+            <td class="centered"><span id="nombre-requiere-neutralizado">-</span></td>
         </tr>
         <tr>
             <td class="requisito-apertura">¿El equipo y/o línea requiere vaporizado?</td>
             <td class="respuesta-apertura centered"><span id="resp-requiere-vaporizado">-</span></td>
+            <td class="centered"><span id="nombre-requiere-vaporizado">-</span></td>
         </tr>
         <tr>
             <td class="requisito-apertura">¿Se deben suspender los trabajos adyacentes?</td>
             <td class="respuesta-apertura centered"><span id="resp-suspender-trabajos-adyacentes">-</span></td>
+            <td class="centered"><span id="nombre-suspender-trabajos-adyacentes">-</span></td>
         </tr>
         <tr>
             <td class="requisito-apertura">¿Se requiere acordonar el área?</td>
             <td class="respuesta-apertura centered"><span id="resp-acordonar-area">-</span></td>
+            <td class="centered"><span id="nombre-acordonar-area">-</span></td>
         </tr>
         <tr>
             <td class="requisito-apertura">¿Se requiere prueba de gas tóxico/inflamable?</td>
             <td class="respuesta-apertura centered"><span id="resp-prueba-gas-toxico-inflamable">-</span></td>
+            <td class="centered"><span id="nombre-prueba-gas-toxico-inflamable">-</span></td>
+        </tr>
+        <tr>
+            <td class="requisito-apertura" colspan="2">
+                <div class="gas-values" style="margin-top:10px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; border-radius: 8px; padding: 12px 16px;">
+                        <div style="display: flex; flex-direction: column; gap: 6px;">
+                            <label style="font-weight: 500; color: #2c3e50;">% LEL:</label>
+                            <span id="valor-gas-lel" class="highlight">-</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 6px;">
+                            <label style="font-weight: 500; color: #2c3e50;">CO2:</label>
+                            <span id="valor-gas-co2" class="highlight">-</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 6px;">
+                            <label style="font-weight: 500; color: #2c3e50;">NH3:</label>
+                            <span id="valor-gas-nh3" class="highlight">-</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 6px;">
+                            <label style="font-weight: 500; color: #2c3e50;">% Oxígeno:</label>
+                            <span id="valor-gas-oxigeno" class="highlight">-</span>
+                        </div>
+                    </div>
+                </div>
+            </td>
+            <td></td>
         </tr>
         <tr>
             <td class="requisito-apertura">¿El equipo eléctrico se encuentra desenergizado?</td>
             <td class="respuesta-apertura centered"><span id="resp-equipo-electrico-desenergizado">-</span></td>
+            <td class="centered"><span id="nombre-equipo-electrico-desenergizado">-</span></td>
         </tr>
         <tr>
             <td class="requisito-apertura">¿Se requiere tapar purgas y/o registros de los drenajes?</td>
-                                        <td class="centered"><span id="resp-tapar-purgas-drenajes">-</span></td>
-                                    </tr>
+            <td class="centered"><span id="resp-tapar-purgas-drenajes">-</span></td>
+            <td class="centered"><span id="nombre-tapar-purgas-drenajes">-</span></td>
+        </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -293,50 +333,9 @@
                         <div class="executive-section ">
         <div class="section-header requisitos-riesgos-header">
             <i class="ri-checkbox-multiple-line"></i>
-            <h3 class="requisitos-riesgos-title">Administrar los Riesgos</h3>
+            <h3 class="requisitos-riesgos-title">Requisitos para Administrar los Riesgos</h3>
         </div>
-     <table id="tabla-administrar-riesgos" class="styled-table requisitos-riesgos-table">
-    <thead id="thead-requisitos-riesgos">
-        <tr>
-            <th class="requisito-riesgo">Requisito</th>
-            <th class="respuesta-riesgo centered">Respuesta</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td class="requisito-riesgo">Equipo de protección especial recomendado</td>
-            <td class="respuesta-riesgo centered"><span id="resp-special-protection">-</span></td>
-        </tr>
-        <tr>
-            <td class="requisito-riesgo">Para piel y cuerpo</td>
-            <td class="respuesta-riesgo centered"><span id="resp-skin-protection">-</span></td>
-        </tr>
-        <tr>
-            <td class="requisito-riesgo">Protección respiratoria</td>
-            <td class="respuesta-riesgo centered"><span id="resp-respiratory-protection">-</span></td>
-        </tr>
-        <tr>
-            <td class="requisito-riesgo">Protección ocular</td>
-            <td class="respuesta-riesgo centered"><span id="resp-eye-protection">-</span></td>
-        </tr>
-        <tr>
-            <td class="requisito-riesgo">¿Se requiere protección contraincendio?</td>
-            <td class="respuesta-riesgo centered"><span id="resp-fire-protection">-</span></td>
-        </tr>
-        <tr>
-            <td class="requisito-riesgo" style="text-align:right; font-weight: 500;">¿Cuál?</td>
-            <td class="respuesta-riesgo"><p id="fire-protection-type" style="background:#f8f9fa; padding:12px 14px; border-radius:8px; border:1px solid #e9ecef; margin:0;">-</p></td>
-        </tr>
-        <tr>
-            <td class="requisito-riesgo">¿Instalación de barreras y/o barricadas?</td>
-            <td class="respuesta-riesgo centered"><span id="resp-barriers-required">-</span></td>
-        </tr>
-        <tr>
-            <td class="requisito-riesgo">Observaciones adicionales</td>
-            <td class="respuesta-riesgo"><p id="observations" style="background:#f8f9fa; padding:12px 14px; border-radius:8px; border:1px solid #e9ecef; margin:0; min-height:60px;">-</p></td>
-        </tr>
-    </tbody>
-</table>
+     
                         </div>
                     </div>
 

@@ -149,6 +149,7 @@ router.put("/pt-radiacion/requisitos_area/:id", async (req, res) => {
     fluido,
     presion,
     temperatura,
+    observaciones, // Nuevo campo para la columna agregada
   } = req.body;
 
   try {
@@ -171,8 +172,9 @@ router.put("/pt-radiacion/requisitos_area/:id", async (req, res) => {
         fluido = $15,
         presion = $16,
         temperatura = $17,
+        observaciones = $18,
         fecha_actualizacion = NOW()
-      WHERE id_permiso = $18
+      WHERE id_permiso = $19
       RETURNING *`,
       [
         tipo_fuente_radiactiva,
@@ -192,6 +194,7 @@ router.put("/pt-radiacion/requisitos_area/:id", async (req, res) => {
         fluido,
         presion,
         temperatura,
+        observaciones,
         id_permiso,
       ]
     );

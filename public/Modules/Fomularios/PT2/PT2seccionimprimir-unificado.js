@@ -109,14 +109,14 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((resp) => resp.json())
       .then((data) => {
         console.log("Datos recibidos para el permiso:", data);
-        
+
         if (data && data.general) {
           document.querySelector(".section-header h3").textContent =
             data.general.prefijo || "NP-XXXXXX";
           document.title =
             "Permiso  Apertura Equipo Línea" +
             (data.general.prefijo ? " - " + data.general.prefijo : "");
-          
+
           if (document.getElementById("descripcion-trabajo-label"))
             document.getElementById("descripcion-trabajo-label").textContent =
               data.general.descripcion_trabajo || "-";
@@ -204,14 +204,17 @@ document.addEventListener("DOMContentLoaded", function () {
             data.general.requiere_neutralizado || "-";
           document.getElementById("resp-requiere-vaporizado").textContent =
             data.general.requiere_vaporizado || "-";
-          document.getElementById("resp-suspender-trabajos-adyacentes").textContent =
-            data.general.suspender_trabajos_adyacentes || "-";
+          document.getElementById(
+            "resp-suspender-trabajos-adyacentes"
+          ).textContent = data.general.suspender_trabajos_adyacentes || "-";
           document.getElementById("resp-acordonar-area").textContent =
             data.general.acordonar_area || "-";
-          document.getElementById("resp-prueba-gas-toxico-inflamable").textContent =
-            data.general.prueba_gas_toxico_inflamable || "-";
-          document.getElementById("resp-equipo-electrico-desenergizado").textContent =
-            data.general.equipo_electrico_desenergizado || "-";
+          document.getElementById(
+            "resp-prueba-gas-toxico-inflamable"
+          ).textContent = data.general.prueba_gas_toxico_inflamable || "-";
+          document.getElementById(
+            "resp-equipo-electrico-desenergizado"
+          ).textContent = data.general.equipo_electrico_desenergizado || "-";
           document.getElementById("resp-tapar-purgas-drenajes").textContent =
             data.general.tapar_purgas_drenajes || "-";
 
@@ -222,6 +225,72 @@ document.addEventListener("DOMContentLoaded", function () {
             data.general.presion || "-";
           document.getElementById("temperature").textContent =
             data.general.temperatura || "-";
+
+          if (document.getElementById("valor-gas-lel"))
+            document.getElementById("valor-gas-lel").textContent =
+              data.general.gas_lel || "-";
+          if (document.getElementById("valor-gas-co2"))
+            document.getElementById("valor-gas-co2").textContent =
+              data.general.gas_co2 || "-";
+          if (document.getElementById("valor-gas-nh3"))
+            document.getElementById("valor-gas-nh3").textContent =
+              data.general.gas_nh3 || "-";
+          if (document.getElementById("valor-gas-oxigeno"))
+            document.getElementById("valor-gas-oxigeno").textContent =
+              data.general.gas_oxigeno || "-";
+
+          // Mapeo de los nuevos campos *_nombre para requisitos de apertura
+          if (document.getElementById("fuera-operacion-nombre"))
+            document.getElementById("fuera-operacion-nombre").textContent =
+              data.general.fuera_operacion_nombre || "-";
+          if (document.getElementById("despresurizado-purgado-nombre"))
+            document.getElementById(
+              "despresurizado-purgado-nombre"
+            ).textContent = data.general.despresurizado_purgado_nombre || "-";
+          if (document.getElementById("necesita-aislamiento-nombre"))
+            document.getElementById("necesita-aislamiento-nombre").textContent =
+              data.general.necesita_aislamiento_nombre || "-";
+          if (document.getElementById("con-valvulas-nombre"))
+            document.getElementById("con-valvulas-nombre").textContent =
+              data.general.con_valvulas_nombre || "-";
+          if (document.getElementById("con-juntas-ciegas-nombre"))
+            document.getElementById("con-juntas-ciegas-nombre").textContent =
+              data.general.con_juntas_ciegas_nombre || "-";
+          if (document.getElementById("producto-entrampado-nombre"))
+            document.getElementById("producto-entrampado-nombre").textContent =
+              data.general.producto_entrampado_nombre || "-";
+          if (document.getElementById("requiere-lavado-nombre"))
+            document.getElementById("requiere-lavado-nombre").textContent =
+              data.general.requiere_lavado_nombre || "-";
+          if (document.getElementById("requiere-neutralizado-nombre"))
+            document.getElementById(
+              "requiere-neutralizado-nombre"
+            ).textContent = data.general.requiere_neutralizado_nombre || "-";
+          if (document.getElementById("requiere-vaporizado-nombre"))
+            document.getElementById("requiere-vaporizado-nombre").textContent =
+              data.general.requiere_vaporizado_nombre || "-";
+          if (document.getElementById("suspender-trabajos-adyacentes-nombre"))
+            document.getElementById(
+              "suspender-trabajos-adyacentes-nombre"
+            ).textContent =
+              data.general.suspender_trabajos_adyacentes_nombre || "-";
+          if (document.getElementById("acordonar-area-nombre"))
+            document.getElementById("acordonar-area-nombre").textContent =
+              data.general.acordonar_area_nombre || "-";
+          if (document.getElementById("prueba-gas-toxico-inflamable-nombre"))
+            document.getElementById(
+              "prueba-gas-toxico-inflamable-nombre"
+            ).textContent =
+              data.general.prueba_gas_toxico_inflamable_nombre || "-";
+          if (document.getElementById("equipo-electrico-desenergizado-nombre"))
+            document.getElementById(
+              "equipo-electrico-desenergizado-nombre"
+            ).textContent =
+              data.general.equipo_electrico_desenergizado_nombre || "-";
+          if (document.getElementById("tapar-purgas-drenajes-nombre"))
+            document.getElementById(
+              "tapar-purgas-drenajes-nombre"
+            ).textContent = data.general.tapar_purgas_drenajes_nombre || "-";
 
           // Administrar riesgos
           document.getElementById("resp-special-protection").textContent =
@@ -361,7 +430,7 @@ document.addEventListener("DOMContentLoaded", function () {
     btnSalir.addEventListener("click", function () {
       const currentPage = window.location.pathname;
       let redirectUrl = "/Modules/SupSeguridad/SupSeguridad.html";
-      
+
       if (currentPage.includes("PT2imprimir2.html")) {
         redirectUrl = "/Modules/Usuario/AutorizarPT.html";
       } else if (currentPage.includes("PT2imprimirsup.html")) {
@@ -369,7 +438,7 @@ document.addEventListener("DOMContentLoaded", function () {
       } else if (currentPage.includes("PT2imprimirseg.html")) {
         redirectUrl = "/Modules/SupSeguridad/SupSeguridad.html";
       }
-      
+
       window.location.href = redirectUrl;
     });
   }

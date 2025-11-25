@@ -399,9 +399,7 @@ if (idPermiso) {
         );
 
         function mostrarVerificacion(valor) {
-          if (valor === "SI") return "si";
-          if (valor === "NO") return "no";
-          return "-";
+          return valor || "-";
         }
         setText(
           "verifico_identifico_equipo",

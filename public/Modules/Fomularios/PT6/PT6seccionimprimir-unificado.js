@@ -102,14 +102,17 @@ async function agregarPersonaEnArea(idPermiso, persona) {
 const btnRegresar = document.getElementById("btn-regresar");
 if (btnRegresar) {
   btnRegresar.addEventListener("click", function () {
-    // Detectar la página actual y redirigir a la correspondiente
-    if (window.location.pathname.includes("PT6imprimir2.html")) {
-      window.location.href = "/Modules/Usuario/AutorizarPT.html";
-    } else if (window.location.pathname.includes("PT6imprimirseg.html")) {
-      window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
-    } else if (window.location.pathname.includes("PT6imprimirsup.html")) {
-      window.location.href = "../../JefeSeguridad/JefeSeguridad.html";
+    // Redirección dinámica según el tipo de vista
+    // Ejemplo: ?vista=usuario | supervisor | jefe
+    const params = new URLSearchParams(window.location.search);
+    const vista = params.get("vista");
+    let destino = "/Modules/Usuario/AutorizarPT.html"; // Default usuario
+    if (vista === "supervisor") {
+      destino = "/Modules/SupSeguridad/SupSeguridad.html";
+    } else if (vista === "jefe") {
+      destino = "/Modules/JefeSeguridad/JefeSeguridad.html";
     }
+    window.location.href = destino;
   });
 }
 
@@ -395,9 +398,10 @@ if (idPermiso) {
 
         // ANÁLISIS DE REQUISITOS PARA EFECTUAR EL TRABAJO (nuevo formato)
         function respuestaTexto(valor) {
-          if (valor === "SI") return "SI";
-          if (valor === "NO") return "NO";
-          return "N/A";
+          if (valor === "SI") return "si";
+          if (valor === "NO") return "no";
+          if (valor === "NA") return "n/a";
+          return "";
         }
         setText(
           "identifico_equipo_respuesta",
@@ -405,8 +409,7 @@ if (idPermiso) {
         );
 
         function mostrarVerificacion(valor) {
-          if (valor === "SI") return "si";
-          return "no";
+          return valor || "-";
         }
         setText(
           "verifico_identifico_equipo",
@@ -510,43 +513,64 @@ document.addEventListener("DOMContentLoaded", function () {
       const params = new URLSearchParams(window.location.search);
       const idPermiso = params.get("id");
       if (!idPermiso) {
-        alert("No se encontró el ID del permiso.");
+        alert("No se encontró el id del permiso en la URL");
         return;
       }
-      const requisitosVerificados = {
-        verifico_identifico_equipo: document.querySelector(
-          'input[name="verifico_identifico_equipo"]:checked'
-        )?.value,
-        verifico_fuera_operacion_desenergizado: document.querySelector(
-          'input[name="verifico_fuera_operacion_desenergizado"]:checked'
-        )?.value,
-        verifico_candado_etiqueta: document.querySelector(
-          'input[name="verifico_candado_etiqueta"]:checked'
-        )?.value,
-        verifico_suspender_adyacentes: document.querySelector(
-          'input[name="verifico_suspender_adyacentes"]:checked'
-        )?.value,
-        verifico_area_limpia_libre_obstaculos: document.querySelector(
-          'input[name="verifico_area_limpia_libre_obstaculos"]:checked'
-        )?.value,
-        verifico_libranza_electrica: document.querySelector(
-          'input[name="verifico_libranza_electrica"]:checked'
-        )?.value,
+      // Utilidad para leer radios
+      function getRadio(name) {
+        const checked = document.querySelector(`input[name='${name}']:checked`);
+        return checked ? checked.value : null;
+      }
+      // Utilidad para leer checkboxes (devuelve "SI" o "NO")
+      function getCheckbox(name) {
+        const checkbox = document.querySelector(`input[name='${name}']`);
+        return checkbox && checkbox.checked ? "SI" : "NO";
+      }
+      // Utilidad para leer input text
+      function getInputValue(id) {
+        const input = document.getElementById(id);
+        return input ? input.value : null;
+      }
+      // Construir payload con los nombres correctos del backend
+      const payload = {
+        identifico_equipo: getRadio("identifico_equipo"),
+        verifico_identifico_equipo: getCheckbox("verifico_identifico_equipo"),
+        fuera_operacion_desenergizado: getRadio(
+          "fuera_operacion_desenergizado"
+        ),
+        verifico_fuera_operacion_desenergizado: getCheckbox(
+          "verifico_fuera_operacion_desenergizado"
+        ),
+        candado_etiqueta: getRadio("candado_etiqueta"),
+        verifico_candado_etiqueta: getCheckbox("verifico_candado_etiqueta"),
+        suspender_adyacentes: getRadio("suspender_adyacentes"),
+        verifico_suspender_adyacentes: getCheckbox(
+          "verifico_suspender_adyacentes"
+        ),
+        area_limpia_libre_obstaculos: getRadio("area_limpia_libre_obstaculos"),
+        verifico_area_limpia_libre_obstaculos: getCheckbox(
+          "verifico_area_limpia_libre_obstaculos"
+        ),
+        libranza_electrica: getRadio("libranza_electrica"),
+        verifico_libranza_electrica: getCheckbox("verifico_libranza_electrica"),
+        nivel_tension: getInputValue("nivel_tension"),
       };
       try {
-        const response = await fetch(`/api/pt-electrico/${idPermiso}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(requisitosVerificados),
-        });
-        if (response.ok) {
-          alert("Requisitos guardados exitosamente.");
-        } else {
-          alert("Error al guardar los requisitos.");
-        }
-      } catch (error) {
-        console.error("Error al guardar requisitos:", error);
-        alert("Error al guardar los requisitos.");
+        const resp = await fetch(
+          `/api/pt-electrico/requisitos_area/${idPermiso}`,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          }
+        );
+        if (!resp.ok) throw new Error("Error al guardar los requisitos");
+        alert("Requisitos guardados correctamente");
+      } catch (err) {
+        console.error("Error al guardar requisitos:", err);
+        alert(
+          "Error al guardar los requisitos. Revisa la consola para más detalles."
+        );
       }
     });
   }
@@ -559,29 +583,35 @@ document.addEventListener("DOMContentLoaded", function () {
     const eppList = document.getElementById("modal-epp-list");
     if (eppList) {
       eppList.innerHTML = "";
-      (ast.epp || []).forEach((item) => {
-        const li = document.createElement("li");
-        li.textContent = item;
-        eppList.appendChild(li);
-      });
+      if (ast && ast.epp_requerido) {
+        ast.epp_requerido.split(",").forEach((item) => {
+          const li = document.createElement("li");
+          li.textContent = item.trim();
+          eppList.appendChild(li);
+        });
+      }
     }
     const maqList = document.getElementById("modal-maquinaria-list");
     if (maqList) {
       maqList.innerHTML = "";
-      (ast.maquinaria || []).forEach((item) => {
-        const li = document.createElement("li");
-        li.textContent = item;
-        maqList.appendChild(li);
-      });
+      if (ast && ast.maquinaria_herramientas) {
+        ast.maquinaria_herramientas.split(",").forEach((item) => {
+          const li = document.createElement("li");
+          li.textContent = item.trim();
+          maqList.appendChild(li);
+        });
+      }
     }
     const matList = document.getElementById("modal-materiales-list");
     if (matList) {
       matList.innerHTML = "";
-      (ast.materiales || []).forEach((item) => {
-        const li = document.createElement("li");
-        li.textContent = item;
-        matList.appendChild(li);
-      });
+      if (ast && ast.material_accesorios) {
+        ast.material_accesorios.split(",").forEach((item) => {
+          const li = document.createElement("li");
+          li.textContent = item.trim();
+          matList.appendChild(li);
+        });
+      }
     }
   }
 
@@ -589,19 +619,20 @@ document.addEventListener("DOMContentLoaded", function () {
     const tbody = document.getElementById("modal-ast-actividades-body");
     if (tbody) {
       tbody.innerHTML = "";
-      (actividades || []).forEach((act) => {
-        const tr = document.createElement("tr");
-        const td1 = document.createElement("td");
-        td1.textContent = act.actividad || "";
-        const td2 = document.createElement("td");
-        td2.textContent = act.riesgo || "";
-        const td3 = document.createElement("td");
-        td3.textContent = act.medidas || "";
-        tr.appendChild(td1);
-        tr.appendChild(td2);
-        tr.appendChild(td3);
-        tbody.appendChild(tr);
-      });
+      if (Array.isArray(actividades)) {
+        actividades.forEach((act) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+                <td>${act.no || ""}</td>
+                <td>${act.secuencia_actividad || ""}</td>
+                <td>${act.personal_ejecutor || ""}</td>
+                <td>${act.peligros_potenciales || ""}</td>
+                <td>${act.descripcion || ""}</td>
+                <td>${act.responsable || ""}</td>
+            `;
+          tbody.appendChild(tr);
+        });
+      }
     }
   }
 
@@ -609,16 +640,18 @@ document.addEventListener("DOMContentLoaded", function () {
     const tbody = document.getElementById("modal-ast-participantes-body");
     if (tbody) {
       tbody.innerHTML = "";
-      (participantes || []).forEach((p) => {
-        const tr = document.createElement("tr");
-        const td1 = document.createElement("td");
-        td1.textContent = p.nombre || "";
-        const td2 = document.createElement("td");
-        td2.textContent = p.funcion || "";
-        tr.appendChild(td1);
-        tr.appendChild(td2);
-        tbody.appendChild(tr);
-      });
+      if (Array.isArray(participantes)) {
+        participantes.forEach((p) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+                <td>${p.nombre || ""}</td>
+                <td><span class="role-badge">${p.funcion || ""}</span></td>
+                <td>${p.credencial || ""}</td>
+                <td>${p.cargo || ""}</td>
+            `;
+          tbody.appendChild(tr);
+        });
+      }
     }
   }
 
@@ -630,85 +663,128 @@ document.addEventListener("DOMContentLoaded", function () {
     fetch(`/api/verformularios?id=${encodeURIComponent(idPermiso2)}`)
       .then((resp) => resp.json())
       .then((data) => {
-        if (data.success && data.data) {
-          _verformulariosFetch = data.data;
-          const permiso = data.data;
-          console.log("Respuesta de /api/verformularios:", permiso);
-
-          // Mapear datos generales
-          setText("prefijo-label", permiso.general?.prefijo || "-");
-          setText("empresa-label", permiso.general?.empresa || "-");
-          setText(
-            "nombre-solicitante-label",
-            permiso.general?.solicitante ||
-              permiso.general?.nombre_solicitante ||
-              "-"
-          );
-          setText("sucursal-label", permiso.general?.sucursal || "-");
-          setText("contrato-label", permiso.general?.contrato || "-");
-          setText("plant-label", permiso.general?.area || "-");
-          setText("start-time-label", permiso.general?.hora_inicio || "-");
-          setText("fecha-label", permiso.general?.fecha || "-");
-          setText("work-order-label", permiso.general?.ot_numero || "-");
-          setText("tag-label", permiso.general?.tag || "-");
-          setText(
-            "descripcion-trabajo-label",
-            permiso.general?.descripcion_trabajo || "-"
-          );
-          setText(
-            "equipment-description-label",
-            permiso.general?.equipo_intervener || "-"
-          );
-          setText(
-            "maintenance-type-label",
-            permiso.general?.tipo_mantenimiento || "-"
-          );
-
-          // Otros campos del backend
-          setText(
-            "special-tools-label",
-            permiso.data?.requiere_herramientas_especiales || "-"
-          );
-          setText(
-            "special-tools-type-label",
-            permiso.data?.tipo_herramientas_especiales || "-"
-          );
-          setText(
-            "adequate-tools-label",
-            permiso.data?.herramientas_adecuadas || "-"
-          );
-          setText(
-            "pre-verification-label",
-            permiso.data?.requiere_verificacion_previa || "-"
-          );
-          setText(
-            "risk-knowledge-label",
-            permiso.data?.requiere_conocer_riesgos || "-"
-          );
-          setText(
-            "final-observations-label",
-            permiso.data?.observaciones_medidas || "-"
-          );
-
-          // AST
-          if (permiso.ast) {
-            mostrarAST(permiso.ast);
+        // Prefijo en el título y descripción del trabajo
+        if (data && data.general) {
+          if (document.getElementById("prefijo-label")) {
+            document.getElementById("prefijo-label").textContent =
+              data.general.prefijo || "-";
           }
-          if (permiso.ast_actividades) {
-            mostrarActividadesAST(permiso.ast_actividades);
+          if (document.getElementById("descripcion-trabajo-label")) {
+            document.getElementById("descripcion-trabajo-label").textContent =
+              data.general.descripcion_trabajo || "-";
           }
-          if (permiso.ast_participantes) {
-            mostrarParticipantesAST(permiso.ast_participantes);
-          }
-
-          // Actualizar campos fusionados después
-          actualizarCamposFusionados();
         }
+        // Llenar campos generales usando data.data
+        if (data && data.data) {
+          const detalles = data.data;
+          if (document.getElementById("maintenance-type-label"))
+            document.getElementById("maintenance-type-label").textContent =
+              detalles.tipo_mantenimiento || "-";
+          if (document.getElementById("work-order-label"))
+            document.getElementById("work-order-label").textContent =
+              detalles.ot_numero || "-";
+          if (document.getElementById("tag-label"))
+            document.getElementById("tag-label").textContent =
+              detalles.tag || "-";
+          if (document.getElementById("start-time-label"))
+            document.getElementById("start-time-label").textContent =
+              detalles.hora_inicio || "-";
+          if (document.getElementById("equipment-description-label"))
+            document.getElementById("equipment-description-label").textContent =
+              detalles.equipo_intervenir || "-";
+          if (document.getElementById("special-tools-label"))
+            document.getElementById("special-tools-label").textContent =
+              detalles.requiere_herramientas_especiales || "-";
+          if (document.getElementById("special-tools-type-label"))
+            document.getElementById("special-tools-type-label").textContent =
+              detalles.tipo_herramientas_especiales || "-";
+          if (document.getElementById("adequate-tools-label"))
+            document.getElementById("adequate-tools-label").textContent =
+              detalles.herramientas_adecuadas || "-";
+          if (document.getElementById("pre-verification-label"))
+            document.getElementById("pre-verification-label").textContent =
+              detalles.requiere_verificacion_previa || "-";
+          if (document.getElementById("risk-knowledge-label"))
+            document.getElementById("risk-knowledge-label").textContent =
+              detalles.requiere_conocer_riesgos || "-";
+          if (document.getElementById("final-observations-label"))
+            document.getElementById("final-observations-label").textContent =
+              detalles.observaciones_medidas || "-";
+          // También mapear equipo_intervenir correctamente
+          if (document.getElementById("descripcion-trabajo-label"))
+            document.getElementById("descripcion-trabajo-label").textContent =
+              detalles.descripcion_trabajo || "-";
+        }
+        // Rellenar AST y Participantes si existen en la respuesta
+        if (data.ast) {
+          mostrarAST(data.ast);
+        } else {
+          mostrarAST({}); // Limpia listas si no hay datos
+        }
+        if (data.actividades_ast) {
+          mostrarActividadesAST(data.actividades_ast);
+        } else {
+          mostrarActividadesAST([]); // Limpia tabla si no hay datos
+        }
+        if (data.participantes_ast) {
+          mostrarParticipantesAST(data.participantes_ast);
+        } else {
+          mostrarParticipantesAST([]); // Limpia tabla si no hay datos
+        }
+
+        // Además pedir verformularios (general + data) — esto puede contener nivel_tension en otro nodo
+        fetch(`/api/verformularios?id=${encodeURIComponent(idPermiso)}`)
+          .then((resp) => resp.json())
+          .then((vf) => {
+            console.log("Respuesta de verformularios (impresión):", vf);
+            _verformulariosFetch = vf || null;
+            // algunos endpoints devuelven nivel_tension en data o en general
+            // Mapear campos que a veces vienen en verformularios.general
+            if (vf && vf.general) {
+              if (document.getElementById("prefijo-label"))
+                document.getElementById("prefijo-label").textContent =
+                  vf.general.prefijo || "-";
+              if (document.getElementById("fecha-label"))
+                document.getElementById("fecha-label").textContent =
+                  vf.general.fecha || "-";
+            }
+            if (vf && vf.data) {
+              const detallesVF = vf.data;
+              if (document.getElementById("work-order-label"))
+                document.getElementById("work-order-label").textContent =
+                  detallesVF.ot_numero ||
+                  document.getElementById("work-order-label").textContent ||
+                  "-";
+              if (document.getElementById("tag-label"))
+                document.getElementById("tag-label").textContent =
+                  detallesVF.tag ||
+                  document.getElementById("tag-label").textContent ||
+                  "-";
+              if (document.getElementById("descripcion-trabajo-label"))
+                document.getElementById(
+                  "descripcion-trabajo-label"
+                ).textContent =
+                  detallesVF.descripcion_trabajo ||
+                  document.getElementById("descripcion-trabajo-label")
+                    .textContent ||
+                  "-";
+            }
+            // Finalmente resolver nivel_tension con prioridad y volver a
+            // sincronizar los campos comunes en caso de que verformularios
+            // aporte valores más completos.
+            actualizarCamposFusionados();
+          })
+          .catch((err) => {
+            console.warn(
+              "No se pudo obtener verformularios para impresión:",
+              err
+            );
+          });
       })
       .catch((err) => {
-        console.error("Error al obtener datos generales del permiso:", err);
+        console.error("Error al obtener datos del permiso:", err);
         alert(
-          "Error al obtener datos generales del permiso. Revisa la consola para más detalles."
+          "Error al obtener datos del permiso. Revisa la consola para más detalles."
         );
       });
 
@@ -717,18 +793,25 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-// --- Botón Salir ---
+// --- Botón Salir (igual que PT5) ---
 const btnSalirNuevo = document.getElementById("btn-salir-nuevo");
 if (btnSalirNuevo) {
   btnSalirNuevo.addEventListener("click", function () {
-    // Detectar la página actual y redirigir a la correspondiente
-    if (window.location.pathname.includes("PT6imprimir2.html")) {
-      window.location.href = "/Modules/Usuario/AutorizarPT.html";
-    } else if (window.location.pathname.includes("PT6imprimirseg.html")) {
-      window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
-    } else if (window.location.pathname.includes("PT6imprimirsup.html")) {
-      window.location.href = "../../JefeSeguridad/JefeSeguridad.html";
+    // Detectar la ruta de redirección según el archivo HTML actual
+    const currentPage = window.location.pathname;
+    let redirectUrl = "/Modules/SupSeguridad/SupSeguridad.html"; // Por defecto
+
+    if (currentPage.includes("PT6imprimir2.html")) {
+      redirectUrl = "/Modules/Usuario/AutorizarPT.html";
+    } else if (currentPage.includes("PT6imprimirsup.html")) {
+      redirectUrl = "/Modules/SupSeguridad/SupSeguridad.html";
+    } else if (currentPage.includes("PT6imprimirseg.html")) {
+      redirectUrl = "/Modules/SupSeguridad/SupSeguridad.html";
+    } else if (currentPage.includes("PT6imprimirjefe.html")) {
+      redirectUrl = "/Modules/JefeSeguridad/JefeSeguridad.html";
     }
+
+    window.location.href = redirectUrl;
   });
 }
 
@@ -742,46 +825,50 @@ function llenarTablaResponsables(idPermiso) {
       tbody.innerHTML = ""; // Limpia la tabla antes de llenarla
 
       if (result.success && result.data) {
-        result.data.forEach((persona) => {
-          const tr = document.createElement("tr");
+        const data = result.data;
+        const filas = [
+          { nombre: data.responsable_area, cargo: "Responsable de área" },
+          { nombre: data.operador_area, cargo: "Operador del área" },
+          { nombre: data.nombre_supervisor, cargo: "Supervisor de Seguridad" },
+        ];
 
-          const tdNombre = document.createElement("td");
-          tdNombre.textContent = persona.nombre || "-";
-          tr.appendChild(tdNombre);
-
-          const tdFuncion = document.createElement("td");
-          tdFuncion.textContent = persona.funcion || "-";
-          tr.appendChild(tdFuncion);
-
-          const tdCredencial = document.createElement("td");
-          tdCredencial.textContent = persona.credencial || "-";
-          tr.appendChild(tdCredencial);
-
-          const tdFirma = document.createElement("td");
-          if (persona.firma_base64) {
-            const img = document.createElement("img");
-            img.src = `data:image/png;base64,${persona.firma_base64}`;
-            img.alt = `Firma de ${persona.nombre}`;
-            img.style.maxWidth = "120px";
-            img.style.height = "auto";
-            tdFirma.appendChild(img);
-          } else {
-            tdFirma.textContent = "Sin firma";
+        let hayResponsables = false;
+        filas.forEach((fila) => {
+          if (fila.nombre && fila.nombre.trim() !== "") {
+            hayResponsables = true;
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+              <td>${fila.nombre}</td>
+              <td>${fila.cargo}</td>
+              <td></td>
+            `;
+            tbody.appendChild(tr);
           }
-          tr.appendChild(tdFirma);
-
-          const tdCargo = document.createElement("td");
-          tdCargo.textContent = persona.cargo || "-";
-          tr.appendChild(tdCargo);
-
-          tbody.appendChild(tr);
         });
+
+        // Si alguna fila no tiene nombre, igual la mostramos con N/A
+        filas.forEach((fila) => {
+          if (!fila.nombre || fila.nombre.trim() === "") {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+              <td>N/A</td>
+              <td>${fila.cargo}</td>
+              <td></td>
+            `;
+            tbody.appendChild(tr);
+          }
+        });
+
+        // Si no hay responsables, muestra mensaje
+        if (!hayResponsables) {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `<td colspan="3">Sin responsables registrados</td>`;
+          tbody.appendChild(tr);
+        }
       } else {
+        // Si no hay datos, muestra mensaje
         const tr = document.createElement("tr");
-        const td = document.createElement("td");
-        td.colSpan = 5;
-        td.textContent = "No hay responsables registrados.";
-        tr.appendChild(td);
+        tr.innerHTML = `<td colspan="3">Sin responsables registrados</td>`;
         tbody.appendChild(tr);
       }
     })

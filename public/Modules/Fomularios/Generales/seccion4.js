@@ -719,7 +719,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const hora = document.getElementById("start-time")?.value || "";
           const fecha = document.getElementById("permit-date")?.value || "";
           const hora_inicio = `${fecha} ${hora}`;
-          const equipo_intervencion =
+          const equipo_intervenir =
             document.getElementById("equipment")?.value || "";
 
           // Medidas/Requisitos para administrar los riesgos
@@ -788,7 +788,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ot_numero,
             tag,
             hora_inicio,
-            equipo_intervencion:
+            equipo_intervenir:
               document.getElementById("equipment")?.value || "", // <--- CAMBIA AQUÍ
             avisos_trabajos: warning_signs,
             iluminacion_prueba_explosion: explosion_proof_lighting,

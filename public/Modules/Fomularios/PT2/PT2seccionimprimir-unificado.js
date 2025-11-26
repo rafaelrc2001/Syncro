@@ -327,6 +327,50 @@ document.addEventListener("DOMContentLoaded", function () {
             data.general.lel_nivel || "-";
           document.getElementById("aprobado-lel").textContent =
             data.general.aprobado_lel || "-";
+
+          document.getElementById("nombre-fuera-operacion").textContent =
+            data.general.fuera_operacion_nombre || "-";
+          document.getElementById("nombre-despresurizado-purgado").textContent =
+            data.general.despresurizado_purgado_nombre || "-";
+          document.getElementById("nombre-necesita-aislamiento").textContent =
+            data.general.necesita_aislamiento_nombre || "-";
+          document.getElementById("nombre-con-valvulas").textContent =
+            data.general.con_valvulas_nombre || "-";
+          document.getElementById("nombre-con-juntas-ciegas").textContent =
+            data.general.con_juntas_ciegas_nombre || "-";
+          document.getElementById("nombre-producto-entrampado").textContent =
+            data.general.producto_entrampado_nombre || "-";
+          document.getElementById("nombre-requiere-lavado").textContent =
+            data.general.requiere_lavado_nombre || "-";
+          document.getElementById("nombre-requiere-neutralizado").textContent =
+            data.general.requiere_neutralizado_nombre || "-";
+          document.getElementById("nombre-requiere-vaporizado").textContent =
+            data.general.requiere_vaporizado_nombre || "-";
+          document.getElementById(
+            "nombre-suspender-trabajos-adyacentes"
+          ).textContent =
+            data.general.suspender_trabajos_adyacentes_nombre || "-";
+          document.getElementById("nombre-acordonar-area").textContent =
+            data.general.acordonar_area_nombre || "-";
+          document.getElementById(
+            "nombre-prueba-gas-toxico-inflamable"
+          ).textContent =
+            data.general.prueba_gas_toxico_inflamable_nombre || "-";
+          document.getElementById(
+            "nombre-equipo-electrico-desenergizado"
+          ).textContent =
+            data.general.equipo_electrico_desenergizado_nombre || "-";
+          document.getElementById("nombre-tapar-purgas-drenajes").textContent =
+            data.general.tapar_purgas_drenajes_nombre || "-";
+
+          document.getElementById("valor-gas-lel").textContent =
+            data.general.gas_lel || "-";
+          document.getElementById("valor-gas-co2").textContent =
+            data.general.gas_co2 || "-";
+          document.getElementById("valor-gas-nh3").textContent =
+            data.general.gas_nh3 || "-";
+          document.getElementById("valor-gas-oxigeno").textContent =
+            data.general.gas_oxigeno || "-";
         }
 
         if (data && data.data) {

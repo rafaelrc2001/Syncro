@@ -30,7 +30,7 @@
 
                 <div class="section-header">
                     <i class="ri-checkbox-circle-line"></i>
-                    <h2>Permiso de Trabajo para Apertura Equipo Línea</h2>
+                    <h2>Permiso de Trabajo para Entrada a Espacio Confinado</h2>
                    <h3 id="prefijo-label">NP-XXXXXX</h3>
                 </div>
                                  <div class="general-box-header">
@@ -243,6 +243,8 @@
                         <tr>
                             <th>Requisito</th>
                             <th>Respuesta</th>
+                            <th>Verificó Cada Punto Físicamente en Campo</th>
+                        
                         </tr>
                     </thead>
                     <tbody>
@@ -253,8 +255,12 @@
                                     <label><input type="radio" name="verificar_explosividad" value="SI"> SI</label>
                                     <label><input type="radio" name="verificar_explosividad" value="NO"> NO</label>
                                     <label><input type="radio" name="verificar_explosividad" value="NA"> N/A</label>
+
+                                    
                                 </div>
                             </td>
+                           
+                            <td><input type="text" id="nombre-verificar_explosividad" name="nombre-verificar_explosividad" style="width: 220px;" /></td>
                         </tr>
                         <tr>
                             <td>¿Se requiere verificar presencia de gas o vapor tóxico, irritante?</td>
@@ -265,6 +271,8 @@
                                     <label><input type="radio" name="verificar_gas_toxico" value="NA"> N/A</label>
                                 </div>
                             </td>
+                          
+                            <td><input type="text" id="nombre-verificar_gas_toxico" name="nombre-verificar_gas_toxico" style="width: 220px;" /></td>
                         </tr>
                         <tr>
                             <td>¿Se requiere verificar presencia de deficiencia de oxígeno?</td>
@@ -275,6 +283,8 @@
                                     <label><input type="radio" name="verificar_deficiencia_oxigeno" value="NA"> N/A</label>
                                 </div>
                             </td>
+                           
+                            <td><input type="text" id="nombre-verificar_deficiencia_oxigeno" name="nombre-verificar_deficiencia_oxigeno" style="width: 220px;" /></td>
                         </tr>
                         <tr>
                             <td>¿Se requiere verificar presencia de enriquesimiento de oxígeno?</td>
@@ -285,6 +295,8 @@
                                     <label><input type="radio" name="verificar_enriquecimiento_oxigeno" value="NA"> N/A</label>
                                 </div>
                             </td>
+                           
+                            <td><input type="text" id="nombre-verificar_enriquecimiento_oxigeno" name="nombre-verificar_enriquecimiento_oxigeno" style="width: 220px;" /></td>
                         </tr>
                         <tr>
                             <td>¿Se requiere verificar presencia de polvo, humos o fibras?</td>
@@ -295,6 +307,8 @@
                                     <label><input type="radio" name="verificar_polvo_humos_fibras" value="NA"> N/A</label>
                                 </div>
                             </td>
+                           
+                            <td><input type="text" id="nombre-verificar_polvo_humos_fibras" name="nombre-verificar_polvo_humos_fibras" style="width: 220px;" /></td>
                         </tr>
                         <tr>
                             <td>¿Se requiere verificar presencia de amniaco?</td>
@@ -305,6 +319,8 @@
                                     <label><input type="radio" name="verificar_amoniaco" value="NA"> N/A</label>
                                 </div>
                             </td>
+                           
+                            <td><input type="text" id="nombre-verificar_amoniaco" name="nombre-verificar_amoniaco" style="width: 220px;" /></td>
                         </tr>
                         <tr>
                             <td>¿Se requiere verificar presencia de material dañino para la piel?</td>
@@ -315,6 +331,8 @@
                                     <label><input type="radio" name="verificar_material_piel" value="NA"> N/A</label>
                                 </div>
                             </td>
+                           
+                            <td><input type="text" id="nombre-verificar_material_piel" name="nombre-verificar_material_piel" style="width: 220px;" /></td>
                         </tr>
                         <tr>
                             <td>¿Se requiere verificar la temperatura?</td>
@@ -325,6 +343,8 @@
                                     <label><input type="radio" name="verificar_temperatura" value="NA"> N/A</label>
                                 </div>
                             </td>
+                           
+                            <td><input type="text" id="nombre-verificar_temperatura" name="nombre-verificar_temperatura" style="width: 220px;" /></td>
                         </tr>
                         <tr>
                             <td>¿Se requiere verificar de porcentaje de L.E.L.?</td>
@@ -335,6 +355,8 @@
                                     <label><input type="radio" name="verificar_lel" value="NA"> N/A</label>
                                 </div>
                             </td>
+                           
+                            <td><input type="text" id="nombre-verificar_lel" name="nombre-verificar_lel" style="width: 220px;" /></td>
                         </tr>
                         <tr>
                             <td>¿Deben suspender los trabajos adyacentes?</td>
@@ -345,6 +367,8 @@
                                     <label><input type="radio" name="suspender_trabajos_adyacentes" value="NA"> N/A</label>
                                 </div>
                             </td>
+                           
+                            <td><input type="text" id="nombre-suspender_trabajos_adyacentes" name="nombre-suspender_trabajos_adyacentes" style="width: 220px;" /></td>
                         </tr>
                         <tr>
                             <td>¿Se requiere acordonar el área?</td>
@@ -355,6 +379,8 @@
                                     <label><input type="radio" name="acordonar_area" value="NA"> N/A</label>
                                 </div>
                             </td>
+                           
+                            <td><input type="text" id="nombre-acordonar_area" name="nombre-acordonar_area" style="width: 220px;" /></td>
                         </tr>
                         <tr>
                             <td>¿Se requiere prueba de gas tóxico/inflamable?</td>
@@ -365,18 +391,26 @@
                                     <label><input type="radio" name="prueba_gas_toxico_inflamable" value="NA"> N/A</label>
                                 </div>
                             </td>
+                           
+                            <td><input type="text" id="nombre-prueba_gas_toxico_inflamable" name="nombre-prueba_gas_toxico_inflamable" style="width: 220px;" /></td>
                         </tr>
                         <tr>
                             <td>% LEL</td>
                             <td><input type="text" name="porcentaje_lel" style="width: 100px;" /></td>
+                           
+                            <td><input type="text" id="nombre-porcentaje_lel" name="nombre-porcentaje_lel" style="width: 220px;" /></td>
                         </tr>
                         <tr>
                             <td>NH3</td>
                             <td><input type="text" name="nh3" style="width: 100px;" /></td>
+                           
+                            <td><input type="text" id="nombre-nh3" name="nombre-nh3" style="width: 220px;" /></td>
                         </tr>
                         <tr>
                             <td>% Oxígeno</td>
                             <td><input type="text" name="porcentaje_oxigeno" style="width: 100px;" /></td>
+                           
+                            <td><input type="text" id="nombre-porcentaje_oxigeno" name="nombre-porcentaje_oxigeno" style="width: 220px;" /></td>
                         </tr>
                         <tr>
                             <td>¿El equipo fue despresionado y puesto fuera de operación?</td>
@@ -387,6 +421,8 @@
                                     <label><input type="radio" name="equipo_despresionado_fuera_operacion" value="NA"> N/A</label>
                                 </div>
                             </td>
+                           
+                            <td><input type="text" id="nombre-equipo_despresionado_fuera_operacion" name="nombre-equipo_despresionado_fuera_operacion" style="width: 220px;" /></td>
                         </tr>
                         <tr>
                             <td>¿El equipo fue aislado?</td>
@@ -403,6 +439,8 @@
                                     <input type="checkbox" name="equipo_aislado_junta_ciega" />
                                 </div>
                             </td>
+                           
+                            <td><input type="text" id="nombre-equipo_aislado" name="nombre-equipo_aislado" style="width: 220px;" /></td>
                         </tr>
                         <tr>
                             <td>¿El equipo fue lavado?</td>
@@ -413,6 +451,8 @@
                                     <label><input type="radio" name="equipo_lavado" value="NA"> N/A</label>
                                 </div>
                             </td>
+                           
+                            <td><input type="text" id="nombre-equipo_lavado" name="nombre-equipo_lavado" style="width: 220px;" /></td>
                         </tr>
                         <tr>
                             <td>¿El equipo fue neutralizado?</td>
@@ -423,6 +463,8 @@
                                     <label><input type="radio" name="equipo_neutralizado" value="NA"> N/A</label>
                                 </div>
                             </td>
+                           
+                            <td><input type="text" id="nombre-equipo_neutralizado" name="nombre-equipo_neutralizado" style="width: 220px;" /></td>
                         </tr>
                         <tr>
                             <td>¿El equipo fue vaporizado?</td>
@@ -433,6 +475,8 @@
                                     <label><input type="radio" name="equipo_vaporizado" value="NA"> N/A</label>
                                 </div>
                             </td>
+                           
+                            <td><input type="text" id="nombre-equipo_vaporizado" name="nombre-equipo_vaporizado" style="width: 220px;" /></td>
                         </tr>
                         <tr>
                             <td>¿Se aislaron las purgas al drenaje y venteos?</td>
@@ -443,6 +487,8 @@
                                     <label><input type="radio" name="aislar_purgas_drenaje_venteo" value="NA"> N/A</label>
                                 </div>
                             </td>
+                           
+                            <td><input type="text" id="nombre-aislar_purgas_drenaje_venteo" name="nombre-aislar_purgas_drenaje_venteo" style="width: 220px;" /></td>
                         </tr>
                         <tr>
                             <td>¿Se abrieron los registros necesarios?</td>
@@ -453,10 +499,14 @@
                                     <label><input type="radio" name="abrir_registros_necesarios" value="NA"> N/A</label>
                                 </div>
                             </td>
+                           
+                            <td><input type="text" id="nombre-abrir_registros_necesarios" name="nombre-abrir_registros_necesarios" style="width: 220px;" /></td>
                         </tr>
                         <tr>
                             <td>Observaciones:</td>
                             <td><textarea name="observaciones_requisitos" style="width: 100%;"></textarea></td>
+                           
+                            <td><input type="text" id="nombre-observaciones_requisitos" name="nombre-observaciones_requisitos" style="width: 220px;" /></td>
                         </tr>
                     </tbody>
                 </table>

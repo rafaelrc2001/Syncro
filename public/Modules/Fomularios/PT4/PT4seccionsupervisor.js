@@ -686,6 +686,7 @@ if (btnAutorizar) {
       tarjeta_andamio: getCheckboxValue("tarjeta_andamio"),
       viento_permitido: getCheckboxValue("viento_permitido"),
       escalera_condicion: getCheckboxValue("escalera_condicion"),
+      observaciones_riesgos: getInputValue("observaciones_riesgos"),
     };
 
     try {

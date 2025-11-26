@@ -92,6 +92,8 @@ function mostrarDatosImprimir(permiso) {
   setText("tarjeta_andamio_respuesta", permiso.tarjeta_andamio || "-");
   setText("viento_permitido_respuesta", permiso.viento_permitido || "-");
   setText("escalera_condicion_respuesta", permiso.escalera_condicion || "-");
+
+  setText("mostrar_observaciones_riesgos", permiso.observaciones_riesgos);
 }
 // --- Funciones de utilidad ---
 function getRadioValue(name) {
@@ -298,6 +300,8 @@ function mostrarDatosSupervisor(permiso) {
   setText("tarjeta_andamio_respuesta", permiso.tarjeta_andamio);
   setText("viento_permitido_respuesta", permiso.viento_permitido);
   setText("escalera_condicion_respuesta", permiso.escalera_condicion);
+
+  setText("mostrar_observaciones_riesgos", permiso.observaciones_riesgos);
 }
 
 // Al cargar la página, obtener el id y mostrar los datos

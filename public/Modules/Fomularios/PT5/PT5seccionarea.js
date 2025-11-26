@@ -56,6 +56,46 @@ async function ejecutarAutorizacionPT5() {
     fluido: document.getElementById("fluid").value,
     presion: document.getElementById("pressure").value,
     temperatura: document.getElementById("temperature").value,
+    // NUEVAS COLUMNAS
+    observaciones_area:
+      document.getElementById("observaciones_requisitos")?.value || "",
+    nombre_equipo_fuera_operacion:
+      document.getElementById("nombre_equipo_fuera_operacion")?.value || "",
+    nombre_equipo_despresionado_purgado:
+      document.getElementById("nombre_equipo_despresionado_purgado")?.value ||
+      "",
+    nombre_producto_entrampado:
+      document.getElementById("nombre_producto_entrampado")?.value || "",
+    nombre_equipo_tuberia_fuera_operacion:
+      document.getElementById("nombre_equipo_tuberia_fuera_operacion")?.value ||
+      "",
+    nombre_equipo_tuberia_aislado_junta_ciega:
+      document.getElementById("nombre_equipo_tuberia_aislado_junta_ciega")
+        ?.value || "",
+    nombre_equipo_tuberia_lavado_vaporizado:
+      document.getElementById("nombre_equipo_tuberia_lavado_vaporizado")
+        ?.value || "",
+    nombre_residuos_interior:
+      document.getElementById("nombre_residuos_interior")?.value || "",
+    nombre_prueba_explosividad_interior:
+      document.getElementById("nombre_prueba_explosividad_interior")?.value ||
+      "",
+    nombre_prueba_explosividad_exterior:
+      document.getElementById("nombre_prueba_explosividad_exterior")?.value ||
+      "",
+    nombre_acumulacion_gases_combustion:
+      document.getElementById("nombre_acumulacion_gases_combustion")?.value ||
+      "",
+    nombre_permisos_trabajos_adicionales:
+      document.getElementById("nombre_permisos_trabajos_adicionales")?.value ||
+      "",
+    nombre_acordonar_area:
+      document.getElementById("nombre_acordonar_area")?.value || "",
+    nombre_equipo_contraincendio:
+      document.getElementById("nombre_equipo_contraincendio")?.value || "",
+
+    cual_permiso:
+      document.getElementById("cual_trabajo_adicional")?.value || "",
   };
 
   try {

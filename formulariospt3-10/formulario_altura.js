@@ -191,8 +191,9 @@ router.put("/altura/requisitos_supervisor/:id_permiso", async (req, res) => {
         andamio_completo_opcion = $8,
         tarjeta_andamio = $9,
         viento_permitido = $10,
-        escalera_condicion = $11
-      WHERE id_permiso = $12`,
+        escalera_condicion = $11,
+        observaciones_riesgos = $12
+      WHERE id_permiso = $13`,
       [
         datos.proteccion_especial,
         datos.proteccion_especial_cual,
@@ -205,6 +206,7 @@ router.put("/altura/requisitos_supervisor/:id_permiso", async (req, res) => {
         datos.tarjeta_andamio,
         datos.viento_permitido,
         datos.escalera_condicion,
+        datos.observaciones_riesgos,
         id,
       ]
     );

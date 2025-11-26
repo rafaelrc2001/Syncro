@@ -155,3 +155,110 @@ add columns numero_permiso_confinado TYPE VARCHAR(50)
 ADD COLUMN numero_permiso_confinado VARCHAR(50);
 
 
+
+
+
+select * from pt_confinados
+
+ALTER TABLE pt_confinados 
+ADD COLUMN nombre_verificar_explosividad VARCHAR(255),
+ADD COLUMN nombre_verificar_gas_toxico VARCHAR(255),
+ADD COLUMN nombre_verificar_deficiencia_oxigeno VARCHAR(255),
+ADD COLUMN nombre_verificar_enriquecimiento_oxigeno VARCHAR(255),
+ADD COLUMN nombre_verificar_polvo_humos_fibras VARCHAR(255),
+ADD COLUMN nombre_verificar_amoniaco VARCHAR(255),
+ADD COLUMN nombre_verificar_material_piel VARCHAR(255),
+ADD COLUMN nombre_verificar_temperatura VARCHAR(255),
+ADD COLUMN nombre_verificar_lel VARCHAR(255),
+ADD COLUMN nombre_suspender_trabajos_adyacentes VARCHAR(255),
+ADD COLUMN nombre_acordonar_area VARCHAR(255),
+ADD COLUMN nombre_prueba_gas_toxico_inflamable VARCHAR(255),
+ADD COLUMN nombre_porcentaje_lel VARCHAR(255),
+ADD COLUMN nombre_nh3 VARCHAR(255),
+ADD COLUMN nombre_porcentaje_oxigeno VARCHAR(255),
+ADD COLUMN nombre_equipo_despresionado_fuera_operacion VARCHAR(255),
+ADD COLUMN nombre_equipo_aislado VARCHAR(255),
+ADD COLUMN nombre_equipo_lavado VARCHAR(255),
+ADD COLUMN nombre_equipo_neutralizado VARCHAR(255),
+ADD COLUMN nombre_equipo_vaporizado VARCHAR(255),
+ADD COLUMN nombre_aislar_purgas_drenaje_venteo VARCHAR(255),
+ADD COLUMN nombre_abrir_registros_necesarios VARCHAR(255),
+ADD COLUMN nombre_observaciones_requisitos VARCHAR(255);
+
+
+
+
+
+select * from pt_fuego where id_permiso = 463
+
+
+ALTER TABLE pt_altura
+ADD COLUMN observaciones_riesgos TEXT;
+
+
+
+ALTER TABLE pt_fuego
+ADD COLUMN observaciones_area TEXT,
+ADD COLUMN observaciones_seguridad TEXT;
+
+
+
+ALTER TABLE pt_fuego 
+ADD COLUMN nombre_equipo_fuera_operacion VARCHAR(255),
+ADD COLUMN nombre_equipo_despresionado_purgado VARCHAR(255),
+ADD COLUMN nombre_producto_entrampado VARCHAR(255),
+ADD COLUMN nombre_equipo_tuberia_fuera_operacion VARCHAR(255),
+ADD COLUMN nombre_equipo_tuberia_aislado_junta_ciega VARCHAR(255),
+ADD COLUMN nombre_equipo_tuberia_lavado_vaporizado VARCHAR(255),
+ADD COLUMN nombre_residuos_interior VARCHAR(255),
+ADD COLUMN nombre_prueba_explosividad_interior VARCHAR(255),
+ADD COLUMN nombre_prueba_explosividad_exterior VARCHAR(255),
+ADD COLUMN nombre_acumulacion_gases_combustion VARCHAR(255),
+ADD COLUMN nombre_permisos_trabajos_adicionales VARCHAR(255),
+ADD COLUMN nombre_acordonar_area VARCHAR(255),
+ADD COLUMN nombre_equipo_contraincendio VARCHAR(255);
+
+
+
+
+UPDATE permisos_trabajo
+SET fuera_operacion = 'fuera_operacion',
+    despresurizado_purgado = 'despresurizado_purgado',
+    producto_entrampado = 'producto_entrampado',
+    necesita_aislamiento = 'necesita_aislamiento',
+    con_valvulas = 'con_valvulas',
+    con_juntas_ciegas = 'con_juntas_ciegas',
+    requiere_lavado = 'requiere_lavado',
+    requiere_neutralizado = 'requiere_neutralizado',
+    requiere_vaporizado = 'requiere_vaporizado',
+    suspender_trabajos_adyacentes = 'suspender_trabajos_adyacentes',
+    acordonar_area = 'acordonar_area',
+    prueba_gas_toxico_inflamable = 'prueba_gas_toxico_inflamable',
+    equipo_electrico_desenergizado = 'equipo_electrico_desenergizado',
+    tapar_purgas_drenajes = 'tapar_purgas_drenajes'
+WHERE id_permiso = 373;
+
+
+
+
+
+
+
+
+
+UPDATE pt_fuego
+SET fuera_operacion = 'fuera_operacion',
+    despresurizado_purgado = 'despresurizado_purgado',
+    producto_entrampado = 'producto_entrampado',
+    necesita_aislamiento = 'necesita_aislamiento',
+    con_valvulas = 'con_valvulas',
+    con_juntas_ciegas = 'con_juntas_ciegas',
+    requiere_lavado = 'requiere_lavado',
+    requiere_neutralizado = 'requiere_neutralizado',
+    requiere_vaporizado = 'requiere_vaporizado',
+    suspender_trabajos_adyacentes = 'suspender_trabajos_adyacentes',
+    acordonar_area = 'acordonar_area',
+    prueba_gas_toxico_inflamable = 'prueba_gas_toxico_inflamable',
+    equipo_electrico_desenergizado = 'equipo_electrico_desenergizado',
+    tapar_purgas_drenajes = 'tapar_purgas_drenajes'
+WHERE id_permiso = 373;

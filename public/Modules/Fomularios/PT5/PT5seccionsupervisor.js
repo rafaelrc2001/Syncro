@@ -164,6 +164,64 @@ function mostrarDatosSupervisor(permiso) {
   setText("pressure-label", permiso.presion);
   setText("temperature-label", permiso.temperatura);
 
+  // Mapeo de los campos de nombre para cada requisito
+  setText(
+    "nombre_fuera_operacion-label",
+    pick("nombre_equipo_fuera_operacion")
+  );
+  setText(
+    "nombre_despresurizado_purgado-label",
+    pick("nombre_equipo_despresionado_purgado")
+  );
+  setText(
+    "nombre_producto_entrampado-label",
+    pick("nombre_producto_entrampado")
+  );
+  setText(
+    "nombre_necesita_aislamiento-label",
+    pick("nombre_equipo_tuberia_fuera_operacion")
+  );
+  setText(
+    "nombre_con_valvulas-label",
+    pick("nombre_equipo_tuberia_aislado_junta_ciega")
+  );
+  setText(
+    "nombre_con_juntas_ciegas-label",
+    pick("nombre_equipo_tuberia_lavado_vaporizado")
+  );
+  setText("nombre_requiere_lavado-label", pick("nombre_residuos_interior"));
+  setText(
+    "nombre_requiere_neutralizado-label",
+    pick("nombre_prueba_explosividad_interior")
+  );
+  setText(
+    "nombre_requiere_vaporizado-label",
+    pick("nombre_prueba_explosividad_exterior")
+  );
+  setText(
+    "nombre_suspender_trabajos_adyacentes-label",
+    pick("nombre_acumulacion_gases_combustion")
+  );
+  setText(
+    "nombre_acordonar_area-label",
+    pick("nombre_permisos_trabajos_adicionales")
+  );
+  setText(
+    "nombre_prueba_gas_toxico_inflamable-label",
+    pick("nombre_acordonar_area")
+  );
+  setText(
+    "nombre_equipo_electrico_desenergizado-label",
+    pick("nombre_equipo_contraincendio")
+  );
+  setText(
+    "nombre_tapar_purgas_drenajes-label",
+    pick("nombre_equipo_contraincendio")
+  );
+
+  // Observaciones área
+  setText("observaciones_area", pick("observaciones_area"));
+
   // Mapeo de requisitos para efectuar el trabajo
   setText("fuera_operacion-label", permiso.fuera_operacion);
   setText("despresurizado_purgado-label", permiso.despresurizado_purgado);
@@ -292,9 +350,11 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         // Cerrar el modal de comentario y mostrar modal de confirmación para rechazo
         document.getElementById("modalComentario").style.display = "none";
-        
+
         // Crear y mostrar modal de confirmación para rechazo PT5
-        let rejectionConfirmationModal = document.getElementById("rejection-confirmation-modal");
+        let rejectionConfirmationModal = document.getElementById(
+          "rejection-confirmation-modal"
+        );
         if (!rejectionConfirmationModal) {
           rejectionConfirmationModal = document.createElement("div");
           rejectionConfirmationModal.id = "rejection-confirmation-modal";
@@ -311,7 +371,9 @@ document.addEventListener("DOMContentLoaded", function () {
           rejectionConfirmationModal.innerHTML = `
             <div style="background:#fff; border-radius:12px; max-width:400px; width:90vw; padding:2em 1.5em; box-shadow:0 4px 24px rgba(44,62,80,0.18); display:flex; flex-direction:column; gap:1em; align-items:center;">
               <h3 style="margin:0 0 0.5em 0; font-size:1.2em; color:#c0392b;"><i class="ri-close-circle-line" style="margin-right:8px;"></i>Permiso no autorizado correctamente</h3>
-              <div style="font-size:1em; color:#2c3e50; margin-bottom:1em;">El permiso de trabajo número: <span id="rejected-permit">${idPermiso || "-"}</span> ha sido rechazado</div>
+              <div style="font-size:1em; color:#2c3e50; margin-bottom:1em;">El permiso de trabajo número: <span id="rejected-permit">${
+                idPermiso || "-"
+              }</span> ha sido rechazado</div>
               <button id="rejection-modal-close-btn" style="background:#c0392b; color:#fff; border:none; border-radius:4px; padding:8px 24px; cursor:pointer; font-size:1em;">Cerrar</button>
             </div>
           `;
@@ -321,9 +383,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         const rejectedPermitNumber = document.getElementById("rejected-permit");
-        if (rejectedPermitNumber) rejectedPermitNumber.textContent = idPermiso || "-";
+        if (rejectedPermitNumber)
+          rejectedPermitNumber.textContent = idPermiso || "-";
 
-        const rejectionModalCloseBtn = document.getElementById("rejection-modal-close-btn");
+        const rejectionModalCloseBtn = document.getElementById(
+          "rejection-modal-close-btn"
+        );
         if (rejectionModalCloseBtn) {
           rejectionModalCloseBtn.setAttribute("type", "button");
           rejectionModalCloseBtn.onclick = function (e) {
@@ -332,7 +397,6 @@ document.addEventListener("DOMContentLoaded", function () {
             window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
           };
         }
-
       } catch (err) {
         console.error("Error al procesar el rechazo:", err);
         alert("Error al procesar el rechazo. Intenta nuevamente.");
@@ -728,9 +792,11 @@ document.addEventListener("DOMContentLoaded", function () {
               const modalComentario =
                 document.getElementById("modalComentario");
               if (modalComentario) modalComentario.style.display = "none";
-              
+
               // Crear y mostrar modal de confirmación para rechazo PT5
-              let rejectionConfirmationModal = document.getElementById("rejection-confirmation-modal");
+              let rejectionConfirmationModal = document.getElementById(
+                "rejection-confirmation-modal"
+              );
               if (!rejectionConfirmationModal) {
                 rejectionConfirmationModal = document.createElement("div");
                 rejectionConfirmationModal.id = "rejection-confirmation-modal";
@@ -740,14 +806,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 rejectionConfirmationModal.style.left = 0;
                 rejectionConfirmationModal.style.width = "100vw";
                 rejectionConfirmationModal.style.height = "100vh";
-                rejectionConfirmationModal.style.background = "rgba(44,62,80,0.25)";
+                rejectionConfirmationModal.style.background =
+                  "rgba(44,62,80,0.25)";
                 rejectionConfirmationModal.style.zIndex = 1000;
                 rejectionConfirmationModal.style.justifyContent = "center";
                 rejectionConfirmationModal.style.alignItems = "center";
                 rejectionConfirmationModal.innerHTML = `
                   <div style="background:#fff; border-radius:12px; max-width:400px; width:90vw; padding:2em 1.5em; box-shadow:0 4px 24px rgba(44,62,80,0.18); display:flex; flex-direction:column; gap:1em; align-items:center;">
                     <h3 style="margin:0 0 0.5em 0; font-size:1.2em; color:#c0392b;"><i class="ri-close-circle-line" style="margin-right:8px;"></i>Permiso no autorizado correctamente</h3>
-                    <div style="font-size:1em; color:#2c3e50; margin-bottom:1em;">El permiso de trabajo número: <span id="rejected-permit">${idPermiso || "-"}</span> ha sido rechazado</div>
+                    <div style="font-size:1em; color:#2c3e50; margin-bottom:1em;">El permiso de trabajo número: <span id="rejected-permit">${
+                      idPermiso || "-"
+                    }</span> ha sido rechazado</div>
                     <button id="rejection-modal-close-btn" style="background:#c0392b; color:#fff; border:none; border-radius:4px; padding:8px 24px; cursor:pointer; font-size:1em;">Cerrar</button>
                   </div>
                 `;
@@ -756,16 +825,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 rejectionConfirmationModal.style.display = "flex";
               }
 
-              const rejectedPermitNumber = document.getElementById("rejected-permit");
-              if (rejectedPermitNumber) rejectedPermitNumber.textContent = idPermiso || "-";
+              const rejectedPermitNumber =
+                document.getElementById("rejected-permit");
+              if (rejectedPermitNumber)
+                rejectedPermitNumber.textContent = idPermiso || "-";
 
-              const rejectionModalCloseBtn = document.getElementById("rejection-modal-close-btn");
+              const rejectionModalCloseBtn = document.getElementById(
+                "rejection-modal-close-btn"
+              );
               if (rejectionModalCloseBtn) {
                 rejectionModalCloseBtn.setAttribute("type", "button");
                 rejectionModalCloseBtn.onclick = function (e) {
                   e.preventDefault();
                   rejectionConfirmationModal.style.display = "none";
-                  window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
+                  window.location.href =
+                    "/Modules/SupSeguridad/SupSeguridad.html";
                 };
               }
             };

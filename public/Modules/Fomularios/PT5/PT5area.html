@@ -144,6 +144,8 @@
                         <tr>
                             <th>Requisito</th>
                             <th>Respuesta</th>
+                             <th>Verificó cada punto fisicamente en campo</th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -156,6 +158,9 @@
                                     <label><input type="radio" name="equipo_fuera_operacion" value="NA"> N/A</label>
                                 </div>
                             </td>
+                            <td>
+                                <input type="text" id="nombre_equipo_fuera_operacion"  style="width: 100%;" />
+                            </td>
                         </tr>
                         <tr>
                             <td>¿Se requiere que el equipo o línea esté despresionado y purgado?</td>
@@ -165,6 +170,9 @@
                                     <label><input type="radio" name="equipo_despresionado_purgado" value="NO"> NO</label>
                                     <label><input type="radio" name="equipo_despresionado_purgado" value="NA"> N/A</label>
                                 </div>
+                            </td>
+                             <td>
+                                <input type="text" id="nombre_equipo_despresionado_purgado"  style="width: 100%;" />
                             </td>
                         </tr>
                         <tr>
@@ -176,6 +184,9 @@
                                     <label><input type="radio" name="producto_entrampado" value="NA"> N/A</label>
                                 </div>
                             </td>
+                             <td>
+                                <input type="text" id="nombre_producto_entrampado"  style="width: 100%;" />
+                            </td>
                         </tr>
                         <tr>
                             <td>¿Se requiere que el equipo o tubería esté fuera de operación?</td>
@@ -185,6 +196,9 @@
                                     <label><input type="radio" name="equipo_tuberia_fuera_operacion" value="NO"> NO</label>
                                     <label><input type="radio" name="equipo_tuberia_fuera_operacion" value="NA"> N/A</label>
                                 </div>
+                            </td>
+                               <td>
+                                <input type="text" id="nombre_equipo_tuberia_fuera_operacion"  style="width: 100%;" />
                             </td>
                         </tr>
                         <tr>
@@ -196,6 +210,9 @@
                                     <label><input type="radio" name="equipo_tuberia_aislado_junta_ciega" value="NA"> N/A</label>
                                 </div>
                             </td>
+                               <td>
+                                <input type="text" id="nombre_equipo_tuberia_aislado_junta_ciega"  style="width: 100%;" />
+                            </td>
                         </tr>
                         <tr>
                             <td>¿Se requiere que el equipo o tubería esté lavado y vaporizado?</td>
@@ -205,6 +222,9 @@
                                     <label><input type="radio" name="equipo_tuberia_lavado_vaporizado" value="NO"> NO</label>
                                     <label><input type="radio" name="equipo_tuberia_lavado_vaporizado" value="NA"> N/A</label>
                                 </div>
+                            </td>
+                             <td>
+                                <input type="text" id="nombre_equipo_tuberia_lavado_vaporizado"  style="width: 100%;" />
                             </td>
                         </tr>
                         <tr>
@@ -216,6 +236,9 @@
                                     <label><input type="radio" name="residuos_interior" value="NA"> N/A</label>
                                 </div>
                             </td>
+                             <td>
+                                <input type="text" id="nombre_residuos_interior"  style="width: 100%;" />
+                            </td>
                         </tr>
                         <tr>
                             <td>¿Se requiere prueba de explosividad en el interior?</td>
@@ -225,6 +248,9 @@
                                     <label><input type="radio" name="prueba_explosividad_interior" value="NO"> NO</label>
                                     <label><input type="radio" name="prueba_explosividad_interior" value="NA"> N/A</label>
                                 </div>
+                            </td>
+                             <td>
+                                <input type="text" id="nombre_prueba_explosividad_interior"  style="width: 100%;" />
                             </td>
                         </tr>
                         <tr>
@@ -236,6 +262,9 @@
                                     <label><input type="radio" name="prueba_explosividad_exterior" value="NA"> N/A</label>
                                 </div>
                             </td>
+                              <td>
+                                <input type="text" id="nombre_prueba_explosividad_exterior"  style="width: 100%;" />
+                            </td>
                         </tr>
                         <tr>
                             <td>¿Existe acumulación de gases de combustión por ventilación insuficiente?</td>
@@ -245,6 +274,9 @@
                                     <label><input type="radio" name="acumulacion_gases_combustion" value="NO"> NO</label>
                                     <label><input type="radio" name="acumulacion_gases_combustion" value="NA"> N/A</label>
                                 </div>
+                            </td>
+                            <td>
+                                <input type="text" id="nombre_acumulacion_gases_combustion"  style="width: 100%;" />
                             </td>
                         </tr>
                         <tr>
@@ -256,10 +288,14 @@
                                     <label><input type="radio" name="permisos_trabajos_adicionales" value="NA"> N/A</label>
                                 </div>
                             </td>
+                            <td>
+                                <input type="text" id="nombre_permisos_trabajos_adicionales"  style="width: 100%;" />
+                            </td>
                         </tr>
                         <tr>
                             <td>¿Cuál?:</td>
-                            <td><input type="text" name="cual_trabajo_adicional" style="width: 100%;" /></td>
+                            <td><input type="text" id="cual_trabajo_adicional" style="width: 100%;" /></td>
+                            <td></td>
                         </tr>
                         <tr>
                             <td>¿Se requiere acordonar el área?</td>
@@ -269,6 +305,9 @@
                                     <label><input type="radio" name="acordonar_area" value="NO"> NO</label>
                                     <label><input type="radio" name="acordonar_area" value="NA"> N/A</label>
                                 </div>
+                            </td>
+                             <td>
+                                <input type="text" id="nombre_acordonar_area"  style="width: 100%;" />
                             </td>
                         </tr>
                         <tr>
@@ -280,10 +319,14 @@
                                     <label><input type="radio" name="equipo_contraincendio" value="NA"> N/A</label>
                                 </div>
                             </td>
+                              <td>
+                                <input type="text" id="nombre_equipo_contraincendio"  style="width: 100%;" />
+                            </td>
                         </tr>
                         <tr>
                             <td>Observaciones:</td>
-                            <td><textarea name="observaciones_requisitos" style="width: 100%;"></textarea></td>
+                            <td><textarea id="observaciones_requisitos" style="width: 100%;"></textarea></td>
+                            <td></td>
                         </tr>
                     </tbody>
                 </table>

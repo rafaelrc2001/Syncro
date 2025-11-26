@@ -110,6 +110,22 @@ router.put("/pt-fuego/requisitos_area/:id", async (req, res) => {
     fluido,
     presion,
     temperatura,
+    // NUEVAS COLUMNAS
+    observaciones_area,
+    nombre_equipo_fuera_operacion,
+    nombre_equipo_despresionado_purgado,
+    nombre_producto_entrampado,
+    nombre_equipo_tuberia_fuera_operacion,
+    nombre_equipo_tuberia_aislado_junta_ciega,
+    nombre_equipo_tuberia_lavado_vaporizado,
+    nombre_residuos_interior,
+    nombre_prueba_explosividad_interior,
+    nombre_prueba_explosividad_exterior,
+    nombre_acumulacion_gases_combustion,
+    nombre_permisos_trabajos_adicionales,
+    nombre_acordonar_area,
+    nombre_equipo_contraincendio,
+    cual_permiso,
   } = req.body;
 
   try {
@@ -138,8 +154,23 @@ router.put("/pt-fuego/requisitos_area/:id", async (req, res) => {
         equipo_proteccion_personal = $21,
         fluido = $22,
         presion = $23,
-        temperatura = $24
-      WHERE id_permiso = $25
+        temperatura = $24,
+        observaciones_area = $25,
+        nombre_equipo_fuera_operacion = $26,
+        nombre_equipo_despresionado_purgado = $27,
+        nombre_producto_entrampado = $28,
+        nombre_equipo_tuberia_fuera_operacion = $29,
+        nombre_equipo_tuberia_aislado_junta_ciega = $30,
+        nombre_equipo_tuberia_lavado_vaporizado = $31,
+        nombre_residuos_interior = $32,
+        nombre_prueba_explosividad_interior = $33,
+        nombre_prueba_explosividad_exterior = $34,
+        nombre_acumulacion_gases_combustion = $35,
+        nombre_permisos_trabajos_adicionales = $36,
+        nombre_acordonar_area = $37,
+        nombre_equipo_contraincendio = $38,
+        cual_permiso = $39
+      WHERE id_permiso = $40
       RETURNING *`,
       [
         fuera_operacion,
@@ -166,6 +197,21 @@ router.put("/pt-fuego/requisitos_area/:id", async (req, res) => {
         fluido,
         presion,
         temperatura,
+        observaciones_area,
+        nombre_equipo_fuera_operacion,
+        nombre_equipo_despresionado_purgado,
+        nombre_producto_entrampado,
+        nombre_equipo_tuberia_fuera_operacion,
+        nombre_equipo_tuberia_aislado_junta_ciega,
+        nombre_equipo_tuberia_lavado_vaporizado,
+        nombre_residuos_interior,
+        nombre_prueba_explosividad_interior,
+        nombre_prueba_explosividad_exterior,
+        nombre_acumulacion_gases_combustion,
+        nombre_permisos_trabajos_adicionales,
+        nombre_acordonar_area,
+        nombre_equipo_contraincendio,
+        cual_permiso,
         id_permiso,
       ]
     );

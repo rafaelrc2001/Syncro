@@ -403,6 +403,64 @@ function mostrarDatosImprimir(sources = {}) {
   setText("pressure-label", pick("presion", "pressure"));
   setText("temperature-label", pick("temperatura", "temperature"));
 
+  // Mapeo de los campos de nombre para cada requisito
+  setText(
+    "nombre_fuera_operacion-label",
+    pick("nombre_equipo_fuera_operacion")
+  );
+  setText(
+    "nombre_despresurizado_purgado-label",
+    pick("nombre_equipo_despresionado_purgado")
+  );
+  setText(
+    "nombre_producto_entrampado-label",
+    pick("nombre_producto_entrampado")
+  );
+  setText(
+    "nombre_necesita_aislamiento-label",
+    pick("nombre_equipo_tuberia_fuera_operacion")
+  );
+  setText(
+    "nombre_con_valvulas-label",
+    pick("nombre_equipo_tuberia_aislado_junta_ciega")
+  );
+  setText(
+    "nombre_con_juntas_ciegas-label",
+    pick("nombre_equipo_tuberia_lavado_vaporizado")
+  );
+  setText("nombre_requiere_lavado-label", pick("nombre_residuos_interior"));
+  setText(
+    "nombre_requiere_neutralizado-label",
+    pick("nombre_prueba_explosividad_interior")
+  );
+  setText(
+    "nombre_requiere_vaporizado-label",
+    pick("nombre_prueba_explosividad_exterior")
+  );
+  setText(
+    "nombre_suspender_trabajos_adyacentes-label",
+    pick("nombre_acumulacion_gases_combustion")
+  );
+  setText(
+    "nombre_acordonar_area-label",
+    pick("nombre_permisos_trabajos_adicionales")
+  );
+  setText(
+    "nombre_prueba_gas_toxico_inflamable-label",
+    pick("nombre_acordonar_area")
+  );
+  setText(
+    "nombre_equipo_electrico_desenergizado-label",
+    pick("nombre_equipo_contraincendio")
+  );
+  setText(
+    "nombre_tapar_purgas_drenajes-label",
+    pick("nombre_equipo_contraincendio")
+  );
+
+  // Observaciones área
+  setText("observaciones_area", pick("observaciones_area"));
+
   // Requisitos para efectuar el trabajo
   const requisitos = [
     "fuera_operacion",

@@ -110,19 +110,50 @@ async function autorizarPermisoPT2() {
   }
   const payload = {
     fuera_operacion: getRadio("fuera_operacion"),
+    fuera_operacion_nombre:
+      document.getElementById("fuera_operacion-nombre")?.value || "",
     despresurizado_purgado: getRadio("despresurizado_purgado"),
+    despresurizado_purgado_nombre:
+      document.getElementById("despresurizado_purgado-nombre")?.value || "",
     necesita_aislamiento: getRadio("necesita_aislamiento"),
+    necesita_aislamiento_nombre:
+      document.getElementById("necesita_aislamiento-nombre")?.value || "",
     con_valvulas: getRadio("con_valvulas"),
+    con_valvulas_nombre:
+      document.getElementById("con_valvulas-nombre")?.value || "",
     con_juntas_ciegas: getRadio("con_juntas_ciegas"),
+    con_juntas_ciegas_nombre:
+      document.getElementById("con_juntas_ciegas-nombre")?.value || "",
     producto_entrampado: getRadio("producto_entrampado"),
+    producto_entrampado_nombre:
+      document.getElementById("producto_entrampado-nombre")?.value || "",
     requiere_lavado: getRadio("requiere_lavado"),
+    requiere_lavado_nombre:
+      document.getElementById("requiere_lavado-nombre")?.value || "",
     requiere_neutralizado: getRadio("requiere_neutralizado"),
+    requiere_neutralizado_nombre:
+      document.getElementById("requiere_neutralizado-nombre")?.value || "",
     requiere_vaporizado: getRadio("requiere_vaporizado"),
+    requiere_vaporizado_nombre:
+      document.getElementById("requiere_vaporizado-nombre")?.value || "",
     suspender_trabajos_adyacentes: getRadio("suspender_trabajos_adyacentes"),
+    suspender_trabajos_adyacentes_nombre:
+      document.getElementById("suspender_trabajos_adyacentes-nombre")?.value ||
+      "",
     acordonar_area: getRadio("acordonar_area"),
+    acordonar_area_nombre:
+      document.getElementById("acordonar_area-nombre")?.value || "",
     prueba_gas_toxico_inflamable: getRadio("prueba_gas_toxico_inflamable"),
+    prueba_gas_toxico_inflamable_nombre:
+      document.getElementById("prueba_gas_toxico_inflamable-nombre")?.value ||
+      "",
     equipo_electrico_desenergizado: getRadio("equipo_electrico_desenergizado"),
+    equipo_electrico_desenergizado_nombre:
+      document.getElementById("equipo_electrico_desenergizado-nombre")?.value ||
+      "",
     tapar_purgas_drenajes: getRadio("tapar_purgas_drenajes"),
+    tapar_purgas_drenajes_nombre:
+      document.getElementById("tapar_purgas_drenajes-nombre")?.value || "",
     fluido: document.getElementById("fluid").value,
     presion: document.getElementById("pressure").value,
     temperatura: document.getElementById("temperature").value,

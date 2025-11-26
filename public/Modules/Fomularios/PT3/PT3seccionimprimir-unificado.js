@@ -345,6 +345,84 @@ document.addEventListener("DOMContentLoaded", function () {
           setText("param_otro", data.general.param_otro);
           setText("valor_otro", data.general.valor_otro);
           setText("observaciones_gas", data.general.observaciones);
+
+          //verifcicacion de campo
+          //
+          //
+          setText(
+            "nombre_verificar_explosividad",
+            data.general.nombre_verificar_explosividad
+          );
+          setText(
+            "nombre_verificar_gas_toxico",
+            data.general.nombre_verificar_gas_toxico
+          );
+          setText(
+            "nombre_verificar_deficiencia",
+            data.general.nombre_verificar_deficiencia_oxigeno
+          );
+          setText(
+            "nombre_verificar_enriquecimiento",
+            data.general.nombre_verificar_enriquecimiento_oxigeno
+          );
+          setText(
+            "nombre_verificar_polvo",
+            data.general.nombre_verificar_polvo_humos_fibras
+          );
+          setText(
+            "nombre_verificar_amoniaco",
+            data.general.nombre_verificar_amoniaco
+          );
+          setText(
+            "nombre_verificar_material",
+            data.general.nombre_verificar_material_piel
+          );
+          setText(
+            "nombre_verificar_temperatura",
+            data.general.nombre_verificar_temperatura
+          );
+          setText("nombre_verificar_lel", data.general.nombre_verificar_lel);
+          setText(
+            "nombre_suspeder_trabajos",
+            data.general.nombre_suspender_trabajos_adyacentes
+          );
+          setText("nombre_acordonar_area", data.general.nombre_acordonar_area);
+          setText(
+            "nombre_prueba_gas",
+            data.general.nombre_prueba_gas_toxico_inflamable
+          );
+          setText("nombre_porcentaje_lel", data.general.nombre_porcentaje_lel);
+          setText("nombre_nh3", data.general.nombre_nh3);
+          setText(
+            "nombre_porcentaje_oxigeno",
+            data.general.nombre_porcentaje_oxigeno
+          );
+          setText(
+            "nombre_equipo_despresionado_fuera_operacion",
+            data.general.nombre_equipo_despresionado_fuera_operacion
+          );
+          setText("nombre_equipo_aislado", data.general.nombre_equipo_aislado);
+          setText("nombre_equipo_lavado", data.general.nombre_equipo_lavado);
+          setText(
+            "nombre_equipo_neutralizado",
+            data.general.nombre_equipo_neutralizado
+          );
+          setText(
+            "nombre_equipo_vaporizado",
+            data.general.nombre_equipo_vaporizado
+          );
+          setText(
+            "nombre_aislar_purgas",
+            data.general.nombre_aislar_purgas_drenaje_venteo
+          );
+          setText(
+            "nombre_abrir_registros_necesarios",
+            data.general.nombre_abrir_registros_necesarios
+          );
+          setText(
+            "nombre_observaciones_requisitos",
+            data.general.nombre_observaciones_requisitos
+          );
         }
 
         // Rellenar AST y Participantes

@@ -377,7 +377,13 @@ function mostrarDatosImprimir(sources = {}) {
   // General / encabezados
   setText("prefijo-label", pick("prefijo", "id_permiso", "id"));
   setText("start-time-label", pick("hora_inicio", "start_time", "hora"));
-  setText("fecha-label", pick("fecha", "fecha_creacion"));
+  // Formatear la fecha a dd/mm/yyyy si viene en formato ISO
+  let fechaRaw = pick("fecha", "fecha_creacion");
+  let fechaFormateada = fechaRaw;
+  if (fechaRaw && fechaRaw.includes("T")) {
+    fechaFormateada = formatDateIsoToDDMMYYYY(fechaRaw);
+  }
+  setText("fecha-label", fechaFormateada);
   setText(
     "activity-type-label",
     pick("tipo_mantenimiento", "maintenance_type")

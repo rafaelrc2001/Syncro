@@ -137,6 +137,20 @@ function rellenarSupervisoresYCategorias() {
     });
 }
 
+function pick(...keys) {
+  for (const k of keys) {
+    if (
+      typeof permiso === "object" &&
+      permiso &&
+      permiso[k] !== undefined &&
+      permiso[k] !== null &&
+      permiso[k] !== ""
+    ) {
+      return permiso[k];
+    }
+  }
+  return "-";
+}
 // Utilidad para asignar texto en un elemento por id
 function setText(id, value) {
   const el = document.getElementById(id);
@@ -264,6 +278,66 @@ function mostrarDatosSupervisor(permiso) {
     "equipo_proteccion_personal-label",
     permiso.equipo_proteccion_personal
   );
+
+  //estas son las nuevas columnas:
+  setText(
+    "nombre_fuera_operacion-label",
+    permiso.nombre_equipo_fuera_operacion
+  );
+  setText(
+    "nombre_despresurizado_purgado-label",
+    permiso.nombre_equipo_despresionado_purgado
+  );
+  setText(
+    "nombre_producto_entrampado-label",
+    permiso.nombre_producto_entrampado
+  );
+  setText(
+    "nombre_necesita_aislamiento-label",
+    permiso.nombre_equipo_tuberia_fuera_operacion
+  );
+  setText(
+    "nombre_con_valvulas-label",
+    permiso.nombre_equipo_tuberia_aislado_junta_ciega
+  );
+  setText(
+    "nombre_con_juntas_ciegas-label",
+    permiso.nombre_equipo_tuberia_lavado_vaporizado
+  );
+  setText("nombre_requiere_lavado-label", permiso.nombre_residuos_interior);
+  setText(
+    "nombre_requiere_neutralizado-label",
+    permiso.nombre_prueba_explosividad_interior
+  );
+  setText(
+    "nombre_requiere_vaporizado-label",
+    permiso.nombre_prueba_explosividad_exterior
+  );
+  setText(
+    "nombre_suspender_trabajos_adyacentes-label",
+    permiso.nombre_acumulacion_gases_combustion
+  );
+  setText(
+    "nombre_acordonar_area-label",
+    permiso.nombre_permisos_trabajos_adicionales
+  );
+  setText(
+    "nombre_prueba_gas_toxico_inflamable-label",
+    permiso.nombre_acordonar_area
+  );
+  setText(
+    "nombre_equipo_electrico_desenergizado-label",
+    permiso.nombre_acordonar_area
+  );
+  setText(
+    "nombre_tapar_purgas_drenajes-label",
+    permiso.nombre_equipo_contraincendio
+  );
+
+  setText("cual_permiso", permiso.cual_permiso);
+
+  // Observaciones área
+  setText("observaciones_area", permiso.observaciones_area);
 }
 
 // Al cargar la página, obtener el id y mostrar los datos

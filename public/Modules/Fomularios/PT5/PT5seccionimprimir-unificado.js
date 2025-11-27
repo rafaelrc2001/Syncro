@@ -451,7 +451,7 @@ function mostrarDatosImprimir(sources = {}) {
   );
   setText(
     "nombre_equipo_electrico_desenergizado-label",
-    pick("nombre_equipo_contraincendio")
+    pick("nombre_acordonar_area")
   );
   setText(
     "nombre_tapar_purgas_drenajes-label",
@@ -460,6 +460,8 @@ function mostrarDatosImprimir(sources = {}) {
 
   // Observaciones área
   setText("observaciones_area", pick("observaciones_area"));
+
+  setText("cual_permiso", pick("cual_permiso"));
 
   // Requisitos para efectuar el trabajo
   const requisitos = [

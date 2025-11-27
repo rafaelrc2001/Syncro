@@ -17,6 +17,8 @@ class DashboardFilter {
     };
     this.searchTerm = "";
     this.statusFilter = "all";
+    this.fechaInicio = null;
+    this.fechaFinal = null;
 
     this.initEventListeners();
   }
@@ -44,6 +46,22 @@ class DashboardFilter {
     if (statusFilter) {
       statusFilter.addEventListener("change", (e) => {
         this.statusFilter = e.target.value;
+        this.applyFilters();
+      });
+    }
+
+    // Listeners para los inputs de fecha
+    const fechaInicioInput = document.getElementById("fecha-inicio");
+    const fechaFinalInput = document.getElementById("fecha-final");
+    if (fechaInicioInput) {
+      fechaInicioInput.addEventListener("change", (e) => {
+        this.fechaInicio = e.target.value ? e.target.value : null;
+        this.applyFilters();
+      });
+    }
+    if (fechaFinalInput) {
+      fechaFinalInput.addEventListener("change", (e) => {
+        this.fechaFinal = e.target.value ? e.target.value : null;
         this.applyFilters();
       });
     }
@@ -170,6 +188,18 @@ class DashboardFilter {
       });
     }
 
+    // Filtrar por rango de fechas (asegura que se use 'fecha' y afecte todas las visualizaciones)
+    if (this.fechaInicio || this.fechaFinal) {
+      filteredPermisos = filteredPermisos.filter((permiso) => {
+        let fechaPermiso = permiso.fecha; // usa 'fecha' en minúsculas
+        if (!fechaPermiso) return false;
+        let fechaStr = fechaPermiso.split("T")[0];
+        if (this.fechaInicio && fechaStr < this.fechaInicio) return false;
+        if (this.fechaFinal && fechaStr > this.fechaFinal) return false;
+        return true;
+      });
+    }
+
     this.filteredData.permisos = filteredPermisos;
 
     // Recalcular datos de gráficas basados en permisos filtrados
@@ -181,8 +211,13 @@ class DashboardFilter {
 
   // Recalcular datos de gráficas basados en permisos filtrados
   recalculateChartData() {
-    // Si no hay filtros activos, usar datos originales
-    if (!this.searchTerm && this.statusFilter === "all") {
+    // Si no hay ningún filtro activo (búsqueda, estado o fecha), usar datos originales
+    if (
+      !this.searchTerm &&
+      this.statusFilter === "all" &&
+      !this.fechaInicio &&
+      !this.fechaFinal
+    ) {
       this.filteredData.areas = [...this.originalData.areas];
       this.filteredData.tipos = [...this.originalData.tipos];
       this.filteredData.estatus = [...this.originalData.estatus];
@@ -191,40 +226,10 @@ class DashboardFilter {
 
     // Filtrar áreas basado en permisos filtrados
     const areasCounts = {};
-    this.filteredData.permisos.forEach((permiso, index) => {
-      // Mapeo robusto para área
-      let area = "Sin área";
-      if (
-        permiso.Area &&
-        typeof permiso.Area === "string" &&
-        permiso.Area.trim() !== ""
-      ) {
-        area = permiso.Area.trim();
-      } else if (
-        permiso.area &&
-        typeof permiso.area === "string" &&
-        permiso.area.trim() !== ""
-      ) {
-        area = permiso.area.trim();
-      } else if (
-        permiso["area"] &&
-        typeof permiso["area"] === "string" &&
-        permiso["area"].trim() !== ""
-      ) {
-        area = permiso["area"].trim();
-      }
+    this.filteredData.permisos.forEach((permiso) => {
+      const area = permiso.area || permiso.Area || "Sin área";
       areasCounts[area] = (areasCounts[area] || 0) + 1;
-      // Debug para los primeros 3 elementos
-      if (index < 3) {
-        console.log(`🔍 Permiso ${index + 1}:`, {
-          Area: permiso.Area,
-          area: permiso.area,
-          areaFinal: area,
-          todosLosCampos: Object.keys(permiso),
-        });
-      }
     });
-
     this.filteredData.areas = Object.entries(areasCounts).map(
       ([area, cantidad]) => ({
         area,
@@ -322,124 +327,153 @@ class DashboardFilter {
 
   // Actualizar gráfica de áreas
   updateAreasChart() {
-    if (window.areasChartInstance && this.filteredData.areas.length > 0) {
-      const categories = this.filteredData.areas.map((a) => a.area);
-      const values = this.filteredData.areas.map((a) =>
-        Number(a.cantidad_trabajos)
-      );
-      const baseColors = [
-        "#003B5C",
-        "#FF6F00",
-        "#00BFA5",
-        "#B0BEC5",
-        "#4A4A4A",
-        "#D32F2F",
-      ];
-      const colors = categories.map(
-        (_, i) => baseColors[i % baseColors.length]
-      );
-
-      console.log("🔄 Actualizando gráfica de áreas:", { categories, values });
-      window.areasChartInstance.updateData({ categories, values, colors });
+    if (window.areasChartInstance) {
+      if (this.filteredData.areas.length > 0) {
+        const categories = this.filteredData.areas.map((a) => a.area);
+        const values = this.filteredData.areas.map((a) =>
+          Number(a.cantidad_trabajos)
+        );
+        const baseColors = [
+          "#003B5C",
+          "#FF6F00",
+          "#00BFA5",
+          "#B0BEC5",
+          "#4A4A4A",
+          "#D32F2F",
+        ];
+        const colors = categories.map(
+          (_, i) => baseColors[i % baseColors.length]
+        );
+        console.log("🔄 Actualizando gráfica de áreas:", {
+          categories,
+          values,
+        });
+        window.areasChartInstance.updateData({ categories, values, colors });
+      } else {
+        // Limpiar gráfica si no hay datos
+        window.areasChartInstance.updateData({
+          categories: [],
+          values: [],
+          colors: [],
+        });
+      }
     }
   }
 
   // Actualizar gráfica de tipos
   updateTypesChart() {
-    if (window.typesChartInstance && this.filteredData.tipos.length > 0) {
-      const categories = this.filteredData.tipos.map((t) => t.tipo_permiso);
-      const values = this.filteredData.tipos.map((t) =>
-        Number(t.cantidad_trabajos)
-      );
-      const baseColors = [
-        "#D32F2F",
-        "#FF6F00",
-        "#FFC107",
-        "#003B5C",
-        "#00BFA5",
-        "#B0BEC5",
-        "#4A4A4A",
-        "#1976D2",
-      ];
-      const colors = categories.map(
-        (_, i) => baseColors[i % baseColors.length]
-      );
-
-      const riskLevels = categories.map((category) => {
-        const tipo = category.toLowerCase();
-        if (
-          tipo.includes("fuego") ||
-          tipo.includes("radiacion") ||
-          tipo.includes("electrico")
-        ) {
-          return "Alto";
-        } else if (tipo.includes("confinado") || tipo.includes("altura")) {
-          return "Medio";
-        } else {
-          return "Bajo";
-        }
-      });
-
-      console.log("🔄 Actualizando gráfica de tipos:", { categories, values });
-      window.typesChartInstance.updateData({
-        categories,
-        values,
-        colors,
-        riskLevels,
-      });
+    if (window.typesChartInstance) {
+      if (this.filteredData.tipos.length > 0) {
+        const categories = this.filteredData.tipos.map((t) => t.tipo_permiso);
+        const values = this.filteredData.tipos.map((t) =>
+          Number(t.cantidad_trabajos)
+        );
+        const baseColors = [
+          "#D32F2F",
+          "#FF6F00",
+          "#FFC107",
+          "#003B5C",
+          "#00BFA5",
+          "#B0BEC5",
+          "#4A4A4A",
+          "#1976D2",
+        ];
+        const colors = categories.map(
+          (_, i) => baseColors[i % baseColors.length]
+        );
+        const riskLevels = categories.map((category) => {
+          const tipo = category.toLowerCase();
+          if (
+            tipo.includes("fuego") ||
+            tipo.includes("radiacion") ||
+            tipo.includes("electrico")
+          ) {
+            return "Alto";
+          } else if (tipo.includes("confinado") || tipo.includes("altura")) {
+            return "Medio";
+          } else {
+            return "Bajo";
+          }
+        });
+        console.log("🔄 Actualizando gráfica de tipos:", {
+          categories,
+          values,
+        });
+        window.typesChartInstance.updateData({
+          categories,
+          values,
+          colors,
+          riskLevels,
+        });
+      } else {
+        // Limpiar gráfica si no hay datos
+        window.typesChartInstance.updateData({
+          categories: [],
+          values: [],
+          colors: [],
+          riskLevels: [],
+        });
+      }
     }
   }
 
   // Actualizar gráfica de estatus
   updateStatusChart() {
-    if (window.statusChartInstance && this.filteredData.estatus.length > 0) {
-      const categories = this.filteredData.estatus.map((e) => e.estatus);
-      const values = this.filteredData.estatus.map((e) =>
-        Number(e.cantidad_trabajos)
-      );
-
-      const colors = categories.map((status) => {
-        const estado = status.toLowerCase();
-        if (estado.includes("activo") || estado.includes("terminado")) {
-          return "#00BFA5";
-        } else if (estado.includes("cancelado")) {
-          return "#D32F2F";
-        } else if (estado.includes("espera")) {
-          return "#FF6F00";
-        } else if (estado.includes("no autorizado")) {
-          return "#FFC107";
-        } else {
-          return "#B0BEC5";
-        }
-      });
-
-      const icons = categories.map((status) => {
-        const estado = status.toLowerCase();
-        if (estado.includes("activo")) {
-          return "✓";
-        } else if (estado.includes("terminado")) {
-          return "🏁";
-        } else if (estado.includes("cancelado")) {
-          return "✗";
-        } else if (estado.includes("espera")) {
-          return "⏱️";
-        } else if (estado.includes("no autorizado")) {
-          return "⚠️";
-        } else {
-          return "📋";
-        }
-      });
-
-      console.log("🔄 Actualizando gráfica de estatus:", {
-        categories,
-        values,
-      });
-      window.statusChartInstance.updateData({
-        categories,
-        values,
-        colors,
-        icons,
-      });
+    if (window.statusChartInstance) {
+      if (this.filteredData.estatus.length > 0) {
+        const categories = this.filteredData.estatus.map((e) => e.estatus);
+        const values = this.filteredData.estatus.map((e) =>
+          Number(e.cantidad_trabajos)
+        );
+        const colors = categories.map((status) => {
+          const estado = status.toLowerCase();
+          if (estado.includes("activo") || estado.includes("terminado")) {
+            return "#00BFA5";
+          } else if (estado.includes("cancelado")) {
+            return "#D32F2F";
+          } else if (estado.includes("espera")) {
+            return "#FF6F00";
+          } else if (estado.includes("no autorizado")) {
+            return "#FFC107";
+          } else {
+            return "#B0BEC5";
+          }
+        });
+        const icons = categories.map((status) => {
+          const estado = status.toLowerCase();
+          if (estado.includes("activo")) {
+            return "✓";
+          } else if (estado.includes("terminado")) {
+            return "🏁";
+          } else if (estado.includes("cancelado")) {
+            return "✗";
+          } else if (estado.includes("espera")) {
+            return "⏱️";
+          } else if (estado.includes("no autorizado")) {
+            return "⚠️";
+          } else {
+            return "📋";
+          }
+        });
+        console.log("🔄 Actualizando gráfica de estatus:", {
+          categories,
+          values,
+        });
+        window.statusChartInstance.updateData({
+          categories,
+          values,
+          colors,
+          icons,
+        });
+      } else {
+        // Limpiar gráfica si no hay datos
+        window.statusChartInstance.updateData({
+          categories: [],
+          values: [],
+          colors: [],
+          icons: [],
+        });
+      }
     }
   }
 

@@ -14,6 +14,7 @@ router.get("/tabla-permisos/:id_departamento", async (req, res) => {
 						tp.nombre AS Tipo,
 						a.nombre AS Area,
 						pt.contrato AS Contrato,
+						pt.fecha_hora AS Fecha,
 						COALESCE(
 								ptnp.descripcion_trabajo, 
 								pta.descripcion_trabajo, 

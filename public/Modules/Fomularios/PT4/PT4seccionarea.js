@@ -79,7 +79,22 @@ if (btnGuardarCampos) {
         err
       );
     }
-    modalConfirmarAutorizar.style.display = "flex";
+
+    const responsableInput = document.getElementById("responsable-aprobador");
+    const responsable_area = responsableInput
+      ? responsableInput.value.trim()
+      : "";
+
+    if (!responsable_area) {
+      alert("Debes ingresar el nombre del responsable del área.");
+      if (responsableInput) responsableInput.focus();
+      return;
+    }
+
+    if (modalConfirmarAutorizar) {
+      modalConfirmarAutorizar.style.display = "flex";
+    }
+    // modalConfirmarAutorizar.style.display = "flex";
   });
 }
 
@@ -99,7 +114,7 @@ async function ejecutarAutorizacionPT4() {
     return;
   }
   if (!responsable_area) {
-    alert("Debes ingresar el nombre del responsable.");
+    alert("Debes ingresar el nombre del responsable 1212.");
     return;
   }
 

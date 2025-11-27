@@ -61,8 +61,21 @@ if (btnGuardarCampos) {
     } catch (e) {
       console.warn("No se pudieron rellenar todos los campos del modal:", e);
     }
+    // Validar responsable antes de mostrar el modal
+    const responsableInput = document.getElementById("responsable-aprobador");
+    const responsable_area = responsableInput
+      ? responsableInput.value.trim()
+      : "";
+    if (!responsable_area) {
+      alert("Debes ingresar el nombre del responsable");
+      if (responsableInput) responsableInput.focus();
+      return;
+    }
+
     const confirmar = document.getElementById("modalConfirmarAutorizar");
-    if (confirmar) confirmar.style.display = "flex";
+    if (confirmar) {
+      confirmar.style.display = "flex";
+    }
   });
 }
 
@@ -99,7 +112,7 @@ async function autorizarPermisoPT2() {
     return;
   }
   if (!responsable_area) {
-    alert("Debes ingresar el nombre del responsable.");
+    alert("Debes ingresar el nombre del responsable.11");
     return;
   }
 

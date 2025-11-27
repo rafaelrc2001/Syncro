@@ -72,7 +72,26 @@ if (btnGuardarCampos) {
           err
         );
       }
-      modalConfirmarAutorizar.style.display = "flex";
+
+      //funcion de mostrar alerta antes de abrir el modal
+
+      const responsableInput = document.getElementById("responsable-aprobador");
+      const responsable_area = responsableInput
+        ? responsableInput.value.trim()
+        : "";
+      if (!responsable_area) {
+        alert("Debes ingresar el nombre del responsable");
+        if (responsableInput) responsableInput.focus();
+        return;
+      }
+
+      const confirmar = document.getElementById("modalConfirmarAutorizar");
+      if (confirmar) {
+        confirmar.style.display = "flex";
+      }
+
+      // alert("antes de abrir el modal");
+      // modalConfirmarAutorizar.style.display = "flex";
     }
   });
   // Deshabilitar hasta que se carguen los datos canónicos
@@ -99,7 +118,7 @@ async function ejecutarAutorizacion() {
     return;
   }
   if (!responsable_area) {
-    alert("Debes ingresar el nombre del responsable.");
+    alert("Debes ingresar el nombre del responsable. 12");
     return;
   }
 

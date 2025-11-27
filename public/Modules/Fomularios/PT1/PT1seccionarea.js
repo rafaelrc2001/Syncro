@@ -19,7 +19,7 @@ if (btnAutorizar) {
     }
     // Validar responsable obligatorio
     if (!responsable_area) {
-      alert("Debes ingresar el nombre del responsable del área.");
+      alert("Debes ingresar el nombre del responsable del área 1.");
       if (responsableInput) responsableInput.focus();
       return;
     }
@@ -215,7 +215,7 @@ if (btnNoAutorizar) {
       ? responsableInput.value.trim()
       : "";
     if (!responsable_area) {
-      alert("Debes ingresar el nombre del responsable antes de rechazar.");
+      alert("Debes ingresar el nombre del responsable antes de rechazar 2.");
       return;
     }
     // Mostrar un modal de confirmación para 'No Autorizar' antes de pedir el motivo
@@ -224,23 +224,50 @@ if (btnNoAutorizar) {
       try {
         const data = window.currentPermisoData;
         const params = new URLSearchParams(window.location.search);
-  const idPermisoLocal = getPermisoValue(["general.prefijo","prefijo","data.prefijo"]) || params.get('id') || (data && (data.general && data.general.id || data.id)) || '-';
-  const tipoFromData = getPermisoValue(["data.tipo_permiso","general.tipo_permiso","detalles.tipo_actividad","general.tipo_actividad","general.prefijo","data.tipo_mantenimiento","general.tipo_mantenimiento"]);
-  const tipo = tipoFromData || document.getElementById('activity-type-label')?.textContent || '-';
-  const solicitante = getPermisoValue(["general.solicitante","detalles.solicitante"]) || document.getElementById('nombre-solicitante-label')?.textContent || '-';
-  const departamento = getPermisoValue(["detalles.departamento","general.departamento","detalles.planta","general.planta"]) || document.getElementById('plant-label')?.textContent || document.getElementById('sucursal-label')?.textContent || '-';
+        const idPermisoLocal =
+          getPermisoValue(["general.prefijo", "prefijo", "data.prefijo"]) ||
+          params.get("id") ||
+          (data && ((data.general && data.general.id) || data.id)) ||
+          "-";
+        const tipoFromData = getPermisoValue([
+          "data.tipo_permiso",
+          "general.tipo_permiso",
+          "detalles.tipo_actividad",
+          "general.tipo_actividad",
+          "general.prefijo",
+          "data.tipo_mantenimiento",
+          "general.tipo_mantenimiento",
+        ]);
+        const tipo =
+          tipoFromData ||
+          document.getElementById("activity-type-label")?.textContent ||
+          "-";
+        const solicitante =
+          getPermisoValue(["general.solicitante", "detalles.solicitante"]) ||
+          document.getElementById("nombre-solicitante-label")?.textContent ||
+          "-";
+        const departamento =
+          getPermisoValue([
+            "detalles.departamento",
+            "general.departamento",
+            "detalles.planta",
+            "general.planta",
+          ]) ||
+          document.getElementById("plant-label")?.textContent ||
+          document.getElementById("sucursal-label")?.textContent ||
+          "-";
 
-        const elId = document.getElementById('modal-permit-id-no');
-        const elTipo = document.getElementById('modal-permit-type-no');
-        const elSolicitante = document.getElementById('modal-solicitante-no');
-        const elDepto = document.getElementById('modal-departamento-no');
+        const elId = document.getElementById("modal-permit-id-no");
+        const elTipo = document.getElementById("modal-permit-type-no");
+        const elSolicitante = document.getElementById("modal-solicitante-no");
+        const elDepto = document.getElementById("modal-departamento-no");
 
         if (elId) elId.textContent = idPermisoLocal;
         if (elTipo) elTipo.textContent = tipo;
         if (elSolicitante) elSolicitante.textContent = solicitante;
         if (elDepto) elDepto.textContent = departamento;
       } catch (e) {
-        console.warn('No se pudo rellenar modalConfirmarNoAutorizar:', e);
+        console.warn("No se pudo rellenar modalConfirmarNoAutorizar:", e);
       }
       noModal.style.display = "flex";
     } else {
@@ -494,7 +521,7 @@ document.addEventListener("DOMContentLoaded", function () {
         ? responsableInput.value.trim()
         : "";
       if (!responsable_area) {
-        alert("Debes ingresar el nombre del responsable antes de rechazar.");
+        alert("Debes ingresar el nombre del responsable antes de rechazar. 3");
         return;
       }
       // Aquí puedes abrir un modal para capturar el comentario de rechazo
@@ -668,18 +695,17 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-
-
-
-
 // Helper: obtener campo del permiso cargado en memoria (window.currentPermisoData)
 function getPermisoValue(candidatePaths) {
   const root = window.currentPermisoData || {};
   for (const path of candidatePaths) {
-    const parts = path.split('.');
+    const parts = path.split(".");
     let cur = root;
     for (const p of parts) {
-      if (cur == null) { cur = null; break; }
+      if (cur == null) {
+        cur = null;
+        break;
+      }
       cur = cur[p];
     }
     if (cur != null && cur !== "" && cur !== "-") return cur;
@@ -689,35 +715,74 @@ function getPermisoValue(candidatePaths) {
 
 // Función para el botón de autorización con confirmación
 const btnPreguntaAutorizar = document.getElementById("btn-pregunta-autorizar");
-const modalConfirmarAutorizar = document.getElementById("modalConfirmarAutorizar");
+const modalConfirmarAutorizar = document.getElementById(
+  "modalConfirmarAutorizar"
+);
 const btnCancelarConfirmar = document.getElementById("btnCancelarConfirmar");
 const btnConfirmarAutorizar = document.getElementById("btnConfirmarAutorizar");
 
 if (btnPreguntaAutorizar) {
   // Abrir modal de confirmación al hacer clic en "Autorizar"
-  btnPreguntaAutorizar.addEventListener("click", function() {
+  btnPreguntaAutorizar.addEventListener("click", function () {
     // Antes de mostrar el modal, rellenar campos con la información del permiso
     try {
       const data = window.currentPermisoData;
       const params = new URLSearchParams(window.location.search);
-  const idPermisoLocal = getPermisoValue(["general.prefijo","prefijo","data.prefijo"]) || params.get('id') || (data && (data.general && data.general.id || data.id)) || '-';
-      const tipoFromData = getPermisoValue(["data.tipo_permiso","general.tipo_permiso","detalles.tipo_actividad","general.tipo_actividad","data.tipo_mantenimiento","general.tipo_mantenimiento"]);
-      const tipo = tipoFromData || document.getElementById('activity-type-label')?.textContent || '-';
-    const solicitante = getPermisoValue(["general.solicitante","detalles.solicitante"]) || document.getElementById('nombre-solicitante-label')?.textContent || '-';
-  // Mostrar el departamento (si existe). Preferir detalles.departamento -> general.departamento -> planta -> DOM
-  const departamento = getPermisoValue(["detalles.departamento","general.departamento","detalles.planta","general.planta"]) || document.getElementById('plant-label')?.textContent || document.getElementById('sucursal-label')?.textContent || '-';
+      const idPermisoLocal =
+        getPermisoValue(["general.prefijo", "prefijo", "data.prefijo"]) ||
+        params.get("id") ||
+        (data && ((data.general && data.general.id) || data.id)) ||
+        "-";
+      const tipoFromData = getPermisoValue([
+        "data.tipo_permiso",
+        "general.tipo_permiso",
+        "detalles.tipo_actividad",
+        "general.tipo_actividad",
+        "data.tipo_mantenimiento",
+        "general.tipo_mantenimiento",
+      ]);
+      const tipo =
+        tipoFromData ||
+        document.getElementById("activity-type-label")?.textContent ||
+        "-";
+      const solicitante =
+        getPermisoValue(["general.solicitante", "detalles.solicitante"]) ||
+        document.getElementById("nombre-solicitante-label")?.textContent ||
+        "-";
+      // Mostrar el departamento (si existe). Preferir detalles.departamento -> general.departamento -> planta -> DOM
+      const departamento =
+        getPermisoValue([
+          "detalles.departamento",
+          "general.departamento",
+          "detalles.planta",
+          "general.planta",
+        ]) ||
+        document.getElementById("plant-label")?.textContent ||
+        document.getElementById("sucursal-label")?.textContent ||
+        "-";
 
-      const elId = document.getElementById('modal-permit-id');
-      const elTipo = document.getElementById('modal-permit-type');
-      const elSolicitante = document.getElementById('modal-solicitante');
-      const elDepto = document.getElementById('modal-departamento');
+      const elId = document.getElementById("modal-permit-id");
+      const elTipo = document.getElementById("modal-permit-type");
+      const elSolicitante = document.getElementById("modal-solicitante");
+      const elDepto = document.getElementById("modal-departamento");
 
       if (elId) elId.textContent = idPermisoLocal;
       if (elTipo) elTipo.textContent = tipo;
       if (elSolicitante) elSolicitante.textContent = solicitante;
       if (elDepto) elDepto.textContent = departamento;
     } catch (e) {
-      console.warn('No se pudo rellenar el modal con datos (no hay data):', e);
+      console.warn("No se pudo rellenar el modal con datos (no hay data):", e);
+    }
+
+    const responsableInput = document.getElementById("responsable-aprobador");
+    const responsable_area = responsableInput
+      ? responsableInput.value.trim()
+      : "";
+
+    if (!responsable_area) {
+      alert("Debes ingresar el nombre del responsable del área.");
+      if (responsableInput) responsableInput.focus();
+      return;
     }
 
     if (modalConfirmarAutorizar) {
@@ -728,7 +793,7 @@ if (btnPreguntaAutorizar) {
 
 // Cerrar modal al hacer clic en "Cancelar"
 if (btnCancelarConfirmar) {
-  btnCancelarConfirmar.addEventListener("click", function() {
+  btnCancelarConfirmar.addEventListener("click", function () {
     if (modalConfirmarAutorizar) {
       modalConfirmarAutorizar.style.display = "none";
     }
@@ -737,7 +802,7 @@ if (btnCancelarConfirmar) {
 
 // Cerrar modal al hacer clic fuera del contenido
 if (modalConfirmarAutorizar) {
-  modalConfirmarAutorizar.addEventListener("click", function(e) {
+  modalConfirmarAutorizar.addEventListener("click", function (e) {
     if (e.target === modalConfirmarAutorizar) {
       modalConfirmarAutorizar.style.display = "none";
     }
@@ -746,7 +811,7 @@ if (modalConfirmarAutorizar) {
 
 // Procesar autorización al confirmar
 if (btnConfirmarAutorizar) {
-  btnConfirmarAutorizar.addEventListener("click", async function() {
+  btnConfirmarAutorizar.addEventListener("click", async function () {
     try {
       // Cerrar modal inmediatamente
       if (modalConfirmarAutorizar) {
@@ -758,7 +823,9 @@ if (btnConfirmarAutorizar) {
       const idPermiso = params.get("id") || window.idPermisoActual;
       const responsableInput = document.getElementById("responsable-aprobador");
       const operadorInput = document.getElementById("responsable-aprobador2");
-      const responsable_area = responsableInput ? responsableInput.value.trim() : "";
+      const responsable_area = responsableInput
+        ? responsableInput.value.trim()
+        : "";
       const operador_area = operadorInput ? operadorInput.value.trim() : "";
 
       // 2. Validaciones básicas
@@ -766,9 +833,9 @@ if (btnConfirmarAutorizar) {
         alert("No se pudo obtener el ID del permiso.");
         return;
       }
-      
+
       if (!responsable_area) {
-        alert("Debes ingresar el nombre del responsable del área.");
+        alert("Debes ingresar el nombre del responsable del área. 4");
         if (responsableInput) responsableInput.focus();
         return;
       }
@@ -780,10 +847,15 @@ if (btnConfirmarAutorizar) {
         const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
         if (respEstatus.ok) {
           const permisoData = await respEstatus.json();
-          idEstatus = permisoData.id_estatus || (permisoData.data && permisoData.data.id_estatus);
+          idEstatus =
+            permisoData.id_estatus ||
+            (permisoData.data && permisoData.data.id_estatus);
           console.log("[DEPURACIÓN] idEstatus obtenido:", idEstatus);
         } else {
-          console.error("[DEPURACIÓN] Error al obtener id_estatus. Status:", respEstatus.status);
+          console.error(
+            "[DEPURACIÓN] Error al obtener id_estatus. Status:",
+            respEstatus.status
+          );
         }
       } catch (err) {
         console.error("[DEPURACIÓN] Error al consultar id_estatus:", err);
@@ -798,14 +870,21 @@ if (btnConfirmarAutorizar) {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payloadEstatus),
           });
-          
+
           if (!respEstatus.ok) {
-            console.error("[DEPURACIÓN] Error en respuesta de estatus/seguridad");
+            console.error(
+              "[DEPURACIÓN] Error en respuesta de estatus/seguridad"
+            );
           } else {
-            console.log("[DEPURACIÓN] Estatus de seguridad actualizado correctamente");
+            console.log(
+              "[DEPURACIÓN] Estatus de seguridad actualizado correctamente"
+            );
           }
         } catch (err) {
-          console.error("[DEPURACIÓN] Excepción al actualizar estatus de seguridad:", err);
+          console.error(
+            "[DEPURACIÓN] Excepción al actualizar estatus de seguridad:",
+            err
+          );
         }
       }
 
@@ -813,25 +892,39 @@ if (btnConfirmarAutorizar) {
       const fluidInput = document.getElementById("fluid");
       const pressureInput = document.getElementById("pressure");
       const temperatureInput = document.getElementById("temperature");
-      
+
       const datosRequisitos = {
         fluido: fluidInput ? fluidInput.value.trim() : "",
         presion: pressureInput ? pressureInput.value.trim() : "",
         temperatura: temperatureInput ? temperatureInput.value.trim() : "",
-        trabajo_area_riesgo_controlado: document.querySelector('input[name="risk-area"]:checked')?.value || "",
-        necesita_entrega_fisica: document.querySelector('input[name="physical-delivery"]:checked')?.value || "",
-        necesita_ppe_adicional: document.querySelector('input[name="additional-ppe"]:checked')?.value || "",
-        area_circundante_riesgo: document.querySelector('input[name="surrounding-risk"]:checked')?.value || "",
-        necesita_supervision: document.querySelector('input[name="supervision-needed"]:checked')?.value || "",
-        observaciones_analisis_previo: document.getElementById("pre-work-observations")?.value.trim() || ""
+        trabajo_area_riesgo_controlado:
+          document.querySelector('input[name="risk-area"]:checked')?.value ||
+          "",
+        necesita_entrega_fisica:
+          document.querySelector('input[name="physical-delivery"]:checked')
+            ?.value || "",
+        necesita_ppe_adicional:
+          document.querySelector('input[name="additional-ppe"]:checked')
+            ?.value || "",
+        area_circundante_riesgo:
+          document.querySelector('input[name="surrounding-risk"]:checked')
+            ?.value || "",
+        necesita_supervision:
+          document.querySelector('input[name="supervision-needed"]:checked')
+            ?.value || "",
+        observaciones_analisis_previo:
+          document.getElementById("pre-work-observations")?.value.trim() || "",
       };
 
       // 5. Guardar requisitos del área
-      const respRequisitos = await fetch(`/api/pt-no-peligroso/requisitos_area/${idPermiso}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(datosRequisitos),
-      });
+      const respRequisitos = await fetch(
+        `/api/pt-no-peligroso/requisitos_area/${idPermiso}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(datosRequisitos),
+        }
+      );
 
       if (!respRequisitos.ok) {
         throw new Error("Error al guardar los requisitos del área");
@@ -871,10 +964,11 @@ if (btnConfirmarAutorizar) {
         alert("Permiso autorizado exitosamente");
         window.location.reload();
       }
-
     } catch (err) {
       console.error("Error al autorizar el permiso:", err);
-      alert("Ocurrió un error al autorizar el permiso. Por favor, intenta nuevamente.");
+      alert(
+        "Ocurrió un error al autorizar el permiso. Por favor, intenta nuevamente."
+      );
     }
   });
 }
@@ -883,20 +977,28 @@ if (btnConfirmarAutorizar) {
 
 // Handlers para el modal específico de "No Autorizar"
 (function setupNoAutorizarModalHandlers() {
-  const modalConfirmarNoAutorizar = document.getElementById("modalConfirmarNoAutorizar");
-  const btnCancelarConfirmarNo = document.getElementById("btnCancelarConfirmarNo");
-  const btnConfirmarNoAutorizar = document.getElementById("btnConfirmarNoAutorizar");
+  const modalConfirmarNoAutorizar = document.getElementById(
+    "modalConfirmarNoAutorizar"
+  );
+  const btnCancelarConfirmarNo = document.getElementById(
+    "btnCancelarConfirmarNo"
+  );
+  const btnConfirmarNoAutorizar = document.getElementById(
+    "btnConfirmarNoAutorizar"
+  );
 
   if (btnCancelarConfirmarNo) {
     btnCancelarConfirmarNo.addEventListener("click", function () {
-      if (modalConfirmarNoAutorizar) modalConfirmarNoAutorizar.style.display = "none";
+      if (modalConfirmarNoAutorizar)
+        modalConfirmarNoAutorizar.style.display = "none";
     });
   }
 
   if (btnConfirmarNoAutorizar) {
     btnConfirmarNoAutorizar.addEventListener("click", function () {
       // Cerrar modal de confirmación y abrir el modalComentario para capturar el motivo
-      if (modalConfirmarNoAutorizar) modalConfirmarNoAutorizar.style.display = "none";
+      if (modalConfirmarNoAutorizar)
+        modalConfirmarNoAutorizar.style.display = "none";
       const modal = document.getElementById("modalComentario");
       if (modal) {
         modal.style.display = "flex";
@@ -909,5 +1011,3 @@ if (btnConfirmarAutorizar) {
     });
   }
 })();
-
-

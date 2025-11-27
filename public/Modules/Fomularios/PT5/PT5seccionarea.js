@@ -330,7 +330,23 @@ if (btnGuardarCampos) {
         err
       );
     }
-    modalConfirmarAutorizar.style.display = "flex";
+
+    const responsableInput = document.getElementById("responsable-aprobador");
+    const responsable_area = responsableInput
+      ? responsableInput.value.trim()
+      : "";
+
+    if (!responsable_area) {
+      alert("Debes ingresar el nombre del responsable del área.");
+      if (responsableInput) responsableInput.focus();
+      return;
+    }
+
+    if (modalConfirmarAutorizar) {
+      modalConfirmarAutorizar.style.display = "flex";
+    }
+    //alert("dfdf");
+    //modalConfirmarAutorizar.style.display = "flex";
   });
 
   // Botón "Continuar" dentro del modal -> ejecutar autorización

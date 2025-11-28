@@ -81,6 +81,7 @@ const registrosPorPaginaJefe = 7;
 let textoBusquedaJefe = "";
 let fechaInicioJefe = null;
 let fechaFinalJefe = null;
+window.permisosJefeFiltrados = permisosJefeFiltrados;
 
 function formatHoraJefe(fecha) {
   if (!fecha) return "-";
@@ -208,6 +209,11 @@ function renderTablaPermisosJefe() {
     .querySelectorAll(".permits-table tbody tr[data-tooltip]")
     .forEach((element) => {
       element.addEventListener("mouseenter", function (e) {
+        // Eliminar cualquier tooltip previo
+        if (this.tooltip) {
+          this.tooltip.remove();
+          this.tooltip = null;
+        }
         const tooltip = document.createElement("div");
         tooltip.className = "custom-tooltip";
         tooltip.innerHTML = this.getAttribute("data-tooltip");
@@ -233,6 +239,7 @@ function renderTablaPermisosJefe() {
         this.tooltip = tooltip;
       });
       element.addEventListener("mouseleave", function () {
+        // Eliminar el tooltip aunque el mouse entre y salga rápido
         if (this.tooltip) {
           this.tooltip.remove();
           this.tooltip = null;
@@ -388,5 +395,8 @@ function aplicarFiltroPermisosJefe() {
 
     return coincideBusqueda && coincideFecha;
   });
+  window.permisosJefeFiltrados = permisosJefeFiltrados;
   renderTablaPermisosJefe();
+  if (window.actualizarTarjetasSupervisor)
+    window.actualizarTarjetasSupervisor();
 }

@@ -38,8 +38,18 @@ document.addEventListener("DOMContentLoaded", function () {
   // }
 
   // Tooltips mejorados
+  // Tooltips mejorados: manejo global para evitar tooltips clavados
+  function removeAllTooltips() {
+    document.querySelectorAll(".custom-tooltip").forEach((t) => t.remove());
+    // Limpiar referencia en todos los elementos
+    document.querySelectorAll("[data-tooltip]").forEach((el) => {
+      el.tooltip = null;
+    });
+  }
+
   document.querySelectorAll("[data-tooltip]").forEach((element) => {
     element.addEventListener("mouseenter", function (e) {
+      removeAllTooltips();
       const tooltip = document.createElement("div");
       tooltip.className = "custom-tooltip";
       tooltip.innerHTML = this.getAttribute("data-tooltip");
@@ -65,10 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
       this.tooltip = tooltip;
     });
     element.addEventListener("mouseleave", function () {
-      if (this.tooltip) {
-        this.tooltip.remove();
-        this.tooltip = null;
-      }
+      removeAllTooltips();
     });
   });
 });
@@ -81,6 +88,7 @@ const registrosPorPaginaJefe = 7;
 let textoBusquedaJefe = "";
 let fechaInicioJefe = null;
 let fechaFinalJefe = null;
+window.permisosJefeFiltrados = permisosJefeFiltrados;
 
 function formatHoraJefe(fecha) {
   if (!fecha) return "-";
@@ -208,6 +216,11 @@ function renderTablaPermisosJefe() {
     .querySelectorAll(".permits-table tbody tr[data-tooltip]")
     .forEach((element) => {
       element.addEventListener("mouseenter", function (e) {
+        // Eliminar cualquier tooltip previo
+        if (this.tooltip) {
+          this.tooltip.remove();
+          this.tooltip = null;
+        }
         const tooltip = document.createElement("div");
         tooltip.className = "custom-tooltip";
         tooltip.innerHTML = this.getAttribute("data-tooltip");
@@ -233,10 +246,44 @@ function renderTablaPermisosJefe() {
         this.tooltip = tooltip;
       });
       element.addEventListener("mouseleave", function () {
+        // Eliminar el tooltip aunque el mouse entre y salga rápido
         if (this.tooltip) {
           this.tooltip.remove();
           this.tooltip = null;
         }
+      });
+    });
+  document
+    .querySelectorAll(".permits-table tbody tr[data-tooltip]")
+    .forEach((element) => {
+      element.addEventListener("mouseenter", function (e) {
+        removeAllTooltips();
+        const tooltip = document.createElement("div");
+        tooltip.className = "custom-tooltip";
+        tooltip.innerHTML = this.getAttribute("data-tooltip");
+        document.body.appendChild(tooltip);
+
+        const rect = this.getBoundingClientRect();
+        const tooltipRect = tooltip.getBoundingClientRect();
+
+        // Posicionar tooltip centrado arriba del elemento
+        let left = rect.left + rect.width / 2 - tooltipRect.width / 2;
+        let top = rect.top - tooltipRect.height - 8;
+
+        // Ajustar si se sale de la pantalla
+        if (left < 10) left = 10;
+        if (left + tooltipRect.width > window.innerWidth - 10) {
+          left = window.innerWidth - tooltipRect.width - 10;
+        }
+        if (top < 10) top = rect.bottom + 8;
+
+        tooltip.style.left = left + "px";
+        tooltip.style.top = top + "px";
+
+        this.tooltip = tooltip;
+      });
+      element.addEventListener("mouseleave", function () {
+        removeAllTooltips();
       });
     });
 }
@@ -388,5 +435,7 @@ function aplicarFiltroPermisosJefe() {
 
     return coincideBusqueda && coincideFecha;
   });
+  window.permisosJefeFiltrados = permisosJefeFiltrados;
   renderTablaPermisosJefe();
+  if (window.actualizarTarjetasJefe) window.actualizarTarjetasJefe();
 }

@@ -6,13 +6,15 @@ class DashboardSearcher {
     this.originalData = null;
     this.filteredData = null;
     this.searchInput = null;
+    this.fechaInicio = null;
+    this.fechaFinal = null;
     this.init();
   }
 
   init() {
     // Esperar a que el DOM esté listo
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => this.setupSearcher());
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", () => this.setupSearcher());
     } else {
       this.setupSearcher();
     }
@@ -20,11 +22,15 @@ class DashboardSearcher {
 
   setupSearcher() {
     // Obtener el input de búsqueda
-    this.searchInput = document.querySelector('.search-bar input');
+    this.searchInput = document.querySelector(".search-bar input");
     if (!this.searchInput) {
-      console.warn('Input de búsqueda no encontrado');
+      console.warn("Input de búsqueda no encontrado");
       return;
     }
+
+    // Inputs de fecha
+    this.fechaInicioInput = document.getElementById("fecha-inicio");
+    this.fechaFinalInput = document.getElementById("fecha-final");
 
     // Cargar datos originales
     this.loadOriginalData();
@@ -34,7 +40,7 @@ class DashboardSearcher {
 
     // Configurar eventos de búsqueda con debounce
     let searchTimeout;
-    this.searchInput.addEventListener('input', (e) => {
+    this.searchInput.addEventListener("input", (e) => {
       clearTimeout(searchTimeout);
       searchTimeout = setTimeout(() => {
         this.handleSearch(e.target.value);
@@ -42,35 +48,49 @@ class DashboardSearcher {
     });
 
     // Limpiar búsqueda con Escape
-    this.searchInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        e.target.value = '';
-        this.handleSearch('');
+    this.searchInput.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        e.target.value = "";
+        this.handleSearch("");
       }
     });
 
     // Enfocar con Ctrl+F
-    document.addEventListener('keydown', (e) => {
-      if (e.ctrlKey && e.key === 'f') {
+    document.addEventListener("keydown", (e) => {
+      if (e.ctrlKey && e.key === "f") {
         e.preventDefault();
         this.searchInput.focus();
       }
     });
+
+    // Eventos de filtro de fecha
+    if (this.fechaInicioInput) {
+      this.fechaInicioInput.addEventListener("change", (e) => {
+        this.fechaInicio = e.target.value ? e.target.value : null;
+        this.handleSearch(this.searchInput.value);
+      });
+    }
+    if (this.fechaFinalInput) {
+      this.fechaFinalInput.addEventListener("change", (e) => {
+        this.fechaFinal = e.target.value ? e.target.value : null;
+        this.handleSearch(this.searchInput.value);
+      });
+    }
   }
 
   setupDynamicPlaceholder() {
     const placeholders = [
-      'Buscar por folio, tipo...',
-      'Ej: PT-001, Altura, Activo...',
-      'Buscar área, estatus...',
-      'Ej: Producción, Terminado...',
-      'Buscar solicitante, ubicación...',
-      'Buscar contrato, departamento...',
-      'Ej: CONTR-001, Mantenimiento...'
+      "Buscar por folio, tipo...",
+      "Ej: PT-001, Altura, Activo...",
+      "Buscar área, estatus...",
+      "Ej: Producción, Terminado...",
+      "Buscar solicitante, ubicación...",
+      "Buscar contrato, departamento...",
+      "Ej: CONTR-001, Mantenimiento...",
     ];
 
     let currentIndex = 0;
-    
+
     const changePlaceholder = () => {
       if (this.searchInput && document.activeElement !== this.searchInput) {
         this.searchInput.placeholder = placeholders[currentIndex];
@@ -84,31 +104,37 @@ class DashboardSearcher {
 
   async loadOriginalData() {
     try {
-      const response = await fetch('/api/graficas_jefes/permisos-jefes');
+      const response = await fetch("/api/graficas_jefes/permisos-jefes");
       this.originalData = await response.json();
       this.filteredData = [...this.originalData];
-      
-      console.log('Datos originales cargados:', this.originalData.length, 'permisos');
-      
+
+      console.log(
+        "Datos originales cargados:",
+        this.originalData.length,
+        "permisos"
+      );
+
       // Verificar que las gráficas estén disponibles después de cargar los datos
       setTimeout(() => {
         this.verifyChartInstances();
       }, 1500);
     } catch (error) {
-      console.error('Error al cargar datos originales:', error);
+      console.error("Error al cargar datos originales:", error);
     }
   }
 
   verifyChartInstances() {
-    console.log('Verificando instancias de gráficas:');
-    console.log('- Áreas:', !!window.areasChartInstance);
-    console.log('- Tipos:', !!window.typesChartInstance);
-    console.log('- Estatus:', !!window.statusChartInstance);
-    console.log('- Tiempos:', !!window.tiemposChartInstance);
-    
+    console.log("Verificando instancias de gráficas:");
+    console.log("- Áreas:", !!window.areasChartInstance);
+    console.log("- Tipos:", !!window.typesChartInstance);
+    console.log("- Estatus:", !!window.statusChartInstance);
+    console.log("- Tiempos:", !!window.tiemposChartInstance);
+
     if (!window.tiemposChartInstance) {
-      console.warn('Instancia de gráfica de tiempos no encontrada, intentando crear...');
-      const container = document.getElementById('tiempos-chart');
+      console.warn(
+        "Instancia de gráfica de tiempos no encontrada, intentando crear..."
+      );
+      const container = document.getElementById("tiempos-chart");
       if (container && this.filteredData) {
         const processed = this.processTiemposData(this.filteredData);
         this.createTiemposChart(container, processed);
@@ -118,45 +144,67 @@ class DashboardSearcher {
 
   handleSearch(searchTerm) {
     if (!this.originalData) {
-      console.warn('Datos originales no disponibles');
+      console.warn("Datos originales no disponibles");
       return;
     }
 
     const term = searchTerm.toLowerCase().trim();
-    
+
     // Agregar feedback visual
     this.addSearchFeedback(true);
-    
-    if (term === '') {
-      // Si no hay término de búsqueda, mostrar todos los datos
-      this.filteredData = [...this.originalData];
-      this.removeSearchIndicator();
+
+    // Filtrar por texto y por rango de fechas
+    this.filteredData = this.originalData.filter((permiso) => {
+      // Filtrado por texto
+      let coincideBusqueda = true;
+      if (term) {
+        coincideBusqueda = this.matchesSearchTerm(permiso, term);
+      }
+
+      // Filtrado por fechas (usa campo fecha_hora)
+      let coincideFecha = true;
+      if (this.fechaInicio || this.fechaFinal) {
+        let fechaPermiso = permiso.fecha_hora;
+        if (!fechaPermiso) return false;
+        let fechaStr = fechaPermiso.split("T")[0];
+        if (this.fechaInicio && fechaStr < this.fechaInicio) return false;
+        if (this.fechaFinal && fechaStr > this.fechaFinal) return false;
+      }
+
+      return coincideBusqueda && coincideFecha;
+    });
+
+    // Indicador de resultados
+    if (term || this.fechaInicio || this.fechaFinal) {
+      this.showSearchResults(
+        this.filteredData.length,
+        this.originalData.length
+      );
     } else {
-      // Filtrar datos basado en múltiples campos
-      this.filteredData = this.originalData.filter(permiso => {
-        return this.matchesSearchTerm(permiso, term);
-      });
-      
-      // Mostrar indicador de resultados
-      this.showSearchResults(this.filteredData.length, this.originalData.length);
+      this.removeSearchIndicator();
     }
 
-    console.log(`Búsqueda: "${searchTerm}" - Resultados: ${this.filteredData.length}/${this.originalData.length}`);
-    
+    console.log(
+      `Búsqueda: "${searchTerm}" - Resultados: ${this.filteredData.length}/${this.originalData.length}`
+    );
+
     // Actualizar todas las gráficas y tarjetas con animación
     setTimeout(() => {
       try {
         this.updateAllCharts();
         this.updateCards();
-        console.log('Gráficas actualizadas correctamente');
+        console.log("Gráficas actualizadas correctamente");
       } catch (error) {
-        console.error('Error al actualizar gráficas:', error);
+        console.error("Error al actualizar gráficas:", error);
       }
-      
+
       this.addSearchFeedback(false);
-      
+
       // Mostrar mensaje si no hay resultados
-      if (this.filteredData.length === 0 && term !== '') {
+      if (
+        this.filteredData.length === 0 &&
+        (term || this.fechaInicio || this.fechaFinal)
+      ) {
         this.showNoResultsMessage(term);
       } else {
         this.hideNoResultsMessage();
@@ -178,10 +226,10 @@ class DashboardSearcher {
       permiso.nombre_solicitante,
       permiso.descripcion_trabajo,
       permiso.ubicacion,
-      permiso.contrato
+      permiso.contrato,
     ];
 
-    return searchableFields.some(field => {
+    return searchableFields.some((field) => {
       if (!field) return false;
       return field.toString().toLowerCase().includes(term);
     });
@@ -211,12 +259,12 @@ class DashboardSearcher {
   }
 
   updateTiemposChart() {
-    const tiemposContainer = document.getElementById('tiempos-chart');
+    const tiemposContainer = document.getElementById("tiempos-chart");
     if (!tiemposContainer) return;
 
     // Procesar datos de tiempos con datos filtrados
     const processed = this.processTiemposData(this.filteredData);
-    
+
     // Si no hay instancia existente o si la gráfica no existe, crearla
     if (!window.tiemposChartInstance || !window.tiemposChartInstance.chart) {
       this.createTiemposChart(tiemposContainer, processed);
@@ -225,40 +273,46 @@ class DashboardSearcher {
 
     // Actualizar la gráfica existente
     const tiemposChart = window.tiemposChartInstance.chart;
-    
+
     const updatedOption = {
       title: {
-        text: this.calculateTiemposAverages(processed)
+        text: this.calculateTiemposAverages(processed),
       },
       xAxis: {
-        data: processed.permisos
+        data: processed.permisos,
       },
       dataZoom: [
         {
-          type: 'slider',
+          type: "slider",
           start: 0,
-          end: Math.min(100, (8 / Math.max(processed.permisos.length, 1)) * 100)
+          end: Math.min(
+            100,
+            (8 / Math.max(processed.permisos.length, 1)) * 100
+          ),
         },
         {
-          type: 'inside',
+          type: "inside",
           start: 0,
-          end: Math.min(100, (8 / Math.max(processed.permisos.length, 1)) * 100)
-        }
+          end: Math.min(
+            100,
+            (8 / Math.max(processed.permisos.length, 1)) * 100
+          ),
+        },
       ],
       series: [
         {
           name: "Creación → Área",
-          data: processed.tiemposCreacionArea
+          data: processed.tiemposCreacionArea,
         },
         {
-          name: "Área → Supervisor", 
-          data: processed.tiemposAreaSupervisor
+          name: "Área → Supervisor",
+          data: processed.tiemposAreaSupervisor,
         },
         {
           name: "Tiempo Total",
-          data: processed.tiemposTotales
-        }
-      ]
+          data: processed.tiemposTotales,
+        },
+      ],
     };
 
     tiemposChart.setOption(updatedOption, false, true);
@@ -266,11 +320,11 @@ class DashboardSearcher {
 
   createTiemposChart(container, processed) {
     // Limpiar el contenedor
-    container.innerHTML = '';
-    
+    container.innerHTML = "";
+
     // Crear nueva instancia
     const tiemposChart = echarts.init(container);
-    
+
     const tiemposOption = {
       title: {
         text: this.calculateTiemposAverages(processed),
@@ -309,21 +363,21 @@ class DashboardSearcher {
       legend: {
         data: ["Creación → Área", "Área → Supervisor", "Tiempo Total"],
         bottom: 35,
-        left: 'center',
+        left: "center",
         itemGap: 20,
         textStyle: {
           fontSize: 11,
-          color: '#4A4A4A'
+          color: "#4A4A4A",
         },
-        icon: 'rect',
+        icon: "rect",
         itemWidth: 12,
-        itemHeight: 8
+        itemHeight: 8,
       },
       grid: {
         left: 50,
         right: 20,
         bottom: 80,
-        top: 40
+        top: 40,
       },
       xAxis: {
         type: "category",
@@ -353,25 +407,31 @@ class DashboardSearcher {
       },
       dataZoom: [
         {
-          type: 'slider',
+          type: "slider",
           show: true,
           xAxisIndex: [0],
           start: 0,
-          end: Math.min(100, (8 / Math.max(processed.permisos.length, 1)) * 100),
+          end: Math.min(
+            100,
+            (8 / Math.max(processed.permisos.length, 1)) * 100
+          ),
           bottom: 5,
           height: 18,
-          borderColor: '#B0BEC5',
-          fillerColor: 'rgba(0, 59, 92, 0.2)',
+          borderColor: "#B0BEC5",
+          fillerColor: "rgba(0, 59, 92, 0.2)",
           handleStyle: {
-            color: '#003B5C'
-          }
+            color: "#003B5C",
+          },
         },
         {
-          type: 'inside',
+          type: "inside",
           xAxisIndex: [0],
           start: 0,
-          end: Math.min(100, (8 / Math.max(processed.permisos.length, 1)) * 100)
-        }
+          end: Math.min(
+            100,
+            (8 / Math.max(processed.permisos.length, 1)) * 100
+          ),
+        },
       ],
       series: [
         {
@@ -408,7 +468,11 @@ class DashboardSearcher {
           symbol: "circle",
           symbolSize: 8,
           lineStyle: { color: "#00BFA5", width: 3 },
-          itemStyle: { color: "#00BFA5", borderColor: "#FFFFFF", borderWidth: 2 },
+          itemStyle: {
+            color: "#00BFA5",
+            borderColor: "#FFFFFF",
+            borderWidth: 2,
+          },
           data: processed.tiemposTotales,
           z: 10,
         },
@@ -427,8 +491,8 @@ class DashboardSearcher {
     window.addEventListener("resize", resizeHandler);
 
     // Guardar instancia
-    window.tiemposChartInstance = { 
-      chart: tiemposChart, 
+    window.tiemposChartInstance = {
+      chart: tiemposChart,
       resize: resizeHandler,
       updateData: (newProcessed) => {
         const updateOption = {
@@ -437,26 +501,38 @@ class DashboardSearcher {
           series: [
             { data: newProcessed.tiemposCreacionArea },
             { data: newProcessed.tiemposAreaSupervisor },
-            { data: newProcessed.tiemposTotales }
-          ]
+            { data: newProcessed.tiemposTotales },
+          ],
         };
         tiemposChart.setOption(updateOption, false, true);
-      }
+      },
     };
   }
 
   calculateTiemposAverages(processed) {
-    const promedioCreacionArea = processed.tiemposCreacionArea.length > 0
-      ? (processed.tiemposCreacionArea.reduce((a, b) => a + b, 0) / processed.tiemposCreacionArea.length).toFixed(1)
-      : 0;
-    
-    const promedioAreaSupervisor = processed.tiemposAreaSupervisor.length > 0
-      ? (processed.tiemposAreaSupervisor.reduce((a, b) => a + b, 0) / processed.tiemposAreaSupervisor.length).toFixed(1)
-      : 0;
-    
-    const promedioTotal = processed.tiemposTotales.length > 0
-      ? (processed.tiemposTotales.reduce((a, b) => a + b, 0) / processed.tiemposTotales.length).toFixed(1)
-      : 0;
+    const promedioCreacionArea =
+      processed.tiemposCreacionArea.length > 0
+        ? (
+            processed.tiemposCreacionArea.reduce((a, b) => a + b, 0) /
+            processed.tiemposCreacionArea.length
+          ).toFixed(1)
+        : 0;
+
+    const promedioAreaSupervisor =
+      processed.tiemposAreaSupervisor.length > 0
+        ? (
+            processed.tiemposAreaSupervisor.reduce((a, b) => a + b, 0) /
+            processed.tiemposAreaSupervisor.length
+          ).toFixed(1)
+        : 0;
+
+    const promedioTotal =
+      processed.tiemposTotales.length > 0
+        ? (
+            processed.tiemposTotales.reduce((a, b) => a + b, 0) /
+            processed.tiemposTotales.length
+          ).toFixed(1)
+        : 0;
 
     return `Promedios: Creación→Área: ${promedioCreacionArea}h | Área→Supervisor: ${promedioAreaSupervisor}h | Total: ${promedioTotal}h`;
   }
@@ -478,7 +554,14 @@ class DashboardSearcher {
     });
     const categories = Object.keys(areaCounts);
     const values = categories.map((area) => areaCounts[area]);
-    const colors = ["#003B5C", "#FF6F00", "#00BFA5", "#B0BEC5", "#4A4A4A", "#D32F2F"];
+    const colors = [
+      "#003B5C",
+      "#FF6F00",
+      "#00BFA5",
+      "#B0BEC5",
+      "#4A4A4A",
+      "#D32F2F",
+    ];
     return {
       categories,
       values,
@@ -490,14 +573,22 @@ class DashboardSearcher {
     const typeCounts = {};
     data.forEach((item) => {
       if (item.tipo_permiso) {
-        typeCounts[item.tipo_permiso] = (typeCounts[item.tipo_permiso] || 0) + 1;
+        typeCounts[item.tipo_permiso] =
+          (typeCounts[item.tipo_permiso] || 0) + 1;
       }
     });
     const categories = Object.keys(typeCounts);
     const values = categories.map((tipo) => typeCounts[tipo]);
     const colors = [
-      "#D32F2F", "#FF6F00", "#FFC107", "#003B5C", "#00BFA5", 
-      "#7B1FA2", "#388E3C", "#1976D2", "#C2185B"
+      "#D32F2F",
+      "#FF6F00",
+      "#FFC107",
+      "#003B5C",
+      "#00BFA5",
+      "#7B1FA2",
+      "#388E3C",
+      "#1976D2",
+      "#C2185B",
     ];
     return {
       categories,
@@ -523,7 +614,14 @@ class DashboardSearcher {
     });
     const categories = Object.values(statusLabels);
     const values = Object.keys(statusLabels).map((key) => statusCounts[key]);
-    const colors = ["#00BFA5", "#FF6F00", "#FFC107", "#D32F2F", "#003B5C", "#7B1FA2"];
+    const colors = [
+      "#00BFA5",
+      "#FF6F00",
+      "#FFC107",
+      "#D32F2F",
+      "#003B5C",
+      "#7B1FA2",
+    ];
     return {
       categories,
       values,
@@ -536,18 +634,20 @@ class DashboardSearcher {
     const tiemposCreacionArea = [];
     const tiemposAreaSupervisor = [];
     const tiemposTotales = [];
-    
+
     data.forEach((item) => {
       if (!item.fecha_hora) return;
-      
+
       const creacion = new Date(item.fecha_hora);
       let area = item.fecha_hora_area ? new Date(item.fecha_hora_area) : null;
-      let supervisor = item.fecha_hora_supervisor ? new Date(item.fecha_hora_supervisor) : null;
-      
+      let supervisor = item.fecha_hora_supervisor
+        ? new Date(item.fecha_hora_supervisor)
+        : null;
+
       let diffCreacionArea = null;
       let diffAreaSupervisor = null;
       let diffTotal = null;
-      
+
       if (area && supervisor) {
         diffCreacionArea = (area - creacion) / (1000 * 60 * 60);
         diffAreaSupervisor = (supervisor - area) / (1000 * 60 * 60);
@@ -559,17 +659,18 @@ class DashboardSearcher {
       } else {
         return;
       }
-      
+
       if (isNaN(diffCreacionArea) || diffCreacionArea < 0) diffCreacionArea = 0;
-      if (isNaN(diffAreaSupervisor) || diffAreaSupervisor < 0) diffAreaSupervisor = 0;
+      if (isNaN(diffAreaSupervisor) || diffAreaSupervisor < 0)
+        diffAreaSupervisor = 0;
       if (isNaN(diffTotal) || diffTotal < 0) return;
-      
+
       permisos.push(item.prefijo || item.id_permiso);
       tiemposCreacionArea.push(Number(diffCreacionArea.toFixed(2)));
       tiemposAreaSupervisor.push(Number(diffAreaSupervisor.toFixed(2)));
       tiemposTotales.push(Number(diffTotal.toFixed(2)));
     });
-    
+
     return {
       permisos,
       tiemposCreacionArea,
@@ -608,16 +709,21 @@ class DashboardSearcher {
       data.forEach((permiso) => {
         total++;
         const estatus = normalizar(permiso.estatus);
-        
+
         if (estatus === "activo") {
           activos++;
           desglose.activos[estatus] = (desglose.activos[estatus] || 0) + 1;
         } else if (estatus === "no autorizado") {
           noAutorizados++;
-          desglose.noAutorizados[estatus] = (desglose.noAutorizados[estatus] || 0) + 1;
-        } else if (estatus === "en espera del area" || estatus === "espera seguridad") {
+          desglose.noAutorizados[estatus] =
+            (desglose.noAutorizados[estatus] || 0) + 1;
+        } else if (
+          estatus === "en espera del area" ||
+          estatus === "espera seguridad"
+        ) {
           porAutorizar++;
-          desglose.porAutorizar[estatus] = (desglose.porAutorizar[estatus] || 0) + 1;
+          desglose.porAutorizar[estatus] =
+            (desglose.porAutorizar[estatus] || 0) + 1;
         } else if (
           estatus === "cancelado" ||
           estatus === "cierre con incidentes" ||
@@ -626,7 +732,8 @@ class DashboardSearcher {
           estatus === "terminado"
         ) {
           terminados++;
-          desglose.terminados[estatus] = (desglose.terminados[estatus] || 0) + 1;
+          desglose.terminados[estatus] =
+            (desglose.terminados[estatus] || 0) + 1;
         }
       });
 
@@ -647,8 +754,8 @@ class DashboardSearcher {
   // Método público para limpiar búsqueda
   clearSearch() {
     if (this.searchInput) {
-      this.searchInput.value = '';
-      this.handleSearch('');
+      this.searchInput.value = "";
+      this.handleSearch("");
     }
   }
 
@@ -662,64 +769,64 @@ class DashboardSearcher {
 
   // Métodos de feedback visual
   addSearchFeedback(isSearching) {
-    const searchBar = document.querySelector('.search-bar');
+    const searchBar = document.querySelector(".search-bar");
     if (!searchBar) return;
 
     if (isSearching) {
-      searchBar.classList.add('searching');
+      searchBar.classList.add("searching");
       // Agregar animación a las tarjetas
-      document.querySelectorAll('.card').forEach(card => {
-        card.classList.add('updating');
+      document.querySelectorAll(".card").forEach((card) => {
+        card.classList.add("updating");
       });
       // Agregar animación a las gráficas
-      document.querySelectorAll('.chart-card').forEach(chart => {
-        chart.classList.add('updating');
+      document.querySelectorAll(".chart-card").forEach((chart) => {
+        chart.classList.add("updating");
       });
     } else {
-      searchBar.classList.remove('searching');
+      searchBar.classList.remove("searching");
       // Remover animaciones después de un tiempo
       setTimeout(() => {
-        document.querySelectorAll('.card').forEach(card => {
-          card.classList.remove('updating');
+        document.querySelectorAll(".card").forEach((card) => {
+          card.classList.remove("updating");
         });
-        document.querySelectorAll('.chart-card').forEach(chart => {
-          chart.classList.remove('updating');
+        document.querySelectorAll(".chart-card").forEach((chart) => {
+          chart.classList.remove("updating");
         });
       }, 600);
     }
   }
 
   showSearchResults(resultCount, totalCount) {
-    let indicator = document.querySelector('.search-results-indicator');
+    let indicator = document.querySelector(".search-results-indicator");
     if (!indicator) {
-      indicator = document.createElement('div');
-      indicator.className = 'search-results-indicator';
-      document.querySelector('.search-bar').appendChild(indicator);
+      indicator = document.createElement("div");
+      indicator.className = "search-results-indicator";
+      document.querySelector(".search-bar").appendChild(indicator);
     }
 
     indicator.textContent = `${resultCount}/${totalCount} resultados`;
-    indicator.classList.remove('no-results');
-    
+    indicator.classList.remove("no-results");
+
     if (resultCount === 0) {
-      indicator.classList.add('no-results');
-      indicator.textContent = 'Sin resultados';
+      indicator.classList.add("no-results");
+      indicator.textContent = "Sin resultados";
     }
 
-    indicator.classList.add('show');
+    indicator.classList.add("show");
   }
 
   removeSearchIndicator() {
-    const indicator = document.querySelector('.search-results-indicator');
+    const indicator = document.querySelector(".search-results-indicator");
     if (indicator) {
-      indicator.classList.remove('show');
+      indicator.classList.remove("show");
     }
   }
 
   showNoResultsMessage(searchTerm) {
-    let overlay = document.querySelector('.no-results-overlay');
+    let overlay = document.querySelector(".no-results-overlay");
     if (!overlay) {
-      overlay = document.createElement('div');
-      overlay.className = 'no-results-overlay';
+      overlay = document.createElement("div");
+      overlay.className = "no-results-overlay";
       overlay.innerHTML = `
         <div class="no-results-message">
           <h3><i class="ri-search-line"></i>Sin resultados encontrados</h3>
@@ -733,19 +840,19 @@ class DashboardSearcher {
       document.body.appendChild(overlay);
     }
 
-    document.getElementById('search-term').textContent = searchTerm;
-    overlay.classList.add('show');
+    document.getElementById("search-term").textContent = searchTerm;
+    overlay.classList.add("show");
 
     // Auto-cerrar después de 5 segundos
     setTimeout(() => {
       this.hideNoResultsMessage();
-    }, 5000);
+    }, 1500);
   }
 
   hideNoResultsMessage() {
-    const overlay = document.querySelector('.no-results-overlay');
+    const overlay = document.querySelector(".no-results-overlay");
     if (overlay) {
-      overlay.classList.remove('show');
+      overlay.classList.remove("show");
     }
   }
 }
@@ -753,15 +860,15 @@ class DashboardSearcher {
 // Inicializar el buscador cuando el DOM esté listo
 let dashboardSearcher;
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener("DOMContentLoaded", function () {
   // Esperar un poco para que se inicialicen las gráficas
   setTimeout(() => {
     dashboardSearcher = new DashboardSearcher();
-    
+
     // Hacer disponible globalmente
     window.dashboardSearcher = dashboardSearcher;
-    
-    console.log('Buscador del dashboard inicializado');
+
+    console.log("Buscador del dashboard inicializado");
   }, 1000);
 });
 

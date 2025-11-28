@@ -278,6 +278,51 @@ class DashboardFilter {
     this.updateTypesChart();
     this.updateStatusChart();
     this.updateFilterResults();
+    this.updateCards();
+  }
+
+  // Actualizar tarjetas del dashboard
+  updateCards() {
+    // Selecciona todas las tarjetas por orden
+    const cards = document.querySelectorAll(".cards-section .card .count");
+    if (!cards || cards.length < 5) return;
+
+    // Total de permisos filtrados
+    cards[0].textContent = this.filteredData.permisos.length;
+
+    // Por Autorizar: estados "en espera del área" y "espera seguridad"
+    const porAutorizar = this.filteredData.permisos.filter((p) => {
+      const estado = (p.Estado || p.estado || "").toLowerCase();
+      return estado === "en espera del área" || estado === "espera seguridad";
+    }).length;
+    cards[1].textContent = porAutorizar;
+
+    // Activos: estado "activo"
+    const activos = this.filteredData.permisos.filter((p) => {
+      const estado = (p.Estado || p.estado || "").toLowerCase();
+      return estado === "activo";
+    }).length;
+    cards[2].textContent = activos;
+
+    // Terminados: estados "terminado", "cancelado", "cierre con accidentes", "cierre con incidentes", "cierre sin incidentes"
+    const terminados = this.filteredData.permisos.filter((p) => {
+      const estado = (p.Estado || p.estado || "").toLowerCase();
+      return (
+        estado === "terminado" ||
+        estado === "cancelado" ||
+        estado === "cierre con accidentes" ||
+        estado === "cierre con incidentes" ||
+        estado === "cierre sin incidentes"
+      );
+    }).length;
+    cards[3].textContent = terminados;
+
+    // No Autorizados: estado "no autorizado"
+    const noAutorizados = this.filteredData.permisos.filter((p) => {
+      const estado = (p.Estado || p.estado || "").toLowerCase();
+      return estado === "no autorizado";
+    }).length;
+    cards[4].textContent = noAutorizados;
   }
 
   // Actualizar tabla

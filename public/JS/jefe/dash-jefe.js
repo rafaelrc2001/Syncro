@@ -79,6 +79,8 @@ let permisosJefeFiltrados = [];
 let paginaActualJefe = 1;
 const registrosPorPaginaJefe = 7;
 let textoBusquedaJefe = "";
+let fechaInicioJefe = null;
+let fechaFinalJefe = null;
 
 function formatHoraJefe(fecha) {
   if (!fecha) return "-";
@@ -332,14 +334,32 @@ document.addEventListener("DOMContentLoaded", () => {
       aplicarFiltroPermisosJefe();
     });
   }
+
+  // Filtros de fecha
+  const fechaInicioInput = document.getElementById("fecha-inicio");
+  const fechaFinalInput = document.getElementById("fecha-final");
+  if (fechaInicioInput) {
+    fechaInicioInput.addEventListener("change", function () {
+      fechaInicioJefe = this.value ? this.value : null;
+      paginaActualJefe = 1;
+      aplicarFiltroPermisosJefe();
+    });
+  }
+  if (fechaFinalInput) {
+    fechaFinalInput.addEventListener("change", function () {
+      fechaFinalJefe = this.value ? this.value : null;
+      paginaActualJefe = 1;
+      aplicarFiltroPermisosJefe();
+    });
+  }
 });
 
 function aplicarFiltroPermisosJefe() {
-  if (!textoBusquedaJefe) {
-    permisosJefeFiltrados = permisosJefe.slice();
-  } else {
-    permisosJefeFiltrados = permisosJefe.filter((permiso) => {
-      // Buscar en prefijo, id_permiso, tipo_permiso, descripcion, solicitante, departamento, estatus, contrato
+  // Filtrado por búsqueda y por fecha
+  permisosJefeFiltrados = permisosJefe.filter((permiso) => {
+    // Filtrar por texto de búsqueda
+    let coincideBusqueda = true;
+    if (textoBusquedaJefe) {
       const campos = [
         permiso.prefijo,
         permiso.id_permiso,
@@ -350,11 +370,23 @@ function aplicarFiltroPermisosJefe() {
         permiso.estatus,
         permiso.contrato,
       ];
-      return campos.some(
+      coincideBusqueda = campos.some(
         (campo) =>
           campo && campo.toString().toLowerCase().includes(textoBusquedaJefe)
       );
-    });
-  }
+    }
+
+    // Filtrar por rango de fechas (usa campo fecha_hora)
+    let coincideFecha = true;
+    if (fechaInicioJefe || fechaFinalJefe) {
+      let fechaPermiso = permiso.fecha_hora;
+      if (!fechaPermiso) return false;
+      let fechaStr = fechaPermiso.split("T")[0];
+      if (fechaInicioJefe && fechaStr < fechaInicioJefe) return false;
+      if (fechaFinalJefe && fechaStr > fechaFinalJefe) return false;
+    }
+
+    return coincideBusqueda && coincideFecha;
+  });
   renderTablaPermisosJefe();
 }

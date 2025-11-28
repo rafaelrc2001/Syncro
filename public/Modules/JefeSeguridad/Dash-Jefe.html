@@ -161,11 +161,54 @@
         </section>
 
         <!-- Filtros Simplificados -->
-        <section class="filters-section">
+        <section
+          class="filters-section"
+          style="display: flex; align-items: center; gap: 32px"
+        >
           <div class="search-bar-container">
             <div class="search-bar">
-              <input type="text" placeholder="Buscar por folio,tipo..." />
+              <input type="text" placeholder="Buscar por folio, tipo..." />
               <i class="ri-search-line"></i>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px">
+            <div class="date-filter-item" style="position: relative">
+              <label
+                for="fecha-inicio"
+                style="font-weight: 500; margin-bottom: 6px; display: block"
+                >Fecha inicio</label
+              >
+              <input
+                type="date"
+                id="fecha-inicio"
+                name="fecha-inicio"
+                class="date-input"
+                style="
+                  padding: 8px 12px;
+                  border-radius: 6px;
+                  border: 1px solid #b0bec5;
+                  transition: box-shadow 0.3s;
+                "
+              />
+            </div>
+            <div class="date-filter-item" style="position: relative">
+              <label
+                for="fecha-final"
+                style="font-weight: 500; margin-bottom: 6px; display: block"
+                >Fecha final</label
+              >
+              <input
+                type="date"
+                id="fecha-final"
+                name="fecha-final"
+                class="date-input"
+                style="
+                  padding: 8px 12px;
+                  border-radius: 6px;
+                  border: 1px solid #b0bec5;
+                  transition: box-shadow 0.3s;
+                "
+              />
             </div>
           </div>
           <div class="charts-btn-container">
@@ -179,6 +222,19 @@
             </div>
           </div>
         </section>
+        <style>
+          .date-input:focus {
+            box-shadow: 0 0 8px #1976d2;
+            border-color: #1976d2;
+          }
+          .date-filter-item label {
+            transition: color 0.3s;
+          }
+          .date-input:focus + label,
+          .date-filter-item:focus-within label {
+            color: #1976d2;
+          }
+        </style>
 
         <!-- Tabla de Permisos -->
         <section class="permits-table">
@@ -243,7 +299,7 @@
       </main>
     </div>
 
-   <!-- ...existing code... -->
+    <!-- ...existing code... -->
     <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
     <script src="/JS/jefe/MenuJefe.js"></script>
     <script src="/JS/generales/dash_jefe/cards_jefes.js"></script>
@@ -251,8 +307,8 @@
     <script src="/JS/generales/dash_jefe/Grafica-tipos.js"></script>
     <script src="/JS/generales/dash_jefe/Graficas-estatus.js"></script>
     <script src="/JS/generales/dash_jefe/Promedio.js"></script>
-    
+
     <script src="/JS/jefe/dash-jefe.js"></script>
-<!-- ...existing code... -->
+    <!-- ...existing code... -->
   </body>
 </html>

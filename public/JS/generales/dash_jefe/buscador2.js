@@ -7,13 +7,17 @@ class DashboardSearcher2 {
     this.originalData = null;
     this.filteredData = null;
     this.searchInput = null;
+    this.fechaInicioInput = null;
+    this.fechaFinalInput = null;
+    this.fechaInicio = null;
+    this.fechaFinal = null;
     this.init();
   }
 
   init() {
     // Esperar a que el DOM esté listo
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => this.setupSearcher());
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", () => this.setupSearcher());
     } else {
       this.setupSearcher();
     }
@@ -21,11 +25,14 @@ class DashboardSearcher2 {
 
   setupSearcher() {
     // Obtener el input de búsqueda
-    this.searchInput = document.querySelector('.search-bar input');
-    if (!this.searchInput) {
-      console.warn('Input de búsqueda no encontrado');
-      return;
+    this.searchInput = document.querySelector('.search-bar input[type="text"]');
+    this.fechaInicioInput = document.getElementById("fecha-inicio");
+    this.fechaFinalInput = document.getElementById("fecha-final");
+    if (this.searchInput) {
+      this.searchInput.value = "";
+      this.handleSearch("");
     }
+    this.hideNoResultsMessage();
 
     // Cargar datos originales
     this.loadOriginalData();
@@ -35,7 +42,7 @@ class DashboardSearcher2 {
 
     // Configurar eventos de búsqueda con debounce
     let searchTimeout;
-    this.searchInput.addEventListener('input', (e) => {
+    this.searchInput.addEventListener("input", (e) => {
       clearTimeout(searchTimeout);
       searchTimeout = setTimeout(() => {
         this.handleSearch(e.target.value);
@@ -43,35 +50,49 @@ class DashboardSearcher2 {
     });
 
     // Limpiar búsqueda con Escape
-    this.searchInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        e.target.value = '';
-        this.handleSearch('');
+    this.searchInput.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        e.target.value = "";
+        this.handleSearch("");
       }
     });
 
     // Enfocar con Ctrl+F
-    document.addEventListener('keydown', (e) => {
-      if (e.ctrlKey && e.key === 'f') {
+    document.addEventListener("keydown", (e) => {
+      if (e.ctrlKey && e.key === "f") {
         e.preventDefault();
         this.searchInput.focus();
       }
     });
+
+    // Eventos de filtro de fecha
+    if (this.fechaInicioInput) {
+      this.fechaInicioInput.addEventListener("change", (e) => {
+        this.fechaInicio = e.target.value ? e.target.value : null;
+        this.handleSearch(this.searchInput.value);
+      });
+    }
+    if (this.fechaFinalInput) {
+      this.fechaFinalInput.addEventListener("change", (e) => {
+        this.fechaFinal = e.target.value ? e.target.value : null;
+        this.handleSearch(this.searchInput.value);
+      });
+    }
   }
 
   setupDynamicPlaceholder() {
     const placeholders = [
-      'Buscar por supervisor, categoría...',
-      'Ej: Juan Pérez, Mantenimiento...',
-      'Buscar departamento, sucursal...',
-      'Ej: Operaciones, Planta Norte...',
-      'Buscar contrato, área...',
-      'Ej: CONTR-001, Producción...',
-      'Buscar folio, tipo de permiso...'
+      "Buscar por supervisor, categoría...",
+      "Ej: Juan Pérez, Mantenimiento...",
+      "Buscar departamento, sucursal...",
+      "Ej: Operaciones, Planta Norte...",
+      "Buscar contrato, área...",
+      "Ej: CONTR-001, Producción...",
+      "Buscar folio, tipo de permiso...",
     ];
 
     let currentIndex = 0;
-    
+
     const changePlaceholder = () => {
       if (this.searchInput && document.activeElement !== this.searchInput) {
         this.searchInput.placeholder = placeholders[currentIndex];
@@ -85,71 +106,102 @@ class DashboardSearcher2 {
 
   async loadOriginalData() {
     try {
-      const response = await fetch('/api/graficas_jefes/permisos-jefes');
+      const response = await fetch("/api/graficas_jefes/permisos-jefes");
       this.originalData = await response.json();
       this.filteredData = [...this.originalData];
-      
-      console.log('Datos originales cargados:', this.originalData.length, 'permisos');
-      
+
+      console.log(
+        "Datos originales cargados:",
+        this.originalData.length,
+        "permisos"
+      );
+
       // Verificar que las gráficas estén disponibles después de cargar los datos
       setTimeout(() => {
         this.verifyChartInstances();
       }, 1500);
     } catch (error) {
-      console.error('Error al cargar datos originales:', error);
+      console.error("Error al cargar datos originales:", error);
     }
   }
 
   verifyChartInstances() {
-    console.log('Verificando instancias de gráficas Dashboard 2:');
-    console.log('- Supervisores:', !!window.supervisoresChartInstance);
-    console.log('- Categorías:', !!window.categoriasChartInstance);
-    console.log('- Solicitantes:', !!window.solicitantesChartInstance);
-    console.log('- Sucursales:', !!window.sucursalesChartInstance);
+    console.log("Verificando instancias de gráficas Dashboard 2:");
+    console.log("- Supervisores:", !!window.supervisoresChartInstance);
+    console.log("- Categorías:", !!window.categoriasChartInstance);
+    console.log("- Solicitantes:", !!window.solicitantesChartInstance);
+    console.log("- Sucursales:", !!window.sucursalesChartInstance);
   }
 
   handleSearch(searchTerm) {
     if (!this.originalData) {
-      console.warn('Datos originales no disponibles');
+      console.warn("Datos originales no disponibles");
       return;
     }
 
     const term = searchTerm.toLowerCase().trim();
-    
+
     // Agregar feedback visual
     this.addSearchFeedback(true);
-    
-    if (term === '') {
-      // Si no hay término de búsqueda, mostrar todos los datos
-      this.filteredData = [...this.originalData];
-      this.removeSearchIndicator();
+
+    // Filtrar por texto y por rango de fechas
+    this.filteredData = this.originalData.filter((permiso) => {
+      // Filtrado por texto
+      let coincideBusqueda = true;
+      if (term) {
+        coincideBusqueda = this.matchesSearchTerm(permiso, term);
+      }
+
+      // Filtrado por fechas (usa campo fecha_permiso, fecha_solicitud o fecha_hora)
+      let coincideFecha = true;
+      let fechaPermiso =
+        permiso.fecha_permiso || permiso.fecha_solicitud || permiso.fecha_hora;
+      if ((this.fechaInicio || this.fechaFinal) && fechaPermiso) {
+        let fechaStr = fechaPermiso.split("T")[0];
+        if (this.fechaInicio && fechaStr < this.fechaInicio) return false;
+        if (this.fechaFinal && fechaStr > this.fechaFinal) return false;
+      } else if ((this.fechaInicio || this.fechaFinal) && !fechaPermiso) {
+        return false;
+      }
+
+      return coincideBusqueda && coincideFecha;
+    });
+
+    // Indicador de resultados
+    if (term || this.fechaInicio || this.fechaFinal) {
+      this.showSearchResults(
+        this.filteredData.length,
+        this.originalData.length
+      );
     } else {
-      // Filtrar datos basado en múltiples campos
-      this.filteredData = this.originalData.filter(permiso => {
-        return this.matchesSearchTerm(permiso, term);
-      });
-      
-      // Mostrar indicador de resultados
-      this.showSearchResults(this.filteredData.length, this.originalData.length);
+      this.removeSearchIndicator();
     }
 
-    console.log(`Búsqueda Dashboard 2: "${searchTerm}" - Resultados: ${this.filteredData.length}/${this.originalData.length}`);
-    
+    console.log(
+      `Búsqueda Dashboard 2: "${searchTerm}" - Resultados: ${this.filteredData.length}/${this.originalData.length}`
+    );
+
     // Actualizar todas las gráficas y tarjetas con animación
     setTimeout(() => {
       try {
         this.updateAllCharts();
         this.updateCards();
-        console.log('Gráficas Dashboard 2 actualizadas correctamente');
+        console.log("Gráficas Dashboard 2 actualizadas correctamente");
       } catch (error) {
-        console.error('Error al actualizar gráficas Dashboard 2:', error);
+        console.error("Error al actualizar gráficas Dashboard 2:", error);
       }
-      
+
       this.addSearchFeedback(false);
-      
-      // Mostrar mensaje si no hay resultados
-      if (this.filteredData.length === 0 && term !== '') {
-        this.showNoResultsMessage(term);
+
+      // Mostrar mensaje si no hay resultados SOLO si hay búsqueda o fechas
+      if (
+        this.filteredData.length === 0 &&
+        (term || this.fechaInicio || this.fechaFinal) &&
+        (term.trim() !== "" || this.fechaInicio || this.fechaFinal)
+      ) {
+        this.showNoResultsMessage(
+          term || `${this.fechaInicio || ""} a ${this.fechaFinal || ""}`
+        );
       } else {
         this.hideNoResultsMessage();
       }
@@ -171,10 +223,10 @@ class DashboardSearcher2 {
       permiso.nombre_solicitante,
       permiso.descripcion_trabajo,
       permiso.ubicacion,
-      permiso.contrato
+      permiso.contrato,
     ];
 
-    return searchableFields.some(field => {
+    return searchableFields.some((field) => {
       if (!field) return false;
       return field.toString().toLowerCase().includes(term);
     });
@@ -182,25 +234,37 @@ class DashboardSearcher2 {
 
   updateAllCharts() {
     // Actualizar gráfica de supervisores
-    if (window.supervisoresChartInstance && window.supervisoresChartInstance.updateData) {
+    if (
+      window.supervisoresChartInstance &&
+      window.supervisoresChartInstance.updateData
+    ) {
       const supervisoresData = this.processSupervisoresData(this.filteredData);
       window.supervisoresChartInstance.updateData(supervisoresData);
     }
 
     // Actualizar gráfica de categorías
-    if (window.categoriasChartInstance && window.categoriasChartInstance.updateData) {
+    if (
+      window.categoriasChartInstance &&
+      window.categoriasChartInstance.updateData
+    ) {
       const categoriasData = this.processCategoriasData(this.filteredData);
       window.categoriasChartInstance.updateData(categoriasData);
     }
 
     // Actualizar gráfica de solicitantes (departamentos)
-    if (window.solicitantesChartInstance && window.solicitantesChartInstance.updateData) {
+    if (
+      window.solicitantesChartInstance &&
+      window.solicitantesChartInstance.updateData
+    ) {
       const solicitantesData = this.processSolicitantesData(this.filteredData);
       window.solicitantesChartInstance.updateData(solicitantesData);
     }
 
     // Actualizar gráfica de sucursales
-    if (window.sucursalesChartInstance && window.sucursalesChartInstance.updateData) {
+    if (
+      window.sucursalesChartInstance &&
+      window.sucursalesChartInstance.updateData
+    ) {
       const sucursalesData = this.processSucursalesData(this.filteredData);
       window.sucursalesChartInstance.updateData(sucursalesData);
     }
@@ -232,8 +296,16 @@ class DashboardSearcher2 {
     const categories = Object.values(supLabels);
     const values = Object.keys(supLabels).map((key) => supCounts[key]);
     const colors = [
-      "#D32F2F", "#FF6F00", "#FFC107", "#003B5C", "#00BFA5",
-      "#7B1FA2", "#0097A7", "#C51162", "#43A047", "#F4511E"
+      "#D32F2F",
+      "#FF6F00",
+      "#FFC107",
+      "#003B5C",
+      "#00BFA5",
+      "#7B1FA2",
+      "#0097A7",
+      "#C51162",
+      "#43A047",
+      "#F4511E",
     ];
     return {
       categories,
@@ -260,8 +332,16 @@ class DashboardSearcher2 {
     const categories = Object.values(catLabels);
     const values = Object.keys(catLabels).map((key) => catCounts[key]);
     const colors = [
-      "#00BFA5", "#FF6F00", "#D32F2F", "#003B5C", "#7B1FA2",
-      "#FFC107", "#0097A7", "#C51162", "#43A047", "#F4511E"
+      "#00BFA5",
+      "#FF6F00",
+      "#D32F2F",
+      "#003B5C",
+      "#7B1FA2",
+      "#FFC107",
+      "#0097A7",
+      "#C51162",
+      "#43A047",
+      "#F4511E",
     ];
     const icons = ["🔧", "⚡", "🧪", "🏭", "📦", "🛠️", "🚧", "🔬", "🧰", "🏗️"];
     return {
@@ -290,8 +370,16 @@ class DashboardSearcher2 {
     const categories = Object.values(deptLabels);
     const values = Object.keys(deptLabels).map((key) => deptCounts[key]);
     const colors = [
-      "#003B5C", "#00BFA5", "#FF6F00", "#D32F2F", "#FFC107",
-      "#7B1FA2", "#0097A7", "#C51162", "#43A047", "#F4511E"
+      "#003B5C",
+      "#00BFA5",
+      "#FF6F00",
+      "#D32F2F",
+      "#FFC107",
+      "#7B1FA2",
+      "#0097A7",
+      "#C51162",
+      "#43A047",
+      "#F4511E",
     ];
     return {
       categories,
@@ -318,8 +406,16 @@ class DashboardSearcher2 {
     const categories = Object.values(sucLabels);
     const values = Object.keys(sucLabels).map((key) => sucCounts[key]);
     const colors = [
-      "#003B5C", "#FF6F00", "#00BFA5", "#D32F2F", "#7B1FA2",
-      "#FFC107", "#0097A7", "#C51162", "#43A047", "#F4511E"
+      "#003B5C",
+      "#FF6F00",
+      "#00BFA5",
+      "#D32F2F",
+      "#7B1FA2",
+      "#FFC107",
+      "#0097A7",
+      "#C51162",
+      "#43A047",
+      "#F4511E",
     ];
     const icons = ["🏭", "🔧", "🏢", "🏬", "🏠", "🏣", "🏨", "🏦", "🏥", "🏛️"];
     return {
@@ -360,16 +456,21 @@ class DashboardSearcher2 {
       data.forEach((permiso) => {
         total++;
         const estatus = normalizar(permiso.estatus);
-        
+
         if (estatus === "activo") {
           activos++;
           desglose.activos[estatus] = (desglose.activos[estatus] || 0) + 1;
         } else if (estatus === "no autorizado") {
           noAutorizados++;
-          desglose.noAutorizados[estatus] = (desglose.noAutorizados[estatus] || 0) + 1;
-        } else if (estatus === "en espera del area" || estatus === "espera seguridad") {
+          desglose.noAutorizados[estatus] =
+            (desglose.noAutorizados[estatus] || 0) + 1;
+        } else if (
+          estatus === "en espera del area" ||
+          estatus === "espera seguridad"
+        ) {
           porAutorizar++;
-          desglose.porAutorizar[estatus] = (desglose.porAutorizar[estatus] || 0) + 1;
+          desglose.porAutorizar[estatus] =
+            (desglose.porAutorizar[estatus] || 0) + 1;
         } else if (
           estatus === "cancelado" ||
           estatus === "cierre con incidentes" ||
@@ -378,7 +479,8 @@ class DashboardSearcher2 {
           estatus === "terminado"
         ) {
           terminados++;
-          desglose.terminados[estatus] = (desglose.terminados[estatus] || 0) + 1;
+          desglose.terminados[estatus] =
+            (desglose.terminados[estatus] || 0) + 1;
         }
       });
 
@@ -398,9 +500,10 @@ class DashboardSearcher2 {
 
   // Métodos públicos
   clearSearch() {
+    this.hideNoResultsMessage();
     if (this.searchInput) {
-      this.searchInput.value = '';
-      this.handleSearch('');
+      this.searchInput.value = "";
+      this.handleSearch("");
     }
   }
 
@@ -413,64 +516,64 @@ class DashboardSearcher2 {
 
   // Métodos de feedback visual
   addSearchFeedback(isSearching) {
-    const searchBar = document.querySelector('.search-bar');
+    const searchBar = document.querySelector(".search-bar");
     if (!searchBar) return;
 
     if (isSearching) {
-      searchBar.classList.add('searching');
+      searchBar.classList.add("searching");
       // Agregar animación a las tarjetas
-      document.querySelectorAll('.card').forEach(card => {
-        card.classList.add('updating');
+      document.querySelectorAll(".card").forEach((card) => {
+        card.classList.add("updating");
       });
       // Agregar animación a las gráficas
-      document.querySelectorAll('.chart-card').forEach(chart => {
-        chart.classList.add('updating');
+      document.querySelectorAll(".chart-card").forEach((chart) => {
+        chart.classList.add("updating");
       });
     } else {
-      searchBar.classList.remove('searching');
+      searchBar.classList.remove("searching");
       // Remover animaciones después de un tiempo
       setTimeout(() => {
-        document.querySelectorAll('.card').forEach(card => {
-          card.classList.remove('updating');
+        document.querySelectorAll(".card").forEach((card) => {
+          card.classList.remove("updating");
         });
-        document.querySelectorAll('.chart-card').forEach(chart => {
-          chart.classList.remove('updating');
+        document.querySelectorAll(".chart-card").forEach((chart) => {
+          chart.classList.remove("updating");
         });
       }, 600);
     }
   }
 
   showSearchResults(resultCount, totalCount) {
-    let indicator = document.querySelector('.search-results-indicator');
+    let indicator = document.querySelector(".search-results-indicator");
     if (!indicator) {
-      indicator = document.createElement('div');
-      indicator.className = 'search-results-indicator';
-      document.querySelector('.search-bar').appendChild(indicator);
+      indicator = document.createElement("div");
+      indicator.className = "search-results-indicator";
+      document.querySelector(".search-bar").appendChild(indicator);
     }
 
     indicator.textContent = `${resultCount}/${totalCount} resultados`;
-    indicator.classList.remove('no-results');
-    
+    indicator.classList.remove("no-results");
+
     if (resultCount === 0) {
-      indicator.classList.add('no-results');
-      indicator.textContent = 'Sin resultados';
+      indicator.classList.add("no-results");
+      indicator.textContent = "Sin resultados";
     }
 
-    indicator.classList.add('show');
+    indicator.classList.add("show");
   }
 
   removeSearchIndicator() {
-    const indicator = document.querySelector('.search-results-indicator');
+    const indicator = document.querySelector(".search-results-indicator");
     if (indicator) {
-      indicator.classList.remove('show');
+      indicator.classList.remove("show");
     }
   }
 
   showNoResultsMessage(searchTerm) {
-    let overlay = document.querySelector('.no-results-overlay');
+    let overlay = document.querySelector(".no-results-overlay");
     if (!overlay) {
-      overlay = document.createElement('div');
-      overlay.className = 'no-results-overlay';
+      overlay = document.createElement("div");
+      overlay.className = "no-results-overlay";
       overlay.innerHTML = `
         <div class="no-results-message">
           <h3><i class="ri-search-line"></i>Sin resultados encontrados</h3>
@@ -484,19 +587,19 @@ class DashboardSearcher2 {
       document.body.appendChild(overlay);
     }
 
-    document.getElementById('search-term').textContent = searchTerm;
-    overlay.classList.add('show');
+    document.getElementById("search-term").textContent = searchTerm;
+    overlay.classList.add("show");
 
     // Auto-cerrar después de 5 segundos
     setTimeout(() => {
       this.hideNoResultsMessage();
-    }, 5000);
+    }, 1500);
   }
 
   hideNoResultsMessage() {
-    const overlay = document.querySelector('.no-results-overlay');
+    const overlay = document.querySelector(".no-results-overlay");
     if (overlay) {
-      overlay.classList.remove('show');
+      overlay.classList.remove("show");
     }
   }
 }
@@ -504,15 +607,15 @@ class DashboardSearcher2 {
 // Inicializar el buscador cuando el DOM esté listo
 let dashboardSearcher2;
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener("DOMContentLoaded", function () {
   // Esperar un poco para que se inicialicen las gráficas
   setTimeout(() => {
     dashboardSearcher2 = new DashboardSearcher2();
-    
+
     // Hacer disponible globalmente
     window.dashboardSearcher2 = dashboardSearcher2;
-    
-    console.log('Buscador del dashboard 2 inicializado');
+
+    console.log("Buscador del dashboard 2 inicializado");
   }, 1000);
 });
 

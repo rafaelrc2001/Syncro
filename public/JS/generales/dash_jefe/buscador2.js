@@ -123,6 +123,9 @@ class DashboardSearcher2 {
       if (window.actualizarTarjetasSupervisor) {
         window.actualizarTarjetasSupervisor();
       }
+      if (window.actualizarTarjetasJefe) {
+        window.actualizarTarjetasJefe();
+      }
 
       // Verificar que las gráficas estén disponibles después de cargar los datos
       setTimeout(() => {
@@ -282,11 +285,16 @@ class DashboardSearcher2 {
   }
 
   updateCards() {
-    // Usar la función global de cards_supervisor.js si está disponible
+    // Usar la función global de cards_supervisor.js o cards_jefes.js si está disponible
     if (window.actualizarTarjetasSupervisor) {
       window.actualizarTarjetasSupervisor();
-    } else {
-      // Fallback a la función local
+    }
+    if (window.actualizarTarjetasJefe) {
+      window.actualizarTarjetasJefe();
+    }
+    
+    // Fallback a la función local si ninguna está disponible
+    if (!window.actualizarTarjetasSupervisor && !window.actualizarTarjetasJefe) {
       setTimeout(() => {
         this.cargarTarjetasFiltradas();
       }, 200);

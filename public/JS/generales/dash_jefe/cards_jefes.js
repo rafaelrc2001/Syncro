@@ -106,35 +106,43 @@ function actualizarTarjetasJefe() {
           ".cards-section .card[data-tooltip], .cards-section .card-content[data-tooltip]"
         )
         .forEach((element) => {
+          // Evitar duplicar event listeners
+          if (element.hasTooltipListeners) return;
+          element.hasTooltipListeners = true;
+
           element.addEventListener("mouseenter", function (e) {
+            // Eliminar cualquier tooltip previo del DOM
+            document.querySelectorAll(".custom-tooltip").forEach((t) => t.remove());
+            
             const tooltip = document.createElement("div");
             tooltip.className = "custom-tooltip";
             tooltip.innerHTML = this.getAttribute("data-tooltip");
             document.body.appendChild(tooltip);
-
+            
             const rect = this.getBoundingClientRect();
             const tooltipRect = tooltip.getBoundingClientRect();
-
-            // Posicionar tooltip centrado arriba del elemento
+            
             let left = rect.left + rect.width / 2 - tooltipRect.width / 2;
             let top = rect.top - tooltipRect.height - 8;
-
-            // Ajustar si se sale de la pantalla
+            
             if (left < 10) left = 10;
             if (left + tooltipRect.width > window.innerWidth - 10) {
               left = window.innerWidth - tooltipRect.width - 10;
             }
             if (top < 10) top = rect.bottom + 8;
-
+            
             tooltip.style.left = left + "px";
             tooltip.style.top = top + "px";
-
-            this.tooltip = tooltip;
+            
+            // Guardar referencia al tooltip
+            this.currentTooltip = tooltip;
           });
+          
           element.addEventListener("mouseleave", function () {
-            if (this.tooltip) {
-              this.tooltip.remove();
-              this.tooltip = null;
+            // Eliminar el tooltip asociado a este elemento
+            if (this.currentTooltip) {
+              this.currentTooltip.remove();
+              this.currentTooltip = null;
             }
           });
         });

@@ -30,7 +30,7 @@ class DashboardSearcher2 {
     this.fechaFinalInput = document.getElementById("fecha-final");
     if (this.searchInput) {
       this.searchInput.value = "";
-      this.handleSearch("");
+     
     }
     this.hideNoResultsMessage();
 
@@ -109,12 +109,20 @@ class DashboardSearcher2 {
       const response = await fetch("/api/graficas_jefes/permisos-jefes");
       this.originalData = await response.json();
       this.filteredData = [...this.originalData];
+      
+      // Exponer datos filtrados globalmente para cards_supervisor.js
+      window.permisosJefeFiltrados = this.filteredData;
 
       console.log(
         "Datos originales cargados:",
         this.originalData.length,
         "permisos"
       );
+
+      // Actualizar tarjetas con datos iniciales
+      if (window.actualizarTarjetasSupervisor) {
+        window.actualizarTarjetasSupervisor();
+      }
 
       // Verificar que las gráficas estén disponibles después de cargar los datos
       setTimeout(() => {
@@ -166,6 +174,9 @@ class DashboardSearcher2 {
 
       return coincideBusqueda && coincideFecha;
     });
+    
+    // Exponer datos filtrados globalmente para cards_supervisor.js
+    window.permisosJefeFiltrados = this.filteredData;
 
     // Indicador de resultados
     if (term || this.fechaInicio || this.fechaFinal) {
@@ -271,10 +282,15 @@ class DashboardSearcher2 {
   }
 
   updateCards() {
-    // Agregar pequeño delay para mejor experiencia visual
-    setTimeout(() => {
-      this.cargarTarjetasFiltradas();
-    }, 200);
+    // Usar la función global de cards_supervisor.js si está disponible
+    if (window.actualizarTarjetasSupervisor) {
+      window.actualizarTarjetasSupervisor();
+    } else {
+      // Fallback a la función local
+      setTimeout(() => {
+        this.cargarTarjetasFiltradas();
+      }, 200);
+    }
   }
 
   // Métodos de procesamiento de datos (copiados de los archivos originales)

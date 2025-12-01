@@ -1302,12 +1302,13 @@ document.addEventListener("DOMContentLoaded", () => {
           const hora = document.getElementById("start-time")?.value || "";
           const fecha = document.getElementById("permit-date")?.value || "";
           // Usar el campo start-time para hora_inicio, igual que otros formularios
+
           const hora_inicio =
             document.getElementById("start-time")?.value || "08:00";
-          const duracionInicio =
+          /*const duracionInicio =
             document.getElementById("duracion-inicio")?.value || "";
 
-          const hora_inicio_prevista = duracionInicio
+           const hora_inicio_prevista = duracionInicio
             ? duracionInicio.split("T")[1]
             : "";
 
@@ -1315,7 +1316,27 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("duracion-fin")?.value || "";
           const hora_fin_prevista = duracionFin
             ? duracionFin.split("T")[1]
-            : "";
+            : "";*/
+
+          const duracionInicio =
+            document.getElementById("duracion-inicio")?.value || "";
+          let hora_inicio_prevista = "";
+          if (duracionInicio) {
+            hora_inicio_prevista = duracionInicio.replace("T", " ");
+            if (hora_inicio_prevista.includes(".000Z")) {
+              hora_inicio_prevista = hora_inicio_prevista.replace(".000Z", "");
+            }
+          }
+
+          const duracionFin =
+            document.getElementById("duracion-fin")?.value || "";
+          let hora_fin_prevista = "";
+          if (duracionFin) {
+            hora_fin_prevista = duracionFin.replace("T", " ");
+            if (hora_fin_prevista.includes(".000Z")) {
+              hora_fin_prevista = hora_fin_prevista.replace(".000Z", "");
+            }
+          }
 
           const equipo_intervenir =
             document.getElementById("equipment")?.value || "";

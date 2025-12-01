@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const btn1 = document.getElementById("btn-ver-graficas-1");
   const btn2 = document.getElementById("btn-ver-graficas-2");
   const btn3 = document.getElementById("btn-ver-graficas-3");
+  const btn4 = document.getElementById("btn-ver-graficas-meses");
   if (btn1)
     btn1.onclick = () =>
       (window.location.href = "/Modules/SupSeguridad/Dash-Supervisor1.html");
@@ -12,6 +13,9 @@ document.addEventListener("DOMContentLoaded", function () {
   if (btn3)
     btn3.onclick = () =>
       (window.location.href = "/Modules/SupSeguridad/Dash-Supervisor.html");
+  if (btn4)
+    btn4.onclick = () =>
+      (window.location.href = "/Modules/SupSeguridad/Dash-Supervisor3.html");
 
   // Mostrar fecha actual
   function mostrarFecha() {

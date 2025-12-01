@@ -326,14 +326,13 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Estilos específicos para el dashboard */
 .dashboard-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    gap: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
     padding: 25px;
-    height: calc(100vh - 120px);
+    gap: 20px;
+    height: auto;
 }
-
 .chart-card {
     background: rgb(255, 255, 255);
     border-radius: 12px;
@@ -612,7 +611,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .grafica-autorizacion-central .chart-container {
     width: 100%;
-    min-height: 400px;
-    height: 60vh;
-    max-height: 800px;
+    min-height: 500px;
+    height: 70vh;
+    max-height: 1000px;
 }

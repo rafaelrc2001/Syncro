@@ -1,6 +1,8 @@
 // Gráfica de Permisos por Mes y Tipo - Barras Agrupadas
-async function fetchAndRenderBarChart() {
-  const response = await fetch("/api/graficas_jefes/meses");
+async function fetchAndRenderBarChart(id_departamento) {
+  const response = await fetch(
+    `/api/graficas_jefes/meses/departamento/${id_departamento}`
+  );
   const data = await response.json();
 
   // Meses en español
@@ -127,8 +129,8 @@ async function fetchAndRenderBarChart() {
       top: "8%",
       containLabel: true,
     },
-    xAxis: { type: "category", data: meses, axisLabel: { fontSize: 12 } },
-    yAxis: { type: "value", name: "Cantidad", axisLabel: { fontSize: 12 } },
+    xAxis: { type: "category", data: meses, axisLabel: { fontSize: 13 } },
+    yAxis: { type: "value", name: "Cantidad", axisLabel: { fontSize: 13 } },
     series: series,
   };
   chart.setOption(option);
@@ -140,6 +142,10 @@ async function fetchAndRenderBarChart() {
 
 document.addEventListener("DOMContentLoaded", function () {
   if (document.getElementById("tiempos-chart")) {
-    fetchAndRenderBarChart();
+    const usuario = JSON.parse(localStorage.getItem("usuario"));
+    console.log("usuario:", usuario);
+    const id_departamento = usuario.id;
+    console.log("id_departamento:", id_departamento);
+    fetchAndRenderBarChart(id_departamento);
   }
 });

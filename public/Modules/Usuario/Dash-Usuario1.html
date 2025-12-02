@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Syncro</title>
+    <title>Syncro - Dashboard</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Orbitron:wght@500;700&family=Roboto:wght@400;500&display=swap"
       rel="stylesheet"
@@ -12,13 +12,12 @@
       href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/CSS/EstiloGeneral.css" />
-    <link rel="stylesheet" href="/CSS/EstiloJefe.css" />
-    <link rel="stylesheet" href="/CSS/Estilo-Dash4.css" />
-    <link rel="stylesheet" href="/CSS/Estilo-Dash.css" />
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <link rel="stylesheet" href="/CSS/Estilogeneral-Dash1.css" />
   </head>
   <body>
     <div class="app-container">
+      <!-- Sidebar -->
       <aside class="sidebar">
         <div class="sidebar-header">
           <h2 class="logo-container">
@@ -32,9 +31,15 @@
         </div>
         <nav class="sidebar-nav">
           <ul>
-            <li>
+            <li class="active">
               <a href="#"
                 ><i class="ri-pie-chart-2-line"></i> <span>Dashboard</span></a
+              >
+            </li>
+            <li>
+              <a href="#"
+                ><i class="ri-clipboard-line"></i>
+                <span>Crear Permisos</span></a
               >
             </li>
             <li>
@@ -43,37 +48,15 @@
                 <span>Autorizar Permisos</span></a
               >
             </li>
-            <li class="has-submenu">
-              <a href="#"
-                ><i class="ri-add-circle-line"></i> <span>Registrar</span>
-                <i class="ri-arrow-down-s-line submenu-icon"></i
-              ></a>
-              <ul class="submenu">
-                <li>
-                  <a><span>área</span></a>
-                </li>
-                <li>
-                  <a><span>categoria</span></a>
-                </li>
-                <li>
-                  <a><span>sucursal</span></a>
-                </li>
-                <li>
-                  <a><span>departamento</span></a>
-                </li>
-                <li>
-                  <a><span>supervisor</span></a>
-                </li>
-              </ul>
-            </li>
           </ul>
         </nav>
         <div class="sidebar-footer">
           <div class="user-profile">
             <div class="avatar"></div>
             <div class="user-info">
+ 
               <span class="name"></span>
-              <span class="role">Jefe</span>
+              <span class="role"></span>
             </div>
           </div>
           <button class="logout-btn">
@@ -115,7 +98,7 @@
             </div>
             <div class="card-content">
               <h3>Total de Permisos</h3>
-              <p class="count">-</p>
+              <p class="count">0</p>
             </div>
           </div>
 
@@ -125,7 +108,7 @@
             </div>
             <div class="card-content">
               <h3>Por Autorizar</h3>
-              <p class="count">-</p>
+              <p class="count">0</p>
             </div>
           </div>
 
@@ -135,7 +118,7 @@
             </div>
             <div class="card-content">
               <h3>Activos</h3>
-              <p class="count">-</p>
+              <p class="count">0</p>
             </div>
           </div>
 
@@ -145,7 +128,7 @@
             </div>
             <div class="card-content">
               <h3>Terminados</h3>
-              <p class="count">-</p>
+              <p class="count">0</p>
             </div>
           </div>
 
@@ -155,30 +138,27 @@
             </div>
             <div class="card-content">
               <h3>No Autorizados</h3>
-              <p class="count">-</p>
+              <p class="count">0</p>
             </div>
           </div>
+
+          
         </section>
 
-        <section class="filters-section">
-          <div class="charts-btn-container">
-            <div style="display: flex; gap: 12px">
-              <button id="btn-ver-graficas-1" class="btn secondary charts-btn">
-                <i class="ri-bar-chart-line"></i> Ver Gráficas
-              </button>
-              <button id="btn-ver-graficas-3" class="btn secondary charts-btn">
-                <i class="ri-bar-chart-line"></i> Tabla
-              </button>
-              <button id="btn-ver-graficas-2" class="btn secondary charts-btn">
-                <i class="ri-bar-chart-line"></i> Ver Gráficas 2
-              </button>
-            </div>
-          </div>
-        </section>
 
-        <!-- Dashboard Grid: 4 Gráficas -->
-        <div class="dashboard-grid">
-          <!-- Gráfica de Supervisores de Seguridad -->
+
+         <div class="dashboard-grid" style="padding: 0; margin: 0;">
+                      <button id="btn-graficas" class="btn secondary charts-btn">
+                                    <i class="ri-bar-chart-line"></i> Gráficas
+                      </button>
+         </div>
+
+       <div class="dashboard-grid">
+                    
+          <!-- Botón Gráficas arriba de la gráfica -->
+      
+                     
+                    
           <div class="chart-card large-chart grafica-autorizacion-central">
             <div class="chart-title">
               <i
@@ -190,14 +170,44 @@
             <div id="tiempos-chart" class="chart-container"></div>
           </div>
         </div>
+        
+
+
+        </div>
       </main>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
-    <script src="/JS/jefe/MenuJefe.js"></script>
-    <script src="/JS/generales/dash_jefe/Grafica-meses.js"></script>
-    <script src="/JS/generales/dash_jefe/buscador2.js"></script>
-    <script src="/JS/jefe/dash-jefe.js"></script>
-    <script src="/JS/generales/dash_jefe/cards_jefes.js"></script>
+
+    <script src="/JS/usuario/js-dash/filtro-global.js"></script>
+    <script src="/JS/usuario/js-dash/Grafica-meses.js"></script>
+    <script src="/JS/usuario/js-dash/debug-filtro.js"></script>
+    <script type="module" src="/JS/usuario/tabla-crearpt.js"></script>
+
+    <script>
+      // Función para mostrar la fecha actual
+      function mostrarFecha() {
+        const fecha = new Date();
+        const opciones = {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        };
+        const fechaFormateada = fecha.toLocaleDateString("es-ES", opciones);
+        document.getElementById("current-date").textContent = fechaFormateada;
+      }
+
+      // Ejecutar al cargar la página
+      document.addEventListener("DOMContentLoaded", mostrarFecha);
+    </script>
+    <script src="/JS/usuario/MenuUsuario.js"></script>
+
+    <div id="modal-ver" class="modal" style="display: none">
+      <div class="modal-content">
+        <span class="modal-close">&times;</span>
+        <h2>Detalle del registro</h2>
+        <div id="modal-detalle"></div>
+      </div>
+    </div>
   </body>
 </html>

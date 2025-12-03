@@ -146,26 +146,101 @@
         </section>
 
 
+        <section>
+          <div
+            class="date-filter-container"
+            style="
+              display: flex;
+              gap: 24px;
+              justify-content: flex-start;
+              align-items: center;
+              margin: 8px 0 0 60px;
+            "
+          >
+            <div class="date-filter-item" style="position: relative">
+              <label
+                for="fecha-inicio"
+                style="font-weight: 500; margin-bottom: 6px; display: block"
+                >Fecha inicio</label
+              >
+              <input
+                type="date"
+                id="fecha-inicio"
+                name="fecha-inicio"
+                class="date-input"
+                style="
+                  padding: 8px 12px;
+                  border-radius: 6px;
+                  border: 1px solid #b0bec5;
+                  transition: box-shadow 0.3s;
+                "
+              />
+            </div>
+            <div class="date-filter-item" style="position: relative">
+              <label
+                for="fecha-final"
+                style="font-weight: 500; margin-bottom: 6px; display: block"
+                >Fecha final</label
+              >
+              <input
+                type="date"
+                id="fecha-final"
+                name="fecha-final"
+                class="date-input"
+                style="
+                  padding: 8px 12px;
+                  border-radius: 6px;
+                  border: 1px solid #b0bec5;
+                  transition: box-shadow 0.3s;
+                "
+              />
+            </div>
+            <button
+              id="btn-graficas"
+              class="btn secondary charts-btn"
+              style="margin-left: auto; margin-right: 60px"
+            >
+              <i class="ri-bar-chart-line"></i> Gráficas
+            </button>
+          </div>
+          <script>
+            document
+              .getElementById("btn-graficas")
+              .addEventListener("click", function () {
+                window.location.href = "Dash-Usuario.html";
+              });
+          </script>
+          <style>
+            .date-input:focus {
+              box-shadow: 0 0 8px #1976d2;
+              border-color: #1976d2;
+            }
+            .date-filter-item label {
+              transition: color 0.3s;
+            }
+            .date-input:focus + label,
+            .date-filter-item:focus-within label {
+              color: #1976d2;
+            }
+          </style>
+        </section>
 
-         <div class="dashboard-grid" style="padding: 0; margin: 0;">
-                      <button id="btn-graficas" class="btn secondary charts-btn">
-                                    <i class="ri-bar-chart-line"></i> Gráficas
-                      </button>
-         </div>
 
-       <div class="dashboard-grid">
-                    
-          <!-- Botón Gráficas arriba de la gráfica -->
-      
-                     
-                    
+
+
+
+
+       <div class="dashboard-grid">           
+          <!-- Botón Gráficas arriba de la gráfica -->                   
           <div class="chart-card large-chart grafica-autorizacion-central">
-            <div class="chart-title">
-              <i
-                class="ri-time-line"
-                style="color: var(--naranja-seguridad)"
-              ></i>
+            <div class="chart-title" style="display: flex; align-items: center; gap: 16px;">
+              <i class="ri-time-line" style="color: var(--naranja-seguridad)"></i>
               Permisos por Meses
+              <div style="margin-left: auto; display: flex; align-items: center; gap: 8px;">
+                <button id="anio-prev" style="border:none;background:none;font-size:20px;cursor:pointer;">&#8592;</button>
+                <span id="anio-actual" style="font-weight: bold; font-size: 18px;">2025</span>
+                <button id="anio-next" style="border:none;background:none;font-size:20px;cursor:pointer;">&#8594;</button>
+              </div>
             </div>
             <div id="tiempos-chart" class="chart-container"></div>
           </div>
@@ -178,9 +253,8 @@
     </div>
 
 
-    <script src="/JS/usuario/js-dash/filtro-global.js"></script>
+ 
     <script src="/JS/usuario/js-dash/Grafica-meses.js"></script>
-    <script src="/JS/usuario/js-dash/debug-filtro.js"></script>
     <script type="module" src="/JS/usuario/tabla-crearpt.js"></script>
 
     <script>

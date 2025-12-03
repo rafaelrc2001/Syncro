@@ -161,6 +161,83 @@
         </section>
 
         <section class="filters-section">
+          <div style="display: flex; align-items: center; gap: 12px">
+            <div class="date-filter-item" style="position: relative">
+              <label
+                for="fecha-inicio"
+                style="font-weight: 500; margin-bottom: 6px; display: block"
+                >Fecha inicio</label
+              >
+              <input
+                type="date"
+                id="fecha-inicio"
+                name="fecha-inicio"
+                class="date-input"
+                style="
+                  padding: 8px 12px;
+                  border-radius: 6px;
+                  border: 1px solid #b0bec5;
+                  transition: box-shadow 0.3s;
+                "
+              />
+            </div>
+            <div class="date-filter-item" style="position: relative">
+              <label
+                for="fecha-final"
+                style="font-weight: 500; margin-bottom: 6px; display: block"
+                >Fecha final</label
+              >
+              <input
+                type="date"
+                id="fecha-final"
+                name="fecha-final"
+                class="date-input"
+                style="
+                  padding: 8px 12px;
+                  border-radius: 6px;
+                  border: 1px solid #b0bec5;
+                  transition: box-shadow 0.3s;
+                "
+              />
+            </div>
+            <!-- Controles de navegación de año -->
+            <div
+              class="year-navigation"
+              style="
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                margin-left: 18px;
+              "
+            >
+              <button
+                id="anio-prev"
+                class="btn secondary"
+                title="Año anterior"
+                style="padding: 4px 10px; font-size: 18px"
+              >
+                &#8592;
+              </button>
+              <span
+                id="anio-actual"
+                style="
+                  font-weight: bold;
+                  min-width: 48px;
+                  text-align: center;
+                  font-size: 18px;
+                "
+                >2025</span
+              >
+              <button
+                id="anio-next"
+                class="btn secondary"
+                title="Año siguiente"
+                style="padding: 4px 10px; font-size: 18px"
+              >
+                &#8594;
+              </button>
+            </div>
+          </div>
           <div class="charts-btn-container">
             <div style="display: flex; gap: 12px">
               <button id="btn-ver-graficas-1" class="btn secondary charts-btn">
@@ -196,8 +273,6 @@
     <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
     <script src="/JS/jefe/MenuJefe.js"></script>
     <script src="/JS/generales/dash_jefe/Grafica-meses.js"></script>
-    <script src="/JS/generales/dash_jefe/buscador2.js"></script>
     <script src="/JS/jefe/dash-jefe.js"></script>
-    <script src="/JS/generales/dash_jefe/cards_jefes.js"></script>
   </body>
 </html>

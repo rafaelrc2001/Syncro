@@ -24,6 +24,10 @@ router.post("/loginDepartamento", async (req, res) => {
     }
     usuario.rol = "usuario";
     delete usuario.contraseña;
+    
+    // Crear sesión del usuario
+    req.session.usuario = usuario;
+    
     res.json({ success: true, usuario });
   } catch (error) {
     console.error("Error en loginDepartamento:", error);
@@ -51,6 +55,10 @@ router.post("/loginJefe", async (req, res) => {
     jefe.rol = "jefe";
     // No enviar la contraseña al frontend
     delete jefe.contraseña;
+    
+    // Crear sesión del usuario
+    req.session.usuario = jefe;
+    
     res.json({ success: true, usuario: jefe });
   } catch (error) {
     console.error("Error en loginJefe:", error);
@@ -76,6 +84,10 @@ router.post("/loginSupervisor", async (req, res) => {
     }
     supervisor.rol = "supervisor";
     delete supervisor.contraseña;
+    
+    // Crear sesión del usuario
+    req.session.usuario = supervisor;
+    
     res.json({ success: true, usuario: supervisor });
   } catch (error) {
     console.error("Error en loginSupervisor:", error);

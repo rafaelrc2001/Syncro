@@ -146,10 +146,16 @@ document.addEventListener('DOMContentLoaded', function() {
     // 5. Logout button
     const logoutBtn = document.querySelector('.logout-btn');
     if (logoutBtn) {
-        logoutBtn.addEventListener('click', function() {
+        logoutBtn.addEventListener('click', async function() {
             if (confirm('¿Estás seguro que deseas cerrar sesión?')) {
                 localStorage.removeItem('sidebarCollapsed');
-                window.location.href = '/login.html';
+                // Llamar a la función cerrarSesion de auth-check.js
+                if (typeof cerrarSesion === 'function') {
+                    await cerrarSesion();
+                } else {
+                    // Fallback si auth-check.js no está cargado
+                    window.location.href = '/login.html';
+                }
             }
         });
     }

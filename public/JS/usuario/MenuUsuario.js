@@ -25,12 +25,18 @@ document.addEventListener('DOMContentLoaded', function() {
     // Botón cerrar sesión
     const btnLogout = document.querySelector('.logout-btn');
     if (btnLogout) {
-        btnLogout.addEventListener('click', function() {
+        btnLogout.addEventListener('click', async function() {
             if (usuario && usuario.nombre && usuario.id) {
                 console.log(`Saliste del departamento ${usuario.nombre} con el id: ${usuario.id}`);
             }
-            localStorage.removeItem('usuario');
-            window.location.href = '/login.html';
+            // Llamar a la función cerrarSesion de auth-check.js
+            if (typeof cerrarSesion === 'function') {
+                await cerrarSesion();
+            } else {
+                // Fallback si auth-check.js no está cargado
+                localStorage.removeItem('usuario');
+                window.location.href = '/login.html';
+            }
         });
     }
     // 1. Mapeo de rutas para el menú

@@ -7,23 +7,23 @@ const db = require("./database");
 router.use(express.json());
 
 // Endpoint para login de usuarios de departamento
-router.post("/loginDepartamento", async (req, res) => {
+router.post("/loginUsuario", async (req, res) => {
   const { email, password } = req.body;
   try {
-    // Solo permite login si el departamento está visible
+    // Login usando la tabla usuarios
     const result = await db.query(
-      "SELECT id_departamento as id, nombre, correo, contraseña, extension FROM departamentos WHERE LOWER(nombre) = LOWER($1) AND visibilidad = true",
+      "SELECT id_usuario as id, usuario, nombre, apellidoM, apellidoP, contrasena, id_departamento FROM usuarios WHERE LOWER(usuario) = LOWER($1)",
       [email]
     );
     if (result.rows.length === 0) {
       return res.json({ success: false, message: "Usuario no encontrado" });
     }
     const usuario = result.rows[0];
-    if (usuario.contraseña !== password) {
+    if (usuario.contrasena !== password) {
       return res.json({ success: false, message: "Contraseña incorrecta" });
     }
     usuario.rol = "usuario";
-    delete usuario.contraseña;
+    delete usuario.contrasena;
     res.json({ success: true, usuario });
   } catch (error) {
     console.error("Error en loginDepartamento:", error);

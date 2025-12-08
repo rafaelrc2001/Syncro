@@ -44,8 +44,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const password = document.getElementById("password").value;
 
     try {
-      // 1. Intentar login de departamento
-      let response = await fetch("/endpoints/loginDepartamento", {
+      // 1. Intentar login de usuario (tabla usuarios)
+      let response = await fetch("/endpoints/loginUsuario", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: departamentoNombre, password }),

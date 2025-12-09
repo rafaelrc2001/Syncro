@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     try {
       // 1. Intentar login de usuario (tabla usuarios)
-      let response = await fetch("/endpoints/loginUsuario", {
+      let response = await fetch("/endpoints/loginDepartamento", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include", // Importante: enviar y recibir cookies

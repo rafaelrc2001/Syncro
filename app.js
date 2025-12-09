@@ -9,6 +9,8 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const session = require("express-session");
+const cookieParser = require("cookie-parser");
 const db = require("./database");
 require("dotenv").config();
 
@@ -39,6 +41,7 @@ const loginconsultaRouter = require("./loginconsulta");
 const graficaMesesRouter = require("./graficas/endpoint_grafica_meses");
 
 const graficasJefesRouter = require("./graficas/graficas_jefes/graficas_jefes");
+const { verificarAutenticacion, verificarRol, verificarSesion, cerrarSesion } = require("./middleware/auth");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -58,6 +61,21 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.options("*", cors());
 
+// Middleware para cookies y sesiones
+app.use(cookieParser());
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "tu-secreto-super-seguro-cambiame-en-produccion",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: false, // Cambiar a true si usas HTTPS
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 8, // 8 horas
+    },
+  })
+);
+
 // Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -76,81 +94,85 @@ app.use(
 // Endpoint de login de usuario departamento
 app.use("/endpoints", loginconsultaRouter);
 
-// Rutas de la API
+// Endpoints de autenticación (públicos)
+app.get("/api/verificar-sesion", verificarSesion);
+app.post("/api/cerrar-sesion", cerrarSesion);
 
-app.use("/api", tablasRouter); // Monta las rutas de tablas.js bajo el prefijo /api
-app.use("/api", listasRouter); // Monta las rutas de listas.js bajo el prefijo /api
-app.use("/api", vertablasRouter); // Monta las rutas de vertablas.js bajo el prefijo /api
-app.use("/api", targetasRouter); // Monta las rutas de targetas.js bajo el prefijo /api
-app.use("/api", verformulariosRouter); // Monta las rutas de verformularios.js bajo el prefijo /api
-app.use("/api", autorizacionesEstatusRouter); // Monta las rutas de autorizaciones_estatus.js bajo el prefijo /api
-app.use("/api", formulariosRouter); // Monta las rutas de formularios.js bajo el prefijo /api
-app.use("/api", formularioConfinadosRouter); // Monta las rutas de formulario_confinados.js bajo el prefijo /api
-app.use("/api", formularioFuegoRouter); // <--- Y ESTA LÍNEA
-app.use("/api", formularioElectricoRouter); // <--- Y ESTA LÍNEA
-app.use("/api", formularioRadiacionRouter); // <--- Y ESTA LÍNEA
-app.use("/api", formularioAlturaRouter); // Monta las rutas de formulario_altura.js bajo el prefijo /api
-app.use("/api", pt1ImprimirRouter); // Monta las rutas de impresión PT1 bajo el prefijo /api
-app.use("/api/pt2", pt2PDFRouter); // Monta las rutas de PDF PT2 bajo el prefijo /api/pt2
-app.use("/api", graficasAreasRouter); // Monta las rutas de graficas/endpoint_graficas_areas.js bajo el prefijo /api
-app.use("/api", permisosTipoRouter); // Monta las rutas de graficas/endpoint_permisos.js bajo el prefijo /api
-app.use("/api", graficaEstatusRouter); // Monta las rutas de graficas/endpoint_grafica_estatus.js bajo el prefijo /api
-app.use("/api", tablaPermisosRouter); // Monta las rutas de graficas/endpoint_tabla.js bajo el prefijo /api
-app.use("/api", exportarRouter); // Monta las rutas de exportar.js bajo /api (p.ej. /api/exportar-supervisor)
-app.use("/api", fechasAutorizacionRouter); // Monta las rutas de fechas de autorización
-app.use("/api/graficas_jefes", graficasJefesRouter);
-app.use("/api", formularioIzajeRouter);
-app.use("/api", formularioCestaRouter);
-app.use("/api", formularioExcavacionRouter);
-app.use("/api/graficas_jefes", graficaMesesRouter);
+// Rutas de la API (TODAS PROTEGIDAS CON AUTENTICACIÓN)
+
+app.use("/api", verificarAutenticacion, tablasRouter); // Monta las rutas de tablas.js bajo el prefijo /api
+app.use("/api", verificarAutenticacion, listasRouter); // Monta las rutas de listas.js bajo el prefijo /api
+app.use("/api", verificarAutenticacion, vertablasRouter); // Monta las rutas de vertablas.js bajo el prefijo /api
+app.use("/api", verificarAutenticacion, targetasRouter); // Monta las rutas de targetas.js bajo el prefijo /api
+app.use("/api", verificarAutenticacion, verformulariosRouter); // Monta las rutas de verformularios.js bajo el prefijo /api
+app.use("/api", verificarAutenticacion, autorizacionesEstatusRouter); // Monta las rutas de autorizaciones_estatus.js bajo el prefijo /api
+app.use("/api", verificarAutenticacion, formulariosRouter); // Monta las rutas de formularios.js bajo el prefijo /api
+app.use("/api", verificarAutenticacion, formularioConfinadosRouter); // Monta las rutas de formulario_confinados.js bajo el prefijo /api
+app.use("/api", verificarAutenticacion, formularioFuegoRouter); // <--- Y ESTA LÍNEA
+app.use("/api", verificarAutenticacion, formularioElectricoRouter); // <--- Y ESTA LÍNEA
+app.use("/api", verificarAutenticacion, formularioRadiacionRouter); // <--- Y ESTA LÍNEA
+app.use("/api", verificarAutenticacion, formularioAlturaRouter); // Monta las rutas de formulario_altura.js bajo el prefijo /api
+app.use("/api", verificarAutenticacion, pt1ImprimirRouter); // Monta las rutas de impresión PT1 bajo el prefijo /api
+app.use("/api/pt2", verificarAutenticacion, pt2PDFRouter); // Monta las rutas de PDF PT2 bajo el prefijo /api/pt2
+app.use("/api", verificarAutenticacion, graficasAreasRouter); // Monta las rutas de graficas/endpoint_graficas_areas.js bajo el prefijo /api
+app.use("/api", verificarAutenticacion, permisosTipoRouter); // Monta las rutas de graficas/endpoint_permisos.js bajo el prefijo /api
+app.use("/api", verificarAutenticacion, graficaEstatusRouter); // Monta las rutas de graficas/endpoint_grafica_estatus.js bajo el prefijo /api
+app.use("/api", verificarAutenticacion, tablaPermisosRouter); // Monta las rutas de graficas/endpoint_tabla.js bajo el prefijo /api
+app.use("/api", verificarAutenticacion, exportarRouter); // Monta las rutas de exportar.js bajo /api (p.ej. /api/exportar-supervisor)
+app.use("/api", verificarAutenticacion, fechasAutorizacionRouter); // Monta las rutas de fechas de autorización
+app.use("/api/graficas_jefes", verificarAutenticacion, graficasJefesRouter);
+app.use("/api", verificarAutenticacion, formularioIzajeRouter);
+app.use("/api", verificarAutenticacion, formularioCestaRouter);
+app.use("/api", verificarAutenticacion, formularioExcavacionRouter);
+app.use("/api/graficas_jefes", verificarAutenticacion, graficaMesesRouter);
 
 // ================= RUTAS DE TABLAS BASE =================
 const tablasBase = require("./tablasbase");
 
 // CATEGORIAS
-app.get("/api/categorias", tablasBase.getCategorias);
-app.post("/api/categorias", tablasBase.createCategoria);
-app.put("/api/categorias/:id", tablasBase.updateCategoria);
-app.delete("/api/categorias/:id", tablasBase.deleteCategoria);
-app.put("/api/categorias/hide/:id", tablasBase.hideCategoria);
+app.get("/api/categorias", verificarAutenticacion, tablasBase.getCategorias);
+app.post("/api/categorias", verificarAutenticacion, tablasBase.createCategoria);
+app.put("/api/categorias/:id", verificarAutenticacion, tablasBase.updateCategoria);
+app.delete("/api/categorias/:id", verificarAutenticacion, tablasBase.deleteCategoria);
+app.put("/api/categorias/hide/:id", verificarAutenticacion, tablasBase.hideCategoria);
 
 // AREAS
-app.get("/api/areas", tablasBase.getAreas);
-app.get("/api/areas/:id", tablasBase.getAreaById);
-app.post("/api/areas", tablasBase.createArea);
-app.put("/api/areas/:id", tablasBase.updateArea);
-app.delete("/api/areas/:id", tablasBase.deleteArea);
-app.put("/api/areas/hide/:id", tablasBase.hideArea);
+app.get("/api/areas", verificarAutenticacion, tablasBase.getAreas);
+app.get("/api/areas/:id", verificarAutenticacion, tablasBase.getAreaById);
+app.post("/api/areas", verificarAutenticacion, tablasBase.createArea);
+app.put("/api/areas/:id", verificarAutenticacion, tablasBase.updateArea);
+app.delete("/api/areas/:id", verificarAutenticacion, tablasBase.deleteArea);
+app.put("/api/areas/hide/:id", verificarAutenticacion, tablasBase.hideArea);
 
 // SUCURSALES
-app.get("/api/sucursales", tablasBase.getSucursales);
-app.get("/api/sucursales/:id", tablasBase.getSucursalById);
-app.post("/api/sucursales", tablasBase.createSucursal);
-app.put("/api/sucursales/:id", tablasBase.updateSucursal);
-app.delete("/api/sucursales/:id", tablasBase.deleteSucursal);
-app.put("/api/sucursales/hide/:id", tablasBase.hideSucursal);
+app.get("/api/sucursales", verificarAutenticacion, tablasBase.getSucursales);
+app.get("/api/sucursales/:id", verificarAutenticacion, tablasBase.getSucursalById);
+app.post("/api/sucursales", verificarAutenticacion, tablasBase.createSucursal);
+app.put("/api/sucursales/:id", verificarAutenticacion, tablasBase.updateSucursal);
+app.delete("/api/sucursales/:id", verificarAutenticacion, tablasBase.deleteSucursal);
+app.put("/api/sucursales/hide/:id", verificarAutenticacion, tablasBase.hideSucursal);
 
 // DEPARTAMENTOS
-app.get("/api/departamentos", tablasBase.getDepartamentos);
-app.get("/api/departamentos/:id", tablasBase.getDepartamentoById);
-app.post("/api/departamentos", tablasBase.createDepartamento);
-app.put("/api/departamentos/:id", tablasBase.updateDepartamento);
-app.delete("/api/departamentos/:id", tablasBase.deleteDepartamento);
-app.put("/api/departamentos/hide/:id", tablasBase.hideDepartamento);
+app.get("/api/departamentos", verificarAutenticacion, tablasBase.getDepartamentos);
+app.get("/api/departamentos/:id", verificarAutenticacion, tablasBase.getDepartamentoById);
+app.post("/api/departamentos", verificarAutenticacion, tablasBase.createDepartamento);
+app.put("/api/departamentos/:id", verificarAutenticacion, tablasBase.updateDepartamento);
+app.delete("/api/departamentos/:id", verificarAutenticacion, tablasBase.deleteDepartamento);
+app.put("/api/departamentos/hide/:id", verificarAutenticacion, tablasBase.hideDepartamento);
 
 // SUPERVISORES
-app.get("/api/supervisores_base", tablasBase.getSupervisores);
-app.get("/api/supervisores/:id", tablasBase.getSupervisorById);
-app.post("/api/supervisores", tablasBase.createSupervisor);
-app.put("/api/supervisores/:id", tablasBase.updateSupervisor);
-app.delete("/api/supervisores/:id", tablasBase.deleteSupervisor);
-app.put("/api/supervisores/hide/:id", tablasBase.hideSupervisor);
+app.get("/api/supervisores_base", verificarAutenticacion, tablasBase.getSupervisores);
+app.get("/api/supervisores/:id", verificarAutenticacion, tablasBase.getSupervisorById);
+app.post("/api/supervisores", verificarAutenticacion, tablasBase.createSupervisor);
+app.put("/api/supervisores/:id", verificarAutenticacion, tablasBase.updateSupervisor);
+app.delete("/api/supervisores/:id", verificarAutenticacion, tablasBase.deleteSupervisor);
+app.put("/api/supervisores/hide/:id", verificarAutenticacion, tablasBase.hideSupervisor);
 
-app.get("/api/areas", tablasBase.getAreas);
-app.get("/api/areas/:id", tablasBase.getAreaById);
-app.post("/api/areas", tablasBase.createArea);
-app.put("/api/areas/:id", tablasBase.updateArea);
-app.delete("/api/areas/:id", tablasBase.deleteArea);
+app.get("/api/areas", verificarAutenticacion, tablasBase.getAreas);
+app.get("/api/areas/:id", verificarAutenticacion, tablasBase.getAreaById);
+app.post("/api/areas", verificarAutenticacion, tablasBase.createArea);
+app.put("/api/areas/:id", verificarAutenticacion, tablasBase.updateArea);
+app.delete("/api/areas/:id", verificarAutenticacion, tablasBase.deleteArea);
 
 // Endpoint de estado de la aplicación
 app.listen(PORT, () => {

@@ -641,6 +641,17 @@
       <!-- ...resto de campos... -->
     </div>
 
+    <!-- Script de verificación de autenticación -->
+    <script src="/JS/generales/auth-check.js"></script>
+    <script>
+      // Verificar autenticación antes de cargar contenido
+      (async function() {
+        const usuario = await verificarRol(["usuario"]);
+        if (!usuario) return; // auth-check.js ya redirigió
+        // El contenido se carga normalmente si está autenticado
+      })();
+    </script>
+
     <script src="/JS/usuario/MenuUsuario.js"></script>
     <script src="/JS/usuario/LogicaCrearPermiso.js"></script>
     <script src="/JS/generales/LogicaVer.js"></script>

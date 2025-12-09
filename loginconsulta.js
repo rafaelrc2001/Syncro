@@ -7,23 +7,27 @@ const db = require("./database");
 router.use(express.json());
 
 // Endpoint para login de usuarios de departamento
-router.post("/loginUsuario", async (req, res) => {
+router.post("/loginDepartamento", async (req, res) => {
   const { email, password } = req.body;
   try {
-    // Login usando la tabla usuarios
+    // Solo permite login si el departamento está visible
     const result = await db.query(
-      "SELECT id_usuario as id, usuario, nombre, apellidoM, apellidoP, contrasena, id_departamento FROM usuarios WHERE LOWER(usuario) = LOWER($1)",
+      "SELECT id_departamento as id, nombre, correo, contraseña, extension FROM departamentos WHERE LOWER(nombre) = LOWER($1) AND visibilidad = true",
       [email]
     );
     if (result.rows.length === 0) {
       return res.json({ success: false, message: "Usuario no encontrado" });
     }
     const usuario = result.rows[0];
-    if (usuario.contrasena !== password) {
+    if (usuario.contraseña !== password) {
       return res.json({ success: false, message: "Contraseña incorrecta" });
     }
     usuario.rol = "usuario";
-    delete usuario.contrasena;
+    delete usuario.contraseña;
+    
+    // Crear sesión del usuario
+    req.session.usuario = usuario;
+    
     res.json({ success: true, usuario });
   } catch (error) {
     console.error("Error en loginDepartamento:", error);
@@ -51,6 +55,10 @@ router.post("/loginJefe", async (req, res) => {
     jefe.rol = "jefe";
     // No enviar la contraseña al frontend
     delete jefe.contraseña;
+    
+    // Crear sesión del usuario
+    req.session.usuario = jefe;
+    
     res.json({ success: true, usuario: jefe });
   } catch (error) {
     console.error("Error en loginJefe:", error);
@@ -76,6 +84,10 @@ router.post("/loginSupervisor", async (req, res) => {
     }
     supervisor.rol = "supervisor";
     delete supervisor.contraseña;
+    
+    // Crear sesión del usuario
+    req.session.usuario = supervisor;
+    
     res.json({ success: true, usuario: supervisor });
   } catch (error) {
     console.error("Error en loginSupervisor:", error);

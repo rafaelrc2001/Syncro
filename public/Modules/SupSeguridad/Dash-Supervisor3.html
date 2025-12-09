@@ -247,6 +247,17 @@
       </main>
     </div>
 
+    <!-- Script de verificación de autenticación -->
+    <script src="/JS/generales/auth-check.js"></script>
+    <script>
+      // Verificar autenticación antes de cargar contenido
+      (async function() {
+        const usuario = await verificarRol(["supervisor"]);
+        if (!usuario) return; // auth-check.js ya redirigió
+        // El contenido se carga normalmente si está autenticado
+      })();
+    </script>
+
     <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
     <script src="/JS/supervisor/MenuSupervisor.js"></script>
     <script src="/JS/generales/dash_jefe/Grafica-meses.js"></script>

@@ -48,6 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
       let response = await fetch("/endpoints/loginUsuario", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include", // Importante: enviar y recibir cookies
         body: JSON.stringify({ email: departamentoNombre, password }),
       });
       let data = await response.json();
@@ -57,6 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
         response = await fetch("/endpoints/loginJefe", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          credentials: "include",
           body: JSON.stringify({ usuario: departamentoNombre, password }),
         });
         data = await response.json();
@@ -67,6 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
         response = await fetch("/endpoints/loginSupervisor", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          credentials: "include",
           body: JSON.stringify({ usuario: departamentoNombre, password }),
         });
         data = await response.json();
@@ -74,7 +77,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
       loginBtn.classList.remove("loading");
       if (data.success && data.usuario) {
+        // Guardar en localStorage (compatibilidad con código existente)
         localStorage.setItem("usuario", JSON.stringify(data.usuario));
+        // La sesión ya se guardó en el servidor automáticamente
         if (data.usuario.rol === "usuario") {
           window.location.href = "Modules/Usuario/Dash-Usuario.html";
         } else if (data.usuario.rol === "supervisor") {

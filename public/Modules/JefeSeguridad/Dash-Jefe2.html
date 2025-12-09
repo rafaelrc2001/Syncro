@@ -272,6 +272,15 @@
       </main>
     </div>
 
+    <!-- Script de verificación de autenticación -->
+    <script src="/JS/generales/auth-check.js"></script>
+    <script>
+      (async function() {
+        const usuario = await verificarRol(["jefe"]);
+        if (!usuario) return;
+      })();
+    </script>
+
     <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
     <script src="/JS/jefe/MenuJefe.js"></script>
     <script src="/JS/generales/dash_jefe/Grafica-Super.js"></script>

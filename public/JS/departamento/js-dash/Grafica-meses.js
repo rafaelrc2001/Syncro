@@ -12,11 +12,8 @@ function getDateInputs() {
 }
 
 async function fetchAndRenderBarChart(id_departamento) {
-  const usuario = JSON.parse(localStorage.getItem("usuario"));
-  const id_usuario = usuario && usuario.id_usuario ? usuario.id_usuario : null;
-  if (!id_usuario) return;
   const response = await fetch(
-    `/api/graficas_jefes/meses/usuario/${id_usuario}`
+    `/api/graficas_jefes/meses/departamento/${id_departamento}`
   );
   let data = await response.json();
 
@@ -208,10 +205,14 @@ function setupDateFilterListeners(id_departamento) {
   const inicioInput = document.getElementById("fecha-inicio");
   const finalInput = document.getElementById("fecha-final");
   if (inicioInput) {
-    inicioInput.addEventListener("change", () => fetchAndRenderBarChart());
+    inicioInput.addEventListener("change", () =>
+      fetchAndRenderBarChart(id_departamento)
+    );
   }
   if (finalInput) {
-    finalInput.addEventListener("change", () => fetchAndRenderBarChart());
+    finalInput.addEventListener("change", () =>
+      fetchAndRenderBarChart(id_departamento)
+    );
   }
 }
 
@@ -224,24 +225,26 @@ function setupYearChangeListeners(id_departamento) {
   prevBtn.addEventListener("click", () => {
     let anio = parseInt(anioSpan.textContent);
     anioSpan.textContent = (anio - 1).toString();
-    fetchAndRenderBarChart();
+    fetchAndRenderBarChart(id_departamento);
   });
   nextBtn.addEventListener("click", () => {
     let anio = parseInt(anioSpan.textContent);
     anioSpan.textContent = (anio + 1).toString();
-    fetchAndRenderBarChart();
+    fetchAndRenderBarChart(id_departamento);
   });
 }
 
 document.addEventListener("DOMContentLoaded", function () {
   if (document.getElementById("tiempos-chart")) {
+    const usuario = JSON.parse(localStorage.getItem("usuario"));
+    const id_departamento = usuario.id;
     // Inicializa el año actual al año más reciente en los datos si existe
     const anioSpan = document.getElementById("anio-actual");
     if (anioSpan) {
       anioSpan.textContent = new Date().getFullYear().toString();
     }
-    fetchAndRenderBarChart();
-    setupDateFilterListeners();
-    setupYearChangeListeners();
+    fetchAndRenderBarChart(id_departamento);
+    setupDateFilterListeners(id_departamento);
+    setupYearChangeListeners(id_departamento);
   }
 });

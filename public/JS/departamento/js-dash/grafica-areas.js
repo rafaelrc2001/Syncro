@@ -223,18 +223,14 @@ function initAreasChart() {
 const usuario = JSON.parse(localStorage.getItem("usuario"));
 const id_departamento = usuario && usuario.id ? usuario.id : 1;
 
-// Nueva función para cargar datos por usuario usando el endpoint correcto
-function cargarDatosAreasPorUsuario() {
-  const usuario = JSON.parse(localStorage.getItem("usuario"));
-  const id_usuario = usuario && usuario.id_usuario ? usuario.id_usuario : null;
-  if (!id_usuario) return;
-
-  fetch("/api/grafica-usuario/" + id_usuario)
+function cargarDatosAreas() {
+  fetch("/api/grafica/" + id_departamento)
     .then((res) => res.json())
     .then((data) => {
-      // data.areas es un arreglo de objetos { area, cantidad_trabajos }
+      // Transforma los datos para la gráfica usando cantidad_trabajos
       const categories = data.areas.map((a) => a.area);
       const values = data.areas.map((a) => Number(a.cantidad_trabajos));
+      // Genera colores dinámicos si hay más áreas de las que tienes colores
       const baseColors = [
         "#003B5C",
         "#FF6F00",
@@ -246,15 +242,11 @@ function cargarDatosAreasPorUsuario() {
       const colors = categories.map(
         (_, i) => baseColors[i % baseColors.length]
       );
+      // Actualiza la gráfica
       if (window.areasChartInstance) {
         window.areasChartInstance.updateData({ categories, values, colors });
       }
     });
-}
-
-// Para compatibilidad, puedes dejar una función cargarDatosAreas (por departamento) si se requiere
-function cargarDatosAreas() {
-  // Esta función puede quedarse vacía o usar el endpoint por departamento si se requiere
 }
 
 // Auto-inicializar cuando el DOM esté listo

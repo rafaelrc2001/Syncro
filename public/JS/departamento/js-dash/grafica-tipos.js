@@ -267,12 +267,11 @@ function initTypesChart() {
 
 function cargarDatosTipos() {
   const usuario = JSON.parse(localStorage.getItem("usuario"));
-  const id_usuario = usuario && usuario.id_usuario ? usuario.id_usuario : null;
-  if (!id_usuario) return;
-  fetch("/api/permisos-tipo-usuario/" + id_usuario)
+  const id_departamento = usuario && usuario.id ? usuario.id : 1;
+  fetch("/api/permisos-tipo/" + id_departamento)
     .then((res) => res.json())
     .then((data) => {
-      console.log("Datos recibidos para tipos (usuario):", data);
+      console.log("Datos recibidos para tipos:", data); // <-- Agrega este log
       const categories = data.tipos.map((t) => t.tipo_permiso);
       const values = data.tipos.map((t) => Number(t.cantidad_trabajos));
       const baseColors = [

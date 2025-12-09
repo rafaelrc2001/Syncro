@@ -44,16 +44,27 @@ document.addEventListener("DOMContentLoaded", function () {
     const password = document.getElementById("password").value;
 
     try {
-      // 1. Intentar login de usuario (tabla usuarios)
+      // 1. Intentar login de departamento
       let response = await fetch("/endpoints/loginDepartamento", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        credentials: "include", // Importante: enviar y recibir cookies
+        credentials: "include",
         body: JSON.stringify({ email: departamentoNombre, password }),
       });
       let data = await response.json();
 
-      // 2. Si falla, intentar login de jefe
+      // 2. Si falla, intentar login de usuario (tabla usuarios)
+      if (!data.success || !data.usuario) {
+        response = await fetch("/endpoints/loginUsuario", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ email: departamentoNombre, password }),
+        });
+        data = await response.json();
+      }
+
+      // 3. Si falla, intentar login de jefe
       if (!data.success || !data.usuario) {
         response = await fetch("/endpoints/loginJefe", {
           method: "POST",
@@ -64,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
         data = await response.json();
       }
 
-      // 3. Si falla, intentar login de supervisor
+      // 4. Si falla, intentar login de supervisor
       if (!data.success || !data.usuario) {
         response = await fetch("/endpoints/loginSupervisor", {
           method: "POST",
@@ -77,6 +88,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
       loginBtn.classList.remove("loading");
       if (data.success && data.usuario) {
+        // Mostrar el objeto usuario antes de guardar
+        console.log("[LOGIN] Usuario recibido:", data.usuario);
         // Guardar en localStorage (compatibilidad con código existente)
         localStorage.setItem("usuario", JSON.stringify(data.usuario));
         // La sesión ya se guardó en el servidor automáticamente
@@ -86,6 +99,8 @@ document.addEventListener("DOMContentLoaded", function () {
           window.location.href = "Modules/SupSeguridad/Dash-Supervisor.html";
         } else if (data.usuario.rol === "jefe") {
           window.location.href = "Modules/JefeSeguridad/Dash-Jefe.html";
+        } else if (data.usuario.rol === "departamentos") {
+          window.location.href = "Modules/Departamentos/Dash-Usuario.html";
         } else {
           alert("Rol no reconocido.");
         }

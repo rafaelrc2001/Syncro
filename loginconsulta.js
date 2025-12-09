@@ -22,15 +22,44 @@ router.post("/loginDepartamento", async (req, res) => {
     if (usuario.contraseña !== password) {
       return res.json({ success: false, message: "Contraseña incorrecta" });
     }
-    usuario.rol = "usuario";
+    usuario.rol = "departamentos";
     delete usuario.contraseña;
-    
+
     // Crear sesión del usuario
     req.session.usuario = usuario;
-    
+
     res.json({ success: true, usuario });
   } catch (error) {
     console.error("Error en loginDepartamento:", error);
+    res.status(500).json({ success: false, message: "Error en el servidor" });
+  }
+});
+
+// Endpoint para login de usuarios
+router.post("/loginUsuario", async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    // Solo permite login si el usuario está visible
+    const result = await db.query(
+      "SELECT id_usuario as id_usuario, usuario, nombre, apellidoM, apellidoP, contrasena, id_departamento FROM usuarios WHERE LOWER(usuario) = LOWER($1) AND visibilidad = true",
+      [email]
+    );
+    if (result.rows.length === 0) {
+      return res.json({ success: false, message: "Usuario no encontrado" });
+    }
+    const usuario = result.rows[0];
+    if (usuario.contrasena !== password) {
+      return res.json({ success: false, message: "Contraseña incorrecta" });
+    }
+    usuario.rol = "usuario";
+    delete usuario.contrasena;
+
+    // Crear sesión del usuario
+    req.session.usuario = usuario;
+
+    res.json({ success: true, usuario });
+  } catch (error) {
+    console.error("Error en loginUsuario:", error);
     res.status(500).json({ success: false, message: "Error en el servidor" });
   }
 });
@@ -55,10 +84,10 @@ router.post("/loginJefe", async (req, res) => {
     jefe.rol = "jefe";
     // No enviar la contraseña al frontend
     delete jefe.contraseña;
-    
+
     // Crear sesión del usuario
     req.session.usuario = jefe;
-    
+
     res.json({ success: true, usuario: jefe });
   } catch (error) {
     console.error("Error en loginJefe:", error);
@@ -84,10 +113,10 @@ router.post("/loginSupervisor", async (req, res) => {
     }
     supervisor.rol = "supervisor";
     delete supervisor.contraseña;
-    
+
     // Crear sesión del usuario
     req.session.usuario = supervisor;
-    
+
     res.json({ success: true, usuario: supervisor });
   } catch (error) {
     console.error("Error en loginSupervisor:", error);

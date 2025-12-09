@@ -41,7 +41,13 @@
             <li>
               <a href="#"
                 ><i class="ri-clipboard-line"></i>
-                <span>Crear Permisos</span></a
+                <span>Permisos Creados</span></a
+              >
+            </li>
+            <li>
+              <a href="#"
+                ><i class="ri-shield-user-line"></i>
+                <span>Autorizar Permisos</span></a
               >
             </li>
           </ul>
@@ -128,10 +134,6 @@
 
         <!-- Actions Section -->
         <section class="actions-section">
-          <button id="btnNuevoPermiso" class="btn primary">
-            <i class="ri-add-line"></i> Generar Nuevo Permiso
-          </button>
-
           <!-- Botón específico para exportar desde la vista Crear-PT -->
           <button
             id="export-excel-crear"
@@ -640,17 +642,17 @@
     <script>
       // Verificar autenticación antes de cargar contenido
       (async function () {
-        const usuario = await verificarRol(["usuario"]);
+        const usuario = await verificarRol(["departamentos"]);
         if (!usuario) return; // auth-check.js ya redirigió
         // El contenido se carga normalmente si está autenticado
       })();
     </script>
 
-    <script src="/JS/usuario/MenuUsuario.js"></script>
-    <script src="/JS/usuario/LogicaCrearPermiso.js"></script>
+    <script src="/JS/departamento/MenuDepartamento.js"></script>
+    <script src="/JS/departamento/LogicaCrearPermiso.js"></script>
     <script src="/JS/generales/LogicaVer.js"></script>
-    <script type="module" src="/JS/usuario/tabla-crearpt.js"></script>
+    <script type="module" src="/JS/departamento/tabla-crearpt.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    <script src="/JS/usuario/crear_exportar.js"></script>
+    <script src="/JS/departamento/crear_exportar.js"></script>
   </body>
 </html>

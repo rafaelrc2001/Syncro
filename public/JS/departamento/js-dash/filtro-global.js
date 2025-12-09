@@ -70,20 +70,15 @@ class DashboardFilter {
   // Cargar todos los datos iniciales
   async loadAllData() {
     const usuario = JSON.parse(localStorage.getItem("usuario"));
-    const id_usuario =
-      usuario && usuario.id_usuario ? usuario.id_usuario : null;
-    if (!id_usuario) {
-      console.error("❌ No se encontró id_usuario en localStorage.usuario");
-      return;
-    }
+    const id_departamento = usuario && usuario.id ? usuario.id : 1;
 
     try {
       // Cargar datos en paralelo
       const [permisosRes, areasRes, tiposRes, estatusRes] = await Promise.all([
-        fetch(`/api/tabla-permisos-usuario/${id_usuario}`),
-        fetch(`/api/grafica-usuario/${id_usuario}`),
-        fetch(`/api/permisos-tipo-usuario/${id_usuario}`),
-        fetch(`/api/grafica-estatus-usuario/${id_usuario}`),
+        fetch(`/api/tabla-permisos/${id_departamento}`),
+        fetch(`/api/grafica/${id_departamento}`),
+        fetch(`/api/permisos-tipo/${id_departamento}`),
+        fetch(`/api/grafica-estatus/${id_departamento}`),
       ]);
 
       const [permisosData, areasData, tiposData, estatusData] =

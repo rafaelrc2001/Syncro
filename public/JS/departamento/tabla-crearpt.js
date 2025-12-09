@@ -33,15 +33,10 @@ let idPermisoSeleccionado = null;
 async function cargarTargetasDesdePermisos() {
   try {
     const usuario = JSON.parse(localStorage.getItem("usuario"));
-    let id_usuario = usuario && usuario.id_usuario ? usuario.id_usuario : null;
-    if (!id_usuario) {
-      // Si no es usuario, mostrar mensaje y no cargar nada
-      console.warn(
-        "[PERMISOS] Solo usuarios pueden ver esta tabla. id_usuario no encontrado."
-      );
-      return;
-    }
-    const response = await fetch(`/api/vertablasUsuarios/${id_usuario}`);
+    const id_departamento = usuario && usuario.id ? usuario.id : null;
+    if (!id_departamento)
+      throw new Error("No se encontró el id de departamento del usuario");
+    const response = await fetch(`/api/vertablas/${id_departamento}`);
     if (!response.ok) throw new Error("Error al consultar permisos");
     const permisos = await response.json();
 
@@ -89,15 +84,10 @@ async function cargarTargetasDesdePermisos() {
 async function cargarPermisosTabla() {
   try {
     const usuario = JSON.parse(localStorage.getItem("usuario"));
-    let id_usuario = usuario && usuario.id_usuario ? usuario.id_usuario : null;
-    if (!id_usuario) {
-      // Si no es usuario, mostrar mensaje y no cargar nada
-      console.warn(
-        "[PERMISOS] Solo usuarios pueden ver esta tabla. id_usuario no encontrado."
-      );
-      return;
-    }
-    const response = await fetch(`/api/vertablasUsuarios/${id_usuario}`);
+    const id_departamento = usuario && usuario.id ? usuario.id : null;
+    if (!id_departamento)
+      throw new Error("No se encontró el id de departamento del usuario");
+    const response = await fetch(`/api/vertablas/${id_departamento}`);
     if (!response.ok) throw new Error("Error al consultar permisos");
     permisosGlobal = await response.json();
     mostrarPermisosFiltrados("En espera del área");

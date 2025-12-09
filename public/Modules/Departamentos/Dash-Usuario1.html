@@ -13,7 +13,7 @@
       rel="stylesheet"
     />
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
-    <link rel="stylesheet" href="/CSS/Estilogeneral-Dash.css" />
+    <link rel="stylesheet" href="/CSS/Estilogeneral-Dash1.css" />
   </head>
   <body>
     <div class="app-container">
@@ -39,7 +39,13 @@
             <li>
               <a href="#"
                 ><i class="ri-clipboard-line"></i>
-                <span>Crear Permisos</span></a
+                <span>Permisos Creados</span></a
+              >
+            </li>
+            <li>
+              <a href="#"
+                ><i class="ri-shield-user-line"></i>
+                <span>Autorizar Permisos</span></a
               >
             </li>
           </ul>
@@ -48,6 +54,7 @@
           <div class="user-profile">
             <div class="avatar"></div>
             <div class="user-info">
+ 
               <span class="name"></span>
               <span class="role"></span>
             </div>
@@ -135,21 +142,9 @@
             </div>
           </div>
 
-          <!-- Search Bar moved here -->
-          <div class="search-card">
-            <div class="search-bar">
-              <input
-                id="global-search"
-                type="text"
-                placeholder="Buscar por folio o nombre..."
-              />
-              <i class="ri-search-line"></i>
-            </div>
-            <div id="filter-results" class="filter-results">
-              Mostrando todos los registros
-            </div>
-          </div>
+          
         </section>
+
 
         <section>
           <div
@@ -159,7 +154,7 @@
               gap: 24px;
               justify-content: flex-start;
               align-items: center;
-              margin: 24px 0 24px 60px;
+              margin: 8px 0 0 60px;
             "
           >
             <div class="date-filter-item" style="position: relative">
@@ -205,14 +200,14 @@
               class="btn secondary charts-btn"
               style="margin-left: auto; margin-right: 60px"
             >
-              <i class="ri-bar-chart-line"></i> Gráficas 2
+              <i class="ri-bar-chart-line"></i> Gráficas
             </button>
           </div>
           <script>
             document
               .getElementById("btn-graficas")
               .addEventListener("click", function () {
-                window.location.href = "Dash-Usuario1.html";
+                window.location.href = "Dash-Usuario.html";
               });
           </script>
           <style>
@@ -230,96 +225,37 @@
           </style>
         </section>
 
-        <!-- Dashboard Grid: Tabla + Gráfica de Áreas -->
-        <div class="dashboard-grid">
-          <!-- Tabla de Permisos -->
-          <div class="table-section">
-            <div class="table-header">
-              <h3>Últimos Permisos</h3>
-              <div class="status-filter">
-                <select id="status-filter">
-                  <option value="all">Todos los estados</option>
-                  <option value="active">Espera área</option>
-                  <option value="completed">Espera seguridad</option>
-                  <option value="canceled">No autorizado</option>
-                  <option value="continua">Activo</option>
-                  <option value="Cierre sin incidentes">
-                    Cierre sin incidentes
-                  </option>
-                  <option value="Cierre con incidentes">
-                    Cierre con incidentes
-                  </option>
-                  <option value="Cierre con accidentes">
-                    Cierre con accidentes
-                  </option>
-                  <option value="wait-security">Cancelado</option>
-                </select>
+
+
+
+
+
+       <div class="dashboard-grid">           
+          <!-- Botón Gráficas arriba de la gráfica -->                   
+          <div class="chart-card large-chart grafica-autorizacion-central">
+            <div class="chart-title" style="display: flex; align-items: center; gap: 16px;">
+              <i class="ri-time-line" style="color: var(--naranja-seguridad)"></i>
+              Permisos por Meses
+              <div style="margin-left: auto; display: flex; align-items: center; gap: 8px;">
+                <button id="anio-prev" style="border:none;background:none;font-size:20px;cursor:pointer;">&#8592;</button>
+                <span id="anio-actual" style="font-weight: bold; font-size: 18px;">2025</span>
+                <button id="anio-next" style="border:none;background:none;font-size:20px;cursor:pointer;">&#8594;</button>
               </div>
             </div>
-            <div class="table-container">
-              <table class="compact-table">
-                <thead>
-                  <tr>
-                    <th>Permiso</th>
-                    <th>Tipo</th>
-                    <th>Descripción del Trabajo</th>
-                    <th>Supervisor</th>
-                    <th>Estado</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <!-- Las filas se llenarán dinámicamente por JS -->
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <!-- Gráfica de Áreas -->
-          <div class="chart-card">
-            <div class="chart-title">
-              <i
-                class="ri-building-line"
-                style="color: var(--azul-petroleo)"
-              ></i>
-              Permisos por Área
-            </div>
-            <div id="areas-chart" class="chart-container"></div>
+            <div id="tiempos-chart" class="chart-container"></div>
           </div>
         </div>
+        
 
-        <!-- Gráficas Inferiores: Tipos y Estatus -->
-        <div class="charts-container">
-          <!-- Gráfica de Tipos -->
-          <div class="chart-card">
-            <div class="chart-title">
-              <i
-                class="ri-list-check"
-                style="color: var(--naranja-seguridad)"
-              ></i>
-              Permisos por Tipo
-            </div>
-            <div id="type-chart" class="chart-container"></div>
-          </div>
 
-          <!-- Gráfica de Estatus -->
-          <div class="chart-card">
-            <div class="chart-title">
-              <i class="ri-time-line" style="color: var(--verde-tecnico)"></i>
-              Permisos por Estatus
-            </div>
-            <div id="status-chart" class="chart-container"></div>
-          </div>
         </div>
       </main>
     </div>
 
-    <script src="/JS/usuario/js-dash/grafica-areas.js"></script>
-    <script src="/JS/usuario/js-dash/grafica-tipos.js"></script>
-    <script src="/JS/usuario/js-dash/grafica-estatus.js"></script>
-    <script src="/JS/usuario/js-dash/tabla-dash.js"></script>
-    <script src="/JS/usuario/js-dash/filtro-global.js"></script>
-    <script src="/JS/usuario/js-dash/debug-filtro.js"></script>
-    <script type="module" src="/JS/usuario/tabla-crearpt.js"></script>
+
+ 
+    <script src="/JS/departamento/js-dash/Grafica-meses.js"></script>
+    <script type="module" src="/JS/departamento/tabla-crearpt.js"></script>
 
     <script>
       // Función para mostrar la fecha actual
@@ -343,14 +279,14 @@
     <script src="/JS/generales/auth-check.js"></script>
     <script>
       // Verificar autenticación antes de cargar contenido
-      (async function () {
-        const usuario = await verificarRol(["usuario"]);
+      (async function() {
+        const usuario = await verificarRol(["departamentos"]);
         if (!usuario) return; // auth-check.js ya redirigió
         // El contenido se carga normalmente si está autenticado
       })();
     </script>
 
-    <script src="/JS/usuario/MenuUsuario.js"></script>
+    <script src="/JS/departamento/MenuDepartamento.js"></script>
 
     <div id="modal-ver" class="modal" style="display: none">
       <div class="modal-content">

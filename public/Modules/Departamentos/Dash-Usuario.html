@@ -39,7 +39,13 @@
             <li>
               <a href="#"
                 ><i class="ri-clipboard-line"></i>
-                <span>Crear Permisos</span></a
+                <span>Permisos Creados</span></a
+              >
+            </li>
+            <li>
+              <a href="#"
+                ><i class="ri-shield-user-line"></i>
+                <span>Autorizar Permisos</span></a
               >
             </li>
           </ul>
@@ -313,13 +319,13 @@
       </main>
     </div>
 
-    <script src="/JS/usuario/js-dash/grafica-areas.js"></script>
-    <script src="/JS/usuario/js-dash/grafica-tipos.js"></script>
-    <script src="/JS/usuario/js-dash/grafica-estatus.js"></script>
-    <script src="/JS/usuario/js-dash/tabla-dash.js"></script>
-    <script src="/JS/usuario/js-dash/filtro-global.js"></script>
-    <script src="/JS/usuario/js-dash/debug-filtro.js"></script>
-    <script type="module" src="/JS/usuario/tabla-crearpt.js"></script>
+    <script src="/JS/departamento/js-dash/grafica-areas.js"></script>
+    <script src="/JS/departamento/js-dash/grafica-tipos.js"></script>
+    <script src="/JS/departamento/js-dash/grafica-estatus.js"></script>
+    <script src="/JS/departamento/js-dash/tabla-dash.js"></script>
+    <script src="/JS/departamento/js-dash/filtro-global.js"></script>
+    <script src="/JS/departamento/js-dash/debug-filtro.js"></script>
+    <script type="module" src="/JS/departamento/tabla-crearpt.js"></script>
 
     <script>
       // Función para mostrar la fecha actual
@@ -344,13 +350,13 @@
     <script>
       // Verificar autenticación antes de cargar contenido
       (async function () {
-        const usuario = await verificarRol(["usuario"]);
+        const usuario = await verificarRol(["departamentos"]);
         if (!usuario) return; // auth-check.js ya redirigió
         // El contenido se carga normalmente si está autenticado
       })();
     </script>
 
-    <script src="/JS/usuario/MenuUsuario.js"></script>
+    <script src="/JS/departamento/MenuDepartamento.js"></script>
 
     <div id="modal-ver" class="modal" style="display: none">
       <div class="modal-content">

@@ -2,15 +2,10 @@ document.addEventListener("DOMContentLoaded", function () {
   // --- Lógica de usuario, avatar y logout ---
   // Muestra el nombre del usuario, iniciales en el avatar y gestiona el cierre de sesión
   const usuario = JSON.parse(localStorage.getItem("usuario"));
-  if (usuario && usuario.nombre && usuario.id_usuario) {
+  if (usuario && usuario.nombre && usuario.id) {
     // Nombre en el sidebar/footer
     document.querySelectorAll(".user-info .name").forEach((el) => {
-      // Si tiene nombre y apellidos, úsalos; si no, usa usuario
-      el.textContent = usuario.nombre
-        ? `${usuario.nombre} ${usuario.apellidop || ""} ${
-            usuario.apellidom || ""
-          }`.trim()
-        : usuario.usuario || "";
+      el.textContent = usuario.nombre;
     });
     // Avatar con iniciales
     const avatarDiv = document.querySelector(".user-profile .avatar");
@@ -24,13 +19,9 @@ document.addEventListener("DOMContentLoaded", function () {
       }
       avatarDiv.textContent = iniciales;
     }
-    // Mostrar el rol en la sidebar
-    document.querySelectorAll(".user-info .role").forEach((el) => {
-      el.textContent = usuario.apellidoP ? usuario.apellidoP : "";
-    });
     // Mensaje de entrada por consola
     console.log(
-      `Entraste como usuario ${usuario.nombre} con el id_usuario: ${usuario.id_usuario}`
+      `Entraste al departamento ${usuario.nombre} con el id: ${usuario.id}`
     );
   }
   // Botón cerrar sesión
@@ -54,9 +45,9 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   // 1. Mapeo de rutas para el menú
   const menuRoutes = {
-    dashboard: "/Modules/Usuario/Dash-Usuario.html",
-    "crear permisos": "/Modules/Usuario/CrearPT.html",
-    "autorizar permisos": "/Modules/Usuario/AutorizarPT.html",
+    dashboard: "/Modules/Departamentos/Dash-Usuario.html",
+    "permisos Creados": "/Modules/Departamentos/CrearPT.html",
+    "autorizar permisos": "/Modules/Departamentos/AutorizarPT.html",
     // Agregar más rutas según sea necesario
   };
 

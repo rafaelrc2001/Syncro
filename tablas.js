@@ -168,6 +168,7 @@ router.post("/permisos-trabajo", async (req, res) => {
     id_ast,
     contrato, // Nuevo campo opcional
     fecha_hora, // Nuevo campo para la hora normalizada
+    id_usuario,
   } = req.body;
 
   // Validar que los campos obligatorios existan
@@ -179,6 +180,7 @@ router.post("/permisos-trabajo", async (req, res) => {
       id_tipo_permiso,
       id_estatus,
       id_ast,
+      id_usuario,
     ].some((v) => typeof v === "undefined")
   ) {
     return res.status(400).json({
@@ -190,8 +192,8 @@ router.post("/permisos-trabajo", async (req, res) => {
   try {
     const result = await db.query(
       `INSERT INTO permisos_trabajo (
-        id_area, id_departamento, id_sucursal, id_tipo_permiso, id_estatus, id_ast, contrato, fecha_hora
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        id_area, id_departamento, id_sucursal, id_tipo_permiso, id_estatus, id_ast, contrato, fecha_hora, id_usuario
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
       RETURNING *`,
       [
         id_area,
@@ -202,6 +204,7 @@ router.post("/permisos-trabajo", async (req, res) => {
         id_ast,
         contrato || null,
         fecha_hora || null,
+        id_usuario,
       ]
     );
     const id_permiso = result.rows[0].id_permiso;

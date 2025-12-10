@@ -71,7 +71,7 @@ class FechaHoraManager {
 
     // Si la fecha viene en formato SQL (YYYY-MM-DD HH:mm:ss), mostrar tal cual
     if (/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(fechaString)) {
-      const [fecha, hora] = fechaString.split(' ');
+      const [fecha, hora] = fechaString.split(" ");
       const [h, m] = hora.split(":");
       return `${fecha.replace(/-/g, "/")}, ${h}:${m}`;
     }
@@ -84,10 +84,10 @@ class FechaHoraManager {
       }
       // Formatear en UTC
       const year = fecha.getUTCFullYear();
-      const month = String(fecha.getUTCMonth() + 1).padStart(2, '0');
-      const day = String(fecha.getUTCDate()).padStart(2, '0');
-      const hour = String(fecha.getUTCHours()).padStart(2, '0');
-      const minute = String(fecha.getUTCMinutes()).padStart(2, '0');
+      const month = String(fecha.getUTCMonth() + 1).padStart(2, "0");
+      const day = String(fecha.getUTCDate()).padStart(2, "0");
+      const hour = String(fecha.getUTCHours()).padStart(2, "0");
+      const minute = String(fecha.getUTCMinutes()).padStart(2, "0");
       return `${day}/${month}/${year}, ${hour}:${minute}`;
     } catch (error) {
       return "Error en fecha";
@@ -116,12 +116,11 @@ class FechaHoraManager {
     if (elementoArea) {
       const fechaArea = this.formatearFecha(this.fechas.area);
       elementoArea.innerHTML = `
-                Hora de autorización
-                <br>
-                <small style="font-size: 0.75em; color: #666; font-weight: normal;">
-                    ${fechaArea}
-                </small>
-            `;
+  Hora de autorización
+  <small style="font-size: 0.75em; color: #666; font-weight: normal; margin-left: 8px;">
+    ${fechaArea}
+  </small>
+`;
     }
 
     // 3. Actualizar hora de autorización del supervisor

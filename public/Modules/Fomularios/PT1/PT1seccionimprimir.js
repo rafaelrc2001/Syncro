@@ -610,12 +610,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
           const respHerramientas = document.getElementById("resp-herramientas");
           if (respHerramientas) {
-            respHerramientas.textContent = general.verificacion_herramientas || "-";
+            respHerramientas.textContent =
+              general.verificacion_herramientas || "-";
           }
 
-          const verificacionObs = document.getElementById("verificacion-observaciones");
+          const verificacionObs = document.getElementById(
+            "verificacion-observaciones"
+          );
           if (verificacionObs) {
-            verificacionObs.textContent = general.verificacion_observaciones || "-";
+            verificacionObs.textContent =
+              general.verificacion_observaciones || "-";
           }
 
           // Rellenar AST y Participantes
@@ -710,9 +714,21 @@ function llenarTablaResponsables(idPermiso) {
       if (result.success && result.data) {
         const data = result.data;
         const filas = [
-          { nombre: data.responsable_area, cargo: "Responsable de área" },
-          { nombre: data.operador_area, cargo: "Operador del área" },
-          { nombre: data.nombre_supervisor, cargo: "Supervisor de Seguridad" },
+          {
+            nombre: data.responsable_area,
+            cargo: "Responsable de área",
+            fecha: data.fecha_hora_area,
+          },
+          {
+            nombre: data.operador_area,
+            cargo: "Operador del área",
+            fecha: data.fecha_hora_area,
+          },
+          {
+            nombre: data.nombre_supervisor,
+            cargo: "Supervisor de Seguridad",
+            fecha: data.fecha_hora_area,
+          },
         ];
 
         let hayResponsables = false;
@@ -723,6 +739,9 @@ function llenarTablaResponsables(idPermiso) {
             tr.innerHTML = `
               <td>${fila.nombre}</td>
               <td>${fila.cargo}</td>
+              <td></td>
+              <td>${fila.fecha || ""}</td>
+              <td></td>
               <td></td>
             `;
             tbody.appendChild(tr);

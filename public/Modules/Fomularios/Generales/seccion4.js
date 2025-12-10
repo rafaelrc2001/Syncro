@@ -153,7 +153,18 @@ document.addEventListener("DOMContentLoaded", () => {
       // Generar timestamp local para la base de datos
       // Usar la función obtenerFechaHoraLocal para obtener la hora exacta local
       const fecha_hora = obtenerFechaHoraLocal();
+
+      const usuario = JSON.parse(localStorage.getItem("usuario"));
+      const id_usuario = usuario?.id_usuario;
+      const id_departamento = usuario?.id_departamento;
       // ==============================
+
+      if (!id_departamento || isNaN(Number(id_departamento))) {
+        alert(
+          "Error: No se pudo obtener el departamento del usuario. No se puede registrar el permiso."
+        );
+        return;
+      }
 
       // Validar que plant_value no esté vacío antes de continuar
       let plantValue = sessionStorage.getItem("plant_value");
@@ -258,11 +269,11 @@ document.addEventListener("DOMContentLoaded", () => {
         // Recuperar y validar los ids
         const id_area = parseInt(sessionStorage.getItem("plant_value"), 10);
         // Obtener id del departamento del usuario logueado
-        let id_departamento = 1;
-        const usuario = JSON.parse(localStorage.getItem("usuario"));
-        if (usuario && usuario.id) {
-          id_departamento = Number(usuario.id);
-        }
+        //let id_departamento = 1;
+        //const usuario = JSON.parse(localStorage.getItem("usuario"));
+        //if (usuario && usuario.id) {
+        //  id_departamento = Number(usuario.id);
+        //}
         const id_sucursal = parseInt(sessionStorage.getItem("id_sucursal"), 10);
         const id_tipo_permiso = Number(
           sessionStorage.getItem("id_tipo_permiso")
@@ -331,6 +342,7 @@ document.addEventListener("DOMContentLoaded", () => {
             id_ast,
             contrato, // Siempre enviar el campo contrato
             fecha_hora, // Enviar la hora normalizada
+            id_usuario, // <-- Se agrega el id_usuario
           }),
         });
         const permisoResult = await permisoResponse.json();

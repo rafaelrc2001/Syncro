@@ -818,6 +818,13 @@ if (btnConfirmarAutorizar) {
         modalConfirmarAutorizar.style.display = "none";
       }
 
+      //prueba
+      //prueba
+      //prueba
+      //prueba
+      //prueba
+      window.obtenerUbicacionYIP();
+
       // 1. Obtener datos necesarios
       const params = new URLSearchParams(window.location.search);
       const idPermiso = params.get("id") || window.idPermisoActual;
@@ -996,6 +1003,14 @@ if (btnConfirmarAutorizar) {
 
   if (btnConfirmarNoAutorizar) {
     btnConfirmarNoAutorizar.addEventListener("click", function () {
+      //prueba
+      //prueba
+      //prueba
+      //prueba
+      //prueba
+
+      window.obtenerUbicacionYIP();
+
       // Cerrar modal de confirmación y abrir el modalComentario para capturar el motivo
       if (modalConfirmarNoAutorizar)
         modalConfirmarNoAutorizar.style.display = "none";

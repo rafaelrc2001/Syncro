@@ -711,23 +711,49 @@ function llenarTablaResponsables(idPermiso) {
 
       tbody.innerHTML = ""; // Limpia la tabla antes de llenarla
 
+      function formatearFecha(fechaString) {
+        if (!fechaString) return "Pendiente";
+        // Si la fecha viene en formato SQL (YYYY-MM-DD HH:mm:ss), mostrar tal cual
+        if (/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(fechaString)) {
+          const [fecha, hora] = fechaString.split(" ");
+          const [h, m] = hora.split(":");
+          return `${fecha.replace(/-/g, "/")}, ${h}:${m}`;
+        }
+        // Si viene en formato ISO con Z (UTC), mostrar en UTC
+        try {
+          const fecha = new Date(fechaString);
+          if (isNaN(fecha.getTime())) {
+            return "Fecha inválida";
+          }
+          // Formatear en UTC
+          const year = fecha.getUTCFullYear();
+          const month = String(fecha.getUTCMonth() + 1).padStart(2, "0");
+          const day = String(fecha.getUTCDate()).padStart(2, "0");
+          const hour = String(fecha.getUTCHours()).padStart(2, "0");
+          const minute = String(fecha.getUTCMinutes()).padStart(2, "0");
+          return `${day}/${month}/${year}, ${hour}:${minute}`;
+        } catch (error) {
+          return "Error en fecha";
+        }
+      }
+
       if (result.success && result.data) {
         const data = result.data;
         const filas = [
           {
             nombre: data.responsable_area,
             cargo: "Responsable de área",
-            fecha: data.fecha_hora_area,
+            fecha: formatearFecha(data.fecha_hora_area),
           },
           {
             nombre: data.operador_area,
             cargo: "Operador del área",
-            fecha: data.fecha_hora_area,
+            fecha: formatearFecha(data.fecha_hora_area),
           },
           {
             nombre: data.nombre_supervisor,
             cargo: "Supervisor de Seguridad",
-            fecha: data.fecha_hora_area,
+            fecha: formatearFecha(data.fecha_hora_supervisor),
           },
         ];
 
@@ -739,10 +765,8 @@ function llenarTablaResponsables(idPermiso) {
             tr.innerHTML = `
               <td>${fila.nombre}</td>
               <td>${fila.cargo}</td>
-              <td></td>
               <td>${fila.fecha || ""}</td>
-              <td></td>
-              <td></td>
+              <td></td> 
             `;
             tbody.appendChild(tr);
           }

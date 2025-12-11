@@ -99,7 +99,7 @@ if (btnAutorizar) {
         );
       }
 
-      // ...existing code...
+      // 4. Recopilar datos del formulario de requisitos del área
       const fluidInput = document.getElementById("fluid");
       const pressureInput = document.getElementById("pressure");
       const temperatureInput = document.getElementById("temperature");
@@ -943,6 +943,7 @@ if (btnConfirmarAutorizar) {
         now.getTime() - now.getTimezoneOffset() * 60000
       ).toISOString();
 
+      const { ip, localizacion } = await window.obtenerUbicacionYIP();
       const respAutorizacion = await fetch("/api/autorizaciones/area", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -951,6 +952,8 @@ if (btnConfirmarAutorizar) {
           responsable_area,
           encargado_area: operador_area,
           fecha_hora_area: fechaHoraAutorizacion,
+          ip_area: ip, // variable de tu función
+          localizacion_area: localizacion, // variable de tu función
         }),
       });
 
@@ -972,7 +975,12 @@ if (btnConfirmarAutorizar) {
         window.location.reload();
       }
     } catch (err) {
-      console.error("Error al autorizar el permiso:", err);
+      console.error(
+        "Error al autorizar el permiso:",
+        err,
+        err?.message,
+        err?.stack
+      );
       alert(
         "Ocurrió un error al autorizar el permiso. Por favor, intenta nuevamente."
       );

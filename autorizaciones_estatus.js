@@ -350,8 +350,14 @@ router.post("/estatus/cierre_con_accidentes", async (req, res) => {
 
 // Nueva ruta para insertar en la tabla de autorizaciones según requerimiento del usuario
 router.post("/autorizaciones/area", async (req, res) => {
-  const { id_permiso, responsable_area, encargado_area, fecha_hora_area } =
-    req.body;
+  const {
+    id_permiso,
+    responsable_area,
+    encargado_area,
+    fecha_hora_area,
+    ip_area,
+    localizacion_area,
+  } = req.body;
 
   // Validar que los campos requeridos estén presentes
   if (!id_permiso || !responsable_area) {
@@ -373,14 +379,18 @@ router.post("/autorizaciones/area", async (req, res) => {
         const result = await db.query(
           `UPDATE autorizaciones
              SET responsable_area = $1,
-                operador_area = COALESCE($2, operador_area),
-                fecha_hora_area = COALESCE($3, fecha_hora_area)
-             WHERE id_permiso = $4
+                 operador_area = COALESCE($2, operador_area),
+                 fecha_hora_area = COALESCE($3, fecha_hora_area),
+                 ip_area = COALESCE($4, ip_area),
+                 localizacion_area = COALESCE($5, localizacion_area)
+             WHERE id_permiso = $6
              RETURNING *`,
           [
             responsable_area,
             encargado_area || null,
             fecha_hora_area || null,
+            ip_area || null,
+            localizacion_area || null,
             id_permiso,
           ]
         );
@@ -412,8 +422,8 @@ router.post("/autorizaciones/area", async (req, res) => {
   try {
     const result = await db.query(
       `INSERT INTO autorizaciones (
-        id_permiso, id_supervisor, id_categoria, responsable_area, operador_area, fecha_hora_area
-      ) VALUES ($1, $2, $3, $4, $5, COALESCE($6, NOW()))
+        id_permiso, id_supervisor, id_categoria, responsable_area, operador_area, fecha_hora_area, ip_area, localizacion_area
+      ) VALUES ($1, $2, $3, $4, $5, COALESCE($6, NOW()), $7, $8)
       RETURNING *`,
       [
         id_permiso,
@@ -422,6 +432,8 @@ router.post("/autorizaciones/area", async (req, res) => {
         responsable_area,
         encargado_area || null,
         fecha_hora_area || null,
+        ip_area || null,
+        localizacion_area || null,
       ]
     );
     res.status(201).json({

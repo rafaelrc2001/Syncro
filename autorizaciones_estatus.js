@@ -651,14 +651,16 @@ router.get("/autorizaciones/personas/:id", async (req, res) => {
   try {
     const result = await db.query(
       `SELECT 
-    s.nombre as nombre_supervisor,
-    a.operador_area,
-    a.responsable_area,
-    a.fecha_hora_area,
-	  a.fecha_hora_supervisor
-  FROM autorizaciones a
-  LEFT JOIN supervisores s ON a.id_supervisor = s.id_supervisor
-  WHERE a.id_permiso = $1`,
+  s.nombre as nombre_supervisor,
+  a.operador_area,
+  a.responsable_area,
+  a.fecha_hora_area,
+  a.fecha_hora_supervisor,
+  a.ip_area,
+  a.localizacion_area
+FROM autorizaciones a
+LEFT JOIN supervisores s ON a.id_supervisor = s.id_supervisor
+WHERE a.id_permiso = $1`,
       [id]
     );
 
@@ -698,14 +700,16 @@ router.get("/autorizaciones/personas/:id_permiso", async (req, res) => {
   try {
     const result = await db.query(
       `SELECT 
-    s.nombre as nombre_supervisor,
-    a.operador_area,
-    a.responsable_area,
-    a.fecha_hora_area,
-	  a.fecha_hora_supervisor
-  FROM autorizaciones a
-  LEFT JOIN supervisores s ON a.id_supervisor = s.id_supervisor
-  WHERE a.id_permiso = $1`,
+  s.nombre as nombre_supervisor,
+  a.operador_area,
+  a.responsable_area,
+  a.fecha_hora_area,
+  a.fecha_hora_supervisor,
+  a.ip_area,
+  a.localizacion_area
+FROM autorizaciones a
+LEFT JOIN supervisores s ON a.id_supervisor = s.id_supervisor
+WHERE a.id_permiso = $1`,
       [id_permiso]
     );
 

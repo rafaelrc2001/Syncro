@@ -739,6 +739,7 @@ function llenarTablaResponsables(idPermiso) {
 
       if (result.success && result.data) {
         const data = result.data;
+        const { ip_area, localizacion_area } = data;
         const filas = [
           {
             nombre: data.responsable_area,
@@ -763,11 +764,15 @@ function llenarTablaResponsables(idPermiso) {
             hayResponsables = true;
             const tr = document.createElement("tr");
             tr.innerHTML = `
-              <td>${fila.nombre}</td>
-              <td>${fila.cargo}</td>
-              <td>${fila.fecha || ""}</td>
-              <td></td> 
-            `;
+  <td>${fila.nombre}</td>
+  <td>${fila.cargo}</td>
+  <td>
+    ${fila.fecha || ""}<br>
+     ${ip_area || "-"}<br>
+     ${localizacion_area || "-"}
+  </td>
+  <td></td>
+`;
             tbody.appendChild(tr);
           }
         });

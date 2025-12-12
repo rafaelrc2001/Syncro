@@ -203,7 +203,7 @@ if (btnAutorizar) {
 const modalCloseBtn = document.getElementById("modal-close-btn");
 if (modalCloseBtn) {
   modalCloseBtn.addEventListener("click", function () {
-    window.location.href = "/Modules/Usuario/AutorizarPT.html";
+    window.location.href = "/Modules/Departamentos/AutorizarPT.html";
   });
 }
 const btnNoAutorizar = document.getElementById("btn-no-autorizar");
@@ -414,7 +414,7 @@ if (btnNoAutorizar) {
         // 4. Cerrar el modal y mostrar mensaje de éxito
         const modal = document.getElementById("modalComentario");
         if (modal) modal.style.display = "none";
-        window.location.href = "/Modules/Usuario/AutorizarPT.html";
+        window.location.href = "/Modules/Departamentos/AutorizarPT.html";
       } catch (err) {
         // Error en el proceso de no autorización
       }
@@ -427,7 +427,7 @@ const btnSalirNuevo = document.getElementById("btn-salir-nuevo");
 if (btnSalirNuevo) {
   btnSalirNuevo.addEventListener("click", function (e) {
     e.preventDefault();
-    window.location.href = "/Modules/Usuario/AutorizarPT.html";
+    window.location.href = "/Modules/Departamentos/AutorizarPT.html";
   });
 }
 // Mostrar solo la sección 2 al cargar y ocultar las demás
@@ -541,7 +541,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnRegresar = document.getElementById("btn-regresar");
   if (btnRegresar) {
     btnRegresar.addEventListener("click", function () {
-      window.location.href = "/Modules/Usuario/AutorizarPT.html";
+      window.location.href = "/Modules/Departamentos/AutorizarPT.html";
     });
   }
 
@@ -549,7 +549,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnSalir = document.getElementById("btn-salir");
   if (btnSalir) {
     btnSalir.addEventListener("click", function () {
-      window.location.href = "/Modules/Usuario/AutorizarPT.html";
+      window.location.href = "/Modules/Departamentos/AutorizarPT.html";
     });
   }
 

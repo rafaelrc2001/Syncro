@@ -39,15 +39,15 @@ document.addEventListener("DOMContentLoaded", function () {
       // Detectar la ruta de redirección según el archivo HTML actual
       const currentPage = window.location.pathname;
       let redirectUrl = "/Modules/SupSeguridad/SupSeguridad.html"; // Por defecto
-      
+
       if (currentPage.includes("PT1imprimir2.html")) {
-        redirectUrl = "/Modules/Usuario/AutorizarPT.html";
+        redirectUrl = "/Modules/Departamentos/AutorizarPT.html";
       } else if (currentPage.includes("PT1imprimirsup.html")) {
         redirectUrl = "/Modules/SupSeguridad/SupSeguridad.html";
       } else if (currentPage.includes("PT1imprimirseg.html")) {
         redirectUrl = "/Modules/SupSeguridad/SupSeguridad.html";
       }
-      
+
       window.location.href = redirectUrl;
     });
   }
@@ -127,11 +127,11 @@ const btnSalirNuevo = document.getElementById("btn-salir-nuevo");
 if (btnSalirNuevo) {
   btnSalirNuevo.addEventListener("click", function (e) {
     e.preventDefault();
-    
+
     // Detectar la ruta de redirección según el archivo HTML actual
     const currentPage = window.location.pathname;
     let redirectUrl = "/Modules/SupSeguridad/SupSeguridad.html"; // Por defecto
-    
+
     if (currentPage.includes("PT1imprimir2.html")) {
       redirectUrl = "/Modules/Usuario/AutorizarPT.html";
     } else if (currentPage.includes("PT1imprimirsup.html")) {
@@ -139,7 +139,7 @@ if (btnSalirNuevo) {
     } else if (currentPage.includes("PT1imprimirseg.html")) {
       redirectUrl = "/Modules/SupSeguridad/SupSeguridad.html";
     }
-    
+
     window.location.href = redirectUrl;
   });
 }
@@ -240,7 +240,7 @@ document.addEventListener("DOMContentLoaded", function () {
     btnRegresar.addEventListener("click", function () {
       const currentPage = window.location.pathname;
       let redirectUrl = "/Modules/SupSeguridad/SupSeguridad.html"; // Por defecto
-      
+
       if (currentPage.includes("PT1imprimir2.html")) {
         redirectUrl = "/Modules/Usuario/AutorizarPT.html";
       } else if (currentPage.includes("PT1imprimirsup.html")) {
@@ -248,7 +248,7 @@ document.addEventListener("DOMContentLoaded", function () {
       } else if (currentPage.includes("PT1imprimirseg.html")) {
         redirectUrl = "/Modules/SupSeguridad/SupSeguridad.html";
       }
-      
+
       window.location.href = redirectUrl;
     });
   }
@@ -259,7 +259,7 @@ document.addEventListener("DOMContentLoaded", function () {
     btnSalir.addEventListener("click", function () {
       const currentPage = window.location.pathname;
       let redirectUrl = "/Modules/SupSeguridad/SupSeguridad.html"; // Por defecto
-      
+
       if (currentPage.includes("PT1imprimir2.html")) {
         redirectUrl = "/Modules/Usuario/AutorizarPT.html";
       } else if (currentPage.includes("PT1imprimirsup.html")) {
@@ -267,7 +267,7 @@ document.addEventListener("DOMContentLoaded", function () {
       } else if (currentPage.includes("PT1imprimirseg.html")) {
         redirectUrl = "/Modules/SupSeguridad/SupSeguridad.html";
       }
-      
+
       window.location.href = redirectUrl;
     });
   }
@@ -437,12 +437,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
           const respHerramientas = document.getElementById("resp-herramientas");
           if (respHerramientas) {
-            respHerramientas.textContent = general.verificacion_herramientas || "-";
+            respHerramientas.textContent =
+              general.verificacion_herramientas || "-";
           }
 
-          const verificacionObs = document.getElementById("verificacion-observaciones");
+          const verificacionObs = document.getElementById(
+            "verificacion-observaciones"
+          );
           if (verificacionObs) {
-            verificacionObs.textContent = general.verificacion_observaciones || "-";
+            verificacionObs.textContent =
+              general.verificacion_observaciones || "-";
           }
 
           // Rellenar AST y Participantes

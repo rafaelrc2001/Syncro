@@ -451,7 +451,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     initBackButton();
     setDefaultDateTime();
     setDefaultApplicant(); // Llenar automáticamente el responsable del trabajo
-    await setDefaultDepartment(); // Llenar automáticamente el nombre del departamento
+   // await setDefaultDepartment(); // Llenar automáticamente el nombre del departamento
 
     // Lógica para enviar estatus al hacer click en siguiente de sección 1
     const nextBtn = document.querySelector('.next-step[data-next="2"]');

@@ -317,6 +317,29 @@ function initDragAndDropConstructor() {
       return;
     }
 
+    // ===== VERIFICAR SI YA EXISTE UN FORMULARIO DE ESTE TIPO =====
+    const existingForms = dropZone.querySelectorAll(".added-form");
+    const formTypeMap = {
+      "Permiso Altura": "altura",
+      "Permiso Espacio confinado": "confinado",
+      "Permiso Bloqueo y Etiquetado": "bloqueo",
+      "Permiso Agua a Alta Presión": "agua-presion",
+      "Permiso Primera Apertura": "primera-apertura",
+      "Permiso Izaje con Grúa": "izaje",
+      "Permiso Eléctrico": "electrico"
+    };
+    
+    const formType = formTypeMap[formName];
+    const alreadyExists = Array.from(existingForms).some(
+      form => form.dataset.formType === formType
+    );
+
+    if (alreadyExists) {
+      alert(`⚠️ Ya existe un formulario de "${formName}". No puedes agregar duplicados.`);
+      console.warn(`[DRAG&DROP] Formulario duplicado bloqueado: ${formName}`);
+      return;
+    }
+
     // Obtener el template desde el DOM
     const template = document.getElementById(templateId);
     if (!template) {

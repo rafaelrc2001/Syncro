@@ -2,6 +2,20 @@ document.addEventListener("DOMContentLoaded", () => {
   const addParticipantBtn = document.getElementById("add-participant");
   const participantsContainer = document.querySelector(".participants-table");
 
+  // Agregar event listener para el botón eliminar del primer participante
+  const firstParticipant = document.querySelector(".participant-row[data-index='1']");
+  if (firstParticipant) {
+    const removeBtn = firstParticipant.querySelector(".remove-participant");
+    if (removeBtn) {
+      removeBtn.addEventListener("click", function () {
+        if (confirm("¿Está seguro de eliminar este participante?")) {
+          firstParticipant.remove();
+          renumberParticipants();
+        }
+      });
+    }
+  }
+
   // Función para renumerar participantes
   function renumberParticipants() {
     document.querySelectorAll(".participant-row").forEach((row, index) => {

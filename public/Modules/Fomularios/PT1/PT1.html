@@ -1499,6 +1499,25 @@
         </div>
     </div>
 
+    <!-- Modal de carga masiva Excel -->
+    <div class="modal" id="mass-load-modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📂 Importar Participantes desde Excel</h3>
+                <span class="close-modal" id="close-mass-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom: 15px;">Sube un archivo Excel con las siguientes columnas: <strong>Nombre, Credencial, Cargo</strong></p>
+                <input type="file" id="excelInput" accept=".xlsx,.xls" style="margin-bottom: 15px;">
+                <div id="preview-tabla"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn secondary" id="cancel-mass-load">Cancelar</button>
+                <button class="btn primary" id="confirm-mass-load" disabled>Importar Participantes</button>
+            </div>
+        </div>
+    </div>
+
 
       <!-- Script de verificación de autenticación -->
     <script src="/JS/generales/auth-check.js"></script>
@@ -1510,12 +1529,15 @@
         // El contenido se carga normalmente si está autenticado
       })();
     </script>
+    <!-- SheetJS para leer archivos Excel -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
     <!--<script src="/Modules/Fomularios/PT1/PT1.js"></script> -->
     <script src="/Modules/Fomularios/Generales/email.js"></script>
     <script src="/Modules/Fomularios/Generales/seccion1.js"></script>
     <script src="/Modules/Fomularios/PT1/seccion2.js"></script>
     <script src="/Modules/Fomularios/Generales/seccion3.js"></script> 
     <script src="/Modules/Fomularios/Generales/seccion4.js"></script>
-    <script src="/Modules/Fomularios/Generales/navegacion.js"></script> 
+    <script src="/Modules/Fomularios/Generales/navegacion.js"></script>
+    <script src="/Modules/Fomularios/Generales/cargadedatos.js"></script> 
 </body>
 </html>

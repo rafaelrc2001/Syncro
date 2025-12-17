@@ -454,7 +454,7 @@
     <script>
       // Verificar autenticación antes de cargar contenido
       (async function () {
-        const usuario = await verificarRol(["usuario"]);
+        const usuario = await verificarRol(["departamento"]);
         if (!usuario) return; // auth-check.js ya redirigió
         // El contenido se carga normalmente si está autenticado
       })();

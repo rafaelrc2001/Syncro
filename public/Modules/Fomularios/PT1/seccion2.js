@@ -217,4 +217,193 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
+  // ============================================================================
+  // INICIO: FUNCIONALIDAD DE DRAG AND DROP PARA CONSTRUCTOR DE FORMATO
+  // ============================================================================
+  // Esta sección implementa la funcionalidad de arrastrar y soltar formularios
+  // Los formularios están pre-creados como templates en HTML y se clonan al arrastrar
+  // ============================================================================
+
+  initDragAndDropConstructor();
 });
+
+/**
+ * Inicializa el sistema de Drag & Drop para el constructor de formularios
+ * Clona templates HTML pre-existentes en lugar de crear HTML dinámicamente
+ */
+function initDragAndDropConstructor() {
+  // ===== VARIABLE PARA CONTAR FORMULARIOS =====
+  // Contador para generar IDs únicos en los nombres de inputs (evita conflictos)
+  let counter = 0;
+
+  // ===== MAPEO DE NOMBRES A TEMPLATES =====
+  // Relaciona el nombre del formulario arrastrable con su template HTML correspondiente
+  const formTemplateMap = {
+    "Permiso Altura": "template-permiso-altura",
+    "Permiso Espacio confinado": "template-permiso-espacio-confinado",
+    "Permiso Bloqueo y Etiquetado": "template-permiso-bloqueo-y-etiquetado",
+    "Permiso Agua a Alta Presión": "template-permiso-agua-a-alta-presion",
+    "Permiso Primera Apertura": "template-permiso-primera-apertura",
+    "Permiso Izaje con Grúa": "template-permiso-izaje-con-grua",
+    "Permiso Eléctrico": "template-permiso-electrico"
+  };
+
+  // ===== SELECCIÓN DE ELEMENTOS DEL DOM =====
+  const dropZone = document.getElementById("dropZone");
+  const formItems = document.querySelectorAll(".form-item");
+
+  // Verificar que los elementos existen antes de continuar
+  if (!dropZone || formItems.length === 0) {
+    console.warn(
+      "[DRAG&DROP] No se encontraron elementos necesarios para drag&drop"
+    );
+    return;
+  }
+
+  // ===== EVENTO: DRAG START (Inicio del arrastre) =====
+  // Se ejecuta cuando el usuario empieza a arrastrar un formulario
+  formItems.forEach((item) => {
+    item.addEventListener("dragstart", (e) => {
+      // Obtener el nombre del formulario desde el atributo data-name
+      const formName = item.dataset.name;
+
+      // Establecer los datos para la transferencia drag & drop
+      e.dataTransfer.setData("text/plain", formName);
+
+      // Agregar clase visual para indicar que se está arrastrando
+      item.classList.add("dragging");
+
+      console.log(`[DRAG&DROP] Iniciado arrastre de: ${formName}`);
+    });
+
+    // ===== EVENTO: DRAG END (Fin del arrastre) =====
+    // Se ejecuta cuando termina el arrastre
+    item.addEventListener("dragend", () => {
+      item.classList.remove("dragging");
+    });
+  });
+
+  // ===== EVENTO: DRAG OVER (Arrastrar sobre la zona) =====
+  // Permite que la zona acepte elementos soltados
+  dropZone.addEventListener("dragover", (e) => {
+    e.preventDefault(); // Necesario para permitir el drop
+
+    // Agregar clase visual para indicar zona válida
+    dropZone.classList.add("dragover");
+  });
+
+  // ===== EVENTO: DRAG LEAVE (Salir de la zona) =====
+  // Remueve el efecto visual cuando el cursor sale
+  dropZone.addEventListener("dragleave", () => {
+    dropZone.classList.remove("dragover");
+  });
+
+  // ===== EVENTO: DROP (Soltar en la zona) =====
+  // Se ejecuta cuando se suelta el elemento en la zona de destino
+  dropZone.addEventListener("drop", (e) => {
+    e.preventDefault();
+
+    // Remover clase visual de hover
+    dropZone.classList.remove("dragover");
+
+    // Obtener el nombre del formulario que se soltó
+    const formName = e.dataTransfer.getData("text/plain");
+
+    // Verificar que existe un template para este formulario
+    const templateId = formTemplateMap[formName];
+    if (!templateId) {
+      console.error(`[DRAG&DROP] No se encontró template para: ${formName}`);
+      return;
+    }
+
+    // Obtener el template desde el DOM
+    const template = document.getElementById(templateId);
+    if (!template) {
+      console.error(`[DRAG&DROP] Template no existe en HTML: ${templateId}`);
+      return;
+    }
+
+    // Ocultar el placeholder si existe
+    const placeholder = dropZone.querySelector(".drop-zone-placeholder");
+    if (placeholder) {
+      placeholder.style.display = "none";
+    }
+
+    // Incrementar contador para IDs únicos
+    counter++;
+
+    // ===== CLONAR EL TEMPLATE =====
+    // Clonar el contenido del template (true = clonación profunda)
+    const clone = template.content.cloneNode(true);
+    
+    // Obtener el div principal del formulario clonado
+    const formDiv = clone.querySelector(".added-form");
+    
+    // Asignar un ID único al formulario clonado
+    formDiv.dataset.formId = `form-${counter}`;
+    formDiv.dataset.formCounter = counter; // Guardar contador para referencia
+
+    // ===== RENOMBRAR INPUTS PARA EVITAR CONFLICTOS =====
+    // Cada formulario clonado necesita nombres únicos en sus inputs radio
+    const radioInputs = formDiv.querySelectorAll('input[type="radio"]');
+    radioInputs.forEach((input) => {
+      // Obtener el nombre original del input (ej: "altura_q1")
+      const originalName = input.getAttribute("name");
+      
+      // Crear nuevo nombre único agregando el contador (ej: "altura_q1_form1")
+      const uniqueName = `${originalName}_form${counter}`;
+      
+      // Actualizar el nombre del input
+      input.setAttribute("name", uniqueName);
+      
+      // Si el input tiene un ID, también actualizarlo
+      if (input.id) {
+        input.setAttribute("id", `${input.id}_form${counter}`);
+      }
+    });
+
+    // ===== CONFIGURAR BOTÓN DE ELIMINAR =====
+    const removeBtn = formDiv.querySelector(".remove-btn");
+    removeBtn.addEventListener("click", () => {
+      // Animar la salida del formulario
+      formDiv.style.opacity = "0";
+      formDiv.style.transform = "translateX(20px)";
+
+      // Remover el elemento después de la animación
+      setTimeout(() => {
+        formDiv.remove();
+
+        // Si no quedan formularios, mostrar placeholder nuevamente
+        if (dropZone.querySelectorAll(".added-form").length === 0) {
+          if (placeholder) {
+            placeholder.style.display = "flex";
+          }
+        }
+
+        console.log(
+          `[DRAG&DROP] Formulario eliminado: ${formName} (ID: form-${counter})`
+        );
+      }, 300);
+    });
+
+    // ===== AGREGAR EL FORMULARIO CLONADO A LA ZONA DE DROP =====
+    dropZone.appendChild(formDiv);
+
+    // Animación de entrada (pequeño delay para que la transición CSS funcione)
+    setTimeout(() => {
+      formDiv.style.opacity = "1";
+      formDiv.style.transform = "translateY(0)";
+    }, 10);
+
+    console.log(
+      `[DRAG&DROP] Formulario agregado desde template: ${formName} (ID: form-${counter}, Template: ${templateId})`
+    );
+  });
+
+  console.log("[DRAG&DROP] Sistema de Drag & Drop inicializado con templates HTML");
+}
+
+// ============================================================================
+// FIN: FUNCIONALIDAD DE DRAG AND DROP
+// ============================================================================

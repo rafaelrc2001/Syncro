@@ -11,6 +11,8 @@
 
           <link rel="stylesheet" href="/CSS/EstiloFormularios.css">
           <link rel="stylesheet" href="/CSS/prueba.css">
+          <!-- Estilos para funcionalidad Drag & Drop del Constructor de Formato -->
+          <link rel="stylesheet" href="/CSS/EstiloDragDrop.css">
 
 </head>
 <body>
@@ -135,44 +137,11 @@
                             <input type="text" id="contract-number" name="contract-number" class="compact" placeholder="Ingrese el número de contrato si aplica">
                         </div>
                         
-                    </div>
+                      </div>
 
 
-                    
-                        <div class="form-actions">
-                            <button type="button" id="seccion1" class="btn primary next-step" data-next="2">
-                                Siguiente <i class="ri-arrow-right-line"></i>
-                            </button>
-                        </div>
-                       
-                    
-                    </div>
-               <!-- Fin Sección 1: Encabezado -->
-                </section>
 
-            
-
-
-                
-
-                 
-                <!-- Sección 2: Permiso No Peligroso -->
-                <section class="form-section" data-section="2" id="permiso-np-section">
-                    <div class="form-container" id="permiso-np-container">
-                        <div class="form-header" id="permiso-np-header">
-                            <div class="form-icon" id="permiso-np-icon">
-                                <i class="ri-survey-line"></i>
-                            </div>
-                            <div id="permiso-np-header-text">
-                                <h2>Formulario</h2>
-                                <p>Complete los datos básicos del permiso</p>
-                            </div>
-                        </div>
-                        <div id="permiso-np-header-divider"></div>
-
-             
-
-                        <div class="form-grid" id="permiso-np-grid1">
+                       <div class="form-grid" id="permiso-np-grid1">
                             <div class="form-group">
                                 <div class="form-group">
                                     <label for="maintenance-type">Tipo de mantenimiento</label>
@@ -243,58 +212,1080 @@
                             </div>
                         </div>
 
-                        <div class="form-section-title" style="margin-top:2rem;">
-    <i class="ri-checkbox-multiple-line"></i>
-    <h3>Lista de verificación previa al trabajo</h3>
-</div>
-<div class="form-group" style="padding:0;">
-    <table class="verificacion-table" style="width:100%;border-collapse:collapse;">
-        <thead>
-            <tr style="background:#f3f3f3;">
-                <th colspan="4" style="text-align:left;padding:8px;font-weight:600;">Lista de verificación previa al trabajo.</th>
-            </tr>
-            <tr style="background:#fafafa;">
-                <th style="width:70%;text-align:left;padding:8px;"></th>
-                <th style="width:10%;text-align:center;">SI</th>
-                <th style="width:10%;text-align:center;">NO</th>
-                <th style="width:10%;text-align:center;">N/A</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td style="padding:8px;">¿El personal cuenta con el equipo de protección personal adecuado para efectuar el trabajo?</td>
-                <td style="text-align:center;">
-                    <input type="radio" name="epp" value="SI" required>
-                </td>
-                <td style="text-align:center;">
-                    <input type="radio" name="epp" value="NO">
-                </td>
-                <td style="text-align:center;">
-                    <input type="radio" name="epp" value="N/A">
-                </td>
-            </tr>
-            <tr>
-                <td style="padding:8px;">¿Las herramientas están en buen estado y son las adecuadas para efectuar el trabajo?</td>
-                <td style="text-align:center;">
-                    <input type="radio" name="herramientas" value="SI" required>
-                </td>
-                <td style="text-align:center;">
-                    <input type="radio" name="herramientas" value="NO">
-                </td>
-                <td style="text-align:center;">
-                    <input type="radio" name="herramientas" value="N/A">
-                </td>
-            </tr>
-            <tr>
-                <td style="padding:8px;font-weight:600;">Observaciones:</td>
-                <td colspan="3" style="padding:8px;">
-                    <textarea name="observaciones" rows="2" style="width:100%;resize:vertical;" placeholder="Escriba observaciones aquí..."></textarea>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
 
+
+                    
+                        <div class="form-actions">
+                            <button type="button" id="seccion1" class="btn primary next-step" data-next="2">
+                                Siguiente <i class="ri-arrow-right-line"></i>
+                            </button>
+                        </div>
+                       
+                    
+                    </div>
+               <!-- Fin Sección 1: Encabezado -->
+                </section>
+
+            
+
+
+                
+
+                 
+                <!-- Sección 2: Permiso No Peligroso -->
+                <section class="form-section" data-section="2" id="permiso-np-section">
+                    <div class="form-container" id="permiso-np-container">
+                        
+
+             
+
+                    
+                        <!-- ===== INICIO: CONSTRUCTOR DE FORMATO CON DRAG & DROP ===== -->
+                        <!-- Agregado: Constructor de formato dinámico para agregar formularios adicionales -->
+                        <div id="permiso-np-header-divider"></div>
+
+                        <div class="form-section-title" id="permiso-np-constructor-title">
+                            <i class="ri-file-add-line"></i>
+                            <h3>Constructor de Formato</h3>
+                        </div>
+
+                        <div class="container" id="formato-constructor-container">
+                            <!-- PANEL DE FORMULARIOS DISPONIBLES -->
+                            <!-- Esta sección contiene los formularios que se pueden arrastrar -->
+                            <div class="forms-panel" id="forms-panel">
+                                <h3>Formularios Disponibles</h3>
+                                
+                                <!-- Cada item es draggable (arrastrable) y contiene el nombre del formulario -->
+                                <div class="form-item" draggable="true" data-name="Permiso Altura">
+                                    <i class="ri-arrow-up-line"></i> Permiso Altura
+                                </div>
+                                <div class="form-item" draggable="true" data-name="Permiso Espacio confinado">
+                                    <i class="ri-door-lock-box-line"></i> Permiso Espacio confinado
+                                </div>
+                                <div class="form-item" draggable="true" data-name="Permiso Bloqueo y Etiquetado">
+                                    <i class="ri-lock-line"></i> Permiso Bloqueo y Etiquetado
+                                </div>
+                                <div class="form-item" draggable="true" data-name="Permiso Agua a Alta Presión">
+                                    <i class="ri-drop-line"></i> Permiso Agua a Alta Presión
+                                </div>
+                                <div class="form-item" draggable="true" data-name="Permiso Primera Apertura">
+                                    <i class="ri-key-2-line"></i> Permiso Primera Apertura
+                                </div>
+                                <div class="form-item" draggable="true" data-name="Permiso Izaje con Grúa">
+                                    <i class="ri-attachment-2"></i> Permiso Izaje con Grúa
+                                </div>
+                                <div class="form-item" draggable="true" data-name="Permiso Eléctrico">
+                                    <i class="ri-flashlight-line"></i> Permiso Eléctrico
+                                </div>
+                                  
+                            </div>
+
+                            <!-- ÁREA DE DROP (ZONA DE DESTINO) -->
+                            <!-- Aquí se soltarán los formularios arrastrados -->
+                            <div class="main-format" id="main-format">
+                                <h3>Formato Principal</h3>
+                                <h4>Arrastra aquí los formularios adicionales</h4>
+                                
+                                <!-- Zona donde se sueltan los formularios -->
+                                <div class="drop-zone" id="dropZone">
+                                    <div class="drop-zone-placeholder">
+                                        <i class="ri-drag-drop-line"></i>
+                                        <p>Arrastra formularios desde el panel izquierdo</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ===== FIN: CONSTRUCTOR DE FORMATO CON DRAG & DROP ===== -->
+
+                        <!-- ===== TEMPLATES DE FORMULARIOS (OCULTOS) ===== -->
+                        <!-- Estos templates contienen los formularios pre-creados que se clonarán al arrastrar -->
+                        <div id="form-templates" style="display: none;">
+                            
+                            <!-- TEMPLATE: Permiso Altura -->
+                            <template id="template-permiso-altura">
+                                <div class="added-form" data-form-type="altura">
+                                    <div class="added-form-header">
+                                        <h4><i class="ri-arrow-up-line"></i> Permiso Altura</h4>
+                                        <button type="button" class="remove-btn" title="Eliminar formulario">
+                                            <i class="ri-close-line"></i> Eliminar
+                                        </button>
+                                    </div>
+
+                                    <!-- En esta seccion se agrega el permiso en altura -->
+                                    <div class="color-section gray-section">
+                                        <div class="form-section-title">
+                                            <i class="ri-shield-check-line"></i>
+                                            <h4>Análisis de requisitos para efectuar el trabajo</h4>
+                                        </div>
+                                        <div class="form-table">
+                                            <!-- Encabezado de opciones -->
+                                            <div class="options-header">
+                                                <div class="form-table-label"></div>
+                                                <div class="form-table-options">
+                                                    <div class="options-labels">
+                                                        <span class="option-label">SI</span>
+                                                        <span class="option-label">NO</span>
+                                                        <span class="option-label">N/A</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Fila 1 -->
+                                            <!-- Fila 1: Escalera -->
+                                            <div class="form-table-row">
+                                            <div class="form-table-label">
+                                                <label>¿El trabajo requiere escalera?</label>
+                                            </div>
+                                            <div class="form-table-options">
+                                                <div class="yes-no-na compact">
+                                                    <label><input type="radio" name="warning-signs" value="SI"></label>
+                                                    <label><input type="radio" name="warning-signs" value="NO"></label>
+                                                    <label><input type="radio" name="warning-signs" value="N/A"></label>
+                                                </div>
+                                                <div id="input-escalera-container" style="display:none;">
+                                                <label for="input-escalera" style="font-size:0.95em;">¿tipo?</label>
+                                                <input type="text" id="input-escalera" name="input-escalera" class="extra-input" placeholder="-">
+                                                </div>
+                                            </div>
+                                            </div>
+
+                                            <!-- Fila 2 -->
+                                            <div class="form-table-row">
+                                                <div class="form-table-label">
+                                                    <label>¿El trabajo requiere canastilla manejada por grúa?</label>
+                                                </div>
+                                                <div class="form-table-options">
+                                                    <div class="yes-no-na compact">
+                                                        <label><input type="radio" name="explosion-proof-lighting" value="SI"></label>
+                                                        <label><input type="radio" name="explosion-proof-lighting" value="NO"></label>
+                                                        <label><input type="radio" name="explosion-proof-lighting" value="N/A"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Fila 3 -->
+                                            <div class="form-table-row">
+                                                <div class="form-table-label">
+                                                    <label>¿Aseguramiento con estrobo?</label>
+                                                </div>
+                                                <div class="form-table-options">
+                                                    <div class="yes-no-na compact">
+                                                        <label><input type="radio" name="forced-ventilation" value="SI"></label>
+                                                        <label><input type="radio" name="forced-ventilation" value="NO"></label>
+                                                        <label><input type="radio" name="forced-ventilation" value="N/A"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Fila 4 -->
+                                            <div class="form-table-row">
+                                                <div class="form-table-label">
+                                                    <label>¿El trabajo requiere andamio con cama completa?</label>
+                                                </div>
+                                                <div class="form-table-options">
+                                                    <div class="yes-no-na compact">
+                                                        <label><input type="radio" name="medical-evaluation" value="SI"></label>
+                                                        <label><input type="radio" name="medical-evaluation" value="NO"></label>
+                                                        <label><input type="radio" name="medical-evaluation" value="N/A"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Fila 5 -->
+                                            <!-- Fila 5: Otro tipo de acceso -->
+                                            <div class="form-table-row">
+                                            <div class="form-table-label">
+                                                <label>¿El trabajo requiere otro tipo de acceso, andamio o plataforma?</label>
+                                            </div>
+                                            <div class="form-table-options">
+                                                <div class="yes-no-na compact">
+                                                <label><input type="radio" name="lifeline" value="SI"></label>
+                                                <label><input type="radio" name="lifeline" value="NO"></label>
+                                                <label><input type="radio" name="lifeline" value="N/A"></label>
+                                                
+                                                </div>
+                                                <div id="input-acceso-container" style="display:none;">
+                                                <label for="input-acceso" style="font-size:0.95em;">¿cuál?</label>
+                                                <input type="text" id="input-acceso" name="input-acceso" class="extra-input" placeholder="-">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Tabla: Medidas/Requisitos para Administrar los Riesgos -->
+                                    <div class="color-section gray-section">
+                                        <div class="form-section-title">
+                                            <i class="ri-shield-check-line"></i>
+                                            <h3>Medidas para administrar los riesgos</h3>
+                                        </div>
+                                        <div class="form-table">
+                                            <!-- Encabezado de opciones -->
+                                            <div class="options-header">
+                                                <div class="form-table-label"></div>
+                                                <div class="form-table-options">
+                                                    <div class="options-labels">
+                                                        <span class="option-label">SI</span>
+                                                        <span class="option-label">NO</span>
+                                                        <span class="option-label">N/A</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Fila 1 -->
+                                            <div class="form-table-row">
+                                                <div class="form-table-label">
+                                                    <label>¿El acceso al lugar del trabajo está libre de obstáculos</label>
+                                                </div>
+                                                <div class="form-table-options">
+                                                    <div class="yes-no-na compact">
+                                                        <label><input type="radio" name="barriers" value="SI"></label>
+                                                        <label><input type="radio" name="barriers" value="NO"></label>
+                                                        <label><input type="radio" name="barriers" value="N/A"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Fila 2 -->
+                                            <div class="form-table-row">
+                                                <div class="form-table-label">
+                                                    <label>¿La canastilla está debidamente asegurada?</label>
+                                                </div>
+                                                <div class="form-table-options">
+                                                    <div class="yes-no-na compact">
+                                                        <label><input type="radio" name="lifeline2" value="SI"></label>
+                                                        <label><input type="radio" name="lifeline2" value="NO"></label>
+                                                        <label><input type="radio" name="lifeline2" value="N/A"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Fila 3 -->
+                                            <div class="form-table-row">
+                                                <div class="form-table-label">
+                                                    <label>¿El andamio tiene rodapié, barandal plataforma completa, escaleras y contravientos?</label>
+                                                </div>
+                                                <div class="form-table-options">
+                                                    <div class="yes-no-na compact">
+                                                        <label><input type="radio" name="lifeline3" value="SI"></label>
+                                                        <label><input type="radio" name="lifeline3" value="NO"></label>
+                                                        <label><input type="radio" name="lifeline3" value="N/A"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Fila 4 -->
+                                            <div class="form-table-row">
+                                                <div class="form-table-label">
+                                                    <label>¿El andamio tiene seguros y zapatas para frenos?</label>
+                                                </div>
+                                                <div class="form-table-options">
+                                                    <div class="yes-no-na compact">
+                                                        <label><input type="radio" name="barriers2" value="SI"></label>
+                                                        <label><input type="radio" name="barriers2" value="NO"></label>
+                                                        <label><input type="radio" name="barriers2" value="N/A"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Fila 5 -->
+                                            <div class="form-table-row">
+                                                <div class="form-table-label">
+                                                    <label>¿Las escaleras tienen peldaños en buen estado, zapatas o gomas de apoyo y están bien sujetas?</label>
+                                                </div>
+                                                <div class="form-table-options">
+                                                    <div class="yes-no-na compact">
+                                                        <label><input type="radio" name="barriers3" value="SI"></label>
+                                                        <label><input type="radio" name="barriers3" value="NO"></label>
+                                                        <label><input type="radio" name="barriers3" value="N/A"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Fila 6 -->
+                                            <div class="form-table-row">
+                                                <div class="form-table-label">
+                                                    <label>¿La línea de vida o el punto de amarre es eficaz para asegurar el cable de sujecion del arnés de seguridad?</label>
+                                                </div>
+                                                <div class="form-table-options">
+                                                    <div class="yes-no-na compact">
+                                                        <label><input type="radio" name="lifeline4" value="SI"></label>
+                                                        <label><input type="radio" name="lifeline4" value="NO"></label>
+                                                        <label><input type="radio" name="lifeline4" value="N/A"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Fila 7 -->
+                                            <div class="form-table-row">
+                                                <div class="form-table-label">
+                                                    <label>¿El arnés de seguridad y cable de sujeción están completos y en buen estado?</label>
+                                                </div>
+                                                <div class="form-table-options">
+                                                    <div class="yes-no-na compact">
+                                                        <label><input type="radio" name="lifeline5" value="SI"></label>
+                                                        <label><input type="radio" name="lifeline5" value="NO"></label>
+                                                        <label><input type="radio" name="lifeline5" value="N/A"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Fila 8 -->
+                                            <div class="form-table-row">
+                                                <div class="form-table-label">
+                                                    <label>¿Es necesario suspender los trabajos adyacentes?</label>
+                                                </div>
+                                                <div class="form-table-options">
+                                                    <div class="yes-no-na compact">
+                                                        <label><input type="radio" name="lifeline6" value="SI"></label>
+                                                        <label><input type="radio" name="lifeline6" value="NO"></label>
+                                                        <label><input type="radio" name="lifeline6" value="N/A"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Fila 9 -->
+                                            <div class="form-table-row">
+                                                                                <div class="form-table-label">
+                                                                                    <label>¿Número de personas autorizadas?</label>
+                                                                                </div>
+                                                                                <div class="form-table-options">
+                                                                                    <div class="yes-no-na compact">
+                                                                                        <label><input type="radio" name="lifeline7" value="SI"></label>
+                                                                                        <label><input type="radio" name="lifeline7" value="NO"></label>
+                                                                                        <label><input type="radio" name="lifeline7" value="N/A"></label>
+                                                                                    </div>
+                                                                                    <div id="input-personas-autorizadas-container" style="display:none;">
+                                                                                        <label for="input-personas-autorizadas" style="font-size:0.95em;">¿Cuántas?</label>
+                                                                                        <input type="number" min="1" id="input-personas-autorizadas" name="input-personas-autorizadas" class="extra-input" placeholder="-">
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                            <!-- Fila 10 -->
+                                            <div class="form-table-row">
+                                                <div class="form-table-label">
+                                                    <label>¿Los trabajadores resultaron aptos en la evaluación medica?</label>
+                                                </div>
+                                                <div class="form-table-options">
+                                                    <div class="yes-no-na compact">
+                                                        <label><input type="radio" name="lifeline8" value="SI"></label>
+                                                        <label><input type="radio" name="lifeline8" value="NO"></label>
+                                                        <label><input type="radio" name="lifeline8" value="N/A"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Fila 11 -->
+                                            <div class="form-table-row">
+                                                <div class="form-table-label">
+                                                    <label>¿Se requiere la instalación de barreras y/o barricadas?</label>
+                                                </div>
+                                                <div class="form-table-options">
+                                                    <div class="yes-no-na compact">
+                                                        <label><input type="radio" name="lifeline9" value="SI"></label>
+                                                        <label><input type="radio" name="lifeline9" value="NO"></label>
+                                                        <label><input type="radio" name="lifeline9" value="N/A"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-table-row compact-row">
+                                                <div class="form-table-label">
+                                                    <label for="observations">Observaciones adicionales</label>
+                                                </div>
+                                                <div class="form-table-options">
+                                                    <textarea id="observations" name="observations" rows="2" placeholder="Ingrese cualquier observación adicional"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    
+
+                                </div>
+                            </template>
+
+
+
+                            <!-- TEMPLATE: Permiso Espacio Confinado -->
+                            <template id="template-permiso-espacio-confinado">
+                                <div class="added-form" data-form-type="confinado">
+                                    <div class="added-form-header">
+                                        <h4><i class="ri-door-lock-box-line"></i> Permiso Espacio Confinado</h4>
+                                        <button type="button" class="remove-btn" title="Eliminar formulario">
+                                            <i class="ri-close-line"></i> Eliminar
+                                        </button>
+                                    </div>
+
+                                     <!-- Inicio del permiso de trabajo en espacio confinado -->
+                                    <div class="color-section gray-section">
+                                        <div class="form-section-title">
+                                        <i class="ri-shield-check-line"></i>
+                                        <h4>Medidas / Requisitos para administrar los riesgos</h4>
+                                        </div>
+                                        <div class="form-table">
+                                        <!-- Encabezado de opciones -->
+                                        <div class="options-header">
+                                            <div class="form-table-label"></div>
+                                            <div class="form-table-options">
+                                            <div class="options-labels">
+                                                <span class="option-label">SI</span>
+                                                <span class="option-label">NO</span>
+                                                <span class="option-label">N/A</span>
+                                            </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Fila 1 -->
+                                        <div class="form-table-row">
+                                            <div class="form-table-label">
+                                            <label
+                                                >¿En los registros de entrada se colocaron avisos de
+                                                trabajos en espacios confinados?</label
+                                            >
+                                            </div>
+                                            <div class="form-table-options">
+                                            <div class="yes-no-na compact">
+                                                <label
+                                                ><input type="radio" name="warning-signs" value="SI"
+                                                /></label>
+                                                <label
+                                                ><input type="radio" name="warning-signs" value="NO"
+                                                /></label>
+                                                <label
+                                                ><input type="radio" name="warning-signs" value="N/A"
+                                                /></label>
+                                            </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Fila 2 -->
+                                        <div class="form-table-row">
+                                            <div class="form-table-label">
+                                            <label
+                                                >¿Se instaló la iluminación interior, a prueba de
+                                                explosión con cable de uso rudo sin uniones?</label
+                                            >
+                                            </div>
+                                            <div class="form-table-options">
+                                            <div class="yes-no-na compact">
+                                                <label
+                                                ><input
+                                                    type="radio"
+                                                    name="explosion-proof-lighting"
+                                                    value="SI"
+                                                /></label>
+                                                <label
+                                                ><input
+                                                    type="radio"
+                                                    name="explosion-proof-lighting"
+                                                    value="NO"
+                                                /></label>
+                                                <label
+                                                ><input
+                                                    type="radio"
+                                                    name="explosion-proof-lighting"
+                                                    value="N/A"
+                                                /></label>
+                                            </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Fila 3 -->
+                                        <div class="form-table-row">
+                                            <div class="form-table-label">
+                                            <label>¿Se instaló ventilación forzada?</label>
+                                            </div>
+                                            <div class="form-table-options">
+                                            <div class="yes-no-na compact">
+                                                <label
+                                                ><input
+                                                    type="radio"
+                                                    name="forced-ventilation"
+                                                    value="SI"
+                                                /></label>
+                                                <label
+                                                ><input
+                                                    type="radio"
+                                                    name="forced-ventilation"
+                                                    value="NO"
+                                                /></label>
+                                                <label
+                                                ><input
+                                                    type="radio"
+                                                    name="forced-ventilation"
+                                                    value="N/A"
+                                                /></label>
+                                            </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Fila 4 -->
+                                        <div class="form-table-row">
+                                            <div class="form-table-label">
+                                            <label
+                                                >¿Los trabajadores resultaron aptos en la evaluación
+                                                médica?</label
+                                            >
+                                            </div>
+                                            <div class="form-table-options">
+                                            <div class="yes-no-na compact">
+                                                <label
+                                                ><input
+                                                    type="radio"
+                                                    name="medical-evaluation"
+                                                    value="SI"
+                                                /></label>
+                                                <label
+                                                ><input
+                                                    type="radio"
+                                                    name="medical-evaluation"
+                                                    value="NO"
+                                                /></label>
+                                                <label
+                                                ><input
+                                                    type="radio"
+                                                    name="medical-evaluation"
+                                                    value="N/A"
+                                                /></label>
+                                            </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Fila 5 -->
+                                        <div class="form-table-row">
+                                            <div class="form-table-label">
+                                            <label>¿Tiene cable de vida los trabajadores?</label>
+                                            </div>
+                                            <div class="form-table-options">
+                                            <div class="yes-no-na compact">
+                                                <label
+                                                ><input type="radio" name="lifeline" value="SI"
+                                                /></label>
+                                                <label
+                                                ><input type="radio" name="lifeline" value="NO"
+                                                /></label>
+                                                <label
+                                                ><input type="radio" name="lifeline" value="N/A"
+                                                /></label>
+                                            </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Fila 6 - Con campo adicional -->
+                                        <div class="form-table-row combined-row">
+                                            <div class="form-table-label">
+                                            <label>¿Existe vigilancia en el exterior?</label>
+                                            </div>
+                                            <div class="form-table-options combined-options">
+                                            <div class="yes-no-na compact">
+                                                <label
+                                                ><input type="radio" name="external-watch" value="SI"
+                                                /></label>
+                                                <label
+                                                ><input type="radio" name="external-watch" value="NO"
+                                                /></label>
+                                                <label
+                                                ><input
+                                                    type="radio"
+                                                    name="external-watch"
+                                                    value="N/A"
+                                                /></label>
+                                            </div>
+                                            <div class="combined-input">
+                                                <label class="inline-label">Nombre:</label>
+                                                <input
+                                                type="text"
+                                                name="external-watch-name"
+                                                class="compact"
+                                                placeholder="Nombre del vigilante"
+                                                />
+                                            </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Fila 7 - Con campo adicional -->
+                                        <div class="form-table-row combined-row">
+                                            <div class="form-table-label">
+                                            <label>¿Se requiere personal rescatista?</label>
+                                            </div>
+                                            <div class="form-table-options combined-options">
+                                            <div class="yes-no-na compact">
+                                                <label
+                                                ><input
+                                                    type="radio"
+                                                    name="rescue-personnel"
+                                                    value="SI"
+                                                /></label>
+                                                <label
+                                                ><input
+                                                    type="radio"
+                                                    name="rescue-personnel"
+                                                    value="NO"
+                                                /></label>
+                                                <label
+                                                ><input
+                                                    type="radio"
+                                                    name="rescue-personnel"
+                                                    value="N/A"
+                                                /></label>
+                                            </div>
+                                            <div class="combined-input">
+                                                <label class="inline-label">Nombre:</label>
+                                                <input
+                                                type="text"
+                                                name="rescue-personnel-name"
+                                                class="compact"
+                                                placeholder="Nombre del rescatista"
+                                                />
+                                            </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Fila 8 -->
+                                        <div class="form-table-row">
+                                            <div class="form-table-label">
+                                            <label
+                                                >¿Se requiere instalar barreras y/o barricadas?</label
+                                            >
+                                            </div>
+                                            <div class="form-table-options">
+                                            <div class="yes-no-na compact">
+                                                <label
+                                                ><input type="radio" name="barriers" value="SI"
+                                                /></label>
+                                                <label
+                                                ><input type="radio" name="barriers" value="NO"
+                                                /></label>
+                                                <label
+                                                ><input type="radio" name="barriers" value="N/A"
+                                                /></label>
+                                            </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Fila 9 - Con campo adicional -->
+                                        <div class="form-table-row combined-row">
+                                            <div class="form-table-label">
+                                            <label>¿Se requiere equipo especial?</label>
+                                            </div>
+                                            <div class="form-table-options combined-options">
+                                            <div class="yes-no-na compact">
+                                                <label
+                                                ><input
+                                                    type="radio"
+                                                    name="special-equipment"
+                                                    value="SI"
+                                                /></label>
+                                                <label
+                                                ><input
+                                                    type="radio"
+                                                    name="special-equipment"
+                                                    value="NO"
+                                                /></label>
+                                                <label
+                                                ><input
+                                                    type="radio"
+                                                    name="special-equipment"
+                                                    value="N/A"
+                                                /></label>
+                                            </div>
+                                            <div class="combined-input">
+                                                <label class="inline-label">¿Cuál?:</label>
+                                                <input
+                                                type="text"
+                                                name="special-equipment-type"
+                                                class="compact"
+                                                placeholder="Tipo de equipo especial"
+                                                />
+                                            </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Sección compacta en mosaico -->
+                                        <div class="mosaic-grid">
+                                            <div class="mosaic-item">
+                                            <label for="authorized-personnel"
+                                                >Número de personas autorizadas</label
+                                            >
+                                            <input
+                                                type="number"
+                                                id="authorized-personnel"
+                                                name="authorized-personnel"
+                                                min="1"
+                                                class="compact-input"
+                                            />
+                                            </div>
+
+                                            <div class="mosaic-item">
+                                            <label for="stay-time">Tiempo de permanencia (min)</label>
+                                            <input
+                                                type="number"
+                                                id="stay-time"
+                                                name="stay-time"
+                                                min="1"
+                                                class="compact-input"
+                                            />
+                                            </div>
+
+                                            <div class="mosaic-item">
+                                            <label for="recovery-time"
+                                                >Tiempo de recuperación (min)</label
+                                            >
+                                            <input
+                                                type="number"
+                                                id="recovery-time"
+                                                name="recovery-time"
+                                                min="1"
+                                                class="compact-input"
+                                            />
+                                            </div>
+
+                                            <div class="mosaic-item">
+                                            <label for="confined-space-type"
+                                                >Clase de espacio confinado</label
+                                            >
+                                            <input
+                                                type="text"
+                                                id="confined-space-type"
+                                                name="confined-space-type"
+                                                class="compact-input"
+                                            />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-table-row compact-row">
+                                            <div class="form-table-label">
+                                            <label for="observations"
+                                                >Observaciones adicionales</label
+                                            >
+                                            </div>
+                                            <div class="form-table-options">
+                                            <textarea
+                                                id="observations"
+                                                name="observations"
+                                                rows="2"
+                                                placeholder="Ingrese cualquier observación adicional"
+                                            ></textarea>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                </div>
+                            </template>
+
+
+
+                            <!-- TEMPLATE: Permiso Bloqueo y Etiquetado -->
+                            <template id="template-permiso-bloqueo-y-etiquetado">
+                                <div class="added-form" data-form-type="bloqueo">
+                                    <div class="added-form-header">
+                                        <h4><i class="ri-lock-line"></i> Permiso Bloqueo y Etiquetado</h4>
+                                        <button type="button" class="remove-btn" title="Eliminar formulario">
+                                            <i class="ri-close-line"></i> Eliminar
+                                        </button>
+                                    </div>
+                                    <div class="added-form-content">
+                                        <div class="question">
+                                            <strong>¿Se aplicó bloqueo a todas las fuentes de energía?</strong>
+                                            <div class="question-options">
+                                                <label class="radio-option">
+                                                    <input type="radio" name="bloqueo_q1" value="Sí">
+                                                    <span class="radio-custom"></span>
+                                                    Sí
+                                                </label>
+                                                <label class="radio-option">
+                                                    <input type="radio" name="bloqueo_q1" value="No">
+                                                    <span class="radio-custom"></span>
+                                                    No
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="question">
+                                            <strong>¿Las etiquetas están visibles y legibles?</strong>
+                                            <div class="question-options">
+                                                <label class="radio-option">
+                                                    <input type="radio" name="bloqueo_q2" value="Sí">
+                                                    <span class="radio-custom"></span>
+                                                    Sí
+                                                </label>
+                                                <label class="radio-option">
+                                                    <input type="radio" name="bloqueo_q2" value="No">
+                                                    <span class="radio-custom"></span>
+                                                    No
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="question">
+                                            <strong>¿Se verificó la energía residual?</strong>
+                                            <div class="question-options">
+                                                <label class="radio-option">
+                                                    <input type="radio" name="bloqueo_q3" value="Sí">
+                                                    <span class="radio-custom"></span>
+                                                    Sí
+                                                </label>
+                                                <label class="radio-option">
+                                                    <input type="radio" name="bloqueo_q3" value="No">
+                                                    <span class="radio-custom"></span>
+                                                    No
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+
+                            <!-- TEMPLATE: Permiso Agua a Alta Presión -->
+                            <template id="template-permiso-agua-a-alta-presion">
+                                <div class="added-form" data-form-type="agua-presion">
+                                    <div class="added-form-header">
+                                        <h4><i class="ri-drop-line"></i> Permiso Agua a Alta Presión</h4>
+                                        <button type="button" class="remove-btn" title="Eliminar formulario">
+                                            <i class="ri-close-line"></i> Eliminar
+                                        </button>
+                                    </div>
+                                    <div class="added-form-content">
+                                        <div class="question">
+                                            <strong>¿El equipo de alta presión está certificado?</strong>
+                                            <div class="question-options">
+                                                <label class="radio-option">
+                                                    <input type="radio" name="agua_q1" value="Sí">
+                                                    <span class="radio-custom"></span>
+                                                    Sí
+                                                </label>
+                                                <label class="radio-option">
+                                                    <input type="radio" name="agua_q1" value="No">
+                                                    <span class="radio-custom"></span>
+                                                    No
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="question">
+                                            <strong>¿Se verificaron mangueras y conexiones?</strong>
+                                            <div class="question-options">
+                                                <label class="radio-option">
+                                                    <input type="radio" name="agua_q2" value="Sí">
+                                                    <span class="radio-custom"></span>
+                                                    Sí
+                                                </label>
+                                                <label class="radio-option">
+                                                    <input type="radio" name="agua_q2" value="No">
+                                                    <span class="radio-custom"></span>
+                                                    No
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="question">
+                                            <strong>¿El área está delimitada y señalizada?</strong>
+                                            <div class="question-options">
+                                                <label class="radio-option">
+                                                    <input type="radio" name="agua_q3" value="Sí">
+                                                    <span class="radio-custom"></span>
+                                                    Sí
+                                                </label>
+                                                <label class="radio-option">
+                                                    <input type="radio" name="agua_q3" value="No">
+                                                    <span class="radio-custom"></span>
+                                                    No
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+
+                            <!-- TEMPLATE: Permiso Primera Apertura -->
+                            <template id="template-permiso-primera-apertura">
+                                <div class="added-form" data-form-type="primera-apertura">
+                                    <div class="added-form-header">
+                                        <h4><i class="ri-key-2-line"></i> Permiso Primera Apertura</h4>
+                                        <button type="button" class="remove-btn" title="Eliminar formulario">
+                                            <i class="ri-close-line"></i> Eliminar
+                                        </button>
+                                    </div>
+                                    <div class="added-form-content">
+                                        <div class="question">
+                                            <strong>¿Se despresionizó el equipo completamente?</strong>
+                                            <div class="question-options">
+                                                <label class="radio-option">
+                                                    <input type="radio" name="apertura_q1" value="Sí">
+                                                    <span class="radio-custom"></span>
+                                                    Sí
+                                                </label>
+                                                <label class="radio-option">
+                                                    <input type="radio" name="apertura_q1" value="No">
+                                                    <span class="radio-custom"></span>
+                                                    No
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="question">
+                                            <strong>¿Se realizó análisis de contenido?</strong>
+                                            <div class="question-options">
+                                                <label class="radio-option">
+                                                    <input type="radio" name="apertura_q2" value="Sí">
+                                                    <span class="radio-custom"></span>
+                                                    Sí
+                                                </label>
+                                                <label class="radio-option">
+                                                    <input type="radio" name="apertura_q2" value="No">
+                                                    <span class="radio-custom"></span>
+                                                    No
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="question">
+                                            <strong>¿Se cuenta con plan de contingencia?</strong>
+                                            <div class="question-options">
+                                                <label class="radio-option">
+                                                    <input type="radio" name="apertura_q3" value="Sí">
+                                                    <span class="radio-custom"></span>
+                                                    Sí
+                                                </label>
+                                                <label class="radio-option">
+                                                    <input type="radio" name="apertura_q3" value="No">
+                                                    <span class="radio-custom"></span>
+                                                    No
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+
+                            <!-- TEMPLATE: Permiso Izaje con Grúa -->
+                            <template id="template-permiso-izaje-con-grua">
+                                <div class="added-form" data-form-type="izaje">
+                                    <div class="added-form-header">
+                                        <h4><i class="ri-attachment-2"></i> Permiso Izaje con Grúa</h4>
+                                        <button type="button" class="remove-btn" title="Eliminar formulario">
+                                            <i class="ri-close-line"></i> Eliminar
+                                        </button>
+                                    </div>
+                                    <div class="added-form-content">
+                                        <div class="question">
+                                            <strong>¿La grúa cuenta con certificación vigente?</strong>
+                                            <div class="question-options">
+                                                <label class="radio-option">
+                                                    <input type="radio" name="izaje_q1" value="Sí">
+                                                    <span class="radio-custom"></span>
+                                                    Sí
+                                                </label>
+                                                <label class="radio-option">
+                                                    <input type="radio" name="izaje_q1" value="No">
+                                                    <span class="radio-custom"></span>
+                                                    No
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="question">
+                                            <strong>¿Se calculó el peso de la carga?</strong>
+                                            <div class="question-options">
+                                                <label class="radio-option">
+                                                    <input type="radio" name="izaje_q2" value="Sí">
+                                                    <span class="radio-custom"></span>
+                                                    Sí
+                                                </label>
+                                                <label class="radio-option">
+                                                    <input type="radio" name="izaje_q2" value="No">
+                                                    <span class="radio-custom"></span>
+                                                    No
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="question">
+                                            <strong>¿Hay señalero certificado?</strong>
+                                            <div class="question-options">
+                                                <label class="radio-option">
+                                                    <input type="radio" name="izaje_q3" value="Sí">
+                                                    <span class="radio-custom"></span>
+                                                    Sí
+                                                </label>
+                                                <label class="radio-option">
+                                                    <input type="radio" name="izaje_q3" value="No">
+                                                    <span class="radio-custom"></span>
+                                                    No
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+
+                            <!-- TEMPLATE: Permiso Eléctrico -->
+                            <template id="template-permiso-electrico">
+                                <div class="added-form" data-form-type="electrico">
+                                    <div class="added-form-header">
+                                        <h4><i class="ri-flashlight-line"></i> Permiso Eléctrico</h4>
+                                        <button type="button" class="remove-btn" title="Eliminar formulario">
+                                            <i class="ri-close-line"></i> Eliminar
+                                        </button>
+                                    </div>
+                                    <div class="added-form-content">
+                                        <div class="question">
+                                            <strong>¿El circuito está desenergizado?</strong>
+                                            <div class="question-options">
+                                                <label class="radio-option">
+                                                    <input type="radio" name="electrico_q1" value="Sí">
+                                                    <span class="radio-custom"></span>
+                                                    Sí
+                                                </label>
+                                                <label class="radio-option">
+                                                    <input type="radio" name="electrico_q1" value="No">
+                                                    <span class="radio-custom"></span>
+                                                    No
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="question">
+                                            <strong>¿Se verificó ausencia de tensión?</strong>
+                                            <div class="question-options">
+                                                <label class="radio-option">
+                                                    <input type="radio" name="electrico_q2" value="Sí">
+                                                    <span class="radio-custom"></span>
+                                                    Sí
+                                                </label>
+                                                <label class="radio-option">
+                                                    <input type="radio" name="electrico_q2" value="No">
+                                                    <span class="radio-custom"></span>
+                                                    No
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="question">
+                                            <strong>¿Se cuenta con herramientas dieléctricas?</strong>
+                                            <div class="question-options">
+                                                <label class="radio-option">
+                                                    <input type="radio" name="electrico_q3" value="Sí">
+                                                    <span class="radio-custom"></span>
+                                                    Sí
+                                                </label>
+                                                <label class="radio-option">
+                                                    <input type="radio" name="electrico_q3" value="No">
+                                                    <span class="radio-custom"></span>
+                                                    No
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+
+                             <!-- TEMPLATE: Permiso Eléctrico -->
+                            <template id="template-permiso-no-peligroso">
+                                  <div class="added-form" data-form-type="no-peligroso">
+
+                                    
+                                  </div>
+                            </template>
+
+                        </div>
+                        <!-- ===== FIN: TEMPLATES DE FORMULARIOS ===== -->
+
+                        
+                            
 
 
                     

@@ -1,0 +1,427 @@
+/* ============================================================================
+   ESTILOS PARA CONSTRUCTOR DE FORMATO CON DRAG & DROP
+   Archivo: EstiloDragDrop.css
+   
+   Este archivo contiene todos los estilos necesarios para la funcionalidad
+   de arrastrar y soltar formularios en el Constructor de Formato.
+   
+   ACTUALIZACIÓN: Los formularios ahora se clonan desde templates HTML en lugar
+   de crearse dinámicamente desde JavaScript, manteniendo separación de 
+   responsabilidades y mejor rendimiento.
+   ============================================================================ */
+
+/* ===== CONTENEDOR PRINCIPAL ===== */
+/* Contenedor que envuelve todo el constructor (panel + zona de drop) */
+.container#formato-constructor-container {
+    display: flex;
+    gap: 20px;
+    margin: 20px 0;
+    width: 100%;
+}
+
+/* ===== PANEL DE FORMULARIOS DISPONIBLES ===== */
+/* Panel lateral izquierdo con los formularios arrastrables */
+.forms-panel {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    padding: 20px;
+    width: 280px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.forms-panel h3 {
+    color: white;
+    margin: 0 0 15px 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-align: center;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* ===== ITEMS DE FORMULARIOS (DRAGGABLES) ===== */
+/* Cada formulario individual que se puede arrastrar */
+.form-item {
+    background: white;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    cursor: grab;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    color: #2d3748;
+    user-select: none; /* Evita selección de texto al arrastrar */
+}
+
+/* Estado hover - cuando el cursor está sobre el item */
+.form-item:hover {
+    background: #f7fafc;
+    border-color: #667eea;
+    transform: translateX(5px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Estado activo - cuando se está arrastrando */
+.form-item:active,
+.form-item.dragging {
+    cursor: grabbing;
+    opacity: 0.6;
+    transform: scale(0.95);
+}
+
+/* Iconos dentro de los items */
+.form-item i {
+    font-size: 1.2rem;
+    color: #667eea;
+}
+
+/* ===== FORMATO PRINCIPAL (ZONA DE DROP) ===== */
+/* Contenedor derecho donde se sueltan los formularios */
+.main-format {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    flex: 1;
+    border: 2px dashed #cbd5e0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.main-format h3 {
+    color: #2d3748;
+    margin: 0 0 10px 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.main-format h4 {
+    color: #718096;
+    margin: 0 0 20px 0;
+    font-size: 0.95rem;
+    font-weight: 400;
+}
+
+/* ===== ZONA DE DROP (DROP ZONE) ===== */
+/* Área donde se sueltan los formularios arrastrables */
+.drop-zone {
+    min-height: 300px;
+    background: #f7fafc;
+    border: 3px dashed #cbd5e0;
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+/* Estado hover - cuando se arrastra un elemento sobre la zona */
+.drop-zone.dragover {
+    background: linear-gradient(135deg, #ebf4ff 0%, #e6fffa 100%);
+    border-color: #667eea;
+    border-style: solid;
+    box-shadow: 0 0 20px rgba(102, 126, 234, 0.2) inset;
+}
+
+/* ===== PLACEHOLDER (MENSAJE INICIAL) ===== */
+/* Mensaje que se muestra cuando la zona está vacía */
+.drop-zone-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 250px;
+    color: #a0aec0;
+    text-align: center;
+}
+
+.drop-zone-placeholder i {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    opacity: 0.5;
+}
+
+.drop-zone-placeholder p {
+    font-size: 1rem;
+    margin: 0;
+}
+
+/* Ocultar placeholder cuando hay formularios agregados */
+.drop-zone:has(.added-form) .drop-zone-placeholder {
+    display: none;
+}
+
+/* ===== FORMULARIOS AGREGADOS ===== */
+/* Estilos para cada formulario que se ha soltado en la zona */
+.added-form {
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+/* Animación de entrada (se activa automáticamente vía JS) */
+.added-form[style*="opacity: 1"] {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Estado hover sobre formulario agregado */
+.added-form:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+    border-color: #cbd5e0;
+}
+
+/* ===== ENCABEZADO DEL FORMULARIO AGREGADO ===== */
+.added-form-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.added-form-header h4 {
+    color: white;
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.added-form-header i {
+    font-size: 1.2rem;
+}
+
+/* ===== BOTÓN DE ELIMINAR ===== */
+.remove-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.remove-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: scale(1.05);
+}
+
+.remove-btn:active {
+    transform: scale(0.95);
+}
+
+/* ===== CONTENIDO DEL FORMULARIO AGREGADO ===== */
+.added-form-content {
+    padding: 20px;
+}
+
+/* ===== PREGUNTAS ===== */
+/* Cada pregunta dentro del formulario agregado */
+.question {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.question:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.question strong {
+    display: block;
+    color: #2d3748;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+/* ===== OPCIONES DE RESPUESTA ===== */
+/* Container de los radio buttons */
+.question-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Cada opción de radio button */
+.question-options .radio-option {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    background: #f7fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.question-options .radio-option:hover {
+    background: #edf2f7;
+    border-color: #cbd5e0;
+}
+
+/* Radio button oculto (usamos custom styling) */
+.question-options .radio-option input[type="radio"] {
+    opacity: 0;
+    position: absolute;
+    pointer-events: none;
+}
+
+/* Radio button custom */
+.question-options .radio-custom {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #cbd5e0;
+    border-radius: 50%;
+    margin-right: 12px;
+    position: relative;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+/* Estado checked del radio button */
+.question-options .radio-option input[type="radio"]:checked ~ .radio-custom {
+    border-color: #667eea;
+    background: #667eea;
+}
+
+/* Punto interior del radio button cuando está checked */
+.question-options .radio-option input[type="radio"]:checked ~ .radio-custom::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
+}
+
+/* Label text de la opción */
+.question-options .radio-option input[type="radio"]:checked ~ span:not(.radio-custom) {
+    font-weight: 600;
+    color: #667eea;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+/* Adaptación para tablets */
+@media (max-width: 992px) {
+    .container#formato-constructor-container {
+        flex-direction: column;
+    }
+
+    .forms-panel {
+        width: 100%;
+        max-width: none;
+    }
+
+    .form-item {
+        display: inline-flex;
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+}
+
+/* Adaptación para móviles */
+@media (max-width: 768px) {
+    .container#formato-constructor-container {
+        gap: 15px;
+        margin: 15px 0;
+    }
+
+    .forms-panel {
+        padding: 15px;
+    }
+
+    .main-format {
+        padding: 15px;
+    }
+
+    .drop-zone {
+        min-height: 200px;
+        padding: 15px;
+    }
+
+    .added-form-header {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+
+    .remove-btn {
+        align-self: flex-end;
+    }
+}
+
+/* ===== ANIMACIONES ADICIONALES ===== */
+/* Animación de pulse para indicar interactividad */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+/* Aplicar animación cuando se arrastra sobre la zona */
+.drop-zone.dragover::before {
+    content: "Suelta aquí";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #667eea;
+    animation: pulse 1s infinite;
+    z-index: 1;
+}
+
+/* ===== ACCESIBILIDAD ===== */
+/* Mejorar visibilidad en modo de alto contraste */
+@media (prefers-contrast: high) {
+    .form-item,
+    .added-form {
+        border-width: 3px;
+    }
+
+    .drop-zone {
+        border-width: 4px;
+    }
+}
+
+/* Respetar preferencias de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+    .form-item,
+    .added-form,
+    .drop-zone,
+    .remove-btn {
+        transition: none;
+    }
+
+    .drop-zone.dragover::before {
+        animation: none;
+    }
+}

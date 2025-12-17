@@ -102,6 +102,7 @@ app.post("/api/cerrar-sesion", cerrarSesion);
 // Rutas de la API (TODAS PROTEGIDAS CON AUTENTICACIÓN)
 
 app.use("/api", verificarAutenticacion, tablasRouter); // Monta las rutas de tablas.js bajo el prefijo /api
+app.use("/api", verificarAutenticacion, departamentoConsultaRouter); // Monta rutas de departamento_consulta.js (incluye /areas con filtro)
 app.use("/api", verificarAutenticacion, listasRouter); // Monta las rutas de listas.js bajo el prefijo /api
 app.use("/api", verificarAutenticacion, vertablasRouter); // Monta las rutas de vertablas.js bajo el prefijo /api
 app.use("/api", verificarAutenticacion, targetasRouter); // Monta las rutas de targetas.js bajo el prefijo /api
@@ -138,9 +139,9 @@ app.put("/api/categorias/:id", verificarAutenticacion, tablasBase.updateCategori
 app.delete("/api/categorias/:id", verificarAutenticacion, tablasBase.deleteCategoria);
 app.put("/api/categorias/hide/:id", verificarAutenticacion, tablasBase.hideCategoria);
 
-// AREAS
-app.get("/api/areas", verificarAutenticacion, tablasBase.getAreas);
-app.get("/api/areas/:id", verificarAutenticacion, tablasBase.getAreaById);
+// AREAS - COMENTADO: Ahora se usa el endpoint en departamento_consulta.js con filtro
+// app.get("/api/areas", verificarAutenticacion, tablasBase.getAreas);
+// app.get("/api/areas/:id", verificarAutenticacion, tablasBase.getAreaById);
 app.post("/api/areas", verificarAutenticacion, tablasBase.createArea);
 app.put("/api/areas/:id", verificarAutenticacion, tablasBase.updateArea);
 app.delete("/api/areas/:id", verificarAutenticacion, tablasBase.deleteArea);

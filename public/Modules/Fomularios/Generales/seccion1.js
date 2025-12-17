@@ -9,25 +9,33 @@ async function fetchDepartamentoSuggestions() {
     try {
         const response = await fetch('/api/departamentos');
         const departamentos = await response.json();
+        console.log('[FETCH DEPTOS] Departamentos recibidos:', departamentos);
         window.departamentos = departamentos; // Guardar departamentos globalmente para buscar el id
         departamentoSuggestions = departamentos.map(depto => depto.nombre);
-        console.log('Departamentos para autocompletado:', departamentoSuggestions);
+        console.log('[FETCH DEPTOS] Sugerencias mapeadas:', departamentoSuggestions);
     } catch (err) {
         console.error('No se pudieron cargar los departamentos para autocompletado:', err);
     }
 }
 
 // === Cargar sugerencias de áreas ===
-async function fetchPlantSuggestions() {
+async function fetchPlantSuggestions(id_departamento = null) {
     try {
-        // Al obtener las áreas del backend
-        const response = await fetch('/api/areas');
+        // Al obtener las áreas del backend, filtrar por departamento si se proporciona
+        let url = '/api/areas';
+        if (id_departamento) {
+            url = `/api/areas?id_departamento=${id_departamento}`;
+        }
+        console.log('[FETCH AREAS] URL:', url);
+        const response = await fetch(url);
+        console.log('[FETCH AREAS] Response status:', response.status);
         const areas = await response.json();
+        console.log('[FETCH AREAS] Áreas recibidas:', areas);
         window.areas = areas; // Guardar áreas globalmente para buscar el id
         plantSuggestions = areas.map(area => area.nombre);
-        console.log('Áreas para autocompletado:', plantSuggestions);
+        console.log('[FETCH AREAS] Sugerencias mapeadas:', plantSuggestions);
     } catch (err) {
-        console.error('No se pudieron cargar las áreas para autocompletado:', err);
+        console.error('[FETCH AREAS ERROR] No se pudieron cargar las áreas:', err);
     }
 }
 
@@ -116,7 +124,7 @@ function initDepartamentoAutocomplete() {
 
     const departamentoIdHidden = document.getElementById('departamento-id-hidden');
 
-    departamentoInput.addEventListener('input', function () {
+    departamentoInput.addEventListener('input', async function () {
         showDepartamentoSuggestions(this, suggestionsContainer);
         const selectedDepartamento = (window.departamentos || []).find(d => d.nombre === this.value);
         const warningId = 'departamento-warning';
@@ -127,10 +135,25 @@ function initDepartamentoAutocomplete() {
             if (departamentoIdHidden) departamentoIdHidden.value = selectedDepartamento.id;
             console.log('[DEBUG] departamento_value guardado:', selectedDepartamento.id);
             if (warning) warning.remove();
+            
+            // Recargar áreas filtradas por departamento
+            await fetchPlantSuggestions(selectedDepartamento.id);
+            
+            // Limpiar el campo de ubicación ya que cambió el departamento
+            const plantInput = document.getElementById('plant');
+            if (plantInput) {
+                plantInput.value = '';
+                sessionStorage.setItem('plant_value', '');
+                const plantIdHidden = document.getElementById('plant-id-hidden');
+                if (plantIdHidden) plantIdHidden.value = '';
+            }
         } else {
             sessionStorage.setItem('departamento_value', '');
             if (departamentoIdHidden) departamentoIdHidden.value = '';
             console.log('[DEBUG] departamento_value guardado: vacío');
+            
+            // Si no hay departamento válido, cargar todas las áreas
+            await fetchPlantSuggestions();
             
             if (this.value.trim() && !warning) {
                 warning = document.createElement('div');
@@ -169,7 +192,7 @@ function initDepartamentoAutocomplete() {
     });
 
     // Al hacer click en sugerencia, guardar el id y limpiar advertencia
-    suggestionsContainer.addEventListener('click', function (e) {
+    suggestionsContainer.addEventListener('click', async function (e) {
         if (e.target.classList.contains('autocomplete-suggestion')) {
             const selectedDepartamento = (window.departamentos || []).find(d => d.nombre === e.target.textContent);
             if (selectedDepartamento) {
@@ -179,6 +202,18 @@ function initDepartamentoAutocomplete() {
                 console.log('[DEBUG] departamento_value guardado (click):', selectedDepartamento.id);
                 const warning = document.getElementById('departamento-warning');
                 if (warning) warning.remove();
+                
+                // Recargar áreas filtradas por departamento
+                await fetchPlantSuggestions(selectedDepartamento.id);
+                
+                // Limpiar el campo de ubicación ya que cambió el departamento
+                const plantInput = document.getElementById('plant');
+                if (plantInput) {
+                    plantInput.value = '';
+                    sessionStorage.setItem('plant_value', '');
+                    const plantIdHidden = document.getElementById('plant-id-hidden');
+                    if (plantIdHidden) plantIdHidden.value = '';
+                }
             }
         }
     });

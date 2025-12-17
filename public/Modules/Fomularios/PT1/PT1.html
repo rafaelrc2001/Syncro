@@ -82,11 +82,9 @@
                                 <label for="permit-date">Fecha</label>
                                 <input type="date" id="permit-date" name="permit-date" required>
                             </div>
-                             <div class="form-group">
-                                <div class="form-group">
-                                    <label for="start-time">Hora de inicio</label>
-                                    <input type="time" id="start-time" name="start-time" required class="compact">
-                                </div>
+                            <div class="form-group">
+                                <label for="start-time">Hora de inicio</label>
+                                <input type="time" id="start-time" name="start-time" required class="compact">
                             </div>
 
                             <div class="form-group">
@@ -94,12 +92,8 @@
                                 <input type="text" id="company" name="company" value="PRO-AGROINDUSTRIA" readonly>
                             </div>
 
-                            <div class="form-group">
-                                <label for="subcontract">Departamento o contratista</label>
-                                <input type="text" id="subcontract" name="subcontract" >
-                            </div>
 
-                            <div class="form-group">
+                              <div class="form-group">
                                 <label for="area">Sucursal</label>
                                 <div class="select-wrapper">
                                     <select id="sucursal" name="sucursal" required>
@@ -108,6 +102,14 @@
                                     <i class="ri-arrow-down-s-line select-arrow"></i>
                                 </div>
                             </div>
+
+
+                            <div class="form-group">
+                                <label for="subcontract">Departamento o contratista</label>
+                                <input type="text" id="subcontract" name="subcontract" >
+                            </div>
+
+                          
                             
                             
 
@@ -151,9 +153,35 @@
                                 <label for="work-description">Descripción del trabajo</label>
                                 <textarea id="work-description" name="work-description" rows="2" required></textarea>
                         </div>
+
                         
+                       <div class="form-grid" id="permiso-np-grid1">
+                            <div class="form-group">
+                                <label for="maintenance-type">Tipo de mantenimiento</label>
+                                <select id="maintenance-type" name="maintenance-type" required>
+                                    <option value="" disabled selected>Seleccione un tipo</option>
+                                    <option value="PREDICTIVO">PREDICTIVO</option>
+                                    <option value="PREVENTIVO">PREVENTIVO</option>
+                                    <option value="CORRECTIVO">CORRECTIVO</option>
+                                    <option value="APOYO">APOYO</option>
+                                    <option value="OTRO">OTRO</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group" id="other-maintenance-container" style="display:none;">
+                                <label for="other-maintenance">Otro (especifique)</label>
+                                <input type="text" id="other-maintenance" name="other-maintenance" class="compact">
+                            </div>
+                        </div>
+                        
+
+                        <div class="form-group">
+                            <label for="work-order">No. O.T. </label>
+                            <input type="text" id="work-order" name="work-order"  class="compact">
+                        </div>
+
                          <div class="form-group">
-                            <label for="contract-number">Número de contrato <span style="font-weight:normal;color:#888;">(opcional, solo si lo tienen)</span></label>
+                            <label for="contract-number">Número de contrato <span style="font-weight:normal;color:#888;">(solo si lo tienen)</span></label>
                             <input type="text" id="contract-number" name="contract-number" class="compact" placeholder="Ingrese el número de contrato si aplica">
                         </div>
                         
@@ -161,45 +189,14 @@
 
 
 
-                       <div class="form-grid" id="permiso-np-grid1">
-                            <div class="form-group">
-                                <div class="form-group">
-                                    <label for="maintenance-type">Tipo de mantenimiento</label>
-                                    <select id="maintenance-type" name="maintenance-type" required>
-                                        <option value="" disabled selected>Seleccione un tipo</option>
-                                        <option value="PREDICTIVO">PREDICTIVO</option>
-                                        <option value="PREVENTIVO">PREVENTIVO</option>
-                                        <option value="CORRECTIVO">CORRECTIVO</option>
-                                        <option value="APOYO">APOYO</option>
-                                        <option value="OTRO">OTRO</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="form-group">
-                                    <label for="work-order">O.T. No.</label>
-                                    <input type="text" id="work-order" name="work-order"  class="compact">
-                                </div>
 
-                            </div>
+
                            
 
-                            <div class="form-group" id="other-maintenance-container" style="display:none;">
-                                <label for="other-maintenance">Otro (especifique)</label>
-                                <input type="text" id="other-maintenance" name="other-maintenance" class="compact">
-                            </div>
-                        </div>
-
-
-                           <div id="permiso-np-header-divider"></div>
-
-                        <div class="form-section-title" id="permiso-np-equipo-title">
-                            <i class="ri-tools-line"></i>
-                            <h3>Equipo</h3>
-                        </div>
+                       
                         <div class="form-grid" id="permiso-np-grid2">
                             <div class="form-group">
-                                <label>¿Tiene equipo a intervenir?</label>
+                                <label>¿Tiene que intervenir un equipo?</label>
                                 <div class="radio-group" id="equipment-toggle">
                                     <label class="radio-option">
                                         <input type="radio" name="has-equipment" value="si" checked>
@@ -214,17 +211,15 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <div class="form-group">
-                                    <label for="equipment">Equipo a Intervenir</label>
-                                    <input type="text" id="equipment" name="equipment" required class="compact">
-                                </div>
+                                <label for="tag">TAG</label>
+                                <input type="text" id="tag" name="tag" class="compact">
                             </div>
+                          
                             <div class="form-group">
-                                <div class="form-group">
-                                    <label for="tag">TAG</label>
-                                    <input type="text" id="tag" name="tag" class="compact">
-                                </div>
+                                <label for="equipment">Equipo a Intervenir</label>
+                                <input type="text" id="equipment" name="equipment" required class="compact">
                             </div>
+                          
                         </div>
 
 

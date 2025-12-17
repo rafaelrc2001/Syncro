@@ -358,12 +358,12 @@ h1, h2, h3, h4, h5, h6 {
     max-width: 50%;
     min-width: 200px;
     display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+    flex-direction: row; /* Cambio: ahora en horizontal */
+    gap: 1.5rem; /* Más espacio entre opciones */
 }
 
 .radio-group.compact {
-    gap: 0.25rem;
+    gap: 1rem;
 }
 
 .radio-option {

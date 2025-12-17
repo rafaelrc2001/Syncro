@@ -467,12 +467,12 @@ body {
 .form-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: var(--space-lg);
-    margin-bottom: var(--space-xl);
+    gap: 1.0rem; /* este es el que estoy tocando para mover la parte de los estilos */
+    margin-bottom: 1.0rem;
 }
 
 .form-group {
-    margin-bottom: var(--space-lg);
+    margin-bottom: 0.5rem;
 }
 
 .form-group label {

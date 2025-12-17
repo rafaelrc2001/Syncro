@@ -161,7 +161,7 @@ function initDepartamentoAutocomplete() {
                 warning.style.color = '#d9534f';
                 warning.style.fontSize = '0.95em';
                 warning.style.marginTop = '4px';
-                warning.textContent = 'Debe seleccionar un departamento válido de la lista.';
+                warning.textContent = 'Debe seleccionar un area de trabajo válida de la lista.';
                 departamentoInput.parentNode.insertBefore(warning, departamentoInput.nextSibling);
             } else if (!this.value.trim() && warning) {
                 warning.remove();

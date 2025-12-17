@@ -335,7 +335,7 @@ function initDragAndDropConstructor() {
     );
 
     if (alreadyExists) {
-      alert(`⚠️ Ya existe un formulario de "${formName}". No puedes agregar duplicados.`);
+      alert(`⚠️ Ya existe un  "${formName}". `);
       console.warn(`[DRAG&DROP] Formulario duplicado bloqueado: ${formName}`);
       return;
     }

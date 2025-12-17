@@ -39,6 +39,7 @@ const formularioCestaRouter = require("./formulariospt3-10/formulario_cesta");
 const formularioExcavacionRouter = require("./formulariospt3-10/formulario_excavacion");
 const loginconsultaRouter = require("./loginconsulta");
 const graficaMesesRouter = require("./graficas/endpoint_grafica_meses");
+const departamentoConsultaRouter = require("./departamento_consulta");
 
 const graficasJefesRouter = require("./graficas/graficas_jefes/graficas_jefes");
 const { verificarAutenticacion, verificarRol, verificarSesion, cerrarSesion } = require("./middleware/auth");
@@ -125,6 +126,7 @@ app.use("/api", verificarAutenticacion, formularioIzajeRouter);
 app.use("/api", verificarAutenticacion, formularioCestaRouter);
 app.use("/api", verificarAutenticacion, formularioExcavacionRouter);
 app.use("/api/graficas_jefes", verificarAutenticacion, graficaMesesRouter);
+app.use("/api", verificarAutenticacion, departamentoConsultaRouter);
 
 // ================= RUTAS DE TABLAS BASE =================
 const tablasBase = require("./tablasbase");

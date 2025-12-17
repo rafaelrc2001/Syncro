@@ -264,6 +264,26 @@ function setDefaultDateTime() {
     }
 }
 
+// === Llenar automáticamente el nombre del responsable ===
+function setDefaultApplicant() {
+    const applicantField = document.getElementById('applicant');
+    if (!applicantField) return;
+
+    try {
+        const usuario = JSON.parse(localStorage.getItem('usuario'));
+        if (usuario && usuario.nombre) {
+            // Construir nombre completo: nombre + apellidop + apellidom
+            const nombreCompleto = `${usuario.nombre} ${usuario.apellidop || ''} ${usuario.apellidom || ''}`.trim();
+            applicantField.value = nombreCompleto;
+            console.log('Responsable del trabajo establecido:', nombreCompleto);
+        }
+    } catch (error) {
+        console.error('Error al obtener datos del usuario:', error);
+    }
+}
+
+
+
 // === Inicializar todo ===
 document.addEventListener('DOMContentLoaded', async () => {
     await fetchPlantSuggestions();
@@ -271,6 +291,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     populateSucursales();
     initBackButton();
     setDefaultDateTime();
+    setDefaultApplicant(); // Llenar automáticamente el responsable del trabajo
+    setDefaultDepartment(); // Llenar automáticamente el nombre del departamento
 
     // Lógica para enviar estatus al hacer click en siguiente de sección 1
     const nextBtn = document.querySelector('.next-step[data-next="2"]');

@@ -1,6 +1,22 @@
 // Autocompletado de planta dinámico desde /api/areas
 let plantSuggestions = [];
 
+// Autocompletado de departamento dinámico desde /api/departamentos
+let departamentoSuggestions = [];
+
+// === Cargar sugerencias de departamentos ===
+async function fetchDepartamentoSuggestions() {
+    try {
+        const response = await fetch('/api/departamentos');
+        const departamentos = await response.json();
+        window.departamentos = departamentos; // Guardar departamentos globalmente para buscar el id
+        departamentoSuggestions = departamentos.map(depto => depto.nombre);
+        console.log('Departamentos para autocompletado:', departamentoSuggestions);
+    } catch (err) {
+        console.error('No se pudieron cargar los departamentos para autocompletado:', err);
+    }
+}
+
 // === Cargar sugerencias de áreas ===
 async function fetchPlantSuggestions() {
     try {
@@ -51,6 +67,128 @@ function showPlantSuggestions(input, suggestionsContainer) {
     });
 
     suggestionsContainer.style.display = 'block';
+}
+
+// === Mostrar sugerencias dinámicas de departamento ===
+function showDepartamentoSuggestions(input, suggestionsContainer) {
+    const inputValue = input.value.toLowerCase();
+    suggestionsContainer.innerHTML = '';
+    suggestionsContainer.style.display = 'none';
+
+    if (inputValue.length === 0) return;
+
+    const filteredSuggestions = departamentoSuggestions.filter(suggestion =>
+        suggestion.toLowerCase().includes(inputValue)
+    );
+
+    if (filteredSuggestions.length === 0) {
+        const noResults = document.createElement('div');
+        noResults.className = 'autocomplete-suggestion';
+        noResults.textContent = 'No se encontraron resultados';
+        suggestionsContainer.appendChild(noResults);
+        suggestionsContainer.style.display = 'block';
+        return;
+    }
+
+    filteredSuggestions.forEach(suggestion => {
+        const suggestionElement = document.createElement('div');
+        suggestionElement.className = 'autocomplete-suggestion';
+        suggestionElement.textContent = suggestion;
+
+        suggestionElement.addEventListener('click', function () {
+            input.value = suggestion;
+            document.getElementById('departamento-value').value = suggestion;
+            suggestionsContainer.style.display = 'none';
+        });
+
+        suggestionsContainer.appendChild(suggestionElement);
+    });
+
+    suggestionsContainer.style.display = 'block';
+}
+
+// === Inicializar el autocompletado de departamento ===
+function initDepartamentoAutocomplete() {
+    const departamentoInput = document.getElementById('departamento');
+    const suggestionsContainer = document.getElementById('departamento-suggestions');
+
+    if (!departamentoInput || !suggestionsContainer) return;
+
+    const departamentoIdHidden = document.getElementById('departamento-id-hidden');
+
+    departamentoInput.addEventListener('input', function () {
+        showDepartamentoSuggestions(this, suggestionsContainer);
+        const selectedDepartamento = (window.departamentos || []).find(d => d.nombre === this.value);
+        const warningId = 'departamento-warning';
+        let warning = document.getElementById(warningId);
+        
+        if (selectedDepartamento) {
+            sessionStorage.setItem('departamento_value', selectedDepartamento.id);
+            if (departamentoIdHidden) departamentoIdHidden.value = selectedDepartamento.id;
+            console.log('[DEBUG] departamento_value guardado:', selectedDepartamento.id);
+            if (warning) warning.remove();
+        } else {
+            sessionStorage.setItem('departamento_value', '');
+            if (departamentoIdHidden) departamentoIdHidden.value = '';
+            console.log('[DEBUG] departamento_value guardado: vacío');
+            
+            if (this.value.trim() && !warning) {
+                warning = document.createElement('div');
+                warning.id = warningId;
+                warning.style.color = '#d9534f';
+                warning.style.fontSize = '0.95em';
+                warning.style.marginTop = '4px';
+                warning.textContent = 'Debe seleccionar un departamento válido de la lista.';
+                departamentoInput.parentNode.insertBefore(warning, departamentoInput.nextSibling);
+            } else if (!this.value.trim() && warning) {
+                warning.remove();
+            }
+        }
+    });
+
+    // Al perder el foco, si el valor no es válido, limpiar el input y advertencia
+    departamentoInput.addEventListener('blur', function () {
+        setTimeout(() => {
+            const selectedDepartamento = (window.departamentos || []).find(d => d.nombre === this.value);
+            const warning = document.getElementById('departamento-warning');
+            
+            if (!selectedDepartamento && this.value.trim()) {
+                if (!warning) {
+                    const w = document.createElement('div');
+                    w.id = 'departamento-warning';
+                    w.style.color = '#d9534f';
+                    w.style.fontSize = '0.95em';
+                    w.style.marginTop = '4px';
+                    w.textContent = 'Debe seleccionar un departamento válido de la lista.';
+                    departamentoInput.parentNode.insertBefore(w, departamentoInput.nextSibling);
+                }
+            } else if (warning && selectedDepartamento) {
+                warning.remove();
+            }
+        }, 150);
+    });
+
+    // Al hacer click en sugerencia, guardar el id y limpiar advertencia
+    suggestionsContainer.addEventListener('click', function (e) {
+        if (e.target.classList.contains('autocomplete-suggestion')) {
+            const selectedDepartamento = (window.departamentos || []).find(d => d.nombre === e.target.textContent);
+            if (selectedDepartamento) {
+                departamentoInput.value = selectedDepartamento.nombre;
+                sessionStorage.setItem('departamento_value', selectedDepartamento.id);
+                if (departamentoIdHidden) departamentoIdHidden.value = selectedDepartamento.id;
+                console.log('[DEBUG] departamento_value guardado (click):', selectedDepartamento.id);
+                const warning = document.getElementById('departamento-warning');
+                if (warning) warning.remove();
+            }
+        }
+    });
+
+    // Cerrar sugerencias al hacer click afuera
+    document.addEventListener('click', function (e) {
+        if (e.target !== departamentoInput && !suggestionsContainer.contains(e.target)) {
+            suggestionsContainer.style.display = 'none';
+        }
+    });
 }
 
 // === Inicializar el autocompletado ===
@@ -273,7 +411,7 @@ function setDefaultApplicant() {
         const usuario = JSON.parse(localStorage.getItem('usuario'));
         if (usuario && usuario.nombre) {
             // Construir nombre completo: nombre + apellidop + apellidom
-            const nombreCompleto = `${usuario.nombre} ${usuario.apellidop || ''} ${usuario.apellidom || ''}`.trim();
+            const nombreCompleto = `${usuario.nombre} ${usuario.apellidoP || ''} ${usuario.apellidoM || ''}`.trim();
             applicantField.value = nombreCompleto;
             console.log('Responsable del trabajo establecido:', nombreCompleto);
         }
@@ -282,17 +420,38 @@ function setDefaultApplicant() {
     }
 }
 
+// === Llenar automáticamente el nombre del departamento ===
+async function setDefaultDepartment() {
+    const departmentField = document.getElementById('subcontract');
+    if (!departmentField) return;
 
+    try {
+        const usuario = JSON.parse(localStorage.getItem('usuario'));
+        if (usuario && usuario.id_departamento) {
+            // Consultar el nombre del departamento desde el backend
+            const response = await fetch(`/api/departamento/${usuario.id_departamento}`);
+            if (response.ok) {
+                const data = await response.json();
+                departmentField.value = data.nombre;
+                console.log('Departamento establecido:', data.nombre);
+            }
+        }
+    } catch (error) {
+        console.error('Error al obtener departamento del usuario:', error);
+    }
+}
 
 // === Inicializar todo ===
 document.addEventListener('DOMContentLoaded', async () => {
     await fetchPlantSuggestions();
+    await fetchDepartamentoSuggestions();
     initPlantAutocomplete();
+    initDepartamentoAutocomplete();
     populateSucursales();
     initBackButton();
     setDefaultDateTime();
     setDefaultApplicant(); // Llenar automáticamente el responsable del trabajo
-    setDefaultDepartment(); // Llenar automáticamente el nombre del departamento
+    await setDefaultDepartment(); // Llenar automáticamente el nombre del departamento
 
     // Lógica para enviar estatus al hacer click en siguiente de sección 1
     const nextBtn = document.querySelector('.next-step[data-next="2"]');

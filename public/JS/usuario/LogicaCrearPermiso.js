@@ -15,13 +15,19 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (btnNuevoPermiso) {
         console.log('Agregando event listener al botón');
-        btnNuevoPermiso.addEventListener('click', function(e) {
-            console.log('Botón clickeado');
+        btnNuevoPermiso.addEventListener('click', function(e) { 
+          /*  console.log('Botón clickeado');
             e.preventDefault();
             console.log('Modal antes de mostrar:', modal);
             modal.style.display = 'flex';
             document.body.style.overflow = 'hidden'; // Evitar scroll del fondo
-            console.log('Modal después de intentar mostrar:', modal.style.display);
+            console.log('Modal después de intentar mostrar:', modal.style.display);*/
+
+            e.preventDefault();
+            // Guardar el tipo de permiso PT1 en sessionStorage
+            sessionStorage.setItem('id_tipo_permiso', 1);
+            // Redirigir directamente a PT1
+            window.location.href = '/Modules/Fomularios/PT1/PT1.html';
         });
     } else {
         console.error('No se encontró el botón con ID btnNuevoPermiso');

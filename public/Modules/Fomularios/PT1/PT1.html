@@ -216,7 +216,10 @@
                             </div>
                             <div class="form-group">
                                 <label for="tag">TAG</label>
-                                <input type="text" id="tag" name="tag" class="compact">
+                                <div style="position: relative;">
+                                    <input type="text" id="tag" name="tag" class="compact">
+                                    <div id="tag-suggestions" class="autocomplete-suggestions"></div>
+                                </div>
                             </div>
                           
                             <div class="form-group">
@@ -279,9 +282,6 @@
                                 <div class="form-item" draggable="true" data-name="Permiso Espacio confinado">
                                     <i class="ri-door-lock-box-line"></i> Permiso Espacio confinado
                                 </div>
-                                <div class="form-item" draggable="true" data-name="Permiso Bloqueo y Etiquetado">
-                                    <i class="ri-lock-line"></i> Permiso Bloqueo y Etiquetado
-                                </div>
                                 <div class="form-item" draggable="true" data-name="Permiso Agua a Alta Presión">
                                     <i class="ri-drop-line"></i> Permiso Agua a Alta Presión
                                 </div>
@@ -341,29 +341,41 @@
                                             <div class="section-header">Equipo de Protección Personal</div>
                                             <table>
                                                 <tr><td class="label-fixed">Arnés de cuerpo completo</td><td class="value-fixed">SI</td></tr>
-                                                <tr>
-                                                    <td class="label-fixed">Línea de vida retráctil (1.8 a 5.5 m...)</td>
-                                                    <td class="input-cell-blue"><input type="text" class="editable-blue" value="NO" id="retractil"></td>
-                                                </tr>
                                                 <tr><td class="label-fixed">Línea de restricción</td><td class="value-fixed">SI</td></tr>
-                                                <tr>
-                                                    <td class="label-fixed">Línea de vida con amortiguador</td>
-                                                    <td class="input-cell-blue"><input type="text" class="editable-blue" value="NO" id="amortiguador"></td>
-                                                </tr>
                                             </table>
+
+                                            <div class="footer-row" style="margin-top: 10px;">
+                                                <div class="footer-label">Línea de vida retráctil (1.8 a 5.5 m...)</div>
+                                                <div class="input-cell-blue" style="flex: 1; border-radius: 4px;">
+                                                    <input type="text" class="editable-blue" value="NO" id="retractil" style="border-radius: 4px;">
+                                                </div>
+                                            </div>
+
+                                            <div class="footer-row" style="margin-top: 10px;">
+                                                <div class="footer-label">Línea de vida con amortiguador</div>
+                                                <div class="input-cell-blue" style="flex: 1; border-radius: 4px;">
+                                                    <input type="text" class="editable-blue" value="NO" id="amortiguador" style="border-radius: 4px;">
+                                                </div>
+                                            </div>
 
                                             <div class="section-header">Factores Ambientales</div>
                                             <table>
-                                                <tr>
-                                                    <td class="label-fixed">Presencia Lluvia</td>
-                                                    <td class="input-cell-blue"><input type="text" class="editable-blue" value="NO" id="lluvia"></td>
-                                                </tr>
                                                 <tr><td class="label-fixed">Velocidad del viento menor a 30 km/hr</td><td class="value-fixed">SI</td></tr>
-                                                <tr>
-                                                    <td class="label-fixed">Presencia de gases tóxicos</td>
-                                                    <td class="input-cell-blue"><input type="text" class="editable-blue" value="NO" id="gases"></td>
-                                                </tr>
                                             </table>
+
+                                            <div class="footer-row" style="margin-top: 10px;">
+                                                <div class="footer-label">Presencia Lluvia</div>
+                                                <div class="input-cell-blue" style="flex: 1; border-radius: 4px;">
+                                                    <input type="text" class="editable-blue" value="NO" id="lluvia" style="border-radius: 4px;">
+                                                </div>
+                                            </div>
+
+                                            <div class="footer-row" style="margin-top: 10px;">
+                                                <div class="footer-label">Presencia de gases tóxicos</div>
+                                                <div class="input-cell-blue" style="flex: 1; border-radius: 4px;">
+                                                    <input type="text" class="editable-blue" value="NO" id="gases" style="border-radius: 4px;">
+                                                </div>
+                                            </div>
                                         </div>
 
                                         <div>
@@ -377,24 +389,30 @@
                                         <div>
                                             <div class="section-header">Control de Riesgos</div>
                                             <table>
-                                                <tr>
-                                                    <td class="label-fixed">Andamio liberado (personal autorizado)</td>
-                                                    <td class="input-cell-blue"><input type="text" class="editable-blue" value="SI" id="andamio_liberado"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="label-fixed">Andamio "candadeado" (> 4 metros)</td>
-                                                    <td class="input-cell-blue"><input type="text" class="editable-blue" value="SI" id="andamio_candado"></td>
-                                                </tr>
                                                 <tr><td class="label-fixed">Escaleras tipo I Clase A dieléctrica</td><td class="value-fixed">SI</td></tr>
                                                 <tr><td class="label-fixed">La escalera cumple la relación 4:1</td><td class="value-fixed">SI</td></tr>
                                                 <tr><td class="label-fixed">Escalera asegurada en la parte alta y baja</td><td class="value-fixed">SI</td></tr>
                                             </table>
+
+                                            <div class="footer-row" style="margin-top: 10px;">
+                                                <div class="footer-label">Andamio liberado (personal autorizado)</div>
+                                                <div class="input-cell-blue" style="flex: 1; border-radius: 4px;">
+                                                    <input type="text" class="editable-blue" value="SI" id="andamio_liberado" style="border-radius: 4px;">
+                                                </div>
+                                            </div>
+
+                                            <div class="footer-row" style="margin-top: 10px;">
+                                                <div class="footer-label">Andamio "candadeado" (> 4 metros)</div>
+                                                <div class="input-cell-blue" style="flex: 1; border-radius: 4px;">
+                                                    <input type="text" class="editable-blue" value="SI" id="andamio_candado" style="border-radius: 4px;">
+                                                </div>
+                                            </div>
                                         </div>
 
                                         <div class="footer-area">
                                             <div class="footer-item">
                                                 <div class="footer-tag">Requerimientos solicitados por:</div>
-                                                <div class="footer-tag" style="background-color: #A04000;">Jesús Daniel Puig Fernández</div>
+                                                <div class="footer-tag solicitante-nombre" style="background-color: #A04000;">-</div>
                                             </div>
                                             <div class="footer-item">
                                                 <div class="footer-tag">Requerimientos verificados:</div>
@@ -785,64 +803,7 @@
 
 
 
-                            <!-- TEMPLATE: Permiso Bloqueo y Etiquetado -->
-                            <template id="template-permiso-bloqueo-y-etiquetado">
-                                <div class="added-form" data-form-type="bloqueo">
-                                    <div class="added-form-header">
-                                        <h4><i class="ri-lock-line"></i> Permiso Bloqueo y Etiquetado</h4>
-                                        <button type="button" class="remove-btn" title="Eliminar formulario">
-                                            <i class="ri-close-line"></i> Eliminar
-                                        </button>
-                                    </div>
-                                    <div class="added-form-content">
-                                        <div class="question">
-                                            <strong>¿Se aplicó bloqueo a todas las fuentes de energía?</strong>
-                                            <div class="question-options">
-                                                <label class="radio-option">
-                                                    <input type="radio" name="bloqueo_q1" value="Sí">
-                                                    <span class="radio-custom"></span>
-                                                    Sí
-                                                </label>
-                                                <label class="radio-option">
-                                                    <input type="radio" name="bloqueo_q1" value="No">
-                                                    <span class="radio-custom"></span>
-                                                    No
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="question">
-                                            <strong>¿Las etiquetas están visibles y legibles?</strong>
-                                            <div class="question-options">
-                                                <label class="radio-option">
-                                                    <input type="radio" name="bloqueo_q2" value="Sí">
-                                                    <span class="radio-custom"></span>
-                                                    Sí
-                                                </label>
-                                                <label class="radio-option">
-                                                    <input type="radio" name="bloqueo_q2" value="No">
-                                                    <span class="radio-custom"></span>
-                                                    No
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="question">
-                                            <strong>¿Se verificó la energía residual?</strong>
-                                            <div class="question-options">
-                                                <label class="radio-option">
-                                                    <input type="radio" name="bloqueo_q3" value="Sí">
-                                                    <span class="radio-custom"></span>
-                                                    Sí
-                                                </label>
-                                                <label class="radio-option">
-                                                    <input type="radio" name="bloqueo_q3" value="No">
-                                                    <span class="radio-custom"></span>
-                                                    No
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </template>
+                            
 
                             <!-- TEMPLATE: Permiso Agua a Alta Presión -->
                             <template id="template-permiso-agua-a-alta-presion">
@@ -1132,17 +1093,29 @@
                                                     <tr>
                                                         <td class="label-orange">Se requiere más de un vigía de fuego</td>
                                                         <td class="input-cell-blue">
-                                                            <input type="text" id="requiereMasVigia" class="editable-blue" value="NO">
+                                                            <div style="display: flex; gap: 15px; justify-content: center; align-items: center;">
+                                                                <label style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
+                                                                    <input type="radio" name="requiereMasVigia" value="SI" onchange="toggleVigiasAdicionales(this)">
+                                                                    <span style="font-weight: bold;">SI</span>
+                                                                </label>
+                                                                <label style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
+                                                                    <input type="radio" name="requiereMasVigia" value="NO" checked onchange="toggleVigiasAdicionales(this)">
+                                                                    <span style="font-weight: bold;">NO</span>
+                                                                </label>
+                                                            </div>
                                                         </td>
                                                     </tr>
-                                                    <tr>
-                                                        <td class="label-orange">Nombre del (os) vigía (as) adicional (es)</td>
-                                                        <td class="input-cell-blue">
-                                                            <input type="text" id="nombresVigiasAdicionales" class="editable-blue text-left" placeholder="Escriba nombres...">
-                                                        </td>
-                                                    </tr>
+                                                    
+                                                    
                                                 </tbody>
                                             </table>
+
+                                            <div id="rowVigiasAdicionales" class="footer-row" style="display: none; margin-top: 10px;">
+                                                <div class="footer-label">Nombre del (os) vigía (as) adicional (es)</div>
+                                                <div class="input-cell-blue" style="flex: 1; border-radius: 4px;">
+                                                    <input type="text" id="nombresVigiasAdicionales" class="editable-blue text-left" placeholder="Escriba nombres..." disabled style="border-radius: 4px;">
+                                                </div>
+                                            </div>
                                         </div>
 
 
@@ -1188,47 +1161,53 @@
                                                         <td class="label-orange">Respirador para humos de soldadura</td>
                                                         <td class="value-fixed-orange">SI</td>
                                                     </tr>
-                                                    <tr>
-                                                        <td class="label-orange">Otro</td>
-                                                        <td class="input-cell-blue">
-                                                            <input type="text" id="eppOtro1" class="editable-blue text-left">
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="label-orange">Otro</td>
-                                                        <td class="input-cell-blue">
-                                                            <input type="text" id="eppOtro2" class="editable-blue text-left">
-                                                        </td>
-                                                    </tr>
                                                 </tbody>
                                             </table>
+
+                                            <div class="footer-row" style="margin-top: 10px;">
+                                                <div class="footer-label">Otro</div>
+                                                <div class="input-cell-blue" style="flex: 1; border-radius: 4px;">
+                                                    <input type="text" id="eppOtro1" class="editable-blue text-left" style="border-radius: 4px;">
+                                                </div>
+                                            </div>
+
+                                            <div class="footer-row" style="margin-top: 10px;">
+                                                <div class="footer-label">Otro</div>
+                                                <div class="input-cell-blue" style="flex: 1; border-radius: 4px;">
+                                                    <input type="text" id="eppOtro2" class="editable-blue text-left" style="border-radius: 4px;">
+                                                </div>
+                                            </div>
                                         </div>
 
 
                                         <div class="col-right">
+                                            <h4><strong>Monitoreo de atmosfera</strong></h4>
+                                            
+                                            <div class="footer-row" style="margin-top: 10px;">
+                                                <div class="footer-label">Temperatura</div>
+                                                <div class="input-cell-blue" style="flex: 1; border-radius: 4px;">
+                                                    <input type="text" id="temperatura" class="editable-blue" value="27 °C" style="border-radius: 4px;">
+                                                </div>
+                                            </div>
+
+                                            <div class="footer-row" style="margin-top: 10px;">
+                                                <div class="footer-label">Nombre del Vigía de fuego</div>
+                                                <div class="input-cell-blue" style="flex: 1; border-radius: 4px;">
+                                                    <input type="text" id="nombreVigia" class="editable-blue text-left" value="Jorge Luis Zurita" style="border-radius: 4px;">
+                                                </div>
+                                            </div>
+
+                                            <div class="footer-row" style="margin-top: 10px;">
+                                                <div class="footer-label">Nombre del Vigía de fuego suplente</div>
+                                                <div class="input-cell-blue" style="flex: 1; border-radius: 4px;">
+                                                    <input type="text" id="nombreSuplente" class="editable-blue text-left" value="Juan Pérez" style="border-radius: 4px;">
+                                                </div>
+                                            </div>
                                             <table>
                                                 <thead>
-                                                    <tr><th colspan="2" class="header-orange">Monitoreo de Atmosferas:</th></tr>
+                                                   
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td class="label-orange">Temperatura</td>
-                                                        <td class="input-cell-blue">
-                                                            <input type="text" id="temperatura" class="editable-blue" value="27 °C">
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="label-orange">Nombre del Vigía de fuego</td>
-                                                        <td class="input-cell-blue">
-                                                            <input type="text" id="nombreVigia" class="editable-blue text-left" value="Jorge Luis Zurita">
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="label-orange">Nombre del Vigía de fuego suplente</td>
-                                                        <td class="input-cell-blue">
-                                                            <input type="text" id="nombreSuplente" class="editable-blue text-left" value="Juan Pérez">
-                                                        </td>
-                                                    </tr>
                                                     <tr>
                                                         <td class="label-orange">Realizar monitoreo inicial de O2 (19.5%-23.5%), CO (0ppm), LEL (0%), NH3 (0 ppm)</td>
                                                         <td class="value-fixed-orange">SI</td>
@@ -1244,10 +1223,12 @@
                                                 </tbody>
                                             </table>
 
-                                            <div class="footer-section">
+                                     
+
+                                            <div class="footer-section" style="margin-top: 20px;">
                                                 <div class="footer-row">
                                                     <div class="footer-label">Requerimientos solicitados por:</div>
-                                                    <div class="footer-value-fixed" style="background-color: #A04000;">Jesús Daniel Puig Fernández</div>
+                                                    <div class="footer-value-fixed solicitante-nombre" style="background-color: #A04000;">-</div>
                                                 </div>
                                                 
                                                 <div class="footer-row">
@@ -1260,13 +1241,85 @@
                                             </div>
 
                                     
-                                    </div>
+                                     </div>
 
 
-                                  </div>
+                                </div>
                             </template>
 
                             
+
+                            <template id="template-permiso-apertura">
+                                  <div class="added-form" data-form-type="permiso-apertura">
+                                    <div class="added-form-header">
+                                        <h4><i class="ri-fire-fill"></i> Permiso Apertura</h4>
+                                        <button type="button" class="remove-btn" title="Eliminar formulario">
+                                            <i class="ri-close-line"></i> Eliminar
+                                        </button>
+                                    </div>
+
+                                    <div class="main-container">  
+                                        <div class="col-left">
+                                            <div class="section-header">Control de Energías:</div>
+                                            <table>
+                                                <tr><td class="label-orange">Equipo aislado, desenergizado y bloqueado (LOTO, Entradas y Salidas)</td><td class="value-orange">SI</td></tr>
+                                                <tr><td class="label-orange">Equipo venteado</td><td class="value-orange">SI</td></tr>
+                                                <tr><td class="label-orange">Equipo drenado</td><td class="value-orange">SI</td></tr>
+                                                <tr><td class="label-orange">Equipo Inertizado</td><td class="value-orange">SI</td></tr>
+                                                
+                                                <tr>
+                                                    <td class="label-orange">Suspender trabajos adyacentes</td>
+                                                    <td class="input-cell-blue">
+                                                        <input type="text" class="editable-blue" value="NO" id="suspender_trabajos">
+                                                    </td>
+                                                </tr>
+                                                
+                                                <tr>
+                                                    <td class="label-orange">Realizar monitoreo de gases de O2 (19.5%-23.5%), CO (0ppm), LEL (0%), NH3 (0 ppm)</td>
+                                                    <td class="input-cell-blue">
+                                                        <input type="text" class="editable-blue" value="SI" id="monitoreo_gases">
+                                                    </td>
+                                                </tr>
+                                                
+                                                <tr><td class="label-orange">Eliminar sustancias entrampadas</td><td class="value-orange">SI</td></tr>
+                                                <tr><td class="label-orange">Delimitar el área</td><td class="value-orange">SI</td></tr>
+                                                <tr><td class="label-orange">Conocer la sustancia que estuvo contenida</td><td class="value-orange">SI</td></tr>
+                                            </table>
+                                        </div>
+
+                                        <div class="col-right">
+                                            <div class="section-header">Equipo de Protección Especial:</div>
+                                            <table>
+                                                <tr><td class="label-orange">Capucha, chamarra y pantalón antiácido</td><td class="value-orange">SI</td></tr>
+                                                <tr><td class="label-orange">Full face</td><td class="value-orange">SI</td></tr>
+                                                <tr><td class="label-orange">Botas y guantes de hule</td><td class="value-orange">SI</td></tr>
+                                            </table>
+
+                                            <div style="margin-top: 50px;">
+                                                <div class="footer-box" style="margin-bottom: 10px;">
+                                                    <div class="tag-orange">Requerimientos solicitados por:</div>
+                                                    <div class="tag-orange solicitante-nombre" style="background-color: #A04000; flex-grow: 1; text-align: center;">-</div>
+                                                </div>
+
+                                                <div class="footer-box">
+                                                    <div class="tag-orange">Requerimientos verificados:</div>
+                                                    <div class="input-cell-blue" style="border-radius: 5px; width: 80px;">
+                                                        <input type="text" class="editable-blue" value="SI" id="verificado_apertura">
+                                                    </div>
+                                                    <div class="resp-text">Responsable del área</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+
+
+
+
+                                    </div>
+                            </template>  
 
                         </div>
                         <!-- ===== FIN: TEMPLATES DE FORMULARIOS ===== -->
@@ -1520,6 +1573,7 @@
     <!--<script src="/Modules/Fomularios/PT1/PT1.js"></script> -->
     <script src="/Modules/Fomularios/Generales/email.js"></script>
     <script src="/Modules/Fomularios/Generales/seccion1.js"></script>
+    <script src="/Modules/Fomularios/Generales/buscar_equipo_tag.js"></script>
     <script src="/Modules/Fomularios/PT1/seccion2.js"></script>
     <script src="/Modules/Fomularios/Generales/seccion3.js"></script> 
     <script src="/Modules/Fomularios/Generales/seccion4.js"></script>

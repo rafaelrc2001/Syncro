@@ -448,10 +448,43 @@ function setDefaultApplicant() {
             // Construir nombre completo: nombre + apellidop + apellidom
             const nombreCompleto = `${usuario.nombre} ${usuario.apellidop || ''} ${usuario.apellidom || ''}`.trim();
             applicantField.value = nombreCompleto;
+            
+            // Actualizar todos los campos que muestran el nombre del solicitante en los templates
+            updateSolicitanteNombre(nombreCompleto);
+            
             console.log('Responsable del trabajo establecido:', nombreCompleto);
         }
     } catch (error) {
         console.error('Error al obtener datos del usuario:', error);
+    }
+}
+
+// === Actualizar nombre del solicitante en todos los templates ===
+function updateSolicitanteNombre(nombreCompleto) {
+    // Actualizar todos los elementos con la clase 'solicitante-nombre'
+    const elementos = document.querySelectorAll('.solicitante-nombre');
+    elementos.forEach(elemento => {
+        elemento.textContent = nombreCompleto;
+    });
+    
+    // También observar cambios futuros cuando se agreguen formularios dinámicamente
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            mutation.addedNodes.forEach((node) => {
+                if (node.nodeType === 1) { // Es un elemento
+                    const nuevosSolicitantes = node.querySelectorAll('.solicitante-nombre');
+                    nuevosSolicitantes.forEach(elemento => {
+                        elemento.textContent = nombreCompleto;
+                    });
+                }
+            });
+        });
+    });
+    
+    // Observar cambios en la zona de drop donde se agregan formularios
+    const dropZone = document.getElementById('dropZone');
+    if (dropZone) {
+        observer.observe(dropZone, { childList: true, subtree: true });
     }
 }
 
@@ -563,4 +596,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 });
+
+
+
+
+/* 
+=============================
+Funcion para consultar la aprte de los tags
+=============================
+*/
+
 

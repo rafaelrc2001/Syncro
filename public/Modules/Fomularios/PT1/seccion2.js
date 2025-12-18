@@ -242,12 +242,12 @@ function initDragAndDropConstructor() {
   const formTemplateMap = {
     "Permiso Altura": "template-permiso-altura",
     "Permiso Espacio confinado": "template-permiso-espacio-confinado",
-    "Permiso Bloqueo y Etiquetado": "template-permiso-bloqueo-y-etiquetado",
     "Permiso Agua a Alta Presión": "template-permiso-agua-a-alta-presion",
     "Permiso Primera Apertura": "template-permiso-primera-apertura",
     "Permiso Izaje con Grúa": "template-permiso-izaje-con-grua",
     "Permiso Eléctrico": "template-permiso-electrico",
-    "Permiso Fuego" : "template-permiso-fuego"
+    "Permiso Fuego" : "template-permiso-fuego", 
+    "Permiso apertura" : "template-permiso-apertura"
   };
 
   // ===== SELECCIÓN DE ELEMENTOS DEL DOM =====
@@ -323,13 +323,12 @@ function initDragAndDropConstructor() {
     const formTypeMap = {
       "Permiso Altura": "altura",
       "Permiso Espacio confinado": "confinado",
-      "Permiso Bloqueo y Etiquetado": "bloqueo",
       "Permiso Agua a Alta Presión": "agua-presion",
       "Permiso Primera Apertura": "primera-apertura",
       "Permiso Izaje con Grúa": "izaje",
       "Permiso Eléctrico": "electrico",
-      "Permiso Fuego": "permiso-fuego"
-      
+      "Permiso Fuego": "permiso-fuego",
+      "Permiso apertura": "permiso-apertura"
     };
     
     const formType = formTypeMap[formName];
@@ -433,3 +432,24 @@ function initDragAndDropConstructor() {
 // ============================================================================
 // FIN: FUNCIONALIDAD DE DRAG AND DROP
 // ============================================================================
+
+
+
+
+// ============================================================================
+// !!!!! FUNCIONES PARA ESCONDER PREGUNTAS
+// ============================================================================
+
+
+function toggleVigiasAdicionales(radio) {
+  const row = document.getElementById('rowVigiasAdicionales');
+  const input = document.getElementById('nombresVigiasAdicionales');                                                        
+    if (radio.value === 'SI') {
+      row.style.display = 'table-row';
+      input.disabled = false;
+    } else {
+      row.style.display = 'none';
+      input.disabled = true;
+      input.value = '';
+    }
+  }

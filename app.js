@@ -42,6 +42,7 @@ const graficaMesesRouter = require("./graficas/endpoint_grafica_meses");
 const departamentoConsultaRouter = require("./departamento_consulta");
 
 const graficasJefesRouter = require("./graficas/graficas_jefes/graficas_jefes");
+const equipoBuscarRouter = require("./equipo_buscar");
 const { verificarAutenticacion, verificarRol, verificarSesion, cerrarSesion } = require("./middleware/auth");
 
 const app = express();
@@ -128,6 +129,7 @@ app.use("/api", verificarAutenticacion, formularioCestaRouter);
 app.use("/api", verificarAutenticacion, formularioExcavacionRouter);
 app.use("/api/graficas_jefes", verificarAutenticacion, graficaMesesRouter);
 app.use("/api", verificarAutenticacion, departamentoConsultaRouter);
+app.use("/api", verificarAutenticacion, equipoBuscarRouter); // Ruta para buscar equipo por TAG
 
 // ================= RUTAS DE TABLAS BASE =================
 const tablasBase = require("./tablasbase");

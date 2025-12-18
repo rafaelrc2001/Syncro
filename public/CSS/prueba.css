@@ -254,7 +254,7 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: var(--space-xl);
-    padding: var(--space-lg) var(--space-xl);
+    padding: var(--space-md) var(--space-lg);
     background: linear-gradient(135deg, var(--azul-industrial) 0%, var(--azul-petroleo) 100%);
     border-radius: var(--radius-lg);
     color: white;
@@ -275,7 +275,7 @@ body {
 
 .main-header h1 {
     color: white;
-    font-size: 1.75rem;
+    font-size: 1.18rem;/* este es el estilo para la parte del header en el ajuste del tamaño*/
     font-weight: 800;
     display: flex;
     align-items: center;
@@ -285,23 +285,23 @@ body {
 
 /* ==================== PROGRESS STEPS ====================*/
 .progress-container {
-    margin-bottom: var(--space-xl);
+    margin-bottom: var(--space-md);
 }
 
 .progress-steps {
     display: flex;
     justify-content: space-between;
     position: relative;
-    margin-bottom: var(--space-xl);
+    margin-bottom: var(--space-md);
 }
 
 .progress-steps::before {
     content: '';
     position: absolute;
-    top: 20px;
+    top: 11px;
     left: 0;
     right: 0;
-    height: 3px;
+    height: 2px;
     background: var(--gris-claro);
     z-index: 1;
 }
@@ -316,8 +316,8 @@ body {
 }
 
 .step-number {
-    width: 40px;
-    height: 40px;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
     background: var(--gris-claro);
     color: var(--gris-medio);
@@ -325,9 +325,10 @@ body {
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    margin-bottom: var(--space-sm);
-    border: 3px solid white;
+    margin-bottom: 0.25rem;
+    border: 2px solid white;
     transition: all var(--transition-base);
+    font-size: 0.77rem;
 }
 
 .step.active .step-number {
@@ -337,7 +338,7 @@ body {
 }
 
 .step-title {
-    font-size: 0.8rem;
+    font-size: 0.66rem;
     font-weight: 600;
     text-align: center;
     color: var(--gris-medio);
@@ -429,7 +430,7 @@ body {
 
 .form-header h2 {
     color: white;
-    font-size: 0.9rem;
+    font-size: 1.18rem;  /* Ajustado a 1.08rem esta es la caracteristica que se va acambiar*/ 
     margin-bottom: 0.2rem;
     font-weight: 800;
 }

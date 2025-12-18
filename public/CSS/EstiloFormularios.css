@@ -89,69 +89,6 @@ h1, h2, h3, h4, h5, h6 {
     gap: 0.5rem;
 }
 
-/* Barra de progreso mejorada */
-.progress-container {
-    margin: 1rem 0;
-}
-
-.progress-steps {
-    display: flex;
-    justify-content: space-between;
-    position: relative;
-}
-
-.step {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    z-index: 1;
-}
-
-.step:not(:last-child)::after {
-    content: '';
-    position: absolute;
-    top: 1rem;
-    left: 50%;
-    width: 100%;
-    height: 2px;
-    background-color: var(--plata-industrial);
-    z-index: -1;
-}
-
-.step.active:not(:last-child)::after {
-    background-color: var(--azul-petroleo);
-}
-
-.step-number {
-    width: 1.75rem;
-    height: 1.75rem;
-    border-radius: 50%;
-    background-color: var(--plata-industrial);
-    color: var(--gris-acero);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    margin-bottom: 0.25rem;
-    font-size: 0.75rem;
-    z-index: 2;
-}
-
-.step.active .step-number {
-    background-color: var(--azul-petroleo);
-    color: white;
-}
-
-.step-title {
-    font-size: 0.7rem;
-    color: var(--gris-acero);
-    text-align: center;
-    font-weight: 500;
-    white-space: nowrap;
-}
-
 /* Secciones del formulario */
 .form-section {
     display: none;

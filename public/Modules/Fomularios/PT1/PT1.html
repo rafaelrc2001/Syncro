@@ -273,7 +273,7 @@
                             <!-- PANEL DE FORMULARIOS DISPONIBLES -->
                             <!-- Esta sección contiene los formularios que se pueden arrastrar -->
                             <div class="forms-panel" id="forms-panel">
-                                <h3>Formularios Disponibles</h3>
+                                <h3>Permisos Disponibles</h3>
                                 
                                 <!-- Cada item es draggable (arrastrable) y contiene el nombre del formulario -->
                                 <div class="form-item" draggable="true" data-name="Permiso Altura">
@@ -282,7 +282,7 @@
                                 <div class="form-item" draggable="true" data-name="Permiso Espacio confinado">
                                     <i class="ri-door-lock-box-line"></i> Permiso Espacio confinado
                                 </div>
-                                <div class="form-item" draggable="true" data-name="Permiso Agua a Alta Presión">
+                        <!--         <div class="form-item" draggable="true" data-name="Permiso Agua a Alta Presión">
                                     <i class="ri-drop-line"></i> Permiso Agua a Alta Presión
                                 </div>
                                 <div class="form-item" draggable="true" data-name="Permiso Primera Apertura">
@@ -293,7 +293,7 @@
                                 </div>
                                 <div class="form-item" draggable="true" data-name="Permiso Eléctrico">
                                     <i class="ri-flashlight-line"></i> Permiso Eléctrico
-                                </div>
+                                </div>-->
                                 <div class="form-item" draggable="true" data-name="Permiso Fuego">
                                     <i class="ri-fire-fill"></i> Permiso Fuego
                                 </div>
@@ -347,8 +347,8 @@
 
                                             <div class="footer-row">
                                                 <div class="footer-label">Línea de vida retráctil (1.8 a 5.5 m...)</div>
-                                                <div class="input-cell-blue">
-                                                    <input type="text" class="editable-blue" value="NO" id="retractil">
+                                                <div class="input-cell-blue-short" style="width: 70px; flex-shrink: 0;">
+                                                    <input type="text" class="editable-blue editable-blue-short" value="NO" id="retractil" style="text-align: center;">
                                                 </div>
                                             </div>
 
@@ -359,8 +359,8 @@
 
                                             <div class="footer-row">
                                                 <div class="footer-label">Línea de vida con amortiguador</div>
-                                                <div class="input-cell-blue">
-                                                    <input type="text" class="editable-blue" value="NO" id="amortiguador">
+                                                <div class="input-cell-blue-short" style="width: 70px; flex-shrink: 0;">
+                                                    <input type="text" class="editable-blue editable-blue-short" value="NO" id="amortiguador" style="text-align: center;">
                                                 </div>
                                             </div>
 
@@ -368,8 +368,8 @@
 
                                             <div class="footer-row">
                                                 <div class="footer-label">Presencia Lluvia</div>
-                                                <div class="input-cell-blue">
-                                                    <input type="text" class="editable-blue" value="NO" id="lluvia">
+                                                <div class="input-cell-blue-short" style="width: 70px; flex-shrink: 0;">
+                                                    <input type="text" class="editable-blue editable-blue-short" value="NO" id="lluvia" style="text-align: center;">
                                                 </div>
                                             </div>
 
@@ -380,8 +380,8 @@
 
                                             <div class="footer-row">
                                                 <div class="footer-label">Presencia de gases tóxicos</div>
-                                                <div class="input-cell-blue">
-                                                    <input type="text" class="editable-blue" value="NO" id="gases">
+                                                <div class="input-cell-blue-short" style="width: 70px; flex-shrink: 0;">
+                                                    <input type="text" class="editable-blue editable-blue-short" value="NO" id="gases" style="text-align: center;">
                                                 </div>
                                             </div>
                                         </div>
@@ -405,15 +405,15 @@
                                             
                                             <div class="footer-row">
                                                 <div class="footer-label">Andamio liberado (personal autorizado)</div>
-                                                <div class="input-cell-blue">
-                                                    <input type="text" class="editable-blue" value="SI" id="andamio_liberado">
+                                                <div class="input-cell-blue-short" style="width: 70px; flex-shrink: 0;">
+                                                    <input type="text" class="editable-blue editable-blue-short" value="SI" id="andamio_liberado" style="text-align: center;">
                                                 </div>
                                             </div>
 
                                             <div class="footer-row">
                                                 <div class="footer-label">Andamio "candadeado" (> 4 metros)</div>
-                                                <div class="input-cell-blue">
-                                                    <input type="text" class="editable-blue" value="SI" id="andamio_candado">
+                                                <div class="input-cell-blue-short" style="width: 70px; flex-shrink: 0;">
+                                                    <input type="text" class="editable-blue editable-blue-short" value="SI" id="andamio_candado" style="text-align: center;">
                                                 </div>
                                             </div>
                                         
@@ -440,8 +440,8 @@
                                             </div>
                                             <div class="footer-item">
                                                 <div class="footer-tag">Requerimientos verificados:</div>
-                                                <div class="input-cell-blue" style="width: 60px;">
-                                                    <input type="text" class="editable-blue" value="SI" id="verificado">
+                                                <div class="input-cell-blue-short" style="width: 60px; flex-shrink: 0;">
+                                                    <input type="text" class="editable-blue editable-blue-short" value="SI" id="verificado" style="text-align: center;">
                                                 </div>
                                                 <span class="resp-text">Responsable del área</span>
                                             </div>
@@ -618,8 +618,8 @@
                                                 </div>
                                                 <div class="footer-item">
                                                     <div class="footer-tag">Requerimientos verificados:</div>
-                                                    <div class="input-cell-blue" style="width: 60px;">
-                                                        <input type="text" class="editable-blue" value="SI" id="verificado">
+                                                    <div class="input-cell-blue-short" style="width: 60px; flex-shrink: 0;">
+                                                        <input type="text" class="editable-blue editable-blue-short" value="SI" id="verificado" style="text-align: center;">
                                                     </div>
                                                     <span class="resp-text">Responsable del área</span>
                                                 </div>

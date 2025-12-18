@@ -13,6 +13,7 @@
           <link rel="stylesheet" href="/CSS/prueba.css">
           <!-- Estilos para funcionalidad Drag & Drop del Constructor de Formato -->
           <link rel="stylesheet" href="/CSS/EstiloDragDrop.css">
+          <link rel="stylesheet" href="/CSS/EstiloPermisosDrag.css">
 
 </head>
 <body>
@@ -168,12 +169,15 @@
                                 </select>
                             </div>
 
-                            <div class="form-group" id="other-maintenance-container" style="display:none;">
+                          
+                        </div>
+                        
+
+                          <div class="form-group" id="other-maintenance-container" style="display:none;">
                                 <label for="other-maintenance">Otro (especifique)</label>
                                 <input type="text" id="other-maintenance" name="other-maintenance" class="compact">
                             </div>
-                        </div>
-                        
+
 
                         <div class="form-group">
                             <label for="work-order">No. O.T. </label>
@@ -287,6 +291,12 @@
                                 <div class="form-item" draggable="true" data-name="Permiso Eléctrico">
                                     <i class="ri-flashlight-line"></i> Permiso Eléctrico
                                 </div>
+                                <div class="form-item" draggable="true" data-name="Permiso Fuego">
+                                    <i class="ri-fire-fill"></i> Permiso Fuego
+                                </div>
+                                <div class="form-item" draggable="true" data-name="Permiso apertura">
+
+                                </div>
                                   
                             </div>
 
@@ -322,292 +332,76 @@
                                     </div>
 
                                     <!-- En esta seccion se agrega el permiso en altura -->
-                                    <div class="color-section gray-section">
-                                        <div class="form-section-title">
-                                            <i class="ri-shield-check-line"></i>
-                                            <h4>Análisis de requisitos para efectuar el trabajo</h4>
+                                    <div class="main-container">
+    
+                                        <div>
+                                            <div class="section-header">Equipo de Protección Personal</div>
+                                            <table>
+                                                <tr><td class="label-fixed">Arnés de cuerpo completo</td><td class="value-fixed">SI</td></tr>
+                                                <tr>
+                                                    <td class="label-fixed">Línea de vida retráctil (1.8 a 5.5 m...)</td>
+                                                    <td class="input-cell-blue"><input type="text" class="editable-blue" value="NO" id="retractil"></td>
+                                                </tr>
+                                                <tr><td class="label-fixed">Línea de restricción</td><td class="value-fixed">SI</td></tr>
+                                                <tr>
+                                                    <td class="label-fixed">Línea de vida con amortiguador</td>
+                                                    <td class="input-cell-blue"><input type="text" class="editable-blue" value="NO" id="amortiguador"></td>
+                                                </tr>
+                                            </table>
+
+                                            <div class="section-header">Factores Ambientales</div>
+                                            <table>
+                                                <tr>
+                                                    <td class="label-fixed">Presencia Lluvia</td>
+                                                    <td class="input-cell-blue"><input type="text" class="editable-blue" value="NO" id="lluvia"></td>
+                                                </tr>
+                                                <tr><td class="label-fixed">Velocidad del viento menor a 30 km/hr</td><td class="value-fixed">SI</td></tr>
+                                                <tr>
+                                                    <td class="label-fixed">Presencia de gases tóxicos</td>
+                                                    <td class="input-cell-blue"><input type="text" class="editable-blue" value="NO" id="gases"></td>
+                                                </tr>
+                                            </table>
                                         </div>
-                                        <div class="form-table">
-                                            <!-- Encabezado de opciones -->
-                                            <div class="options-header">
-                                                <div class="form-table-label"></div>
-                                                <div class="form-table-options">
-                                                    <div class="options-labels">
-                                                        <span class="option-label">SI</span>
-                                                        <span class="option-label">NO</span>
-                                                        <span class="option-label">N/A</span>
-                                                    </div>
-                                                </div>
-                                            </div>
 
-                                            <!-- Fila 1 -->
-                                            <!-- Fila 1: Escalera -->
-                                            <div class="form-table-row">
-                                            <div class="form-table-label">
-                                                <label>¿El trabajo requiere escalera?</label>
-                                            </div>
-                                            <div class="form-table-options">
-                                                <div class="yes-no-na compact">
-                                                    <label><input type="radio" name="warning-signs" value="SI"></label>
-                                                    <label><input type="radio" name="warning-signs" value="NO"></label>
-                                                    <label><input type="radio" name="warning-signs" value="N/A"></label>
-                                                </div>
-                                                <div id="input-escalera-container" style="display:none;">
-                                                <label for="input-escalera" style="font-size:0.95em;">¿tipo?</label>
-                                                <input type="text" id="input-escalera" name="input-escalera" class="extra-input" placeholder="-">
-                                                </div>
-                                            </div>
-                                            </div>
+                                        <div>
+                                            <div class="section-header">Equipo de Protección contra caídas</div>
+                                            <table>
+                                                <tr><td class="label-fixed">Puntos de anclaje (tuberías > 8", vigas...)</td><td class="value-fixed">SI</td></tr>
+                                                <tr><td class="label-fixed">Línea de vida de acero de 3/8"</td><td class="value-fixed">SI</td></tr>
+                                            </table>
+                                        </div>
 
-                                            <!-- Fila 2 -->
-                                            <div class="form-table-row">
-                                                <div class="form-table-label">
-                                                    <label>¿El trabajo requiere canastilla manejada por grúa?</label>
-                                                </div>
-                                                <div class="form-table-options">
-                                                    <div class="yes-no-na compact">
-                                                        <label><input type="radio" name="explosion-proof-lighting" value="SI"></label>
-                                                        <label><input type="radio" name="explosion-proof-lighting" value="NO"></label>
-                                                        <label><input type="radio" name="explosion-proof-lighting" value="N/A"></label>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                        <div>
+                                            <div class="section-header">Control de Riesgos</div>
+                                            <table>
+                                                <tr>
+                                                    <td class="label-fixed">Andamio liberado (personal autorizado)</td>
+                                                    <td class="input-cell-blue"><input type="text" class="editable-blue" value="SI" id="andamio_liberado"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="label-fixed">Andamio "candadeado" (> 4 metros)</td>
+                                                    <td class="input-cell-blue"><input type="text" class="editable-blue" value="SI" id="andamio_candado"></td>
+                                                </tr>
+                                                <tr><td class="label-fixed">Escaleras tipo I Clase A dieléctrica</td><td class="value-fixed">SI</td></tr>
+                                                <tr><td class="label-fixed">La escalera cumple la relación 4:1</td><td class="value-fixed">SI</td></tr>
+                                                <tr><td class="label-fixed">Escalera asegurada en la parte alta y baja</td><td class="value-fixed">SI</td></tr>
+                                            </table>
+                                        </div>
 
-                                            <!-- Fila 3 -->
-                                            <div class="form-table-row">
-                                                <div class="form-table-label">
-                                                    <label>¿Aseguramiento con estrobo?</label>
-                                                </div>
-                                                <div class="form-table-options">
-                                                    <div class="yes-no-na compact">
-                                                        <label><input type="radio" name="forced-ventilation" value="SI"></label>
-                                                        <label><input type="radio" name="forced-ventilation" value="NO"></label>
-                                                        <label><input type="radio" name="forced-ventilation" value="N/A"></label>
-                                                    </div>
-                                                </div>
+                                        <div class="footer-area">
+                                            <div class="footer-item">
+                                                <div class="footer-tag">Requerimientos solicitados por:</div>
+                                                <div class="footer-tag" style="background-color: #A04000;">Jesús Daniel Puig Fernández</div>
                                             </div>
-
-                                            <!-- Fila 4 -->
-                                            <div class="form-table-row">
-                                                <div class="form-table-label">
-                                                    <label>¿El trabajo requiere andamio con cama completa?</label>
+                                            <div class="footer-item">
+                                                <div class="footer-tag">Requerimientos verificados:</div>
+                                                <div class="input-cell-blue" style="border-radius: 5px; width: 60px;">
+                                                    <input type="text" class="editable-blue" value="SI" id="verificado">
                                                 </div>
-                                                <div class="form-table-options">
-                                                    <div class="yes-no-na compact">
-                                                        <label><input type="radio" name="medical-evaluation" value="SI"></label>
-                                                        <label><input type="radio" name="medical-evaluation" value="NO"></label>
-                                                        <label><input type="radio" name="medical-evaluation" value="N/A"></label>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Fila 5 -->
-                                            <!-- Fila 5: Otro tipo de acceso -->
-                                            <div class="form-table-row">
-                                            <div class="form-table-label">
-                                                <label>¿El trabajo requiere otro tipo de acceso, andamio o plataforma?</label>
-                                            </div>
-                                            <div class="form-table-options">
-                                                <div class="yes-no-na compact">
-                                                <label><input type="radio" name="lifeline" value="SI"></label>
-                                                <label><input type="radio" name="lifeline" value="NO"></label>
-                                                <label><input type="radio" name="lifeline" value="N/A"></label>
-                                                
-                                                </div>
-                                                <div id="input-acceso-container" style="display:none;">
-                                                <label for="input-acceso" style="font-size:0.95em;">¿cuál?</label>
-                                                <input type="text" id="input-acceso" name="input-acceso" class="extra-input" placeholder="-">
-                                                </div>
+                                                <span style="font-size: 12px; font-weight: bold;">Responsable del área</span>
                                             </div>
                                         </div>
-                                    </div>
-
-                                    <!-- Tabla: Medidas/Requisitos para Administrar los Riesgos -->
-                                    <div class="color-section gray-section">
-                                        <div class="form-section-title">
-                                            <i class="ri-shield-check-line"></i>
-                                            <h3>Medidas para administrar los riesgos</h3>
-                                        </div>
-                                        <div class="form-table">
-                                            <!-- Encabezado de opciones -->
-                                            <div class="options-header">
-                                                <div class="form-table-label"></div>
-                                                <div class="form-table-options">
-                                                    <div class="options-labels">
-                                                        <span class="option-label">SI</span>
-                                                        <span class="option-label">NO</span>
-                                                        <span class="option-label">N/A</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Fila 1 -->
-                                            <div class="form-table-row">
-                                                <div class="form-table-label">
-                                                    <label>¿El acceso al lugar del trabajo está libre de obstáculos</label>
-                                                </div>
-                                                <div class="form-table-options">
-                                                    <div class="yes-no-na compact">
-                                                        <label><input type="radio" name="barriers" value="SI"></label>
-                                                        <label><input type="radio" name="barriers" value="NO"></label>
-                                                        <label><input type="radio" name="barriers" value="N/A"></label>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Fila 2 -->
-                                            <div class="form-table-row">
-                                                <div class="form-table-label">
-                                                    <label>¿La canastilla está debidamente asegurada?</label>
-                                                </div>
-                                                <div class="form-table-options">
-                                                    <div class="yes-no-na compact">
-                                                        <label><input type="radio" name="lifeline2" value="SI"></label>
-                                                        <label><input type="radio" name="lifeline2" value="NO"></label>
-                                                        <label><input type="radio" name="lifeline2" value="N/A"></label>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Fila 3 -->
-                                            <div class="form-table-row">
-                                                <div class="form-table-label">
-                                                    <label>¿El andamio tiene rodapié, barandal plataforma completa, escaleras y contravientos?</label>
-                                                </div>
-                                                <div class="form-table-options">
-                                                    <div class="yes-no-na compact">
-                                                        <label><input type="radio" name="lifeline3" value="SI"></label>
-                                                        <label><input type="radio" name="lifeline3" value="NO"></label>
-                                                        <label><input type="radio" name="lifeline3" value="N/A"></label>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Fila 4 -->
-                                            <div class="form-table-row">
-                                                <div class="form-table-label">
-                                                    <label>¿El andamio tiene seguros y zapatas para frenos?</label>
-                                                </div>
-                                                <div class="form-table-options">
-                                                    <div class="yes-no-na compact">
-                                                        <label><input type="radio" name="barriers2" value="SI"></label>
-                                                        <label><input type="radio" name="barriers2" value="NO"></label>
-                                                        <label><input type="radio" name="barriers2" value="N/A"></label>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Fila 5 -->
-                                            <div class="form-table-row">
-                                                <div class="form-table-label">
-                                                    <label>¿Las escaleras tienen peldaños en buen estado, zapatas o gomas de apoyo y están bien sujetas?</label>
-                                                </div>
-                                                <div class="form-table-options">
-                                                    <div class="yes-no-na compact">
-                                                        <label><input type="radio" name="barriers3" value="SI"></label>
-                                                        <label><input type="radio" name="barriers3" value="NO"></label>
-                                                        <label><input type="radio" name="barriers3" value="N/A"></label>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Fila 6 -->
-                                            <div class="form-table-row">
-                                                <div class="form-table-label">
-                                                    <label>¿La línea de vida o el punto de amarre es eficaz para asegurar el cable de sujecion del arnés de seguridad?</label>
-                                                </div>
-                                                <div class="form-table-options">
-                                                    <div class="yes-no-na compact">
-                                                        <label><input type="radio" name="lifeline4" value="SI"></label>
-                                                        <label><input type="radio" name="lifeline4" value="NO"></label>
-                                                        <label><input type="radio" name="lifeline4" value="N/A"></label>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Fila 7 -->
-                                            <div class="form-table-row">
-                                                <div class="form-table-label">
-                                                    <label>¿El arnés de seguridad y cable de sujeción están completos y en buen estado?</label>
-                                                </div>
-                                                <div class="form-table-options">
-                                                    <div class="yes-no-na compact">
-                                                        <label><input type="radio" name="lifeline5" value="SI"></label>
-                                                        <label><input type="radio" name="lifeline5" value="NO"></label>
-                                                        <label><input type="radio" name="lifeline5" value="N/A"></label>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Fila 8 -->
-                                            <div class="form-table-row">
-                                                <div class="form-table-label">
-                                                    <label>¿Es necesario suspender los trabajos adyacentes?</label>
-                                                </div>
-                                                <div class="form-table-options">
-                                                    <div class="yes-no-na compact">
-                                                        <label><input type="radio" name="lifeline6" value="SI"></label>
-                                                        <label><input type="radio" name="lifeline6" value="NO"></label>
-                                                        <label><input type="radio" name="lifeline6" value="N/A"></label>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Fila 9 -->
-                                            <div class="form-table-row">
-                                                                                <div class="form-table-label">
-                                                                                    <label>¿Número de personas autorizadas?</label>
-                                                                                </div>
-                                                                                <div class="form-table-options">
-                                                                                    <div class="yes-no-na compact">
-                                                                                        <label><input type="radio" name="lifeline7" value="SI"></label>
-                                                                                        <label><input type="radio" name="lifeline7" value="NO"></label>
-                                                                                        <label><input type="radio" name="lifeline7" value="N/A"></label>
-                                                                                    </div>
-                                                                                    <div id="input-personas-autorizadas-container" style="display:none;">
-                                                                                        <label for="input-personas-autorizadas" style="font-size:0.95em;">¿Cuántas?</label>
-                                                                                        <input type="number" min="1" id="input-personas-autorizadas" name="input-personas-autorizadas" class="extra-input" placeholder="-">
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-
-                                            <!-- Fila 10 -->
-                                            <div class="form-table-row">
-                                                <div class="form-table-label">
-                                                    <label>¿Los trabajadores resultaron aptos en la evaluación medica?</label>
-                                                </div>
-                                                <div class="form-table-options">
-                                                    <div class="yes-no-na compact">
-                                                        <label><input type="radio" name="lifeline8" value="SI"></label>
-                                                        <label><input type="radio" name="lifeline8" value="NO"></label>
-                                                        <label><input type="radio" name="lifeline8" value="N/A"></label>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Fila 11 -->
-                                            <div class="form-table-row">
-                                                <div class="form-table-label">
-                                                    <label>¿Se requiere la instalación de barreras y/o barricadas?</label>
-                                                </div>
-                                                <div class="form-table-options">
-                                                    <div class="yes-no-na compact">
-                                                        <label><input type="radio" name="lifeline9" value="SI"></label>
-                                                        <label><input type="radio" name="lifeline9" value="NO"></label>
-                                                        <label><input type="radio" name="lifeline9" value="N/A"></label>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-table-row compact-row">
-                                                <div class="form-table-label">
-                                                    <label for="observations">Observaciones adicionales</label>
-                                                </div>
-                                                <div class="form-table-options">
-                                                    <textarea id="observations" name="observations" rows="2" placeholder="Ingrese cualquier observación adicional"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    </div>                                                                            
                                     
 
                                 </div>
@@ -1283,11 +1077,189 @@
                                 </div>
                             </template>
 
-                             <!-- TEMPLATE: Permiso Eléctrico -->
-                            <template id="template-permiso-no-peligroso">
-                                  <div class="added-form" data-form-type="no-peligroso">
+
+
+
+                             
+                             <!-- TEMPLATE: Permiso Fuego -->
+                            <template id="template-permiso-fuego">
+                                  <div class="added-form" data-form-type="permiso-fuego">
+                                    <div class="added-form-header">
+                                        <h4><i class="ri-fire-fill"></i> Permiso Fuego</h4>
+                                        <button type="button" class="remove-btn" title="Eliminar formulario">
+                                            <i class="ri-close-line"></i> Eliminar
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="main-container">
+                                        <div class="col-left">
+                                            <table>
+                                                <thead>
+                                                    <tr><th colspan="2" class="header-orange">Control de riesgos:</th></tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="label-orange">Retiro de material combustible y/o inflamable más allá de 11 metros</td>
+                                                        <td class="value-fixed-orange">SI</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="label-orange">Sistemas de ventilación y extracción apagados</td>
+                                                        <td class="value-fixed-orange">SI</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="label-orange">Válvulas del sistema de supresión, aspersión abiertas</td>
+                                                        <td class="value-fixed-orange">SI</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="label-orange">Uso de lonas ignifugas certificadas</td>
+                                                        <td class="value-fixed-orange">SI</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="label-orange">Cubrir el material combustible / inflamable con lonas ignifugas certificadas cuando no sea posible retirarlo</td>
+                                                        <td class="value-fixed-orange">SI</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="label-orange">Cubrir drenajes, espacios abiertos con lonas ignifugas u otro material no combustible cuando aplique</td>
+                                                        <td class="value-fixed-orange">SI</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="label-orange">Manguera contraincendios presionada y lista para usarse</td>
+                                                        <td class="value-fixed-orange">SI</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="label-orange">Se requiere más de un vigía de fuego</td>
+                                                        <td class="input-cell-blue">
+                                                            <input type="text" id="requiereMasVigia" class="editable-blue" value="NO">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="label-orange">Nombre del (os) vigía (as) adicional (es)</td>
+                                                        <td class="input-cell-blue">
+                                                            <input type="text" id="nombresVigiasAdicionales" class="editable-blue text-left" placeholder="Escriba nombres...">
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+
+                                        <div class="col-mid">
+                                            <table>
+                                                <thead>
+                                                    <tr><th colspan="2" class="header-orange">Equipo de Respuesta a Emergencias:</th></tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="label-orange">Extintor PQS 9 kg en sitio a no más de 7 metros de la actividad</td>
+                                                        <td class="value-fixed-orange">SI</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="label-orange">Bombas contraincendios operando</td>
+                                                        <td class="value-fixed-orange">SI</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+                                            <table>
+                                                <thead>
+                                                    <tr><th colspan="2" class="header-orange">Equipo Protección Personal Especifico:</th></tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="label-orange">Careta de soldador o careta facial</td>
+                                                        <td class="value-fixed-orange">SI</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="label-orange">Lentes o goggles</td>
+                                                        <td class="value-fixed-orange">SI</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="label-orange">Guantes, peto, mangas, guantes largos y polainas de carnaza</td>
+                                                        <td class="value-fixed-orange">SI</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="label-orange">Capucha de algodón (Monja)</td>
+                                                        <td class="value-fixed-orange">SI</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="label-orange">Respirador para humos de soldadura</td>
+                                                        <td class="value-fixed-orange">SI</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="label-orange">Otro</td>
+                                                        <td class="input-cell-blue">
+                                                            <input type="text" id="eppOtro1" class="editable-blue text-left">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="label-orange">Otro</td>
+                                                        <td class="input-cell-blue">
+                                                            <input type="text" id="eppOtro2" class="editable-blue text-left">
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+
+                                        <div class="col-right">
+                                            <table>
+                                                <thead>
+                                                    <tr><th colspan="2" class="header-orange">Monitoreo de Atmosferas:</th></tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="label-orange">Temperatura</td>
+                                                        <td class="input-cell-blue">
+                                                            <input type="text" id="temperatura" class="editable-blue" value="27 °C">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="label-orange">Nombre del Vigía de fuego</td>
+                                                        <td class="input-cell-blue">
+                                                            <input type="text" id="nombreVigia" class="editable-blue text-left" value="Jorge Luis Zurita">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="label-orange">Nombre del Vigía de fuego suplente</td>
+                                                        <td class="input-cell-blue">
+                                                            <input type="text" id="nombreSuplente" class="editable-blue text-left" value="Juan Pérez">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="label-orange">Realizar monitoreo inicial de O2 (19.5%-23.5%), CO (0ppm), LEL (0%), NH3 (0 ppm)</td>
+                                                        <td class="value-fixed-orange">SI</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="label-orange">Realizar monitoreo cada 30 minutos.</td>
+                                                        <td class="value-fixed-orange">SI</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="label-orange">Detector de gas calibrado</td>
+                                                        <td class="value-fixed-orange">SI</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+                                            <div class="footer-section">
+                                                <div class="footer-row">
+                                                    <div class="footer-label">Requerimientos solicitados por:</div>
+                                                    <div class="footer-value-fixed" style="background-color: #A04000;">Jesús Daniel Puig Fernández</div>
+                                                </div>
+                                                
+                                                <div class="footer-row">
+                                                    <div class="footer-label">Requerimientos verificados:</div>
+                                                    <div class="input-cell-blue" style="flex: 1; border-radius: 4px;">
+                                                        <input type="text" id="reqVerificados" class="editable-blue" value="SI" style="border-radius: 4px;">
+                                                    </div>
+                                                    <div class="footer-value-fixed" style="background-color: transparent; color: black; flex: 1;">Responsable del área</div>
+                                                </div>
+                                            </div>
 
                                     
+                                    </div>
+
+
                                   </div>
                             </template>
 

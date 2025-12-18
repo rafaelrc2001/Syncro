@@ -466,8 +466,8 @@ body {
 /* ==================== FORM GRID Y GRUPOS ====================*/
 .form-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.0rem; /* este es el que estoy tocando para mover la parte de los estilos */
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
     margin-bottom: 1.0rem;
 }
 
@@ -477,12 +477,12 @@ body {
 
 .form-group label {
     display: block;
-    margin-bottom: var(--space-sm);
+    margin-bottom: 0.3rem;
     font-weight: 600;
     color: var(--azul-industrial);
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.03em;
 }
 
 /* ==================== INPUTS Y CAMPOS ====================*/
@@ -493,10 +493,10 @@ input[type="time"],
 select,
 textarea {
     width: 100%;
-    padding: 1rem 1.25rem;
+    padding: 0.6rem 0.8rem;
     border: 2px solid var(--gris-claro);
     border-radius: var(--radius-md);
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     transition: all var(--transition-base);
     background: var(--blanco-puro);
     color: var(--gris-oscuro);
@@ -516,6 +516,18 @@ textarea:focus {
 textarea {
     resize: vertical;
     min-height: 80px;
+}
+
+/* Hacer que descripción del trabajo ocupe toda la fila */
+.form-group:has(#work-description) {
+    grid-column: span 4;
+}
+
+/* Ajustar tamaño del textarea de descripción */
+#work-description {
+    width: 100%;           /* Ancho completo del contenedor */
+    min-height: 50px;     /* Altura mínima */
+    max-width: 100%;       /* Evita que se salga del contenedor */
 }
 
 select {

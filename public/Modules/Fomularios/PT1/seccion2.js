@@ -246,7 +246,8 @@ function initDragAndDropConstructor() {
     "Permiso Agua a Alta Presión": "template-permiso-agua-a-alta-presion",
     "Permiso Primera Apertura": "template-permiso-primera-apertura",
     "Permiso Izaje con Grúa": "template-permiso-izaje-con-grua",
-    "Permiso Eléctrico": "template-permiso-electrico"
+    "Permiso Eléctrico": "template-permiso-electrico",
+    "Permiso Fuego" : "template-permiso-fuego"
   };
 
   // ===== SELECCIÓN DE ELEMENTOS DEL DOM =====
@@ -326,7 +327,9 @@ function initDragAndDropConstructor() {
       "Permiso Agua a Alta Presión": "agua-presion",
       "Permiso Primera Apertura": "primera-apertura",
       "Permiso Izaje con Grúa": "izaje",
-      "Permiso Eléctrico": "electrico"
+      "Permiso Eléctrico": "electrico",
+      "Permiso Fuego": "permiso-fuego"
+      
     };
     
     const formType = formTypeMap[formName];

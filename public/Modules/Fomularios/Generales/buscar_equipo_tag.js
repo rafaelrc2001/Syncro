@@ -77,7 +77,7 @@ async function buscarEquipoPorTag(tag) {
             return null;
         }
     } catch (error) {
-        console.error('Error al buscar equipo por TAG:', error);
+       
         return null;
     }
 }
@@ -153,10 +153,10 @@ function initTagSearch() {
                 alert('No se encontró ningún equipo con el TAG: ' + tag);
             }
         } catch (error) {
-            console.error('Error al buscar equipo por TAG:', error);
+           
             equipmentInput.disabled = false;
             equipmentInput.value = '';
-            alert('Error al buscar el equipo');
+          
         }
     };
 

@@ -530,11 +530,22 @@ textarea {
     grid-column: span 4;
 }
 
+/* Hacer que equipo a intervenir ocupe más espacio */
+.form-group:has(#equipment) {
+    grid-column: span 2;
+}
+
 /* Ajustar tamaño del textarea de descripción */
 #work-description {
     width: 100%;           /* Ancho completo del contenedor */
     min-height: 95px;     /* Altura mínima */
     max-width: 100%;       /* Evita que se salga del contenedor */
+}
+
+/* Ajustar ancho del input de equipo */
+#equipment {
+    min-width: 400px;      /* Ancho mínimo más amplio */
+    max-width: 100%;       /* No exceder el contenedor */
 }
 
 select {

@@ -384,12 +384,16 @@ body {
     background: linear-gradient(90deg, var(--naranja-primario) 0%, var(--azul-acento) 100%);
 }
 
+
+
+/* estos son los estilos del header*/
+
 .form-header {
     display: flex;
     align-items: center;
-    gap: var(--space-lg);
-    margin-bottom: var(--space-2xl);
-    padding: var(--space-xl);
+    gap: var(--space-md);
+    margin-bottom: var(--space-xl);
+    padding: var(--space-md) var(--space-lg);
     background: linear-gradient(135deg, var(--azul-industrial) 0%, var(--azul-petroleo) 100%);
     border-radius: var(--radius-lg);
     color: white;
@@ -409,15 +413,15 @@ body {
 }
 
 .form-icon {
-    width: 4rem;
-    height: 4rem;
+    width: 2rem;
+    height: 2rem;
     border-radius: var(--radius-md);
     background: rgba(255, 255, 255, 0.15);
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    font-size: 1.8rem;
+    font-size: 0.9rem;
     flex-shrink: 0;
     backdrop-filter: blur(10px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
@@ -425,14 +429,14 @@ body {
 
 .form-header h2 {
     color: white;
-    font-size: 1.5rem;
-    margin-bottom: var(--space-sm);
+    font-size: 0.9rem;
+    margin-bottom: 0.2rem;
     font-weight: 800;
 }
 
 .form-header p {
     color: rgba(255, 255, 255, 0.85);
-    font-size: 1rem;
+    font-size: 0.7rem;
     margin: 0;
     font-weight: 400;
 }
@@ -483,6 +487,7 @@ body {
     font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 0.03em;
+    padding-left: 0.2rem; /*esto es lo que mueve las etiquetas*/
 }
 
 /* ==================== INPUTS Y CAMPOS ====================*/
@@ -526,7 +531,7 @@ textarea {
 /* Ajustar tamaño del textarea de descripción */
 #work-description {
     width: 100%;           /* Ancho completo del contenedor */
-    min-height: 50px;     /* Altura mínima */
+    min-height: 95px;     /* Altura mínima */
     max-width: 100%;       /* Evita que se salga del contenedor */
 }
 
@@ -924,7 +929,13 @@ input[type="checkbox"]:checked + .checkbox-custom::after {
     gap: var(--space-lg);
     margin-top: var(--space-2xl);
     padding-top: var(--space-xl);
-    border-top: 2px solid var(--gris-claro);
+  /*  border-top: 2px solid var(--gris-claro);*/
+}
+
+/* Alinear botón único a la derecha */
+.form-actions > button:only-child,
+.form-actions > .btn:only-child {
+    margin-left: auto;
 }
 
 /* ==================== VALIDACIÓN ====================*/

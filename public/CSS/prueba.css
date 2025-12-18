@@ -201,8 +201,9 @@
     --font-family-heading: 'Montserrat', 'Roboto', sans-serif;
     
     --space-sm: 0.5rem;
-    --space-md: 1rem;
+    --space-md: 1.5rem;
     --space-lg: 1.5rem;
+    
     --space-xl: 2rem;
     --space-2xl: 3rem;
 }
@@ -275,7 +276,7 @@ body {
 
 .main-header h1 {
     color: white;
-    font-size: 1.18rem;/* este es el estilo para la parte del header en el ajuste del tamaño*/
+    font-size: 1.5rem;/* este es el estilo para la parte del header en el ajuste del tamaño*/
     font-weight: 800;
     display: flex;
     align-items: center;

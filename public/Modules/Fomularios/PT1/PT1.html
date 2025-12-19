@@ -1323,6 +1323,11 @@
                         <i class="ri-add-line"></i> Añadir Actividad
                     </button>
 
+                    <button type="button" class="btn secondary" id="add-mass-load-ast">
+                        <i class="ri-file-excel-line"></i> Añadir carga masiva
+                    </button>
+
+
                     <div class="form-actions">
                         <button type="button" class="btn secondary prev-step" data-prev="3">
                             <i class="ri-arrow-left-line"></i> Anterior
@@ -1357,7 +1362,7 @@
         </div>
     </div>
 
-    <!-- Modal de carga masiva Excel -->
+    <!-- Modal de carga masiva Excel  Participantes-->
     <div class="modal" id="mass-load-modal" style="display: none;">
         <div class="modal-content">
             <div class="modal-header">
@@ -1372,6 +1377,26 @@
             <div class="modal-footer">
                 <button class="btn secondary" id="cancel-mass-load">Cancelar</button>
                 <button class="btn primary" id="confirm-mass-load" disabled>Importar Participantes</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal de carga masiva AST desde Excel -->
+    <div class="modal" id="mass-load-modal-ast" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📊 Importar Actividades AST desde Excel</h3>
+                <span class="close-modal" id="close-mass-modal-ast">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom: 15px;">Sube un archivo Excel con las siguientes columnas: <strong>Secuencia-Actividad, Peligros-potenciales, Acciones-Preventivas</strong></p>
+                <input type="file" id="excelInput-ast" accept=".xlsx,.xls" style="margin-bottom: 15px;">
+                <div id="preview-tabla-ast"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn secondary" id="cancel-mass-load-ast">Cancelar</button>
+                <button class="btn primary" id="confirm-mass-load-ast" disabled>Importar Actividades</button>
             </div>
         </div>
     </div>
@@ -1398,5 +1423,6 @@
     <script src="/Modules/Fomularios/Generales/seccion4.js"></script>
     <script src="/Modules/Fomularios/Generales/navegacion.js"></script>
     <script src="/Modules/Fomularios/Generales/cargadedatos.js"></script> 
+    <script src="/Modules/Fomularios/Generales/carga_masiva_ast.js"></script>
 </body>
 </html>

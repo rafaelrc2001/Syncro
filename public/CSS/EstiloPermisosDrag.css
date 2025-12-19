@@ -437,6 +437,29 @@ table th {
     overflow: visible;
 }
 
+/* Mejorar las líneas divisorias en las tablas del Permiso Fuego */
+.added-form[data-form-type="permiso-fuego"] table {
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 2px solid #ffffff;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.added-form[data-form-type="permiso-fuego"] table td {
+    border: 1px solid #ffffff;
+    border-left: none;
+    border-top: none;
+}
+
+.added-form[data-form-type="permiso-fuego"] table td:first-child {
+    border-left: 1px solid #ffffff;
+}
+
+.added-form[data-form-type="permiso-fuego"] table tr:first-child td {
+    border-top: 1px solid #ffffff;
+}
+
 /* Fijar el ancho de las columnas de valores SI en las tablas para uniformidad */
 .added-form[data-form-type="permiso-fuego"] table td.value-fixed-orange,
 .added-form[data-form-type="permiso-fuego"] table td.value-orange {
@@ -444,6 +467,7 @@ table th {
     min-width: 50px;
     max-width: 50px;
     text-align: center;
+    border-left: 2px solid #ffffff !important;
 }
 
 /* Fijar también el ancho de celdas con inputs en tablas del Permiso Fuego */
@@ -452,6 +476,7 @@ table th {
     min-width: 50px;
     max-width: 50px;
     padding: 2px !important;
+    border-left: 2px solid #ffffff !important;
 }
 
 .col-left,
@@ -467,12 +492,36 @@ table th {
     grid-template-columns: repeat(2, 1fr);
 }
 
+/* Mejorar las líneas divisorias en las tablas del Permiso Apertura */
+.added-form[data-form-type="permiso-apertura"] table {
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 2px solid #ffffff;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.added-form[data-form-type="permiso-apertura"] table td {
+    border: 1px solid #ffffff;
+    border-left: none;
+    border-top: none;
+}
+
+.added-form[data-form-type="permiso-apertura"] table td:first-child {
+    border-left: 1px solid #ffffff;
+}
+
+.added-form[data-form-type="permiso-apertura"] table tr:first-child td {
+    border-top: 1px solid #ffffff;
+}
+
 /* Fijar el ancho de las columnas de valores SI en las tablas para uniformidad */
 .added-form[data-form-type="permiso-apertura"] table td.value-orange {
     width: 50px;
     min-width: 50px;
     max-width: 50px;
     text-align: center;
+    border-left: 2px solid #ffffff !important;
 }
 
 /* Fijar también el ancho de celdas con inputs en tablas del Permiso Apertura */
@@ -481,6 +530,7 @@ table th {
     min-width: 50px;
     max-width: 50px;
     padding: 0 !important;
+    border-left: 2px solid #ffffff !important;
 }
 
 /* Fijar el ancho de los inputs dentro de las celdas */

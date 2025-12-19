@@ -255,20 +255,9 @@
                 <!-- Sección 2 : Permiso de trabajo -->
                 <section class="form-section" data-section="2" id="permiso-np-section">
                     <div class="form-container" id="permiso-np-container">
-                        
-
-             
-
-                    
                         <!-- ===== INICIO: CONSTRUCTOR DE FORMATO CON DRAG & DROP ===== -->
                         <!-- Agregado: Constructor de formato dinámico para agregar formularios adicionales -->
-                        <div id="permiso-np-header-divider"></div>
-
-                        <div class="form-section-title" id="permiso-np-constructor-title">
-                            <i class="ri-file-add-line"></i>
-                            <h3>Constructor de Formato</h3>
-                        </div>
-
+                         
                         <div class="container" id="formato-constructor-container">
                             <!-- PANEL DE FORMULARIOS DISPONIBLES -->
                             <!-- Esta sección contiene los formularios que se pueden arrastrar -->
@@ -282,7 +271,7 @@
                                 <div class="form-item" draggable="true" data-name="Permiso Espacio confinado">
                                     <i class="ri-door-lock-box-line"></i> Permiso Espacio confinado
                                 </div>
-                        <!--         <div class="form-item" draggable="true" data-name="Permiso Agua a Alta Presión">
+                                <!--<div class="form-item" draggable="true" data-name="Permiso Agua a Alta Presión">
                                     <i class="ri-drop-line"></i> Permiso Agua a Alta Presión
                                 </div>
                                 <div class="form-item" draggable="true" data-name="Permiso Primera Apertura">
@@ -306,7 +295,7 @@
                             <!-- ÁREA DE DROP (ZONA DE DESTINO) -->
                             <!-- Aquí se soltarán los formularios arrastrados -->
                             <div class="main-format" id="main-format">
-                                <h3>Formato Principal</h3>
+                                
                                 <h4>Arrastra aquí los formularios adicionales</h4>
                                 
                                 <!-- Zona donde se sueltan los formularios -->
@@ -346,19 +335,19 @@
                                             </div>
 
                                             <div class="footer-row">
-                                                <div class="footer-label">Línea de vida retráctil (1.8 a 5.5 m...)</div>
+                                                <div class="footer-label">Línea de vida retráctil (1.8 metros a 5.5. metros de altura o cerca de espacio abiertos sin protección lateral o perimetral)</div>
                                                 <div class="input-cell-blue-short" style="width: 70px; flex-shrink: 0;">
                                                     <input type="text" class="editable-blue editable-blue-short" value="NO" id="retractil" style="text-align: center;">
                                                 </div>
                                             </div>
 
                                             <div class="footer-row">
-                                                <div class="footer-label">Línea de restricción</div>
+                                                <div class="footer-label">Línea de restricción (limitar la distancia de desplazamiento hacia un borde)</div>
                                                 <div class="footer-value-fixed">SI</div>
                                             </div>
 
                                             <div class="footer-row">
-                                                <div class="footer-label">Línea de vida con amortiguador</div>
+                                                <div class="footer-label">Línea de vida con amortiguador (alturas mayores a 5.5. metros)</div>
                                                 <div class="input-cell-blue-short" style="width: 70px; flex-shrink: 0;">
                                                     <input type="text" class="editable-blue editable-blue-short" value="NO" id="amortiguador" style="text-align: center;">
                                                 </div>
@@ -374,15 +363,13 @@
                                             </div>
 
                                             <div class="footer-row">
-                                                <div class="footer-label">Velocidad del viento menor a 30 km/hr</div>
+                                                <div class="footer-label">Velocidad del viento menor a 30 km/hr (8.3 m/seg)</div>
                                                 <div class="footer-value-fixed">SI</div>
                                             </div>
 
                                             <div class="footer-row">
                                                 <div class="footer-label">Presencia de gases tóxicos</div>
-                                                <div class="input-cell-blue-short" style="width: 70px; flex-shrink: 0;">
-                                                    <input type="text" class="editable-blue editable-blue-short" value="NO" id="gases" style="text-align: center;">
-                                                </div>
+                                                <div class="footer-value-fixed">No</div>
                                             </div>
                                         </div>
 
@@ -390,7 +377,7 @@
                                             <div class="section-header">Equipo de Protección contra caídas</div>
                                             
                                             <div class="footer-row">
-                                                <div class="footer-label">Puntos de anclaje (tuberías > 8", vigas...)</div>
+                                                <div class="footer-label">Puntos de anclaje (tuberías de diámetro mayor a 8” y trabes, vigas u estructura mayor de 4”)</div>
                                                 <div class="footer-value-fixed">SI</div>
                                             </div>
                                             
@@ -403,15 +390,16 @@
                                         <div>
                                             <div class="section-header">Control de Riesgos</div>
                                             
+                                            
                                             <div class="footer-row">
-                                                <div class="footer-label">Andamio liberado (personal autorizado)</div>
+                                                <div class="footer-label">Andamio liberado (personal certificado y autorizado)</div>
                                                 <div class="input-cell-blue-short" style="width: 70px; flex-shrink: 0;">
                                                     <input type="text" class="editable-blue editable-blue-short" value="SI" id="andamio_liberado" style="text-align: center;">
                                                 </div>
                                             </div>
 
                                             <div class="footer-row">
-                                                <div class="footer-label">Andamio "candadeado" (> 4 metros)</div>
+                                                <div class="footer-label">Andamio “candadeado” cuando sea igual o mayor a 4 metros de altura</div>
                                                 <div class="input-cell-blue-short" style="width: 70px; flex-shrink: 0;">
                                                     <input type="text" class="editable-blue editable-blue-short" value="SI" id="andamio_candado" style="text-align: center;">
                                                 </div>
@@ -431,12 +419,12 @@
                                                 <div class="footer-label">Escalera asegurada en la parte alta y baja</div>
                                                 <div class="footer-value-fixed">SI</div>
                                             </div>
-                                        </div>
-
-                                        <div class="footer-area">
+                                        
+                                        
+                                            <div class="footer-area">
                                             <div class="footer-item">
                                                 <div class="footer-tag">Requerimientos solicitados por:</div>
-                                                <div class="footer-tag solicitante-nombre" style="background-color: #A04000;">-</div>
+                                                <div class="footer-tag solicitante-nombre" style="background-color: #eeeeee;">-</div>
                                             </div>
                                             <div class="footer-item">
                                                 <div class="footer-tag">Requerimientos verificados:</div>
@@ -446,6 +434,10 @@
                                                 <span class="resp-text">Responsable del área</span>
                                             </div>
                                         </div>
+                                        
+                                        </div>
+
+                                        
                                     </div>
 
                                 </div>
@@ -611,10 +603,10 @@
                                                 <div class="footer-value-fixed">SI</div>
                                             </div>
 
-                                            <div class="footer-section">
+                                            <div class="footer-area">
                                                 <div class="footer-item">
                                                     <div class="footer-tag">Requerimientos solicitados por:</div>
-                                                    <div class="footer-tag solicitante-nombre" style="background-color: #A04000;">-</div>
+                                                    <div class="footer-tag solicitante-nombre" style="background-color: #eeeeee;">-</div>
                                                 </div>
                                                 <div class="footer-item">
                                                     <div class="footer-tag">Requerimientos verificados:</div>
@@ -1011,7 +1003,12 @@
 
 
                                         <div class="col-right">
-                                            <h4><strong>Monitoreo de atmosfera</strong></h4>
+                                            <table>
+                                                <thead>
+                                                    <tr><th colspan="2" class="header-orange">Monitoreo de atmosfera</th></tr>
+                                                </thead>
+
+                                            </table>
                                             
                                             <div class="footer-row" style="margin-top: 10px;">
                                                 <div class="footer-label">Temperatura</div>
@@ -1055,24 +1052,17 @@
 
                                      
 
-                                            <div class="footer-section" style="margin-top: 20px;">
-                                                <div class="footer-row">
-                                                    <div class="footer-label">Requerimientos solicitados por:</div>
-                                                    <div class="footer-value-fixed solicitante-nombre" style="background-color: #A04000;">-</div>
+                                            <div class="footer-area">
+                                                <div class="footer-item">
+                                                    <div class="footer-tag">Requerimientos solicitados por:</div>
+                                                    <div class="footer-tag solicitante-nombre" style="background-color: #eeeeee;">-</div>
                                                 </div>
-                                                
-                                                <div class="footer-row">
-                                                    <div class="footer-label">Requerimientos verificados:</div>
-                                                    <div class="input-cell-blue" style="flex: 1; border-radius: 4px;">
-                                                        <input type="text" id="reqVerificados" class="editable-blue" value="SI" style="border-radius: 4px;">
+                                                <div class="footer-item">
+                                                    <div class="footer-tag">Requerimientos verificados:</div>
+                                                    <div class="input-cell-blue-short" style="width: 60px; flex-shrink: 0;">
+                                                        <input type="text" class="editable-blue editable-blue-short" value="SI" id="verificado" style="text-align: center;">
                                                     </div>
-                                             
-                                                </div>
-
-                                                <div class="footer-row">
-                                                    <div class="footer-label">Solicitado por:</div>
-                                                    
-                                             
+                                                    <span class="resp-text">Responsable del área</span>
                                                 </div>
                                             </div>
 
@@ -1131,18 +1121,17 @@
                                                 <tr><td class="label-orange">Botas y guantes de hule</td><td class="value-orange">SI</td></tr>
                                             </table>
 
-                                            <div style="margin-top: 50px;">
-                                                <div class="footer-box" style="margin-bottom: 10px;">
-                                                    <div class="tag-orange">Requerimientos solicitados por:</div>
-                                                    <div class="tag-orange solicitante-nombre" style="background-color: #A04000; flex-grow: 1; text-align: center;">-</div>
+                                            <div class="footer-area">
+                                                <div class="footer-item">
+                                                    <div class="footer-tag">Requerimientos solicitados por:</div>
+                                                    <div class="footer-tag solicitante-nombre" style="background-color: #eeeeee;">-</div>
                                                 </div>
-
-                                                <div class="footer-box">
-                                                    <div class="tag-orange">Requerimientos verificados:</div>
-                                                    <div class="input-cell-blue" style="border-radius: 5px; width: 80px;">
-                                                        <input type="text" class="editable-blue" value="SI" id="verificado_apertura">
+                                                <div class="footer-item">
+                                                    <div class="footer-tag">Requerimientos verificados:</div>
+                                                    <div class="input-cell-blue-short" style="width: 60px; flex-shrink: 0;">
+                                                        <input type="text" class="editable-blue editable-blue-short" value="SI" id="verificado_apertura" style="text-align: center;">
                                                     </div>
-                                                    <div class="resp-text">Responsable del área</div>
+                                                    <span class="resp-text">Responsable del área</span>
                                                 </div>
                                             </div>
                                         </div>

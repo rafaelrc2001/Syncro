@@ -7,8 +7,8 @@
 .main-container {
     display: grid;
     grid-template-columns: 1.2fr 1fr 1fr;
-    gap: 18px;
-    padding: 20px;
+    gap: 6px;
+    padding: 8px;
     background: #fafbfc;
 }
 
@@ -65,20 +65,20 @@
 .section-header {
     background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
     color: white;
-    padding: 8px 12px;
+    padding: 3px 6px;
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 0.88rem;
     border-radius: 4px;
-    margin-bottom: 10px;
-    margin-top: 20px;
+    margin-bottom: 4px;
+    margin-top: 6px;
 }
 
 .header-orange {
     background: linear-gradient(135deg, #FF8C42 0%, #FF6B35 100%);
     color: white;
-    padding: 8px 12px;
+    padding: 3px 6px;
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 0.88rem;
     text-align: center;
 }
 
@@ -86,17 +86,17 @@
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 10px;
+    margin-bottom: 6px;
 }
 
 table td {
-    padding: 8px;
+    padding: 4px 6px;
     border: 1px solid #e1e8ed;
-    font-size: 0.9rem;
+    font-size: 0.83rem;
 }
 
 table th {
-    padding: 8px;
+    padding: 4px 6px;
     border: 1px solid #e1e8ed;
 }
 
@@ -108,25 +108,23 @@ table th {
     font-weight: normal;
     color: #2c3e50;
     background: #f8f9fa;
-    padding: 8px 12px;
-    border-left: 3px solid #4A90E2;
-    font-size: 0.9rem;
+    padding: 3px 6px;
+    border-left: none;
+    font-size: 0.83rem;
 }
 
 /* Variante naranja para labels */
 .label-orange {
-    border-left-color: #FF8C42;
+    /* Sin borde */
 }
 
 .footer-label {
-    border-left-color: #667eea;
     flex: 1;
     display: flex;
     align-items: center;
 }
 
 .tag-orange {
-    border-left-color: #FF8C42;
     background: #fff5e6;
     border-radius: 4px;
 }
@@ -140,8 +138,8 @@ table th {
     color: #2c3e50;
     font-weight: normal;
     text-align: center;
-    padding: 6px 8px;
-    font-size: 0.9rem;
+    padding: 3px 6px;
+    font-size: 0.83rem;
     border-radius: 4px;
     border: 2px solid transparent;
     box-sizing: border-box;
@@ -157,7 +155,7 @@ table th {
 .footer-value-fixed {
      width: 70px;
     flex-shrink: 0;
-    padding: 8px 8px;  /* Ajustar a 8px horizontal */
+    padding: 3px 6px;
     text-align: center;
     border-radius: 4px;
 }
@@ -166,7 +164,7 @@ table th {
 .input-cell-blue,
 .input-cell-yellow {
     min-width: 160px;
-    padding: 4px;
+    padding: 2px !important;
 }
 
 /* Clase para celdas cortas de SI/NO */
@@ -186,10 +184,12 @@ table th {
 .editable-blue,
 .select-yellow {
     width: 100%;
-    padding: 6px 8px;
+    padding: 1px 6px !important;
     border-radius: 4px;
-    font-size: 0.9rem;
+    font-size: 0.83rem;
     transition: all 0.2s ease;
+    line-height: 1.2 !important;
+    height: auto !important;
 }
 
 .editable-blue {
@@ -236,8 +236,8 @@ table th {
 .footer-row {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-top: 10px;
+    gap: 4px;
+    margin-top: 3px;
 }
 
 .footer-box {
@@ -252,16 +252,16 @@ table th {
 .footer-area {
     grid-column: 1 / -1;
     background: #f8f9fa;
-    padding: 15px;
+    padding: 6px;
     border-radius: 4px;
-    margin-top: 10px;
+    margin-top: 4px;
 }
 
 .footer-item {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 8px;
+    gap: 4px;
+    margin-bottom: 3px;
 }
 
 .footer-item:last-child {
@@ -271,9 +271,9 @@ table th {
 .footer-tag {
     background: #e8f4f8;
     color: #2c3e50;
-    padding: 6px 12px;
+    padding: 3px 6px;
     border-radius: 4px;
-    font-size: 0.85rem;
+    font-size: 0.78rem;
     font-weight: 600;
 }
 
@@ -391,10 +391,10 @@ table th {
 /* Similar a Permiso Agua */
 
 /* --- PERMISO FUEGO --- */
-/* Este permiso tiene estructura de 3 columnas con primera columna más ancha */
+/* Este permiso tiene estructura de 3 columnas con proporciones equilibradas */
 .added-form[data-form-type="permiso-fuego"] .main-container {
-    grid-template-columns: 1.3fr 0.8fr 1.5fr;
-    gap: 10px;
+    grid-template-columns: 1.2fr 1fr 1.2fr;
+    gap: 6px;
     max-width: 100%;
 }
 
@@ -404,6 +404,23 @@ table th {
 .added-form[data-form-type="permiso-fuego"] .col-right {
     min-width: 0;
     overflow: visible;
+}
+
+/* Fijar el ancho de las columnas de valores SI en las tablas para uniformidad */
+.added-form[data-form-type="permiso-fuego"] table td.value-fixed-orange,
+.added-form[data-form-type="permiso-fuego"] table td.value-orange {
+    width: 50px;
+    min-width: 50px;
+    max-width: 50px;
+    text-align: center;
+}
+
+/* Fijar también el ancho de celdas con inputs en tablas del Permiso Fuego */
+.added-form[data-form-type="permiso-fuego"] table td.input-cell-blue {
+    width: 50px;
+    min-width: 50px;
+    max-width: 50px;
+    padding: 2px !important;
 }
 
 .col-left,

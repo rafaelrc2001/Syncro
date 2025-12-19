@@ -207,6 +207,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Función para renumerar participantes (debe estar también en seccion3.js)
   function renumberParticipants() {
+    console.log("[CARGADEDATOS] Renumerando participantes...");
     document.querySelectorAll(".participant-row").forEach((row, index) => {
       const newIndex = index + 1;
       row.setAttribute("data-index", newIndex);
@@ -215,13 +216,15 @@ document.addEventListener("DOMContentLoaded", () => {
       const fields = ["name", "credential", "position", "role"];
       fields.forEach((field) => {
         const input = row.querySelector(
-          `[name="participant-${field}-${row.getAttribute("data-index")}"]`
+          `input[name^="participant-${field}"], select[name^="participant-${field}"]`
         );
         if (input) {
           input.setAttribute("name", `participant-${field}-${newIndex}`);
+          console.log(`[CARGADEDATOS] Renombrado: participant-${field}-${newIndex}`);
         }
       });
     });
+    console.log("[CARGADEDATOS] ✅ Renumeración completada");
   }
 });
 

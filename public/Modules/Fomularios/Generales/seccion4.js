@@ -2352,32 +2352,43 @@ document.addEventListener("DOMContentLoaded", () => {
 // ==============================
 async function poblarSelectParticipantes() {
   const idEstatus = sessionStorage.getItem("id_estatus");
+  console.log("[POBLAR] Iniciando poblado de selects con id_estatus:", idEstatus);
+  
   if (!idEstatus || idEstatus === "undefined" || idEstatus === "") {
     console.warn(
-      "id_estatus no está definido o es inválido, no se poblan los selects."
+      "[POBLAR] id_estatus no está definido o es inválido, no se poblan los selects."
     );
     return;
   }
   try {
-    const response = await fetch(`/api/participantes?id_estatus=${idEstatus}`);
+    const url = `/api/participantes?id_estatus=${idEstatus}`;
+    console.log("[POBLAR] Haciendo fetch a:", url);
+    
+    const response = await fetch(url);
     const participantes = await response.json();
 
-    console.log("[DEBUG] id_estatus enviado:", idEstatus);
-    console.log("[DEBUG] URL:", `/api/participantes?id_estatus=${idEstatus}`);
-    console.log("[DEBUG] participantes recibidos:", participantes);
+    console.log("[POBLAR] Respuesta recibida:", participantes);
+    console.log("[POBLAR] Cantidad de participantes:", participantes?.length || 0);
 
     if (!Array.isArray(participantes)) {
       console.error(
-        "La respuesta de participantes no es un array:",
+        "[POBLAR] La respuesta de participantes no es un array:",
         participantes
       );
+      return;
+    }
+
+    if (participantes.length === 0) {
+      console.warn("[POBLAR] No hay participantes para poblar");
       return;
     }
 
     const selectsPersonal = document.querySelectorAll(
       'select[name^="ast-personnel-"]'
     );
-    selectsPersonal.forEach((select) => {
+    console.log("[POBLAR] Selects de personal encontrados:", selectsPersonal.length);
+    
+    selectsPersonal.forEach((select, index) => {
       select.innerHTML = '<option value="">-- Seleccione --</option>';
       participantes.forEach((part) => {
         const option = document.createElement("option");
@@ -2385,12 +2396,15 @@ async function poblarSelectParticipantes() {
         option.textContent = part.nombre;
         select.appendChild(option);
       });
+      console.log(`[POBLAR] Select personal ${index + 1} poblado con ${participantes.length} opciones`);
     });
 
     const selectsResponsable = document.querySelectorAll(
       'select[name^="ast-responsible-"]'
     );
-    selectsResponsable.forEach((select) => {
+    console.log("[POBLAR] Selects de responsable encontrados:", selectsResponsable.length);
+    
+    selectsResponsable.forEach((select, index) => {
       select.innerHTML = '<option value="">-- Seleccione --</option>';
       participantes.forEach((part) => {
         const option = document.createElement("option");
@@ -2398,17 +2412,40 @@ async function poblarSelectParticipantes() {
         option.textContent = part.nombre;
         select.appendChild(option);
       });
+      console.log(`[POBLAR] Select responsable ${index + 1} poblado con ${participantes.length} opciones`);
     });
+    
+    console.log("[POBLAR] ✅ Todos los selects poblados exitosamente");
   } catch (error) {
-    console.error("Error al poblar participantes:", error);
+    console.error("[POBLAR] ❌ Error al poblar participantes:", error);
   }
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+  // Intentar poblar al cargar la página
   poblarSelectParticipantes();
+  
+  // Observar cuando se activa la sección 4
+  const section4 = document.querySelector('.form-section[data-section="4"]');
+  if (section4) {
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+          if (section4.classList.contains('active')) {
+            console.log("[SECTION4] Sección 4 activada, poblando selects...");
+            poblarSelectParticipantes();
+          }
+        }
+      });
+    });
+    
+    observer.observe(section4, { attributes: true });
+  }
+  
   const btnSaveParticipants = document.getElementById("btn-save-participants");
   if (btnSaveParticipants) {
     btnSaveParticipants.addEventListener("click", function () {
+      console.log("[SECTION4] Botón participantes clickeado, poblando selects...");
       setTimeout(() => {
         poblarSelectParticipantes();
       }, 200);

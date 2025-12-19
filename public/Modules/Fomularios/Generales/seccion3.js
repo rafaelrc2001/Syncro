@@ -91,39 +91,81 @@ document.addEventListener("DOMContentLoaded", () => {
     const participants = [];
     const rows = document.querySelectorAll(".participant-row");
 
+    console.log("[COLLECT] Total de filas encontradas:", rows.length);
+
     if (rows.length === 0) {
       throw new Error("Debe agregar al menos un participante");
     }
 
     rows.forEach((row, index) => {
-      const name = row
-        .querySelector(`[name="participant-name-${index + 1}"]`)
-        .value.trim();
-      const credential = row
-        .querySelector(`[name="participant-credential-${index + 1}"]`)
-        .value.trim();
-      const position = row
-        .querySelector(`[name="participant-position-${index + 1}"]`)
-        .value.trim();
-      const role = row.querySelector(
-        `[name="participant-role-${index + 1}"]`
-      ).value;
+      const rowIndex = index + 1;
+      console.log(`[COLLECT] Procesando fila ${rowIndex}`);
+      
+      // Debug: mostrar todos los inputs de la fila
+      const allInputs = row.querySelectorAll('input, select');
+      console.log(`[COLLECT] Fila ${rowIndex} - Total inputs/selects:`, allInputs.length);
+      allInputs.forEach(input => {
+        console.log(`[COLLECT] Fila ${rowIndex} - Input encontrado:`, {
+          tagName: input.tagName,
+          name: input.getAttribute('name'),
+          type: input.type || 'select'
+        });
+      });
+      
+      // Buscar elementos con validación
+      const nameInput = row.querySelector(`[name="participant-name-${rowIndex}"]`);
+      const credentialInput = row.querySelector(`[name="participant-credential-${rowIndex}"]`);
+      const positionInput = row.querySelector(`[name="participant-position-${rowIndex}"]`);
+      const roleSelect = row.querySelector(`[name="participant-role-${rowIndex}"]`);
+      
+      console.log(`[COLLECT] Fila ${rowIndex} - Elementos encontrados:`, {
+        name: !!nameInput,
+        credential: !!credentialInput,
+        position: !!positionInput,
+        role: !!roleSelect
+      });
+
+      // Validar que todos los elementos existen
+      if (!nameInput) {
+        throw new Error(`No se encontró el campo de nombre para el participante ${rowIndex}`);
+      }
+      if (!credentialInput) {
+        throw new Error(`No se encontró el campo de credencial para el participante ${rowIndex}`);
+      }
+      if (!positionInput) {
+        throw new Error(`No se encontró el campo de cargo para el participante ${rowIndex}`);
+      }
+      if (!roleSelect) {
+        throw new Error(`No se encontró el campo de rol para el participante ${rowIndex}`);
+      }
+
+      const name = nameInput.value.trim();
+      const credential = credentialInput.value.trim();
+      const position = positionInput.value.trim();
+      const role = roleSelect.value;
+
+      console.log(`[COLLECT] Fila ${rowIndex} - Valores:`, {
+        name,
+        credential,
+        position,
+        role
+      });
 
       // Validar campos obligatorios
       if (!name) {
-        throw new Error(`El nombre del participante ${index + 1} es requerido`);
+        throw new Error(`El nombre del participante ${rowIndex} es requerido`);
       }
       if (!credential) {
         throw new Error(
-          `El número de credencial del participante ${index + 1} es requerido`
+          `El número de credencial del participante ${rowIndex} es requerido`
         );
       }
       if (!position) {
-        throw new Error(`El cargo del participante ${index + 1} es requerido`);
+        throw new Error(`El cargo del participante ${rowIndex} es requerido`);
       }
       if (!role) {
         throw new Error(
-          `Debe seleccionar un rol para el participante ${index + 1}`
+          `Debe seleccionar un rol para el participante ${rowIndex}`
         );
       }
 
@@ -135,6 +177,8 @@ document.addEventListener("DOMContentLoaded", () => {
         id_estatus: sessionStorage.getItem("id_estatus"),
       });
     });
+    
+    console.log("[COLLECT] ✅ Total participantes recolectados:", participants.length);
     return participants;
   }
 
@@ -161,7 +205,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // 1. Primero guardamos los participantes
       const participants = collectParticipants();
-      console.log("[DEBUG] Participantes a enviar:", participants);
+      console.log("[SECCION3] ========== INICIO GUARDADO ==========");
+      console.log("[SECCION3] Participantes a enviar:", participants);
+      console.log("[SECCION3] Cantidad de participantes:", participants.length);
+      
       const respPart = await fetch("/api/ast-participan", {
         method: "POST",
         headers: {
@@ -170,15 +217,19 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         body: JSON.stringify({ participants }),
       });
+      
+      console.log("[SECCION3] Status HTTP de ast-participan:", respPart.status);
+      console.log("[SECCION3] Response OK?:", respPart.ok);
+      
       const respPartJson = await respPart.json();
-      console.log(
-        "[DEBUG] Respuesta backend ast-participan:",
-        respPart.status,
-        respPartJson
-      );
+      console.log("[SECCION3] Respuesta completa de ast-participan:", respPartJson);
+      
       if (!respPart.ok) {
+        console.error("[SECCION3] ❌ Error en respuesta ast-participan:", respPartJson);
         throw new Error(respPartJson.error || "Error al guardar participantes");
       }
+      
+      console.log("[SECCION3] ✅ Participantes guardados exitosamente");
 
       // 2. Luego guardamos los datos de AST
       const astData = {
@@ -190,6 +241,8 @@ document.addEventListener("DOMContentLoaded", () => {
           .getElementById("materials")
           .value.trim(),
       };
+
+      console.log("[SECCION3] Datos de AST a enviar:", astData);
 
       // Validar que al menos un campo de AST tenga datos
       if (
@@ -210,18 +263,23 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         body: JSON.stringify(astData),
       });
+      
+      console.log("[SECCION3] Status HTTP de ast:", astResponse.status);
+      
       const astResult = await astResponse.json();
+      console.log("[SECCION3] Respuesta completa de ast:", astResult);
+      
       if (astResult.success && astResult.data && astResult.data.id_ast) {
         sessionStorage.setItem("id_ast", astResult.data.id_ast);
         console.log(
-          "[DEBUG] id_ast guardado en sessionStorage:",
+          "[SECCION3] ✅ id_ast guardado en sessionStorage:",
           astResult.data.id_ast
         );
       }
 
       if (!astResponse.ok) {
-        const error = await astResponse.json();
-        throw new Error(error.error || "Error al guardar los datos de AST");
+        console.error("[SECCION3] ❌ Error en respuesta ast:", astResult);
+        throw new Error(astResult.error || "Error al guardar los datos de AST");
       }
 
       // Marcar como insertado en sessionStorage
@@ -232,47 +290,71 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Esperar confirmación de que los participantes están en la base de datos antes de avanzar
       const id_estatus = sessionStorage.getItem("id_estatus");
+      console.log("[SECCION3] Verificando inserción con id_estatus:", id_estatus);
+      
       let retries = 0;
-      const maxRetries = 8; // ~8 segundos máximo
+      const maxRetries = 10; // Aumentado a 10 segundos
       const delay = 1000; // 1 segundo entre intentos
 
       async function checkParticipantsInsertedAndPopulate() {
         try {
+          console.log(`[SECCION3] Verificación ${retries + 1}/${maxRetries}...`);
+          
           const checkResp = await fetch(
             `/api/ast-participan/estatus/${id_estatus}`
           );
           const checkJson = await checkResp.json();
+          
+          console.log(`[SECCION3] Resultado verificación ${retries + 1}:`, checkJson);
+          console.log(`[SECCION3] Participantes en BD:`, checkJson.data?.length || 0);
+          console.log(`[SECCION3] Participantes esperados:`, participants.length);
+          
           if (
             checkJson.success &&
             Array.isArray(checkJson.data) &&
             checkJson.data.length >= participants.length
           ) {
+            console.log("[SECCION3] ✅ Participantes confirmados en BD");
+            
             // Llama a poblarSelectParticipantes antes de avanzar
             if (typeof window.poblarSelectParticipantes === "function") {
+              console.log("[SECCION3] Llamando a window.poblarSelectParticipantes...");
               await window.poblarSelectParticipantes();
             } else if (typeof poblarSelectParticipantes === "function") {
+              console.log("[SECCION3] Llamando a poblarSelectParticipantes...");
               await poblarSelectParticipantes();
+            } else {
+              console.warn("[SECCION3] ⚠️ No se encontró función poblarSelectParticipantes");
             }
+            
             btnSaveParticipants.removeEventListener(
               "click",
               handleInsertAndNavigate
             );
             btnSaveParticipants.addEventListener("click", goToNextSection);
+            
+            console.log("[SECCION3] ✅ Avanzando a siguiente sección");
             goToNextSection();
           } else if (retries < maxRetries) {
             retries++;
+            console.log(`[SECCION3] ⏳ Esperando... reintento en ${delay}ms`);
             setTimeout(checkParticipantsInsertedAndPopulate, delay);
           } else {
+            console.error("[SECCION3] ❌ Máximo de reintentos alcanzado");
+            console.error("[SECCION3] Participantes esperados:", participants.length);
+            console.error("[SECCION3] Participantes encontrados:", checkJson.data?.length || 0);
             showNotification(
               "error",
               "No se pudo confirmar la inserción de los participantes en la base de datos. Intente de nuevo."
             );
           }
         } catch (err) {
+          console.error(`[SECCION3] ❌ Error en verificación ${retries + 1}:`, err);
           if (retries < maxRetries) {
             retries++;
             setTimeout(checkParticipantsInsertedAndPopulate, delay);
           } else {
+            console.error("[SECCION3] ❌ Error final:", err.message);
             showNotification(
               "error",
               "Error al verificar la inserción de participantes: " + err.message
@@ -283,7 +365,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       checkParticipantsInsertedAndPopulate();
     } catch (error) {
-      console.error("Error:", error);
+      console.error("[SECCION3] ❌ ERROR CRÍTICO:", error);
+      console.error("[SECCION3] Stack trace:", error.stack);
       showNotification(
         "error",
         error.message || "Error al procesar la solicitud"

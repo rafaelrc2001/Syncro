@@ -207,25 +207,34 @@ function initCargaMasivaAST() {
 
     // Obtener el id_estatus para los selects de participantes
     const idEstatus = sessionStorage.getItem("id_estatus");
+    console.log("[CARGA-AST] Obteniendo participantes para id_estatus:", idEstatus);
+    
     let participantes = [];
 
     // Intentar obtener participantes para los selects
     try {
       const response = await fetch(`/api/participantes?id_estatus=${idEstatus}`);
       participantes = await response.json();
+      console.log("[CARGA-AST] Participantes obtenidos:", participantes.length);
     } catch (error) {
-      console.warn("[CARGA-AST] No se pudieron cargar participantes:", error);
+      console.error("[CARGA-AST] Error al cargar participantes:", error);
+      alert("❌ Error al cargar participantes. Verifique su conexión e intente nuevamente.");
+      return;
+    }
+
+    // Validar que hay participantes
+    if (!Array.isArray(participantes) || participantes.length === 0) {
+      alert("⚠️ No se encontraron participantes. Debe guardar los participantes en la sección 3 antes de importar actividades.");
+      return;
     }
 
     // Crear opciones para los selects
     let optionsHTML = '<option value="">-- Seleccione --</option>';
-    if (Array.isArray(participantes)) {
-      participantes.forEach((part) => {
-        if (Number.isInteger(part.id_ast_participan)) {
-          optionsHTML += `<option value="${part.id_ast_participan}">${part.nombre}</option>`;
-        }
-      });
-    }
+    participantes.forEach((part) => {
+      if (Number.isInteger(part.id_ast_participan) && part.nombre) {
+        optionsHTML += `<option value="${part.id_ast_participan}">${part.nombre}</option>`;
+      }
+    });
 
     // Obtener el índice actual más alto
     const actividadesExistentes = astActivitiesContainer.querySelectorAll(".ast-activity");
@@ -234,6 +243,9 @@ function initCargaMasivaAST() {
       const index = parseInt(activity.getAttribute("data-index")) || 0;
       if (index > maxIndex) maxIndex = index;
     });
+
+    console.log("[CARGA-AST] Índice máximo actual:", maxIndex);
+    console.log("[CARGA-AST] Importando", datos.length, "actividades");
 
     // Crear nuevas actividades
     datos.forEach((item, i) => {
@@ -276,8 +288,9 @@ function initCargaMasivaAST() {
       `;
 
       astActivitiesContainer.appendChild(newActivity);
+      console.log(`[CARGA-AST] Actividad ${newIndex} agregada`);
     });
 
-    console.log(`[CARGA-AST] Se importaron ${datos.length} actividades al AST`);
+    console.log(`[CARGA-AST] ✅ ${datos.length} actividades importadas exitosamente`);
   }
 }

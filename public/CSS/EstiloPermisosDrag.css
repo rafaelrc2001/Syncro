@@ -445,6 +445,31 @@ table th {
     grid-template-columns: repeat(2, 1fr);
 }
 
+/* Fijar el ancho de las columnas de valores SI en las tablas para uniformidad */
+.added-form[data-form-type="permiso-apertura"] table td.value-orange {
+    width: 50px;
+    min-width: 50px;
+    max-width: 50px;
+    text-align: center;
+}
+
+/* Fijar también el ancho de celdas con inputs en tablas del Permiso Apertura */
+.added-form[data-form-type="permiso-apertura"] table td.input-cell-blue {
+    width: 50px;
+    min-width: 50px;
+    max-width: 50px;
+    padding: 0 !important;
+}
+
+/* Fijar el ancho de los inputs dentro de las celdas */
+.added-form[data-form-type="permiso-apertura"] table td.input-cell-blue .editable-blue {
+    width: 50px !important;
+    min-width: 50px !important;
+    max-width: 50px !important;
+    text-align: center;
+    padding: 2px !important;
+}
+
 
 /* ================================================================
    ESTILOS PARA IMPRIMIR

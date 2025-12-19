@@ -68,7 +68,7 @@ function initCargaMasivaAST() {
   /**
    * Lee un archivo Excel y extrae los datos
    * @param {File} file - Archivo Excel seleccionado
-   * @returns {Promise<Array>} - Array con los datos procesados
+   * @returns {Promise<Array>} - Array con los datos procesadoss
    */
   async function leerArchivoExcel(file) {
     return new Promise((resolve, reject) => {

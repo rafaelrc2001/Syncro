@@ -558,6 +558,17 @@ table th {
     text-align: center !important;
 }
 
+/* --- PERMISO APERTURA - Campos específicos más pequeños --- */
+/* Campos de suspender trabajos y monitoreo de gases (10% más estrechos que las celdas fijas) */
+#suspender_trabajos,
+#monitoreo_gases {
+    width: 45px !important;
+    min-width: 45px !important;
+    max-width: 45px !important;
+    text-align: center !important;
+    padding: 2px 4px !important;
+}
+
 
 /* ================================================================
    ESTILOS PARA IMPRIMIR

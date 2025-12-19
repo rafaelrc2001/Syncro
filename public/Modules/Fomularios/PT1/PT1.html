@@ -914,17 +914,11 @@
                                                     </tr>
                                                     <tr>
                                                         <td class="label-orange">Se requiere más de un vigía de fuego</td>
-                                                        <td class="input-cell-blue">
-                                                            <div style="display: flex; gap: 15px; justify-content: center; align-items: center;">
-                                                                <label style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
-                                                                    <input type="radio" name="requiereMasVigia" value="SI" onchange="toggleVigiasAdicionales(this)">
-                                                                    <span style="font-weight: bold;">SI</span>
-                                                                </label>
-                                                                <label style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
-                                                                    <input type="radio" name="requiereMasVigia" value="NO" checked onchange="toggleVigiasAdicionales(this)">
-                                                                    <span style="font-weight: bold;">NO</span>
-                                                                </label>
-                                                            </div>
+                                                        <td class="input-cell-blue" style="padding: 0 !important;">
+                                                            <select class="select-yellow" onchange="toggleVigiasAdicionales(this)" style="width: 100%; text-align: center;">
+                                                                <option value="NO" selected>NO</option>
+                                                                <option value="SI">SI</option>
+                                                            </select>
                                                         </td>
                                                     </tr>
                                                     

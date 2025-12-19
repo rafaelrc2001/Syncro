@@ -178,7 +178,10 @@ table th {
 }
 
 .input-cell-yellow {
-    min-width: 120px;
+    width: 70px;
+    min-width: unset;
+    flex-shrink: 0;
+    padding: 0 !important;
 }
 
 .editable-blue,
@@ -216,9 +219,15 @@ table th {
 }
 
 .select-yellow {
-    min-width: 100px;
+    width: 70px;
+    min-width: unset;
     border: 2px solid #FFA500;
     background: #FFF9E6;
+    padding: 1px 6px !important;
+    line-height: 1.2 !important;
+    height: auto !important;
+    min-height: unset !important;
+    text-align: center;
 }
 
 .select-yellow:hover {

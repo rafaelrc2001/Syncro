@@ -3,6 +3,29 @@ const router = express.Router();
 const db = require("./database");
 const { pool } = require("./database");
 
+// Nueva ruta para obtener todos los estatus distintos
+router.get("/estatus/lista", async (req, res) => {
+  try {
+    const result = await db.query(
+      `SELECT DISTINCT estatus 
+       FROM estatus 
+       WHERE estatus IS NOT NULL 
+       ORDER BY estatus ASC`
+    );
+    
+    res.json({
+      success: true,
+      data: result.rows.map(row => row.estatus),
+    });
+  } catch (err) {
+    console.error("Error al obtener lista de estatus:", err);
+    res.status(500).json({
+      success: false,
+      error: err.message,
+    });
+  }
+});
+
 //ruta para traer el estaus de un permiso por id
 router.get("/estatus/permiso/:id", async (req, res) => {
   const { id } = req.params;

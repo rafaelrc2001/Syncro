@@ -26,29 +26,13 @@ document.addEventListener("DOMContentLoaded", () => {
       if (numberDiv) {
         numberDiv.textContent = newIndex;
       }
-      // Actualiza los names de los campos
-      const activityTextarea = activity.querySelector(
-        'textarea[name^="ast-activity-"]'
-      );
+      // Actualiza los names de los campos (solo los que existen)
+      const activityTextarea = activity.querySelector('textarea[name^="ast-activity-"]');
       if (activityTextarea) activityTextarea.name = `ast-activity-${newIndex}`;
-      const selectPersonnel = activity.querySelector(
-        'select[name^="ast-personnel-"]'
-      );
-      if (selectPersonnel) selectPersonnel.name = `ast-personnel-${newIndex}`;
-      const textareaHazards = activity.querySelector(
-        'textarea[name^="ast-hazards-"]'
-      );
+      const textareaHazards = activity.querySelector('textarea[name^="ast-hazards-"]');
       if (textareaHazards) textareaHazards.name = `ast-hazards-${newIndex}`;
-      const textareaPreventions = activity.querySelector(
-        'textarea[name^="ast-preventions-"]'
-      );
-      if (textareaPreventions)
-        textareaPreventions.name = `ast-preventions-${newIndex}`;
-      const selectResponsible = activity.querySelector(
-        'select[name^="ast-responsible-"]'
-      );
-      if (selectResponsible)
-        selectResponsible.name = `ast-responsible-${newIndex}`;
+      const textareaPreventions = activity.querySelector('textarea[name^="ast-preventions-"]');
+      if (textareaPreventions) textareaPreventions.name = `ast-preventions-${newIndex}`;
     });
   }
 
@@ -79,45 +63,27 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error("Error al obtener participantes:", error);
       }
 
-      // Crear opciones
-      let options = '<option value="">-- Seleccione --</option>';
-      participantes.forEach((part) => {
-        if (Number.isInteger(part.id_ast_participan)) {
-          options += `<option value="${part.id_ast_participan}">${part.nombre}</option>`;
-        }
-      });
-
-      // Crear actividad
+      // Crear actividad (sin selects, solo columnas requeridas)
       const newActivity = document.createElement("div");
       newActivity.className = "ast-activity";
       newActivity.setAttribute("data-index", newIndex);
       newActivity.innerHTML = `
-                <div class="ast-activity-number">${newIndex}</div>
-                <div class="ast-activity-field">
-                    <textarea name="ast-activity-${newIndex}" rows="2" required></textarea>
-                </div>
-                <div class="ast-activity-field">
-                    <select name="ast-personnel-${newIndex}" required>
-                        ${options}
-                    </select>
-                </div>
-                <div class="ast-activity-field">
-                    <textarea name="ast-hazards-${newIndex}" rows="2" required></textarea>
-                </div>
-                <div class="ast-activity-field">
-                    <textarea name="ast-preventions-${newIndex}" rows="2" required></textarea>
-                </div>
-                <div class="ast-activity-field">
-                    <select name="ast-responsible-${newIndex}" required>
-                        ${options}
-                    </select>
-                </div>
-                <div class="ast-activities-actions">
-                        <button type="button" class="action-btn remove-participant" title="Eliminar">
-                                    <i class="ri-delete-bin-line"></i>
-                        </button>
-                </div>
-            `;
+        <div class="ast-activity-number">${newIndex}</div>
+        <div class="ast-activity-field">
+          <textarea name="ast-activity-${newIndex}" rows="2" required placeholder="Secuencia de la Actividad"></textarea>
+        </div>
+        <div class="ast-activity-field">
+          <textarea name="ast-hazards-${newIndex}" rows="2" required placeholder="Riesgos Potenciales"></textarea>
+        </div>
+        <div class="ast-activity-field">
+          <textarea name="ast-preventions-${newIndex}" rows="2" required placeholder="Acciones Preventivas"></textarea>
+        </div>
+        <div class="ast-activities-actions">
+          <button type="button" class="action-btn remove-participant" title="Eliminar">
+            <i class="ri-delete-bin-line"></i>
+          </button>
+        </div>
+      `;
       astActivitiesContainer.appendChild(newActivity);
       // No es necesario renumerar aquí, solo al eliminar
     });

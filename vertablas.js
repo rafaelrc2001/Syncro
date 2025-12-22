@@ -99,7 +99,8 @@ router.get("/vertablasUsuarios/:id_usuario", async (req, res) => {
           a.nombre AS area,
           COALESCE(ptnp.nombre_solicitante, pta.nombre_solicitante, ptc.nombre_solicitante, ptf.nombre_solicitante, pte.nombre_solicitante, ptr.nombre_solicitante, pta2.nombre_solicitante, pti.nombre_solicitante, ptce.nombre_solicitante, ptexc.nombre_solicitante) AS solicitante,
           pt.fecha_hora,
-          e.estatus
+          e.estatus,
+          e.subestatus
         FROM permisos_trabajo pt
         INNER JOIN tipos_permisos tp ON pt.id_tipo_permiso = tp.id_tipo_permiso
         INNER JOIN areas a ON pt.id_area = a.id_area
@@ -141,7 +142,8 @@ SELECT
         a.nombre AS area,
     COALESCE(ptnp.nombre_solicitante, pta.nombre_solicitante, ptc.nombre_solicitante, ptf.nombre_solicitante, pte.nombre_solicitante, ptr.nombre_solicitante, pta2.nombre_solicitante, pti.nombre_solicitante, ptce.nombre_solicitante, ptexc.nombre_solicitante) AS solicitante,
         pt.fecha_hora,
-        e.estatus
+        e.estatus,
+        e.subestatus
 FROM permisos_trabajo pt
 INNER JOIN tipos_permisos tp ON pt.id_tipo_permiso = tp.id_tipo_permiso
 INNER JOIN areas a ON pt.id_area = a.id_area
@@ -183,7 +185,8 @@ router.get("/autorizar/:id_departamento", async (req, res) => {
     a.nombre AS area,
     COALESCE(ptnp.nombre_solicitante, pta.nombre_solicitante, ptc.nombre_solicitante, ptf.nombre_solicitante, pte.nombre_solicitante, ptr.nombre_solicitante, pta2.nombre_solicitante, pti.nombre_solicitante, ptce.nombre_solicitante, ptexc.nombre_solicitante) AS solicitante,
     pt.fecha_hora,
-    e.estatus
+    e.estatus,
+    e.subestatus
 FROM permisos_trabajo pt
 INNER JOIN tipos_permisos tp ON pt.id_tipo_permiso = tp.id_tipo_permiso
 INNER JOIN areas a ON pt.id_area = a.id_area
@@ -229,7 +232,8 @@ router.get("/autorizar-jefe", async (req, res) => {
     a.nombre AS area,
   COALESCE(ptnp.nombre_solicitante, pta.nombre_solicitante, ptc.nombre_solicitante, ptf.nombre_solicitante, pte.nombre_solicitante, ptr.nombre_solicitante, pta2.nombre_solicitante, pti.nombre_solicitante, ptce.nombre_solicitante, ptexc.nombre_solicitante) AS solicitante,
     pt.fecha_hora,
-    e.estatus
+    e.estatus,
+    e.subestatus
 FROM permisos_trabajo pt
 INNER JOIN tipos_permisos tp ON pt.id_tipo_permiso = tp.id_tipo_permiso
 INNER JOIN areas a ON pt.id_area = a.id_area

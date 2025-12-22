@@ -66,6 +66,52 @@ let paginaActual = 1;
 const registrosPorPagina = 7;
 let filtroBusqueda = "";
 
+// Función para cargar los estatus dinámicamente en el dropdown
+async function cargarEstatusEnDropdown() {
+  try {
+    const response = await fetch('/api/estatus/lista');
+    if (!response.ok) {
+      console.error('Error al cargar estatus para el dropdown');
+      return;
+    }
+    
+    const result = await response.json();
+    if (!result.success || !result.data) {
+      console.error('Respuesta inválida del servidor al cargar estatus');
+      return;
+    }
+    
+    const selectElement = document.getElementById('status-filter');
+    if (!selectElement) {
+      console.warn('Elemento status-filter no encontrado');
+      return;
+    }
+    
+    // Guardar el valor seleccionado actual
+    const valorActual = selectElement.value;
+    
+    // Limpiar opciones existentes excepto "Todos"
+    selectElement.innerHTML = '<option value="all">Todos</option>';
+    
+    // Agregar las opciones de estatus desde la BD
+    result.data.forEach(estatus => {
+      const option = document.createElement('option');
+      option.value = estatus;
+      option.textContent = estatus;
+      selectElement.appendChild(option);
+    });
+    
+    // Restaurar el valor seleccionado si existe
+    if (valorActual && Array.from(selectElement.options).some(opt => opt.value === valorActual)) {
+      selectElement.value = valorActual;
+    }
+    
+    console.log('Estatus cargados en dropdown:', result.data.length);
+  } catch (error) {
+    console.error('Error al cargar estatus en dropdown:', error);
+  }
+}
+
 // --- Tabla de permisos ---
 
 async function cargarPermisosTabla() {
@@ -173,6 +219,32 @@ function mostrarPermisosFiltrados(filtro) {
       default:
         badgeClass = "";
     }
+
+    // Determinar clase de color para subestatus
+    let subestatusBadgeClass = "";
+    if (permiso.subestatus) {
+      const subestatusNorm = permiso.subestatus.toLowerCase().trim();
+      switch (subestatusNorm) {
+        case "cierre sin incidentes":
+          subestatusBadgeClass = "cierre-sin-incidentes";
+          break;
+        case "cierre con incidentes":
+          subestatusBadgeClass = "cierre-con-incidentes";
+          break;
+        case "cierre con accidentes":
+          subestatusBadgeClass = "cierre-con-accidentes";
+          break;
+        case "terminado":
+          subestatusBadgeClass = "completed";
+          break;
+        case "cancelado":
+          subestatusBadgeClass = "canceled";
+          break;
+        default:
+          subestatusBadgeClass = "";
+      }
+    }
+
     row.innerHTML = `
             <td>${permiso.prefijo}</td>
             <td>${permiso.tipo_permiso}</td>
@@ -183,6 +255,9 @@ function mostrarPermisosFiltrados(filtro) {
             <td><span class="status-badge${
               badgeClass ? " " + badgeClass : ""
             }">${permiso.estatus}</span></td>
+            <td><span class="status-badge${
+              subestatusBadgeClass ? " " + subestatusBadgeClass : ""
+            }">${permiso.subestatus || '-'}</span></td>
             <td>
                 <button class="action-btn view" data-idpermiso="${
                   permiso.id_permiso
@@ -254,6 +329,7 @@ document
   });
 
 document.addEventListener("DOMContentLoaded", () => {
+  cargarEstatusEnDropdown();
   cargarTargetasDesdeAutorizar();
   cargarPermisosTabla();
   // Búsqueda por folio compatible con paginación

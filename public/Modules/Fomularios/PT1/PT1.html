@@ -336,8 +336,11 @@
 
                                             <div class="footer-row">
                                                 <div class="footer-label">Línea de vida retráctil (1.8 metros a 5.5. metros de altura o cerca de espacio abiertos sin protección lateral o perimetral)</div>
-                                                <div class="input-cell-blue-short" style="width: 70px; flex-shrink: 0;">
-                                                    <input type="text" class="editable-blue editable-blue-short" value="NO" id="retractil" style="text-align: center;">
+                                               <div class="input-cell-blue-short" style="width: 70px; flex-shrink: 0;">
+                                                    <select class="select-yellow" id="linea_vida" style="text-align: center; width: 100%;">
+                                                        <option value="SI">SI</option>
+                                                        <option value="NO">NO</option>
+                                                    </select>
                                                 </div>
                                             </div>
 
@@ -348,8 +351,11 @@
 
                                             <div class="footer-row">
                                                 <div class="footer-label">Línea de vida con amortiguador (alturas mayores a 5.5. metros)</div>
-                                                <div class="input-cell-blue-short" style="width: 70px; flex-shrink: 0;">
-                                                    <input type="text" class="editable-blue editable-blue-short" value="NO" id="amortiguador" style="text-align: center;">
+                                                 <div class="input-cell-blue-short" style="width: 70px; flex-shrink: 0;">
+                                                    <select class="select-yellow" id="linea_vida" style="text-align: center; width: 100%;">
+                                                        <option value="SI">SI</option>
+                                                        <option value="NO">NO</option>
+                                                    </select>
                                                 </div>
                                             </div>
 
@@ -358,13 +364,21 @@
                                             <div class="footer-row">
                                                 <div class="footer-label">Presencia Lluvia</div>
                                                 <div class="input-cell-blue-short" style="width: 70px; flex-shrink: 0;">
-                                                    <input type="text" class="editable-blue editable-blue-short" value="NO" id="lluvia" style="text-align: center;">
+                                                    <select class="select-yellow" id="presencia_lluvia" style="text-align: center; width: 100%;">
+                                                        <option value="SI">SI</option>
+                                                        <option value="NO">NO</option>
+                                                    </select>
                                                 </div>
                                             </div>
 
                                             <div class="footer-row">
-                                                <div class="footer-label">Velocidad del viento menor a 30 km/hr (8.3 m/seg)</div>
-                                                <div class="footer-value-fixed">SI</div>
+                                                <div class="footer-label">Velocidad del viento en el sitio de trabajo menor a 30 km/hr (8.3 m/seg)</div>
+                                                  <div class="input-cell-blue-short" style="width: 70px; flex-shrink: 0;">
+                                                    <select class="select-yellow" id="velocidad_viento" style="text-align: center; width: 100%;">
+                                                        <option value="SI">SI</option>
+                                                        <option value="NO">NO</option>
+                                                    </select>
+                                                </div>
                                             </div>
 
                                             <div class="footer-row">
@@ -378,61 +392,66 @@
                                             
                                             <div class="footer-row">
                                                 <div class="footer-label">Puntos de anclaje (tuberías de diámetro mayor a 8” y trabes, vigas u estructura mayor de 4”)</div>
-                                                <div class="footer-value-fixed">SI</div>
+                                                    <div class="input-cell-blue-short" style="width: 70px; flex-shrink: 0;">
+                                                        <select class="select-yellow" id="puntos_anclaje" style="text-align: center; width: 100%;">
+                                                            <option value="SI">SI</option>
+                                                            <option value="NO">NO</option>
+                                                            <option value="N/A">N/A</option>
+                                                        </select>
+                                                    </div>
                                             </div>
                                             
                                             <div class="footer-row">
                                                 <div class="footer-label">Línea de vida de acero de 3/8"</div>
-                                                <div class="footer-value-fixed">SI</div>
+                                                <div class="input-cell-blue-short" style="width: 70px; flex-shrink: 0;">
+                                                    <select class="select-yellow" id="linea_vida_acero" style="text-align: center; width: 100%;">
+                                                        <option value="SI">SI</option>
+                                                        <option value="NO">NO</option>
+                                                        <option value="N/A">N/A</option>
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
 
                                         <div>
                                             <div class="section-header">Control de Riesgos</div>
                                             
+                                            <div class="footer-row">
+                                                <div class="footer-label">¿Se requiere andamio?</div>
+                                                <div class="input-cell-blue-short" style="width: 70px; flex-shrink: 0;">
+                                                    <select class="select-yellow" id="requiere_andamio" onchange="toggleAndamioEscalera(this)" style="text-align: center; width: 100%;">
+                                                        <option value="SI">SI</option>
+                                                        <option value="NO">NO</option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                             
                                             <div class="footer-row">
                                                 <div class="footer-label">Andamio liberado (personal certificado y autorizado)</div>
-                                                <div class="input-cell-blue-short" style="width: 70px; flex-shrink: 0;">
-                                                    <input type="text" class="editable-blue editable-blue-short" value="SI" id="andamio_liberado" style="text-align: center;">
-                                                </div>
+                                               <div class="footer-value-fixed"><span id="andamio_liberado">SI</span></div>
                                             </div>
 
                                             <div class="footer-row">
                                                 <div class="footer-label">Andamio “candadeado” cuando sea igual o mayor a 4 metros de altura</div>
-                                                <div class="input-cell-blue-short" style="width: 70px; flex-shrink: 0;">
-                                                    <input type="text" class="editable-blue editable-blue-short" value="SI" id="andamio_candado" style="text-align: center;">
-                                                </div>
+                                                <div class="footer-value-fixed"><span id="andamio_candado">SI</span></div>
                                             </div>
                                         
                                             <div class="footer-row">
                                                 <div class="footer-label">Escaleras tipo I Clase A dieléctrica</div>
-                                                <div class="footer-value-fixed">SI</div>
+                                                <div class="footer-value-fixed"><span id="escalera_dielectrica">NO</span></div>
                                             </div>
-                                            
                                             <div class="footer-row">
                                                 <div class="footer-label">La escalera cumple la relación 4:1</div>
-                                                <div class="footer-value-fixed">SI</div>
+                                                <div class="footer-value-fixed"><span id="escalera_relacion">NO</span></div>
                                             </div>
-                                            
                                             <div class="footer-row">
                                                 <div class="footer-label">Escalera asegurada en la parte alta y baja</div>
-                                                <div class="footer-value-fixed">SI</div>
+                                                <div class="footer-value-fixed"><span id="escalera_asegurada">NO</span></div>
                                             </div>
                                         
                                         
                                             <div class="footer-area">
-                                            <div class="footer-item">
-                                                <div class="footer-tag">Requerimientos solicitados por:</div>
-                                                <div class="footer-tag solicitante-nombre" style="background-color: #eeeeee;">-</div>
-                                            </div>
-                                            <div class="footer-item">
-                                                <div class="footer-tag">Requerimientos verificados:</div>
-                                                <div class="input-cell-blue-short" style="width: 60px; flex-shrink: 0;">
-                                                    <input type="text" class="editable-blue editable-blue-short" value="SI" id="verificado" style="text-align: center;">
-                                                </div>
-                                                <span class="resp-text">Responsable del área</span>
-                                            </div>
+                                         
                                         </div>
                                         
                                         </div>
@@ -604,17 +623,8 @@
                                             </div>
 
                                             <div class="footer-area">
-                                                <div class="footer-item">
-                                                    <div class="footer-tag">Requerimientos solicitados por:</div>
-                                                    <div class="footer-tag solicitante-nombre" style="background-color: #eeeeee;">-</div>
-                                                </div>
-                                                <div class="footer-item">
-                                                    <div class="footer-tag">Requerimientos verificados:</div>
-                                                    <div class="input-cell-blue-short" style="width: 60px; flex-shrink: 0;">
-                                                        <input type="text" class="editable-blue editable-blue-short" value="SI" id="verificado" style="text-align: center;">
-                                                    </div>
-                                                    <span class="resp-text">Responsable del área</span>
-                                                </div>
+                                                  
+                                               
                                             </div>
                                         </div>
 
@@ -626,245 +636,6 @@
 
 
                             
-
-                            <!-- TEMPLATE: Permiso Agua a Alta Presión -->
-                          <!--  <template id="template-permiso-agua-a-alta-presion">
-                                <div class="added-form" data-form-type="agua-presion">
-                                    <div class="added-form-header">
-                                        <h4><i class="ri-drop-line"></i> Permiso Agua a Alta Presión</h4>
-                                        <button type="button" class="remove-btn" title="Eliminar formulario">
-                                            <i class="ri-close-line"></i> Eliminar
-                                        </button>
-                                    </div>
-                                    <div class="added-form-content">
-                                        <div class="question">
-                                            <strong>¿El equipo de alta presión está certificado?</strong>
-                                            <div class="question-options">
-                                                <label class="radio-option">
-                                                    <input type="radio" name="agua_q1" value="Sí">
-                                                    <span class="radio-custom"></span>
-                                                    Sí
-                                                </label>
-                                                <label class="radio-option">
-                                                    <input type="radio" name="agua_q1" value="No">
-                                                    <span class="radio-custom"></span>
-                                                    No
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="question">
-                                            <strong>¿Se verificaron mangueras y conexiones?</strong>
-                                            <div class="question-options">
-                                                <label class="radio-option">
-                                                    <input type="radio" name="agua_q2" value="Sí">
-                                                    <span class="radio-custom"></span>
-                                                    Sí
-                                                </label>
-                                                <label class="radio-option">
-                                                    <input type="radio" name="agua_q2" value="No">
-                                                    <span class="radio-custom"></span>
-                                                    No
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="question">
-                                            <strong>¿El área está delimitada y señalizada?</strong>
-                                            <div class="question-options">
-                                                <label class="radio-option">
-                                                    <input type="radio" name="agua_q3" value="Sí">
-                                                    <span class="radio-custom"></span>
-                                                    Sí
-                                                </label>
-                                                <label class="radio-option">
-                                                    <input type="radio" name="agua_q3" value="No">
-                                                    <span class="radio-custom"></span>
-                                                    No
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </template>-->
-
-                            <!-- TEMPLATE: Permiso Primera Apertura -->
-                    <!--        <template id="template-permiso-primera-apertura">
-                                <div class="added-form" data-form-type="primera-apertura">
-                                    <div class="added-form-header">
-                                        <h4><i class="ri-key-2-line"></i> Permiso Primera Apertura</h4>
-                                        <button type="button" class="remove-btn" title="Eliminar formulario">
-                                            <i class="ri-close-line"></i> Eliminar
-                                        </button>
-                                    </div>
-                                    <div class="added-form-content two-columns">
-                                        <div class="question">
-                                            <strong>¿Se despresionizó el equipo completamente?</strong>
-                                            <div class="question-options">
-                                                <label class="radio-option">
-                                                    <input type="radio" name="apertura_q1" value="Sí">
-                                                    <span class="radio-custom"></span>
-                                                    Sí
-                                                </label>
-                                                <label class="radio-option">
-                                                    <input type="radio" name="apertura_q1" value="No">
-                                                    <span class="radio-custom"></span>
-                                                    No
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="question">
-                                            <strong>¿Se realizó análisis de contenido?</strong>
-                                            <div class="question-options">
-                                                <label class="radio-option">
-                                                    <input type="radio" name="apertura_q2" value="Sí">
-                                                    <span class="radio-custom"></span>
-                                                    Sí
-                                                </label>
-                                                <label class="radio-option">
-                                                    <input type="radio" name="apertura_q2" value="No">
-                                                    <span class="radio-custom"></span>
-                                                    No
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="question">
-                                            <strong>¿Se cuenta con plan de contingencia?</strong>
-                                            <div class="question-options">
-                                                <label class="radio-option">
-                                                    <input type="radio" name="apertura_q3" value="Sí">
-                                                    <span class="radio-custom"></span>
-                                                    Sí
-                                                </label>
-                                                <label class="radio-option">
-                                                    <input type="radio" name="apertura_q3" value="No">
-                                                    <span class="radio-custom"></span>
-                                                    No
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </template>-->
-
-                            <!-- TEMPLATE: Permiso Izaje con Grúa -->
-                        <!--    <template id="template-permiso-izaje-con-grua">
-                                <div class="added-form" data-form-type="izaje">
-                                    <div class="added-form-header">
-                                        <h4><i class="ri-attachment-2"></i> Permiso Izaje con Grúa</h4>
-                                        <button type="button" class="remove-btn" title="Eliminar formulario">
-                                            <i class="ri-close-line"></i> Eliminar
-                                        </button>
-                                    </div>
-                                    <div class="added-form-content">
-                                        <div class="question">
-                                            <strong>¿La grúa cuenta con certificación vigente?</strong>
-                                            <div class="question-options">
-                                                <label class="radio-option">
-                                                    <input type="radio" name="izaje_q1" value="Sí">
-                                                    <span class="radio-custom"></span>
-                                                    Sí
-                                                </label>
-                                                <label class="radio-option">
-                                                    <input type="radio" name="izaje_q1" value="No">
-                                                    <span class="radio-custom"></span>
-                                                    No
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="question">
-                                            <strong>¿Se calculó el peso de la carga?</strong>
-                                            <div class="question-options">
-                                                <label class="radio-option">
-                                                    <input type="radio" name="izaje_q2" value="Sí">
-                                                    <span class="radio-custom"></span>
-                                                    Sí
-                                                </label>
-                                                <label class="radio-option">
-                                                    <input type="radio" name="izaje_q2" value="No">
-                                                    <span class="radio-custom"></span>
-                                                    No
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="question">
-                                            <strong>¿Hay señalero certificado?</strong>
-                                            <div class="question-options">
-                                                <label class="radio-option">
-                                                    <input type="radio" name="izaje_q3" value="Sí">
-                                                    <span class="radio-custom"></span>
-                                                    Sí
-                                                </label>
-                                                <label class="radio-option">
-                                                    <input type="radio" name="izaje_q3" value="No">
-                                                    <span class="radio-custom"></span>
-                                                    No
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </template>-->
-
-                            <!-- TEMPLATE: Permiso Eléctrico -->
-                          <!--   <template id="template-permiso-electrico">
-                                <div class="added-form" data-form-type="electrico">
-                                    <div class="added-form-header">
-                                        <h4><i class="ri-flashlight-line"></i> Permiso Eléctrico</h4>
-                                        <button type="button" class="remove-btn" title="Eliminar formulario">
-                                            <i class="ri-close-line"></i> Eliminar
-                                        </button>
-                                    </div>
-                                    <div class="added-form-content">
-                                        <div class="question">
-                                            <strong>¿El circuito está desenergizado?</strong>
-                                            <div class="question-options">
-                                                <label class="radio-option">
-                                                    <input type="radio" name="electrico_q1" value="Sí">
-                                                    <span class="radio-custom"></span>
-                                                    Sí
-                                                </label>
-                                                <label class="radio-option">
-                                                    <input type="radio" name="electrico_q1" value="No">
-                                                    <span class="radio-custom"></span>
-                                                    No
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="question">
-                                            <strong>¿Se verificó ausencia de tensión?</strong>
-                                            <div class="question-options">
-                                                <label class="radio-option">
-                                                    <input type="radio" name="electrico_q2" value="Sí">
-                                                    <span class="radio-custom"></span>
-                                                    Sí
-                                                </label>
-                                                <label class="radio-option">
-                                                    <input type="radio" name="electrico_q2" value="No">
-                                                    <span class="radio-custom"></span>
-                                                    No
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="question">
-                                            <strong>¿Se cuenta con herramientas dieléctricas?</strong>
-                                            <div class="question-options">
-                                                <label class="radio-option">
-                                                    <input type="radio" name="electrico_q3" value="Sí">
-                                                    <span class="radio-custom"></span>
-                                                    Sí
-                                                </label>
-                                                <label class="radio-option">
-                                                    <input type="radio" name="electrico_q3" value="No">
-                                                    <span class="radio-custom"></span>
-                                                    No
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </template>-->
-
-
-
 
                              
                              <!-- TEMPLATE: Permiso Fuego -->
@@ -983,14 +754,14 @@
                                             <div class="footer-row" style="margin-top: 10px;">
                                                 <div class="footer-label">Otro</div>
                                                 <div class="input-cell-blue" style="flex: 1; border-radius: 4px;">
-                                                    <input type="text" id="eppOtro1" class="editable-blue text-left" style="border-radius: 4px;">
+                                                    <input type="text" id="eppOtro1" class="editable-blue text-left" value="N/A" style="border-radius: 4px;">
                                                 </div>
                                             </div>
 
                                             <div class="footer-row" style="margin-top: 10px;">
                                                 <div class="footer-label">Otro</div>
                                                 <div class="input-cell-blue" style="flex: 1; border-radius: 4px;">
-                                                    <input type="text" id="eppOtro2" class="editable-blue text-left" style="border-radius: 4px;">
+                                                    <input type="text" id="eppOtro2" class="editable-blue text-left" value="N/A" style="border-radius: 4px;">
                                                 </div>
                                             </div>
                                         </div>
@@ -1047,17 +818,8 @@
                                      
 
                                             <div class="footer-area">
-                                                <div class="footer-item">
-                                                    <div class="footer-tag">Requerimientos solicitados por:</div>
-                                                    <div class="footer-tag solicitante-nombre" style="background-color: #eeeeee;">-</div>
-                                                </div>
-                                                <div class="footer-item">
-                                                    <div class="footer-tag">Requerimientos verificados:</div>
-                                                    <div class="input-cell-blue-short" style="width: 60px; flex-shrink: 0;">
-                                                        <input type="text" class="editable-blue editable-blue-short" value="SI" id="verificado" style="text-align: center;">
-                                                    </div>
-                                                    <span class="resp-text">Responsable del área</span>
-                                                </div>
+                                               
+                                              
                                             </div>
 
                                     
@@ -1089,15 +851,23 @@
                                                 
                                                 <tr>
                                                     <td class="label-orange">Suspender trabajos adyacentes</td>
-                                                    <td class="input-cell-blue">
-                                                        <input type="text" class="editable-blue" value="NO" id="suspender_trabajos">
+                                                     <td class="input-cell-blue" style="width: 70px; flex-shrink: 0;">
+                                                        <select class="select-yellow" id="suspender_trabajos" style="text-align: center; width: 100%;">
+                                                            <option value="SI">SI</option>
+                                                            <option value="NO">NO</option>
+                                                            <option value="N/A">N/A</option>
+                                                        </select>
                                                     </td>
                                                 </tr>
                                                 
                                                 <tr>
                                                     <td class="label-orange">Realizar monitoreo de gases de O2 (19.5%-23.5%), CO (0ppm), LEL (0%), NH3 (0 ppm)</td>
-                                                    <td class="input-cell-blue">
-                                                        <input type="text" class="editable-blue" value="SI" id="monitoreo_gases">
+                                                     <td class="input-cell-blue" style="width: 70px; flex-shrink: 0;">
+                                                        <select class="select-yellow" id="monitoreo_gases" style="text-align: center; width: 100%;">
+                                                            <option value="SI">SI</option>
+                                                            <option value="NO">NO</option>
+                                                            <option value="N/A">N/A</option>
+                                                        </select>
                                                     </td>
                                                 </tr>
                                                 
@@ -1111,22 +881,19 @@
                                             <div class="section-header">Equipo de Protección Especial:</div>
                                             <table>
                                                 <tr><td class="label-orange">Capucha, chamarra y pantalón antiácido</td><td class="value-orange">SI</td></tr>
-                                                <tr><td class="label-orange">Full face</td><td class="value-orange">SI</td></tr>
+                                                <tr><td class="label-orange">Full face</td>
+                                                 <td class="input-cell-blue" style="width: 70px; flex-shrink: 0;">
+                                                        <select class="select-yellow" id="monitoreo_gases" style="text-align: center; width: 100%;">
+                                                            <option value="SI">SI</option>
+                                                            <option value="NO">NO</option>   
+                                                        </select>
+                                                    </td>
+                                                </tr>
                                                 <tr><td class="label-orange">Botas y guantes de hule</td><td class="value-orange">SI</td></tr>
                                             </table>
 
                                             <div class="footer-area">
-                                                <div class="footer-item">
-                                                    <div class="footer-tag">Requerimientos solicitados por:</div>
-                                                    <div class="footer-tag solicitante-nombre" style="background-color: #eeeeee;">-</div>
-                                                </div>
-                                                <div class="footer-item">
-                                                    <div class="footer-tag">Requerimientos verificados:</div>
-                                                    <div class="input-cell-blue-short" style="width: 60px; flex-shrink: 0;">
-                                                        <input type="text" class="editable-blue editable-blue-short" value="SI" id="verificado_apertura" style="text-align: center;">
-                                                    </div>
-                                                    <span class="resp-text">Responsable del área</span>
-                                                </div>
+                                               
                                             </div>
                                         </div>
 
@@ -1158,6 +925,7 @@
                            </div>
                         </div>
                        
+                    
                     
                         
                 </section>
@@ -1232,26 +1000,10 @@
                     </div>
 
                     <div class="form-group">
-                        <textarea id="ppe-required" name="ppe-required" rows="2" placeholder="Describa el EPP requerido"></textarea>
+                        <textarea id="ppe-required" name="ppe-required" rows="2" placeholder="Describa el EPP requerido">Casco ......</textarea>
                     </div>
 
-                    <div class="form-section-title">
-                        <i class="ri-tools-line"></i>
-                        <h3>Maquinaria, Equipo y Herramientas</h3>
-                    </div>
-
-                    <div class="form-group">
-                        <textarea id="equipment-tools" name="equipment-tools" rows="2" placeholder="Liste maquinaria y herramientas a utilizar"></textarea>
-                    </div>
-
-                    <div class="form-section-title">
-                        <i class="ri-box-line"></i>
-                        <h3>Materiales y Accesorios</h3>
-                    </div>
-
-                    <div class="form-group">
-                        <textarea id="materials" name="materials" rows="2" placeholder="Liste materiales y accesorios necesarios"></textarea>
-                    </div>
+                    
                 
                     <div class="form-actions">
                         <button type="button" class="btn secondary prev-step" data-prev="2">
@@ -1281,10 +1033,8 @@
                         <div class="ast-table-header">
                             <div>No.</div>
                             <div>Secuencia de la Actividad</div>
-                            <div>Personal Ejecutor</div>
-                            <div>Peligros Potenciales</div>
+                            <div>Riesgos Potenciales</div>
                             <div>Acciones Preventivas</div>
-                            <div>Responsable</div>
                             <div>Acciones</div>
                         </div>
                     
@@ -1294,20 +1044,10 @@
                                 <textarea name="ast-activity-1" rows="2"></textarea>
                             </div>
                             <div class="ast-activity-field">
-                                <select name="ast-personnel-1" required>
-                                    <option value="">-- Seleccione --</option>
-                                </select>
-                            </div> 
-                            <div class="ast-activity-field">
-                                <textarea name="ast-hazards-1" rows="2" required></textarea>
+                                <textarea name="ast-hazards-1" rows="2" required placeholder="Riesgos Potenciales"></textarea>
                             </div>
                             <div class="ast-activity-field">
-                                <textarea name="ast-preventions-1" rows="2"></textarea>
-                            </div>
-                            <div class="ast-activity-field">
-                                <select name="ast-responsible-1" required>
-                                    <option value="">-- Seleccione --</option>
-                                </select>
+                                <textarea name="ast-preventions-1" rows="2" required placeholder="Acciones Preventivas"></textarea>
                             </div>
                             <div class="ast-activities-actions">
                                 <button type="button" class="action-btn remove-participant" title="Eliminar">
@@ -1411,6 +1151,46 @@
         if (!usuario) return; // auth-check.js ya redirigió
         // El contenido se carga normalmente si está autenticado
       })();
+
+            // Función para alternar valores de andamio/escalera (footer-value-fixed)
+            function toggleAndamioEscalera(selectElement) {
+                const formContainer = selectElement.closest('.added-form');
+                if (!formContainer) return;
+                const requiereAndamio = selectElement.value;
+                // Buscar los spans de escalera dentro del mismo formulario
+                const escaleraDielectrica = formContainer.querySelector('#escalera_dielectrica');
+                const escaleraRelacion = formContainer.querySelector('#escalera_relacion');
+                const escaleraAsegurada = formContainer.querySelector('#escalera_asegurada');
+                if (requiereAndamio === 'SI') {
+                    if (escaleraDielectrica) escaleraDielectrica.textContent = 'NO';
+                    if (escaleraRelacion) escaleraRelacion.textContent = 'NO';
+                    if (escaleraAsegurada) escaleraAsegurada.textContent = 'NO';
+                } else {
+                    if (escaleraDielectrica) escaleraDielectrica.textContent = 'SI';
+                    if (escaleraRelacion) escaleraRelacion.textContent = 'SI';
+                    if (escaleraAsegurada) escaleraAsegurada.textContent = 'SI';
+                }
+            }
+
+      // Función existente para vigías adicionales (permiso fuego)
+      function toggleVigiasAdicionales(selectElement) {
+        const formContainer = selectElement.closest('.added-form');
+        if (!formContainer) return;
+        
+        const rowVigiasAdicionales = formContainer.querySelector('#rowVigiasAdicionales');
+        const inputVigiasAdicionales = formContainer.querySelector('#nombresVigiasAdicionales');
+        
+        if (selectElement.value === 'SI') {
+          if (rowVigiasAdicionales) rowVigiasAdicionales.style.display = 'flex';
+          if (inputVigiasAdicionales) inputVigiasAdicionales.disabled = false;
+        } else {
+          if (rowVigiasAdicionales) rowVigiasAdicionales.style.display = 'none';
+          if (inputVigiasAdicionales) {
+            inputVigiasAdicionales.disabled = true;
+            inputVigiasAdicionales.value = '';
+          }
+        }
+      }
     </script>
     <!-- SheetJS para leer archivos Excel -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>

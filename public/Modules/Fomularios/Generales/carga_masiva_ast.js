@@ -265,20 +265,10 @@ function initCargaMasivaAST() {
           <textarea name="ast-activity-${newIndex}" rows="2" required>${item.actividad}</textarea>
         </div>
         <div class="ast-activity-field">
-          <select name="ast-personnel-${newIndex}" required>
-            ${optionsHTML}
-          </select>
-        </div>
-        <div class="ast-activity-field">
           <textarea name="ast-hazards-${newIndex}" rows="2" required>${item.peligros}</textarea>
         </div>
         <div class="ast-activity-field">
           <textarea name="ast-preventions-${newIndex}" rows="2" required>${item.preventivas}</textarea>
-        </div>
-        <div class="ast-activity-field">
-          <select name="ast-responsible-${newIndex}" required>
-            ${optionsHTML}
-          </select>
         </div>
         <div class="ast-activities-actions">
           <button type="button" class="action-btn remove-participant" title="Eliminar">

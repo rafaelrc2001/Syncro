@@ -1161,14 +1161,22 @@
                 const escaleraDielectrica = formContainer.querySelector('#escalera_dielectrica');
                 const escaleraRelacion = formContainer.querySelector('#escalera_relacion');
                 const escaleraAsegurada = formContainer.querySelector('#escalera_asegurada');
+                // Buscar los spans de andamio dentro del mismo formulario
+                const andamioLiberado = formContainer.querySelector('#andamio_liberado');
+                const andamioCandado = formContainer.querySelector('#andamio_candado');
+
                 if (requiereAndamio === 'SI') {
                     if (escaleraDielectrica) escaleraDielectrica.textContent = 'NO';
                     if (escaleraRelacion) escaleraRelacion.textContent = 'NO';
                     if (escaleraAsegurada) escaleraAsegurada.textContent = 'NO';
+                    if (andamioLiberado) andamioLiberado.textContent = 'SI';
+                    if (andamioCandado) andamioCandado.textContent = 'SI';
                 } else {
                     if (escaleraDielectrica) escaleraDielectrica.textContent = 'SI';
                     if (escaleraRelacion) escaleraRelacion.textContent = 'SI';
                     if (escaleraAsegurada) escaleraAsegurada.textContent = 'SI';
+                    if (andamioLiberado) andamioLiberado.textContent = 'NO';
+                    if (andamioCandado) andamioCandado.textContent = 'NO';
                 }
             }
 

@@ -438,15 +438,15 @@
                                         
                                             <div class="footer-row">
                                                 <div class="footer-label">Escaleras tipo I Clase A dieléctrica</div>
-                                                <div class="footer-value-fixed"><span id="escalera_dielectrica">NO</span></div>
+                                                <div class="footer-value-fixed"><span id="escalera_dielectrica">N/A</span></div>
                                             </div>
                                             <div class="footer-row">
                                                 <div class="footer-label">La escalera cumple la relación 4:1</div>
-                                                <div class="footer-value-fixed"><span id="escalera_relacion">NO</span></div>
+                                                <div class="footer-value-fixed"><span id="escalera_relacion">N/A</span></div>
                                             </div>
                                             <div class="footer-row">
                                                 <div class="footer-label">Escalera asegurada en la parte alta y baja</div>
-                                                <div class="footer-value-fixed"><span id="escalera_asegurada">NO</span></div>
+                                                <div class="footer-value-fixed"><span id="escalera_asegurada">N/A</span></div>
                                             </div>
                                         
                                         
@@ -778,7 +778,7 @@
                                             <div class="footer-row" style="margin-top: 10px;">
                                                 <div class="footer-label">Temperatura</div>
                                                 <div class="input-cell-blue" style="flex: 1; border-radius: 4px;">
-                                                    <input type="text" id="temperatura" class="editable-blue" value="27 °C" style="border-radius: 4px;">
+                                                    <input type="text" id="temperatura" class="editable-blue" style="border-radius: 4px;" required>
                                                 </div>
                                             </div>
 
@@ -1000,7 +1000,14 @@
                     </div>
 
                     <div class="form-group">
-                        <textarea id="ppe-required" name="ppe-required" rows="2" placeholder="Describa el EPP requerido">Casco ......</textarea>
+                        <textarea id="ppe-required" name="ppe-required" rows="2" placeholder="Describa el EPP requerido">
+Casco de seguridad
+Lentes de seguridad 
+Cangurera o bolsa larga con mascarilla para gases (NH3)
+Calzado de seguridad
+Ropa de algodón.
+Protección respiratoria 
+Guantes</textarea>
                     </div>
 
                     
@@ -1166,9 +1173,9 @@
                 const andamioCandado = formContainer.querySelector('#andamio_candado');
 
                 if (requiereAndamio === 'SI') {
-                    if (escaleraDielectrica) escaleraDielectrica.textContent = 'NO';
-                    if (escaleraRelacion) escaleraRelacion.textContent = 'NO';
-                    if (escaleraAsegurada) escaleraAsegurada.textContent = 'NO';
+                    if (escaleraDielectrica) escaleraDielectrica.textContent = 'N/A';
+                    if (escaleraRelacion) escaleraRelacion.textContent = 'N/A';
+                    if (escaleraAsegurada) escaleraAsegurada.textContent = 'N/A';
                     if (andamioLiberado) andamioLiberado.textContent = 'SI';
                     if (andamioCandado) andamioCandado.textContent = 'SI';
                 } else {

@@ -51,17 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      // Obtener participantes filtrados por estatus desde el backend
-      let participantes = [];
-      try {
-        const idEstatus = sessionStorage.getItem("id_estatus");
-        const response = await fetch(
-          `/api/participantes?id_estatus=${idEstatus}`
-        );
-        participantes = await response.json();
-      } catch (error) {
-        console.error("Error al obtener participantes:", error);
-      }
+      // (Eliminado fetch innecesario a /api/participantes)
 
       // Crear actividad (sin selects, solo columnas requeridas)
       const newActivity = document.createElement("div");
@@ -373,11 +363,52 @@ document.addEventListener("DOMContentLoaded", () => {
             permisoResult.error || "Error al guardar permiso de trabajo"
           );
 
-        // 2. Insertar actividades AST si existen
+        // 2. Insertar participantes con id_permiso
+        let id_permiso = permisoResult.data.id_permiso || permisoResult.data.id;
+        // --- RECOLECTAR PARTICIPANTES DEL DOM ---
+        function collectParticipants() {
+          const participants = [];
+          const rows = document.querySelectorAll(".participant-row");
+          rows.forEach((row) => {
+            const nombre = row.querySelector('input[name^="participant-name-"]')?.value?.trim() || "";
+            const credencial = row.querySelector('input[name^="participant-credential-"]')?.value?.trim() || "";
+            const cargo = row.querySelector('input[name^="participant-position-"]')?.value?.trim() || "";
+            const funcion = row.querySelector('select[name^="participant-role-"]')?.value?.trim() || "";
+            if (nombre && credencial) {
+              participants.push({
+                nombre,
+                credencial,
+                cargo,
+                funcion,
+                id_permiso
+              });
+            }
+          });
+          return participants;
+        }
+
+        const participants = collectParticipants();
+        if (participants.length === 0) {
+          alert("Debe agregar al menos un participante antes de continuar.");
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalHTML;
+          return;
+        }
+        // --- ENVIAR PARTICIPANTES AL BACKEND ---
+        const participantesResponse = await fetch("/api/ast-participan", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ participants }),
+        });
+        const participantesResult = await participantesResponse.json();
+        if (!participantesResponse.ok || !participantesResult.success) {
+          throw new Error(participantesResult.error || "Error al guardar participantes");
+        }
+
+        // 3. Insertar actividades AST si existen
         const astActivitiesContainer = document.querySelector(".ast-activities");
         if (astActivitiesContainer) {
           const actividades = [];
-          const id_permiso = permisoResult.data.id_permiso || permisoResult.data.id;
           const activityDivs = astActivitiesContainer.querySelectorAll(".ast-activity");
           activityDivs.forEach((div, idx) => {
             const secuencia_actividad = div.querySelector('textarea[name^="ast-activity-"]')?.value?.trim() || "";
@@ -403,6 +434,29 @@ document.addEventListener("DOMContentLoaded", () => {
               throw new Error(actividadesResult.error || "Error al guardar actividades AST");
             }
           }
+        }
+
+        // 3. Insertar estatus automáticamente como en sección 1
+        try {
+          const estatusResponse = await fetch("/api/estatus/default", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id_permiso }),
+          });
+          const estatusResult = await estatusResponse.json();
+          if (!estatusResponse.ok || !estatusResult.success) {
+            throw new Error(estatusResult.error || "Error al guardar estatus final");
+          }
+          // Guardar id_estatus en sessionStorage si es necesario
+          if (estatusResult.data && estatusResult.data.id) {
+            sessionStorage.setItem("id_estatus", estatusResult.data.id);
+          }
+        } catch (estatusError) {
+          console.error("Error al guardar estatus:", estatusError);
+          alert("Error al guardar el estatus final: " + (estatusError.message || estatusError));
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalHTML;
+          return;
         }
 
         // Mostrar modal de éxito
@@ -468,108 +522,6 @@ document.addEventListener("DOMContentLoaded", () => {
 // ==============================
 // 5. Poblar selects de participantes dinámicamente
 // ==============================
-async function poblarSelectParticipantes() {
-  const idEstatus = sessionStorage.getItem("id_estatus");
-  console.log("[POBLAR] Iniciando poblado de selects con id_estatus:", idEstatus);
-  
-  if (!idEstatus || idEstatus === "undefined" || idEstatus === "") {
-    console.warn(
-      "[POBLAR] id_estatus no está definido o es inválido, no se poblan los selects."
-    );
-    return;
-  }
-  try {
-    const url = `/api/participantes?id_estatus=${idEstatus}`;
-    console.log("[POBLAR] Haciendo fetch a:", url);
-    
-    const response = await fetch(url);
-    const participantes = await response.json();
-
-    console.log("[POBLAR] Respuesta recibida:", participantes);
-    console.log("[POBLAR] Cantidad de participantes:", participantes?.length || 0);
-
-    if (!Array.isArray(participantes)) {
-      console.error(
-        "[POBLAR] La respuesta de participantes no es un array:",
-        participantes
-      );
-      return;
-    }
-
-    if (participantes.length === 0) {
-      console.warn("[POBLAR] No hay participantes para poblar");
-      return;
-    }
-
-    const selectsPersonal = document.querySelectorAll(
-      'select[name^="ast-personnel-"]'
-    );
-    console.log("[POBLAR] Selects de personal encontrados:", selectsPersonal.length);
-    
-    selectsPersonal.forEach((select, index) => {
-      select.innerHTML = '<option value="">-- Seleccione --</option>';
-      participantes.forEach((part) => {
-        const option = document.createElement("option");
-        option.value = part.id_ast_participan;
-        option.textContent = part.nombre;
-        select.appendChild(option);
-      });
-      console.log(`[POBLAR] Select personal ${index + 1} poblado con ${participantes.length} opciones`);
-    });
-
-    const selectsResponsable = document.querySelectorAll(
-      'select[name^="ast-responsible-"]'
-    );
-    console.log("[POBLAR] Selects de responsable encontrados:", selectsResponsable.length);
-    
-    selectsResponsable.forEach((select, index) => {
-      select.innerHTML = '<option value="">-- Seleccione --</option>';
-      participantes.forEach((part) => {
-        const option = document.createElement("option");
-        option.value = part.id_ast_participan;
-        option.textContent = part.nombre;
-        select.appendChild(option);
-      });
-      console.log(`[POBLAR] Select responsable ${index + 1} poblado con ${participantes.length} opciones`);
-    });
-    
-    console.log("[POBLAR] ✅ Todos los selects poblados exitosamente");
-  } catch (error) {
-    console.error("[POBLAR] ❌ Error al poblar participantes:", error);
-  }
-}
-
-document.addEventListener("DOMContentLoaded", function () {
-  // Intentar poblar al cargar la página
-  poblarSelectParticipantes();
-  
-  // Observar cuando se activa la sección 4
-  const section4 = document.querySelector('.form-section[data-section="4"]');
-  if (section4) {
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-          if (section4.classList.contains('active')) {
-            console.log("[SECTION4] Sección 4 activada, poblando selects...");
-            poblarSelectParticipantes();
-          }
-        }
-      });
-    });
-    
-    observer.observe(section4, { attributes: true });
-  }
-  
-  const btnSaveParticipants = document.getElementById("btn-save-participants");
-  if (btnSaveParticipants) {
-    btnSaveParticipants.addEventListener("click", function () {
-      console.log("[SECTION4] Botón participantes clickeado, poblando selects...");
-      setTimeout(() => {
-        poblarSelectParticipantes();
-      }, 200);
-    });
-  }
-});
 
 // Debug idAst
 const idAst = sessionStorage.getItem("id_ast");

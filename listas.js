@@ -61,25 +61,7 @@ router.get("/areas", async (req, res) => {
   }
 });
 
-// Endpoint para obtener todos los participantes de AST
-// Endpoint para obtener todos los participantes de AST
-// Endpoint para obtener todos los participantes de AST
-router.get("/participantes", async (req, res) => {
-  const id_estatus = parseInt(req.query.id_estatus, 10);
-  if (!Number.isInteger(id_estatus) || id_estatus <= 0) {
-    return res.json([]);
-  }
-  try {
-    const result = await db.query(
-      "SELECT * FROM ast_participan WHERE id_estatus = $1",
-      [id_estatus]
-    );
-    res.json(result.rows);
-  } catch (err) {
-    console.error("Error al obtener participantes:", err);
-    res.status(500).json({ error: "Error al obtener participantes" });
-  }
-});
+// (Endpoint /participantes eliminado a petición del usuario)
 
 // Endpoint para obtener todos los departamentos
 // Endpoint para obtener todos los departamentos

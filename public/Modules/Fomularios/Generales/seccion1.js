@@ -521,6 +521,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     setDefaultApplicant(); // Llenar automáticamente el responsable del trabajo
    // await setDefaultDepartment(); // Llenar automáticamente el nombre del departamento
 
+    // --- Lógica de inserción de estatus en sección 1 comentada por migración a sección 4 ---
+    /*
     // Lógica para enviar estatus al hacer click en siguiente de sección 1
     const nextBtn = document.querySelector('.next-step[data-next="2"]');
     if (nextBtn) {
@@ -595,6 +597,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
     }
+    */
 });
 
 

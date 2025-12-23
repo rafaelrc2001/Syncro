@@ -14,11 +14,19 @@ console.log("[DEBUG] tablas.js cargado");
 
 router.post("/estatus/default", async (req, res) => {
   const ESTATUS_DEFAULT = "en espera del área";
+  const { id_permiso } = req.body;
+
+  if (!id_permiso) {
+    return res.status(400).json({
+      success: false,
+      error: "id_permiso es requerido",
+    });
+  }
 
   try {
     const result = await db.query(
-      "INSERT INTO estatus (estatus) VALUES ($1) RETURNING id_estatus as id, estatus",
-      [ESTATUS_DEFAULT]
+      "INSERT INTO estatus (estatus, id_permiso, comentarios, subestatus) VALUES ($1, $2, $3, $4) RETURNING id_estatus as id, estatus",
+      [ESTATUS_DEFAULT, id_permiso, null, null]
     );
 
     res.status(201).json({
@@ -64,15 +72,18 @@ router.post("/ast-participan", async (req, res) => {
   try {
     const results = [];
 
-    // Insertar cada participante sin transacción
+    // Insertar cada participante con id_permiso
     for (const participant of participants) {
       if (!participant.nombre || !participant.credencial) {
         throw new Error("Nombre y credencial son campos obligatorios");
       }
+      if (!participant.id_permiso) {
+        throw new Error("id_permiso es obligatorio para cada participante");
+      }
 
       const result = await db.query(
         `INSERT INTO ast_participan 
-         (nombre, credencial, cargo, funcion, id_estatus) 
+         (nombre, credencial, cargo, funcion, id_permiso) 
          VALUES ($1, $2, $3, $4, $5)
          RETURNING *`,
         [
@@ -80,7 +91,7 @@ router.post("/ast-participan", async (req, res) => {
           participant.credencial,
           participant.cargo || null,
           participant.funcion || null,
-          participant.id_estatus || 1,
+          participant.id_permiso
         ]
       );
 

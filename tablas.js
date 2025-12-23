@@ -102,54 +102,7 @@ router.post("/ast-participan", async (req, res) => {
   }
 });
 
-// Ruta para insertar el ast
-// Ruta para insertar el ast
-// Ruta para insertar el ast
-// Ruta para insertar el ast
-// Ruta para insertar el ast
-// Ruta para insertar el ast
-
-// Ruta para insertar en la tabla ast
-
-router.post("/ast", async (req, res) => {
-  const { epp, maquinaria_equipo_herramientas, materiales_accesorios } =
-    req.body;
-
-  // Validaciones básicas
-  if (!epp && !maquinaria_equipo_herramientas && !materiales_accesorios) {
-    return res.status(400).json({
-      success: false,
-      error: "Se requiere al menos un campo para guardar en la tabla AST",
-    });
-  }
-
-  try {
-    const result = await db.query(
-      `INSERT INTO ast 
-       (epp, maquinaria_equipo_herramientas, materiales_accesorios) 
-       VALUES ($1, $2, $3) 
-       RETURNING *`,
-      [
-        epp || null,
-        maquinaria_equipo_herramientas || null,
-        materiales_accesorios || null,
-      ]
-    );
-
-    res.status(201).json({
-      success: true,
-      message: "Datos de AST guardados exitosamente",
-      data: result.rows[0],
-    });
-  } catch (err) {
-    console.error("Error en la base de datos:", err);
-    res.status(500).json({
-      success: false,
-      error: "Error al guardar los datos de AST",
-      details: process.env.NODE_ENV === "development" ? err.message : undefined,
-    });
-  }
-});
+// ...existing code...
 
 // Ruta para insertar un registro en permisos_trabajo
 // Ruta para insertar un registro en permisos_trabajo
@@ -163,9 +116,8 @@ router.post("/permisos-trabajo", async (req, res) => {
     id_area,
     id_departamento,
     id_sucursal,
-    id_tipo_permiso,
     id_estatus,
-    id_ast,
+    id_ast_ast_actividad,
     contrato, // Nuevo campo opcional
     fecha_hora, // Nuevo campo para la hora normalizada
     id_usuario,
@@ -177,9 +129,8 @@ router.post("/permisos-trabajo", async (req, res) => {
       id_area,
       id_departamento,
       id_sucursal,
-      id_tipo_permiso,
       id_estatus,
-      id_ast,
+      id_ast_ast_actividad,
       id_usuario,
     ].some((v) => typeof v === "undefined")
   ) {
@@ -192,16 +143,15 @@ router.post("/permisos-trabajo", async (req, res) => {
   try {
     const result = await db.query(
       `INSERT INTO permisos_trabajo (
-        id_area, id_departamento, id_sucursal, id_tipo_permiso, id_estatus, id_ast, contrato, fecha_hora, id_usuario
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+        id_area, id_departamento, id_sucursal, id_estatus, id_ast_ast_actividad, contrato, fecha_hora, id_usuario
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
       RETURNING *`,
       [
         id_area,
         id_departamento,
         id_sucursal,
-        id_tipo_permiso,
         id_estatus,
-        id_ast,
+        id_ast_ast_actividad,
         contrato || null,
         fecha_hora || null,
         id_usuario,

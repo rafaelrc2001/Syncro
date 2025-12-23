@@ -20,12 +20,12 @@ const vertablasRouter = require("./vertablas");
 const targetasRouter = require("./verformularios");
 const verformulariosRouter = require("./loginconsulta");
 const autorizacionesEstatusRouter = require("./autorizaciones_estatus");
-const formulariosRouter = require("./formularios");
-const formularioConfinadosRouter = require("./formulariospt3-10/formulario_confinados");
-const formularioFuegoRouter = require("./formulariospt3-10/formulario_fuego"); // <--- AGREGA ESTA LÍNEA
-const formularioElectricoRouter = require("./formulariospt3-10/formulario_electrico"); // <--- AGREGA ESTA LÍNEA
-const formularioRadiacionRouter = require("./formulariospt3-10/formulario_radiactivas"); // <--- AGREGA ESTA LÍNEA
-const formularioAlturaRouter = require("./formulariospt3-10/formulario_altura");
+// const formulariosRouter = require("./formularios");
+//const formularioConfinadosRouter = require("./formulariospt3-10/formulario_confinados");
+//const formularioFuegoRouter = require("./formulariospt3-10/formulario_fuego"); // <--- AGREGA ESTA LÍNEA
+//const formularioElectricoRouter = require("./formulariospt3-10/formulario_electrico"); // <--- AGREGA ESTA LÍNEA
+//const formularioRadiacionRouter = require("./formulariospt3-10/formulario_radiactivas"); // <--- AGREGA ESTA LÍNEA
+//const formularioAlturaRouter = require("./formulariospt3-10/formulario_altura");
 const pt1ImprimirRouter = require("./impresiones/pt1_imprimir");
 const pt2PDFRouter = require("./impresiones/pt2_pdf_routes"); // Nuevo router para PDF PT2
 const graficasAreasRouter = require("./graficas/endpoint_graficas_areas");
@@ -34,9 +34,9 @@ const graficaEstatusRouter = require("./graficas/endpoint_grafica_estatus");
 const tablaPermisosRouter = require("./graficas/endpoint_tabla");
 const exportarRouter = require("./exportar");
 const fechasAutorizacionRouter = require("./fechas_autorizacion_routes");
-const formularioIzajeRouter = require("./formulariospt3-10/formulario_izaje");
-const formularioCestaRouter = require("./formulariospt3-10/formulario_cesta");
-const formularioExcavacionRouter = require("./formulariospt3-10/formulario_excavacion");
+//const formularioIzajeRouter = require("./formulariospt3-10/formulario_izaje");
+//const formularioCestaRouter = require("./formulariospt3-10/formulario_cesta");
+//const formularioExcavacionRouter = require("./formulariospt3-10/formulario_excavacion");
 const loginconsultaRouter = require("./loginconsulta");
 const graficaMesesRouter = require("./graficas/endpoint_grafica_meses");
 const departamentoConsultaRouter = require("./departamento_consulta");
@@ -109,12 +109,12 @@ app.use("/api", verificarAutenticacion, vertablasRouter); // Monta las rutas de 
 app.use("/api", verificarAutenticacion, targetasRouter); // Monta las rutas de targetas.js bajo el prefijo /api
 app.use("/api", verificarAutenticacion, verformulariosRouter); // Monta las rutas de verformularios.js bajo el prefijo /api
 app.use("/api", verificarAutenticacion, autorizacionesEstatusRouter); // Monta las rutas de autorizaciones_estatus.js bajo el prefijo /api
-app.use("/api", verificarAutenticacion, formulariosRouter); // Monta las rutas de formularios.js bajo el prefijo /api
-app.use("/api", verificarAutenticacion, formularioConfinadosRouter); // Monta las rutas de formulario_confinados.js bajo el prefijo /api
-app.use("/api", verificarAutenticacion, formularioFuegoRouter); // <--- Y ESTA LÍNEA
-app.use("/api", verificarAutenticacion, formularioElectricoRouter); // <--- Y ESTA LÍNEA
-app.use("/api", verificarAutenticacion, formularioRadiacionRouter); // <--- Y ESTA LÍNEA
-app.use("/api", verificarAutenticacion, formularioAlturaRouter); // Monta las rutas de formulario_altura.js bajo el prefijo /api
+// app.use("/api", verificarAutenticacion, formulariosRouter); // Monta las rutas de formularios.js bajo el prefijo /api
+//app.use("/api", verificarAutenticacion, formularioConfinadosRouter); // Monta las rutas de formulario_confinados.js bajo el prefijo /api
+//app.use("/api", verificarAutenticacion, formularioFuegoRouter); // <--- Y ESTA LÍNEA
+//app.use("/api", verificarAutenticacion, formularioElectricoRouter); // <--- Y ESTA LÍNEA
+//app.use("/api", verificarAutenticacion, formularioRadiacionRouter); // <--- Y ESTA LÍNEA
+//app.use("/api", verificarAutenticacion, formularioAlturaRouter); // Monta las rutas de formulario_altura.js bajo el prefijo /api
 app.use("/api", verificarAutenticacion, pt1ImprimirRouter); // Monta las rutas de impresión PT1 bajo el prefijo /api
 app.use("/api/pt2", verificarAutenticacion, pt2PDFRouter); // Monta las rutas de PDF PT2 bajo el prefijo /api/pt2
 app.use("/api", verificarAutenticacion, graficasAreasRouter); // Monta las rutas de graficas/endpoint_graficas_areas.js bajo el prefijo /api
@@ -124,9 +124,9 @@ app.use("/api", verificarAutenticacion, tablaPermisosRouter); // Monta las rutas
 app.use("/api", verificarAutenticacion, exportarRouter); // Monta las rutas de exportar.js bajo /api (p.ej. /api/exportar-supervisor)
 app.use("/api", verificarAutenticacion, fechasAutorizacionRouter); // Monta las rutas de fechas de autorización
 app.use("/api/graficas_jefes", verificarAutenticacion, graficasJefesRouter);
-app.use("/api", verificarAutenticacion, formularioIzajeRouter);
-app.use("/api", verificarAutenticacion, formularioCestaRouter);
-app.use("/api", verificarAutenticacion, formularioExcavacionRouter);
+//app.use("/api", verificarAutenticacion, formularioIzajeRouter);
+//app.use("/api", verificarAutenticacion, formularioCestaRouter);
+//app.use("/api", verificarAutenticacion, formularioExcavacionRouter);
 app.use("/api/graficas_jefes", verificarAutenticacion, graficaMesesRouter);
 app.use("/api", verificarAutenticacion, departamentoConsultaRouter);
 app.use("/api", verificarAutenticacion, equipoBuscarRouter); // Ruta para buscar equipo por TAG

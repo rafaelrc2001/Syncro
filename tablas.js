@@ -116,7 +116,6 @@ router.post("/permisos-trabajo", async (req, res) => {
     id_area,
     id_departamento,
     id_sucursal,
-    id_estatus,
     contrato,
     fecha_hora,
     id_usuario,
@@ -161,7 +160,6 @@ router.post("/permisos-trabajo", async (req, res) => {
       id_area,
       id_departamento,
       id_sucursal,
-      id_estatus,
       id_usuario,
     ].some((v) => typeof v === "undefined")
   ) {
@@ -174,7 +172,7 @@ router.post("/permisos-trabajo", async (req, res) => {
   try {
     const result = await db.query(
       `INSERT INTO permisos_trabajo (
-        id_area, id_departamento, id_sucursal, id_estatus, contrato, fecha_hora, id_usuario,
+        id_area, id_departamento, id_sucursal, contrato, fecha_hora, id_usuario,
         tipo_mantenimiento, ot_numero, tag, hora_inicio, equipo_intervenir, descripcion_trabajo, nombre_solicitante, empresa,
         PAL_EPP_1, PAL_EPP_2, PAL_FA_1, PAL_FA_2, PAL_EPC_1, PAL_EPC_2, PAL_CR_1,
         PCO_EH_1, PCO_MA_1, PCO_MA_2, PCO_MA_3, PCO_MA_4, PCO_MA_5, PCO_ERA_1,
@@ -186,14 +184,13 @@ router.post("/permisos-trabajo", async (req, res) => {
         $16, $17, $18, $19, $20, $21, $22,
         $23, $24, $25, $26, $27, $28, $29,
         $30, $31, $32, $33, $34, $35, $36,
-        $37, $38, $39, $40
+        $37, $38, $39
       )
       RETURNING *`,
       [
         id_area,
         id_departamento,
         id_sucursal,
-        id_estatus,
         contrato || null,
         fecha_hora || null,
         id_usuario,

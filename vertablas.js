@@ -20,7 +20,7 @@ router.get("/vertablas", async (req, res) => {
       e.estatus
     FROM permisos_trabajo pt
     INNER JOIN areas a ON pt.id_area = a.id_area
-    INNER JOIN estatus e ON pt.id_estatus = e.id_estatus
+    INNER JOIN estatus e ON pt.id_permiso = e.id_permiso
     ORDER BY pt.fecha_hora DESC;
     `);
     res.json(result.rows);
@@ -46,7 +46,7 @@ router.get("/vertablas/:id_departamento", async (req, res) => {
           e.estatus
         FROM permisos_trabajo pt
         INNER JOIN areas a ON pt.id_area = a.id_area
-        INNER JOIN estatus e ON pt.id_estatus = e.id_estatus
+        INNER JOIN estatus e ON pt.id_permiso = e.id_permiso
         WHERE pt.id_departamento = $1
         ORDER BY pt.fecha_hora DESC;
       `,
@@ -75,7 +75,7 @@ router.get("/vertablasUsuarios/:id_usuario", async (req, res) => {
           e.estatus
         FROM permisos_trabajo pt
         INNER JOIN areas a ON pt.id_area = a.id_area
-        INNER JOIN estatus e ON pt.id_estatus = e.id_estatus
+        INNER JOIN estatus e ON pt.id_permiso = e.id_permiso
         WHERE pt.id_usuario = $1
         ORDER BY pt.fecha_hora DESC;
       `,
@@ -104,7 +104,7 @@ async function obtenerPermisosPorDepartamento(id_departamento) {
           e.estatus
         FROM permisos_trabajo pt
         INNER JOIN areas a ON pt.id_area = a.id_area
-        INNER JOIN estatus e ON pt.id_estatus = e.id_estatus
+        INNER JOIN estatus e ON pt.id_permiso = e.id_permiso
         WHERE pt.id_departamento = $1
         ORDER BY pt.fecha_hora DESC;
       `,
@@ -133,7 +133,7 @@ router.get("/autorizar/:id_departamento", async (req, res) => {
           e.estatus
         FROM permisos_trabajo pt
         INNER JOIN areas a ON pt.id_area = a.id_area
-        INNER JOIN estatus e ON pt.id_estatus = e.id_estatus
+        INNER JOIN estatus e ON pt.id_permiso = e.id_permiso
         WHERE a.id_departamento = $1
         ORDER BY pt.fecha_hora DESC;
       `,
@@ -166,7 +166,7 @@ router.get("/autorizar-jefe", async (req, res) => {
           e.estatus
         FROM permisos_trabajo pt
         INNER JOIN areas a ON pt.id_area = a.id_area
-        INNER JOIN estatus e ON pt.id_estatus = e.id_estatus
+        INNER JOIN estatus e ON pt.id_permiso = e.id_permiso
         ORDER BY pt.fecha_hora DESC;
     `);
     res.json(result.rows);

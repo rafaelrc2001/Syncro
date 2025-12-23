@@ -17,7 +17,7 @@ router.get("/tabla-permisos/:id_departamento", async (req, res) => {
           s.nombre AS Supervisor,
           e.estatus AS Estado
         FROM permisos_trabajo pt
-        INNER JOIN estatus e ON pt.id_estatus = e.id_estatus
+        INNER JOIN estatus e ON pt.id_permiso = e.id_permiso
         INNER JOIN areas a ON pt.id_area = a.id_area
         LEFT JOIN autorizaciones aut ON pt.id_permiso = aut.id_permiso
         LEFT JOIN supervisores s ON aut.id_supervisor = s.id_supervisor
@@ -49,7 +49,7 @@ router.get("/tabla-permisos-usuario/:id_usuario", async (req, res) => {
           s.nombre AS Supervisor,
           e.estatus AS Estado
         FROM permisos_trabajo pt
-        INNER JOIN estatus e ON pt.id_estatus = e.id_estatus
+        INNER JOIN estatus e ON pt.id_permiso = e.id_permiso
         INNER JOIN areas a ON pt.id_area = a.id_area
         LEFT JOIN autorizaciones aut ON pt.id_permiso = aut.id_permiso
         LEFT JOIN supervisores s ON aut.id_supervisor = s.id_supervisor

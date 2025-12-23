@@ -287,9 +287,9 @@ function mostrarPermisosFiltrados(filtro) {
 
     row.innerHTML = `
     <td>${permiso.prefijo}</td>
-    <td>${permiso.descripcion_trabajo || ""}</td>
+    <td>${permiso.descripcion_trabajo || permiso.descripcion || ""}</td>
     <td>${permiso.area}</td>
- <td>${formatearFecha(permiso.fecha_hora)}</td>
+    <td>${formatearFecha(permiso.fecha_hora)}</td>
     <td><span class="status-badge${badgeClass ? " " + badgeClass : ""}">${
       permiso.estatus
     }</span></td>

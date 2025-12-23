@@ -24,7 +24,7 @@ router.get("/permisos-jefes", async (req, res) => {
 				aut.responsable_area
 			FROM permisos_trabajo pt
 			INNER JOIN areas a ON pt.id_area = a.id_area
-			INNER JOIN estatus e ON pt.id_estatus = e.id_estatus
+			INNER JOIN estatus e ON pt.id_permiso = e.id_permiso
 			INNER JOIN departamentos d ON pt.id_departamento = d.id_departamento
 			INNER JOIN sucursales s ON pt.id_sucursal = s.id_sucursal
 			LEFT JOIN autorizaciones aut ON pt.id_permiso = aut.id_permiso

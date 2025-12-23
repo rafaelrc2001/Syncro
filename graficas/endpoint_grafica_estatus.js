@@ -12,7 +12,7 @@ router.get("/grafica-estatus/:id_departamento", async (req, res) => {
           e.estatus,
           COUNT(pt.id_permiso) AS cantidad_trabajos
         FROM permisos_trabajo pt
-        INNER JOIN estatus e ON pt.id_estatus = e.id_estatus
+        INNER JOIN estatus e ON pt.id_permiso = e.id_permiso
         WHERE pt.id_departamento = $1
         GROUP BY e.estatus
         ORDER BY e.estatus;
@@ -36,7 +36,7 @@ router.get("/grafica-estatus-usuario/:id_usuario", async (req, res) => {
           e.estatus,
           COUNT(pt.id_permiso) AS cantidad_trabajos
         FROM permisos_trabajo pt
-        INNER JOIN estatus e ON pt.id_estatus = e.id_estatus
+        INNER JOIN estatus e ON pt.id_permiso = e.id_permiso
         WHERE pt.id_usuario = $1
         GROUP BY e.estatus
         ORDER BY e.estatus;

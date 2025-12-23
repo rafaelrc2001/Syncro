@@ -320,10 +320,10 @@ router.post("/ast-actividades", async (req, res) => {
   const results = [];
   for (let i = 0; i < actividades.length; i++) {
     const act = actividades[i];
-    // Validar campos obligatorios (solo los actuales)
+    // Validar campos obligatorios según las nuevas columnas
     if (
       !act.id_permiso ||
-      !act.secuencia ||
+      !act.secuencia_actividad ||
       !act.peligros_potenciales ||
       !act.acciones_preventivas
     ) {
@@ -341,7 +341,7 @@ router.post("/ast-actividades", async (req, res) => {
         [
           act.id_permiso,
           String(i + 1),
-          act.secuencia,
+          act.secuencia_actividad,
           act.peligros_potenciales,
           act.acciones_preventivas
         ]

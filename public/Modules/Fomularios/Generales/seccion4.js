@@ -378,13 +378,13 @@ document.addEventListener("DOMContentLoaded", () => {
           const id_permiso = permisoResult.data.id_permiso || permisoResult.data.id;
           const activityDivs = astActivitiesContainer.querySelectorAll(".ast-activity");
           activityDivs.forEach((div, idx) => {
-            const secuencia = div.querySelector('textarea[name^="ast-activity-"]')?.value?.trim() || "";
+            const secuencia_actividad = div.querySelector('textarea[name^="ast-activity-"]')?.value?.trim() || "";
             const peligros_potenciales = div.querySelector('textarea[name^="ast-hazards-"]')?.value?.trim() || "";
             const acciones_preventivas = div.querySelector('textarea[name^="ast-preventions-"]')?.value?.trim() || "";
-            if (secuencia && peligros_potenciales && acciones_preventivas) {
+            if (secuencia_actividad && peligros_potenciales && acciones_preventivas) {
               actividades.push({
-                id_ast: id_permiso,
-                secuencia,
+                id_permiso,
+                secuencia_actividad,
                 peligros_potenciales,
                 acciones_preventivas
               });

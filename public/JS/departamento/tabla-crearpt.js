@@ -277,7 +277,6 @@ function mostrarPermisosFiltrados(filtro) {
 
     row.innerHTML = `
     <td>${permiso.prefijo}</td>
-    <td>${permiso.tipo_permiso}</td>
     <td>${permiso.descripcion}</td>
     <td>${permiso.area}</td>
     <td>${permiso.solicitante}</td>
@@ -285,9 +284,11 @@ function mostrarPermisosFiltrados(filtro) {
     <td><span class="status-badge${badgeClass ? " " + badgeClass : ""}">${
       permiso.estatus
     }</span></td>
+
     <td><span class="status-badge${subestatusBadgeClass ? " " + subestatusBadgeClass : ""}">${
       permiso.subestatus || '-'
     }</span></td>
+    
     <td>
         <button class="action-btn print" data-idpermiso="${
           permiso.id_permiso

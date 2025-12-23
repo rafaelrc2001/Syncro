@@ -247,7 +247,6 @@ function mostrarPermisosFiltrados(filtro) {
 
     row.innerHTML = `
             <td>${permiso.prefijo}</td>
-            <td>${permiso.tipo_permiso}</td>
             <td>${permiso.descripcion}</td>
             <td>${permiso.area}</td>
             <td>${permiso.solicitante}</td>

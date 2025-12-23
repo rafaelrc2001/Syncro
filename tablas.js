@@ -152,6 +152,7 @@ router.post("/permisos-trabajo", async (req, res) => {
     PAP_CE_1,
     PAP_CE_2,
     PAP_EPE_1,
+    nombre_departamento
   } = req.body;
 
   // Validar que los campos obligatorios existan
@@ -178,14 +179,14 @@ router.post("/permisos-trabajo", async (req, res) => {
         PAL_EPP_1, PAL_EPP_2, PAL_FA_1, PAL_FA_2, PAL_EPC_1, PAL_EPC_2, PAL_CR_1,
         PCO_EH_1, PCO_MA_1, PCO_MA_2, PCO_MA_3, PCO_MA_4, PCO_MA_5, PCO_ERA_1,
         PFG_CR_1, PFG_CR_1A, PFG_EPPE_1, PFG_EPPE_2, PFG_MA_1, PFG_MA_2, PFG_MA_3,
-        PAP_CE_1, PAP_CE_2, PAP_EPE_1
+        PAP_CE_1, PAP_CE_2, PAP_EPE_1, nombre_departamento
       ) VALUES (
         $1, $2, $3, $4, $5, $6, $7,
         $8, $9, $10, $11, $12, $13, $14, $15,
         $16, $17, $18, $19, $20, $21, $22,
         $23, $24, $25, $26, $27, $28, $29,
         $30, $31, $32, $33, $34, $35, $36,
-        $37, $38, $39
+        $37, $38, $39, $40
       )
       RETURNING *`,
       [
@@ -228,6 +229,7 @@ router.post("/permisos-trabajo", async (req, res) => {
         PAP_CE_1 || null,
         PAP_CE_2 || null,
         PAP_EPE_1 || null,
+        nombre_departamento || null,
       ]
     );
     const id_permiso = result.rows[0].id_permiso;

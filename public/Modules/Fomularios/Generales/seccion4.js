@@ -254,6 +254,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const descripcion_trabajo = document.getElementById("work-description")?.value || null;
         const nombre_solicitante = document.getElementById("applicant")?.value || null;
         const empresa = document.getElementById("company")?.value || null;
+        const nombre_departamento = document.getElementById("subcontract")?.value || null;
 
         // Permiso altura y otros campos especiales
         const PAL_EPP_1 = document.getElementById("linea_vida")?.value || null;
@@ -363,6 +364,7 @@ document.addEventListener("DOMContentLoaded", () => {
             PAP_CE_1,
             PAP_CE_2,
             PAP_EPE_1,
+            nombre_departamento,
           }),
         });
         const permisoResult = await permisoResponse.json();

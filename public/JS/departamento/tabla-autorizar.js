@@ -245,57 +245,26 @@ function mostrarPermisosFiltrados(filtro) {
 
   paginaDatos.forEach((permiso) => {
     const row = document.createElement("tr");
-    let estatusNorm = permiso.estatus.toLowerCase().trim();
+    let estatusNorm = (permiso.estatus || "").toLowerCase().trim();
     const puedeEditar = estatusNorm === "en espera del área";
     let badgeClass = "";
     switch (estatusNorm) {
-      case "por autorizar":
-        badgeClass = "wait-area";
-        break;
-      case "espera area":
-        badgeClass = "wait-area2";
-        break;
-      case "en espera del área":
-        badgeClass = "wait-area3";
-        break;
-      case "activo":
-        badgeClass = "active";
-        break;
-      case "terminado":
-        badgeClass = "completed";
-        break;
-      case "cierre sin incidentes":
-        badgeClass = "cierre-sin-incidentes";
-        break;
-      case "cierre con incidentes":
-        badgeClass = "cierre-con-incidentes";
-        break;
-      case "cierre con accidentes":
-        badgeClass = "cierre-con-accidentes";
-        break;
-      case "completed":
-        badgeClass = "completed2";
-        break;
-      case "cancelado":
-        badgeClass = "canceled";
-        break;
-      case "canceled":
-        badgeClass = "canceled2";
-        break;
-      case "continua":
-        badgeClass = "continua";
-        break;
-      case "espera seguridad":
-        badgeClass = "wait-security";
-        break;
-      case "no autorizado":
-        badgeClass = "wait-security2";
-        break;
-      case "wait-security":
-        badgeClass = "wait-security3";
-        break;
-      default:
-        badgeClass = "";
+      case "por autorizar": badgeClass = "wait-area"; break;
+      case "espera area": badgeClass = "wait-area2"; break;
+      case "en espera del área": badgeClass = "wait-area3"; break;
+      case "activo": badgeClass = "active"; break;
+      case "terminado": badgeClass = "completed"; break;
+      case "cierre sin incidentes": badgeClass = "cierre-sin-incidentes"; break;
+      case "cierre con incidentes": badgeClass = "cierre-con-incidentes"; break;
+      case "cierre con accidentes": badgeClass = "cierre-con-accidentes"; break;
+      case "completed": badgeClass = "completed2"; break;
+      case "cancelado": badgeClass = "canceled"; break;
+      case "canceled": badgeClass = "canceled2"; break;
+      case "continua": badgeClass = "continua"; break;
+      case "espera seguridad": badgeClass = "wait-security"; break;
+      case "no autorizado": badgeClass = "wait-security2"; break;
+      case "wait-security": badgeClass = "wait-security3"; break;
+      default: badgeClass = "";
     }
 
     // Determinar clase de color para subestatus
@@ -303,50 +272,29 @@ function mostrarPermisosFiltrados(filtro) {
     if (permiso.subestatus) {
       const subestatusNorm = permiso.subestatus.toLowerCase().trim();
       switch (subestatusNorm) {
-        case "cierre sin incidentes":
-          subestatusBadgeClass = "cierre-sin-incidentes";
-          break;
-        case "cierre con incidentes":
-          subestatusBadgeClass = "cierre-con-incidentes";
-          break;
-        case "cierre con accidentes":
-          subestatusBadgeClass = "cierre-con-accidentes";
-          break;
-        case "terminado":
-          subestatusBadgeClass = "completed";
-          break;
-        case "cancelado":
-          subestatusBadgeClass = "canceled";
-          break;
-        default:
-          subestatusBadgeClass = "";
+        case "cierre sin incidentes": subestatusBadgeClass = "cierre-sin-incidentes"; break;
+        case "cierre con incidentes": subestatusBadgeClass = "cierre-con-incidentes"; break;
+        case "cierre con accidentes": subestatusBadgeClass = "cierre-con-accidentes"; break;
+        case "terminado": subestatusBadgeClass = "completed"; break;
+        case "cancelado": subestatusBadgeClass = "canceled"; break;
+        default: subestatusBadgeClass = "";
       }
     }
 
+    // Render table row with required columns and order
     row.innerHTML = `
-    <td>${permiso.prefijo}</td>
-    <td>${permiso.tipo_permiso}</td>
-    <td>${permiso.descripcion}</td>
-    <td>${permiso.area}</td>
-    <td>${permiso.solicitante}</td>
-    <td>${formatearFecha(permiso.fecha_hora)}</td>
-    <td><span class="status-badge${badgeClass ? " " + badgeClass : ""}">${
-      permiso.estatus
-    }</span></td>
-    <td><span class="status-badge${subestatusBadgeClass ? " " + subestatusBadgeClass : ""}">${
-      permiso.subestatus || '-'
-    }</span></td>
-    <td>
-    <button class="action-btn print" data-idpermiso="${permiso.id_permiso}">
-        <i class="ri-eye-line"></i>
-      </button>
-      <button class="action-btn edit${!puedeEditar ? " edit-disabled" : ""}"${
-      !puedeEditar ? " disabled" : ""
-    }>
-        <i class="ri-edit-line"></i>
-      </button>
-    </td>
-  `;
+      <td>${permiso.prefijo}</td>
+      <td>${permiso.descripcion}</td>
+      <td>${permiso.area}</td>
+      <td>${permiso.solicitante}</td>
+      <td>${formatearFecha(permiso.fecha_hora)}</td>
+      <td><span class="status-badge${badgeClass ? " " + badgeClass : ""}">${permiso.estatus}</span></td>
+      <td><span class="status-badge${subestatusBadgeClass ? " " + subestatusBadgeClass : ""}">${permiso.subestatus || '-'}</span></td>
+      <td>
+        <button class="action-btn print" data-idpermiso="${permiso.id_permiso}"><i class="ri-eye-line"></i></button>
+        <button class="action-btn edit${!puedeEditar ? " edit-disabled" : ""}"${!puedeEditar ? " disabled" : ""}><i class="ri-edit-line"></i></button>
+      </td>
+    `;
     tbody.appendChild(row);
   });
 

@@ -15,7 +15,8 @@ router.get("/vertablas", async (req, res) => {
       pt.contrato,
       a.nombre AS area,
       pt.fecha_hora,
-      pt.descripcion_trabajo,
+      pt.descripcion_trabajo AS descripcion,
+      pt.nombre_solicitante AS solicitante,
       e.estatus
     FROM permisos_trabajo pt
     INNER JOIN areas a ON pt.id_area = a.id_area
@@ -40,7 +41,8 @@ router.get("/vertablas/:id_departamento", async (req, res) => {
           pt.contrato,
           a.nombre AS area,
           pt.fecha_hora,
-          pt.descripcion_trabajo,
+          pt.descripcion_trabajo AS descripcion,
+          pt.nombre_solicitante AS solicitante,
           e.estatus
         FROM permisos_trabajo pt
         INNER JOIN areas a ON pt.id_area = a.id_area
@@ -68,7 +70,8 @@ router.get("/vertablasUsuarios/:id_usuario", async (req, res) => {
           pt.contrato,
           a.nombre AS area,
           pt.fecha_hora,
-          pt.descripcion_trabajo,
+          pt.descripcion_trabajo AS descripcion,
+          pt.nombre_solicitante AS solicitante,
           e.estatus
         FROM permisos_trabajo pt
         INNER JOIN areas a ON pt.id_area = a.id_area
@@ -96,7 +99,8 @@ async function obtenerPermisosPorDepartamento(id_departamento) {
           pt.contrato,
           a.nombre AS area,
           pt.fecha_hora,
-          pt.descripcion_trabajo,
+          pt.descripcion_trabajo AS descripcion,
+          pt.nombre_solicitante AS solicitante,
           e.estatus
         FROM permisos_trabajo pt
         INNER JOIN areas a ON pt.id_area = a.id_area
@@ -124,6 +128,8 @@ router.get("/autorizar/:id_departamento", async (req, res) => {
           pt.contrato,
           a.nombre AS area,
           pt.fecha_hora,
+          pt.descripcion_trabajo AS descripcion,
+          pt.nombre_solicitante AS solicitante,
           e.estatus
         FROM permisos_trabajo pt
         INNER JOIN areas a ON pt.id_area = a.id_area
@@ -155,7 +161,8 @@ router.get("/autorizar-jefe", async (req, res) => {
           pt.contrato,
           a.nombre AS area,
           pt.fecha_hora,
-          pt.descripcion_trabajo,
+          pt.descripcion_trabajo AS descripcion,
+          pt.nombre_solicitante AS solicitante,
           e.estatus
         FROM permisos_trabajo pt
         INNER JOIN areas a ON pt.id_area = a.id_area

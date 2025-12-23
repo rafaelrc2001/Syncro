@@ -186,7 +186,7 @@ function mostrarPermisosFiltrados(filtro) {
       )
         .toString()
         .toLowerCase();
-      const descripcion = (permiso.descripcion || "").toString().toLowerCase();
+      const descripcion = (permiso.descripcion_trabajo || "").toString().toLowerCase();
       const solicitante = (permiso.solicitante || "").toString().toLowerCase();
       const tipoPermiso = (permiso.tipo_permiso || "").toString().toLowerCase();
       return (
@@ -287,10 +287,8 @@ function mostrarPermisosFiltrados(filtro) {
 
     row.innerHTML = `
     <td>${permiso.prefijo}</td>
-    <td>${permiso.tipo_permiso}</td>
-    <td>${permiso.descripcion}</td>
+    <td>${permiso.descripcion_trabajo || ""}</td>
     <td>${permiso.area}</td>
-    <td>${permiso.solicitante}</td>
  <td>${formatearFecha(permiso.fecha_hora)}</td>
     <td><span class="status-badge${badgeClass ? " " + badgeClass : ""}">${
       permiso.estatus

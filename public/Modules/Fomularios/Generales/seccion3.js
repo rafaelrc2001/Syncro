@@ -231,56 +231,6 @@ document.addEventListener("DOMContentLoaded", () => {
       
       console.log("[SECCION3] ✅ Participantes guardados exitosamente");
 
-      // 2. Luego guardamos los datos de AST
-      const astData = {
-        epp: document.getElementById("ppe-required").value.trim(),
-        maquinaria_equipo_herramientas: document
-          .getElementById("equipment-tools")
-          .value.trim(),
-        materiales_accesorios: document
-          .getElementById("materials")
-          .value.trim(),
-      };
-
-      console.log("[SECCION3] Datos de AST a enviar:", astData);
-
-      // Validar que al menos un campo de AST tenga datos
-      if (
-        !astData.epp &&
-        !astData.maquinaria_equipo_herramientas &&
-        !astData.materiales_accesorios
-      ) {
-        throw new Error(
-          "Debe completar al menos un campo de EPP, Equipos o Materiales"
-        );
-      }
-
-      const astResponse = await fetch("/api/ast", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify(astData),
-      });
-      
-      console.log("[SECCION3] Status HTTP de ast:", astResponse.status);
-      
-      const astResult = await astResponse.json();
-      console.log("[SECCION3] Respuesta completa de ast:", astResult);
-      
-      if (astResult.success && astResult.data && astResult.data.id_ast) {
-        sessionStorage.setItem("id_ast", astResult.data.id_ast);
-        console.log(
-          "[SECCION3] ✅ id_ast guardado en sessionStorage:",
-          astResult.data.id_ast
-        );
-      }
-
-      if (!astResponse.ok) {
-        console.error("[SECCION3] ❌ Error en respuesta ast:", astResult);
-        throw new Error(astResult.error || "Error al guardar los datos de AST");
-      }
 
       // Marcar como insertado en sessionStorage
       sessionStorage.setItem("participantsInserted", "true");

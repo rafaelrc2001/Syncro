@@ -241,12 +241,45 @@ document.addEventListener("DOMContentLoaded", () => {
         //  id_departamento = Number(usuario.id);
         //}
         const id_sucursal = parseInt(sessionStorage.getItem("id_sucursal"), 10);
-        const id_tipo_permiso = Number(
-          sessionStorage.getItem("id_tipo_permiso")
-        );
-        console.log("[DEBUG] id_tipo_permiso:", id_tipo_permiso);
+        // id_tipo_permiso eliminado, ya no se usa
         const id_estatus = parseInt(sessionStorage.getItem("id_estatus"), 10);
-        const id_ast = parseInt(sessionStorage.getItem("id_ast"), 10) || 1;
+        // id_ast_actividad eliminado, ya no se usa
+
+        // === NUEVOS CAMPOS A ENVIAR ===
+        const tipo_mantenimiento = document.getElementById("maintenance-type")?.value || null;
+        const ot_numero = document.getElementById("work-order")?.value || null;
+        const tag = document.getElementById("tag")?.value || null;
+        const hora_inicio = document.getElementById("start-time")?.value || null;
+        const equipo_intervenir = document.getElementById("equipment")?.value || null;
+        const descripcion_trabajo = document.getElementById("work-description")?.value || null;
+        const nombre_solicitante = document.getElementById("applicant")?.value || null;
+        const empresa = document.getElementById("company")?.value || null;
+
+        // Permiso altura y otros campos especiales
+        const PAL_EPP_1 = document.getElementById("linea_vida")?.value || null;
+        const PAL_EPP_2 = document.getElementById("linea_vida_amortiguador")?.value || null;
+        const PAL_FA_1 = document.getElementById("presencia_lluvia")?.value || null;
+        const PAL_FA_2 = document.getElementById("velocidad_viento")?.value || null;
+        const PAL_EPC_1 = document.getElementById("puntos_anclaje")?.value || null;
+        const PAL_EPC_2 = document.getElementById("linea_vida_acero")?.value || null;
+        const PAL_CR_1 = document.getElementById("requiere_andamio")?.value || null;
+        const PCO_EH_1 = document.getElementById("ventilacion_artificial")?.value || null;
+        const PCO_MA_1 = document.getElementById("temp")?.value || null;
+        const PCO_MA_2 = document.getElementById("guardavida")?.value || null;
+        const PCO_MA_3 = document.getElementById("suplente")?.value || null;
+        const PCO_MA_4 = document.getElementById("permanencia")?.value || null;
+        const PCO_MA_5 = document.getElementById("descanso")?.value || null;
+        const PCO_ERA_1 = document.getElementById("rescatista")?.value || null;
+        const PFG_CR_1 = document.getElementById("vigia_fuego")?.value || null;
+        const PFG_CR_1A = document.getElementById("nombresVigiasAdicionales")?.value || null;
+        const PFG_EPPE_1 = document.getElementById("eppOtro1")?.value || null;
+        const PFG_EPPE_2 = document.getElementById("eppOtro2")?.value || null;
+        const PFG_MA_1 = document.getElementById("temperatura_fuego")?.value || null;
+        const PFG_MA_2 = document.getElementById("nombreVigiafuego")?.value || null;
+        const PFG_MA_3 = document.getElementById("nombreSuplentefuego")?.value || null;
+        const PAP_CE_1 = document.getElementById("suspender_trabajos")?.value || null;
+        const PAP_CE_2 = document.getElementById("monitoreo_gases")?.value || null;
+        const PAP_EPE_1 = document.getElementById("full-face_apertura")?.value || null;
 
         // Log para depuración
         console.log(
@@ -262,18 +295,11 @@ document.addEventListener("DOMContentLoaded", () => {
           "id_sucursal_raw:",
           sessionStorage.getItem("id_sucursal")
         );
-        console.log("[DEBUG] id_tipo_permiso:", id_tipo_permiso);
         console.log(
           "[DEBUG] id_estatus:",
           id_estatus,
           "id_estatus_raw:",
           sessionStorage.getItem("id_estatus")
-        );
-        console.log(
-          "[DEBUG] id_ast:",
-          id_ast,
-          "id_ast_raw:",
-          sessionStorage.getItem("id_ast")
         );
 
         // Validar que todos los ids sean números válidos
@@ -282,9 +308,7 @@ document.addEventListener("DOMContentLoaded", () => {
             id_area,
             id_departamento,
             id_sucursal,
-            id_tipo_permiso,
             id_estatus,
-            id_ast,
           ].some((v) => isNaN(v) || typeof v !== "number")
         ) {
           alert(
@@ -295,7 +319,7 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
-        // 1. Insertar permiso
+        // 1. Insertar permiso (ahora todo va a permisos_trabajo)
         const permisoResponse = await fetch("/api/permisos-trabajo", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -303,12 +327,42 @@ document.addEventListener("DOMContentLoaded", () => {
             id_area,
             id_departamento,
             id_sucursal,
-            id_tipo_permiso,
             id_estatus,
-            id_ast,
-            contrato, // Siempre enviar el campo contrato
-            fecha_hora, // Enviar la hora normalizada
-            id_usuario, // <-- Se agrega el id_usuario
+            contrato,
+            fecha_hora,
+            id_usuario,
+            tipo_mantenimiento,
+            ot_numero,
+            tag,
+            hora_inicio,
+            equipo_intervenir,
+            descripcion_trabajo,
+            nombre_solicitante,
+            empresa,
+            PAL_EPP_1,
+            PAL_EPP_2,
+            PAL_FA_1,
+            PAL_FA_2,
+            PAL_EPC_1,
+            PAL_EPC_2,
+            PAL_CR_1,
+            PCO_EH_1,
+            PCO_MA_1,
+            PCO_MA_2,
+            PCO_MA_3,
+            PCO_MA_4,
+            PCO_MA_5,
+            PCO_ERA_1,
+            PFG_CR_1,
+            PFG_CR_1A,
+            PFG_EPPE_1,
+            PFG_EPPE_2,
+            PFG_MA_1,
+            PFG_MA_2,
+            PFG_MA_3,
+            PAP_CE_1,
+            PAP_CE_2,
+            PAP_EPE_1,
           }),
         });
         const permisoResult = await permisoResponse.json();
@@ -317,242 +371,49 @@ document.addEventListener("DOMContentLoaded", () => {
             permisoResult.error || "Error al guardar permiso de trabajo"
           );
 
-        const id_permiso =
-          permisoResult.data.id_permiso || permisoResult.data.id;
-
-        let exito = false;
-
-        try {
-          // 1. Insertar permiso de trabajo (esto siempre)
-          const permisoResult = await insertarPermisoTrabajo();
-          if (permisoResult.success) exito = true;
-
-          // Obtener el tipo de formulario desde sessionStorage
-          const tipoFormulario = Number(
-            sessionStorage.getItem("id_tipo_permiso")
-          );
-          console.log("[DEBUG] tipoFormulario:", tipoFormulario);
-
-          // Según el tipo de formulario, insertar en la tabla correspondiente
-          if (tipoFormulario === 1) {
-            // Insertar en pt_no_peligroso
-            const noPeligrosoResult = await insertarPtNoPeligroso();
-            if (noPeligrosoResult.success) exito = true;
-          } else if (tipoFormulario === 2) {
-            // Insertar en pt_Apertura
-            const aperturaResult = await insertarPtApertura();
-            if (aperturaResult.success) exito = true;
-          }
-
-          if (exito) {
-            mostrarMensajeExito();
-          } else {
-            mostrarMensajeError();
-          }
-        } catch (error) {
-          mostrarMensajeError();
-        }
-
-        // ==============================
-        // INICIO BLOQUE: IF para tipoFormulario
-        // Aquí inicia el condicional para el tipo de formulario
-        // ==============================
-        // Obtener el tipo de formulario desde sessionStorage
-        const tipoFormulario = Number(
-          sessionStorage.getItem("id_tipo_permiso")
-        );
-
-        // Imprimir el valor antes de entrar al if
-        console.log("[DEBUG] tipoFormulario:", tipoFormulario);
-
-        // Cambiar según el formulario que se esté usando
-        if (tipoFormulario === 1) {
-          // ==============================
-          // INICIO BLOQUE: Insertar PT no peligroso
-          // Este bloque inicia la lógica para insertar el permiso de trabajo no peligroso
-          // ==============================
-
-          // 2. Insertar PT no peligroso
-          const nombre_solicitante =
-            document.getElementById("applicant")?.value || null;
-          const descripcion_trabajo =
-            document.getElementById("work-description")?.value || null;
-          let tipo_mantenimiento =
-            document.getElementById("maintenance-type")?.value || null;
-          if (tipo_mantenimiento === "OTRO") {
-            const otroInput = document.getElementById("other-maintenance");
-            if (otroInput && otroInput.value.trim()) {
-              tipo_mantenimiento = otroInput.value.trim();
+        // 2. Insertar actividades AST si existen
+        const astActivitiesContainer = document.querySelector(".ast-activities");
+        if (astActivitiesContainer) {
+          const actividades = [];
+          const id_permiso = permisoResult.data.id_permiso || permisoResult.data.id;
+          const activityDivs = astActivitiesContainer.querySelectorAll(".ast-activity");
+          activityDivs.forEach((div, idx) => {
+            const secuencia = div.querySelector('textarea[name^="ast-activity-"]')?.value?.trim() || "";
+            const peligros_potenciales = div.querySelector('textarea[name^="ast-hazards-"]')?.value?.trim() || "";
+            const acciones_preventivas = div.querySelector('textarea[name^="ast-preventions-"]')?.value?.trim() || "";
+            if (secuencia && peligros_potenciales && acciones_preventivas) {
+              actividades.push({
+                id_ast: id_permiso,
+                secuencia,
+                peligros_potenciales,
+                acciones_preventivas
+              });
+            }
+          });
+          if (actividades.length > 0) {
+            const actividadesResponse = await fetch("/api/ast-actividades", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ actividades }),
+            });
+            const actividadesResult = await actividadesResponse.json();
+            if (!actividadesResponse.ok || !actividadesResult.success) {
+              throw new Error(actividadesResult.error || "Error al guardar actividades AST");
             }
           }
-          const ot_no = document.getElementById("work-order")?.value || null;
-          const equipo_intervenir =
-            document.getElementById("equipment")?.value || null;
-          const fecha =
-            document.getElementById("permit-date")?.value || "2025-08-19";
-          const hora = document.getElementById("start-time")?.value || "08:00";
-          const hora_inicio = `${fecha} ${hora}`;
-          const tag = document.getElementById("tag")?.value || null;
-          const fluido = document.getElementById("fluid")?.value || null;
-          const presion = document.getElementById("pressure")?.value || null;
-          const temperatura =
-            document.getElementById("temperature")?.value || null;
-          const empresa = document.getElementById("company")?.value || null;
-
-          // Obtener el valor de equipo_intervencion para PT1
-          const equipo_intervencion =
-            document.getElementById("equipment")?.value || "";
-          // CREA el objeto una sola vez
-          const verificacion_epp =
-            document.querySelector('input[name="epp"]:checked')?.value || "";
-          const verificacion_herramientas =
-            document.querySelector('input[name="herramientas"]:checked')
-              ?.value || "";
-          const verificacion_observaciones =
-            document.querySelector('textarea[name="observaciones"]')?.value ||
-            "";
-
-          const datosNoPeligroso = {
-            id_permiso,
-            nombre_solicitante: nombre_solicitante || "",
-            descripcion_trabajo: descripcion_trabajo || "",
-            tipo_mantenimiento: tipo_mantenimiento || "",
-            ot_no: ot_no || "",
-            equipo_intervencion: equipo_intervencion || "",
-            hora_inicio: hora_inicio || "",
-            tag: tag || "",
-            fluido: fluido || "",
-            presion: presion || "",
-            temperatura: temperatura || "",
-            empresa: empresa || "",
-            trabajo_area_riesgo_controlado:
-              document.querySelector('input[name="risk-area"]:checked')
-                ?.value || "",
-            necesita_entrega_fisica:
-              document.querySelector('input[name="physical-delivery"]:checked')
-                ?.value || "",
-            necesita_ppe_adicional:
-              document.querySelector('input[name="additional-ppe"]:checked')
-                ?.value || "",
-            area_circundante_riesgo:
-              document.querySelector('input[name="surrounding-risk"]:checked')
-                ?.value || "",
-            necesita_supervision:
-              document.querySelector('input[name="supervision-needed"]:checked')
-                ?.value || "",
-            observaciones_analisis_previo:
-              document.getElementById("pre-work-observations")?.value || "",
-            verificacion_epp,
-            verificacion_herramientas,
-            verificacion_observaciones,
-          };
-
-          // Ahora sí puedes imprimir el objeto y enviarlo
-          console.log(
-            "[DEBUG] Datos a enviar PT No Peligroso:",
-            datosNoPeligroso
-          );
-
-          const ptResponse = await fetch("/api/pt-no-peligroso", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(datosNoPeligroso),
-          });
-          const ptResult = await ptResponse.json();
-          if (!ptResponse.ok || !ptResult.success)
-            throw new Error(
-              ptResult.error || "Error al guardar PT No Peligroso"
-            );
-
-          // ==============================
-          // FIN BLOQUE: Insertar PT no peligroso
-          // Este bloque termina la lógica para insertar el permiso de trabajo no peligroso
-          // ==============================
-        } 
-
-        
-        // 3. Insertar actividades AST
-        const astActivities = [];
-        let validAst = true;
-
-        document.querySelectorAll(".ast-activity").forEach((row, index) => {
-          // Guardar el texto de la actividad como 'secuencia'
-          const secuencia = row
-            .querySelector('textarea[name^="ast-activity-"]')
-            .value.trim();
-          const personal_ejecutor = row.querySelector(
-            'select[name^="ast-personnel-"]'
-          ).value;
-          const peligros_potenciales = row
-            .querySelector('textarea[name^="ast-hazards-"]')
-            .value.trim();
-          const acciones_preventivas = row
-            .querySelector('textarea[name^="ast-preventions-"]')
-            .value.trim();
-          const responsable = row.querySelector(
-            'select[name^="ast-responsible-"]'
-          ).value;
-
-          if (
-            !secuencia ||
-            !personal_ejecutor ||
-            !peligros_potenciales ||
-            !acciones_preventivas ||
-            !responsable
-          ) {
-            validAst = false;
-          }
-
-          astActivities.push({
-            id_ast,
-            secuencia,
-            personal_ejecutor,
-            peligros_potenciales,
-            acciones_preventivas,
-            responsable,
-          });
-        });
-
-        if (!validAst) {
-          alert(
-            "Por favor completa todos los campos obligatorios de las actividades AST antes de guardar."
-          );
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = originalHTML;
-          return;
         }
-
-        const responseAST = await fetch("/api/ast-actividades", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ actividades: astActivities }),
-        });
-        const resultAST = await responseAST.json();
-        if (!responseAST.ok || !resultAST.success)
-          throw new Error(
-            resultAST.error || "Error al guardar actividades AST"
-          );
-
-        sessionStorage.setItem("permisoCompletoInserted", "true");
 
         // Mostrar modal de éxito
         const modal = document.getElementById("confirmation-modal");
         if (modal) {
           modal.querySelector("h3").textContent = "Permiso creado exitosamente";
-          const permitNumber = `GSI-PT-N${id_permiso}`;
+          const permitNumber = `GSI-PT-N${permisoResult.data.id_permiso || permisoResult.data.id}`;
           window.permitNumber = permitNumber;
-          const permitText = `El permiso de trabajo con AST ha sido registrado en el sistema con el número: <strong id="generated-permit">${permitNumber}</strong>`;
+          const permitText = `El permiso de trabajo ha sido registrado en el sistema con el número: <strong id=\"generated-permit\">${permitNumber}</strong>`;
           modal.querySelector("p").innerHTML = permitText;
           modal.classList.add("active");
-          // Llamar a n8nFormHandler para enviar los datos a n8n
-          if (typeof n8nFormHandler === "function") {
-            try {
-              await n8nFormHandler();
-            } catch (err) {
-              console.error("Error al enviar datos a n8n:", err);
-            }
-          }
         }
+
       } catch (error) {
         console.error("Error:", error);
         const modal = document.getElementById("confirmation-modal");

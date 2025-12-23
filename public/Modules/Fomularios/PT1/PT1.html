@@ -352,7 +352,7 @@
                                             <div class="footer-row">
                                                 <div class="footer-label">Línea de vida con amortiguador (alturas mayores a 5.5. metros)</div>
                                                  <div class="input-cell-blue-short" style="width: 70px; flex-shrink: 0;">
-                                                    <select class="select-yellow" id="linea_vida" style="text-align: center; width: 100%;">
+                                                    <select class="select-yellow" id="linea_vida_amortiguador" style="text-align: center; width: 100%;">
                                                         <option value="SI">SI</option>
                                                         <option value="NO">NO</option>
                                                     </select>
@@ -539,21 +539,21 @@
                                             <div class="footer-row">
                                                 <div class="footer-label">Temperatura</div>
                                                 <div class="input-cell-blue">
-                                                    <input type="text" class="editable-blue" value="27 °C" id="temp">
+                                                    <input type="text" class="editable-blue" required id="temp">
                                                 </div>
                                             </div>
                                             
                                             <div class="footer-row">
                                                 <div class="footer-label">Nombre del Guardavida</div>
                                                 <div class="input-cell-blue">
-                                                    <input type="text" class="editable-blue" value="Jorge Luis Zurita" id="guardavida">
+                                                    <input type="text" class="editable-blue" required id="guardavida">
                                                 </div>
                                             </div>
                                             
                                             <div class="footer-row">
                                                 <div class="footer-label">Nombre del guardavida suplente</div>
                                                 <div class="input-cell-blue">
-                                                    <input type="text" class="editable-blue" value="Juan Pérez" id="suplente">
+                                                    <input type="text" class="editable-blue" required id="suplente">
                                                 </div>
                                             </div>
                                             
@@ -575,14 +575,14 @@
                                             <div class="footer-row">
                                                 <div class="footer-label">Tiempo de permanencia</div>
                                                 <div class="input-cell-blue" style="width: 100px; min-width: unset;">
-                                                    <input type="text" class="editable-blue" value="15 minutos" id="permanencia" style="text-align: center; width: 100%;">
+                                                    <input type="text" id ="permanencia" class="editable-blue" required style="text-align: center; width: 100%;">
                                                 </div>
                                             </div>
                                             
                                             <div class="footer-row">
                                                 <div class="footer-label">Tiempo de descanso</div>
                                                 <div class="input-cell-blue" style="width: 100px; min-width: unset;">
-                                                    <input type="text" class="editable-blue" value="45 minutos" id="descanso" style="text-align: center; width: 100%;">
+                                                    <input type="text" class="editable-blue" required id="descanso" style="text-align: center; width: 100%;">
                                                 </div>
                                             </div>
                                         </div>
@@ -613,7 +613,7 @@
                                             <div class="footer-row">
                                                 <div class="footer-label">Nombre del rescatista</div>
                                                 <div class="input-cell-blue">
-                                                    <input type="text" class="editable-blue" value="Pepito Gutierrez" id="rescatista">
+                                                    <input type="text" class="editable-blue" required id="rescatista">
                                                 </div>
                                             </div>
                                             
@@ -686,7 +686,7 @@
                                                     <tr>
                                                         <td class="label-orange">Se requiere más de un vigía de fuego</td>
                                                         <td class="input-cell-blue" style="padding: 0 !important;">
-                                                            <select class="select-yellow" onchange="toggleVigiasAdicionales(this)" style="width: 100%; text-align: center;">
+                                                            <select class="select-yellow" onchange="toggleVigiasAdicionales(this)" style="width: 100%; text-align: center;" id="vigia_fuego">
                                                                 <option value="NO" selected>NO</option>
                                                                 <option value="SI">SI</option>
                                                             </select>
@@ -778,21 +778,21 @@
                                             <div class="footer-row" style="margin-top: 10px;">
                                                 <div class="footer-label">Temperatura</div>
                                                 <div class="input-cell-blue" style="flex: 1; border-radius: 4px;">
-                                                    <input type="text" id="temperatura" class="editable-blue" style="border-radius: 4px;" required>
+                                                    <input type="text" id="temperatura_fuego" class="editable-blue" style="border-radius: 4px;" required>
                                                 </div>
                                             </div>
 
                                             <div class="footer-row" style="margin-top: 10px;">
                                                 <div class="footer-label">Nombre del Vigía de fuego</div>
                                                 <div class="input-cell-blue" style="flex: 1; border-radius: 4px;">
-                                                    <input type="text" id="nombreVigia" class="editable-blue text-left" value="Jorge Luis Zurita" style="border-radius: 4px;">
+                                                    <input type="text" id="nombreVigiafuego" class="editable-blue text-left" required style="border-radius: 4px;">
                                                 </div>
                                             </div>
 
                                             <div class="footer-row" style="margin-top: 10px;">
                                                 <div class="footer-label">Nombre del Vigía de fuego suplente</div>
                                                 <div class="input-cell-blue" style="flex: 1; border-radius: 4px;">
-                                                    <input type="text" id="nombreSuplente" class="editable-blue text-left" value="Juan Pérez" style="border-radius: 4px;">
+                                                    <input type="text" id="nombreSuplentefuego" class="editable-blue text-left" required style="border-radius: 4px;">
                                                 </div>
                                             </div>
                                             <table>
@@ -883,7 +883,7 @@
                                                 <tr><td class="label-orange">Capucha, chamarra y pantalón antiácido</td><td class="value-orange">SI</td></tr>
                                                 <tr><td class="label-orange">Full face</td>
                                                  <td class="input-cell-blue" style="width: 70px; flex-shrink: 0;">
-                                                        <select class="select-yellow" id="monitoreo_gases" style="text-align: center; width: 100%;">
+                                                        <select class="select-yellow" id="full-face_apertura" style="text-align: center; width: 100%;">
                                                             <option value="SI">SI</option>
                                                             <option value="NO">NO</option>   
                                                         </select>

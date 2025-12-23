@@ -117,10 +117,41 @@ router.post("/permisos-trabajo", async (req, res) => {
     id_departamento,
     id_sucursal,
     id_estatus,
-    id_ast_ast_actividad,
-    contrato, // Nuevo campo opcional
-    fecha_hora, // Nuevo campo para la hora normalizada
+    contrato,
+    fecha_hora,
     id_usuario,
+    tipo_mantenimiento,
+    ot_numero,
+    tag,
+    hora_inicio,
+    equipo_intervenir,
+    descripcion_trabajo,
+    nombre_solicitante,
+    empresa,
+    PAL_EPP_1,
+    PAL_EPP_2,
+    PAL_FA_1,
+    PAL_FA_2,
+    PAL_EPC_1,
+    PAL_EPC_2,
+    PAL_CR_1,
+    PCO_EH_1,
+    PCO_MA_1,
+    PCO_MA_2,
+    PCO_MA_3,
+    PCO_MA_4,
+    PCO_MA_5,
+    PCO_ERA_1,
+    PFG_CR_1,
+    PFG_CR_1A,
+    PFG_EPPE_1,
+    PFG_EPPE_2,
+    PFG_MA_1,
+    PFG_MA_2,
+    PFG_MA_3,
+    PAP_CE_1,
+    PAP_CE_2,
+    PAP_EPE_1,
   } = req.body;
 
   // Validar que los campos obligatorios existan
@@ -130,7 +161,6 @@ router.post("/permisos-trabajo", async (req, res) => {
       id_departamento,
       id_sucursal,
       id_estatus,
-      id_ast_ast_actividad,
       id_usuario,
     ].some((v) => typeof v === "undefined")
   ) {
@@ -143,18 +173,61 @@ router.post("/permisos-trabajo", async (req, res) => {
   try {
     const result = await db.query(
       `INSERT INTO permisos_trabajo (
-        id_area, id_departamento, id_sucursal, id_estatus, id_ast_ast_actividad, contrato, fecha_hora, id_usuario
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        id_area, id_departamento, id_sucursal, id_estatus, contrato, fecha_hora, id_usuario,
+        tipo_mantenimiento, ot_numero, tag, hora_inicio, equipo_intervenir, descripcion_trabajo, nombre_solicitante, empresa,
+        PAL_EPP_1, PAL_EPP_2, PAL_FA_1, PAL_FA_2, PAL_EPC_1, PAL_EPC_2, PAL_CR_1,
+        PCO_EH_1, PCO_MA_1, PCO_MA_2, PCO_MA_3, PCO_MA_4, PCO_MA_5, PCO_ERA_1,
+        PFG_CR_1, PFG_CR_1A, PFG_EPPE_1, PFG_EPPE_2, PFG_MA_1, PFG_MA_2, PFG_MA_3,
+        PAP_CE_1, PAP_CE_2, PAP_EPE_1
+      ) VALUES (
+        $1, $2, $3, $4, $5, $6, $7,
+        $8, $9, $10, $11, $12, $13, $14, $15,
+        $16, $17, $18, $19, $20, $21, $22,
+        $23, $24, $25, $26, $27, $28, $29,
+        $30, $31, $32, $33, $34, $35, $36,
+        $37, $38, $39
+      )
       RETURNING *`,
       [
         id_area,
         id_departamento,
         id_sucursal,
         id_estatus,
-        id_ast_ast_actividad,
         contrato || null,
         fecha_hora || null,
         id_usuario,
+        tipo_mantenimiento || null,
+        ot_numero || null,
+        tag || null,
+        hora_inicio || null,
+        equipo_intervenir || null,
+        descripcion_trabajo || null,
+        nombre_solicitante || null,
+        empresa || null,
+        PAL_EPP_1 || null,
+        PAL_EPP_2 || null,
+        PAL_FA_1 || null,
+        PAL_FA_2 || null,
+        PAL_EPC_1 || null,
+        PAL_EPC_2 || null,
+        PAL_CR_1 || null,
+        PCO_EH_1 || null,
+        PCO_MA_1 || null,
+        PCO_MA_2 || null,
+        PCO_MA_3 || null,
+        PCO_MA_4 || null,
+        PCO_MA_5 || null,
+        PCO_ERA_1 || null,
+        PFG_CR_1 || null,
+        PFG_CR_1A || null,
+        PFG_EPPE_1 || null,
+        PFG_EPPE_2 || null,
+        PFG_MA_1 || null,
+        PFG_MA_2 || null,
+        PFG_MA_3 || null,
+        PAP_CE_1 || null,
+        PAP_CE_2 || null,
+        PAP_EPE_1 || null,
       ]
     );
     const id_permiso = result.rows[0].id_permiso;
@@ -236,8 +309,6 @@ router.post("/autorizaciones", async (req, res) => {
 // Ruta para insertar en la tabla ast_actividades
 router.post("/ast-actividades", async (req, res) => {
   const { actividades } = req.body;
-  // ...existing code...
-
   if (!Array.isArray(actividades) || actividades.length === 0) {
     return res.status(400).json({
       success: false,
@@ -249,14 +320,12 @@ router.post("/ast-actividades", async (req, res) => {
   const results = [];
   for (let i = 0; i < actividades.length; i++) {
     const act = actividades[i];
-    // Validar campos obligatorios
+    // Validar campos obligatorios (solo los actuales)
     if (
-      !act.id_ast ||
+      !act.id_permiso ||
       !act.secuencia ||
-      !act.personal_ejecutor ||
       !act.peligros_potenciales ||
-      !act.acciones_preventivas ||
-      !act.responsable
+      !act.acciones_preventivas
     ) {
       return res.status(400).json({
         success: false,
@@ -266,17 +335,15 @@ router.post("/ast-actividades", async (req, res) => {
     try {
       const result = await db.query(
         `INSERT INTO ast_actividades (
-          id_ast, num_actividad, secuencia_actividad, personal_ejecutor, peligros_potenciales, acciones_preventivas, responsable
-        ) VALUES ($1, $2, $3, $4, $5, $6, $7)
+          id_permiso, num_actividad, secuencia_actividad, peligros_potenciales, acciones_preventivas
+        ) VALUES ($1, $2, $3, $4, $5)
         RETURNING *`,
         [
-          act.id_ast,
-          i + 1,
+          act.id_permiso,
+          String(i + 1),
           act.secuencia,
-          act.personal_ejecutor,
           act.peligros_potenciales,
-          act.acciones_preventivas,
-          act.responsable,
+          act.acciones_preventivas
         ]
       );
       results.push(result.rows[0]);

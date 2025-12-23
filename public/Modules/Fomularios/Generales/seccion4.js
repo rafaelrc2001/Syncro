@@ -232,8 +232,13 @@ document.addEventListener("DOMContentLoaded", () => {
         //}
         const id_sucursal = parseInt(sessionStorage.getItem("id_sucursal"), 10);
         // id_tipo_permiso eliminado, ya no se usa
-        const id_estatus = parseInt(sessionStorage.getItem("id_estatus"), 10);
-        // id_ast_actividad eliminado, ya no se usa
+        // id_estatus eliminado, ya no se usa
+        // Log para depuración de IDs
+        console.log("[DEBUG] Validación de IDs:", {
+          id_area,
+          id_departamento,
+          id_sucursal
+        });
 
         // === NUEVOS CAMPOS A ENVIAR ===
         const tipo_mantenimiento = document.getElementById("maintenance-type")?.value || null;
@@ -286,24 +291,17 @@ document.addEventListener("DOMContentLoaded", () => {
           "id_sucursal_raw:",
           sessionStorage.getItem("id_sucursal")
         );
-        console.log(
-          "[DEBUG] id_estatus:",
-          id_estatus,
-          "id_estatus_raw:",
-          sessionStorage.getItem("id_estatus")
-        );
 
-        // Validar que todos los ids sean números válidos
+        // Validar que todos los ids sean números válidos (sin id_estatus)
         if (
           [
             id_area,
             id_departamento,
-            id_sucursal,
-            id_estatus,
+            id_sucursal
           ].some((v) => isNaN(v) || typeof v !== "number")
         ) {
           alert(
-            "Error: Debe seleccionar correctamente todas las listas (área, sucursal, estatus, etc)."
+            "Error: Debe seleccionar correctamente todas las listas (área, sucursal, etc)."
           );
           submitBtn.disabled = false;
           submitBtn.innerHTML = originalHTML;
@@ -318,7 +316,6 @@ document.addEventListener("DOMContentLoaded", () => {
             id_area,
             id_departamento,
             id_sucursal,
-            id_estatus,
             contrato,
             fecha_hora,
             id_usuario,

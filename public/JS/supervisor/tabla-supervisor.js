@@ -168,7 +168,7 @@ function mostrarPermisosFiltrados(filtro) {
   paginaDatos.forEach((permiso) => {
     const row = document.createElement("tr");
     let estatusNorm = permiso.estatus.toLowerCase().trim();
-    const puedeEditar = estatusNorm === "espera seguridad";
+    const puedeEditar = estatusNorm === "activo";
     let badgeClass = "";
     switch (estatusNorm) {
       case "por autorizar":
@@ -619,32 +619,9 @@ if (tableBody) {
     const editBtn = e.target.closest(".action-btn.edit");
     if (editBtn) {
       const row = editBtn.closest("tr");
-      const tipoPermiso = row ? row.children[1].textContent.trim() : "";
       const viewBtn = row ? row.querySelector(".action-btn.view") : null;
       const idPermiso = viewBtn ? viewBtn.getAttribute("data-idpermiso") : "";
-      if (tipoPermiso === "PT No Peligroso") {
-        window.location.href = `/Modules/Fomularios/PT1/PT1supervisor.html?id=${idPermiso}`;
-      } else if (tipoPermiso === "PT para Apertura Equipo o Línea") {
-        window.location.href = `/Modules/Fomularios/PT2/PT2supervisor.html?id=${idPermiso}`;
-      } else if (tipoPermiso === "PT de Entrada a Espacio Confinado") {
-        window.location.href = `/Modules/Fomularios/PT3/PT3supervisor.html?id=${idPermiso}`;
-      } else if (tipoPermiso === "PT en Altura") {
-        window.location.href = `/Modules/Fomularios/PT4/PT4supervisor.html?id=${idPermiso}`;
-      } else if (tipoPermiso === "PT de Fuego Abierto") {
-        window.location.href = `/Modules/Fomularios/PT5/PT5supervisor.html?id=${idPermiso}`;
-      } else if (tipoPermiso === "PT con Energía Eléctrica") {
-        window.location.href = `/Modules/Fomularios/PT6/PT6supervisor.html?id=${idPermiso}`;
-      } else if (tipoPermiso === "PT con Fuentes Radioactivas") {
-        window.location.href = `/Modules/Fomularios/PT7/PT7supervisor.html?id=${idPermiso}`;
-      } else if (tipoPermiso === "PT para Izaje con Hiab con Grúa") {
-        window.location.href = `/Modules/Fomularios/PT8/PT8supervisor.html?id=${idPermiso}`;
-      } else if (tipoPermiso === "PT con Cesta Izada") {
-        window.location.href = `/Modules/Fomularios/PT9/PT9supervisor.html?id=${idPermiso}`;
-      } else if (tipoPermiso === "PT de Excavacion") {
-        window.location.href = `/Modules/Fomularios/PT10/PT10supervisor.html?id=${idPermiso}`;
-      } else {
-        window.location.href = `/Modules/Fomularios/OTRO/OTROsupervisor.html?id=${idPermiso}`;
-      }
+      window.location.href = `/Modules/Fomularios/PT1/PT1supervisor.html?id=${idPermiso}`;
     }
 
     // Ver/Imprimir
@@ -685,33 +662,9 @@ if (tableBody) {
   });
 }
 
-// Si no tienes la función de mapeo, agrégala:
-function mapSupervisorFields(general) {
-  return {
-    "special-protection": general.proteccion_especial_recomendada,
-    "skin-protection": general.proteccion_piel_cuerpo,
-    "respiratory-protection": general.proteccion_respiratoria,
-    "eye-protection": general.proteccion_ocular,
-    "fire-protection": general.proteccion_contraincendio,
-    "fire-protection-type": general.tipo_proteccion_contraincendio,
-    "barriers-required": general.instalacion_barreras,
-    observations: general.observaciones_riesgos,
-    "co2-level": general.co2_nivel,
-    "nh3-level": general.nh3_nivel,
-    "oxygen-level": general.oxigeno_nivel,
-    "lel-level": general.lel_nivel,
-  };
-}
 
-// Elimina o comenta este bloque para que el botón "ver" ya no abra el modal de ver
-/*
-const tbody = document.getElementById("table-body");
-tbody.addEventListener("click", async function (e) {
-  if (e.target.closest(".view")) {
-    // ... abre modal ...
-  }
-});
-*/
+
+
 
 function formatearFecha(fechaISO) {
   if (!fechaISO) return "-";

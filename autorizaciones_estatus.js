@@ -102,7 +102,7 @@ router.post("/estatus/activo", async (req, res) => {
 // Nueva ruta para actualizar el estatus a 'espera seguridad' usando el id_estatus recibido
 router.post("/estatus/seguridad", async (req, res) => {
   const { id_estatus } = req.body;
-  const ESTATUS = "espera seguridad";
+  const ESTATUS = "validado por seguridad";
 
   if (!id_estatus) {
     return res.status(400).json({

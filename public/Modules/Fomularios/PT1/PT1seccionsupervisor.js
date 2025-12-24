@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // Consultar id_estatus
       let idEstatus = null;
       try {
-        const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
+        const respEstatus = await fetch(`/api/estatus/permiso/${idPermiso}`);
         if (respEstatus.ok) {
           const permisoData = await respEstatus.json();
           idEstatus =
@@ -97,13 +97,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (idEstatus) {
         try {
-          await fetch("/api/estatus/activo", {
+          await fetch("/api/estatus/seguridad", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ id_estatus: idEstatus }),
           });
         } catch (err) {
-          console.error("Error al actualizar estatus activo:", err);
+          console.error("Error al actualizar estatus seguridad:", err);
         }
       }
 
@@ -464,39 +464,7 @@ if (btnSalirNuevo) {
 document.addEventListener("DOMContentLoaded", function () {
   // --- FUNCIONES PARA RELLENAR AST Y PARTICIPANTES ---
   function mostrarAST(ast) {
-    const eppList = document.getElementById("modal-epp-list");
-    if (eppList) {
-      eppList.innerHTML = "";
-      if (ast.epp_requerido) {
-        ast.epp_requerido.split(",").forEach((item) => {
-          const li = document.createElement("li");
-          li.textContent = item.trim();
-          eppList.appendChild(li);
-        });
-      }
-    }
-    const maqList = document.getElementById("modal-maquinaria-list");
-    if (maqList) {
-      maqList.innerHTML = "";
-      if (ast.maquinaria_herramientas) {
-        ast.maquinaria_herramientas.split(",").forEach((item) => {
-          const li = document.createElement("li");
-          li.textContent = item.trim();
-          maqList.appendChild(li);
-        });
-      }
-    }
-    const matList = document.getElementById("modal-materiales-list");
-    if (matList) {
-      matList.innerHTML = "";
-      if (ast.material_accesorios) {
-        ast.material_accesorios.split(",").forEach((item) => {
-          const li = document.createElement("li");
-          li.textContent = item.trim();
-          matList.appendChild(li);
-        });
-      }
-    }
+    // No se requiere mostrar EPP requerido ni otros campos de AST por el momento
   }
 
   function mostrarActividadesAST(actividades) {
@@ -592,131 +560,37 @@ document.addEventListener("DOMContentLoaded", function () {
           const general = data.general || {};
 
           document.getElementById("start-time-label").textContent =
-            detalles.horario ||
-            detalles.hora_inicio ||
-            general.horario ||
-            general.hora_inicio ||
-            "-";
-          document.getElementById("fecha-label").textContent =
-            detalles.fecha || general.fecha || "-";
-          document.getElementById("activity-type-label").textContent =
-            detalles.tipo_actividad || general.tipo_actividad || "-";
-          // Prefer planta from detalles, then general.planta (do NOT fallback to general.area which contains 'Site')
-          document.getElementById("plant-label").textContent =
-            detalles.planta || general.planta || "-";
-          document.getElementById("descripcion-trabajo-label").textContent =
-            detalles.descripcion_trabajo || general.descripcion_trabajo || "-";
-          document.getElementById("empresa-label").textContent =
-            detalles.empresa || general.empresa || "-";
-          document.getElementById("nombre-solicitante-label").textContent =
-            detalles.solicitante || general.solicitante || "-";
-          document.getElementById("sucursal-label").textContent =
-            detalles.sucursal || general.sucursal || "-";
-          document.getElementById("contrato-label").textContent =
-            detalles.contrato || general.contrato || "-";
-          document.getElementById("work-order-label").textContent =
-            detalles.ot || general.ot || "-";
-          document.getElementById("equipment-label").textContent =
-            detalles.equipo || general.equipo || "-";
-          document.getElementById("tag-label").textContent =
-            detalles.tag || general.tag || "-";
-          // Condiciones actuales del equipo: mostrar fluido, presion, temperatura si existen
+          document.getElementById("start-time-label").textContent = general.hora_inicio || "-";
+          document.getElementById("fecha-label").textContent = general.fecha_hora ? new Date(general.fecha_hora).toLocaleDateString('es-MX') : "-";
+          document.getElementById("activity-type-label").textContent = general.tipo_mantenimiento || "-";
+          document.getElementById("plant-label").textContent = general.planta || general.id_sucursal || "-";
+          document.getElementById("descripcion-trabajo-label").textContent = general.descripcion_trabajo || "-";
+          document.getElementById("empresa-label").textContent = general.empresa || "-";
+          document.getElementById("nombre-solicitante-label").textContent = general.nombre_solicitante || "-";
+          document.getElementById("sucursal-label").textContent = general.id_sucursal || "-";
+          document.getElementById("contrato-label").textContent = general.contrato || "-";
+          document.getElementById("work-order-label").textContent = general.ot_numero || "-";
+          document.getElementById("equipment-label").textContent = general.equipo_intervenir || "-";
+          document.getElementById("tag-label").textContent = general.tag || "-";
           let condiciones = [];
-          if (data.detalles.fluido)
-            condiciones.push(`Fluido: ${data.detalles.fluido}`);
-          if (data.detalles.presion)
-            condiciones.push(`Presión: ${data.detalles.presion}`);
-          if (data.detalles.temperatura)
-            condiciones.push(`Temperatura: ${data.detalles.temperatura}`);
+          if (general.fluido) condiciones.push(`Fluido: ${general.fluido}`);
+          if (general.presion) condiciones.push(`Presión: ${general.presion}`);
+          if (general.temperatura) condiciones.push(`Temperatura: ${general.temperatura}`);
+          // Si no hay detalles o no hay datos, intenta con general
+          if ((!data.detalles || condiciones.length === 0) && data.general) {
+            if (data.general.fluido) condiciones.push(`Fluido: ${data.general.fluido}`);
+            if (data.general.presion) condiciones.push(`Presión: ${data.general.presion}`);
+            if (data.general.temperatura) condiciones.push(`Temperatura: ${data.general.temperatura}`);
+          }
           if (document.getElementById("equipment-conditions-label")) {
             document.getElementById("equipment-conditions-label").textContent =
               condiciones.length > 0
                 ? condiciones.join(" | ")
-                : data.detalles.condiciones_equipo || "-";
+                : (data.detalles && data.detalles.condiciones_equipo) || "-";
           }
 
-          // Rellenar Condiciones del Proceso (inputs y <p> para vista solo lectura)
-          if (document.getElementById("fluid")) {
-            if (document.getElementById("fluid").tagName === "INPUT") {
-              document.getElementById("fluid").value =
-                data.detalles.fluido || "";
-            } else {
-              document.getElementById("fluid").textContent =
-                data.detalles.fluido || "-";
-            }
-          }
-          if (document.getElementById("pressure")) {
-            if (document.getElementById("pressure").tagName === "INPUT") {
-              document.getElementById("pressure").value =
-                data.detalles.presion || "";
-            } else {
-              document.getElementById("pressure").textContent =
-                data.detalles.presion || "-";
-            }
-          }
-          if (document.getElementById("temperature")) {
-            if (document.getElementById("temperature").tagName === "INPUT") {
-              document.getElementById("temperature").value =
-                data.detalles.temperatura || "";
-            } else {
-              document.getElementById("temperature").textContent =
-                data.detalles.temperatura || "-";
-            }
-          }
+  
 
-          // Rellenar radios del análisis previo (modo edición)
-          function marcarRadio(name, value) {
-            if (!value) return;
-            const radio = document.querySelector(
-              `input[name='${name}'][value='${value.toLowerCase()}']`
-            );
-            if (radio) radio.checked = true;
-          }
-          marcarRadio(
-            "risk-area",
-            data.detalles.trabajo_area_riesgo_controlado
-          );
-          marcarRadio(
-            "physical-delivery",
-            data.detalles.necesita_entrega_fisica
-          );
-          marcarRadio("additional-ppe", data.detalles.necesita_ppe_adicional);
-          marcarRadio(
-            "surrounding-risk",
-            data.detalles.area_circundante_riesgo
-          );
-          marcarRadio("supervision-needed", data.detalles.necesita_supervision);
-          if (
-            document.getElementById("pre-work-observations") &&
-            document.getElementById("pre-work-observations").tagName ===
-              "TEXTAREA"
-          ) {
-            document.getElementById("pre-work-observations").value =
-              data.detalles.observaciones_analisis_previo || "";
-          }
-
-          // Rellenar campos de solo lectura (modo vista)
-          if (document.getElementById("resp-risk-area"))
-            document.getElementById("resp-risk-area").textContent =
-              data.detalles.trabajo_area_riesgo_controlado || "-";
-          if (document.getElementById("resp-physical-delivery"))
-            document.getElementById("resp-physical-delivery").textContent =
-              data.detalles.necesita_entrega_fisica || "-";
-          if (document.getElementById("resp-additional-ppe"))
-            document.getElementById("resp-additional-ppe").textContent =
-              data.detalles.necesita_ppe_adicional || "-";
-          if (document.getElementById("resp-surrounding-risk"))
-            document.getElementById("resp-surrounding-risk").textContent =
-              data.detalles.area_circundante_riesgo || "-";
-          if (document.getElementById("resp-supervision-needed"))
-            document.getElementById("resp-supervision-needed").textContent =
-              data.detalles.necesita_supervision || "-";
-          if (
-            document.getElementById("pre-work-observations") &&
-            document.getElementById("pre-work-observations").tagName === "P"
-          )
-            document.getElementById("pre-work-observations").textContent =
-              data.detalles.observaciones_analisis_previo || "-";
 
           // Rellenar AST y Participantes
           mostrarAST(data.ast);

@@ -125,49 +125,94 @@ document.addEventListener("DOMContentLoaded", function () {
       window.location.href = "/Modules/Usuario/CrearPT.html";
     });
   }
+  
+    // Mostrar/ocultar botón "Trabajo Finalizado" según estatus
+    const btnTrabajoFinalizado = document.getElementById("btn-cerrar-permiso");
+    const params = new URLSearchParams(window.location.search);
+    const idPermiso = params.get("id");
+    if (btnTrabajoFinalizado && idPermiso) {
+      fetch(`/api/estatus-solo/${idPermiso}`)
+        .then((resp) => resp.json())
+        .then((data) => {
+          if (data && data.estatus && typeof data.estatus === "string") {
+            if (data.estatus.trim().toLowerCase() === "validado por seguridad") {
+              btnTrabajoFinalizado.style.display = "";
+            } else {
+              btnTrabajoFinalizado.style.display = "none";
+            }
+          } else {
+            btnTrabajoFinalizado.style.display = "none";
+          }
+        })
+        .catch(() => {
+          btnTrabajoFinalizado.style.display = "none";
+        });
+    }
 });
 
 // Lógica para mostrar el modal de cierre de permiso y guardar el comentario
+
+// Lógica para mostrar el modal de confirmación antes del cierre
 document.addEventListener("DOMContentLoaded", function () {
   var btnCerrarPermiso = document.getElementById("btn-cerrar-permiso");
+  var modalConfirmar = document.getElementById("modalConfirmarCerrarPermiso");
   var modalCerrarPermiso = document.getElementById("modalCerrarPermiso");
-  var btnCancelarCerrarPermiso = document.getElementById(
-    "btnCancelarCerrarPermiso"
-  );
-  var btnGuardarCerrarPermiso = document.getElementById(
-    "btnGuardarCerrarPermiso"
-  );
+  var modalAlternativo = document.getElementById("modalCierreAlternativo");
+  var btnSi = document.getElementById("btnConfirmarCerrarSi");
+  var btnNo = document.getElementById("btnConfirmarCerrarNo");
+  var btnCerrarAlternativo = document.getElementById("btnCerrarAlternativo");
+  var btnCancelarCerrarPermiso = document.getElementById("btnCancelarCerrarPermiso");
+  var btnGuardarCerrarPermiso = document.getElementById("btnGuardarCerrarPermiso");
 
-  if (btnCerrarPermiso && modalCerrarPermiso) {
-    btnCerrarPermiso.addEventListener("click", function () {
+  // Al hacer click en el botón principal, mostrar el modal de confirmación
+  if (btnCerrarPermiso && modalConfirmar) {
+    btnCerrarPermiso.addEventListener("click", function (e) {
+      e.preventDefault();
+        // Oculta el modal de cierre tradicional si está visible
+        if (modalCerrarPermiso) modalCerrarPermiso.style.display = "none";
+        modalConfirmar.style.display = "flex";
+    });
+  }
+  // Si el usuario elige 'Sí', mostrar el modal de cierre tradicional
+  if (btnSi && modalCerrarPermiso && modalConfirmar) {
+    btnSi.addEventListener("click", function () {
+      modalConfirmar.style.display = "none";
       modalCerrarPermiso.style.display = "flex";
     });
   }
+  // Si el usuario elige 'No', mostrar el modal alternativo
+  if (btnNo && modalAlternativo && modalConfirmar) {
+    btnNo.addEventListener("click", function () {
+      modalConfirmar.style.display = "none";
+      modalAlternativo.style.display = "flex";
+    });
+  }
+  // Cerrar el modal alternativo
+  if (btnCerrarAlternativo && modalAlternativo) {
+    btnCerrarAlternativo.addEventListener("click", function () {
+      modalAlternativo.style.display = "none";
+    });
+  }
+  // Cerrar el modal de cierre tradicional
   if (btnCancelarCerrarPermiso && modalCerrarPermiso) {
     btnCancelarCerrarPermiso.addEventListener("click", function () {
       modalCerrarPermiso.style.display = "none";
     });
   }
-
   // Guardar comentario de cierre en la base de datos
   if (btnGuardarCerrarPermiso && modalCerrarPermiso) {
     btnGuardarCerrarPermiso.addEventListener("click", async function () {
-      var comentario = document
-        .getElementById("comentarioCerrarPermiso")
-        .value.trim();
+      var comentario = document.getElementById("comentarioCerrarPermiso").value.trim();
       var tipoCierre = document.getElementById("tipoCierrePermiso").value;
 
       if (!comentario) {
         alert("Debes escribir el motivo del cierre.");
         return;
       }
-
       if (!tipoCierre) {
         alert("Debes seleccionar el tipo de cierre.");
         return;
       }
-
-      // Obtener el id del permiso desde la URL o variable global
       var params = new URLSearchParams(window.location.search);
       var idPermiso = params.get("id") || window.idPermisoActual;
       console.log("Permiso de trabajo a cerrar:", idPermiso);
@@ -175,16 +220,12 @@ document.addEventListener("DOMContentLoaded", function () {
         alert("No se pudo obtener el ID del permiso.");
         return;
       }
-
-      // Consultar el id_estatus desde permisos_trabajo
       let idEstatus = null;
       try {
         const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
         if (respEstatus.ok) {
           const permisoData = await respEstatus.json();
-          idEstatus =
-            permisoData.id_estatus ||
-            (permisoData.data && permisoData.data.id_estatus);
+          idEstatus = permisoData.id_estatus || (permisoData.data && permisoData.data.id_estatus);
         }
       } catch (err) {
         console.error("Error al consultar id_estatus:", err);
@@ -193,11 +234,8 @@ document.addEventListener("DOMContentLoaded", function () {
         alert("No se pudo obtener el estatus del permiso.");
         return;
       }
-
-      // Mapear el tipo de cierre al endpoint correspondiente
       let endpoint;
       let mensajeExito;
-
       switch (tipoCierre) {
         case "cierre-sin-incidentes":
           endpoint = "/api/estatus/cierre_sin_incidentes";
@@ -205,13 +243,11 @@ document.addEventListener("DOMContentLoaded", function () {
           break;
         case "cierre-con-incidentes":
           endpoint = "/api/estatus/cierre_con_incidentes";
-          mensajeExito =
-            "Permiso cerrado con incidentes registrado exitosamente.";
+          mensajeExito = "Permiso cerrado con incidentes registrado exitosamente.";
           break;
         case "cierre-con-accidentes":
           endpoint = "/api/estatus/cierre_con_accidentes";
-          mensajeExito =
-            "Permiso cerrado con accidentes registrado exitosamente.";
+          mensajeExito = "Permiso cerrado con accidentes registrado exitosamente.";
           break;
         case "cancelado":
           endpoint = "/api/estatus/cancelado";
@@ -221,10 +257,7 @@ document.addEventListener("DOMContentLoaded", function () {
           alert("Tipo de cierre no válido.");
           return;
       }
-
-      // Guardar el comentario y actualizar el estatus
       try {
-        // 1. Guardar el comentario
         const respComentario = await fetch("/api/estatus/comentario", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -238,8 +271,6 @@ document.addEventListener("DOMContentLoaded", function () {
           alert("No se pudo guardar el comentario de cierre.");
           return;
         }
-
-        // 2. Actualizar el estatus según la selección
         const payloadEstatus = { id_estatus: idEstatus };
         const respEstatus = await fetch(endpoint, {
           method: "POST",
@@ -251,20 +282,12 @@ document.addEventListener("DOMContentLoaded", function () {
           dataEstatus = await respEstatus.json();
         } catch (e) {}
         if (!respEstatus.ok || !dataEstatus.success) {
-          alert(
-            `No se pudo actualizar el estatus. Error: ${
-              dataEstatus.error || "Desconocido"
-            }`
-          );
+          alert(`No se pudo actualizar el estatus. Error: ${dataEstatus.error || "Desconocido"}`);
           return;
         }
-
-        // 3. Enviar los datos a N8N usando el archivo separado
         if (window.n8nFormHandler) {
           await window.n8nFormHandler();
         }
-
-        // Cerrar el modal y mostrar mensaje de éxito
         modalCerrarPermiso.style.display = "none";
         alert(mensajeExito);
         window.location.href = "/Modules/Usuario/CrearPT.html";
@@ -275,6 +298,12 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+
+
+
+
+
+
 // Función para aplicar estilos específicos de PT1
 function aplicarEstilosPT1() {
   // Aplicar clases dinámicas a las respuestas según su valor
@@ -470,180 +499,28 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   if (idPermiso) {
-    // Llamar a la API para obtener los datos del permiso
+    // Solo mapear los campos especificados de data.general
     fetch(`/api/verformularios?id=${encodeURIComponent(idPermiso)}`)
       .then((resp) => resp.json())
       .then((data) => {
-        console.log("Datos recibidos para el permiso:", data);
-        // Prefijo en el título y descripción del trabajo
         if (data && data.general) {
-          document.querySelector(".section-header h3").textContent =
-            data.general.prefijo || "NP-XXXXXX";
-          // Aquí actualizas el título de la pestaña
-          document.title = `Permiso No Peligroso ${
-            data.general.prefijo || "NP-XXXXXX"
-          }`;
-          document.getElementById("descripcion-trabajo-label").textContent =
-            data.general.descripcion_trabajo || "-";
-        }
-        if (data && (data.detalles || data.general)) {
-          const detalles = data.detalles || {};
-          const general = data.general || {};
-
-          document.getElementById("start-time-label").textContent =
-            detalles.horario ||
-            detalles.hora_inicio ||
-            general.horario ||
-            general.hora_inicio ||
-            "-";
-          document.getElementById("fecha-label").textContent =
-            detalles.fecha || general.fecha || "-";
-          document.getElementById("activity-type-label").textContent =
-            detalles.tipo_actividad || general.tipo_actividad || "-";
-          document.getElementById("plant-label").textContent =
-            detalles.planta || general.area || general.planta || "-";
-          document.getElementById("descripcion-trabajo-label").textContent =
-            detalles.descripcion_trabajo || general.descripcion_trabajo || "-";
-          document.getElementById("empresa-label").textContent =
-            detalles.empresa || general.empresa || "-";
-          document.getElementById("nombre-solicitante-label").textContent =
-            detalles.solicitante || general.solicitante || "-";
-          document.getElementById("sucursal-label").textContent =
-            detalles.sucursal || general.sucursal || "-";
-          document.getElementById("contrato-label").textContent =
-            detalles.contrato || general.contrato || "-";
-          document.getElementById("work-order-label").textContent =
-            detalles.ot || general.ot || "-";
-          document.getElementById("equipment-label").textContent =
-            detalles.equipo || general.equipo || "-";
-          document.getElementById("tag-label").textContent =
-            detalles.tag || general.tag || "-";
-
-          // Rellenar Condiciones del Proceso (inputs y <p> para vista solo lectura)
-          if (document.getElementById("fluid")) {
-            if (document.getElementById("fluid").tagName === "INPUT") {
-              document.getElementById("fluid").value =
-                data.detalles.fluido || "";
-            } else {
-              document.getElementById("fluid").textContent =
-                data.detalles.fluido || "-";
-            }
-          }
-          if (document.getElementById("pressure")) {
-            if (document.getElementById("pressure").tagName === "INPUT") {
-              document.getElementById("pressure").value =
-                data.detalles.presion || "";
-            } else {
-              document.getElementById("pressure").textContent =
-                data.detalles.presion || "-";
-            }
-          }
-          if (document.getElementById("temperature")) {
-            if (document.getElementById("temperature").tagName === "INPUT") {
-              document.getElementById("temperature").value =
-                data.detalles.temperatura || "";
-            } else {
-              document.getElementById("temperature").textContent =
-                data.detalles.temperatura || "-";
-            }
-          }
-
-          // Rellenar radios del análisis previo (modo edición)
-          function marcarRadio(name, value) {
-            if (!value) return;
-            const radio = document.querySelector(
-              `input[name='${name}'][value='${value.toLowerCase()}']`
-            );
-            if (radio) radio.checked = true;
-          }
-          marcarRadio(
-            "risk-area",
-            data.detalles.trabajo_area_riesgo_controlado
-          );
-          marcarRadio(
-            "physical-delivery",
-            data.detalles.necesita_entrega_fisica
-          );
-          marcarRadio("additional-ppe", data.detalles.necesita_ppe_adicional);
-          marcarRadio(
-            "surrounding-risk",
-            data.detalles.area_circundante_riesgo
-          );
-          marcarRadio("supervision-needed", data.detalles.necesita_supervision);
-          if (
-            document.getElementById("pre-work-observations") &&
-            document.getElementById("pre-work-observations").tagName ===
-              "TEXTAREA"
-          ) {
-            document.getElementById("pre-work-observations").value =
-              data.detalles.observaciones_analisis_previo || "";
-          }
-
-          // Rellenar campos de solo lectura (modo vista)
-          if (document.getElementById("resp-risk-area"))
-            document.getElementById("resp-risk-area").textContent =
-              data.detalles.trabajo_area_riesgo_controlado || "-";
-          if (document.getElementById("resp-physical-delivery"))
-            document.getElementById("resp-physical-delivery").textContent =
-              data.detalles.necesita_entrega_fisica || "-";
-          if (document.getElementById("resp-additional-ppe"))
-            document.getElementById("resp-additional-ppe").textContent =
-              data.detalles.necesita_ppe_adicional || "-";
-          if (document.getElementById("resp-surrounding-risk"))
-            document.getElementById("resp-surrounding-risk").textContent =
-              data.detalles.area_circundante_riesgo || "-";
-          if (document.getElementById("resp-supervision-needed"))
-            document.getElementById("resp-supervision-needed").textContent =
-              data.detalles.necesita_supervision || "-";
-          if (
-            document.getElementById("pre-work-observations") &&
-            document.getElementById("pre-work-observations").tagName === "P"
-          )
-            document.getElementById("pre-work-observations").textContent =
-              data.detalles.observaciones_analisis_previo || "-";
-
-          // Mapear datos de verificación previa al trabajo
-          const respEpp = document.getElementById("resp-epp");
-          if (respEpp) {
-            respEpp.textContent = general.verificacion_epp || "-";
-          }
-
-          const respHerramientas = document.getElementById("resp-herramientas");
-          if (respHerramientas) {
-            respHerramientas.textContent =
-              general.verificacion_herramientas || "-";
-          }
-
-          const verificacionObs = document.getElementById(
-            "verificacion-observaciones"
-          );
-          if (verificacionObs) {
-            verificacionObs.textContent =
-              general.verificacion_observaciones || "-";
-          }
-
-          // Rellenar AST y Participantes
-          mostrarAST(data.ast);
-          mostrarActividadesAST(data.actividades_ast);
-          mostrarParticipantesAST(data.participantes_ast);
-
-          // Consultar y rellenar datos de autorización
-          consultarPersonasAutorizacion(idPermiso);
-          llenarTablaResponsables(idPermiso); // <-- AGREGA ESTA LÍNEA
-
-          // Aplicar estilos dinámicos PT1
-          aplicarEstilosPT1();
+          const general = data.general;
+          document.getElementById("contrato-label").textContent = general.contrato || "-";
+          document.getElementById("descripcion-trabajo-label").textContent = general.descripcion_trabajo || "-";
+          document.getElementById("empresa-label").textContent = general.empresa || "-";
+          document.getElementById("equipment-label").textContent = general.equipo_intervenir || "-";
+          document.getElementById("fecha-label").textContent = general.fecha_hora || "-";
+          document.getElementById("start-time-label").textContent = general.hora_inicio || "-";
+          document.getElementById("plant-label").textContent = general.nombre_departamento || "-";
+          document.getElementById("nombre-solicitante-label").textContent = general.nombre_solicitante || "-";
+          document.getElementById("work-order-label").textContent = general.ot_numero || "-";
         } else {
-          alert(
-            "No se encontraron datos para este permiso o el backend no responde con la estructura esperada."
-          );
+          alert("No se encontraron datos para este permiso o el backend no responde con la estructura esperada.");
         }
       })
       .catch((err) => {
         console.error("Error al obtener datos del permiso:", err);
-        alert(
-          "Error al obtener datos del permiso. Revisa la consola para más detalles."
-        );
+        alert("Error al obtener datos del permiso. Revisa la consola para más detalles.");
       });
   }
 });

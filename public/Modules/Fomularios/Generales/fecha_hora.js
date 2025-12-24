@@ -116,10 +116,11 @@ class FechaHoraManager {
     if (elementoArea) {
       const fechaArea = this.formatearFecha(this.fechas.area);
       elementoArea.innerHTML = `
-  Hora de autorización
-  <small style="font-size: 0.75em; color: #666; font-weight: normal; margin-left: 8px;">
-    ${fechaArea}
-  </small>
+                Hora de autorización
+                <br>
+                <small style="font-size: 0.75em; color: #666; font-weight: normal;">
+                  ${fechaArea}
+                </small>
 `;
     }
 

@@ -17,7 +17,8 @@ router.get("/vertablas", async (req, res) => {
       pt.fecha_hora,
       pt.descripcion_trabajo AS descripcion,
       pt.nombre_solicitante AS solicitante,
-      e.estatus
+      e.estatus,
+      e.subestatus
     FROM permisos_trabajo pt
     INNER JOIN areas a ON pt.id_area = a.id_area
     INNER JOIN estatus e ON pt.id_permiso = e.id_permiso
@@ -43,7 +44,8 @@ router.get("/vertablas/:id_departamento", async (req, res) => {
           pt.fecha_hora,
           pt.descripcion_trabajo AS descripcion,
           pt.nombre_solicitante AS solicitante,
-          e.estatus
+          e.estatus,
+          e.subestatus
         FROM permisos_trabajo pt
         INNER JOIN areas a ON pt.id_area = a.id_area
         INNER JOIN estatus e ON pt.id_permiso = e.id_permiso
@@ -72,7 +74,8 @@ router.get("/vertablasUsuarios/:id_usuario", async (req, res) => {
           pt.fecha_hora,
           pt.descripcion_trabajo AS descripcion,
           pt.nombre_solicitante AS solicitante,
-          e.estatus
+          e.estatus,
+          e.subestatus
         FROM permisos_trabajo pt
         INNER JOIN areas a ON pt.id_area = a.id_area
         INNER JOIN estatus e ON pt.id_permiso = e.id_permiso
@@ -101,7 +104,8 @@ async function obtenerPermisosPorDepartamento(id_departamento) {
           pt.fecha_hora,
           pt.descripcion_trabajo AS descripcion,
           pt.nombre_solicitante AS solicitante,
-          e.estatus
+          e.estatus,
+          e.subestatus
         FROM permisos_trabajo pt
         INNER JOIN areas a ON pt.id_area = a.id_area
         INNER JOIN estatus e ON pt.id_permiso = e.id_permiso

@@ -30,14 +30,16 @@ router.get("/estatus/lista", async (req, res) => {
 router.get("/estatus/permiso/:id", async (req, res) => {
   const { id } = req.params;
   try {
+    // Ahora el id_estatus está en la tabla estatus y se relaciona por id_permiso
     const result = await db.query(
       `SELECT 
-          pt.id_permiso,
-          pt.id_estatus,
-          e.estatus
-        FROM permisos_trabajo pt
-        INNER JOIN estatus e ON pt.id_estatus = e.id_estatus
-        WHERE pt.id_permiso = $1`,
+          e.id_permiso,
+          e.id_estatus,
+          e.estatus,
+          e.comentarios,
+          e.subestatus
+        FROM estatus e
+        WHERE e.id_permiso = $1`,
       [id]
     );
     if (result.rows.length === 0) {
@@ -71,8 +73,9 @@ router.post("/estatus/activo", async (req, res) => {
   }
 
   try {
+    // Actualiza por id_estatus, pero ahora puedes usar id_permiso si lo prefieres
     const result = await db.query(
-      "UPDATE estatus SET estatus = $1 WHERE id_estatus = $2 RETURNING id_estatus as id, estatus",
+      "UPDATE estatus SET estatus = $1 WHERE id_estatus = $2 RETURNING *",
       [ESTATUS, id_estatus]
     );
     if (result.rows.length === 0) {
@@ -474,24 +477,10 @@ router.post("/autorizaciones/area", async (req, res) => {
   }
 });
 
-// Ruta para obtener el id_estatus de permisos_trabajo por id_permiso
-router.get("/permisos-trabajo/:id", async (req, res) => {
-  const { id } = req.params;
-  try {
-    const result = await db.query(
-      "SELECT id_estatus FROM permisos_trabajo WHERE id_permiso = $1",
-      [id]
-    );
-    if (result.rows.length === 0) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Permiso no encontrado" });
-    }
-    res.json(result.rows[0]);
-  } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
-  }
-});
+
+// NOTA: Ya no existe lógica para guardar requisitos del área en una tabla específica de permiso.
+// Toda la lógica de guardado y actualización debe hacerse en la tabla general (autorizaciones).
+// Si necesitas guardar campos adicionales de requisitos, agrégalos a la tabla autorizaciones y adapta aquí.
 
 //no autorizado
 //no autorizado
@@ -500,7 +489,8 @@ router.get("/permisos-trabajo/:id", async (req, res) => {
 // Nueva ruta para actualizar el estatus a 'no autorizado' usando el id_estatus recibido
 router.post("/estatus/no_autorizado", async (req, res) => {
   const { id_estatus } = req.body;
-  const ESTATUS = "no autorizado";
+  const ESTATUS = "cierre";
+  const SUBESTATUS = "no autorizado";
 
   if (!id_estatus) {
     return res.status(400).json({
@@ -511,8 +501,8 @@ router.post("/estatus/no_autorizado", async (req, res) => {
 
   try {
     const result = await db.query(
-      "UPDATE estatus SET estatus = $1 WHERE id_estatus = $2 RETURNING id_estatus as id, estatus",
-      [ESTATUS, id_estatus]
+      "UPDATE estatus SET estatus = $1, subestatus = $2 WHERE id_estatus = $3 RETURNING id_estatus as id, estatus, subestatus",
+      [ESTATUS, SUBESTATUS, id_estatus]
     );
     if (result.rows.length === 0) {
       return res.status(404).json({
@@ -795,11 +785,9 @@ router.get("/api/permiso-estatus", async (req, res) => {
 router.get("/estatus-comentarios/:id_permiso", async (req, res) => {
   const { id_permiso } = req.params;
   try {
+    // Ahora la relación es directa por id_permiso en estatus
     const result = await db.query(
-      `SELECT e.estatus, e.comentarios
-       FROM permisos_trabajo p
-       JOIN estatus e ON p.id_estatus = e.id_estatus
-       WHERE p.id_permiso = $1`,
+      `SELECT estatus, comentarios, subestatus FROM estatus WHERE id_permiso = $1`,
       [id_permiso]
     );
     if (result.rows.length === 0) {
@@ -812,6 +800,7 @@ router.get("/estatus-comentarios/:id_permiso", async (req, res) => {
       success: true,
       estatus: result.rows[0].estatus,
       comentarios: result.rows[0].comentarios,
+      subestatus: result.rows[0].subestatus,
     });
   } catch (err) {
     res.status(500).json({
@@ -829,11 +818,9 @@ router.get("/estatus-comentarios/:id_permiso", async (req, res) => {
 router.get("/estatus-solo/:id_permiso", async (req, res) => {
   const { id_permiso } = req.params;
   try {
+    // Ahora la relación es directa por id_permiso en estatus
     const result = await db.query(
-      `SELECT e.estatus
-       FROM permisos_trabajo p
-       JOIN estatus e ON p.id_estatus = e.id_estatus
-       WHERE p.id_permiso = $1`,
+      `SELECT estatus FROM estatus WHERE id_permiso = $1`,
       [id_permiso]
     );
     if (result.rows.length === 0) {

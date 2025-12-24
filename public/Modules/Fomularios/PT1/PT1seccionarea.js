@@ -27,9 +27,11 @@ if (btnAutorizar) {
     // 3. Insertar autorización de área vía API
     try {
       // --- Consultar el id_estatus desde permisos_trabajo ---
+      // Este endpoint obtiene los datos del permiso de trabajo específico usando su ID. 
+      // Permite recuperar información general y de estatus del permiso, necesaria para mostrar y procesar la autorización en la interfaz. Es fundamental para validar el estado actual y continuar con el flujo de autorización o rechazo.
       let idEstatus = null;
       try {
-        const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
+        const respEstatus = await fetch(`/api/estatus/permiso/${idPermiso}`);
         if (respEstatus.ok) {
           const permisoData = await respEstatus.json();
           idEstatus =
@@ -53,19 +55,22 @@ if (btnAutorizar) {
 
       // --- Actualizar el estatus si se obtuvo el id_estatus ---
       if (idEstatus) {
+        // Este endpoint actualiza el estatus de seguridad del permiso en la base de datos. 
+        // Se utiliza después de obtener el id_estatus y es clave para reflejar que el área de seguridad ha autorizado 
+        // o cambiado el estado del permiso. Garantiza la trazabilidad y control del flujo de autorizaciones en el sistema.
         try {
           const payloadEstatus = { id_estatus: idEstatus };
           console.log(
-            "[DEPURACIÓN] Enviando a /api/estatus/seguridad:",
+            "[DEPURACIÓN] Enviando a /api/estatus/activo:",
             payloadEstatus
           );
-          const respEstatus = await fetch("/api/estatus/seguridad", {
+          const respEstatus = await fetch("/api/estatus/activo", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payloadEstatus),
           });
           console.log(
-            "[DEPURACIÓN] Respuesta HTTP de estatus/seguridad:",
+            "[DEPURACIÓN] Respuesta HTTP de estatus/activo:",
             respEstatus.status
           );
           let data = {};
@@ -73,23 +78,23 @@ if (btnAutorizar) {
             data = await respEstatus.json();
           } catch (e) {
             console.warn(
-              "[DEPURACIÓN] No se pudo parsear JSON de respuesta de estatus/seguridad"
+              "[DEPURACIÓN] No se pudo parsear JSON de respuesta de estatus/activo"
             );
           }
           if (!respEstatus.ok) {
             console.error(
-              "[DEPURACIÓN] Error en respuesta de estatus/seguridad:",
+              "[DEPURACIÓN] Error en respuesta de estatus/activo:",
               data
             );
           } else {
             console.log(
-              "[DEPURACIÓN] Respuesta exitosa de estatus/seguridad:",
+              "[DEPURACIÓN] Respuesta exitosa de estatus/activo:",
               data
             );
           }
         } catch (err) {
           console.error(
-            "[DEPURACIÓN] Excepción al actualizar estatus de seguridad:",
+            "[DEPURACIÓN] Excepción al actualizar estatus de activo:",
             err
           );
         }
@@ -98,50 +103,6 @@ if (btnAutorizar) {
           "[DEPURACIÓN] No se obtuvo id_estatus para actualizar estatus."
         );
       }
-
-      // 4. Recopilar datos del formulario de requisitos del área
-      const fluidInput = document.getElementById("fluid");
-      const pressureInput = document.getElementById("pressure");
-      const temperatureInput = document.getElementById("temperature");
-      const fluido = fluidInput ? fluidInput.value.trim() : "";
-      const presion = pressureInput ? pressureInput.value.trim() : "";
-      const temperatura = temperatureInput ? temperatureInput.value.trim() : "";
-
-      const trabajo_area_riesgo_controlado =
-        document.querySelector('input[name="risk-area"]:checked')?.value || "";
-      const necesita_entrega_fisica =
-        document.querySelector('input[name="physical-delivery"]:checked')
-          ?.value || "";
-      const necesita_ppe_adicional =
-        document.querySelector('input[name="additional-ppe"]:checked')?.value ||
-        "";
-      const area_circundante_riesgo =
-        document.querySelector('input[name="surrounding-risk"]:checked')
-          ?.value || "";
-      const necesita_supervision =
-        document.querySelector('input[name="supervision-needed"]:checked')
-          ?.value || "";
-      const observaciones_analisis_previo =
-        document.getElementById("pre-work-observations")?.value.trim() || "";
-
-      const resp = await fetch(
-        `/api/pt-no-peligroso/requisitos_area/${idPermiso}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            fluido,
-            presion,
-            temperatura,
-            trabajo_area_riesgo_controlado,
-            necesita_entrega_fisica,
-            necesita_ppe_adicional,
-            area_circundante_riesgo,
-            necesita_supervision,
-            observaciones_analisis_previo,
-          }),
-        }
-      );
 
       // Generar timestamp automático para autorización PT1 (hora local)
       const now = new Date();
@@ -154,6 +115,10 @@ if (btnAutorizar) {
       );
 
       // Guardar responsable y operador de área igual que PT2
+      // Este endpoint guarda la autorización del área, 
+      // registrando responsable, operador y fecha/hora.
+      // Es esencial para dejar evidencia de quién autorizó el permiso y cuándo,
+      //  cumpliendo requisitos de auditoría y control interno. Se usa tanto para autorizaciones normales como para rechazos, asegurando integridad en el registro de acciones.
       await fetch("/api/autorizaciones/area", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -166,6 +131,7 @@ if (btnAutorizar) {
       });
 
       // --- Agregar responsable y operador de área ---
+      // Este endpoint guarda la autorización del área, registrando responsable, operador y fecha/hora. Es esencial para dejar evidencia de quién autorizó el permiso y cuándo, cumpliendo requisitos de auditoría y control interno. Se usa tanto para autorizaciones normales como para rechazos, asegurando integridad en el registro de acciones.
       await fetch("/api/autorizaciones/area", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -328,6 +294,7 @@ if (btnNoAutorizar) {
         );
 
         // 1. Guardar comentario y responsable en la tabla de autorizaciones (puedes adaptar el endpoint si tienes uno específico para no autorizado)
+        // Este endpoint guarda la autorización del área, registrando responsable, operador y fecha/hora. Es esencial para dejar evidencia de quién autorizó el permiso y cuándo, cumpliendo requisitos de auditoría y control interno. Se usa tanto para autorizaciones normales como para rechazos, asegurando integridad en el registro de acciones.
         const resp = await fetch("/api/autorizaciones/area", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -346,7 +313,8 @@ if (btnNoAutorizar) {
         // 2. Consultar el id_estatus desde permisos_trabajo
         let idEstatus = null;
         try {
-          const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
+          // Este endpoint obtiene los datos del permiso de trabajo específico usando su ID. Permite recuperar información general y de estatus del permiso, necesaria para mostrar y procesar la autorización en la interfaz. Es fundamental para validar el estado actual y continuar con el flujo de autorización o rechazo.
+          const respEstatus = await fetch(`/api/estatus/permiso/${idPermiso}`);
           if (respEstatus.ok) {
             const permisoData = await respEstatus.json();
             idEstatus =
@@ -368,6 +336,7 @@ if (btnNoAutorizar) {
         // 3. Actualizar el estatus a 'no autorizado' y guardar el comentario en la tabla estatus
         if (idEstatus) {
           try {
+            // Este endpoint actualiza el estatus a 'no autorizado' en la base de datos. Se utiliza después de obtener el id_estatus y es clave para reflejar que el área de seguridad ha rechazado el permiso. Garantiza la trazabilidad y control del flujo de autorizaciones y rechazos en el sistema.
             const payloadEstatus = { id_estatus: idEstatus };
             console.log(
               "[NO AUTORIZAR] Enviando a /api/estatus/no_autorizado:",
@@ -392,6 +361,7 @@ if (btnNoAutorizar) {
             }
 
             // 3.1 Guardar el comentario en la tabla estatus
+            // Este endpoint permite registrar un comentario de rechazo en la tabla de estatus. Es importante para documentar los motivos de no autorización y mantener un historial claro de decisiones. Facilita la retroalimentación y mejora la transparencia en el proceso de gestión de permisos de trabajo.
             const respComentario = await fetch("/api/estatus/comentario", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -558,6 +528,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const idPermiso = params.get("id");
   if (idPermiso) {
     // Llamar a la API para obtener los datos del permiso
+  // Este endpoint consulta los formularios completos de un permiso, usando su ID. Devuelve toda la información relevante para mostrar en la interfaz, incluyendo datos generales, AST, actividades y participantes. Es la base para cargar y visualizar correctamente los detalles del permiso en la sección de área.
     fetch(`/api/verformularios?id=${encodeURIComponent(idPermiso)}`)
       .then((resp) => resp.json())
       .then((data) => {
@@ -568,122 +539,58 @@ document.addEventListener("DOMContentLoaded", function () {
         } catch (e) {
           // ignore
         }
-        // Prefijo en el título
+        // Prefijo en el título y mapeo de campos según la nueva estructura
         if (data && data.general) {
-          document.querySelector(".section-header h3").textContent =
-            data.general.prefijo || "NP-XXXXXX";
-          // Descripción del trabajo
-          document.getElementById("descripcion-trabajo-label").textContent =
-            data.general.descripcion_trabajo || "-";
-        }
-        if (data && data.detalles) {
-          document.getElementById("work-order-label").textContent =
-            data.detalles.ot || "-";
-          // Mapear fecha si existe
-          if (data.general && data.general.fecha) {
-            document.getElementById("fecha-label").textContent =
-              data.general.fecha;
-          } else if (data.detalles.fecha) {
-            document.getElementById("fecha-label").textContent =
-              data.detalles.fecha;
-          } else {
-            document.getElementById("fecha-label").textContent = "-";
-          }
-          // Usar 'horario' para Hora de inicio si existe, si no, hora_inicio
-          document.getElementById("start-time-label").textContent =
-            data.detalles.horario || data.detalles.hora_inicio || "-";
-          document.getElementById("activity-type-label").textContent =
-            data.detalles.tipo_actividad || "-";
-          document.getElementById("plant-label").textContent =
-            data.detalles.planta || "-";
-          // Nuevos campos mapeados
-          document.getElementById("empresa-label").textContent =
-            data.general && data.general.empresa
-              ? data.general.empresa
-              : data.detalles.empresa || "-";
-          document.getElementById("nombre-solicitante-label").textContent =
-            data.general && data.general.solicitante
-              ? data.general.solicitante
-              : data.detalles.solicitante || "-";
-          document.getElementById("sucursal-label").textContent =
-            data.general && data.general.sucursal
-              ? data.general.sucursal
-              : data.detalles.sucursal || "-";
-          document.getElementById("contrato-label").textContent =
-            data.general && data.general.contrato
-              ? data.general.contrato
-              : data.detalles.contrato || "-";
-          //Equipo a Intervenir
-          document.getElementById("equipment-label").textContent =
-            data.detalles.equipo || "-";
-          // TAG
-          document.getElementById("tag-label").textContent =
-            data.detalles.tag || "-";
+          document.querySelector(".section-header h3").textContent = data.general.prefijo || "NP-XXXXXX";
+          document.getElementById("descripcion-trabajo-label").textContent = data.general.descripcion_trabajo || "-";
+          document.getElementById("work-order-label").textContent = data.general.ot_numero || "-";
+          document.getElementById("fecha-label").textContent = data.general.fecha_hora ? new Date(data.general.fecha_hora).toLocaleDateString() : "-";
+          document.getElementById("start-time-label").textContent = data.general.hora_inicio || "-";
+          document.getElementById("activity-type-label").textContent = data.general.tipo_mantenimiento || "-";
+          document.getElementById("plant-label").textContent = data.general.nombre_departamento || "-";
+          document.getElementById("empresa-label").textContent = data.general.empresa || "-";
+          document.getElementById("nombre-solicitante-label").textContent = data.general.nombre_solicitante || "-";
+          document.getElementById("sucursal-label").textContent = data.general.id_sucursal || "-";
+          document.getElementById("contrato-label").textContent = data.general.contrato || "-";
+          document.getElementById("equipment-label").textContent = data.general.equipo_intervenir || "-";
+          document.getElementById("tag-label").textContent = data.general.tag || "-";
           // ¿Tiene equipo a intervenir?
-          const equipo = data.detalles.equipo;
+          const equipo = data.general.equipo_intervenir;
           const tieneEquipo = equipo && equipo.trim() !== "";
-
-          // Mostrar "Sí" o "No"
-          document.getElementById("equipment-intervene-label").textContent =
-            tieneEquipo ? "Sí" : "No";
-
+          document.getElementById("equipment-intervene-label").textContent = tieneEquipo ? "Sí" : "No";
           // Campos de condiciones del proceso
           const fluidInput = document.getElementById("fluid");
           const pressureInput = document.getElementById("pressure");
           const temperatureInput = document.getElementById("temperature");
-
           if (!tieneEquipo) {
-            // Si NO hay equipo, deshabilita y muestra "-"
-            if (fluidInput) {
-              fluidInput.value = "-";
-              fluidInput.disabled = true;
-            }
-            if (pressureInput) {
-              pressureInput.value = "-";
-              pressureInput.disabled = true;
-            }
-            if (temperatureInput) {
-              temperatureInput.value = "-";
-              temperatureInput.disabled = true;
-            }
+            if (fluidInput) { fluidInput.value = "-"; fluidInput.disabled = true; }
+            if (pressureInput) { pressureInput.value = "-"; pressureInput.disabled = true; }
+            if (temperatureInput) { temperatureInput.value = "-"; temperatureInput.disabled = true; }
           } else {
-            // Si hay equipo, habilita y muestra los valores reales
-            if (fluidInput) {
-              fluidInput.value = data.detalles.fluido || "";
-              fluidInput.disabled = false;
-            }
-            if (pressureInput) {
-              pressureInput.value = data.detalles.presion || "";
-              pressureInput.disabled = false;
-            }
-            if (temperatureInput) {
-              temperatureInput.value = data.detalles.temperatura || "";
-              temperatureInput.disabled = false;
-            }
+            if (fluidInput) { fluidInput.value = data.general.fluido || ""; fluidInput.disabled = false; }
+            if (pressureInput) { pressureInput.value = data.general.presion || ""; pressureInput.disabled = false; }
+            if (temperatureInput) { temperatureInput.value = data.general.temperatura || ""; temperatureInput.disabled = false; }
           }
-
-          // Condiciones actuales del equipo: mostrar fluido, presion, temperatura si existen
+          // Condiciones actuales del equipo
           let condiciones = [];
-          if (data.detalles.fluido)
-            condiciones.push(`Fluido: ${data.detalles.fluido}`);
-          if (data.detalles.presion)
-            condiciones.push(`Presión: ${data.detalles.presion}`);
-          if (data.detalles.temperatura)
-            condiciones.push(`Temperatura: ${data.detalles.temperatura}`);
+          if (data.general.fluido) condiciones.push(`Fluido: ${data.general.fluido}`);
+          if (data.general.presion) condiciones.push(`Presión: ${data.general.presion}`);
+          if (data.general.temperatura) condiciones.push(`Temperatura: ${data.general.temperatura}`);
           if (document.getElementById("equipment-conditions-label")) {
-            document.getElementById("equipment-conditions-label").textContent =
-              condiciones.length > 0
-                ? condiciones.join(" | ")
-                : data.detalles.condiciones_equipo || "-";
+            document.getElementById("equipment-conditions-label").textContent = condiciones.length > 0 ? condiciones.join(" | ") : "-";
           }
-          // Ahora agrega esto para rellenar AST y Participantes:
-          mostrarAST(data.ast);
-          mostrarActividadesAST(data.actividades_ast);
-          mostrarParticipantesAST(data.participantes_ast);
+          // Validaciones para evitar errores si los datos no existen
+          if (data.ast) {
+            mostrarAST(data.ast);
+          }
+          if (Array.isArray(data.actividades_ast)) {
+            mostrarActividadesAST(data.actividades_ast);
+          }
+          if (Array.isArray(data.participantes_ast)) {
+            mostrarParticipantesAST(data.participantes_ast);
+          }
         } else {
-          alert(
-            "No se encontraron datos para este permiso o el backend no responde con la estructura esperada."
-          );
+          alert("No se encontraron datos para este permiso o el backend no responde con la estructura esperada.");
         }
       })
       .catch((err) => {
@@ -851,7 +758,7 @@ if (btnConfirmarAutorizar) {
       // --- Consultar el id_estatus desde permisos_trabajo ---
       let idEstatus = null;
       try {
-        const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
+        const respEstatus = await fetch(`/api/estatus/permiso/${idPermiso}`);
         if (respEstatus.ok) {
           const permisoData = await respEstatus.json();
           idEstatus =
@@ -872,7 +779,7 @@ if (btnConfirmarAutorizar) {
       if (idEstatus) {
         try {
           const payloadEstatus = { id_estatus: idEstatus };
-          const respEstatus = await fetch("/api/estatus/seguridad", {
+          const respEstatus = await fetch("/api/estatus/activo", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payloadEstatus),
@@ -880,62 +787,23 @@ if (btnConfirmarAutorizar) {
 
           if (!respEstatus.ok) {
             console.error(
-              "[DEPURACIÓN] Error en respuesta de estatus/seguridad"
+              "[DEPURACIÓN] Error en respuesta de estatus/activo"
             );
           } else {
             console.log(
-              "[DEPURACIÓN] Estatus de seguridad actualizado correctamente"
+              "[DEPURACIÓN] Estatus de activo actualizado correctamente"
             );
           }
         } catch (err) {
           console.error(
-            "[DEPURACIÓN] Excepción al actualizar estatus de seguridad:",
+            "[DEPURACIÓN] Excepción al actualizar estatus de activo:",
             err
           );
         }
       }
 
       // 4. Recopilar datos del formulario de requisitos del área
-      const fluidInput = document.getElementById("fluid");
-      const pressureInput = document.getElementById("pressure");
-      const temperatureInput = document.getElementById("temperature");
-
-      const datosRequisitos = {
-        fluido: fluidInput ? fluidInput.value.trim() : "",
-        presion: pressureInput ? pressureInput.value.trim() : "",
-        temperatura: temperatureInput ? temperatureInput.value.trim() : "",
-        trabajo_area_riesgo_controlado:
-          document.querySelector('input[name="risk-area"]:checked')?.value ||
-          "",
-        necesita_entrega_fisica:
-          document.querySelector('input[name="physical-delivery"]:checked')
-            ?.value || "",
-        necesita_ppe_adicional:
-          document.querySelector('input[name="additional-ppe"]:checked')
-            ?.value || "",
-        area_circundante_riesgo:
-          document.querySelector('input[name="surrounding-risk"]:checked')
-            ?.value || "",
-        necesita_supervision:
-          document.querySelector('input[name="supervision-needed"]:checked')
-            ?.value || "",
-        observaciones_analisis_previo:
-          document.getElementById("pre-work-observations")?.value.trim() || "",
-      };
-
-      // 5. Guardar requisitos del área
-      const respRequisitos = await fetch(
-        `/api/pt-no-peligroso/requisitos_area/${idPermiso}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(datosRequisitos),
-        }
-      );
-
-      if (!respRequisitos.ok) {
-        throw new Error("Error al guardar los requisitos del área");
-      }
+      // Eliminada la lógica de guardar requisitos del área, ya no se usa respRequisitos ni fetch relacionado.
 
       // 6. Generar timestamp y guardar autorización
       const now = new Date();
@@ -944,6 +812,7 @@ if (btnConfirmarAutorizar) {
       ).toISOString();
 
       const { ip, localizacion } = await window.obtenerUbicacionYIP();
+      // Este endpoint guarda la autorización del área, registrando responsable, operador y fecha/hora, así como IP y localización. Es esencial para dejar evidencia de quién autorizó el permiso y cuándo, cumpliendo requisitos de auditoría y control interno. Se usa tanto para autorizaciones normales como para rechazos, asegurando integridad en el registro de acciones.
       const respAutorizacion = await fetch("/api/autorizaciones/area", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

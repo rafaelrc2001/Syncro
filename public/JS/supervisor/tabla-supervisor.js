@@ -301,6 +301,11 @@ document
 document.addEventListener("DOMContentLoaded", () => {
   cargarEstatusEnDropdown();
   cargarTargetasDesdeAutorizar();
+  // Asegurar que el filtro esté en 'Todos' al cargar
+  const statusFilter = document.getElementById("status-filter");
+  if (statusFilter) {
+    statusFilter.value = "all";
+  }
   cargarPermisosTabla();
   // Búsqueda por folio compatible con paginación
   const searchInput = document.querySelector(".search-bar input");

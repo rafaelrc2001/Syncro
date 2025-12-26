@@ -392,7 +392,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Error al consultar id_estatus:", err);
       }
       if (!idEstatus) {
-        alert("No se pudo obtener el estatus del permiso.");
+      
         return;
       }
       let endpoint;

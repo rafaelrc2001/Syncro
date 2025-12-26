@@ -60,14 +60,14 @@ if (btnGuardarCerrarPermiso) {
     let idEstatus = null;
     try {
       console.log(
-        "🌐 [CERRAR] Consultando id_estatus en /api/permisos-trabajo/",
+        "🌐 [CERRAR] Consultando id_estatus en /estatus/permiso/",
         idPermiso
       );
-      const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
+      const respEstatus = await fetch(`/api/estatus/permiso/${idPermiso}`);
       const permisoData = await respEstatus.json();
       idEstatus =
-        permisoData.id_estatus ||
-        (permisoData.data && permisoData.data.id_estatus);
+        (permisoData.data && permisoData.data.id_estatus) ||
+        permisoData.id_estatus;
     } catch (err) {
       console.error("❌ [CERRAR] Error al consultar id_estatus:", err);
     }

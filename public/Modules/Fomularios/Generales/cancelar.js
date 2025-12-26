@@ -77,7 +77,7 @@ if (btnGuardarCancelarPermiso) {
       console.error("❌ [CANCELAR] Error al consultar id_estatus:", err);
     }
 
-    if (!idEstatus) return alert("No se pudo obtener el estatus del permiso.");
+   
 
     try {
       console.log(

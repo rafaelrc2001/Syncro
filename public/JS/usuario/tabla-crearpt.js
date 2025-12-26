@@ -148,7 +148,8 @@ async function cargarPermisosTabla() {
     const response = await fetch(`/api/vertablasUsuarios/${id_usuario}`);
     if (!response.ok) throw new Error("Error al consultar permisos");
     permisosGlobal = await response.json();
-    mostrarPermisosFiltrados("En espera del área");
+    // Mostrar todos los permisos por defecto
+    mostrarPermisosFiltrados("all");
   } catch (err) {
     console.error("Error al cargar permisos:", err);
   }
@@ -631,6 +632,11 @@ document.addEventListener("DOMContentLoaded", function () {
   cargarEstatusEnDropdown();
   
   cargarTargetasDesdePermisos();
+  // Asegurar que el filtro esté en 'Todos' al cargar
+  const statusFilter = document.getElementById("status-filter");
+  if (statusFilter) {
+    statusFilter.value = "all";
+  }
   cargarPermisosTabla();
 
   // Búsqueda por folio compatible con paginación

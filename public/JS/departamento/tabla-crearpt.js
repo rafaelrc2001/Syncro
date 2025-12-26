@@ -138,7 +138,8 @@ async function cargarPermisosTabla() {
     const response = await fetch(`/api/vertablas/${id_departamento}`);
     if (!response.ok) throw new Error("Error al consultar permisos");
     permisosGlobal = await response.json();
-    mostrarPermisosFiltrados("En espera del área");
+    // Mostrar todos los permisos por defecto
+    mostrarPermisosFiltrados("all");
   } catch (err) {
     console.error("Error al cargar permisos:", err);
   }
@@ -280,13 +281,12 @@ function mostrarPermisosFiltrados(filtro) {
     <td>${permiso.descripcion}</td>
     <td>${permiso.area}</td>
     <td>${permiso.solicitante}</td>
- <td>${formatearFecha(permiso.fecha_hora)}</td>
-    <td <td style="text-align:center; vertical-align:middle;">><span class="status-badge${badgeClass ? " " + badgeClass : ""}">${
+    <td>${formatearFecha(permiso.fecha_hora)}</td>
+    <td style="text-align:center; vertical-align:middle;"><span class="status-badge${badgeClass ? " " + badgeClass : ""}">${
       permiso.estatus
     }</span><span class="status-badge${subestatusBadgeClass ? " " + subestatusBadgeClass : ""}">${
       permiso.subestatus || '-'
     }</span></td>
-    
     <td>
         <button class="action-btn print" data-idpermiso="${
           permiso.id_permiso
@@ -624,6 +624,11 @@ document.addEventListener("DOMContentLoaded", function () {
     console.warn("[CHECK] btnEnviarNuevo NO encontrado en el DOM");
   }
   cargarTargetasDesdePermisos();
+  // Asegurar que el filtro esté en 'Todos' al cargar
+  const statusFilter = document.getElementById("status-filter");
+  if (statusFilter) {
+    statusFilter.value = "all";
+  }
   cargarPermisosTabla();
 
   // Búsqueda por folio compatible con paginación

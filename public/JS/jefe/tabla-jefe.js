@@ -59,6 +59,47 @@ let paginaActual = 1;
 const registrosPorPagina = 7;
 let filtroBusqueda = "";
 
+// Función para cargar los estatus dinámicamente en el dropdown
+async function cargarEstatusEnDropdown() {
+  try {
+    const response = await fetch('/api/estatus/lista');
+    if (!response.ok) {
+      console.error('Error al cargar estatus para el dropdown');
+      return;
+    }
+    const result = await response.json();
+    if (!result.success || !result.data) {
+      console.error('Respuesta inválida del servidor al cargar estatus');
+      return;
+    }
+    const selectElement = document.getElementById('status-filter');
+    if (!selectElement) {
+      console.warn('Elemento status-filter no encontrado');
+      return;
+    }
+    // Guardar el valor seleccionado actual
+    const valorActual = selectElement.value;
+    // Limpiar opciones existentes excepto "Todos"
+    selectElement.innerHTML = '<option value="all">Todos</option>';
+    // Agregar las opciones de estatus desde la BD
+    result.data.forEach(estatus => {
+      const option = document.createElement('option');
+      option.value = estatus;
+      option.textContent = estatus;
+      selectElement.appendChild(option);
+    });
+    // Restaurar el valor seleccionado si existe, o seleccionar "Todos" por defecto
+    if (valorActual && Array.from(selectElement.options).some(opt => opt.value === valorActual)) {
+      selectElement.value = valorActual;
+    } else {
+      selectElement.value = 'all';
+    }
+    console.log('Estatus cargados en dropdown:', result.data.length);
+  } catch (error) {
+    console.error('Error al cargar estatus en dropdown:', error);
+  }
+}
+
 // --- Tabla de permisos ---
 function asignarEventosVer() {
   // Vista/Imprimir: funcionalidad removida intencionalmente.
@@ -281,8 +322,14 @@ document
   });
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Inicialización mínima: cargar tarjetas y tabla, y enlazar búsqueda
+  // Inicialización: cargar estatus, tarjetas y tabla, y enlazar búsqueda
+  cargarEstatusEnDropdown();
   cargarTargetasDesdeAutorizar();
+  // Asegurar que el filtro esté en 'Todos' al cargar
+  const statusFilter = document.getElementById("status-filter");
+  if (statusFilter) {
+    statusFilter.value = "all";
+  }
   cargarPermisosTabla();
   const searchInput = document.querySelector(".search-bar input");
   if (searchInput) {

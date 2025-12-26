@@ -180,8 +180,8 @@ router.post("/estatus/continua", async (req, res) => {
 // Nueva ruta para actualizar el estatus a 'cancelado' usando el id_estatus recibido
 router.post("/estatus/cancelado", async (req, res) => {
   const { id_estatus } = req.body;
-  const ESTATUS = "cancelado";
-
+  const ESTATUS = "cierre";
+  const SUBESTATUS = "cancelado";
   if (!id_estatus) {
     return res.status(400).json({
       success: false,
@@ -191,8 +191,8 @@ router.post("/estatus/cancelado", async (req, res) => {
 
   try {
     const result = await db.query(
-      "UPDATE estatus SET estatus = $1 WHERE id_estatus = $2 RETURNING id_estatus as id, estatus",
-      [ESTATUS, id_estatus]
+      "UPDATE estatus SET estatus = $1, subestatus = $2 WHERE id_estatus = $3 RETURNING id_estatus as id, estatus, subestatus",
+      [ESTATUS, SUBESTATUS, id_estatus]
     );
     if (result.rows.length === 0) {
       return res.status(404).json({
@@ -256,7 +256,8 @@ router.post("/estatus/terminado", async (req, res) => {
 // Nueva ruta para actualizar el estatus a 'cierre sin incidentes' usando el id_estatus recibido
 router.post("/estatus/cierre_sin_incidentes", async (req, res) => {
   const { id_estatus } = req.body;
-  const ESTATUS = "cierre sin incidentes";
+  const ESTATUS = "espera liberacion del area";
+  const SUBESTATUS = "cierre sin incidentes";
 
   if (!id_estatus) {
     return res.status(400).json({
@@ -267,8 +268,8 @@ router.post("/estatus/cierre_sin_incidentes", async (req, res) => {
 
   try {
     const result = await db.query(
-      "UPDATE estatus SET estatus = $1 WHERE id_estatus = $2 RETURNING id_estatus as id, estatus",
-      [ESTATUS, id_estatus]
+      "UPDATE estatus SET estatus = $1, subestatus = $2 WHERE id_estatus = $3 RETURNING id_estatus as id, estatus, subestatus",
+      [ESTATUS, SUBESTATUS, id_estatus]
     );
     if (result.rows.length === 0) {
       return res.status(404).json({
@@ -294,7 +295,8 @@ router.post("/estatus/cierre_sin_incidentes", async (req, res) => {
 // Nueva ruta para actualizar el estatus a 'cierre con incidentes' usando el id_estatus recibido
 router.post("/estatus/cierre_con_incidentes", async (req, res) => {
   const { id_estatus } = req.body;
-  const ESTATUS = "cierre con incidentes";
+  const ESTATUS = "espera liberacion del area";
+   const SUBESTATUS = "cierre con incidentes";
 
   if (!id_estatus) {
     return res.status(400).json({
@@ -305,8 +307,8 @@ router.post("/estatus/cierre_con_incidentes", async (req, res) => {
 
   try {
     const result = await db.query(
-      "UPDATE estatus SET estatus = $1 WHERE id_estatus = $2 RETURNING id_estatus as id, estatus",
-      [ESTATUS, id_estatus]
+      "UPDATE estatus SET estatus = $1, subestatus = $2 WHERE id_estatus = $3 RETURNING id_estatus as id, estatus, subestatus",
+      [ESTATUS, SUBESTATUS, id_estatus]
     );
     if (result.rows.length === 0) {
       return res.status(404).json({
@@ -332,7 +334,8 @@ router.post("/estatus/cierre_con_incidentes", async (req, res) => {
 // Nueva ruta para actualizar el estatus a 'cierre con accidentes' usando el id_estatus recibido
 router.post("/estatus/cierre_con_accidentes", async (req, res) => {
   const { id_estatus } = req.body;
-  const ESTATUS = "cierre con accidentes";
+  const ESTATUS = "espera liberacion del area";
+   const SUBESTATUS = "cierre con accidentes";
 
   if (!id_estatus) {
     return res.status(400).json({
@@ -343,8 +346,8 @@ router.post("/estatus/cierre_con_accidentes", async (req, res) => {
 
   try {
     const result = await db.query(
-      "UPDATE estatus SET estatus = $1 WHERE id_estatus = $2 RETURNING id_estatus as id, estatus",
-      [ESTATUS, id_estatus]
+      "UPDATE estatus SET estatus = $1, subestatus = $2 WHERE id_estatus = $3 RETURNING id_estatus as id, estatus, subestatus",
+      [ESTATUS, SUBESTATUS, id_estatus]
     );
     if (result.rows.length === 0) {
       return res.status(404).json({

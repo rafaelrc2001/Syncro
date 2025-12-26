@@ -1,3 +1,43 @@
+// Lógica para mostrar/ocultar botones según el estatus del permiso
+document.addEventListener('DOMContentLoaded', function () {
+  // Obtener el id del permiso de la URL
+  const params = new URLSearchParams(window.location.search);
+  const idPermiso = params.get('id') || window.idPermisoActual;
+  if (!idPermiso) return;
+
+  fetch(`/api/estatus-solo/${idPermiso}`)
+    .then(resp => resp.json())
+    .then(data => {
+      // Suponiendo que el estatus viene en data.estatus o data.status
+      const estatus = data.estatus || data.status || data;
+      const btnAutorizar = document.getElementById('btn-pregunta-autorizar');
+      const btnNoAutorizar = document.getElementById('btn-no-autorizar');
+      const btnCierre = document.getElementById('btn-cierre-permiso');
+      if (!btnAutorizar || !btnNoAutorizar || !btnCierre) return;
+
+      const seccionResponsables = document.querySelector('.executive-section input#responsable-aprobador')?.closest('.executive-section');
+      if (typeof estatus === 'string' && estatus.trim().toLowerCase() === 'espera liberacion del area') {
+        btnAutorizar.style.display = 'none';
+        btnNoAutorizar.style.display = 'none';
+        btnCierre.style.display = '';
+        if (seccionResponsables) seccionResponsables.style.display = 'none';
+      } else {
+        btnAutorizar.style.display = '';
+        btnNoAutorizar.style.display = '';
+        btnCierre.style.display = 'none';
+        if (seccionResponsables) seccionResponsables.style.display = '';
+      }
+    })
+    .catch(err => {
+      // Si hay error, mostrar todos menos cierre
+      const btnAutorizar = document.getElementById('btn-pregunta-autorizar');
+      const btnNoAutorizar = document.getElementById('btn-no-autorizar');
+      const btnCierre = document.getElementById('btn-cierre-permiso');
+      if (btnAutorizar) btnAutorizar.style.display = '';
+      if (btnNoAutorizar) btnNoAutorizar.style.display = '';
+      if (btnCierre) btnCierre.style.display = 'none';
+    });
+});
 // --- Lógica para el botón "Autorizar" ---
 const btnAutorizar = document.getElementById("btn-guardar-campos");
 if (btnAutorizar) {

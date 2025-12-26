@@ -197,7 +197,7 @@ async function cargarPermisosTabla() {
     const response = await fetch(`/api/autorizar/${id_departamento}`);
     if (!response.ok) throw new Error("Error al consultar permisos");
     permisosGlobal = await response.json();
-    mostrarPermisosFiltrados("En espera del área");
+    mostrarPermisosFiltrados(["En espera del área" , "espera liberacion del area"]);
   } catch (err) {
     console.error("Error al cargar permisos:", err);
   }
@@ -209,14 +209,20 @@ function mostrarPermisosFiltrados(filtro) {
   let filtrados = permisosGlobal;
 
   // Filtrado por estatus
-  if (filtro !== "all") {
+    if (filtro !== "all") {
     filtrados = filtrados.filter((permiso) => {
       const estatus = permiso.estatus.toLowerCase().trim();
-      const filtroNorm = filtro.toLowerCase().trim();
-      if (filtroNorm === "continua") {
-        return estatus === "continua";
+      if (Array.isArray(filtro)) {
+        return filtro.some(f =>
+          estatus === f.toLowerCase().trim()
+        );
+      } else {
+        const filtroNorm = filtro.toLowerCase().trim();
+        if (filtroNorm === "continua") {
+          return estatus === "continua";
+        }
+        return estatus === filtroNorm;
       }
-      return estatus === filtroNorm;
     });
   }
 
@@ -246,7 +252,7 @@ function mostrarPermisosFiltrados(filtro) {
   paginaDatos.forEach((permiso) => {
     const row = document.createElement("tr");
     let estatusNorm = (permiso.estatus || "").toLowerCase().trim();
-    const puedeEditar = estatusNorm === "en espera del área";
+    const puedeEditar = estatusNorm === "en espera del área" || estatusNorm === "espera liberacion del area";
     let badgeClass = "";
     switch (estatusNorm) {
       case "por autorizar": badgeClass = "wait-area"; break;

@@ -63,11 +63,11 @@ if (btnGuardarCancelarPermiso) {
     let idEstatus = null;
     try {
       console.log(
-        "🌐 [CANCELAR] Consultando id_estatus en /api/permisos-trabajo/",
+      
         idPermiso
       );
       const respEstatus = await fetch(
-        `/api/permisos-trabajo/${idPermiso}`
+       `/api/estatus/permiso/${idPermiso}`
       );
       const permisoData = await respEstatus.json();
       idEstatus =
@@ -116,21 +116,12 @@ if (btnGuardarCancelarPermiso) {
         return;
       }
 
-      if (window.n8nFormHandlerCancelado) {
-        console.log(
-          "📨 [CANCELAR] Ejecutando n8nFormHandlerCancelado() para enviar correo..."
-        );
-        await window.n8nFormHandlerCancelado();
-        alert("Permiso cancelado y correo enviado correctamente.");
-        modalCancelarPermisoUnico.style.display = "none";
-        window.location.href = "/Modules/usuario/crearPT.html";
-      } else {
-        console.warn(
-          "⚠️ [CANCELAR] No se encontró window.n8nFormHandlerCancelado"
-        );
-      }
+      // Quitar integración con n8n por ahora
+      alert("Permiso cancelado correctamente.");
+      modalCancelarPermisoUnico.style.display = "none";
+      window.location.href = "/Modules/usuario/crearPT.html";
     } catch (err) {
-      console.error("❌ [CANCELAR] Error en el flujo de cancelación:", err);
+     
     }
   });
 }

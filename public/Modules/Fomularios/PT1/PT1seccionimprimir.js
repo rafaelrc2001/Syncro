@@ -135,7 +135,8 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((resp) => resp.json())
         .then((data) => {
           if (data && data.estatus && typeof data.estatus === "string") {
-            if (data.estatus.trim().toLowerCase() === "validado por seguridad") {
+            if (data.estatus.trim().toLowerCase() === "validado por seguridad" ||
+                data.estatus.trim().toLowerCase() === "espera liberacion del area") {
               btnTrabajoFinalizado.style.display = "";
             } else {
               btnTrabajoFinalizado.style.display = "none";
@@ -157,7 +158,9 @@ document.addEventListener("DOMContentLoaded", function () {
   var btnCerrarPermiso = document.getElementById("btn-cerrar-permiso");
   var modalConfirmar = document.getElementById("modalConfirmarCerrarPermiso");
   var modalCerrarPermiso = document.getElementById("modalCerrarPermiso");
-  var modalAlternativo = document.getElementById("modalCierreAlternativo");
+  //var modalAlternativo = document.getElementById("modalCierreAlternativo");
+  var modalAlternativo = document.getElementById("modalCancelarPermisoUnico");
+  
   var btnSi = document.getElementById("btnConfirmarCerrarSi");
   var btnNo = document.getElementById("btnConfirmarCerrarNo");
   var btnCerrarAlternativo = document.getElementById("btnCerrarAlternativo");
@@ -222,7 +225,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
       let idEstatus = null;
       try {
-        const respEstatus = await fetch(`/api/permisos-trabajo/${idPermiso}`);
+        const respEstatus = await fetch(`/api/estatus/permiso/${idPermiso}`);
         if (respEstatus.ok) {
           const permisoData = await respEstatus.json();
           idEstatus = permisoData.id_estatus || (permisoData.data && permisoData.data.id_estatus);

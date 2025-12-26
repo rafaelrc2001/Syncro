@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Permiso No Peligroso</title>
+    <title>Permiso</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="/CSS/EstiloGeneral.css" />
@@ -30,7 +30,7 @@
             </div>
                  <div class="section-header header-centered">
                     <i class="ri-checkbox-circle-line"></i>
-                    <h2>Permiso de Trabajo No Peligroso</h2>
+                    <h2>Permiso de Trabajo</h2>
                     <h3>NP-XXXXXX</h3>
                 </div>
                                
@@ -449,30 +449,30 @@
                                             
 
                                           <!-- Modal de confirmación de cierre de permiso -->
-<div id="modalConfirmarCerrarPermiso" class="modal-comentario" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(44,62,80,0.25); z-index:1000; justify-content:center; align-items:center;">
-  <div style="background:#fff; border-radius:12px; max-width:400px; width:90vw; padding:2em 1.5em; box-shadow:0 4px 24px rgba(44,62,80,0.18); display:flex; flex-direction:column; gap:1em;">
-    <h3 style="margin:0 0 0.5em 0; font-size:1.2em; color:#2980b9;">
-      <i class="ri-question-line" style="margin-right:8px;"></i>¿Se terminó el permiso?
-    </h3>
-    <div style="display:flex; justify-content:center; gap:20px;">
-      <button id="btnConfirmarCerrarSi" type="button" style="background:#27ae60; color:#fff; border:none; border-radius:4px; padding:8px 24px; font-size:1em; cursor:pointer;">Sí</button>
-      <button id="btnConfirmarCerrarNo" type="button" style="background:#c0392b; color:#fff; border:none; border-radius:4px; padding:8px 24px; font-size:1em; cursor:pointer;">No</button>
-    </div>
-  </div>
-</div>
+                                            <div id="modalConfirmarCerrarPermiso" class="modal-comentario" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(44,62,80,0.25); z-index:1000; justify-content:center; align-items:center;">
+                                            <div style="background:#fff; border-radius:12px; max-width:400px; width:90vw; padding:2em 1.5em; box-shadow:0 4px 24px rgba(44,62,80,0.18); display:flex; flex-direction:column; gap:1em;">
+                                                <h3 style="margin:0 0 0.5em 0; font-size:1.2em; color:#2980b9;">
+                                                <i class="ri-question-line" style="margin-right:8px;"></i>¿Se terminó el permiso?
+                                                </h3>
+                                                <div style="display:flex; justify-content:center; gap:20px;">
+                                                <button id="btnConfirmarCerrarSi" type="button" style="background:#27ae60; color:#fff; border:none; border-radius:4px; padding:8px 24px; font-size:1em; cursor:pointer;">Sí</button>
+                                                <button id="btnConfirmarCerrarNo" type="button" style="background:#c0392b; color:#fff; border:none; border-radius:4px; padding:8px 24px; font-size:1em; cursor:pointer;">No</button>
+                                                </div>
+                                            </div>
+                                            </div>
 
-<!-- Modal de cierre alternativo si el usuario elige 'No' -->
-<div id="modalCierreAlternativo" class="modal-comentario" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(44,62,80,0.25); z-index:1000; justify-content:center; align-items:center;">
-  <div style="background:#fff; border-radius:12px; max-width:400px; width:90vw; padding:2em 1.5em; box-shadow:0 4px 24px rgba(44,62,80,0.18); display:flex; flex-direction:column; gap:1em;">
-    <h3 style="margin:0 0 0.5em 0; font-size:1.2em; color:#c0392b;">
-      <i class="ri-close-circle-line" style="margin-right:8px;"></i>Modal cierre alternativo
-    </h3>
-    <p style="font-size:1em; color:#2c3e50;">El permiso no se ha terminado. Aquí puedes realizar otra acción o cerrar este mensaje.</p>
-    <div style="display:flex; justify-content:flex-end; gap:10px;">
-      <button id="btnCerrarAlternativo" type="button" style="background:#eee; color:#333; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Cerrar</button>
-    </div>
-  </div>
-</div>
+                                            <!-- Modal de cierre alternativo si el usuario elige 'No' -->
+                                            <div id="modalCierreAlternativo" class="modal-comentario" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(44,62,80,0.25); z-index:1000; justify-content:center; align-items:center;">
+                                            <div style="background:#fff; border-radius:12px; max-width:400px; width:90vw; padding:2em 1.5em; box-shadow:0 4px 24px rgba(44,62,80,0.18); display:flex; flex-direction:column; gap:1em;">
+                                                <h3 style="margin:0 0 0.5em 0; font-size:1.2em; color:#c0392b;">
+                                                <i class="ri-close-circle-line" style="margin-right:8px;"></i>Modal cierre alternativo
+                                                </h3>
+                                                <p style="font-size:1em; color:#2c3e50;">El permiso no se ha terminado. Aquí puedes realizar otra acción o cerrar este mensaje.</p>
+                                                <div style="display:flex; justify-content:flex-end; gap:10px;">
+                                                <button id="btnCerrarAlternativo" type="button" style="background:#eee; color:#333; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Cerrar</button>
+                                                </div>
+                                            </div>
+                                            </div>
 
 </body>
     

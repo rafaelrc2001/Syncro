@@ -1,3 +1,63 @@
+// --- Lógica para el modal de cierre de permiso ---
+document.addEventListener('DOMContentLoaded', function () {
+  const btnCierrePermiso = document.getElementById('btn-cierre-permiso');
+  const modalCierre = document.getElementById('modalConfirmarCierre');
+  const btnCancelarCierre = document.getElementById('btnCancelarCierre');
+  const btnConfirmarCierre = document.getElementById('btnConfirmarCierre');
+  if (btnCierrePermiso && modalCierre) {
+    btnCierrePermiso.addEventListener('click', function () {
+      modalCierre.style.display = 'flex';
+    });
+  }
+  if (btnCancelarCierre && modalCierre) {
+    btnCancelarCierre.addEventListener('click', function () {
+      modalCierre.style.display = 'none';
+    });
+  }
+  if (btnConfirmarCierre && modalCierre) {
+    btnConfirmarCierre.addEventListener('click', async function () {
+      // Obtener el id del permiso de la URL
+      const params = new URLSearchParams(window.location.search);
+      const idPermiso = params.get('id') || window.idPermisoActual;
+      if (!idPermiso) {
+        alert('No se pudo obtener el ID del permiso.');
+        return;
+      }
+      // Consultar el id_estatus desde permisos_trabajo
+      let idEstatus = null;
+      try {
+        const respEstatus = await fetch(`/api/estatus/permiso/${idPermiso}`);
+        if (respEstatus.ok) {
+          const permisoData = await respEstatus.json();
+          idEstatus = permisoData.id_estatus || (permisoData.data && permisoData.data.id_estatus);
+        }
+      } catch (err) {
+        // Error al consultar id_estatus
+      }
+      if (!idEstatus) {
+        alert('No se pudo obtener el estatus del permiso.');
+        return;
+      }
+      // Actualizar el estatus a 'cierre'
+      try {
+        const respCierre = await fetch('/api/estatus/cierre', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id_estatus: idEstatus })
+        });
+        if (!respCierre.ok) {
+          alert('Error al cerrar el permiso.');
+        } else {
+          modalCierre.style.display = 'none';
+          alert('Permiso cerrado correctamente.');
+          window.location.reload();
+        }
+      } catch (err) {
+        alert('Error al cerrar el permiso.');
+      }
+    });
+  }
+});
 // Lógica para mostrar/ocultar botones según el estatus del permiso
 document.addEventListener('DOMContentLoaded', function () {
   // Obtener el id del permiso de la URL

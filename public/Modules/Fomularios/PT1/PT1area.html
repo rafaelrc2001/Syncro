@@ -307,9 +307,29 @@
                                 <button id="btn-no-autorizar" class="btn btn-pt1 btn-noautorizar-rojo" type="button">
                                     <i class="ri-close-circle-line" style="margin-right: 8px;"></i>No Autorizar
                                 </button>
-                                <button id="btn-cierre-permiso" class="btn btn-pt1 btn-guardar-azulpetroleo" type="button">
-                                    <i class="ri-close-circle-line" style="margin-right: 8px;"></i>Cierre del Permiso
-                                </button>
+                                                                <button id="btn-cierre-permiso" class="btn btn-pt1 btn-guardar-azulpetroleo" type="button">
+                                                                        <i class="ri-close-circle-line" style="margin-right: 8px;"></i>Cierre del Permiso
+                                                                </button>
+
+<!-- Modal de confirmación de cierre de permiso -->
+<div id="modalConfirmarCierre" class="modal-confirmar" style="display:none;">
+    <div class="modal-confirmar-content">
+        <div class="modal-confirmar-icon modal-cierre-icon">
+            <i class="ri-close-circle-line" style="color:#2c3e50; font-size:2em;"></i>
+        </div>
+        <h3>¿Seguro que deseas cerrar el permiso?</h3>
+        <p class="modal-confirmar-warning">
+            <i class="ri-alert-line" style="color:#e53935; font-size:1.3em; vertical-align:middle; margin-right:6px;"></i>
+            Esta acción no se podrá deshacer y el permiso será marcado como cerrado.
+        </p>
+        <div class="modal-confirmar-actions">
+            <button id="btnCancelarCierre" type="button" class="btn-cancel">Cancelar</button>
+            <button id="btnConfirmarCierre" type="button" class="btn-confirm">Cerrar Permiso</button>
+        </div>
+    </div>
+</div>
+
+
 
 
 

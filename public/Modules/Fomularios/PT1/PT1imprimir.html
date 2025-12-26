@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/CSS/imprimir/EstiloImprimir-Base.css">
     <link rel="stylesheet" href="/CSS/imprimir/EstiloImprimir-PT1.css">
 
+
 </head>
 <body style="background: #f4f6fb; min-height: 100vh; margin: 0; font-family: 'Roboto', Arial, sans-serif;">
         <div style="display: flex; justify-content: center; align-items: flex-start; min-height: 100vh;">
@@ -49,45 +50,58 @@
                       
                     
                       <div class="executive-grid">
-                          <div class="executive-item">
-                              <label>Hora de inicio</label>
-                              <p id="start-time-label">-</p>
-                          </div>
+
                           <div class="executive-item">
                               <label>Fecha</label>
                               <p id="fecha-label">-</p>
                           </div>
                           <div class="executive-item">
-                              <label>Tipo de actividad</label>
-                              <p id="activity-type-label">-</p>
+                              <label>Hora de inicio</label>
+                              <p id="start-time-label">-</p>
+                          </div>
+                         <div class="executive-item">
+                              <label>Empresa</label>
+                              <p id="empresa-label">PRO-AGROINDUSTRIA</p>
+                          </div>
+                          <div class="executive-item">
+                              <label>Sucursal</label>
+                              <p id="sucursal-label">-</p>
+                          </div>
+
+                          <div class="executive-item">
+                              <label>Departamento o contratista</label>
+                              <p id="dpto-contrato">-</p>
                           </div>
                           <div class="executive-item">
                               <label>Área de Trabajo</label>
                               <p id="plant-label">-</p>
                           </div>
                           <div class="executive-item">
+                              <label>Ubicacion</label>
+                              <p id="ubicacion">-</p>
+                          </div>
+                           <div class="executive-item">
+                              <label>Responsable Trabajo</label>
+                              <p id="responsable-trabajo-label">-</p>
+                          </div>
+
+                          <div class="executive-item">
                               <label>Descripción del trabajo</label>
                               <p id="descripcion-trabajo-label">-</p>
                           </div>
+
                           <div class="executive-item">
-                              <label>Empresa</label>
-                              <p id="empresa-label">-</p>
-                          </div>
-                          <div class="executive-item">
-                              <label>Nombre de quien solicita</label>
-                              <p id="nombre-solicitante-label">-</p>
-                          </div>
-                          <div class="executive-item">
-                              <label>Sucursal</label>
-                              <p id="sucursal-label">-</p>
-                          </div>
-                          <div class="executive-item">
-                              <label>Contrato</label>
-                              <p id="contrato-label">-</p>
+                              <label>Tipo de mantenimiento</label>
+                              <p id="activity-type-label">-</p>
                           </div>
                           <div class="executive-item">
                               <label>O.T. No.</label>
                               <p id="work-order-label">-</p>
+                          </div>
+                         
+                          <div class="executive-item">
+                              <label>Contrato</label>
+                              <p id="contrato-label">-</p>
                           </div>
                       </div>
                 </div>
@@ -96,150 +110,299 @@
 
 
                 <div class="executive-section">
-                    <div class="section-header">
-                        <i class="ri-tools-line"></i>
-                        <h3>Equipo</h3>
-                    </div>
+                  
                     <div class="executive-grid">
-                        <div class="executive-item">
-                            <label>Equipo a Intervenir</label>
-                            <p id="equipment-label">-</p>
-                        </div>
+                        
                         <div class="executive-item">
                             <label>TAG</label>
                             <p id="tag-label">-</p>
                         </div>
+                        <div class="executive-item">
+                            <label>Equipo a Intervenir</label>
+                            <p id="equipment-label">-</p>
+                        </div>
                     </div>
                 </div>
 
 
-            <div class="usuario-box-header">
-                     <span>Formulario Area Solicitante</span> 
-            </div>
+
+                    
+                            
+                            <!-- TEMPLATE: Permiso Altura -->
+                            
+                                <div class="added-form" data-form-type="altura">
+                                    <div class="added-form-header">
+                                        <h4><i class="ri-arrow-up-line"></i> Permiso Altura</h4>
+                                    </div>
+
+                                        <div class="main-container-flex">
+                                          <div>
+                                            <div class="section-header">Equipo de Protección Personal</div>
+                                            <div class="footer-row"><div class="footer-label">Arnés de cuerpo completo</div><div class="footer-value-fixed">SI</div></div>
+                                            <div class="footer-row"><div class="footer-label">Línea de vida retráctil (1.8 metros a 5.5. metros de altura o cerca de espacio abiertos sin protección lateral o perimetral)</div><div class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Línea de restricción (limitar la distancia de desplazamiento hacia un borde)</div><div class="footer-value-fixed">SI</div></div>
+                                            <div class="footer-row"><div class="footer-label">Línea de vida con amortiguador (alturas mayores a 5.5. metros)</div><div class="footer-value-fixed">-</div></div>
+                                            <div class="section-header">Factores Ambientales</div>
+                                            <div class="footer-row"><div class="footer-label">Presencia Lluvia</div><div class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Velocidad del viento en el sitio de trabajo menor a 30 km/hr (8.3 m/seg)</div><div class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Presencia de gases tóxicos</div><div class="footer-value-fixed">No</div></div>
+                                          </div>
+                                          <div>
+                                            <div class="section-header">Equipo de Protección contra caídas</div>
+                                            <div class="footer-row"><div class="footer-label">Puntos de anclaje (tuberías de diámetro mayor a 8” y trabes, vigas u estructura mayor de 4”)</div><div class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Línea de vida de acero de 3/8"</div><div class="footer-value-fixed">-</div></div>
+                                          </div>
+                                          <div>
+                                            <div class="section-header">Control de Riesgos</div>
+                                            <div class="footer-row"><div class="footer-label">¿Se requiere andamio?</div><div class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Andamio liberado (personal certificado y autorizado)</div><div class="footer-value-fixed"><span id="andamio_liberado">SI</span></div></div>
+                                            <div class="footer-row"><div class="footer-label">Andamio “candadeado” cuando sea igual o mayor a 4 metros de altura</div><div class="footer-value-fixed"><span id="andamio_candado">SI</span></div></div>
+                                            <div class="footer-row"><div class="footer-label">Escaleras tipo I Clase A dieléctrica</div><div class="footer-value-fixed"><span id="escalera_dielectrica">N/A</span></div></div>
+                                            <div class="footer-row"><div class="footer-label">La escalera cumple la relación 4:1</div><div class="footer-value-fixed"><span id="escalera_relacion">N/A</span></div></div>
+                                            <div class="footer-row"><div class="footer-label">Escalera asegurada en la parte alta y baja</div><div class="footer-value-fixed"><span id="escalera_asegurada">N/A</span></div></div>
+                                            <div class="footer-area"></div>
+                                          
+                                        </div>
 
 
-                        <!-- Lista de verificación previa al trabajo -->
-                <div class="executive-section">
-                    <div class="section-header">
-                        <i class="ri-checkbox-multiple-line"></i>
-                        <h3 class="pt1-section-title">Lista de Verificación Previa al Trabajo</h3>
-                    </div>
-                    <table class="styled-table pt1-analisis-table" style="width:100%; background:#fff; border-radius:8px; overflow:hidden;">
-                        <thead>
-                            <tr>
-                                <th style="text-align:left;">Pregunta</th>
-                                <th class="centered">Respuesta</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>¿El personal cuenta con el equipo de protección personal adecuado para efectuar el trabajo?</td>
-                                <td class="centered"><span id="resp-epp" class="pt1-response-highlight">-</span></td>
-                            </tr>
-                            <tr>
-                                <td>¿Las herramientas están en buen estado y son las adecuadas para efectuar el trabajo?</td>
-                                <td class="centered"><span id="resp-herramientas" class="pt1-response-highlight">-</span></td>
-                            </tr>
-                            <tr>
-                                <td style="font-weight:600;">Observaciones:</td>
-                                <td style="padding:8px;">
-                                    <p id="verificacion-observaciones" class="pt1-observaciones" style="margin:0; min-height:38px;">-</p>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                                </div>
+                          
+
+
+                                <div class="added-form" data-form-type="confinado">
+                                    <div class="added-form-header">
+                                        <h4><i class="ri-door-lock-line"></i> Permiso Confinado</h4>
+                                    </div>
+                                    <div class="main-container-flex">
+                                        <div>
+                                            <div class="section-header">Control de Energías</div>
+                                            <div class="footer-row"><div class="footer-label">Equipo aislado, desenergizado y bloqueado (LOTO)</div><div class="footer-value-fixed">SI</div></div>
+                                            <div class="footer-row"><div class="footer-label">Equipo venteado</div><div class="footer-value-fixed">SI</div></div>
+                                            <div class="footer-row"><div class="footer-label">Equipo drenado</div><div class="footer-value-fixed">SI</div></div>
+                                            <div class="footer-row"><div class="footer-label">Inertizado</div><div class="footer-value-fixed">SI</div></div>
+                                            <div class="section-header">Equipos y herramientas</div>
+                                            <div class="footer-row"><div class="footer-label">Iluminación a prueba de explosión</div><div class="footer-value-fixed">SI</div></div>
+                                            <div class="footer-row"><div class="footer-label">Equipos / herramientas eléctricos y manuales a prueba de explosión</div><div class="footer-value-fixed">SI</div></div>
+                                            <div class="footer-row"><div class="footer-label">Extensiones eléctricas con Interruptor de Circuito por Falla a Tierra</div><div class="footer-value-fixed">SI</div></div>
+                                            <div class="footer-row"><div class="footer-label">Extractor de aire en entrada hombre</div><div class="footer-value-fixed">SI</div></div>
+                                            <div class="footer-row"><div class="footer-label">Ventilación artificial</div><div class="footer-value-fixed">SI</div></div>
+                                        </div>
+                                        <div>
+                                            <div class="section-header">Monitoreo de Atmosferas</div>
+                                            <div class="footer-row"><div class="footer-label">Temperatura</div><div class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Nombre del Guardavida</div><div class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Nombre del guardavida suplente</div><div class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Realizar monitoreo inicial de O2 (19.5%-23.5%), CO (0ppm),LEL (0%), NH3 (0 ppm)</div><div class="footer-value-fixed">SI</div></div>
+                                            <div class="footer-row"><div class="footer-label">Realizar monitoreo cada 30 minutos</div><div class="footer-value-fixed">SI</div></div>
+                                            <div class="footer-row"><div class="footer-label">Detector de gas calibrado</div><div class="footer-value-fixed">SI</div></div>
+                                            <div class="footer-row"><div class="footer-label">Tiempo de permanencia</div><div class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Tiempo de descanso</div><div class="footer-value-fixed">-</div></div>
+                                        </div>
+                                        <div>
+                                            <div class="section-header">Equipo de rescate</div>
+                                            <div class="footer-row"><div class="footer-label">Plan de rescate autorizado por SISMA</div><div class="footer-value-fixed">SI</div></div>
+                                            <div class="footer-row"><div class="footer-label">Arnés tipo paracaídas y/o rescate</div><div class="footer-value-fixed">SI</div></div>
+                                            <div class="footer-row"><div class="footer-label">Chequeo médico previo al ingreso</div><div class="footer-value-fixed">SI</div></div>
+                                            <div class="footer-row"><div class="footer-label">Equipo de rescate disponible acorde al plan de rescate</div><div class="footer-value-fixed">SI</div></div>
+                                            <div class="footer-row"><div class="footer-label">Nombre del rescatista</div><div class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Full face con línea de aire tipo D</div><div class="footer-value-fixed">SI</div></div>
+                                            <div class="footer-area"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                     
+
+
+                                        <div class="added-form" data-form-type="fuego">
+                                            <div class="added-form-header">
+                                            <h4><i class="ri-fire-fill"></i> Permiso Fuego</h4>
+                                            </div>
+                                            <div class="main-container-flex">
+                                            <div>
+                                                <div class="section-header">Control de riesgos</div>
+                                                <div class="footer-row"><div class="footer-label">Retiro de material combustible y/o inflamable más allá de 11 metros</div><div class="footer-value-fixed">SI</div></div>
+                                                <div class="footer-row"><div class="footer-label">Sistemas de ventilación y extracción apagados</div><div class="footer-value-fixed">SI</div></div>
+                                                <div class="footer-row"><div class="footer-label">Válvulas del sistema de supresión, aspersión abiertas</div><div class="footer-value-fixed">SI</div></div>
+                                                <div class="footer-row"><div class="footer-label">Uso de lonas ignifugas certificadas</div><div class="footer-value-fixed">SI</div></div>
+                                                <div class="footer-row"><div class="footer-label">Cubrir el material combustible / inflamable con lonas ignifugas certificadas cuando no sea posible retirarlo</div><div class="footer-value-fixed">SI</div></div>
+                                                <div class="footer-row"><div class="footer-label">Cubrir drenajes, espacios abiertos con lonas ignifugas u otro material no combustible cuando aplique</div><div class="footer-value-fixed">SI</div></div>
+                                                <div class="footer-row"><div class="footer-label">Manguera contraincendios presionada y lista para usarse</div><div class="footer-value-fixed">SI</div></div>
+                                                <div class="footer-row"><div class="footer-label">Se requiere más de un vigía de fuego</div><div class="footer-value-fixed">NO</div></div>
+                                                <div class="footer-row"><div class="footer-label">Nombre del (os) vigía (as) adicional (es)</div><div class="footer-value-fixed">-</div></div>
+                                            </div>
+                                            <div>
+                                                <div class="section-header">Equipo de Respuesta a Emergencias</div>
+                                                <div class="footer-row"><div class="footer-label">Extintor PQS 9 kg en sitio a no más de 7 metros de la actividad</div><div class="footer-value-fixed">SI</div></div>
+                                                <div class="footer-row"><div class="footer-label">Bombas contraincendios operando</div><div class="footer-value-fixed">SI</div></div>
+                                                <div class="section-header">Equipo Protección Personal Específico</div>
+                                                <div class="footer-row"><div class="footer-label">Careta de soldador o careta facial</div><div class="footer-value-fixed">SI</div></div>
+                                                <div class="footer-row"><div class="footer-label">Lentes o goggles</div><div class="footer-value-fixed">SI</div></div>
+                                                <div class="footer-row"><div class="footer-label">Guantes, peto, mangas, guantes largos y polainas de carnaza</div><div class="footer-value-fixed">SI</div></div>
+                                                <div class="footer-row"><div class="footer-label">Capucha de algodón (Monja)</div><div class="footer-value-fixed">SI</div></div>
+                                                <div class="footer-row"><div class="footer-label">Respirador para humos de soldadura</div><div class="footer-value-fixed">SI</div></div>
+                                                <div class="footer-row"><div class="footer-label">Otro</div><div class="footer-value-fixed">N/A</div></div>
+                                                <div class="footer-row"><div class="footer-label">Otro</div><div class="footer-value-fixed">N/A</div></div>
+                                            </div>
+                                            <div>
+                                                <div class="section-header">Monitoreo de atmosfera</div>
+                                                <div class="footer-row"><div class="footer-label">Temperatura</div><div class="footer-value-fixed">-</div></div>
+                                                <div class="footer-row"><div class="footer-label">Nombre del Vigía de fuego</div><div class="footer-value-fixed">-</div></div>
+                                                <div class="footer-row"><div class="footer-label">Nombre del Vigía de fuego suplente</div><div class="footer-value-fixed">-</div></div>
+                                                <div class="footer-row"><div class="footer-label">Realizar monitoreo inicial de O2 (19.5%-23.5%), CO (0ppm), LEL (0%), NH3 (0 ppm)</div><div class="footer-value-fixed">SI</div></div>
+                                                <div class="footer-row"><div class="footer-label">Realizar monitoreo cada 30 minutos.</div><div class="footer-value-fixed">SI</div></div>
+                                                <div class="footer-row"><div class="footer-label">Detector de gas calibrado</div><div class="footer-value-fixed">SI</div></div>
+                                                <div class="footer-area"></div>
+                                            </div>
+                                            </div>
+                                            </div>
+
+                                                                    
+
+                             
+                                            <div class="added-form" data-form-type="apertura">
+                                                <div class="added-form-header">
+                                                    <h4><i class="ri-lock-unlock-line"></i> Permiso Apertura</h4>
+                                                </div>
+                                                <div class="main-container-flex">
+                                                    <div>
+                                                    <div class="section-header">Control de Energías</div>
+                                                    <div class="footer-row"><div class="footer-label">Equipo aislado, desenergizado y bloqueado (LOTO, Entradas y Salidas)</div><div class="footer-value-fixed">SI</div></div>
+                                                    <div class="footer-row"><div class="footer-label">Equipo venteado</div><div class="footer-value-fixed">SI</div></div>
+                                                    <div class="footer-row"><div class="footer-label">Equipo drenado</div><div class="footer-value-fixed">SI</div></div>
+                                                    <div class="footer-row"><div class="footer-label">Equipo Inertizado</div><div class="footer-value-fixed">SI</div></div>
+                                                    <div class="footer-row"><div class="footer-label">Suspender trabajos adyacentes</div>
+                                                        <div class="footer-value-fixed">SI</div>
+                                                    </div>
+                                                    <div class="footer-row"><div class="footer-label">Realizar monitoreo de gases de O2 (19.5%-23.5%), CO (0ppm), LEL (0%), NH3 (0 ppm)</div>
+                                                        <div class="footer-value-fixed">SI</div>
+                                                    </div>
+                                                    <div class="footer-row"><div class="footer-label">Eliminar sustancias entrampadas</div><div class="footer-value-fixed">SI</div></div>
+                                                    <div class="footer-row"><div class="footer-label">Delimitar el área</div><div class="footer-value-fixed">SI</div></div>
+                                                    <div class="footer-row"><div class="footer-label">Conocer la sustancia que estuvo contenida</div><div class="footer-value-fixed">SI</div></div>
+                                                    </div>
+                                                    <div>
+                                                    <div class="section-header">Equipo de Protección Especial</div>
+                                                    <div class="footer-row"><div class="footer-label">Capucha, chamarra y pantalón antiácido</div><div class="footer-value-fixed">SI</div></div>
+                                                    <div class="footer-row"><div class="footer-label">Full face</div>
+                                                        <div class="footer-value-fixed">SI</div>
+                                                    </div>
+                                                    <div class="footer-row"><div class="footer-label">Botas y guantes de hule</div><div class="footer-value-fixed">SI</div></div>
+                                                    <div class="footer-area"></div>
+                                                    </div>
+                                                    <div>
+                                                    <!-- Puedes agregar aquí otra sección si lo necesitas, o dejarla vacía para mantener el formato de tres columnas -->
+                                                    <div class="footer-area"></div>
+                                                    </div>
+                                                </div>
+                                                </div>
+                          
+
+
+<style>
+    .main-container-flex {
+        display: flex;
+        gap: 12px;
+    }
+    .main-container-flex > div {
+        flex: 1 1 0;
+        min-width: 180px;
+    }
+    .main-container-flex .footer-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 16px;
+        padding-bottom: 6px;
+        border-bottom: 1px solid #f0f1f3;
+    }
+    .main-container-flex .footer-label {
+        flex: 1;
+        font-size: 1.01em;
+        font-weight: 500;
+        color: #2b3d4f;
+        margin-right: 12px;
+        line-height: 1.35;
+    }
+    .main-container-flex .footer-value-fixed, .main-container-flex .input-cell-blue-short {
+        min-width: 60px;
+        text-align: right;
+        font-weight: 600;
+        color: #34495e;
+        background: #f8fafc;
+        border-radius: 5px;
+        padding: 2px 8px;
+    }
+    .section-header {
+        background: #f4f6fb;
+        color: #2b3d4f;
+        font-weight: 600;
+        font-size: 1.08em;
+        padding: 8px 14px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        margin-top: 10px;
+        letter-spacing: 0.5px;
+        box-shadow: 0 1px 4px rgba(44,62,80,0.06);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .added-form-header {
+        position: relative;
+        margin: 32px 0 18px 0;
+        padding: 0 0;
+        text-align: center;
+    }
+    .added-form-header:before,
+    .added-form-header:after {
+        content: "";
+        display: block;
+        height: 1.5px;
+        width: 100%;
+        background: linear-gradient(90deg, #e0e4ea 0%, #bfc9d8 50%, #e0e4ea 100%);
+        position: absolute;
+        left: 0;
+    }
+    .added-form-header:before {
+        top: -14px;
+    }
+    .added-form-header:after {
+        bottom: -14px;
+    }
+    .added-form-header h4 {
+        margin: 0;
+        font-size: 1.18em;
+        font-weight: 600;
+        color: #2b3d4f;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        justify-content: center;
+    }
+    @media (max-width: 900px) {
+        .main-container-flex { flex-direction: column; gap: 0.7rem; }
+        .main-container-flex > div { min-width: 0; }
+    }
+</style>
 
 
 
 
 
 
-            <div class="area-box-header">
-                 <span>Formulario Responsable Área</span>
-             </div>
 
-                 
+
+
 
                 <div  id="hora-responsable-header" style="text-align: center;">
                                     <i class="ri-time-line"></i>
                                     <h3>Hora de autorización</h3>
                     </div>
 
-
-
-
-
-
-                    
-
-                <div class="executive-section ">
-                    <div class="section-header">
-                        <i class="ri-flask-line"></i>
-                        <h3 class="pt1-section-title">Condiciones del Proceso</h3>
-                    </div>
-                    <div class="executive-grid">
-                        <div class="executive-item pt1-hover-effect">
-                            <label for="fluid" class="pt1-label">Fluido</label>
-                            <p id="fluid" class="pt1-fluid-highlight">-</p>
-                        </div>
-                        <div class="executive-item pt1-hover-effect">
-                            <label for="pressure" class="pt1-label">Presión</label>
-                            <p id="pressure" class="pt1-process-field">-</p>
-                        </div>
-                        <div class="executive-item pt1-hover-effect">
-                            <label for="temperature" class="pt1-label">Temperatura</label>
-                            <p id="temperature" class="pt1-process-field">-</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="executive-section ">
-                    <div class="section-header">
-                        <i class="ri-checkbox-multiple-line"></i>
-                        <h3 class="pt1-section-title">Análisis Previo al Trabajo</h3>
-                    </div>
-                    <form id="form-no-peligroso-analisis">
-                        <table class="styled-table pt1-analisis-table" style="width:100%; background:#fff; border-radius:8px; overflow:hidden;">
-                            <thead>
-                                <tr>
-                                    <th>Pregunta</th>
-                                    <th class="centered">Respuesta</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>¿El trabajo se realizará en un área de riesgo controlado?</td>
-                                    <td class="centered"><span id="resp-risk-area" class="pt1-response-highlight">-</span></td>
-                                </tr>
-                                <tr>
-                                    <td>¿Se necesita entrega física, para efectuar el trabajo por parte del personal de la planta o departamento?</td>
-                                    <td class="centered"><span id="resp-physical-delivery" class="pt1-response-highlight">-</span></td>
-                                </tr>
-                                <tr>
-                                    <td>¿El personal que va a ejecutar el trabajo, necesita equipo de protección personal adicional al estándar del área donde se desarrollará el trabajo?</td>
-                                    <td class="centered"><span id="resp-additional-ppe" class="pt1-response-highlight">-</span></td>
-                                </tr>
-                                <tr>
-                                    <td>¿En el área circundante se efectuarán trabajos con riesgo?</td>
-                                    <td class="centered"><span id="resp-surrounding-risk" class="pt1-response-highlight">-</span></td>
-                                </tr>
-                                <tr>
-                                    <td>¿Necesita supervisión el personal?</td>
-                                    <td class="centered"><span id="resp-supervision-needed" class="pt1-response-highlight">-</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div class="executive-item" style="margin-top:1em;">
-                            <label for="pre-work-observations" class="pt1-label">Observaciones adicionales:</label>
-                            <p id="pre-work-observations" class="pt1-observaciones" style="width:100%; min-height:38px; border-radius:6px; padding:6px 10px; margin:0;">-</p>
-                        </div>
-                    </form>
-                </div>
-
-    
-  <div class="supervisor-box-header">
-                             <span>Formulario Seguridad Industrial</span>
-                         </div>
+  
                            <div  id="hora-supervisor-header" style="text-align: center;">
                                     <i class="ri-time-line"></i>
                                     <h3>Hora de autorización</h3>
@@ -273,21 +436,15 @@
                         <div class="safety-item">
                             <h4><i class="ri-shield-user-line"></i> EPP Requerido</h4>
                             <ul class="safety-list" id="modal-epp-list">
-                                <li></li>
+                                <li>Casco de seguridad</li>
+                                <li>Lentes de seguridad</li>
+                                <li>Cangurera o bolsa larga con mascarilla para gases (NH3)</li>
+                                <li>Calzado de seguridad</li>
+                                <li>Ropa de algodón.</li>
+                                <li>Protección respiratoria</li>
+                                <li>Guantes</li>
                             </ul>
-                        </div>
-                        <div class="safety-item">
-                            <h4><i class="ri-tools-line"></i> Maquinaria y Herramientas</h4>
-                            <ul class="safety-list" id="modal-maquinaria-list">
-                                <li></li>
-                            </ul>
-                        </div>
-                        <div class="safety-item">
-                            <h4><i class="ri-box-line"></i> Materiales y Accesorios</h4>
-                            <ul class="safety-list" id="modal-materiales-list">
-                                <li></li>
-                            </ul>
-                        </div>
+                        </div>         
                     </div>
                 </div>
                 <!-- Sección 4: Participantes -->

@@ -116,7 +116,7 @@ class FechaHoraManager {
     if (elementoArea) {
       const fechaArea = this.formatearFecha(this.fechas.area);
       elementoArea.innerHTML = `
-                Hora de autorización
+                Hora de autorización responsable del area
                 <br>
                 <small style="font-size: 0.75em; color: #666; font-weight: normal;">
                   ${fechaArea}
@@ -131,7 +131,7 @@ class FechaHoraManager {
     if (elementoSupervisor) {
       const fechaSupervisor = this.formatearFecha(this.fechas.supervisor);
       elementoSupervisor.innerHTML = `
-                Hora de autorización
+                Hora de validación de seguridad
                 <br>
                 <small style="font-size: 0.75em; color: #666; font-weight: normal;">
                     ${fechaSupervisor}

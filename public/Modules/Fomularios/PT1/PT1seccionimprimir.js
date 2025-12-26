@@ -1,4 +1,11 @@
 // Función para enviar los datos del permiso a N8N
+/**
+ * Función para enviar los datos del permiso a N8N.
+ * Esta función toma el motivo de cierre y el id del permiso,
+ * y (antes de eliminar mapeos) enviaba los datos a un webhook externo.
+ * Actualmente, la lógica de envío está eliminada por solicitud.
+ * Se puede restaurar para integraciones externas si es necesario.
+ */
 async function enviarDatosAN8N(motivoCierre) {
   const idPermiso =
     sessionStorage.getItem("id_tipo_permiso") ||
@@ -7,85 +14,23 @@ async function enviarDatosAN8N(motivoCierre) {
     alert("No se pudo obtener el ID del permiso para enviar a N8N.");
     return;
   }
-  let formData = {};
-  try {
-    const resp = await fetch(`/api/verformularios?id=${idPermiso}`);
-    const data = await resp.json();
-    // Imprimir los datos obtenidos de la API
-    console.log("Datos obtenidos de la API para N8N:", data);
-    // Si la API devuelve datos completos, úsalo
-    if (data && data.general && Object.keys(data.general).length > 0) {
-      formData = {
-        numeroPermiso:
-          data.general.prefijo ||
-          document.querySelector(".section-header h3")?.textContent ||
-          "",
-        fechaPermiso:
-          data.general.fecha ||
-          document.getElementById("fecha-label")?.textContent ||
-          "",
-        empresa:
-          data.general.empresa ||
-          document.getElementById("empresa-label")?.textContent ||
-          "",
-        subcontrata: data.general.subcontrata || "",
-        sucursal:
-          data.general.sucursal ||
-          document.getElementById("sucursal-label")?.textContent ||
-          "",
-        planta:
-          data.general.planta ||
-          document.getElementById("plant-label")?.textContent ||
-          "",
-        solicitante:
-          data.general.solicitante ||
-          document.getElementById("nombre-solicitante-label")?.textContent ||
-          "",
-        descripcionTrabajo:
-          data.general.descripcion_trabajo ||
-          document.getElementById("descripcion-trabajo-label")?.textContent ||
-          "",
-        fechaSolicitud: new Date().toISOString(),
-        mantenimiento: data.general.mantenimiento || "",
-        tipopermiso: data.general.tipo_permiso || "",
-        correo: data.general.correo || "",
-        motivoCierre: motivoCierre || "",
-      };
-    } else {
-      // Si la API falla o no tiene datos, recolecta del DOM
-      formData = {
-        numeroPermiso:
-          document.querySelector(".section-header h3")?.textContent || "",
-        fechaPermiso: document.getElementById("fecha-label")?.textContent || "",
-        empresa: document.getElementById("empresa-label")?.textContent || "",
-        subcontrata: "",
-        sucursal: document.getElementById("sucursal-label")?.textContent || "",
-        planta: document.getElementById("plant-label")?.textContent || "",
-        solicitante:
-          document.getElementById("nombre-solicitante-label")?.textContent ||
-          "",
-        descripcionTrabajo:
-          document.getElementById("descripcion-trabajo-label")?.textContent ||
-          "",
-        fechaSolicitud: new Date().toISOString(),
-        mantenimiento: "",
-        tipopermiso: "",
-        correo: "",
-        motivoCierre: motivoCierre || "",
-      };
-    }
-    // Enviar a N8N (reemplaza la URL por la tuya)
-    await fetch("https://TU_WEBHOOK_N8N", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
-    console.log("Datos enviados a N8N:", formData);
-  } catch (err) {
-    console.error("Error al enviar datos a N8N:", err);
-  }
+  // Mapeos de datos eliminados según solicitud
 }
 document.addEventListener("DOMContentLoaded", function () {
+  /**
+   * Evento principal DOMContentLoaded.
+   * Inicializa los selects de supervisores y categorías desde la base de datos,
+   * configura el botón de salir, y muestra/oculta el botón de trabajo finalizado
+   * según el estatus del permiso. Es el punto de entrada para la lógica de la vista.
+   * También maneja la visibilidad de botones según el estatus del permiso.
+   */
+  /**
+   * Evento DOMContentLoaded para la lógica de cierre de permiso.
+   * Maneja la apertura de modales de confirmación y cierre,
+   * así como el guardado del comentario de cierre y actualización de estatus.
+   * Incluye la lógica para cancelar o cerrar el permiso según la acción del usuario.
+   * Esencial para el flujo de cierre/cancelación de permisos.
+   */
   // Llenar select de supervisores desde la base de datos
   fetch("/api/supervisores")
     .then((res) => res.json())
@@ -309,6 +254,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Función para aplicar estilos específicos de PT1
 function aplicarEstilosPT1() {
+  /**
+   * Función para aplicar estilos específicos de PT1.
+   * Recorre ciertos elementos de respuesta y les asigna clases
+   * según su valor (sí/no), para resaltar visualmente las respuestas.
+   * Mejora la legibilidad y el feedback visual en la interfaz.
+   * Se puede ampliar para más respuestas o estilos.
+   */
   // Aplicar clases dinámicas a las respuestas según su valor
   const respuestas = [
     "resp-risk-area",
@@ -338,6 +290,27 @@ function aplicarEstilosPT1() {
 
 // Función para consultar las personas que han autorizado el permiso
 function consultarPersonasAutorizacion(idPermiso) {
+  /**
+   * Función para consultar las personas que han autorizado el permiso.
+   * Realiza una petición a la API para obtener los responsables,
+   * y actualiza el DOM con los nombres y cargos de cada responsable.
+   * Si no hay datos, deja los campos con valores por defecto.
+   * Útil para mostrar la cadena de autorización del permiso.
+   */
+  /**
+   * Evento para el botón salir nuevo (regresa a AutorizarPT.html).
+   * Permite al usuario volver a la pantalla principal de supervisión de seguridad.
+   * Previene el comportamiento por defecto del botón y redirige manualmente.
+   * Mejora la navegación entre módulos.
+   * Se puede reutilizar para otros botones de navegación.
+   */
+  /**
+   * Evento DOMContentLoaded para mostrar solo la sección 2 al cargar.
+   * Incluye funciones para rellenar AST y participantes,
+   * y para manejar la navegación entre secciones y botones de regreso/salir.
+   * También carga los datos del permiso si hay un id en la URL.
+   * Esencial para la experiencia de usuario en la vista de impresión.
+   */
   fetch(`/api/autorizaciones/personas/${idPermiso}`)
     .then((response) => response.json())
     .then((result) => {
@@ -378,164 +351,36 @@ function consultarPersonasAutorizacion(idPermiso) {
     });
 }
 
-// Nuevo botón salir: vuelve a AutorizarPT.html
-const btnSalirNuevo = document.getElementById("btn-salir-nuevo");
-if (btnSalirNuevo) {
-  btnSalirNuevo.addEventListener("click", function (e) {
-    e.preventDefault();
-    window.location.href = "/Modules/SupSeguridad/supseguridad.html";
-  });
-}
-// Mostrar solo la sección 2 al cargar y ocultar las demás
-document.addEventListener("DOMContentLoaded", function () {
-  // --- FUNCIONES PARA RELLENAR AST Y PARTICIPANTES ---
-  function mostrarAST(ast) {
-    const eppList = document.getElementById("modal-epp-list");
-    if (eppList) {
-      eppList.innerHTML = "";
-      if (ast.epp_requerido) {
-        ast.epp_requerido.split(",").forEach((item) => {
-          const li = document.createElement("li");
-          li.textContent = item.trim();
-          eppList.appendChild(li);
-        });
-      }
-    }
-    const maqList = document.getElementById("modal-maquinaria-list");
-    if (maqList) {
-      maqList.innerHTML = "";
-      if (ast.maquinaria_herramientas) {
-        ast.maquinaria_herramientas.split(",").forEach((item) => {
-          const li = document.createElement("li");
-          li.textContent = item.trim();
-          maqList.appendChild(li);
-        });
-      }
-    }
-    const matList = document.getElementById("modal-materiales-list");
-    if (matList) {
-      matList.innerHTML = "";
-      if (ast.material_accesorios) {
-        ast.material_accesorios.split(",").forEach((item) => {
-          const li = document.createElement("li");
-          li.textContent = item.trim();
-          matList.appendChild(li);
-        });
-      }
-    }
-  }
 
-  function mostrarActividadesAST(actividades) {
-    const tbody = document.getElementById("modal-ast-actividades-body");
-    if (tbody) {
-      tbody.innerHTML = "";
-      if (Array.isArray(actividades)) {
-        actividades.forEach((act) => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-                <td>${act.no || ""}</td>
-                <td>${act.secuencia_actividad || ""}</td>
-                <td>${act.personal_ejecutor || ""}</td>
-                <td>${act.peligros_potenciales || ""}</td>
-                <td>${act.descripcion || ""}</td>
-                <td>${act.responsable || ""}</td>
-            `;
-          tbody.appendChild(tr);
-        });
-      }
-    }
-  }
 
-  function mostrarParticipantesAST(participantes) {
-    const tbody = document.getElementById("modal-ast-participantes-body");
-    if (tbody) {
-      tbody.innerHTML = "";
-      if (Array.isArray(participantes)) {
-        participantes.forEach((p) => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-                <td>${p.nombre || ""}</td>
-                <td><span class="role-badge">${p.funcion || ""}</span></td>
-                <td>${p.credencial || ""}</td>
-                <td>${p.cargo || ""}</td>
-                <td> </td>
-            `;
-          tbody.appendChild(tr);
-        });
-      }
-    }
-  }
 
-  document.querySelectorAll(".form-section").forEach(function (section) {
-    if (section.getAttribute("data-section") === "2") {
-      section.style.display = "";
-      section.classList.add("active");
-    } else {
-      section.style.display = "none";
-      section.classList.remove("active");
-    }
-  });
 
-  // Botón regresar: vuelve a AutorizarPT.html
-  const btnRegresar = document.getElementById("btn-regresar");
-  if (btnRegresar) {
-    btnRegresar.addEventListener("click", function () {
-      window.location.href = "/Modules/SupSeguridad/supseguridad.html";
-    });
-  }
 
-  // Botón salir: vuelve a AutorizarPT.html
-  const btnSalir = document.getElementById("btn-salir");
-  if (btnSalir) {
-    btnSalir.addEventListener("click", function () {
-      window.location.href = "/Modules/SupSeguridad/supseguridad.html";
-    });
-  }
 
-  // Leer el id del permiso de la URL
-  const params = new URLSearchParams(window.location.search);
-  const idPermiso = params.get("id");
 
-  const comentarioDiv = document.getElementById("comentarios-permiso");
-  if (comentarioDiv && idPermiso) {
-    mostrarComentarioSiCorresponde(idPermiso, comentarioDiv);
-  }
 
-  if (idPermiso) {
-    // Solo mapear los campos especificados de data.general
-    fetch(`/api/verformularios?id=${encodeURIComponent(idPermiso)}`)
-      .then((resp) => resp.json())
-      .then((data) => {
-        if (data && data.general) {
-          const general = data.general;
-          document.getElementById("contrato-label").textContent = general.contrato || "-";
-          document.getElementById("descripcion-trabajo-label").textContent = general.descripcion_trabajo || "-";
-          document.getElementById("empresa-label").textContent = general.empresa || "-";
-          document.getElementById("equipment-label").textContent = general.equipo_intervenir || "-";
-          document.getElementById("fecha-label").textContent = general.fecha_hora || "-";
-          document.getElementById("start-time-label").textContent = general.hora_inicio || "-";
-          document.getElementById("plant-label").textContent = general.nombre_departamento || "-";
-          document.getElementById("nombre-solicitante-label").textContent = general.nombre_solicitante || "-";
-          document.getElementById("work-order-label").textContent = general.ot_numero || "-";
-        } else {
-          alert("No se encontraron datos para este permiso o el backend no responde con la estructura esperada.");
-        }
-      })
-      .catch((err) => {
-        console.error("Error al obtener datos del permiso:", err);
-        alert("Error al obtener datos del permiso. Revisa la consola para más detalles.");
-      });
-  }
-});
+
+
+
+
+
+
+
+
 
 /**
  * Función de impresión tradicional (fallback)
  */
 async function imprimirPermisoTradicional() {
+  /**
+   * Función de impresión tradicional (fallback).
+   * Llama a window.print() para imprimir la vista actual del permiso.
+   * Puede esperar a que se carguen imágenes si es necesario.
+   * Muestra alertas en caso de error durante la impresión.
+   * Útil como respaldo si no hay lógica de impresión personalizada.
+   */
   try {
-    // Esperar a que las imágenes se carguen completamente (si tienes logos)
-    // Si no tienes logos, puedes omitir esta parte
-    // await esperarImagenes();
+
 
     // Ejecutar impresión tradicional del navegador
     window.print();
@@ -547,15 +392,16 @@ async function imprimirPermisoTradicional() {
   }
 }
 
-// Interceptar Ctrl+P para mostrar instrucciones
-// document.addEventListener("keydown", function (e) {
-//   if ((e.ctrlKey || e.metaKey) && e.key === "p") {
-//     e.preventDefault();
-//     mostrarInstruccionesImpresion();
-//   }
-// });
+
 
 const botonImprimir = document.getElementById("btn-imprimir-permiso");
+/**
+ * Inicialización del botón de impresión.
+ * Asigna eventos visuales y funcionales al botón de imprimir,
+ * como animaciones al pasar el mouse y la acción de imprimir.
+ * Mejora la experiencia de usuario al imprimir el permiso.
+ * Se puede extender para mostrar instrucciones personalizadas.
+ */
 if (botonImprimir) {
   botonImprimir.addEventListener(
     "click",
@@ -583,6 +429,13 @@ if (botonImprimir) {
 console.log("Funcionalidad de impresión PT1 inicializada correctamente");
 
 function llenarTablaResponsables(idPermiso) {
+  /**
+   * Función para llenar la tabla de responsables en el modal AST.
+   * Consulta la API para obtener los responsables y sus datos,
+   * y los muestra en una tabla dentro del modal.
+   * Si no hay responsables, muestra un mensaje adecuado.
+   * Mejora la trazabilidad y visualización de responsables en el permiso.
+   */
   fetch(`/api/autorizaciones/personas/${idPermiso}`)
     .then((response) => response.json())
     .then((result) => {

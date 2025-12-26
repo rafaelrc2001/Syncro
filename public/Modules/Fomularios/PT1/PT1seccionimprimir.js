@@ -16,6 +16,8 @@ document.addEventListener("DOMContentLoaded", function () {
         mostrarPermisosSegunValores(resultado.permiso.data);
       }
     });
+    // Llenar la tabla de responsables
+    llenarTablaResponsables(idPermiso);
   }
 });
 

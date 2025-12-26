@@ -10,9 +10,35 @@ document.addEventListener("DOMContentLoaded", function () {
   const params = new URLSearchParams(window.location.search);
   const idPermiso = params.get("id");
   if (idPermiso) {
-    consultarTodoPermiso(idPermiso);
+    consultarTodoPermiso(idPermiso).then((resultado) => {
+      // Mostrar permisos según los valores columna_*_valor
+      if (resultado && resultado.permiso && resultado.permiso.data) {
+        mostrarPermisosSegunValores(resultado.permiso.data);
+      }
+    });
   }
 });
+
+// Función para mostrar/ocultar permisos según los valores columna_*_valor
+function mostrarPermisosSegunValores(data) {
+  // Mapeo de id de contenedor y campo de valor
+  const permisos = [
+    { id: "permiso-altura", valor: data.columna_altura_valor },
+    { id: "permiso-confinado", valor: data.columna_confinado_valor },
+    { id: "permiso-fuego", valor: data.columna_fuego_valor },
+    { id: "permiso-apertura", valor: data.columna_apertura_valor },
+  ];
+  permisos.forEach((permiso) => {
+    const contenedor = document.getElementById(permiso.id);
+    if (contenedor) {
+      if (permiso.valor === "SI") {
+        contenedor.style.display = "";
+      } else {
+        contenedor.style.display = "none";
+      }
+    }
+  });
+}
 // Consulta todos los datos de un permiso y relacionados por id_permiso
 async function consultarTodoPermiso(id_permiso) {
     // Mapear prefijo al encabezado NP-XXXXXX

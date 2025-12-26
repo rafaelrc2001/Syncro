@@ -277,6 +277,15 @@ document.addEventListener("DOMContentLoaded", () => {
         const PAP_CE_2 = document.getElementById("monitoreo_gases")?.value || null;
         const PAP_EPE_1 = document.getElementById("full-face_apertura")?.value || null;
 
+
+
+        //tipos de permiso
+       
+        const columna_fuego_valor = document.getElementById("columna_fuego_valor")?.textContent || null;
+        const columna_altura_valor = document.getElementById("columna_altura_valor")?.textContent || null;
+        const columna_apertura_valor = document.getElementById("columna_apertura_valor")?.textContent || null;
+        const columna_confinado_valor =  document.getElementById("columna_confinado_valor")?.textContent || null;
+
         // Log para depuración
         console.log(
           "[DEBUG] id_area:",
@@ -352,6 +361,10 @@ document.addEventListener("DOMContentLoaded", () => {
             PAP_CE_2,
             PAP_EPE_1,
             nombre_departamento,
+            columna_fuego_valor,
+            columna_altura_valor,
+            columna_apertura_valor,
+            columna_confinado_valor,
           }),
         });
         const permisoResult = await permisoResponse.json();

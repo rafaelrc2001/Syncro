@@ -101,7 +101,8 @@ router.post("/estatus/activo", async (req, res) => {
 });
 
 
-// Nueva ruta para actualizar el estatus a 'cierre' usando el id_estatus recibido
+// Nueva ruta para actualizar el estatus a 'cierre' usando el id_estatus recibido 
+//este solo afecta la columna de estatus y no la de subestatus
 router.post("/estatus/cierre", async (req, res) => {
   const { id_estatus } = req.body;
   const ESTATUS = "cierre";

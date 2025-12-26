@@ -50,7 +50,11 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
           modalCierre.style.display = 'none';
           alert('Permiso cerrado correctamente.');
-          window.location.reload();
+          window.location.href = "/Modules/Departamentos/AutorizarPT.html";
+
+
+
+
         }
       } catch (err) {
         alert('Error al cerrar el permiso.');

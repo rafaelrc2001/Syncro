@@ -290,12 +290,10 @@ function mostrarPermisosFiltrados(filtro) {
     <td>${permiso.descripcion_trabajo || permiso.descripcion || ""}</td>
     <td>${permiso.area}</td>
     <td>${formatearFecha(permiso.fecha_hora)}</td>
-    <td><span class="status-badge${badgeClass ? " " + badgeClass : ""}">${
-      permiso.estatus
-    }</span></td>
-    <td><span class="status-badge${subestatusBadgeClass ? " " + subestatusBadgeClass : ""}">${ 
-      permiso.subestatus || '-'
-    }</span></td>
+    <td style="text-align:center; vertical-align:middle;">
+      <span class="status-badge${badgeClass ? " " + badgeClass : ""}">${permiso.estatus}</span>
+      <span class="status-badge${subestatusBadgeClass ? " " + subestatusBadgeClass : ""}">${permiso.subestatus || '-'}</span>
+    </td>
     <td>
         <button class="action-btn print" data-idpermiso="${
           permiso.id_permiso

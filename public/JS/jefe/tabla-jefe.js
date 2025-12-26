@@ -74,34 +74,9 @@ function asignarEventosVer() {
     btn.__viewAttached = true;
     btn.addEventListener("click", function () {
       const row = this.closest("tr");
-      const tipoPermiso = row ? row.children[1].textContent.trim() : "";
       const idPermiso = this.getAttribute("data-idpermiso") || "";
-
       try {
-        if (tipoPermiso === "PT No Peligroso") {
-          window.location.href = `/Modules/Fomularios/PT1/PT1imprimirsup.html?tipo=PT1&id=${idPermiso}`;
-        } else if (tipoPermiso === "PT para Apertura Equipo o Línea") {
-          window.location.href = `/Modules/Fomularios/PT2/PT2imprimirsup.html?tipo=PT2&id=${idPermiso}`;
-        } else if (tipoPermiso === "PT de Entrada a Espacio Confinado") {
-          window.location.href = `/Modules/Fomularios/PT3/PT3imprimirsup.html?tipo=PT3&id=${idPermiso}`;
-        } else if (tipoPermiso === "PT en Altura") {
-          window.location.href = `/Modules/Fomularios/PT4/PT4imprimirsup.html?tipo=PT4&id=${idPermiso}`;
-        } else if (tipoPermiso === "PT de Fuego Abierto") {
-          window.location.href = `/Modules/Fomularios/PT5/PT5imprimirsup.html?tipo=PT5&id=${idPermiso}`;
-        } else if (tipoPermiso === "PT con Energía Eléctrica") {
-          window.location.href = `/Modules/Fomularios/PT6/PT6imprimirsup.html?tipo=PT6&id=${idPermiso}`;
-        } else if (tipoPermiso === "PT con Fuentes Radioactivas") {
-          window.location.href = `/Modules/Fomularios/PT7/PT7imprimirsup.html?tipo=PT7&id=${idPermiso}`;
-        } else if (tipoPermiso === "PT para Izaje con Hiab con Grúa") {
-          window.location.href = `/Modules/Fomularios/PT8/PT8imprimirsup.html?tipo=PT8&id=${idPermiso}`;
-        } else if (tipoPermiso === "PT con Cesta Izada") {
-          window.location.href = `/Modules/Fomularios/PT9/PT9imprimirsup.html?tipo=PT9&id=${idPermiso}`;
-        } else if (tipoPermiso === "PT de Excavacion") {
-          window.location.href = `/Modules/Fomularios/PT10/PT10imprimirsup.html?tipo=PT10&id=${idPermiso}`;
-        } else {
-          // fallback a la misma página de impresión genérica usada en crearpt
-          window.location.href = `/JS/usuario/LogicaImprimir.html?tipo=OTRO&id=${idPermiso}`;
-        }
+        window.location.href = `/Modules/Fomularios/PT1/PT1imprimirsup.html?tipo=PT1&id=${idPermiso}`;
       } catch (err) {
         console.error("Error redirigiendo al permiso:", err);
       }
@@ -211,8 +186,9 @@ function mostrarPermisosFiltrados(filtro) {
       <td>${permiso.area}</td>
       <td>${permiso.solicitante}</td>
       <td>${formatearFecha(permiso.fecha_hora)}</td>
-      <td><span class="status-badge${badgeClass ? " " + badgeClass : ""}">${permiso.estatus}</span></td>
-      <td><span class="status-badge${subestatusBadgeClass ? " " + subestatusBadgeClass : ""}">${permiso.subestatus || '-'}</span></td>
+      <td style="text-align:center; vertical-align:middle;">
+      <span class="status-badge${badgeClass ? " " + badgeClass : ""}">${permiso.estatus}</span>
+      <span class="status-badge${subestatusBadgeClass ? " " + subestatusBadgeClass : ""}">${permiso.subestatus || '-'}</span></td>
       <td>
         <button class="action-btn view" data-idpermiso="${permiso.id_permiso}"><i class="ri-eye-line"></i></button>
       </td>

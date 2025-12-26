@@ -32,7 +32,7 @@
                  <div class="section-header header-centered">
                     <i class="ri-checkbox-circle-line"></i>
                     <h2>Permiso de Trabajo</h2>
-                    <h3>NP-XXXXXX</h3>
+                    <h3 id="np-header">NP-XXXXXX</h3>
                 </div>
                                
                                     <div class="general-box-header">
@@ -139,22 +139,22 @@
                                           <div>
                                             <div class="section-header">Equipo de Protección Personal</div>
                                             <div class="footer-row"><div class="footer-label">Arnés de cuerpo completo</div><div class="footer-value-fixed">SI</div></div>
-                                            <div class="footer-row"><div class="footer-label">Línea de vida retráctil (1.8 metros a 5.5. metros de altura o cerca de espacio abiertos sin protección lateral o perimetral)</div><div class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Línea de vida retráctil (1.8 metros a 5.5. metros de altura o cerca de espacio abiertos sin protección lateral o perimetral)</div><div id="pal_epp_1" class="footer-value-fixed">-</div></div>
                                             <div class="footer-row"><div class="footer-label">Línea de restricción (limitar la distancia de desplazamiento hacia un borde)</div><div class="footer-value-fixed">SI</div></div>
-                                            <div class="footer-row"><div class="footer-label">Línea de vida con amortiguador (alturas mayores a 5.5. metros)</div><div class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Línea de vida con amortiguador (alturas mayores a 5.5. metros)</div><div id="pal_epp_2" class="footer-value-fixed">-</div></div>
                                             <div class="section-header">Factores Ambientales</div>
-                                            <div class="footer-row"><div class="footer-label">Presencia Lluvia</div><div class="footer-value-fixed">-</div></div>
-                                            <div class="footer-row"><div class="footer-label">Velocidad del viento en el sitio de trabajo menor a 30 km/hr (8.3 m/seg)</div><div class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Presencia Lluvia</div><div id="pal_fa_1" class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Velocidad del viento en el sitio de trabajo menor a 30 km/hr (8.3 m/seg)</div><div id="pal_fa_2" class="footer-value-fixed">-</div></div>
                                             <div class="footer-row"><div class="footer-label">Presencia de gases tóxicos</div><div class="footer-value-fixed">No</div></div>
                                           </div>
                                           <div>
                                             <div class="section-header">Equipo de Protección contra caídas</div>
-                                            <div class="footer-row"><div class="footer-label">Puntos de anclaje (tuberías de diámetro mayor a 8” y trabes, vigas u estructura mayor de 4”)</div><div class="footer-value-fixed">-</div></div>
-                                            <div class="footer-row"><div class="footer-label">Línea de vida de acero de 3/8"</div><div class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Puntos de anclaje (tuberías de diámetro mayor a 8” y trabes, vigas u estructura mayor de 4”)</div><div id="pal_epc_1" class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Línea de vida de acero de 3/8"</div><div id="pal_epc_2" class="footer-value-fixed">-</div></div>
                                           </div>
                                           <div>
                                             <div class="section-header">Control de Riesgos</div>
-                                            <div class="footer-row"><div class="footer-label">¿Se requiere andamio?</div><div class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">¿Se requiere andamio?</div><div id="pal_cr_1" class="footer-value-fixed">-</div></div>
                                             <div class="footer-row"><div class="footer-label">Andamio liberado (personal certificado y autorizado)</div><div class="footer-value-fixed"><span id="andamio_liberado">SI</span></div></div>
                                             <div class="footer-row"><div class="footer-label">Andamio “candadeado” cuando sea igual o mayor a 4 metros de altura</div><div class="footer-value-fixed"><span id="andamio_candado">SI</span></div></div>
                                             <div class="footer-row"><div class="footer-label">Escaleras tipo I Clase A dieléctrica</div><div class="footer-value-fixed"><span id="escalera_dielectrica">N/A</span></div></div>
@@ -185,18 +185,18 @@
                                             <div class="footer-row"><div class="footer-label">Equipos / herramientas eléctricos y manuales a prueba de explosión</div><div class="footer-value-fixed">SI</div></div>
                                             <div class="footer-row"><div class="footer-label">Extensiones eléctricas con Interruptor de Circuito por Falla a Tierra</div><div class="footer-value-fixed">SI</div></div>
                                             <div class="footer-row"><div class="footer-label">Extractor de aire en entrada hombre</div><div class="footer-value-fixed">SI</div></div>
-                                            <div class="footer-row"><div class="footer-label">Ventilación artificial</div><div class="footer-value-fixed">SI</div></div>
+                                            <div class="footer-row"><div class="footer-label">Ventilación artificial</div><div id="pco_eh_1" class="footer-value-fixed">-</div></div>
                                         </div>
                                         <div>
                                             <div class="section-header">Monitoreo de Atmosferas</div>
-                                            <div class="footer-row"><div class="footer-label">Temperatura</div><div class="footer-value-fixed">-</div></div>
-                                            <div class="footer-row"><div class="footer-label">Nombre del Guardavida</div><div class="footer-value-fixed">-</div></div>
-                                            <div class="footer-row"><div class="footer-label">Nombre del guardavida suplente</div><div class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Temperatura</div><div id="pco_ma_1" class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Nombre del Guardavida</div><div id="pco_ma_2" class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Nombre del guardavida suplente</div><div id="pco_ma_3" class="footer-value-fixed">-</div></div>
                                             <div class="footer-row"><div class="footer-label">Realizar monitoreo inicial de O2 (19.5%-23.5%), CO (0ppm),LEL (0%), NH3 (0 ppm)</div><div class="footer-value-fixed">SI</div></div>
                                             <div class="footer-row"><div class="footer-label">Realizar monitoreo cada 30 minutos</div><div class="footer-value-fixed">SI</div></div>
                                             <div class="footer-row"><div class="footer-label">Detector de gas calibrado</div><div class="footer-value-fixed">SI</div></div>
-                                            <div class="footer-row"><div class="footer-label">Tiempo de permanencia</div><div class="footer-value-fixed">-</div></div>
-                                            <div class="footer-row"><div class="footer-label">Tiempo de descanso</div><div class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Tiempo de permanencia</div><div id="pco_ma_4" class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Tiempo de descanso</div><div id="pco_ma_5" class="footer-value-fixed">-</div></div>
                                         </div>
                                         <div>
                                             <div class="section-header">Equipo de rescate</div>
@@ -204,7 +204,7 @@
                                             <div class="footer-row"><div class="footer-label">Arnés tipo paracaídas y/o rescate</div><div class="footer-value-fixed">SI</div></div>
                                             <div class="footer-row"><div class="footer-label">Chequeo médico previo al ingreso</div><div class="footer-value-fixed">SI</div></div>
                                             <div class="footer-row"><div class="footer-label">Equipo de rescate disponible acorde al plan de rescate</div><div class="footer-value-fixed">SI</div></div>
-                                            <div class="footer-row"><div class="footer-label">Nombre del rescatista</div><div class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Nombre del rescatista</div><div id="pco_era_1" class="footer-value-fixed">-</div></div>
                                             <div class="footer-row"><div class="footer-label">Full face con línea de aire tipo D</div><div class="footer-value-fixed">SI</div></div>
                                             <div class="footer-area"></div>
                                         </div>
@@ -230,8 +230,8 @@
                                                 <div class="footer-row"><div class="footer-label">Cubrir el material combustible / inflamable con lonas ignifugas certificadas cuando no sea posible retirarlo</div><div class="footer-value-fixed">SI</div></div>
                                                 <div class="footer-row"><div class="footer-label">Cubrir drenajes, espacios abiertos con lonas ignifugas u otro material no combustible cuando aplique</div><div class="footer-value-fixed">SI</div></div>
                                                 <div class="footer-row"><div class="footer-label">Manguera contraincendios presionada y lista para usarse</div><div class="footer-value-fixed">SI</div></div>
-                                                <div class="footer-row"><div class="footer-label">Se requiere más de un vigía de fuego</div><div class="footer-value-fixed">NO</div></div>
-                                                <div class="footer-row"><div class="footer-label">Nombre del (os) vigía (as) adicional (es)</div><div class="footer-value-fixed">-</div></div>
+                                                <div class="footer-row"><div class="footer-label">Se requiere más de un vigía de fuego</div><div id="pfg_cr_1" class="footer-value-fixed">NO</div></div>
+                                                <div class="footer-row"><div class="footer-label">Nombre del (os) vigía (as) adicional (es)</div><div id="pfg_cr_1a" class="footer-value-fixed">N/A</div></div>
                                             </div>
                                             <div>
                                                 <div class="section-header">Equipo de Respuesta a Emergencias</div>
@@ -243,14 +243,14 @@
                                                 <div class="footer-row"><div class="footer-label">Guantes, peto, mangas, guantes largos y polainas de carnaza</div><div class="footer-value-fixed">SI</div></div>
                                                 <div class="footer-row"><div class="footer-label">Capucha de algodón (Monja)</div><div class="footer-value-fixed">SI</div></div>
                                                 <div class="footer-row"><div class="footer-label">Respirador para humos de soldadura</div><div class="footer-value-fixed">SI</div></div>
-                                                <div class="footer-row"><div class="footer-label">Otro</div><div class="footer-value-fixed">N/A</div></div>
-                                                <div class="footer-row"><div class="footer-label">Otro</div><div class="footer-value-fixed">N/A</div></div>
+                                                <div class="footer-row"><div class="footer-label">Otro</div><div id="pfg_eppe_1" class="footer-value-fixed">N/A</div></div>
+                                                <div class="footer-row"><div class="footer-label">Otro</div><div id="pfg_eppe_2" class="footer-value-fixed">N/A</div></div>
                                             </div>
                                             <div>
                                                 <div class="section-header">Monitoreo de atmosfera</div>
-                                                <div class="footer-row"><div class="footer-label">Temperatura</div><div class="footer-value-fixed">-</div></div>
-                                                <div class="footer-row"><div class="footer-label">Nombre del Vigía de fuego</div><div class="footer-value-fixed">-</div></div>
-                                                <div class="footer-row"><div class="footer-label">Nombre del Vigía de fuego suplente</div><div class="footer-value-fixed">-</div></div>
+                                                <div class="footer-row"><div class="footer-label">Temperatura</div><div id="pfg_ma_1" class="footer-value-fixed">-</div></div>
+                                                <div class="footer-row"><div class="footer-label">Nombre del Vigía de fuego</div><div id="pfg_ma_2" class="footer-value-fixed">-</div></div>
+                                                <div class="footer-row"><div class="footer-label">Nombre del Vigía de fuego suplente</div><div id="pfg_ma_3" class="footer-value-fixed">-</div></div>
                                                 <div class="footer-row"><div class="footer-label">Realizar monitoreo inicial de O2 (19.5%-23.5%), CO (0ppm), LEL (0%), NH3 (0 ppm)</div><div class="footer-value-fixed">SI</div></div>
                                                 <div class="footer-row"><div class="footer-label">Realizar monitoreo cada 30 minutos.</div><div class="footer-value-fixed">SI</div></div>
                                                 <div class="footer-row"><div class="footer-label">Detector de gas calibrado</div><div class="footer-value-fixed">SI</div></div>
@@ -274,10 +274,10 @@
                                                     <div class="footer-row"><div class="footer-label">Equipo drenado</div><div class="footer-value-fixed">SI</div></div>
                                                     <div class="footer-row"><div class="footer-label">Equipo Inertizado</div><div class="footer-value-fixed">SI</div></div>
                                                     <div class="footer-row"><div class="footer-label">Suspender trabajos adyacentes</div>
-                                                        <div class="footer-value-fixed">SI</div>
+                                                        <div id="pap_ce_1" class="footer-value-fixed">-</div>
                                                     </div>
                                                     <div class="footer-row"><div class="footer-label">Realizar monitoreo de gases de O2 (19.5%-23.5%), CO (0ppm), LEL (0%), NH3 (0 ppm)</div>
-                                                        <div class="footer-value-fixed">SI</div>
+                                                        <div id="pap_ce_2" class="footer-value-fixed">-</div>
                                                     </div>
                                                     <div class="footer-row"><div class="footer-label">Eliminar sustancias entrampadas</div><div class="footer-value-fixed">SI</div></div>
                                                     <div class="footer-row"><div class="footer-label">Delimitar el área</div><div class="footer-value-fixed">SI</div></div>
@@ -287,7 +287,7 @@
                                                     <div class="section-header">Equipo de Protección Especial</div>
                                                     <div class="footer-row"><div class="footer-label">Capucha, chamarra y pantalón antiácido</div><div class="footer-value-fixed">SI</div></div>
                                                     <div class="footer-row"><div class="footer-label">Full face</div>
-                                                        <div class="footer-value-fixed">SI</div>
+                                                        <div id="pap_epe_1" class="footer-value-fixed">-</div>
                                                     </div>
                                                     <div class="footer-row"><div class="footer-label">Botas y guantes de hule</div><div class="footer-value-fixed">SI</div></div>
                                                     <div class="footer-area"></div>

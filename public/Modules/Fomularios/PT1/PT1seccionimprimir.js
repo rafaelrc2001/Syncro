@@ -1,3 +1,190 @@
+//esta es la nueva funcion para mostrar
+//esta es la nueva funcion para mostrar
+//esta es la nueva funcion para mostrar
+//esta es la nueva funcion para mostrar
+//esta es la nueva funcion para mostrar
+
+
+// Ejecutar consulta automática al cargar si hay id en la URL
+document.addEventListener("DOMContentLoaded", function () {
+  const params = new URLSearchParams(window.location.search);
+  const idPermiso = params.get("id");
+  if (idPermiso) {
+    consultarTodoPermiso(idPermiso);
+  }
+});
+// Consulta todos los datos de un permiso y relacionados por id_permiso
+async function consultarTodoPermiso(id_permiso) {
+    // Mapear prefijo al encabezado NP-XXXXXX
+  
+  const permiso = await fetch(`/api/permiso?id_permiso=${id_permiso}`).then(r => r.json()).catch(() => null);
+  const participan = await fetch(`/api/ast_participan?id_permiso=${id_permiso}`).then(r => r.json()).catch(() => null);
+  const actividades = await fetch(`/api/ast_actividades?id_permiso=${id_permiso}`).then(r => r.json()).catch(() => null);
+  const autorizaciones = await fetch(`/api/autorizaciones?id_permiso=${id_permiso}`).then(r => r.json()).catch(() => null);
+  const resultado = { permiso, participan, actividades, autorizaciones };
+  // Mapeo de datos al HTML
+  console.log('OBJETO DEVUELTO POR LA CONSULTA:', permiso);
+  if (permiso && permiso.data) {
+    const d = permiso.data;
+    // Fecha (formato legible)
+    const fechaLabel = document.getElementById("fecha-label");
+    if(fechaLabel) {
+      let fecha = "-";
+      if (d.fecha_hora) {
+        const f = new Date(d.fecha_hora);
+        if (!isNaN(f.getTime())) {
+          fecha = f.toLocaleDateString('es-MX');
+        }
+      }
+      fechaLabel.textContent = fecha;
+    }
+    
+    
+
+      const npHeader = document.getElementById("np-header");
+    if (npHeader && d.prefijo) {
+      npHeader.textContent = d.prefijo;
+    }
+
+    const startTimeLabel = document.getElementById("start-time-label");
+    if(startTimeLabel) startTimeLabel.textContent = d.hora_inicio || "-";
+    const empresaLabel = document.getElementById("empresa-label");
+    if(empresaLabel) empresaLabel.textContent = d.empresa || "-";
+    const sucursalLabel = document.getElementById("sucursal-label");
+    if(sucursalLabel) sucursalLabel.textContent = d.nombre_sucursal_id  || "-";
+    const dptoContrato = document.getElementById("dpto-contrato");
+    if(dptoContrato) dptoContrato.textContent = d.nombre_departamento || d.contratista || d.id_departamento || "-";
+    const plantLabel = document.getElementById("plant-label");
+    if(plantLabel) plantLabel.textContent =  d.nombre_departamento_id ||   "-";
+    const ubicacionLabel = document.getElementById("ubicacion");
+    if(ubicacionLabel) ubicacionLabel.textContent = d.nombre_area_id  || "-";
+    const responsableTrabajoLabel = document.getElementById("responsable-trabajo-label");
+    if(responsableTrabajoLabel) responsableTrabajoLabel.textContent = d.nombre_solicitante || "-";
+    const descripcionTrabajoLabel = document.getElementById("descripcion-trabajo-label");
+    if(descripcionTrabajoLabel) descripcionTrabajoLabel.textContent = d.descripcion_trabajo || "-";
+    const activityTypeLabel = document.getElementById("activity-type-label");
+    if(activityTypeLabel) activityTypeLabel.textContent = d.tipo_mantenimiento || "-";
+    const workOrderLabel = document.getElementById("work-order-label");
+    if(workOrderLabel) workOrderLabel.textContent = d.ot_numero || "-";
+    const contratoLabel = document.getElementById("contrato-label");
+    if(contratoLabel) contratoLabel.textContent = d.contrato || "-";
+    const tagLabel = document.getElementById("tag-label");
+    if(tagLabel) tagLabel.textContent = d.tag || "-";
+    const equipmentLabel = document.getElementById("equipment-label");
+    if(equipmentLabel) equipmentLabel.textContent = d.equipo_intervenir || "-";
+
+    // Mapeo explícito de campos especiales por id
+    const pal_cr_1 = document.getElementById("pal_cr_1");
+    if(pal_cr_1) pal_cr_1.textContent = d.pal_cr_1 || "-";
+    const pal_epc_1 = document.getElementById("pal_epc_1");
+    if(pal_epc_1) pal_epc_1.textContent = d.pal_epc_1 || "-";
+    const pal_epc_2 = document.getElementById("pal_epc_2");
+    if(pal_epc_2) pal_epc_2.textContent = d.pal_epc_2 || "-";
+    const pal_epp_1 = document.getElementById("pal_epp_1");
+    if(pal_epp_1) pal_epp_1.textContent = d.pal_epp_1 || "-";
+    const pal_epp_2 = document.getElementById("pal_epp_2");
+    if(pal_epp_2) pal_epp_2.textContent = d.pal_epp_2 || "-";
+    const pal_fa_1 = document.getElementById("pal_fa_1");
+    if(pal_fa_1) pal_fa_1.textContent = d.pal_fa_1 || "-";
+    const pal_fa_2 = document.getElementById("pal_fa_2");
+    if(pal_fa_2) pal_fa_2.textContent = d.pal_fa_2 || "-";
+    const pap_ce_1 = document.getElementById("pap_ce_1");
+    if(pap_ce_1) pap_ce_1.textContent = d.pap_ce_1 || "-";
+    const pap_ce_2 = document.getElementById("pap_ce_2");
+    if(pap_ce_2) pap_ce_2.textContent = d.pap_ce_2 || "-";
+    const pap_epe_1 = document.getElementById("pap_epe_1");
+    if(pap_epe_1) pap_epe_1.textContent = d.pap_epe_1 || "-";
+    const pco_eh_1 = document.getElementById("pco_eh_1");
+    if(pco_eh_1) pco_eh_1.textContent = d.pco_eh_1 || "-";
+    const pco_era_1 = document.getElementById("pco_era_1");
+    if(pco_era_1) pco_era_1.textContent = d.pco_era_1 || "-";
+    const pco_ma_1 = document.getElementById("pco_ma_1");
+    if(pco_ma_1) pco_ma_1.textContent = d.pco_ma_1 || "-";
+    const pco_ma_2 = document.getElementById("pco_ma_2");
+    if(pco_ma_2) pco_ma_2.textContent = d.pco_ma_2 || "-";
+    const pco_ma_3 = document.getElementById("pco_ma_3");
+    if(pco_ma_3) pco_ma_3.textContent = d.pco_ma_3 || "-";
+    const pco_ma_4 = document.getElementById("pco_ma_4");
+    if(pco_ma_4) pco_ma_4.textContent = d.pco_ma_4 || "-";
+    const pco_ma_5 = document.getElementById("pco_ma_5");
+    if(pco_ma_5) pco_ma_5.textContent = d.pco_ma_5 || "-";
+    const pfg_cr_1 = document.getElementById("pfg_cr_1");
+    if(pfg_cr_1) pfg_cr_1.textContent = d.pfg_cr_1 || "-";
+    const pfg_cr_1a = document.getElementById("pfg_cr_1a");
+    if(pfg_cr_1a) pfg_cr_1a.textContent = d.pfg_cr_1a || "N/A";
+    const pfg_eppe_1 = document.getElementById("pfg_eppe_1");
+    if(pfg_eppe_1) pfg_eppe_1.textContent = d.pfg_eppe_1 || "-";
+    const pfg_eppe_2 = document.getElementById("pfg_eppe_2");
+    if(pfg_eppe_2) pfg_eppe_2.textContent = d.pfg_eppe_2 || "-";
+    const pfg_ma_1 = document.getElementById("pfg_ma_1");
+    if(pfg_ma_1) pfg_ma_1.textContent = d.pfg_ma_1 || "-";
+    const pfg_ma_2 = document.getElementById("pfg_ma_2");
+    if(pfg_ma_2) pfg_ma_2.textContent = d.pfg_ma_2 || "-";
+    const pfg_ma_3 = document.getElementById("pfg_ma_3");
+    if(pfg_ma_3) pfg_ma_3.textContent = d.pfg_ma_3 || "-";
+  }
+
+  // Participantes (tabla)
+  if (participan && participan.data) {
+    const tbody = document.getElementById("modal-ast-participantes-body");
+    if (tbody) {
+      tbody.innerHTML = "";
+      participan.data.forEach(p => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td>${p.nombre || "-"}</td><td>${p.funcion || "-"}</td><td>${p.credencial || "-"}</td><td>${p.cargo || "-"}</td><td></td>`;
+        tbody.appendChild(tr);
+      });
+    }
+  }
+
+  // Actividades AST (tabla)
+  if (actividades && actividades.data) {
+    const tbody = document.getElementById("modal-ast-actividades-body");
+    if (tbody) {
+      tbody.innerHTML = "";
+      actividades.data.forEach((a, idx) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${a.num_actividad || idx + 1}</td>
+          <td>${a.secuencia_actividad || "-"}</td>
+          <td>${a.personal_ejecutor || '-'}</td>
+          <td>${a.peligros_potenciales || "-"}</td>
+          <td>${a.acciones_preventivas || "-"}</td>
+          <td>${a.responsable || '-'}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+  }
+
+  // Autorizaciones (tabla de responsables)
+  if (autorizaciones && autorizaciones.data) {
+    const tbody = document.getElementById("modal-ast-responsable-body");
+    if (tbody) {
+      tbody.innerHTML = "";
+      autorizaciones.data.forEach(a => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td>${a.nombre || "-"}</td><td>${a.cargo || "-"}</td><td>${a.fecha || "-"}</td><td></td>`;
+        tbody.appendChild(tr);
+      });
+    }
+  }
+
+  return resultado;
+}
+//aca termina
+//aca termina
+//aca termina
+//aca termina
+//aca termina
+//aca termina
+
+
+
+
+
+// Ejemplo de uso:
+// consultarTodoPermiso(512);
 // Función para enviar los datos del permiso a N8N
 /**
  * Función para enviar los datos del permiso a N8N.

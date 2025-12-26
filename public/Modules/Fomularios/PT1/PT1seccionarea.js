@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const params = new URLSearchParams(window.location.search);
       const idPermiso = params.get('id') || window.idPermisoActual;
       if (!idPermiso) {
-        alert('No se pudo obtener el ID del permiso.');
+      
         return;
       }
       // Consultar el id_estatus desde permisos_trabajo
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Error al consultar id_estatus
       }
       if (!idEstatus) {
-        alert('No se pudo obtener el estatus del permiso.');
+       
         return;
       }
       // Actualizar el estatus a 'cierre'
@@ -118,7 +118,7 @@ if (btnAutorizar) {
 
     // 2. Validaciones básicas
     if (!idPermiso) {
-      alert("No se pudo obtener el ID del permiso.");
+     
       return;
     }
     // Validar responsable obligatorio
@@ -848,7 +848,7 @@ if (btnConfirmarAutorizar) {
 
       // 2. Validaciones básicas
       if (!idPermiso) {
-        alert("No se pudo obtener el ID del permiso.");
+      
         return;
       }
 

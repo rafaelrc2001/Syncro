@@ -17,11 +17,12 @@ document.addEventListener("DOMContentLoaded", function () {
 // Función para mostrar/ocultar permisos según los valores columna_*_valor
 function mostrarPermisosSegunValores(data) {
   // Mapeo de id de contenedor y campo de valor
-  const permisos = [
-    { id: "permiso-altura", valor: data.columna_altura_valor },
-    { id: "permiso-confinado", valor: data.columna_confinado_valor },
-    { id: "permiso-fuego", valor: data.columna_fuego_valor },
-    { id: "permiso-apertura", valor: data.columna_apertura_valor },
+   const permisos = [
+    { id: "permiso-altura", valor: data.columna_altura_valor, nombre: "Permiso de Altura" },
+    { id: "permiso-confinado", valor: data.columna_confinado_valor, nombre: "Permiso Espacio Confinado" },
+    { id: "permiso-fuego", valor: data.columna_fuego_valor, nombre: "Permiso de Fuego" },
+    { id: "permiso-apertura", valor: data.columna_apertura_valor, nombre: "Permiso de Apertura" },
+    { id: "permiso-nopeligroso", valor: data.columna_nopeligrosovalor_valor, nombre: "Permiso No Peligroso" },
   ];
   permisos.forEach((permiso) => {
     const contenedor = document.getElementById(permiso.id);
@@ -143,6 +144,61 @@ async function consultarTodoPermiso(id_permiso) {
     if(pfg_ma_2) pfg_ma_2.textContent = d.pfg_ma_2 || "-";
     const pfg_ma_3 = document.getElementById("pfg_ma_3");
     if(pfg_ma_3) pfg_ma_3.textContent = d.pfg_ma_3 || "-";
+
+
+
+
+        const pno_cr_1 = document.getElementById("pno_cr_1");
+if(pno_cr_1) pno_cr_1.textContent = d.pno_cr_1 || "-";
+const pno_cr_2 = document.getElementById("pno_cr_2");
+if(pno_cr_2) pno_cr_2.textContent = d.pno_cr_2 || "-";
+const pno_cr_3 = document.getElementById("pno_cr_3");
+if(pno_cr_3) pno_cr_3.textContent = d.pno_cr_3 || "-";
+const pno_cr_4 = document.getElementById("pno_cr_4");
+if(pno_cr_4) pno_cr_4.textContent = d.pno_cr_4 || "-";
+const pno_cr_5 = document.getElementById("pno_cr_5");
+if(pno_cr_5) pno_cr_5.textContent = d.pno_cr_5 || "-";
+const pno_cr_6 = document.getElementById("pno_cr_6");
+if(pno_cr_6) pno_cr_6.textContent = d.pno_cr_6 || "-";
+const pno_cr_7 = document.getElementById("pno_cr_7");
+if(pno_cr_7) pno_cr_7.textContent = d.pno_cr_7 || "-";
+const pno_cr_8 = document.getElementById("pno_cr_8");
+if(pno_cr_8) pno_cr_8.textContent = d.pno_cr_8 || "-";
+const pno_cr_9 = document.getElementById("pno_cr_9");
+if(pno_cr_9) pno_cr_9.textContent = d.pno_cr_9 || "-";
+const pno_cr_10 = document.getElementById("pno_cr_10");
+if(pno_cr_10) pno_cr_10.textContent = d.pno_cr_10 || "-";
+const pno_cr_11 = document.getElementById("pno_cr_11");
+if(pno_cr_11) pno_cr_11.textContent = d.pno_cr_11 || "-";
+const pno_cr_12 = document.getElementById("pno_cr_12");
+if(pno_cr_12) pno_cr_12.textContent = d.pno_cr_12 || "-";
+const pno_cr_13 = document.getElementById("pno_cr_13");
+if(pno_cr_13) pno_cr_13.textContent = d.pno_cr_13 || "-";
+
+const pno_epe_1 = document.getElementById("pno_epe_1");
+if(pno_epe_1) pno_epe_1.textContent = d.pno_epe_1 || "-";
+const pno_epe_2 = document.getElementById("pno_epe_2");
+if(pno_epe_2) pno_epe_2.textContent = d.pno_epe_2 || "-";
+const pno_epe_3 = document.getElementById("pno_epe_3");
+if(pno_epe_3) pno_epe_3.textContent = d.pno_epe_3 || "-";
+const pno_epe_4 = document.getElementById("pno_epe_4");
+if(pno_epe_4) pno_epe_4.textContent = d.pno_epe_4 || "-";
+const pno_epe_5 = document.getElementById("pno_epe_5");
+if(pno_epe_5) pno_epe_5.textContent = d.pno_epe_5 || "-";
+const pno_epe_6 = document.getElementById("pno_epe_6");
+if(pno_epe_6) pno_epe_6.textContent = d.pno_epe_6 || "-";
+const pno_epe_7 = document.getElementById("pno_epe_7");
+if(pno_epe_7) pno_epe_7.textContent = d.pno_epe_7 || "-";
+const pno_epe_8 = document.getElementById("pno_epe_8");
+if(pno_epe_8) pno_epe_8.textContent = d.pno_epe_8 || "-";
+const pno_epe_9 = document.getElementById("pno_epe_9");
+if(pno_epe_9) pno_epe_9.textContent = d.pno_epe_9 || "-";
+
+
+
+
+
+
   }
 
   // Participantes (tabla)

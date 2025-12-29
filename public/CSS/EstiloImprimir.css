@@ -52,15 +52,15 @@ body {
     background: var(--blanco);
     border-radius: var(--radio);
     box-shadow: var(--sombra);
-    padding: 2.5rem 2rem;
-    margin: 40px auto;
+    padding: 1.2rem 1rem;
+    margin: 16px auto 12px auto;
     max-width: 1000px;
 }
  
 /* Secciones internas */
 .executive-section {
-    padding: 2rem 0;
-    margin-bottom: 2rem;
+    padding: 0.1rem 0 0.2rem 0;
+    margin-bottom: 0.2rem;
     border-bottom: var(--borde);
 }
  
@@ -78,8 +78,9 @@ body {
     flex-direction: row;
     justify-content: flex-start;
     text-align: left;
-    gap: 12px;
-    margin-bottom: 1.5rem;
+    gap: 6px;
+    margin-bottom: 0.3rem;
+    margin-top: 0.1rem;
     /* border-bottom: 2px solid var(--azul-petroleo); */
     /* padding-bottom: .75rem; */
 }
@@ -91,11 +92,11 @@ body {
 }
  
 .section-header h2 {
-    font-size: 24px;
+    font-size: 20px;
 }
  
 .section-header h3 {
-    font-size: 18px;
+    font-size: 14px;
     font-weight: 600;
 }
  
@@ -124,11 +125,17 @@ body {
 }
 
 /* Encabezado específico centrado */
+
+/*ajuste del dap margin etc para el ajuste del titulo*/
 .section-header.header-centered {
     justify-content: center !important;
     text-align: center !important;
     flex-direction: column !important;
-    gap: 8px !important;
+    gap: 2px !important;
+    margin-top: 0.2rem !important;
+    margin-bottom: 0.2rem !important;
+    padding-top: 0.1rem !important;
+    padding-bottom: 0.1rem !important;
 }
 
 /* ============================
@@ -136,25 +143,28 @@ body {
    ============================ */
 .executive-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 8px 10px;
+    margin-top: 0;
+    margin-bottom: 0;
 }
  
 .executive-item label {
     font-weight: 600;
-    font-size: 14px;
-    margin-bottom: 6px;
+    font-size: 13px;
+    margin-bottom: 2px;
     color: var(--azul-petroleo);
     display: block;
 }
  
 .executive-item p {
     background: #f8f9fa;
-    padding: 12px 14px;
-    border-radius: 8px;
+    padding: 5px 8px;
+    border-radius: 6px;
     border: 1px solid #e9ecef;
-    font-size: 14px;
+    font-size: 13px;
     color: #495057;
+    margin: 0;
 }
  
 /* ============================
@@ -225,7 +235,7 @@ textarea {
 .ast-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 1rem;
+    margin-top: 0.2rem;
 }
  
 .ast-table thead {
@@ -235,32 +245,32 @@ textarea {
  
 .ast-table th,
 .ast-table td {
-    padding: 12px;
+    padding: 6px 8px;
     border-bottom: 1px solid #e9ecef;
-    font-size: 14px;
+    font-size: 13px;
 }
  
 .safety-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 16px;
-    margin-top: 1.5rem;
+    gap: 6px;
+    margin-top: 0.3rem;
 }
  
 .safety-item {
     background: #f8f9fa;
     border: 1px solid #e9ecef;
     border-radius: 10px;
-    padding: 16px;
+    padding: 6px 8px;
 }
  
 .safety-item h4 {
-    font-size: 15px;
-    margin-bottom: 10px;
+    font-size: 13px;
+    margin-bottom: 4px;
     color: var(--azul-petroleo);
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 4px;
 }
 
 .safety-list {
@@ -270,7 +280,10 @@ textarea {
 }
 
 .safety-list li {
-    padding: 4px 0;
+    padding: 1px 0 0 0;
+    margin: 0;
+    line-height: 1.1;
+    font-size: 14px;
 }
  
 /* ============================

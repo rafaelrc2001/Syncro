@@ -156,14 +156,21 @@
 }
 
 
+.general-box-header {
+    margin-top: 0 !important;
+    margin-bottom: 0.3rem !important;
+}
+
+
+/* En esta parte ajusto con la caracteristica de padding el valor del alto y el ancho */
 .general-box-header span {
     display: block !important;
     background: #003B5C !important;
     color: #ffffff !important;
     font-weight: 500 !important;
-    padding: 14px 0 !important;
+    padding: 1px 0 !important;
     border-radius: 8px !important;
-    font-size: 1.35rem !important;
+    font-size: 1.1rem !important;
     letter-spacing: 0.2px !important;
     border: 1.5px solid #b6e2c6 !important;
     width: 100% !important;

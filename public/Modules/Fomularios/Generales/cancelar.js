@@ -119,7 +119,7 @@ if (btnGuardarCancelarPermiso) {
       // Quitar integración con n8n por ahora
       alert("Permiso cancelado correctamente.");
       modalCancelarPermisoUnico.style.display = "none";
-      window.location.href = "/Modules/usuario/crearPT.html";
+      window.location.href = "/Modules/usuario/CrearPT.html";
     } catch (err) {
      
     }

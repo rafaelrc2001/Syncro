@@ -103,9 +103,11 @@ class FechaHoraManager {
     if (elementoCreacion) {
       const fechaCreacion = this.formatearFecha(this.fechas.creacion);
       elementoCreacion.innerHTML = `
-                Hora de creación
-                <br>
+            
+      <i class="ri-time-line"></i>
+      Hora de creación:
                 <small style="font-size: 0.75em; color: #666; font-weight: normal;">
+                                                    
                     ${fechaCreacion}
                 </small>
             `;

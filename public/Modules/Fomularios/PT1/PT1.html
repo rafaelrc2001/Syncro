@@ -289,6 +289,9 @@
                                 <div class="form-item" draggable="true" data-name="Permiso apertura">
                                     <i class="ri-lock-unlock-line"></i> Permiso Apertura
                                 </div>
+                                <div class="form-item" draggable="true" data-name="Permiso No Peligroso">
+                                    <i class="ri-lock-unlock-line"></i> Permiso No Peligroso
+                                </div>
                                   
                             </div>
 
@@ -937,6 +940,71 @@
 
                                     </div>
                             </template>  
+
+
+
+
+
+                            <template id="template-permiso-nopeligroso">
+
+                            <div class="added-form" data-form-type="permiso-nopeligroso">
+                                <div class="added-form-header">
+                                    <h4><i class="ri-lock-unlock-line"></i> Permiso No peligroso</h4>
+                                    <button type="button" class="remove-btn" title="Eliminar formulario">
+                                        <i class="ri-close-line"></i> Eliminar
+                                    </button>
+                                </div>
+                                <div class="main-container" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px;">
+                                    <!-- Cabeceras -->
+                                    <div class="section-header" style="grid-column: 1 / span 2; text-align: center;">Control de Riesgos:</div>
+                                    <div class="section-header" style="grid-column: 3 / span 1; text-align: center;">Equipo de Protección Especial:</div>
+                                    <!-- Columnas -->
+                                    <div style="grid-column: 1;">
+                                        <div class="footer-row"><div class="footer-label">Tropiezos, resbalones, caídas un mismo nivel</div><div class="footer-value-fixed">SI</div></div>
+                                        <div class="footer-row"><div class="footer-label">Caída a cuerpo de agua</div><div class="input-cell-yellow"><select class="select-yellow" name="caida_agua" id="pno_cr_1"><option value="NO" selected>NO</option><option value="SI">SI</option></select></div></div>
+                                        <div class="footer-row"><div class="footer-label">Atrapado en o entre</div><div class="footer-value-fixed">SI</div></div>
+                                        <div class="footer-row"><div class="footer-label">Sobre esfuerzo, estiramiento</div><div class="input-cell-yellow"><select class="select-yellow" name="sobre_esfuerzo" id="pno_cr_2" ><option value="NO">NO</option><option value="SI">SI</option></select></div></div>
+                                        <div class="footer-row"><div class="footer-label">Exposición a vibraciones</div><div class="input-cell-yellow"><select class= "select-yellow" name="vibraciones" id="pno_cr_3" ><option value="NO" selected>NO</option><option value="SI">SI</option></select></div></div>
+                                            <div class="footer-row"><div class="footer-label">Exposición a ruidos</div><div class="input-cell-yellow"><select class="select-yellow" name="ruidos" id="pno_cr_4" ><option value="NO" selected>NO</option><option value="SI">SI</option></select></div></div>
+                                            <div class="footer-row"><div class="footer-label">Exposición a polvos</div><div class="input-cell-yellow"><select class="select-yellow" name="polvos" id="pno_cr_5"><option value="NO" selected>NO</option><option value="SI">SI</option></select></div></div>
+                                            <div class="footer-row"><div class="footer-label">Exposición a químicos</div><div class="input-cell-yellow"><select class="select-yellow" name="quimicos" id="pno_cr_6"><option value="NO" selected>NO</option><option value="SI">SI</option></select></div></div>
+                                            <div class="footer-row"><div class="footer-label">Fauna nociva</div><div class="input-cell-yellow"><select class="select-yellow" name="fauna" id="pno_cr_7"><option value="NO" selected>NO</option><option value="SI">SI</option></select></div></div>
+                                        <div class="footer-row"><div class="footer-label">Proyección de partículas</div><div class="input-cell-yellow"><select class="select-yellow" name="particulas" id="pno_cr_8" ><option value="NO" selected>NO</option><option value="SI">SI</option></select></div></div>
+                                    </div>
+                                    <div style="grid-column: 2;">
+                                        <div class="footer-row"><div class="footer-label">Carga suspendida</div><div class="input-cell-yellow"><select class="select-yellow" name="carga_suspendida"  id="pno_cr_9"><option value="NO" selected>NO</option><option value="SI">SI</option></select></div></div>
+                                            <div class="footer-row"><div class="footer-label">Operación de maquinaria pesada</div><div class="input-cell-yellow"><select class="select-yellow" name="maquinaria" id="pno_cr_10"><option value="NO" selected>NO</option><option value="SI">SI</option></select></div></div>
+                                            <div class="footer-row"><div class="footer-label">Izamiento de carga</div><div class="input-cell-yellow"><select class="select-yellow" name="izam_carga" id="pno_cr_11"><option value="NO" selected>NO</option><option value="SI">SI</option></select></div></div>
+                                            <div class="footer-row"><div class="footer-label">Izamiento de personal</div><div class="input-cell-yellow"><select class="select-yellow" name="izam_personal" id="pno_cr_12"><option value="NO" selected>NO</option><option value="SI">SI</option></select></div></div>
+                                        <div class="footer-row"><div class="footer-label">Excavación con menos de 1.5 metros de profundidad</div><div class="input-cell-yellow"><select class="select-yellow" name="excavacion" id="pno_cr_13"><option value="NO" selected>NO</option><option value="SI">SI</option></select></div></div>
+                                    </div>
+                                    <div style="grid-column: 3;">
+                                        <div class="footer-row"><div class="footer-label">Careta facial</div><div class="input-cell-yellow"><select class="select-yellow" name="careta" id="pno_epe_1"><option value="NO" selected>NO</option><option value="SI">SI</option></select></div></div>
+                                      
+                                            <div class="footer-row"><div class="footer-label">Peto, guantes, polainas, mangas de carnaza</div><div class="input-cell-yellow"><select class="select-yellow" name="carnaza" id="pno_epe_2"><option value="NO" selected>NO</option><option value="SI">SI</option></select></div></div>
+                                       
+                                            <div class="footer-row"><div class="footer-label">Mascarilla contra polvos</div><div class="input-cell-yellow"><select class="select-yellow" name="masc_polvo" id="pno_epe_3"><option value="NO" selected>NO</option><option value="SI">SI</option></select></div></div>
+                                       
+                                            <div class="footer-row"><div class="footer-label">Mascarilla contra gases</div><div class="input-cell-yellow"><select class="select-yellow" name="masc_gases" id="pno_epe_4"><option value="NO" selected>NO</option><option value="SI">SI</option></select></div></div>
+                                       
+                                            <div class="footer-row"><div class="footer-label">Viboreras</div><div class="input-cell-yellow"><select class="select-yellow" name="viboreras" id="pno_epe_5"><option value="NO" selected>NO</option><option value="SI">SI</option></select></div></div>
+                                     
+                                            <div class="footer-row"><div class="footer-label">Peto, guantes de hule</div><div class="input-cell-yellow"><select class="select-yellow" name="epp_hule" id="pno_epe_6"><option value="NO" selected>NO</option><option value="SI">SI</option></select></div></div>
+
+                                            <div class="footer-row"><div class="footer-label">Rodilleras</div><div class="input-cell-yellow"><select class="select-yellow" name="rodilleras" id="pno_epe_7"><option value="NO" selected>NO</option><option value="SI">SI</option></select></div></div>
+                                
+                                            <div class="footer-row"><div class="footer-label">Otro</div><div class="input-cell-yellow"><select class="select-yellow" name="otro_1" id="pno_epe_8"><option value="NO" selected>NO</option><option value="SI">SI</option></select></div></div>
+
+                                        <div class="footer-row"><div class="footer-label">Otro</div><div class="input-cell-yellow"><select class="select-yellow" name="otro_2" id="pno_epe_9"><option value="NO" selected>NO</option><option value="SI">SI</option></select></div></div>
+                                    </div>
+                                    
+                                </div>
+                                <div style="display:none;">
+                                    <span id="tipo_permiso_nopeligroso">nopeligroso</span>
+                                    <span id="columna_nopeligroso_valor">SI</span>
+                                </div>
+                            </div>
+                            </template>
 
                         </div>
                         <!-- ===== FIN: TEMPLATES DE FORMULARIOS ===== -->

@@ -279,12 +279,47 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+      
+    const pno_cr_1= document.getElementById("pno_cr_1")?.value || null;
+    const pno_cr_2= document.getElementById("pno_cr_2")?.value || null;
+    const pno_cr_3= document.getElementById("pno_cr_3")?.value || null;
+    const pno_cr_4= document.getElementById("pno_cr_4")?.value || null;
+    const pno_cr_5= document.getElementById("pno_cr_5")?.value || null;
+    const pno_cr_6= document.getElementById("pno_cr_6")?.value || null;
+    const pno_cr_7= document.getElementById("pno_cr_7")?.value || null;
+    const pno_cr_8= document.getElementById("pno_cr_8")?.value || null;
+    const pno_cr_9= document.getElementById("pno_cr_9")?.value || null;
+    const pno_cr_10= document.getElementById("pno_cr_10")?.value || null;
+    const pno_cr_11= document.getElementById("pno_cr_11")?.value || null;
+    const pno_cr_12= document.getElementById("pno_cr_12")?.value || null;
+    const pno_cr_13= document.getElementById("pno_cr_13")?.value || null;
+    const pno_epe_1= document.getElementById("pno_epe_1")?.value || null;
+    const pno_epe_2= document.getElementById("pno_epe_2")?.value || null;
+    const pno_epe_3= document.getElementById("pno_epe_3")?.value || null;
+    const pno_epe_4= document.getElementById("pno_epe_4")?.value || null;
+    const pno_epe_5= document.getElementById("pno_epe_5")?.value || null;
+    const pno_epe_6= document.getElementById("pno_epe_6")?.value || null;
+    const pno_epe_7= document.getElementById("pno_epe_7")?.value || null;
+    const pno_epe_8= document.getElementById("pno_epe_8")?.value || null;
+    const pno_epe_9= document.getElementById("pno_epe_9")?.value || null;
+    
+
+
+
+
         //tipos de permiso
-       
         const columna_fuego_valor = document.getElementById("columna_fuego_valor")?.textContent || null;
         const columna_altura_valor = document.getElementById("columna_altura_valor")?.textContent || null;
         const columna_apertura_valor = document.getElementById("columna_apertura_valor")?.textContent || null;
-        const columna_confinado_valor =  document.getElementById("columna_confinado_valor")?.textContent || null;
+        const columna_confinado_valor = document.getElementById("columna_confinado_valor")?.textContent || null;
+        // Siempre obtener el valor del span oculto para Permiso No Peligroso
+        let columna_nopeligrosovalor_valor = null;
+        const spanNoPeligroso = document.getElementById("columna_nopeligroso_valor");
+        if (spanNoPeligroso) {
+          columna_nopeligrosovalor_valor = spanNoPeligroso.textContent || spanNoPeligroso.value || null;
+        }
+        // Log para depuración
+        console.log("[DEBUG] columna_nopeligrosovalor_valor a enviar:", columna_nopeligrosovalor_valor);
 
         // Log para depuración
         console.log(
@@ -365,6 +400,38 @@ document.addEventListener("DOMContentLoaded", () => {
             columna_altura_valor,
             columna_apertura_valor,
             columna_confinado_valor,
+            pno_cr_1,
+            pno_cr_2,
+            pno_cr_3,
+            pno_cr_4,
+            pno_cr_5,
+            pno_cr_6,
+            pno_cr_7,
+            pno_cr_8,
+            pno_cr_9,
+            pno_cr_10,
+            pno_cr_11,
+            pno_cr_12,
+            pno_cr_13,
+            pno_epe_1,
+            pno_epe_2,
+            pno_epe_3,
+            pno_epe_4,
+            pno_epe_5,
+            pno_epe_6,
+            pno_epe_7,
+            pno_epe_8,
+            pno_epe_9,
+            columna_nopeligrosovalor_valor,
+
+
+
+
+
+
+
+
+
           }),
         });
         const permisoResult = await permisoResponse.json();

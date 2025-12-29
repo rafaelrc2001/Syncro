@@ -247,7 +247,8 @@ function initDragAndDropConstructor() {
     "Permiso Izaje con Grúa": "template-permiso-izaje-con-grua",
     "Permiso Eléctrico": "template-permiso-electrico",
     "Permiso Fuego" : "template-permiso-fuego", 
-    "Permiso apertura" : "template-permiso-apertura"
+    "Permiso apertura" : "template-permiso-apertura",
+    "Permiso No Peligroso": "template-permiso-nopeligroso"
   };
 
   // ===== SELECCIÓN DE ELEMENTOS DEL DOM =====
@@ -328,7 +329,8 @@ function initDragAndDropConstructor() {
       "Permiso Izaje con Grúa": "izaje",
       "Permiso Eléctrico": "electrico",
       "Permiso Fuego": "permiso-fuego",
-      "Permiso apertura": "permiso-apertura"
+      "Permiso apertura": "permiso-apertura",
+      "Permiso No Peligroso": "permiso-nopeligroso"
     };
     
     const formType = formTypeMap[formName];

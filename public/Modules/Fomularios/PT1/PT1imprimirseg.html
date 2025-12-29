@@ -504,7 +504,7 @@
                     </div>
                 </div>
                 
-          <!-- Sección 5: Aprobaciones -->
+                <!-- Sección 5: Aprobaciones -->
            <div class="executive-section">
                     <div class="section-header">
                         <i class="ri-team-line"></i>
@@ -663,17 +663,24 @@
 
 
 
+
      <!-- <script src="/Modules/Fomularios/PT1/PT1.js"></script>-->
 
-      <script src="/JS/generales/auth-check.js"></script>
+       <!-- Script de verificación de autenticación -->
+    <script src="/JS/generales/auth-check.js"></script>
     <script>
-      (async function() {
+      // Verificar autenticación antes de cargar contenido
+      (async function () {
         const usuario = await verificarRol(["supervisor"]);
-        if (!usuario) return;
+        if (!usuario) return; // auth-check.js ya redirigió
+        // El contenido se carga normalmente si está autenticado
       })();
     </script>
      <script src="/Modules/Fomularios/Generales/comentarios.js"></script>
      <script src="/Modules/Fomularios/Generales/fecha_hora.js"></script>
+    <!-- <script src="/Modules/Fomularios/PT1/PT1seccionimprimir3.js"></script>-->
      <script src="/Modules/Fomularios/PT1/PT1seccionimprimir-unificado.js"></script>
+
+        
 </body>
 </html>

@@ -1015,3 +1015,117 @@ if (btnConfirmarAutorizar) {
     });
   }
 })();
+
+
+function llenarTablaResponsables(idPermiso) {
+  /**
+   * Función para llenar la tabla de responsables en el modal AST.
+   * Consulta la API para obtener los responsables y sus datos,
+   * y los muestra en una tabla dentro del modal.
+   * Si no hay responsables, muestra un mensaje adecuado.
+   * Mejora la trazabilidad y visualización de responsables en el permiso.
+   */
+  fetch(`/api/autorizaciones/personas/${idPermiso}`)
+    .then((response) => response.json())
+    .then((result) => {
+      const tbody = document.getElementById("modal-ast-responsable-body");
+      if (!tbody) return;
+
+      tbody.innerHTML = ""; // Limpia la tabla antes de llenarla
+
+      function formatearFecha(fechaString) {
+        if (!fechaString) return "Pendiente";
+        // Si la fecha viene en formato SQL (YYYY-MM-DD HH:mm:ss), mostrar tal cual
+        if (/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(fechaString)) {
+          const [fecha, hora] = fechaString.split(" ");
+          const [h, m] = hora.split(":");
+          return `${fecha.replace(/-/g, "/")}, ${h}:${m}`;
+        }
+        // Si viene en formato ISO con Z (UTC), mostrar en UTC
+        try {
+          const fecha = new Date(fechaString);
+          if (isNaN(fecha.getTime())) {
+            return "Fecha inválida";
+          }
+          // Formatear en UTC
+          const year = fecha.getUTCFullYear();
+          const month = String(fecha.getUTCMonth() + 1).padStart(2, "0");
+          const day = String(fecha.getUTCDate()).padStart(2, "0");
+          const hour = String(fecha.getUTCHours()).padStart(2, "0");
+          const minute = String(fecha.getUTCMinutes()).padStart(2, "0");
+          return `${day}/${month}/${year}, ${hour}:${minute}`;
+        } catch (error) {
+          return "Error en fecha";
+        }
+      }
+
+      if (result.success && result.data) {
+        const data = result.data;
+        const { ip_area, localizacion_area } = data;
+        const filas = [
+          {
+            nombre: data.responsable_area,
+            cargo: "Responsable de área",
+            fecha: formatearFecha(data.fecha_hora_area),
+          },
+          {
+            nombre: data.operador_area,
+            cargo: "Operador del área",
+            fecha: formatearFecha(data.fecha_hora_area),
+          },
+          {
+            nombre: data.nombre_supervisor,
+            cargo: "Supervisor de Seguridad",
+            fecha: formatearFecha(data.fecha_hora_supervisor),
+          },
+        ];
+
+        let hayResponsables = false;
+        filas.forEach((fila) => {
+          if (fila.nombre && fila.nombre.trim() !== "") {
+            hayResponsables = true;
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+  <td>${fila.nombre}</td>
+  <td>${fila.cargo}</td>
+  <td>
+    ${fila.fecha || ""}<br>
+     ${ip_area || "-"}<br>
+     ${localizacion_area || "-"}
+  </td>
+  <td></td>
+`;
+            tbody.appendChild(tr);
+          }
+        });
+
+        // Si alguna fila no tiene nombre, igual la mostramos con N/A
+        filas.forEach((fila) => {
+          if (!fila.nombre || fila.nombre.trim() === "") {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+              <td>N/A</td>
+              <td>${fila.cargo}</td>
+              <td></td>
+            `;
+            tbody.appendChild(tr);
+          }
+        });
+
+        // Si no hay responsables, muestra mensaje
+        if (!hayResponsables) {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `<td colspan="3">Sin responsables registrados</td>`;
+          tbody.appendChild(tr);
+        }
+      } else {
+        // Si no hay datos, muestra mensaje
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td colspan="3">Sin responsables registrados</td>`;
+        tbody.appendChild(tr);
+      }
+    })
+    .catch((err) => {
+      console.error("Error al consultar personas de autorización:", err);
+    });
+}

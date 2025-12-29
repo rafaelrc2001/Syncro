@@ -1,4 +1,212 @@
 // Valida que ambos campos estén seleccionados antes de autorizar
+
+
+// Ejecutar consulta automática al cargar si hay id en la URL
+document.addEventListener("DOMContentLoaded", function () {
+  const params = new URLSearchParams(window.location.search);
+  const idPermiso = params.get("id");
+  if (idPermiso) {
+    consultarTodoPermiso(idPermiso).then((resultado) => {
+      // Mostrar permisos según los valores columna_*_valor
+      if (resultado && resultado.permiso && resultado.permiso.data) {
+        mostrarPermisosSegunValores(resultado.permiso.data);
+      }
+    });
+    // Llenar la tabla de responsables
+    llenarTablaResponsables(idPermiso);
+  }
+});
+
+// Función para mostrar/ocultar permisos según los valores columna_*_valor
+function mostrarPermisosSegunValores(data) {
+  // Mapeo de id de contenedor y campo de valor
+  const permisos = [
+    { id: "permiso-altura", valor: data.columna_altura_valor },
+    { id: "permiso-confinado", valor: data.columna_confinado_valor },
+    { id: "permiso-fuego", valor: data.columna_fuego_valor },
+    { id: "permiso-apertura", valor: data.columna_apertura_valor },
+  ];
+  permisos.forEach((permiso) => {
+    const contenedor = document.getElementById(permiso.id);
+    if (contenedor) {
+      if (permiso.valor === "SI") {
+        contenedor.style.display = "";
+      } else {
+        contenedor.style.display = "none";
+      }
+    }
+  });
+}
+// Consulta todos los datos de un permiso y relacionados por id_permiso
+async function consultarTodoPermiso(id_permiso) {
+    // Mapear prefijo al encabezado NP-XXXXXX
+  
+  const permiso = await fetch(`/api/permiso?id_permiso=${id_permiso}`).then(r => r.json()).catch(() => null);
+  const participan = await fetch(`/api/ast_participan?id_permiso=${id_permiso}`).then(r => r.json()).catch(() => null);
+  const actividades = await fetch(`/api/ast_actividades?id_permiso=${id_permiso}`).then(r => r.json()).catch(() => null);
+  const autorizaciones = await fetch(`/api/autorizaciones?id_permiso=${id_permiso}`).then(r => r.json()).catch(() => null);
+  const resultado = { permiso, participan, actividades, autorizaciones };
+  // Mapeo de datos al HTML
+  console.log('OBJETO DEVUELTO POR LA CONSULTA:', permiso);
+  if (permiso && permiso.data) {
+    const d = permiso.data;
+    // Fecha (formato legible)
+    const fechaLabel = document.getElementById("fecha-label");
+    if(fechaLabel) {
+      let fecha = "-";
+      if (d.fecha_hora) {
+        const f = new Date(d.fecha_hora);
+        if (!isNaN(f.getTime())) {
+          fecha = f.toLocaleDateString('es-MX');
+        }
+      }
+      fechaLabel.textContent = fecha;
+    }
+    
+    
+
+      const npHeader = document.getElementById("np-header");
+    if (npHeader && d.prefijo) {
+      npHeader.textContent = d.prefijo;
+    }
+
+    const startTimeLabel = document.getElementById("start-time-label");
+    if(startTimeLabel) startTimeLabel.textContent = d.hora_inicio || "-";
+    const empresaLabel = document.getElementById("empresa-label");
+    if(empresaLabel) empresaLabel.textContent = d.empresa || "-";
+    const sucursalLabel = document.getElementById("sucursal-label");
+    if(sucursalLabel) sucursalLabel.textContent = d.nombre_sucursal_id  || "-";
+    const dptoContrato = document.getElementById("dpto-contrato");
+    if(dptoContrato) dptoContrato.textContent = d.nombre_departamento || d.contratista || d.id_departamento || "-";
+    const plantLabel = document.getElementById("plant-label");
+    if(plantLabel) plantLabel.textContent =  d.nombre_departamento_id ||   "-";
+    const ubicacionLabel = document.getElementById("ubicacion");
+    if(ubicacionLabel) ubicacionLabel.textContent = d.nombre_area_id  || "-";
+    const responsableTrabajoLabel = document.getElementById("responsable-trabajo-label");
+    if(responsableTrabajoLabel) responsableTrabajoLabel.textContent = d.nombre_solicitante || "-";
+    const descripcionTrabajoLabel = document.getElementById("descripcion-trabajo-label");
+    if(descripcionTrabajoLabel) descripcionTrabajoLabel.textContent = d.descripcion_trabajo || "-";
+    const activityTypeLabel = document.getElementById("activity-type-label");
+    if(activityTypeLabel) activityTypeLabel.textContent = d.tipo_mantenimiento || "-";
+    const workOrderLabel = document.getElementById("work-order-label");
+    if(workOrderLabel) workOrderLabel.textContent = d.ot_numero || "-";
+    const contratoLabel = document.getElementById("contrato-label");
+    if(contratoLabel) contratoLabel.textContent = d.contrato || "-";
+    const tagLabel = document.getElementById("tag-label");
+    if(tagLabel) tagLabel.textContent = d.tag || "-";
+    const equipmentLabel = document.getElementById("equipment-label");
+    if(equipmentLabel) equipmentLabel.textContent = d.equipo_intervenir || "-";
+
+    // Mapeo explícito de campos especiales por id
+    const pal_cr_1 = document.getElementById("pal_cr_1");
+    if(pal_cr_1) pal_cr_1.textContent = d.pal_cr_1 || "-";
+    const pal_epc_1 = document.getElementById("pal_epc_1");
+    if(pal_epc_1) pal_epc_1.textContent = d.pal_epc_1 || "-";
+    const pal_epc_2 = document.getElementById("pal_epc_2");
+    if(pal_epc_2) pal_epc_2.textContent = d.pal_epc_2 || "-";
+    const pal_epp_1 = document.getElementById("pal_epp_1");
+    if(pal_epp_1) pal_epp_1.textContent = d.pal_epp_1 || "-";
+    const pal_epp_2 = document.getElementById("pal_epp_2");
+    if(pal_epp_2) pal_epp_2.textContent = d.pal_epp_2 || "-";
+    const pal_fa_1 = document.getElementById("pal_fa_1");
+    if(pal_fa_1) pal_fa_1.textContent = d.pal_fa_1 || "-";
+    const pal_fa_2 = document.getElementById("pal_fa_2");
+    if(pal_fa_2) pal_fa_2.textContent = d.pal_fa_2 || "-";
+    const pap_ce_1 = document.getElementById("pap_ce_1");
+    if(pap_ce_1) pap_ce_1.textContent = d.pap_ce_1 || "-";
+    const pap_ce_2 = document.getElementById("pap_ce_2");
+    if(pap_ce_2) pap_ce_2.textContent = d.pap_ce_2 || "-";
+    const pap_epe_1 = document.getElementById("pap_epe_1");
+    if(pap_epe_1) pap_epe_1.textContent = d.pap_epe_1 || "-";
+    const pco_eh_1 = document.getElementById("pco_eh_1");
+    if(pco_eh_1) pco_eh_1.textContent = d.pco_eh_1 || "-";
+    const pco_era_1 = document.getElementById("pco_era_1");
+    if(pco_era_1) pco_era_1.textContent = d.pco_era_1 || "-";
+    const pco_ma_1 = document.getElementById("pco_ma_1");
+    if(pco_ma_1) pco_ma_1.textContent = d.pco_ma_1 || "-";
+    const pco_ma_2 = document.getElementById("pco_ma_2");
+    if(pco_ma_2) pco_ma_2.textContent = d.pco_ma_2 || "-";
+    const pco_ma_3 = document.getElementById("pco_ma_3");
+    if(pco_ma_3) pco_ma_3.textContent = d.pco_ma_3 || "-";
+    const pco_ma_4 = document.getElementById("pco_ma_4");
+    if(pco_ma_4) pco_ma_4.textContent = d.pco_ma_4 || "-";
+    const pco_ma_5 = document.getElementById("pco_ma_5");
+    if(pco_ma_5) pco_ma_5.textContent = d.pco_ma_5 || "-";
+    const pfg_cr_1 = document.getElementById("pfg_cr_1");
+    if(pfg_cr_1) pfg_cr_1.textContent = d.pfg_cr_1 || "-";
+    const pfg_cr_1a = document.getElementById("pfg_cr_1a");
+    if(pfg_cr_1a) pfg_cr_1a.textContent = d.pfg_cr_1a || "N/A";
+    const pfg_eppe_1 = document.getElementById("pfg_eppe_1");
+    if(pfg_eppe_1) pfg_eppe_1.textContent = d.pfg_eppe_1 || "-";
+    const pfg_eppe_2 = document.getElementById("pfg_eppe_2");
+    if(pfg_eppe_2) pfg_eppe_2.textContent = d.pfg_eppe_2 || "-";
+    const pfg_ma_1 = document.getElementById("pfg_ma_1");
+    if(pfg_ma_1) pfg_ma_1.textContent = d.pfg_ma_1 || "-";
+    const pfg_ma_2 = document.getElementById("pfg_ma_2");
+    if(pfg_ma_2) pfg_ma_2.textContent = d.pfg_ma_2 || "-";
+    const pfg_ma_3 = document.getElementById("pfg_ma_3");
+    if(pfg_ma_3) pfg_ma_3.textContent = d.pfg_ma_3 || "-";
+  }
+
+  // Participantes (tabla)
+  if (participan && participan.data) {
+    const tbody = document.getElementById("modal-ast-participantes-body");
+    if (tbody) {
+      tbody.innerHTML = "";
+      participan.data.forEach(p => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td>${p.nombre || "-"}</td><td>${p.funcion || "-"}</td><td>${p.credencial || "-"}</td><td>${p.cargo || "-"}</td><td></td>`;
+        tbody.appendChild(tr);
+      });
+    }
+  }
+
+  // Actividades AST (tabla)
+  if (actividades && actividades.data) {
+    const tbody = document.getElementById("modal-ast-actividades-body");
+    if (tbody) {
+      tbody.innerHTML = "";
+      actividades.data.forEach((a, idx) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${a.num_actividad || idx + 1}</td>
+          <td>${a.secuencia_actividad || "-"}</td>
+          
+          <td>${a.peligros_potenciales || "-"}</td>
+          <td>${a.acciones_preventivas || "-"}</td>
+        
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+  }
+
+  // Autorizaciones (tabla de responsables)
+  if (autorizaciones && autorizaciones.data) {
+    const tbody = document.getElementById("modal-ast-responsable-body");
+    if (tbody) {
+      tbody.innerHTML = "";
+      autorizaciones.data.forEach(a => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td>${a.nombre || "-"}</td><td>${a.cargo || "-"}</td><td>${a.fecha || "-"}</td><td></td>`;
+        tbody.appendChild(tr);
+      });
+    }
+  }
+
+  return resultado;
+}
+
+
+
+
+
+
+
+
+
+
+
 function validarSupervisorYCategoria() {
   const supervisorInput = document.getElementById("responsable-aprobador");
   const categoriaInput = document.getElementById("responsable-aprobador2");
@@ -460,156 +668,9 @@ if (btnSalirNuevo) {
     window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
   });
 }
-// Mostrar solo la sección 2 al cargar y ocultar las demás
-document.addEventListener("DOMContentLoaded", function () {
-  // --- FUNCIONES PARA RELLENAR AST Y PARTICIPANTES ---
-  function mostrarAST(ast) {
-    // No se requiere mostrar EPP requerido ni otros campos de AST por el momento
-  }
-
-  function mostrarActividadesAST(actividades) {
-    const tbody = document.getElementById("modal-ast-actividades-body");
-    if (tbody) {
-      tbody.innerHTML = "";
-      if (Array.isArray(actividades)) {
-        actividades.forEach((act) => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-                <td>${act.no || ""}</td>
-                <td>${act.secuencia_actividad || ""}</td>
-                <td>${act.personal_ejecutor || ""}</td>
-                <td>${act.peligros_potenciales || ""}</td>
-                <td>${act.descripcion || ""}</td>
-                <td>${act.responsable || ""}</td>
-            `;
-          tbody.appendChild(tr);
-        });
-      }
-    }
-  }
-
-  function mostrarParticipantesAST(participantes) {
-    const tbody = document.getElementById("modal-ast-participantes-body");
-    if (tbody) {
-      tbody.innerHTML = "";
-      if (Array.isArray(participantes)) {
-        participantes.forEach((p) => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-                <td>${p.nombre || ""}</td>
-                <td><span class="role-badge">${p.funcion || ""}</span></td>
-                <td>${p.credencial || ""}</td>
-                <td>${p.cargo || ""}</td>
-            `;
-          tbody.appendChild(tr);
-        });
-      }
-    }
-  }
-
-  document.querySelectorAll(".form-section").forEach(function (section) {
-    if (section.getAttribute("data-section") === "2") {
-      section.style.display = "";
-      section.classList.add("active");
-    } else {
-      section.style.display = "none";
-      section.classList.remove("active");
-    }
-  });
-
-  // Botón regresar: vuelve a AutorizarPT.html
-  const btnRegresar = document.getElementById("btn-regresar");
-  if (btnRegresar) {
-    btnRegresar.addEventListener("click", function () {
-      window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
-    });
-  }
-
-  // Botón salir: vuelve a AutorizarPT.html
-  const btnSalir = document.getElementById("btn-salir");
-  if (btnSalir) {
-    btnSalir.addEventListener("click", function () {
-      window.location.href = "/Modules/SupSeguridad/SupSeguridad.html";
-    });
-  }
-
-  // Leer el id del permiso de la URL
-  const params = new URLSearchParams(window.location.search);
-  const idPermiso = params.get("id");
-  if (idPermiso) {
-    // Llamar a la API para obtener los datos del permiso
-    fetch(`/api/verformularios?id=${encodeURIComponent(idPermiso)}`)
-      .then((resp) => resp.json())
-      .then((data) => {
-        console.log("Datos recibidos para el permiso:", data);
-        // Guardar globalmente para que los modales usen la misma fuente canónica que la vista de área
-        try {
-          window.currentPermisoData = data;
-        } catch (e) {
-          /* ignore */
-        }
-        // Prefijo en el título y descripción del trabajo
-        if (data && data.general) {
-          const h3 = document.querySelector(".section-header h3");
-          if (h3) {
-            h3.textContent = data.general.prefijo || "NP-XXXXXX";
-          }
-        }
-        if (data && (data.detalles || data.general)) {
-          const detalles = data.detalles || {};
-          const general = data.general || {};
-
-          document.getElementById("start-time-label").textContent =
-          document.getElementById("start-time-label").textContent = general.hora_inicio || "-";
-          document.getElementById("fecha-label").textContent = general.fecha_hora ? new Date(general.fecha_hora).toLocaleDateString('es-MX') : "-";
-          document.getElementById("activity-type-label").textContent = general.tipo_mantenimiento || "-";
-          document.getElementById("plant-label").textContent = general.planta || general.id_sucursal || "-";
-          document.getElementById("descripcion-trabajo-label").textContent = general.descripcion_trabajo || "-";
-          document.getElementById("empresa-label").textContent = general.empresa || "-";
-          document.getElementById("nombre-solicitante-label").textContent = general.nombre_solicitante || "-";
-          document.getElementById("sucursal-label").textContent = general.id_sucursal || "-";
-          document.getElementById("contrato-label").textContent = general.contrato || "-";
-          document.getElementById("work-order-label").textContent = general.ot_numero || "-";
-          document.getElementById("equipment-label").textContent = general.equipo_intervenir || "-";
-          document.getElementById("tag-label").textContent = general.tag || "-";
-          let condiciones = [];
-          if (general.fluido) condiciones.push(`Fluido: ${general.fluido}`);
-          if (general.presion) condiciones.push(`Presión: ${general.presion}`);
-          if (general.temperatura) condiciones.push(`Temperatura: ${general.temperatura}`);
-          // Si no hay detalles o no hay datos, intenta con general
-          if ((!data.detalles || condiciones.length === 0) && data.general) {
-            if (data.general.fluido) condiciones.push(`Fluido: ${data.general.fluido}`);
-            if (data.general.presion) condiciones.push(`Presión: ${data.general.presion}`);
-            if (data.general.temperatura) condiciones.push(`Temperatura: ${data.general.temperatura}`);
-          }
-          if (document.getElementById("equipment-conditions-label")) {
-            document.getElementById("equipment-conditions-label").textContent =
-              condiciones.length > 0
-                ? condiciones.join(" | ")
-                : (data.detalles && data.detalles.condiciones_equipo) || "-";
-          }
-
-  
 
 
-          // Rellenar AST y Participantes
-          mostrarAST(data.ast);
-          mostrarActividadesAST(data.actividades_ast);
-          mostrarParticipantesAST(data.participantes_ast);
-        } else {
-          alert(
-            "No se encontraron datos para este permiso o el backend no responde con la estructura esperada."
-          );
-        }
-      })
-      .catch((err) => {
-        console.error("Error al obtener datos del permiso:", err);
-        alert(
-          "Error al obtener datos del permiso. Revisa la consola para más detalles."
-        );
-      });
-  }
-});
+
 
 document.addEventListener("DOMContentLoaded", function () {
   const params = new URLSearchParams(window.location.search);

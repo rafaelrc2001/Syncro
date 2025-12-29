@@ -175,10 +175,10 @@ async function consultarTodoPermiso(id_permiso) {
         tr.innerHTML = `
           <td>${a.num_actividad || idx + 1}</td>
           <td>${a.secuencia_actividad || "-"}</td>
-          <td>${a.personal_ejecutor || '-'}</td>
+          
           <td>${a.peligros_potenciales || "-"}</td>
           <td>${a.acciones_preventivas || "-"}</td>
-          <td>${a.responsable || '-'}</td>
+        
         `;
         tbody.appendChild(tr);
       });

@@ -606,34 +606,10 @@ if (tableBody) {
     );
     if (printOrViewBtn) {
       const row = printOrViewBtn.closest("tr");
-      const tipoPermiso = row ? row.children[1].textContent.trim() : "";
       const idPermiso = row
         ? row.querySelector(".action-btn.view").getAttribute("data-idpermiso")
         : "";
-
-      if (tipoPermiso === "PT No Peligroso") {
-        window.location.href = `/Modules/Fomularios/PT1/PT1imprimirseg.html?tipo=PT1&id=${idPermiso}`;
-      } else if (tipoPermiso === "PT para Apertura Equipo o Línea") {
-        window.location.href = `/Modules/Fomularios/PT2/PT2imprimirseg.html?tipo=PT2&id=${idPermiso}`;
-      } else if (tipoPermiso === "PT de Entrada a Espacio Confinado") {
-        window.location.href = `/Modules/Fomularios/PT3/PT3imprimirseg.html?tipo=PT3&id=${idPermiso}`;
-      } else if (tipoPermiso === "PT en Altura") {
-        window.location.href = `/Modules/Fomularios/PT4/PT4imprimirseg.html?tipo=PT4&id=${idPermiso}`;
-      } else if (tipoPermiso === "PT de Fuego Abierto") {
-        window.location.href = `/Modules/Fomularios/PT5/PT5imprimirseg.html?tipo=PT5&id=${idPermiso}`;
-      } else if (tipoPermiso === "PT con Energía Eléctrica") {
-        window.location.href = `/Modules/Fomularios/PT6/PT6imprimirseg.html?tipo=PT6&id=${idPermiso}`;
-      } else if (tipoPermiso === "PT con Fuentes Radioactivas") {
-        window.location.href = `/Modules/Fomularios/PT7/PT7imprimirseg.html?tipo=PT7&id=${idPermiso}`;
-      } else if (tipoPermiso === "PT para Izaje con Hiab con Grúa") {
-        window.location.href = `/Modules/Fomularios/PT8/PT8imprimirseg.html?tipo=PT8&id=${idPermiso}`;
-      } else if (tipoPermiso === "PT con Cesta Izada") {
-        window.location.href = `/Modules/Fomularios/PT9/PT9imprimirseg.html?tipo=PT9&id=${idPermiso}`;
-      } else if (tipoPermiso === "PT de Excavacion") {
-        window.location.href = `/Modules/Fomularios/PT10/PT10imprimirseg.html?tipo=PT10&id=${idPermiso}`;
-      } else {
-        window.location.href = `/JS/usuario/LogicaImprimir.html?tipo=OTRO&id=${idPermiso}`;
-      }
+      window.location.href = `/Modules/Fomularios/PT1/PT1imprimirseg.html?tipo=PT1&id=${idPermiso}`;
     }
   });
 }

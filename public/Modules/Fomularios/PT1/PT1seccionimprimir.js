@@ -23,24 +23,38 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Función para mostrar/ocultar permisos según los valores columna_*_valor
 function mostrarPermisosSegunValores(data) {
+    // Depuración: mostrar valores de los campos de permisos
+    console.log("Valores recibidos:", {
+      columna_altura_valor: data.columna_altura_valor,
+      columna_confinado_valor: data.columna_confinado_valor,
+      columna_fuego_valor: data.columna_fuego_valor,
+      columna_apertura_valor: data.columna_apertura_valor,
+      columna_nopeligrosovalor_valor: data.columna_nopeligrosovalor_valor
+    });
   // Mapeo de id de contenedor y campo de valor
   const permisos = [
-    { id: "permiso-altura", valor: data.columna_altura_valor },
-    { id: "permiso-confinado", valor: data.columna_confinado_valor },
-    { id: "permiso-fuego", valor: data.columna_fuego_valor },
-    { id: "permiso-apertura", valor: data.columna_apertura_valor },
-    { id: "permiso-nopeligroso", valor: data.columna_nopeligrosovalor_valor },
+    { id: "permiso-altura", valor: data.columna_altura_valor, nombre: "Permiso de Altura" },
+    { id: "permiso-confinado", valor: data.columna_confinado_valor, nombre: "Permiso Espacio Confinado" },
+    { id: "permiso-fuego", valor: data.columna_fuego_valor, nombre: "Permiso de Fuego" },
+    { id: "permiso-apertura", valor: data.columna_apertura_valor, nombre: "Permiso de Apertura" },
+    { id: "permiso-nopeligroso", valor: data.columna_nopeligrosovalor_valor, nombre: "Permiso No Peligroso" },
   ];
+  const permisosMostrados = [];
   permisos.forEach((permiso) => {
     const contenedor = document.getElementById(permiso.id);
     if (contenedor) {
-      if (permiso.valor === "SI") {
+      if (
+        typeof permiso.valor === "string" &&
+        permiso.valor.trim().toUpperCase() === "SI"
+      ) {
         contenedor.style.display = "";
+        permisosMostrados.push(permiso.nombre);
       } else {
         contenedor.style.display = "none";
       }
     }
   });
+  console.log("Permisos mostrados:", permisosMostrados.length > 0 ? permisosMostrados : "Ninguno");
 }
 // Consulta todos los datos de un permiso y relacionados por id_permiso
 async function consultarTodoPermiso(id_permiso) {

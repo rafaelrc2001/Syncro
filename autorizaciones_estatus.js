@@ -427,6 +427,7 @@ router.post("/autorizaciones/area", async (req, res) => {
     fecha_hora_area,
     ip_area,
     localizacion_area,
+    firma,
   } = req.body;
 
   // Validar que los campos requeridos estén presentes
@@ -452,8 +453,9 @@ router.post("/autorizaciones/area", async (req, res) => {
                  operador_area = COALESCE($2, operador_area),
                  fecha_hora_area = COALESCE($3, fecha_hora_area),
                  ip_area = COALESCE($4, ip_area),
-                 localizacion_area = COALESCE($5, localizacion_area)
-             WHERE id_permiso = $6
+                 localizacion_area = COALESCE($5, localizacion_area),
+                 firma = COALESCE($6, firma)
+             WHERE id_permiso = $7
              RETURNING *`,
           [
             responsable_area,
@@ -461,6 +463,7 @@ router.post("/autorizaciones/area", async (req, res) => {
             fecha_hora_area || null,
             ip_area || null,
             localizacion_area || null,
+            firma || null,
             id_permiso,
           ]
         );
@@ -488,12 +491,12 @@ router.post("/autorizaciones/area", async (req, res) => {
     });
   }
 
-  // Si no existe, insertamos el registro incluyendo fecha_hora_area y comentario si vienen
+  // Si no existe, insertamos el registro incluyendo fecha_hora_area, firma y comentario si vienen
   try {
     const result = await db.query(
       `INSERT INTO autorizaciones (
-        id_permiso, id_supervisor, id_categoria, responsable_area, operador_area, fecha_hora_area, ip_area, localizacion_area
-      ) VALUES ($1, $2, $3, $4, $5, COALESCE($6, NOW()), $7, $8)
+        id_permiso, id_supervisor, id_categoria, responsable_area, operador_area, fecha_hora_area, ip_area, localizacion_area, firma
+      ) VALUES ($1, $2, $3, $4, $5, COALESCE($6, NOW()), $7, $8, $9)
       RETURNING *`,
       [
         id_permiso,
@@ -504,6 +507,7 @@ router.post("/autorizaciones/area", async (req, res) => {
         fecha_hora_area || null,
         ip_area || null,
         localizacion_area || null,
+        firma || null,
       ]
     );
     res.status(201).json({
@@ -520,6 +524,8 @@ router.post("/autorizaciones/area", async (req, res) => {
     });
   }
 });
+
+
 
 
 // NOTA: Ya no existe lógica para guardar requisitos del área en una tabla específica de permiso.
@@ -571,7 +577,7 @@ router.post("/estatus/no_autorizado", async (req, res) => {
 
 // Endpoint para actualizar supervisor y categoría (solo nombres) en autorizaciones
 router.put("/autorizaciones/supervisor-categoria", async (req, res) => {
-  const { id_permiso, supervisor, categoria, fecha_hora_supervisor } = req.body;
+  const { id_permiso, supervisor, categoria, fecha_hora_supervisor, ip_supervisor, localizacion_supervisor, firma_supervisor } = req.body;
 
   if (!id_permiso || !supervisor || !categoria) {
     return res.status(400).json({
@@ -619,10 +625,21 @@ router.put("/autorizaciones/supervisor-categoria", async (req, res) => {
         `UPDATE autorizaciones
          SET id_supervisor = $1,
              id_categoria = $2,
-             fecha_hora_supervisor = COALESCE($3, fecha_hora_supervisor)
-         WHERE id_permiso = $4
+             fecha_hora_supervisor = COALESCE($3, fecha_hora_supervisor),
+             ip_supervisor = COALESCE($4, ip_supervisor),
+             localizacion_supervisor = COALESCE($5, localizacion_supervisor),
+             firma_supervisor = COALESCE($6, firma_supervisor)
+         WHERE id_permiso = $7
          RETURNING *`,
-        [idSupervisor, idCategoria, fecha_hora_supervisor || null, id_permiso]
+        [
+          idSupervisor,
+          idCategoria,
+          fecha_hora_supervisor || null,
+          ip_supervisor || null,
+          localizacion_supervisor || null,
+          firma_supervisor || null,
+          id_permiso
+        ]
       );
       if (result.rows.length === 0) {
         return res.status(404).json({
@@ -632,7 +649,7 @@ router.put("/autorizaciones/supervisor-categoria", async (req, res) => {
       }
       return res.status(200).json({
         success: true,
-        message: "Supervisor, categoría y hora actualizados exitosamente",
+        message: "Supervisor, categoría, hora y datos extra actualizados exitosamente",
         data: result.rows[0],
       });
     } else {

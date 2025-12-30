@@ -1,3 +1,4 @@
+
 // Ejecutar consulta automática al cargar si hay id en la URL
 document.addEventListener("DOMContentLoaded", function () {
   const params = new URLSearchParams(window.location.search);
@@ -13,6 +14,12 @@ document.addEventListener("DOMContentLoaded", function () {
     llenarTablaResponsables(idPermiso);
   }
 });
+
+
+
+
+
+
 
 // Función para mostrar/ocultar permisos según los valores columna_*_valor
 function mostrarPermisosSegunValores(data) {
@@ -367,167 +374,159 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 // --- Lógica para el botón "Autorizar" ---
-const btnAutorizar = document.getElementById("btn-guardar-campos");
-if (btnAutorizar) {
-  btnAutorizar.addEventListener("click", async function () {
-    // 1. Obtener datos necesarios
-    const params = new URLSearchParams(window.location.search);
-    const idPermiso = params.get("id") || window.idPermisoActual;
-    const responsableInput = document.getElementById("responsable-aprobador");
-    const operadorInput = document.getElementById("responsable-aprobador2");
-    const responsable_area = responsableInput
-      ? responsableInput.value.trim()
-      : "";
-    const operador_area = operadorInput ? operadorInput.value.trim() : "";
 
-    // 2. Validaciones básicas
-    if (!idPermiso) {
-     
-      return;
+// --- Lógica reutilizable para insertar autorización de área ---
+async function insertarAutorizacionArea() {
+  // 1. Obtener datos necesarios
+  const params = new URLSearchParams(window.location.search);
+  const idPermiso = params.get("id") || window.idPermisoActual;
+  const responsableInput = document.getElementById("responsable-aprobador");
+  const operadorInput = document.getElementById("responsable-aprobador2");
+  const responsable_area = responsableInput ? responsableInput.value.trim() : "";
+  const operador_area = operadorInput ? operadorInput.value.trim() : "";
+  // Obtener firma
+  let firma = "";
+  const outputFirma = document.getElementById("outputBase64");
+  if (outputFirma && outputFirma.value) {
+    firma = outputFirma.value;
+  }
+  // Mostrar valor de la firma en consola
+  if (firma) {
+    console.log("[DEBUG] Valor de firma (Base64):", firma);
+    // Si quieres ver solo el texto plano (sin encabezado data:image/png;base64,)
+    if (firma.startsWith("data:image")) {
+      const base64Solo = firma.split(",")[1];
+      console.log("[DEBUG] Solo Base64:", base64Solo);
     }
-    // Validar responsable obligatorio
-    if (!responsable_area) {
-      alert("Debes ingresar el nombre del responsable del área 1.");
-      if (responsableInput) responsableInput.focus();
-      return;
-    }
-
-    // 3. Insertar autorización de área vía API
+  } else {
+    console.warn("[DEBUG] No se encontró firma para enviar");
+  }
+  // Obtener IP y localización si está disponible
+  let ip_area = "";
+  let localizacion_area = "";
+  if (window.obtenerUbicacionYIP) {
     try {
-      // --- Consultar el id_estatus desde permisos_trabajo ---
-      // Este endpoint obtiene los datos del permiso de trabajo específico usando su ID. 
-      // Permite recuperar información general y de estatus del permiso, necesaria para mostrar y procesar la autorización en la interfaz. Es fundamental para validar el estado actual y continuar con el flujo de autorización o rechazo.
-      let idEstatus = null;
-      try {
-        const respEstatus = await fetch(`/api/estatus/permiso/${idPermiso}`);
-        if (respEstatus.ok) {
-          const permisoData = await respEstatus.json();
-          idEstatus =
-            permisoData.id_estatus ||
-            (permisoData.data && permisoData.data.id_estatus);
-          console.log(
-            "[DEPURACIÓN] idEstatus obtenido:",
-            idEstatus,
-            "| permisoData:",
-            permisoData
-          );
-        } else {
-          console.error(
-            "[DEPURACIÓN] Error al obtener id_estatus. Status:",
-            respEstatus.status
-          );
-        }
-      } catch (err) {
-        console.error("[DEPURACIÓN] Error al consultar id_estatus:", err);
-      }
+      const ubic = await window.obtenerUbicacionYIP();
+      ip_area = ubic.ip || "";
+      localizacion_area = ubic.localizacion || "";
+    } catch (e) {
+      // Si falla, deja vacío
+    }
+  }
 
-      // --- Actualizar el estatus si se obtuvo el id_estatus ---
-      if (idEstatus) {
-        // Este endpoint actualiza el estatus de seguridad del permiso en la base de datos. 
-        // Se utiliza después de obtener el id_estatus y es clave para reflejar que el área de seguridad ha autorizado 
-        // o cambiado el estado del permiso. Garantiza la trazabilidad y control del flujo de autorizaciones en el sistema.
-        try {
-          const payloadEstatus = { id_estatus: idEstatus };
-          console.log(
-            "[DEPURACIÓN] Enviando a /api/estatus/activo:",
-            payloadEstatus
-          );
-          const respEstatus = await fetch("/api/estatus/activo", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payloadEstatus),
-          });
-          console.log(
-            "[DEPURACIÓN] Respuesta HTTP de estatus/activo:",
-            respEstatus.status
-          );
-          let data = {};
-          try {
-            data = await respEstatus.json();
-          } catch (e) {
-            console.warn(
-              "[DEPURACIÓN] No se pudo parsear JSON de respuesta de estatus/activo"
-            );
-          }
-          if (!respEstatus.ok) {
-            console.error(
-              "[DEPURACIÓN] Error en respuesta de estatus/activo:",
-              data
-            );
-          } else {
-            console.log(
-              "[DEPURACIÓN] Respuesta exitosa de estatus/activo:",
-              data
-            );
-          }
-        } catch (err) {
-          console.error(
-            "[DEPURACIÓN] Excepción al actualizar estatus de activo:",
-            err
-          );
-        }
+  // 2. Validaciones básicas
+  if (!idPermiso) {
+    return;
+  }
+  if (!responsable_area) {
+    alert("Debes ingresar el nombre del responsable del área 1.");
+    if (responsableInput) responsableInput.focus();
+    return;
+  }
+
+  // 3. Insertar autorización de área vía API
+  try {
+    let idEstatus = null;
+    try {
+      const respEstatus = await fetch(`/api/estatus/permiso/${idPermiso}`);
+      if (respEstatus.ok) {
+        const permisoData = await respEstatus.json();
+        idEstatus = permisoData.id_estatus || (permisoData.data && permisoData.data.id_estatus);
+        console.log("[DEPURACIÓN] idEstatus obtenido:", idEstatus, "| permisoData:", permisoData);
       } else {
-        console.warn(
-          "[DEPURACIÓN] No se obtuvo id_estatus para actualizar estatus."
-        );
-      }
-
-      // Generar timestamp automático para autorización PT1 (hora local)
-      const now = new Date();
-      const fechaHoraAutorizacion = new Date(
-        now.getTime() - now.getTimezoneOffset() * 60000
-      ).toISOString();
-      console.log(
-        "[AUTORIZAR PT1] Timestamp generado (hora local):",
-        fechaHoraAutorizacion
-      );
-
-      // Guardar responsable y operador de área igual que PT2
-      // Este endpoint guarda la autorización del área, 
-      // registrando responsable, operador y fecha/hora.
-      // Es esencial para dejar evidencia de quién autorizó el permiso y cuándo,
-      //  cumpliendo requisitos de auditoría y control interno. Se usa tanto para autorizaciones normales como para rechazos, asegurando integridad en el registro de acciones.
-      await fetch("/api/autorizaciones/area", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          id_permiso: idPermiso,
-          responsable_area,
-          encargado_area: operador_area,
-          fecha_hora_area: fechaHoraAutorizacion,
-        }),
-      });
-
-      // --- Agregar responsable y operador de área ---
-      // Este endpoint guarda la autorización del área, registrando responsable, operador y fecha/hora. Es esencial para dejar evidencia de quién autorizó el permiso y cuándo, cumpliendo requisitos de auditoría y control interno. Se usa tanto para autorizaciones normales como para rechazos, asegurando integridad en el registro de acciones.
-      await fetch("/api/autorizaciones/area", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          id_permiso: idPermiso,
-          responsable_area,
-          encargado_area: operador_area,
-          fecha_hora_area: fechaHoraAutorizacion,
-        }),
-      });
-
-      // ...existing code...
-      // Mostrar modal de confirmación en vez de redirigir inmediatamente
-      const confirmationModal = document.getElementById("confirmation-modal");
-      if (confirmationModal) {
-        confirmationModal.style.display = "flex";
-      }
-      // Si tienes el número de permiso generado, puedes ponerlo aquí:
-      const permitNumber = document.getElementById("generated-permit");
-      if (permitNumber) {
-        permitNumber.textContent = idPermiso || "-";
+        console.error("[DEPURACIÓN] Error al obtener id_estatus. Status:", respEstatus.status);
       }
     } catch (err) {
-      console.error(
-        "[DEPURACIÓN] Error al insertar autorización de área:",
-        err
-      );
+      console.error("[DEPURACIÓN] Error al consultar id_estatus:", err);
     }
+
+    if (idEstatus) {
+      try {
+        const payloadEstatus = { id_estatus: idEstatus };
+        console.log("[DEPURACIÓN] Enviando a /api/estatus/activo:", payloadEstatus);
+        const respEstatus = await fetch("/api/estatus/activo", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payloadEstatus),
+        });
+        console.log("[DEPURACIÓN] Respuesta HTTP de estatus/activo:", respEstatus.status);
+        let data = {};
+        try {
+          data = await respEstatus.json();
+        } catch (e) {
+          console.warn("[DEPURACIÓN] No se pudo parsear JSON de respuesta de estatus/activo");
+        }
+        if (!respEstatus.ok) {
+          console.error("[DEPURACIÓN] Error en respuesta de estatus/activo:", data);
+        } else {
+          console.log("[DEPURACIÓN] Respuesta exitosa de estatus/activo:", data);
+        }
+      } catch (err) {
+        console.error("[DEPURACIÓN] Excepción al actualizar estatus de activo:", err);
+      }
+    } else {
+      console.warn("[DEPURACIÓN] No se obtuvo id_estatus para actualizar estatus.");
+    }
+
+    const now = new Date();
+    const fechaHoraAutorizacion = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString();
+    console.log("[AUTORIZAR PT1] Timestamp generado (hora local):", fechaHoraAutorizacion);
+
+    // Enviar todos los datos relevantes
+    await fetch("/api/autorizaciones/area", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id_permiso: idPermiso,
+        responsable_area,
+        encargado_area: operador_area,
+        fecha_hora_area: fechaHoraAutorizacion,
+        ip_area,
+        localizacion_area,
+        firma,
+      }),
+    });
+
+    // (Si necesitas la doble inserción, repite aquí, si no, puedes quitar la segunda llamada)
+    await fetch("/api/autorizaciones/area", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id_permiso: idPermiso,
+        responsable_area,
+        encargado_area: operador_area,
+        fecha_hora_area: fechaHoraAutorizacion,
+        ip_area,
+        localizacion_area,
+        firma,
+      }),
+    });
+
+    const confirmationModal = document.getElementById("confirmation-modal");
+    if (confirmationModal) {
+      confirmationModal.style.display = "flex";
+    }
+    const permitNumber = document.getElementById("generated-permit");
+    if (permitNumber) {
+      permitNumber.textContent = idPermiso || "-";
+    }
+  } catch (err) {
+    console.error("[DEPURACIÓN] Error al insertar autorización de área:", err);
+  }
+}
+
+// --- Botón Autorizar ---
+const btnAutorizar = document.getElementById("btn-guardar-campos");
+if (btnAutorizar) {
+  btnAutorizar.addEventListener("click", insertarAutorizacionArea);
+}
+
+// --- Botón Guardar y Continuar (firma) ---
+const btnGuardarFirma = document.getElementById("guardar");
+if (btnGuardarFirma) {
+  btnGuardarFirma.addEventListener("click", async function () {
+    // Aquí ya se guardó la firma en el outputBase64, ahora continúa el flujo normal
+    await insertarAutorizacionArea();
   });
 }
 
@@ -886,141 +885,130 @@ if (modalConfirmarAutorizar) {
 
 // Procesar autorización al confirmar
 if (btnConfirmarAutorizar) {
-  btnConfirmarAutorizar.addEventListener("click", async function () {
-    try {
-      // Cerrar modal inmediatamente
-      if (modalConfirmarAutorizar) {
-        modalConfirmarAutorizar.style.display = "none";
-      }
 
-      //prueba
-      //prueba
-      //prueba
-      //prueba
-      //prueba
-      window.obtenerUbicacionYIP();
+  // Referenciar el modal ya presente en el HTML
+  const modalAgregarFirma = document.getElementById("modalAgregarFirma");
 
-      // 1. Obtener datos necesarios
-      const params = new URLSearchParams(window.location.search);
-      const idPermiso = params.get("id") || window.idPermisoActual;
-      const responsableInput = document.getElementById("responsable-aprobador");
-      const operadorInput = document.getElementById("responsable-aprobador2");
-      const responsable_area = responsableInput
-        ? responsableInput.value.trim()
-        : "";
-      const operador_area = operadorInput ? operadorInput.value.trim() : "";
+  btnConfirmarAutorizar.addEventListener("click", function (e) {
+    e.preventDefault();
+    // Mostrar modal de agregar firma antes de continuar
+    if (modalAgregarFirma) {
+      modalAgregarFirma.style.display = "flex";
+      // Configurar botones
+      const btnContinuar = document.getElementById("btnAgregarFirmaContinuar");
+      const btnCancelar = document.getElementById("btnAgregarFirmaCancelar");
+      if (btnContinuar) {
+        btnContinuar.onclick = async function () {
+          modalAgregarFirma.style.display = "none";
+          try {
+            if (modalConfirmarAutorizar) {
+              modalConfirmarAutorizar.style.display = "none";
+            }
 
-      // 2. Validaciones básicas
-      if (!idPermiso) {
-      
-        return;
-      }
+            // 1. Obtener datos necesarios
+            const params = new URLSearchParams(window.location.search);
+            const idPermiso = params.get("id") || window.idPermisoActual;
+            const responsableInput = document.getElementById("responsable-aprobador");
+            const operadorInput = document.getElementById("responsable-aprobador2");
+            const responsable_area = responsableInput ? responsableInput.value.trim() : "";
+            const operador_area = operadorInput ? operadorInput.value.trim() : "";
 
-      if (!responsable_area) {
-        alert("Debes ingresar el nombre del responsable del área. 4");
-        if (responsableInput) responsableInput.focus();
-        return;
-      }
+            // Obtener la firma desde el textarea generado por lienzos_firma.js
+            let firma = "";
+            const outputFirma = document.getElementById("outputBase64");
+            if (outputFirma && outputFirma.value) {
+              firma = outputFirma.value;
+            }
 
-      // 3. Insertar autorización de área vía API
-      // --- Consultar el id_estatus desde permisos_trabajo ---
-      let idEstatus = null;
-      try {
-        const respEstatus = await fetch(`/api/estatus/permiso/${idPermiso}`);
-        if (respEstatus.ok) {
-          const permisoData = await respEstatus.json();
-          idEstatus =
-            permisoData.id_estatus ||
-            (permisoData.data && permisoData.data.id_estatus);
-          console.log("[DEPURACIÓN] idEstatus obtenido:", idEstatus);
-        } else {
-          console.error(
-            "[DEPURACIÓN] Error al obtener id_estatus. Status:",
-            respEstatus.status
-          );
-        }
-      } catch (err) {
-        console.error("[DEPURACIÓN] Error al consultar id_estatus:", err);
-      }
+            // 2. Validaciones básicas
+            if (!idPermiso) return;
+            if (!responsable_area) {
+              alert("Debes ingresar el nombre del responsable del área. 4");
+              if (responsableInput) responsableInput.focus();
+              return;
+            }
 
-      // --- Actualizar el estatus si se obtuvo el id_estatus ---
-      if (idEstatus) {
-        try {
-          const payloadEstatus = { id_estatus: idEstatus };
-          const respEstatus = await fetch("/api/estatus/activo", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payloadEstatus),
-          });
+            // 3. Consultar el id_estatus desde permisos_trabajo
+            let idEstatus = null;
+            try {
+              const respEstatus = await fetch(`/api/estatus/permiso/${idPermiso}`);
+              if (respEstatus.ok) {
+                const permisoData = await respEstatus.json();
+                idEstatus = permisoData.id_estatus || (permisoData.data && permisoData.data.id_estatus);
+                console.log("[DEPURACIÓN] idEstatus obtenido:", idEstatus);
+              } else {
+                console.error("[DEPURACIÓN] Error al obtener id_estatus. Status:", respEstatus.status);
+              }
+            } catch (err) {
+              console.error("[DEPURACIÓN] Error al consultar id_estatus:", err);
+            }
 
-          if (!respEstatus.ok) {
-            console.error(
-              "[DEPURACIÓN] Error en respuesta de estatus/activo"
-            );
-          } else {
-            console.log(
-              "[DEPURACIÓN] Estatus de activo actualizado correctamente"
-            );
+            // 4. Actualizar el estatus si se obtuvo el id_estatus
+            if (idEstatus) {
+              try {
+                const payloadEstatus = { id_estatus: idEstatus };
+                const respEstatus = await fetch("/api/estatus/activo", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify(payloadEstatus),
+                });
+                if (!respEstatus.ok) {
+                  console.error("[DEPURACIÓN] Error en respuesta de estatus/activo");
+                } else {
+                  console.log("[DEPURACIÓN] Estatus de activo actualizado correctamente");
+                }
+              } catch (err) {
+                console.error("[DEPURACIÓN] Excepción al actualizar estatus de activo:", err);
+              }
+            }
+
+            // 5. Generar timestamp y guardar autorización
+            const now = new Date();
+            const fechaHoraAutorizacion = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString();
+
+            const { ip, localizacion } = await window.obtenerUbicacionYIP();
+            // Enviar la firma al backend
+            const respAutorizacion = await fetch("/api/autorizaciones/area", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                id_permiso: idPermiso,
+                responsable_area,
+                encargado_area: operador_area,
+                fecha_hora_area: fechaHoraAutorizacion,
+                ip_area: ip,
+                localizacion_area: localizacion,
+                firma,
+              }),
+            });
+
+            if (!respAutorizacion.ok) {
+              throw new Error("Error al guardar la autorización del área");
+            }
+
+            // 6. Mostrar modal de éxito o redirigir
+            const confirmationModal = document.getElementById("confirmation-modal");
+            if (confirmationModal) {
+              const permitNumber = document.getElementById("generated-permit");
+              if (permitNumber) {
+                permitNumber.textContent = idPermiso;
+              }
+              confirmationModal.style.display = "flex";
+            } else {
+              alert("Permiso autorizado exitosamente");
+              window.location.reload();
+            }
+          } catch (err) {
+            console.error("Error al autorizar el permiso:", err, err?.message, err?.stack);
+            alert("Ocurrió un error al autorizar el permiso. Por favor, intenta nuevamente.");
           }
-        } catch (err) {
-          console.error(
-            "[DEPURACIÓN] Excepción al actualizar estatus de activo:",
-            err
-          );
-        }
+        };
       }
-
-      // 4. Recopilar datos del formulario de requisitos del área
-      // Eliminada la lógica de guardar requisitos del área, ya no se usa respRequisitos ni fetch relacionado.
-
-      // 6. Generar timestamp y guardar autorización
-      const now = new Date();
-      const fechaHoraAutorizacion = new Date(
-        now.getTime() - now.getTimezoneOffset() * 60000
-      ).toISOString();
-
-      const { ip, localizacion } = await window.obtenerUbicacionYIP();
-      // Este endpoint guarda la autorización del área, registrando responsable, operador y fecha/hora, así como IP y localización. Es esencial para dejar evidencia de quién autorizó el permiso y cuándo, cumpliendo requisitos de auditoría y control interno. Se usa tanto para autorizaciones normales como para rechazos, asegurando integridad en el registro de acciones.
-      const respAutorizacion = await fetch("/api/autorizaciones/area", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          id_permiso: idPermiso,
-          responsable_area,
-          encargado_area: operador_area,
-          fecha_hora_area: fechaHoraAutorizacion,
-          ip_area: ip, // variable de tu función
-          localizacion_area: localizacion, // variable de tu función
-        }),
-      });
-
-      if (!respAutorizacion.ok) {
-        throw new Error("Error al guardar la autorización del área");
+      if (btnCancelar) {
+        btnCancelar.onclick = function () {
+          modalAgregarFirma.style.display = "none";
+        };
       }
-
-      // 7. Mostrar modal de éxito o redirigir
-      const confirmationModal = document.getElementById("confirmation-modal");
-      if (confirmationModal) {
-        const permitNumber = document.getElementById("generated-permit");
-        if (permitNumber) {
-          permitNumber.textContent = idPermiso;
-        }
-        confirmationModal.style.display = "flex";
-      } else {
-        // Si no hay modal de confirmación, mostrar alerta y recargar
-        alert("Permiso autorizado exitosamente");
-        window.location.reload();
-      }
-    } catch (err) {
-      console.error(
-        "Error al autorizar el permiso:",
-        err,
-        err?.message,
-        err?.stack
-      );
-      alert(
-        "Ocurrió un error al autorizar el permiso. Por favor, intenta nuevamente."
-      );
     }
   });
 }
@@ -1185,3 +1173,4 @@ function llenarTablaResponsables(idPermiso) {
       console.error("Error al consultar personas de autorización:", err);
     });
 }
+

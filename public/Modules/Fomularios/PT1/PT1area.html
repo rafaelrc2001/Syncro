@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -705,7 +706,26 @@
                             </div>
 
 
+                            
 
+
+                                    <!-- Modal de Agregar Firma -->
+                            <div id="modalAgregarFirma" class="modal-confirmar" style="display:none;">
+                                <div class="modal-confirmar-content" style="max-width: 500px;">
+                                    <div class="container" style="padding: 0; background: none; box-shadow: none;">
+                                        <h2 style="margin-top:0;">1. Dibuja tu firma</h2>
+                                        <canvas id="canvas" width="400" height="200" style="border:1px solid #ccc; border-radius:8px; background:#fff; cursor:crosshair;"></canvas>
+                                        <!-- Input oculto para la firma en base64 -->
+                                        <input type="hidden" id="outputBase64" />
+                                        <div class="controls" style="margin: 16px 0; display: flex; gap: 12px;">
+                                            <button class="btn-clear" id="limpiar" type="button" style="background:#eee; color:#333; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Borrar Lienzo</button>
+                                            <button class="btn-save" id="guardar" type="button" style="background:#1976d2; color:#fff; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Guardar y Continuar</button>
+                                            <button id="btnAgregarFirmaCancelar" type="button" class="btn-cancel" style="margin-left:auto;">Cancelar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button id="btnAgregarFirmaContinuar" type="button" style="display:none"></button>
 
 
                 </div>
@@ -767,8 +787,9 @@
 
      <!-- <script src="/Modules/Fomularios/PT1/PT1.js"></script>-->
 
-       <script src="/Modules/Fomularios/Generales/fecha_hora.js"></script>
-       <script src="/Modules/Fomularios/Generales/obtenerUbicacionYIP.js"></script>
-     <script src="/Modules/Fomularios/PT1/PT1seccionarea.js"></script>
+        <script src="/Modules/Fomularios/Generales/fecha_hora.js"></script>
+        <script src="/Modules/Fomularios/Generales/obtenerUbicacionYIP.js"></script>
+        <script src="/Modules/Fomularios/PT1/PT1seccionarea.js"></script>
+        <script src="/Modules/Fomularios/Generales/lienzos_firma.js"></script>
 </body>
 </html>

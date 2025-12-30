@@ -275,6 +275,7 @@ function validarSupervisorYCategoria() {
   }
   return true;
 }
+
 // Mostrar nombres de responsable y operador del área en la sección de aprobaciones
 document.addEventListener("DOMContentLoaded", function () {
   // Los listeners del modal se manejan en setupModalComentario()

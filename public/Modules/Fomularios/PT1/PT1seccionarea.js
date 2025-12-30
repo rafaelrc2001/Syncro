@@ -1122,6 +1122,7 @@ if (btnConfirmarAutorizar) {
 })();
 
 
+
 function llenarTablaResponsables(idPermiso) {
   /**
    * Función para llenar la tabla de responsables en el modal AST.

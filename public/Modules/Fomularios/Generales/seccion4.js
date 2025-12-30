@@ -313,6 +313,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const columna_apertura_valor = document.getElementById("columna_apertura_valor")?.textContent || null;
         const columna_confinado_valor = document.getElementById("columna_confinado_valor")?.textContent || null;
         // Siempre obtener el valor del span oculto para Permiso No Peligroso
+
+
+        const firma_creacion = document.getElementById("outputBase64Firma")?.value || null;
+
         let columna_nopeligrosovalor_valor = null;
         const spanNoPeligroso = document.getElementById("columna_nopeligroso_valor");
         if (spanNoPeligroso) {
@@ -425,7 +429,7 @@ document.addEventListener("DOMContentLoaded", () => {
             columna_nopeligrosovalor_valor,
 
 
-
+firma_creacion,
 
 
 
@@ -656,3 +660,5 @@ function obtenerFechaHoraLocal() {
   const milliseconds = String(now.getMilliseconds()).padStart(3, "0");
   return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}`;
 }
+
+

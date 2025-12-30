@@ -811,3 +811,30 @@ h1, h2, h3, h4, h5, h6 {
 .pre-work-table tr {
     height: 3.2rem; /* Altura mínima para cada fila */
 }
+
+
+.modal-confirmar {
+    display: none; /* Se muestra con JS */
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: auto;
+    background: rgba(0,0,0,0.4); /* Fondo oscuro semitransparente */
+    justify-content: center;
+    align-items: center;
+    /* Para centrar el contenido con flex */
+    display: flex;
+}
+
+.modal-confirmar-content {
+    background: #fff;
+    margin: auto;
+    border-radius: 8px;
+    padding: 24px 16px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.2);
+    max-width: 500px;
+    width: 100%;
+}

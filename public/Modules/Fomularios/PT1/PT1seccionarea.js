@@ -530,6 +530,8 @@ if (btnGuardarFirma) {
   });
 }
 
+
+
 // --- Lógica para el botón "No Autorizar" ---
 
 // Lógica para cerrar el modal de confirmación y redirigir
@@ -640,6 +642,31 @@ if (btnNoAutorizar) {
       const operador_area = operadorInput ? operadorInput.value.trim() : "";
       const params = new URLSearchParams(window.location.search);
       const idPermiso = params.get("id") || window.idPermisoActual;
+      // Obtener la firma del input/canvas (igual que en autorizar)
+      let firma = "";
+      const outputFirma = document.getElementById("outputBase64");
+      if (outputFirma && outputFirma.value) {
+        firma = outputFirma.value;
+        console.log("[NO AUTORIZAR] Firma capturada (Base64):", firma);
+      } else {
+        console.warn("[NO AUTORIZAR] No se encontró firma para enviar");
+      }
+      // Obtener IP y localización usando window.obtenerUbicacionYIP
+      let ip_area = "";
+      let localizacion_area = "";
+      if (window.obtenerUbicacionYIP) {
+        try {
+          const ubic = await window.obtenerUbicacionYIP();
+          ip_area = ubic.ip || "";
+          localizacion_area = ubic.localizacion || "";
+          console.log("[NO AUTORIZAR] IP capturada:", ip_area);
+          console.log("[NO AUTORIZAR] Localización capturada:", localizacion_area);
+        } catch (e) {
+          console.warn("[NO AUTORIZAR] Error al obtener IP/localización:", e);
+        }
+      } else {
+        console.warn("[NO AUTORIZAR] window.obtenerUbicacionYIP no está disponible");
+      }
       if (!comentario) {
         return;
       }
@@ -660,8 +687,7 @@ if (btnNoAutorizar) {
           fechaHoraRechazo
         );
 
-        // 1. Guardar comentario y responsable en la tabla de autorizaciones (puedes adaptar el endpoint si tienes uno específico para no autorizado)
-        // Este endpoint guarda la autorización del área, registrando responsable, operador y fecha/hora. Es esencial para dejar evidencia de quién autorizó el permiso y cuándo, cumpliendo requisitos de auditoría y control interno. Se usa tanto para autorizaciones normales como para rechazos, asegurando integridad en el registro de acciones.
+        // 1. Guardar comentario, responsable, firma, ip y localización en la tabla de autorizaciones
         const resp = await fetch("/api/autorizaciones/area", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -671,6 +697,9 @@ if (btnNoAutorizar) {
             encargado_area: operador_area,
             comentario_no_autorizar: comentario,
             fecha_hora_area: fechaHoraRechazo,
+            firma,
+            ip_area,
+            localizacion_area,
           }),
         });
         if (!resp.ok) {

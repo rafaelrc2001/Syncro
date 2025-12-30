@@ -313,13 +313,57 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnAutorizar = document.getElementById("btn-guardar-campos");
   if (btnAutorizar) {
     // Función que ejecuta la autorización real (guardada aquí para llamarla desde el modal)
+
+
+
+
+    
+    // --- INICIO FUNCIÓN QUE EJECUTA LA AUTORIZACIÓN DEL SUPERVISOR ---
+
     async function ejecutarAutorizacionSupervisor() {
+
       const params = new URLSearchParams(window.location.search);
       const idPermiso = params.get("id") || window.idPermisoActual;
       const responsableInput = document.getElementById("responsable-aprobador");
       const operadorInput = document.getElementById("responsable-aprobador2");
       const supervisor = responsableInput ? responsableInput.value.trim() : "";
       const categoria = operadorInput ? operadorInput.value.trim() : "";
+
+      // Obtener IP y localización del supervisor
+      let ip_supervisor = "";
+      let localizacion_supervisor = "";
+      if (window.obtenerUbicacionYIP) {
+        try {
+          const ubic = await window.obtenerUbicacionYIP();
+          console.log("[DEBUG] Resultado de window.obtenerUbicacionYIP():", ubic);
+          ip_supervisor = ubic.ip || "";
+          localizacion_supervisor = ubic.localizacion || "";
+          console.log("[DEBUG] ip_supervisor:", ip_supervisor);
+          console.log("[DEBUG] localizacion_supervisor:", localizacion_supervisor);
+        } catch (e) {
+          console.error("[DEBUG] Error al obtener IP y localización:", e);
+        }
+      } else {
+        console.warn("[DEBUG] window.obtenerUbicacionYIP no está disponible");
+      }
+
+      // Obtener la firma del supervisor desde el input oculto
+      let firma_supervisor = "";
+      const inputFirma = document.getElementById("outputBase64");
+      if (inputFirma) {
+        firma_supervisor = inputFirma.value;
+      }
+
+      // Mostrar valor de la firma en consola
+      if (firma_supervisor) {
+        console.log("[DEBUG] Valor de firma (Base64):", firma_supervisor);
+        if (firma_supervisor.startsWith("data:image")) {
+          const base64Solo = firma_supervisor.split(",")[1];
+          console.log("[DEBUG] Solo Base64:", base64Solo);
+        }
+      } else {
+        console.warn("[DEBUG] No se encontró firma para enviar");
+      }
 
       if (!idPermiso) {
         alert("No se pudo obtener el ID del permiso.");
@@ -331,6 +375,17 @@ document.addEventListener("DOMContentLoaded", function () {
           nowSupervisor.getTime() - nowSupervisor.getTimezoneOffset() * 60000
         ).toISOString();
 
+        // Log de los datos que se enviarán al backend
+        console.log("[DEBUG] Datos enviados a /api/autorizaciones/supervisor-categoria:", {
+          id_permiso: idPermiso,
+          supervisor,
+          categoria,
+          fecha_hora_supervisor: fechaHoraAutorizacionSupervisor,
+          ip_supervisor,
+          localizacion_supervisor,
+          firma_supervisor,
+        });
+
         await fetch("/api/autorizaciones/supervisor-categoria", {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -339,6 +394,9 @@ document.addEventListener("DOMContentLoaded", function () {
             supervisor,
             categoria,
             fecha_hora_supervisor: fechaHoraAutorizacionSupervisor,
+            ip_supervisor,
+            localizacion_supervisor,
+            firma_supervisor,
           }),
         });
       } catch (err) {
@@ -526,22 +584,43 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       if (btnConfirm) {
-        btnConfirm.onclick = async function () {
+        btnConfirm.onclick = function () {
           modal.style.display = "none";
           clearHandlers();
+          // Mostrar el modal de firma antes de continuar
+          const modalAgregarFirma = document.getElementById("modalAgregarFirma");
+          if (modalAgregarFirma) {
+            modalAgregarFirma.style.display = "flex";
+          }
+        };
+      }
+
+      // Listener para el botón Guardar y Continuar del modal de firma
+      const btnGuardarFirma = document.getElementById("guardar");
+      if (btnGuardarFirma) {
+        btnGuardarFirma.onclick = async function () {
+          // Guardar la firma en el input antes de autorizar
+          const canvas = document.getElementById('canvas');
+          const output = document.getElementById('outputBase64');
+          if (canvas && output) {
+            const dataURL = canvas.toDataURL("image/png");
+            output.value = dataURL;
+            console.log('[FIRMA][PATCH] Se guardó en outputBase64:', output.value);
+          } else {
+            console.error('[FIRMA][PATCH] No se pudo guardar en outputBase64');
+          }
+          // Ocultar el modal de firma
+          const modalAgregarFirma = document.getElementById("modalAgregarFirma");
+          if (modalAgregarFirma) {
+            modalAgregarFirma.style.display = "none";
+          }
           // Ejecutar la autorización real
           try {
-            // Reuse existing authorization flow: trigger click on original handler by calling the same async logic
-            // We'll call the original logic function if present, else fallback to submitting directly here.
             if (typeof ejecutarAutorizacionSupervisor === "function") {
               await ejecutarAutorizacionSupervisor();
-            } else {
-              // fallback: submit the original button's click handler by triggering it
-              btnAutorizar.removeEventListener("click", arguments.callee);
-              btnAutorizar.click();
             }
           } catch (err) {
-            console.error("Error al autorizar desde modal supervisor:", err);
+            console.error("Error al autorizar después de la firma:", err);
           }
         };
       }

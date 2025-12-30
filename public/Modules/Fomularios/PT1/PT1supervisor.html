@@ -806,6 +806,41 @@
         </div>
 
         
+
+
+
+
+        <div id="loader-ubicacion" style="
+  display:none;
+  position:fixed;
+  top:0; left:0;
+  width:100vw; height:100vh;
+  background:rgba(44,62,80,0.18);
+  z-index:99999;
+  justify-content:center; align-items:center;
+  backdrop-filter: blur(2px);
+">
+  <div style="
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:18px;
+    background:rgba(255,255,255,0.85);
+    border-radius:18px;
+    box-shadow:0 8px 32px rgba(44,62,80,0.18);
+    padding:32px 48px;
+  ">
+    <img src="/img/loader.gif" alt="Cargando..." style="width:80px; height:80px; margin-bottom:8px;">
+    <p style="
+      color:#2c3e50;
+      font-size:2.2em;
+      font-weight:700;
+      margin:0;
+      letter-spacing:1px;
+      text-shadow:0 2px 8px rgba(44,62,80,0.10);
+    ">Cargando...</p>
+  </div>
+</div>
 </body>
     
 </html>
@@ -827,6 +862,7 @@
 
 
        <script src="/Modules/Fomularios/Generales/fecha_hora.js"></script>
+         <script src="/Modules/Fomularios/Generales/obtenerUbicacionYIP.js"></script>
      <script src="/Modules/Fomularios/PT1/PT1seccionsupervisor.js"></script>
      <script src="/Modules/Fomularios/Generales/lienzos_firma.js"></script>
 </body>

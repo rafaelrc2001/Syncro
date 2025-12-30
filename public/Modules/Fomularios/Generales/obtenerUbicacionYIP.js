@@ -51,3 +51,7 @@ function ocultarLoader() {
 
 // Exportar globalmente para usar desde cualquier botón
 window.obtenerUbicacionYIP = obtenerUbicacionYIP;
+
+
+
+

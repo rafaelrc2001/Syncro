@@ -1,4 +1,20 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // Mostrar/ocultar campo 'Otro (especifique)' según selección
+    const maintenanceTypeSelect = document.getElementById("maintenance-type");
+    const otherMaintenanceContainer = document.getElementById("other-maintenance-container");
+    const otherMaintenanceInput = document.getElementById("other-maintenance");
+    if (maintenanceTypeSelect && otherMaintenanceContainer) {
+      maintenanceTypeSelect.addEventListener("change", function () {
+        if (this.value === "OTRO") {
+          otherMaintenanceContainer.style.display = "block";
+          otherMaintenanceInput && otherMaintenanceInput.setAttribute("required", "required");
+        } else {
+          otherMaintenanceContainer.style.display = "none";
+          otherMaintenanceInput && otherMaintenanceInput.removeAttribute("required");
+          if (otherMaintenanceInput) otherMaintenanceInput.value = "";
+        }
+      });
+    }
   // ==============================
   // 0. Configurar botón de cierre del modal
   // ==============================
@@ -241,7 +257,13 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         // === NUEVOS CAMPOS A ENVIAR ===
-        const tipo_mantenimiento = document.getElementById("maintenance-type")?.value || null;
+        let tipo_mantenimiento = document.getElementById("maintenance-type")?.value || null;
+        if (tipo_mantenimiento === "OTRO") {
+          const otroValor = document.getElementById("other-maintenance")?.value?.trim();
+          if (otroValor) {
+            tipo_mantenimiento = otroValor;
+          }
+        }
         const ot_numero = document.getElementById("work-order")?.value || null;
         const tag = document.getElementById("tag")?.value || null;
         const hora_inicio = document.getElementById("start-time")?.value || null;

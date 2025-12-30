@@ -902,5 +902,58 @@ router.get("/estatus-solo/:id_permiso", async (req, res) => {
   }
 });
 
+
+
+
+// Endpoint para obtener datos de autorizaciones junto con nombre_solicitante y firma_creacion por id_permiso
+router.get("/autorizaciones/detalle/:id_permiso", async (req, res) => {
+  const { id_permiso } = req.params;
+  if (!id_permiso) {
+    return res.status(400).json({
+      success: false,
+      error: "id_permiso es requerido",
+    });
+  }
+  try {
+    const result = await db.query(
+      `SELECT 
+        a.*, 
+        p.nombre_solicitante, 
+        p.firma_creacion,
+        p.fecha_hora,
+        s.nombre AS nombre_supervisor
+      FROM autorizaciones a
+      JOIN permisos_trabajo p 
+        ON a.id_permiso = p.id_permiso
+      LEFT JOIN supervisores s
+        ON a.id_supervisor = s.id_supervisor
+      WHERE a.id_permiso = $1`,
+      [id_permiso]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No se encontró información para ese permiso",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      data: result.rows[0],
+    });
+  } catch (err) {
+    console.error("Error al consultar detalle de autorización:", err);
+    res.status(500).json({
+      success: false,
+      error: "Error al consultar detalle de autorización",
+      details: err.message,
+    });
+  }
+});
+
+
+
+
+
+
 // Dejar solo un module.exports al final
 module.exports = router;

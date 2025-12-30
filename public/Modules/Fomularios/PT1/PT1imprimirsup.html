@@ -552,27 +552,7 @@
                 </div>
                 
           <!-- Sección 5: Aprobaciones -->
-            <div class="executive-section">
-                    <div class="section-header">
-                        <i class="ri-team-line"></i>
-                        <h3>Responsables</h3>
-                    </div>
-                    <div class="ast-summary">
-                       <table class="ast-table ast-table-responsables">
-                            <thead>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>Cargo</th>   
-                                    <th>Firma Digital</th>   
-                                    <th>Firma</th>                              
-                                </tr>
-                            </thead>
-                            <tbody id="modal-ast-responsable-body">
-                                <!-- Participantes AST dinámicos -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+           <div id="contenedor-responsables"></div>
 
 
                 <div id="comentarios-permiso" style="display:none; margin-top:2em;">
@@ -722,5 +702,21 @@
      <script src="/Modules/Fomularios/Generales/comentarios.js"></script>
      <script src="/Modules/Fomularios/Generales/fecha_hora.js"></script>
      <script src="/Modules/Fomularios/PT1/PT1seccionimprimir-unificado.js"></script>
+     <script src="/Modules/Fomularios/Generales/mostrar_autorizaciones.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const params = new URLSearchParams(window.location.search);
+    const idPermiso = params.get('id');
+    if (idPermiso && typeof cargarResponsablesAutorizacion === 'function') {
+        cargarResponsablesAutorizacion(idPermiso);
+    } else {
+        const contenedor = document.getElementById('contenedor-responsables');
+        if (contenedor) {
+            contenedor.innerHTML = '<div class="section-header"><h3>Responsables</h3></div><div class="ast-summary"><table class="ast-table ast-table-responsables"><thead><tr><th>Nombre</th><th>Cargo</th><th>Firma Digital</th><th>Firma</th></tr></thead><tbody><tr><td colspan="4" style="color:#c0392b;font-weight:600;text-align:center;">No se pudo cargar la información de autorizaciones</td></tr></tbody></table></div>';
+        }
+    }
+});
+</script>
 </body>
 </html>

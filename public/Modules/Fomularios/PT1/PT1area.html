@@ -623,18 +623,7 @@
                             </div>
                     </div>
                                         </form>
-                                        <!-- Modal para motivo de no autorización -->
-                                        <div id="modalComentario" class="modal-comentario" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(44,62,80,0.25); z-index:1000; justify-content:center; align-items:center;">
-                                            <div style="background:#fff; border-radius:12px; max-width:400px; width:90vw; padding:2em 1.5em; box-shadow:0 4px 24px rgba(44,62,80,0.18); display:flex; flex-direction:column; gap:1em;">
-                                                <h3 style="margin:0 0 0.5em 0; font-size:1.2em; color:#c0392b;"><i class="ri-close-circle-line" style="margin-right:8px;"></i>Motivo de No Autorización</h3>
-                                                <textarea id="comentarioNoAutorizar" rows="4" style="width:100%; border:1px solid #d0d7de; border-radius:6px; padding:8px; resize:vertical;" placeholder="Escribe el motivo del rechazo..."></textarea>
-                                                <div style="display:flex; justify-content:flex-end; gap:10px;">
-                                                    <button id="btnCancelarComentario" type="button" style="background:#eee; color:#333; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Cancelar</button>
-                                                    <button id="btnGuardarComentario" type="button" style="background:#c0392b; color:#fff; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Guardar</button>
-                                                </div>
-                                            </div>
-                                        </div>
-
+                           
 
 
                                           <!-- Modal de confirmación -->
@@ -700,6 +689,13 @@
                                 <div><span>Solicitante:</span> <strong id="modal-solicitante-no">-</strong></div>
                                 <div><span>Departamento:</span> <strong id="modal-departamento-no">-</strong></div>
                                 </div>
+
+                                 
+                                             
+                                <textarea id="comentarioNoAutorizar" rows="4" style="width:100%; border:1px solid #d0d7de; border-radius:6px; padding:8px; resize:vertical;" placeholder="Escribe el motivo del rechazo..."></textarea>
+                                <div style="display:flex; justify-content:flex-end; gap:10px;"></div>
+
+
                                 <div class="modal-confirmar-actions">
                                 <button id="btnCancelarConfirmarNo" type="button" class="btn-cancel">Cancelar</button>
                                 <button id="btnConfirmarNoAutorizar" type="button" class="btn-noautorizar">No Autorizar</button>
@@ -731,12 +727,12 @@
                             <div id="modalAgregarFirma" class="modal-confirmar" style="display:none;">
                                 <div class="modal-confirmar-content" style="max-width: 500px;">
                                     <div class="container" style="padding: 0; background: none; box-shadow: none;">
-                                        <h2 style="margin-top:0;">1. Dibuja tu firma</h2>
+                                        <h2 style="margin-top:0;">Favor de firmar</h2>
                                         <canvas id="canvas" width="400" height="200" style="border:1px solid #ccc; border-radius:8px; background:#fff; cursor:crosshair;"></canvas>
                                         <!-- Input oculto para la firma en base64 -->
                                         <input type="hidden" id="outputBase64" />
                                         <div class="controls" style="margin: 16px 0; display: flex; gap: 12px;">
-                                            <button class="btn-clear" id="limpiar" type="button" style="background:#eee; color:#333; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Borrar Lienzo</button>
+                                            <button class="btn-clear" id="limpiar" type="button" style="background:#eee; color:#333; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Limpiar área</button>
                                             <button class="btn-save" id="guardar" type="button" style="background:#1976d2; color:#fff; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Guardar y Continuar</button>
                                             <button id="btnAgregarFirmaCancelar" type="button" class="btn-cancel" style="margin-left:auto;">Cancelar</button>
                                         </div>

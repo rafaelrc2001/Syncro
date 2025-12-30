@@ -529,6 +529,19 @@ if (btnGuardarFirma) {
 
 
 // --- Lógica para el botón "No Autorizar" ---
+// --- Lógica para el botón "No Autorizar" ---
+// --- Lógica para el botón "No Autorizar" ---
+// --- Lógica para el botón "No Autorizar" ---
+// --- Lógica para el botón "No Autorizar" ---
+// --- Lógica para el botón "No Autorizar" ---
+
+
+
+
+
+
+
+
 
 // Lógica para cerrar el modal de confirmación y redirigir
 
@@ -563,7 +576,7 @@ if (btnNoAutorizar) {
       alert("Debes ingresar el nombre del responsable antes de rechazar 2.");
       return;
     }
-    // Mostrar un modal de confirmación para 'No Autorizar' antes de pedir el motivo
+    // Mostrar solo el modalConfirmarNoAutorizar para 'No Autorizar'
     const noModal = document.getElementById("modalConfirmarNoAutorizar");
     if (noModal) {
       try {
@@ -615,27 +628,10 @@ if (btnNoAutorizar) {
         console.warn("No se pudo rellenar modalConfirmarNoAutorizar:", e);
       }
       noModal.style.display = "flex";
-    } else {
-      // Fallback: abrir directamente el modalComentario
-      const modal = document.getElementById("modalComentario");
-      if (modal) {
-        modal.style.display = "flex";
-        const ta = document.getElementById("comentarioNoAutorizar");
-        if (ta) ta.value = "";
-      }
     }
   });
 
-  // Lógica para cerrar/cancelar el modal
-  const btnCancelarComentario = document.getElementById(
-    "btnCancelarComentario"
-  );
-  if (btnCancelarComentario) {
-    btnCancelarComentario.addEventListener("click", function () {
-      const modal = document.getElementById("modalComentario");
-      if (modal) modal.style.display = "none";
-    });
-  }
+  // Ya no se usa modalComentario, así que quitamos la lógica de cancelación
 
   // Lógica para guardar el comentario y actualizar estatus a No Autorizado
   const btnGuardarComentario = document.getElementById("btnGuardarComentario");
@@ -811,10 +807,7 @@ if (btnNoAutorizar) {
           return;
         }
 
-        // 4. Cerrar el modal y mostrar mensaje de éxito
-        const modal = document.getElementById("modalComentario");
-        if (modal) modal.style.display = "none";
-        // Mostrar el modal de no confirmación
+        // 4. Mostrar el modal de no confirmación
         const noConfirmationModal = document.getElementById("no-confirmation-modal");
         if (noConfirmationModal) {
           noConfirmationModal.style.display = "flex";
@@ -1087,16 +1080,15 @@ if (btnConfirmarAutorizar) {
 // --- FUNCIONES DE LA VISTA ---
 
 // Handlers para el modal específico de "No Autorizar"
+
+// Nuevo flujo para No Autorizar: mostrar modal de firma después de confirmar No Autorizar
 (function setupNoAutorizarModalHandlers() {
-  const modalConfirmarNoAutorizar = document.getElementById(
-    "modalConfirmarNoAutorizar"
-  );
-  const btnCancelarConfirmarNo = document.getElementById(
-    "btnCancelarConfirmarNo"
-  );
-  const btnConfirmarNoAutorizar = document.getElementById(
-    "btnConfirmarNoAutorizar"
-  );
+  const modalConfirmarNoAutorizar = document.getElementById("modalConfirmarNoAutorizar");
+  const btnCancelarConfirmarNo = document.getElementById("btnCancelarConfirmarNo");
+  const btnConfirmarNoAutorizar = document.getElementById("btnConfirmarNoAutorizar");
+  const modalAgregarFirma = document.getElementById("modalAgregarFirma");
+  const btnAgregarFirmaContinuar = document.getElementById("btnAgregarFirmaContinuar");
+  const btnAgregarFirmaCancelar = document.getElementById("btnAgregarFirmaCancelar");
 
   if (btnCancelarConfirmarNo) {
     btnCancelarConfirmarNo.addEventListener("click", function () {
@@ -1107,24 +1099,22 @@ if (btnConfirmarAutorizar) {
 
   if (btnConfirmarNoAutorizar) {
     btnConfirmarNoAutorizar.addEventListener("click", function () {
-      //prueba
-      //prueba
-      //prueba
-      //prueba
-      //prueba
-
-      window.obtenerUbicacionYIP();
-
-      // Cerrar modal de confirmación y abrir el modalComentario para capturar el motivo
+      // Cerrar modal de confirmación y abrir el modal de firma
       if (modalConfirmarNoAutorizar)
         modalConfirmarNoAutorizar.style.display = "none";
-      const modal = document.getElementById("modalComentario");
-      if (modal) {
-        modal.style.display = "flex";
-        const ta = document.getElementById("comentarioNoAutorizar");
-        if (ta) {
-          ta.value = "";
-          ta.focus();
+      if (modalAgregarFirma) {
+        modalAgregarFirma.style.display = "flex";
+        // Configurar botones del modal de firma
+        if (btnAgregarFirmaContinuar) {
+          btnAgregarFirmaContinuar.onclick = async function () {
+            modalAgregarFirma.style.display = "none";
+            await guardarComentarioNoAutorizar();
+          };
+        }
+        if (btnAgregarFirmaCancelar) {
+          btnAgregarFirmaCancelar.onclick = function () {
+            modalAgregarFirma.style.display = "none";
+          };
         }
       }
     });

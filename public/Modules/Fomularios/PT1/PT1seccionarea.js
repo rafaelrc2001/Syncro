@@ -17,10 +17,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-
-
-
-
 // Función para mostrar/ocultar permisos según los valores columna_*_valor
 function mostrarPermisosSegunValores(data) {
   // Mapeo de id de contenedor y campo de valor
@@ -472,35 +468,35 @@ async function insertarAutorizacionArea() {
     const fechaHoraAutorizacion = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString();
     console.log("[AUTORIZAR PT1] Timestamp generado (hora local):", fechaHoraAutorizacion);
 
-    // Enviar todos los datos relevantes
-    await fetch("/api/autorizaciones/area", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        id_permiso: idPermiso,
-        responsable_area,
-        encargado_area: operador_area,
-        fecha_hora_area: fechaHoraAutorizacion,
-        ip_area,
-        localizacion_area,
-        firma,
-      }),
-    });
+    // --- LOG: Payload que se enviará ---
+    const payload = {
+      id_permiso: idPermiso,
+      responsable_area,
+      encargado_area: operador_area,
+      fecha_hora_area: fechaHoraAutorizacion,
+      ip_area,
+      localizacion_area,
+      firma,
+    };
+    console.log("[DEPURACIÓN] Payload a enviar a /api/autorizaciones/area:", payload);
 
-    // (Si necesitas la doble inserción, repite aquí, si no, puedes quitar la segunda llamada)
-    await fetch("/api/autorizaciones/area", {
+    // Enviar todos los datos relevantes
+    const respArea = await fetch("/api/autorizaciones/area", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        id_permiso: idPermiso,
-        responsable_area,
-        encargado_area: operador_area,
-        fecha_hora_area: fechaHoraAutorizacion,
-        ip_area,
-        localizacion_area,
-        firma,
-      }),
+      body: JSON.stringify(payload),
     });
+    let respAreaData = {};
+    try {
+      respAreaData = await respArea.json();
+    } catch (e) {
+      console.warn("[DEPURACIÓN] No se pudo parsear JSON de respuesta de /api/autorizaciones/area");
+    }
+    console.log("[DEPURACIÓN] Respuesta HTTP de /api/autorizaciones/area:", respArea.status, respAreaData);
+    if (!respArea.ok) {
+      alert("Error al guardar la autorización de área: " + (respAreaData.error || respArea.status));
+      return;
+    }
 
     const confirmationModal = document.getElementById("confirmation-modal");
     if (confirmationModal) {
@@ -535,9 +531,23 @@ if (btnGuardarFirma) {
 // --- Lógica para el botón "No Autorizar" ---
 
 // Lógica para cerrar el modal de confirmación y redirigir
-const modalCloseBtn = document.getElementById("modal-close-btn");
-if (modalCloseBtn) {
-  modalCloseBtn.addEventListener("click", function () {
+
+// --- Fix: Always redirect when closing the modal ---
+// --- Fix: Use unique close button ids for each modal ---
+const modalCloseBtnConfirmation = document.getElementById("modal-close-btn-confirmation");
+if (modalCloseBtnConfirmation) {
+  modalCloseBtnConfirmation.addEventListener("click", function () {
+    const confirmationModal = document.getElementById("confirmation-modal");
+    if (confirmationModal) confirmationModal.style.display = "none";
+    window.location.href = "/Modules/Departamentos/AutorizarPT.html";
+  });
+}
+
+const modalCloseBtnNoConfirmation = document.getElementById("modal-close-btn-no-confirmation");
+if (modalCloseBtnNoConfirmation) {
+  modalCloseBtnNoConfirmation.addEventListener("click", function () {
+    const noConfirmationModal = document.getElementById("no-confirmation-modal");
+    if (noConfirmationModal) noConfirmationModal.style.display = "none";
     window.location.href = "/Modules/Departamentos/AutorizarPT.html";
   });
 }
@@ -630,7 +640,32 @@ if (btnNoAutorizar) {
   // Lógica para guardar el comentario y actualizar estatus a No Autorizado
   const btnGuardarComentario = document.getElementById("btnGuardarComentario");
   if (btnGuardarComentario) {
-    btnGuardarComentario.addEventListener("click", async function () {
+    btnGuardarComentario.addEventListener("click", function () {
+      // Mostrar el modal de firma antes de guardar el comentario
+      const modalAgregarFirma = document.getElementById("modalAgregarFirma");
+      if (modalAgregarFirma) {
+        modalAgregarFirma.style.display = "flex";
+        // Configurar botones del modal de firma
+        const btnContinuarFirma = document.getElementById("btnAgregarFirmaContinuar");
+        const btnCancelarFirma = document.getElementById("btnAgregarFirmaCancelar");
+        if (btnContinuarFirma) {
+          btnContinuarFirma.onclick = async function () {
+            modalAgregarFirma.style.display = "none";
+            // Ejecutar el flujo original de guardar comentario (lo que estaba en este handler)
+            await guardarComentarioNoAutorizar();
+          };
+        }
+        if (btnCancelarFirma) {
+          btnCancelarFirma.onclick = function () {
+            modalAgregarFirma.style.display = "none";
+          };
+        }
+      }
+    });
+  }
+
+  // Extraer la lógica original de guardar comentario a una función reutilizable
+  async function guardarComentarioNoAutorizar() {
       const comentario = document
         .getElementById("comentarioNoAutorizar")
         .value.trim();
@@ -642,12 +677,18 @@ if (btnNoAutorizar) {
       const operador_area = operadorInput ? operadorInput.value.trim() : "";
       const params = new URLSearchParams(window.location.search);
       const idPermiso = params.get("id") || window.idPermisoActual;
-      // Obtener la firma del input/canvas (igual que en autorizar)
+      // Obtener la firma en Base64 igual que en autorización
       let firma = "";
       const outputFirma = document.getElementById("outputBase64");
       if (outputFirma && outputFirma.value) {
         firma = outputFirma.value;
-        console.log("[NO AUTORIZAR] Firma capturada (Base64):", firma);
+        if (firma.startsWith("data:image")) {
+          const base64Solo = firma.split(",")[1];
+          console.log("[NO AUTORIZAR] Firma capturada (Base64):", firma);
+          console.log("[NO AUTORIZAR] Solo Base64:", base64Solo);
+        } else {
+          console.log("[NO AUTORIZAR] Firma capturada:", firma);
+        }
       } else {
         console.warn("[NO AUTORIZAR] No se encontró firma para enviar");
       }
@@ -709,7 +750,6 @@ if (btnNoAutorizar) {
         // 2. Consultar el id_estatus desde permisos_trabajo
         let idEstatus = null;
         try {
-          // Este endpoint obtiene los datos del permiso de trabajo específico usando su ID. Permite recuperar información general y de estatus del permiso, necesaria para mostrar y procesar la autorización en la interfaz. Es fundamental para validar el estado actual y continuar con el flujo de autorización o rechazo.
           const respEstatus = await fetch(`/api/estatus/permiso/${idPermiso}`);
           if (respEstatus.ok) {
             const permisoData = await respEstatus.json();
@@ -722,17 +762,12 @@ if (btnNoAutorizar) {
               "| permisoData:",
               permisoData
             );
-          } else {
-            // Error al obtener id_estatus
           }
-        } catch (err) {
-          // Error al consultar id_estatus
-        }
+        } catch (err) {}
 
         // 3. Actualizar el estatus a 'no autorizado' y guardar el comentario en la tabla estatus
         if (idEstatus) {
           try {
-            // Este endpoint actualiza el estatus a 'no autorizado' en la base de datos. Se utiliza después de obtener el id_estatus y es clave para reflejar que el área de seguridad ha rechazado el permiso. Garantiza la trazabilidad y control del flujo de autorizaciones y rechazos en el sistema.
             const payloadEstatus = { id_estatus: idEstatus };
             console.log(
               "[NO AUTORIZAR] Enviando a /api/estatus/no_autorizado:",
@@ -757,7 +792,6 @@ if (btnNoAutorizar) {
             }
 
             // 3.1 Guardar el comentario en la tabla estatus
-            // Este endpoint permite registrar un comentario de rechazo en la tabla de estatus. Es importante para documentar los motivos de no autorización y mantener un historial claro de decisiones. Facilita la retroalimentación y mejora la transparencia en el proceso de gestión de permisos de trabajo.
             const respComentario = await fetch("/api/estatus/comentario", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -780,13 +814,21 @@ if (btnNoAutorizar) {
         // 4. Cerrar el modal y mostrar mensaje de éxito
         const modal = document.getElementById("modalComentario");
         if (modal) modal.style.display = "none";
-        window.location.href = "/Modules/Departamentos/AutorizarPT.html";
+        // Mostrar el modal de no confirmación
+        const noConfirmationModal = document.getElementById("no-confirmation-modal");
+        if (noConfirmationModal) {
+          noConfirmationModal.style.display = "flex";
+          const permitNumberNo = document.getElementById("generated-permit-no");
+          if (permitNumberNo) {
+            permitNumberNo.textContent = idPermiso || "-";
+          }
+        } else {
+          window.location.href = "/Modules/Departamentos/AutorizarPT.html";
+        }
       } catch (err) {
         // Error en el proceso de no autorización
       }
-    });
-  }
-}
+    }
 
 // Nuevo botón salir: vuelve a AutorizarPT.html
 const btnSalirNuevo = document.getElementById("btn-salir-nuevo");
@@ -1201,5 +1243,6 @@ function llenarTablaResponsables(idPermiso) {
     .catch((err) => {
       console.error("Error al consultar personas de autorización:", err);
     });
+}
 }
 

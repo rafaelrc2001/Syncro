@@ -1,3 +1,97 @@
+/* Mejorar modal en landscape móvil: ocupar más espacio y permitir scroll interno */
+@media (max-width: 900px) and (orientation: landscape) {
+    .modal-confirmar-content-autorizar {
+        max-width: 99vw !important;
+        width: 99vw !important;
+        min-height: 90vh !important;
+        max-height: 98vh !important;
+        margin: 0 !important;
+        padding: 1.2em 0.2em 1.2em 0.2em !important;
+        overflow-y: auto !important;
+        border-radius: 10px !important;
+        box-sizing: border-box !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+    }
+    .modal-confirmar-details-autorizar {
+        width: 98% !important;
+        margin: 0 auto 16px auto !important;
+        padding: 8px 4px !important;
+        font-size: 0.95em !important;
+    }
+    .modal-confirmar-actions {
+        flex-direction: row !important;
+        gap: 10px !important;
+        align-items: stretch !important;
+        width: 98% !important;
+        margin: 0 auto !important;
+    }
+    .btn-confirm, .btn-cancel {
+        padding: 12px 0 !important;
+        font-size: 1em !important;
+        width: 50% !important;
+        min-width: 80px !important;
+        flex: 1 1 0 !important;
+        box-sizing: border-box !important;
+        margin: 0 !important;
+        display: block !important;
+        text-align: center !important;
+    }
+}
+/* Mejoras para modal en orientación horizontal (pantallas móviles anchas) */
+@media (max-width: 900px) and (orientation: landscape) {
+    .modal-confirmar-content-autorizar {
+        max-width: 95vw !important;
+        width: 95vw !important;
+        padding: 1em 0.5em !important;
+        font-size: 0.98em !important;
+    }
+    .modal-confirmar-details-autorizar {
+        padding: 8px 4px !important;
+        font-size: 0.95em !important;
+    }
+    .modal-confirmar-actions {
+        flex-direction: row !important;
+        gap: 10px !important;
+        align-items: stretch !important;
+    }
+    .btn-confirm, .btn-cancel {
+        padding: 12px 0 !important;
+        font-size: 1em !important;
+        width: 50% !important;
+        min-width: 80px !important;
+        flex: 1 1 0 !important;
+        box-sizing: border-box !important;
+        margin: 0 !important;
+        display: block !important;
+        text-align: center !important;
+    }
+}
+/* Responsivo para el grupo de botones principal en PT1supervisor */
+@media (max-width: 600px) {
+    .button-group {
+        flex-direction: column !important;
+        gap: 12px !important;
+        align-items: stretch !important;
+    }
+    .button-group > button,
+    .button-group > div {
+        width: 100% !important;
+        display: flex !important;
+        gap: 0 !important;
+    }
+    .button-group > div > button {
+        flex: 1 1 0 !important;
+        width: 100% !important;
+        min-width: 0 !important;
+    }
+    .button-group > button {
+        flex: 1 1 0 !important;
+        min-width: 0 !important;
+    }
+}
 @media print {
     .executive-section.area .styled-table th:first-child,
     .executive-section.area .styled-table td:first-child {
@@ -414,3 +508,224 @@ textarea {
     }
 }
 
+
+
+
+
+/* Responsivo solo para el modalConfirmarAutorizar */
+#modalConfirmarAutorizar {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(44,62,80,0.18);
+    z-index: 99999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(2px);
+}
+.modal-confirmar-content-autorizar {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(44,62,80,0.12);
+    padding: 2em 2.2em;
+    max-width: 400px;
+    width: 95vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.modal-confirmar-icon {
+    font-size: 2.5em;
+    color: #1976d2;
+    margin-bottom: 10px;
+}
+.modal-confirmar-warning {
+    font-size: 1em;
+    text-align: center;
+    margin-bottom: 8px;
+}
+.modal-confirmar-note {
+    font-size: 0.95em;
+    color: #666;
+    text-align: center;
+    margin-bottom: 12px;
+}
+.modal-confirmar-details-autorizar {
+    width: 100%;
+    margin-bottom: 16px;
+    background: #f7f8fa;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 0.98em;
+    box-shadow: 0 1px 4px rgba(44,62,80,0.06);
+}
+.modal-confirmar-details-autorizar p {
+    margin: 6px 0;
+    font-size: 1em;
+    color: #2b3d4f;
+}
+.modal-confirmar-actions {
+    display: flex;
+    gap: 16px;
+    width: 100%;
+    justify-content: center;
+}
+.btn-confirm, .btn-cancel {
+    padding: 10px 22px;
+    border-radius: 6px;
+    font-size: 1em;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.btn-confirm {
+    background: #1976d2;
+    color: #fff;
+}
+.btn-confirm:hover {
+    background: #1565c0;
+}
+.btn-cancel {
+    background: #eee;
+    color: #333;
+}
+.btn-cancel:hover {
+    background: #e0e0e0;
+}
+@media (max-width: 600px) {
+    .modal-confirmar-content-autorizar {
+        padding: 1em 0.5em;
+        max-width: 98vw;
+        font-size: 0.98em;
+    }
+    .modal-confirmar-details-autorizar {
+        padding: 8px 6px;
+        font-size: 0.95em;
+    }
+    .modal-confirmar-actions {
+        flex-direction: row;
+        gap: 10px;
+        align-items: stretch;
+    }
+    .btn-confirm, .btn-cancel {
+        padding: 12px 0;
+        font-size: 1em;
+        width: 50%;
+        min-width: 100px;
+        flex: 1 1 0;
+        box-sizing: border-box;
+        margin: 0;
+        display: block;
+        text-align: center;
+    }
+}
+
+/* Responsivo solo para el modal de firma */
+#modalAgregarFirma {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(44,62,80,0.18);
+    z-index: 99999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(2px);
+}
+.modal-firma-content {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(44,62,80,0.12);
+    padding: 2em 2.2em;
+    max-width: 500px;
+    width: 98vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.modal-firma-container {
+    padding: 0;
+    background: none;
+    box-shadow: none;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.modal-firma-title {
+    margin-top: 0;
+    font-size: 1.3em;
+    font-weight: 600;
+    color: #1976d2;
+    margin-bottom: 12px;
+    text-align: center;
+}
+.modal-firma-canvas {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #fff;
+    cursor: crosshair;
+    margin-bottom: 10px;
+    width: 400px;
+    height: 200px;
+    max-width: 95vw;
+    max-height: 40vw;
+    display: block;
+}
+.modal-firma-controls {
+    margin: 16px 0;
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    justify-content: center;
+}
+.btn-clear, .btn-save, .btn-cancel {
+    background: #eee;
+    color: #333;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 22px;
+    font-size: 1em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.btn-save {
+    background: #1976d2;
+    color: #fff;
+}
+.btn-save:hover {
+    background: #1565c0;
+}
+.btn-cancel {
+    background: #eee;
+    color: #333;
+}
+.btn-cancel:hover {
+    background: #e0e0e0;
+}
+@media (max-width: 600px) {
+    .modal-firma-content {
+        padding: 1em 0.5em;
+        max-width: 99vw;
+        font-size: 0.98em;
+    }
+    .modal-firma-canvas {
+        width: 98vw !important;
+        height: 40vw !important;
+        max-width: 98vw;
+        max-height: 50vw;
+    }
+    .modal-firma-controls {
+        flex-direction: column;
+        gap: 8px;
+        align-items: stretch;
+    }
+    .btn-clear, .btn-save, .btn-cancel {
+        padding: 9px 12px;
+        font-size: 0.98em;
+        width: 100%;
+    }
+}

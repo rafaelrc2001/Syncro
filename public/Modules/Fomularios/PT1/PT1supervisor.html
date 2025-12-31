@@ -699,7 +699,7 @@
                         
 
                          <div id="modalConfirmarAutorizar" class="modal-confirmar" style="display:none;">
-                        <div class="modal-confirmar-content">
+                        <div class="modal-confirmar-content modal-confirmar-content-autorizar">
                             <div class="modal-confirmar-icon">
                             <i class="ri-check-double-line"></i>
                             </div>
@@ -710,11 +710,11 @@
                             </p>
                               <p class="modal-confirmar-note">Esta acción no se podrá deshacer.</p>
                           
-                            <div class="modal-confirmar-details">
+                            <div class="modal-confirmar-details modal-confirmar-details-autorizar">
                             <p>ID del Permiso: <strong id="modal-permit-id">-</strong></p>
-                                  <p>Tipo de Permiso: <strong id="modal-permit-type">-</strong></p>
-                                   <p>Solicitante: <strong id="modal-solicitante">-</strong></p>
-                                    <p>Departamento: <strong id="modal-departamento">-</strong></p>
+                                <p>Tipo de Permiso: <strong id="modal-permit-type">-</strong></p>
+                                 <p>Solicitante: <strong id="modal-solicitante">-</strong></p>
+                                  <p>Departamento: <strong id="modal-departamento">-</strong></p>
                             </div>
                             <div class="modal-confirmar-actions">
                            
@@ -760,16 +760,16 @@
 
                             <!-- Modal de firma -->
                             <div id="modalAgregarFirma" class="modal-confirmar" style="display:none;">
-                                <div class="modal-confirmar-content" style="max-width: 500px;">
-                                    <div class="container" style="padding: 0; background: none; box-shadow: none;">
-                                        <h2 style="margin-top:0;">Favor de firmar</h2>
-                                        <canvas id="canvas" width="400" height="200" style="border:1px solid #ccc; border-radius:8px; background:#fff; cursor:crosshair;"></canvas>
+                                <div class="modal-confirmar-content modal-firma-content">
+                                    <div class="container modal-firma-container">
+                                        <h2 class="modal-firma-title">Favor de firmar</h2>
+                                        <canvas id="canvas" width="400" height="200" class="modal-firma-canvas"></canvas>
                                         <!-- Input oculto para la firma en base64 -->
                                         <input type="hidden" id="outputBase64" />
-                                        <div class="controls" style="margin: 16px 0; display: flex; gap: 12px;">
-                                            <button class="btn-clear" id="limpiar" type="button" style="background:#eee; color:#333; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Limpiar área</button>
-                                            <button class="btn-save" id="guardar" type="button" style="background:#1976d2; color:#fff; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Guardar y Continuar</button>
-                                            <button id="btnAgregarFirmaCancelar" type="button" class="btn-cancel" style="margin-left:auto;">Cancelar</button>
+                                        <div class="controls modal-firma-controls">
+                                            <button class="btn-clear" id="limpiar" type="button">Limpiar área</button>
+                                            <button class="btn-save" id="guardar" type="button">Guardar y Continuar</button>
+                                            <button id="btnAgregarFirmaCancelar" type="button" class="btn-cancel">Cancelar</button>
                                         </div>
                                     </div>
                                 </div>
@@ -861,5 +861,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
+
+
 </body>
 </html>

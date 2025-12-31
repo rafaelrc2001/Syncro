@@ -265,7 +265,34 @@ function initTypesChart() {
 // Suponiendo que tienes el id_departamento disponible
 // Usa window.idDepartamento directamente para evitar duplicados
 
-
+function cargarDatosTipos() {
+  const usuario = JSON.parse(localStorage.getItem("usuario"));
+  const id_usuario = usuario && usuario.id_usuario ? usuario.id_usuario : null;
+  if (!id_usuario) return;
+  fetch("/api/permisos-tipo-usuario/" + id_usuario)
+    .then((res) => res.json())
+    .then((data) => {
+      console.log("Datos recibidos para tipos (usuario):", data);
+      const categories = data.tipos.map((t) => t.tipo_permiso);
+      const values = data.tipos.map((t) => Number(t.cantidad_trabajos));
+      const baseColors = [
+        "#D32F2F",
+        "#FF6F00",
+        "#FFC107",
+        "#003B5C",
+        "#00BFA5",
+        "#B0BEC5",
+        "#4A4A4A",
+        "#1976D2",
+      ];
+      const colors = categories.map(
+        (_, i) => baseColors[i % baseColors.length]
+      );
+      if (window.typesChartInstance) {
+        window.typesChartInstance.updateData({ categories, values, colors });
+      }
+    });
+}
 
 // Auto-inicializar cuando el DOM esté listo
 document.addEventListener("DOMContentLoaded", function () {

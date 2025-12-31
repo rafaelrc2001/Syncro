@@ -307,6 +307,14 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 document.addEventListener("DOMContentLoaded", function () {
+  // Cerrar modal de firma al hacer clic en Cancelar
+  const btnCancelarFirma = document.getElementById("btnAgregarFirmaCancelar");
+  if (btnCancelarFirma) {
+    btnCancelarFirma.addEventListener("click", function () {
+      const modalFirma = document.getElementById("modalAgregarFirma");
+      if (modalFirma) modalFirma.style.display = "none";
+    });
+  }
   // Inicializa los listeners del modal de comentarios al cargar la página
   setupModalComentario();
   // --- Lógica para el botón "Autorizar" ---

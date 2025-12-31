@@ -69,8 +69,8 @@
         text-align: center !important;
     }
 }
-/* Responsivo para el grupo de botones principal en PT1supervisor */
-@media (max-width: 600px) {
+/* Responsivo para el grupo de botones principal en PT1supervisor (vertical y horizontal) */
+@media (max-width: 900px) {
     .button-group {
         flex-direction: column !important;
         gap: 12px !important;

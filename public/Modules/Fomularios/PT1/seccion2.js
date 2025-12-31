@@ -216,6 +216,9 @@ document.addEventListener("DOMContentLoaded", () => {
         otherInput.value = "";
       }
     });
+
+      // Forzar evento change al cargar para corregir visibilidad inicial
+      maintenanceSelect.dispatchEvent(new Event("change"));
   }
 
   // ============================================================================

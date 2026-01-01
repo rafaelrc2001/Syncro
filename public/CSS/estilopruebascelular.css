@@ -1,3 +1,4 @@
+
 /* Asegura que el campo OTRO esté oculto por defecto en móvil */
 #other-maintenance-container {
   display: none ;
@@ -30,18 +31,23 @@
   }
   .main-header {
     flex-direction: column !important;
-    align-items: flex-start !important;
+    align-items: center !important;
     gap: 8px !important;
     padding: 0.5rem 0.2rem !important;
-    max-width: 380px !important;
+    max-width: 100vw !important;
+    width: 100% !important;
     margin: 0 auto 0.2rem auto !important;
     border-radius: 14px !important;
     box-shadow: 0 2px 8px rgba(44,62,80,0.08) !important;
   }
   .progress-container {
     padding: 0.2rem 0.2rem !important;
-    max-width: 380px !important;
+    max-width: 100vw !important;
+    width: 100% !important;
     margin: 0 auto 0.7rem auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
   }
   .progress-steps {
     display: flex !important;
@@ -49,9 +55,10 @@
     gap: 8px !important;
     overflow-x: auto !important;
     font-size: 0.93em !important;
-    max-width: 360px !important;
+    max-width: 100vw !important;
+    width: 100% !important;
     margin: 0 auto !important;
-    justify-content: flex-start !important;
+    justify-content: center !important;
     align-items: stretch !important;
     padding-bottom: 6px !important;
   }
@@ -151,13 +158,79 @@
   .participants-table, .ast-activities {
     overflow-x: auto !important;
     font-size: 0.98em !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    min-width: 0 !important;
+    margin: 0 auto !important;
+    box-sizing: border-box !important;
+  }
+  .ast-activities {
+    background: #fff !important;
+    border-radius: 10px !important;
+    box-shadow: none !important;
+    padding: 0 2vw !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 96vw !important;
+    max-width: 430px !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+  .ast-table-header {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    font-size: 0.98em !important;
+    box-sizing: border-box !important;
+    gap: 4px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .ast-table-header > div {
+    flex: 1 1 0 !important;
+    text-align: center !important;
+    padding: 4px 2px !important;
+    font-weight: 600 !important;
+    font-size: 0.98em !important;
+    box-sizing: border-box !important;
+    word-break: break-word !important;
+  }
+  .ast-activity {
+    display: flex !important;
+    flex-direction: row !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    gap: 4px !important;
+    box-sizing: border-box !important;
+    align-items: stretch !important;
+    margin-bottom: 6px !important;
+  }
+  .ast-activity > div {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    padding: 2px 2px !important;
+  }
+  .ast-activities-actions {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    min-width: 40px !important;
+    max-width: 60px !important;
+    flex: 0 0 50px !important;
   }
   .participants-header, .ast-table-header {
     font-size: 0.98em !important;
   }
   .participant-row, .ast-activity {
-    flex-direction: column !important;
-    gap: 10px !important;
+    flex-direction: row !important;
+    gap: 4px !important;
+    align-items: stretch !important;
   }
   .form-actions {
     flex-direction: column !important;
@@ -203,12 +276,24 @@
     padding: 15px 0 !important;
     border-radius: 8px !important;
   }
-  #firma-area, #canvasFirma, #canvas {
-    width: 98vw !important;
-    max-width: 98vw !important;
+  #firma-area {
+    width: 96vw !important;
+    max-width: 430px !important;
     min-width: 0 !important;
-    height: 40vw !important;
-    max-height: 50vw !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-sizing: border-box !important;
+    padding: 0 2vw !important;
+  }
+  #canvasFirma, #canvas {
+    width: 92vw !important;
+    max-width: 390px !important;
+    min-width: 0 !important;
+    height: 38vw !important;
+    max-height: 200px !important;
+    display: block !important;
+    margin: 0 auto 8px auto !important;
+    box-sizing: border-box !important;
   }
   .form-group .select-wrapper {
     width: 100% !important;

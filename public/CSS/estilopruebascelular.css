@@ -1,3 +1,7 @@
+/* Asegura que el campo OTRO esté oculto por defecto en móvil */
+#other-maintenance-container {
+  display: none ;
+}
 
 /* =============================
    RESPONSIVE MOBILE (vertical & landscape)
@@ -113,7 +117,8 @@
     gap: 7px !important;
   }
   /* Asegura que los campos ocultos por JS permanezcan ocultos en móvil */
-  .form-group[style*="display: none"] {
+  /* Excepción: permitir que el JS controle #other-maintenance-container */
+  .form-group[style*="display: none"]:not(#other-maintenance-container) {
     display: none !important;
   }
   .form-group label {

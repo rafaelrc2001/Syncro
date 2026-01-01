@@ -1,3 +1,115 @@
+/* MODAL DE ÁREA: igual al de supervisor */
+.modal-confirmar-content-area {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 4px 24px rgba(44,62,80,0.12);
+        padding: 2em 2.2em;
+        max-width: 400px;
+        width: 95vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+}
+.modal-confirmar-details-area {
+        width: 100%;
+        margin-bottom: 16px;
+        background: #f7f8fa;
+        border-radius: 8px;
+        padding: 10px 12px;
+        font-size: 0.98em;
+        box-shadow: 0 1px 4px rgba(44,62,80,0.06);
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+}
+.modal-confirmar-details-area div {
+        margin: 6px 0;
+        font-size: 1em;
+        color: #2b3d4f;
+}
+.modal-confirmar-actions {
+        display: flex;
+        gap: 16px;
+        width: 100%;
+        justify-content: center;
+}
+.btn-confirm, .btn-cancel {
+        padding: 10px 22px;
+        border-radius: 6px;
+        font-size: 1em;
+        font-weight: 500;
+        border: none;
+        cursor: pointer;
+}
+@media (max-width: 700px) {
+    .modal-confirmar-content-area {
+        max-width: 99vw !important;
+        width: 99vw !important;
+        min-height: 90vh !important;
+        max-height: 98vh !important;
+        margin: 0 !important;
+        padding: 1.2em 0.2em 1.2em 0.2em !important;
+        overflow-y: auto !important;
+        border-radius: 10px !important;
+        box-sizing: border-box !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+    }
+    .modal-confirmar-details-area {
+        width: 98% !important;
+        margin: 0 auto 16px auto !important;
+        padding: 8px 4px !important;
+        font-size: 0.95em !important;
+    }
+    .modal-confirmar-actions {
+        flex-direction: row !important;
+        gap: 10px !important;
+        align-items: stretch !important;
+        width: 98% !important;
+        margin: 0 auto !important;
+    }
+    .btn-confirm, .btn-cancel {
+        padding: 12px 0 !important;
+        font-size: 1em !important;
+        width: 50% !important;
+        min-width: 80px !important;
+        flex: 1 1 0 !important;
+        box-sizing: border-box !important;
+        margin: 0 !important;
+        display: block !important;
+        text-align: center !important;
+    }
+}
+@media (max-width: 900px) and (orientation: landscape) {
+        .modal-confirmar-content-area {
+                max-width: 95vw !important;
+                width: 95vw !important;
+                padding: 1em 0.5em !important;
+                font-size: 0.98em !important;
+        }
+        .modal-confirmar-details-area {
+                padding: 8px 4px !important;
+                font-size: 0.95em !important;
+        }
+        .modal-confirmar-actions {
+                flex-direction: row !important;
+                gap: 10px !important;
+                align-items: stretch !important;
+        }
+        .btn-confirm, .btn-cancel {
+                padding: 12px 0 !important;
+                font-size: 1em !important;
+                width: 50% !important;
+                min-width: 80px !important;
+                flex: 1 1 0 !important;
+                box-sizing: border-box !important;
+                margin: 0 !important;
+                display: block !important;
+                text-align: center !important;
+        }
+}
 /* Mejorar modal en landscape móvil: ocupar más espacio y permitir scroll interno */
 @media (max-width: 900px) and (orientation: landscape) {
     .modal-confirmar-content-autorizar {

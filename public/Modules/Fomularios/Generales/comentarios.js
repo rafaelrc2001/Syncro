@@ -1,3 +1,4 @@
+
 // Mostrar comentario solo si el estatus corresponde a ciertos valores
 async function mostrarComentarioSiCorresponde(id_permiso, elementoComentario) {
   try {
@@ -5,11 +6,7 @@ async function mostrarComentarioSiCorresponde(id_permiso, elementoComentario) {
     const data = await response.json();
     if (!data.success) return;
     const estatusPermitidos = [
-      "no autorizado",
-      "cierre sin incidentes",
-      "cierre con accidentes",
-      "cierre con incidentes",
-      "cancelado",
+      "cierre"
     ];
     if (estatusPermitidos.includes((data.estatus || "").toLowerCase())) {
       // Mostrar el contenedor principal
@@ -28,7 +25,14 @@ async function mostrarComentarioSiCorresponde(id_permiso, elementoComentario) {
   }
 }
 
-// Ejemplo de uso:
-// const id_permiso = ...; // El id del permiso
-// const comentarioDiv = document.getElementById("comentarios-permiso");
-// mostrarComentarioSiCorresponde(id_permiso, comentarioDiv);
+// Lógica automática: si existe un div con id 'comentarios-permiso' y hay id en la URL, mostrar el comentario
+document.addEventListener('DOMContentLoaded', function() {
+  const comentarioDiv = document.getElementById('comentarios-permiso');
+  if (comentarioDiv) {
+    const params = new URLSearchParams(window.location.search);
+    const idPermiso = params.get('id');
+    if (idPermiso) {
+      mostrarComentarioSiCorresponde(idPermiso, comentarioDiv);
+    }
+  }
+});

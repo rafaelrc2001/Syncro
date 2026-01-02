@@ -380,19 +380,22 @@ document.addEventListener("DOMContentLoaded", function () {
       // Obtener IP y localización del supervisor, lógica especial para PC/móvil
       let ip_supervisor = "";
       let localizacion_supervisor = "";
+      let dispositivo_supervisor = "";
       if (window.obtenerUbicacionYIP) {
         try {
           const ubic = await window.obtenerUbicacionYIP();
           console.log("[DEBUG] Resultado de window.obtenerUbicacionYIP():", ubic);
           ip_supervisor = ubic.ip || "";
+          dispositivo_supervisor = ubic.dispositivo || "";
           // Si el dispositivo es PC, guardar string especial; si es móvil, guardar coordenadas reales
           if (ubic.dispositivo && typeof ubic.dispositivo === "string" && ubic.dispositivo.toLowerCase().includes("pc")) {
-            localizacion_supervisor = "validado por pc no requiere ubicacion";
+            localizacion_supervisor = "/";
           } else {
             localizacion_supervisor = ubic.localizacion || "";
           }
           console.log("[DEBUG] ip_supervisor:", ip_supervisor);
           console.log("[DEBUG] localizacion_supervisor:", localizacion_supervisor);
+          console.log("[DEBUG] dispositivo_supervisor:", dispositivo_supervisor);
         } catch (e) {
           console.error("[DEBUG] Error al obtener IP y localización:", e);
         }
@@ -451,6 +454,7 @@ document.addEventListener("DOMContentLoaded", function () {
           fecha_hora_supervisor: fechaHoraAutorizacionSupervisor,
           ip_supervisor,
           localizacion_supervisor,
+          dispositivo_supervisor,
           firma_supervisor,
         });
 
@@ -464,6 +468,7 @@ document.addEventListener("DOMContentLoaded", function () {
             fecha_hora_supervisor: fechaHoraAutorizacionSupervisor,
             ip_supervisor,
             localizacion_supervisor,
+            dispositivo_supervisor,
             firma_supervisor,
           }),
         });
@@ -961,6 +966,15 @@ function setupModalComentario() {
           nowRechazoSupervisor.getTimezoneOffset() * 60000
       ).toISOString();
 
+      let dispositivo_supervisor = "";
+      if (window.obtenerUbicacionYIP) {
+        try {
+          const ubic = await window.obtenerUbicacionYIP();
+          dispositivo_supervisor = ubic.dispositivo || "";
+        } catch (e) {
+          console.error("[DEBUG] Error al obtener dispositivo para rechazo:", e);
+        }
+      }
       await fetch("/api/autorizaciones/supervisor-categoria", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -970,6 +984,7 @@ function setupModalComentario() {
           categoria,
           comentario_no_autorizar: comentario,
           fecha_hora_supervisor: fechaHoraRechazoSupervisor,
+          dispositivo_supervisor,
         }),
       });
 

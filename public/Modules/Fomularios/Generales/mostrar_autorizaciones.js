@@ -36,8 +36,8 @@ async function cargarResponsablesAutorizacion(id_permiso) {
 					   html += `<td>${mostrarCampo(info.nombre_solicitante, 'nombre_solicitante')}</td>`;
 					   html += `<td>Solicitante</td>`;
 					   html += `<td style='vertical-align:middle;padding:6px 8px;'>` +
-								   `<div style='font-size:12px;line-height:1.3;'>` +
-								   `<strong>Fecha/Hora:</strong> ${ info.fecha_hora ? info.fecha_hora: '<span style=\'color:#c0392b\'>Sin dato</span>'}<br>` +
+								   `<div style='font-size:8px;line-height:1.3;'>` +
+								   `Fecha:${ info.fecha_hora ? info.fecha_hora: '<span style=\'color:#c0392b\'>Sin dato</span>'}` +
 								   `</div>` +
 							   `</td>`;
 						   
@@ -58,10 +58,10 @@ async function cargarResponsablesAutorizacion(id_permiso) {
 					   html += `<td>${mostrarCampo(info.responsable_area, 'nombre_solicitante')}</td>`;
 					   html += `<td>Responsable area</td>`;
                        html += `<td style='vertical-align:middle;padding:6px 8px;'>` +
-								   `<div style='font-size:12px;line-height:1.3;'>` +
-								   `<strong>Fecha/Hora:</strong> ${ info.fecha_hora_area ? info.fecha_hora_area : '<span style=\'color:#c0392b\'>Sin dato</span>'}<br>` +
-								   `<strong>IP:</strong> ${info.ip_area ? info.ip_area : '<span style=\'color:#c0392b\'>Sin dato</span>'}<br>` +
-								   `<strong>Ubicacion:</strong> ${info.localizacion_area ? info.localizacion_area : '<span style=\'color:#c0392b\'>Sin dato</span>'}` +
+								   `<div style='font-size:8px;line-height:1.3;'>` +
+								   `Fecha :${ info.fecha_hora_area ? info.fecha_hora_area : '<span style=\'color:#c0392b\'>Sin dato</span>'}` +
+								   `IP: ${info.ip_area ? info.ip_area : '<span style=\'color:#c0392b\'>Sin dato</span>'}` +
+								   `GPS: ${info.localizacion_area ? info.localizacion_area : '<span style=\'color:#c0392b\'>Sin dato</span>'}` +
 								   `</div>` +
 							   `</td>`;
 						   `<strong>IP:</strong> ${info.ip_area ? info.ip_area : '<span style=\'color:#c0392b\'>Sin dato</span>'}` +
@@ -79,7 +79,7 @@ async function cargarResponsablesAutorizacion(id_permiso) {
 					   html += `<td>${mostrarCampo(info.operador_area, 'Operador_area')}</td>`;
 					   html += `<td>Operador area</td>`;
 							   html += `<td style='vertical-align:middle;padding:6px 8px;'>` +
-								   `<div style='font-size:12px;line-height:1.3;'>` +
+								   `<div style='font-size:8px;line-height:1.3;'>` +
 								   `<strong>Fecha/Hora:</strong> ${info.fecha_hora_area ? info.fecha_hora_area : '<span style=\'color:#c0392b\'>Sin dato</span>'}<br>` +
 								   `<strong>IP:</strong> ${info.ip_area ? info.ip_area : '<span style=\'color:#c0392b\'>Sin dato</span>'}<br>` +
 								    `<strong>Ubicación:</strong> ${info.localizacion_area ? info.localizacion_area : '<span style=\'color:#c0392b\'>Sin dato</span>'}` +
@@ -101,10 +101,10 @@ async function cargarResponsablesAutorizacion(id_permiso) {
 					   html += `<td>${mostrarCampo(info.nombre_supervisor, 'supervisor')}</td>`;
 					   html += `<td>Supervisor</td>`;
 					   html += `<td style='vertical-align:middle;padding:6px 8px;'>` +
-						   `<div style='font-size:12px;line-height:1.3;'>` +
-						   `<strong>Fecha/Hora:</strong> ${info.fecha_hora_supervisor ? info.fecha_hora_supervisor : '<span style=\'color:#c0392b\'>Sin dato</span>'}<br>` +
-						   `<strong>IP:</strong> ${info.ip_supervisor ? info.ip_supervisor : '<span style=\'color:#c0392b\'>Sin dato</span>'}<br>` +
-						    `<strong>Ubicacion:</strong> ${info.localizacion_supervisor ? info.localizacion_supervisor : '<span style=\'color:#c0392b\'>Sin dato</span>'}` +
+						   `<div style='font-size:8px;line-height:1.3;'>` +
+						   `Fecha: ${info.fecha_hora_supervisor ? info.fecha_hora_supervisor : '<span style=\'color:#c0392b\'>Sin dato</span>'}` +
+						   `IP: ${info.ip_supervisor ? info.ip_supervisor : '<span style=\'color:#c0392b\'>Sin dato</span>'}` +
+						    `GPS:${info.localizacion_supervisor ? info.localizacion_supervisor : '<span style=\'color:#c0392b\'>Sin dato</span>'}` +
 						   `</div>` +
 					   `</td>`;
 					   html += `<td>${getFirmaImg(info.firma_supervisor, 'firma_supervisor')}</td>`;

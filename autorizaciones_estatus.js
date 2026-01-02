@@ -428,6 +428,7 @@ router.post("/autorizaciones/area", async (req, res) => {
     ip_area,
     localizacion_area,
     firma,
+    dispositivo_area,
   } = req.body;
 
   // Validar que los campos requeridos estén presentes
@@ -454,8 +455,9 @@ router.post("/autorizaciones/area", async (req, res) => {
                  fecha_hora_area = COALESCE($3, fecha_hora_area),
                  ip_area = COALESCE($4, ip_area),
                  localizacion_area = COALESCE($5, localizacion_area),
-                 firma = COALESCE($6, firma)
-             WHERE id_permiso = $7
+                 firma = COALESCE($6, firma),
+                 dispositivo_area = COALESCE($7, dispositivo_area)
+             WHERE id_permiso = $8
              RETURNING *`,
           [
             responsable_area,
@@ -464,6 +466,7 @@ router.post("/autorizaciones/area", async (req, res) => {
             ip_area || null,
             localizacion_area || null,
             firma || null,
+            dispositivo_area || null,
             id_permiso,
           ]
         );
@@ -491,12 +494,12 @@ router.post("/autorizaciones/area", async (req, res) => {
     });
   }
 
-  // Si no existe, insertamos el registro incluyendo fecha_hora_area, firma y comentario si vienen
+  // Si no existe, insertamos el registro incluyendo fecha_hora_area, firma, dispositivo_area y comentario si vienen
   try {
     const result = await db.query(
       `INSERT INTO autorizaciones (
-        id_permiso, id_supervisor, id_categoria, responsable_area, operador_area, fecha_hora_area, ip_area, localizacion_area, firma
-      ) VALUES ($1, $2, $3, $4, $5, COALESCE($6, NOW()), $7, $8, $9)
+        id_permiso, id_supervisor, id_categoria, responsable_area, operador_area, fecha_hora_area, ip_area, localizacion_area, firma, dispositivo_area
+      ) VALUES ($1, $2, $3, $4, $5, COALESCE($6, NOW()), $7, $8, $9, $10)
       RETURNING *`,
       [
         id_permiso,
@@ -508,6 +511,7 @@ router.post("/autorizaciones/area", async (req, res) => {
         ip_area || null,
         localizacion_area || null,
         firma || null,
+        dispositivo_area || '/',
       ]
     );
     res.status(201).json({
@@ -577,7 +581,7 @@ router.post("/estatus/no_autorizado", async (req, res) => {
 
 // Endpoint para actualizar supervisor y categoría (solo nombres) en autorizaciones
 router.put("/autorizaciones/supervisor-categoria", async (req, res) => {
-  const { id_permiso, supervisor, categoria, fecha_hora_supervisor, ip_supervisor, localizacion_supervisor, firma_supervisor } = req.body;
+  const { id_permiso, supervisor, categoria, fecha_hora_supervisor, ip_supervisor, localizacion_supervisor, firma_supervisor, dispositivo_supervisor } = req.body;
 
   if (!id_permiso || !supervisor || !categoria) {
     return res.status(400).json({
@@ -628,8 +632,9 @@ router.put("/autorizaciones/supervisor-categoria", async (req, res) => {
              fecha_hora_supervisor = COALESCE($3, fecha_hora_supervisor),
              ip_supervisor = COALESCE($4, ip_supervisor),
              localizacion_supervisor = COALESCE($5, localizacion_supervisor),
-             firma_supervisor = COALESCE($6, firma_supervisor)
-         WHERE id_permiso = $7
+             firma_supervisor = COALESCE($6, firma_supervisor),
+             dispositivo_supervisor = COALESCE($7, dispositivo_supervisor)
+         WHERE id_permiso = $8
          RETURNING *`,
         [
           idSupervisor,
@@ -638,6 +643,7 @@ router.put("/autorizaciones/supervisor-categoria", async (req, res) => {
           ip_supervisor || null,
           localizacion_supervisor || null,
           firma_supervisor || null,
+          dispositivo_supervisor || null,
           id_permiso
         ]
       );
@@ -656,8 +662,8 @@ router.put("/autorizaciones/supervisor-categoria", async (req, res) => {
       // Si no existe, insertar una nueva fila incluyendo la fecha (si no se envía, usar NOW())
       const insert = await db.query(
         `INSERT INTO autorizaciones (
-          id_permiso, id_supervisor, id_categoria, responsable_area, operador_area, fecha_hora_supervisor
-        ) VALUES ($1, $2, $3, $4, $5, COALESCE($6, NOW()))
+          id_permiso, id_supervisor, id_categoria, responsable_area, operador_area, fecha_hora_supervisor, ip_supervisor, localizacion_supervisor, firma_supervisor, dispositivo_supervisor
+        ) VALUES ($1, $2, $3, $4, $5, COALESCE($6, NOW()), $7, $8, $9, $10)
         RETURNING *`,
         [
           id_permiso,
@@ -666,6 +672,10 @@ router.put("/autorizaciones/supervisor-categoria", async (req, res) => {
           null,
           null,
           fecha_hora_supervisor || null,
+          ip_supervisor || null,
+          localizacion_supervisor || null,
+          firma_supervisor || null,
+          dispositivo_supervisor || null
         ]
       );
       return res.status(201).json({
@@ -916,18 +926,20 @@ router.get("/autorizaciones/detalle/:id_permiso", async (req, res) => {
   }
   try {
     const result = await db.query(
-      `SELECT 
-        a.*, 
-        p.nombre_solicitante, 
-        p.firma_creacion,
-        p.fecha_hora,
-        s.nombre AS nombre_supervisor
-      FROM autorizaciones a
-      JOIN permisos_trabajo p 
-        ON a.id_permiso = p.id_permiso
+      `
+      SELECT 
+          a.*,                              
+          p.id_permiso,
+          p.nombre_solicitante,
+          p.firma_creacion,
+          p.fecha_hora,
+          s.nombre AS nombre_supervisor
+      FROM permisos_trabajo p
+      LEFT JOIN autorizaciones a 
+          ON a.id_permiso = p.id_permiso
       LEFT JOIN supervisores s
-        ON a.id_supervisor = s.id_supervisor
-      WHERE a.id_permiso = $1`,
+          ON a.id_supervisor = s.id_supervisor
+      WHERE p.id_permiso = $1`,
       [id_permiso]
     );
     if (result.rows.length === 0) {

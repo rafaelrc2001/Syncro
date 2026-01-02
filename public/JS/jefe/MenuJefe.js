@@ -7,7 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
         'categoria': '/Modules/JefeSeguridad/CrearCategoria.html',
         'sucursal': '/Modules/JefeSeguridad/CrearSucursal.html',
         'departamento': '/Modules/JefeSeguridad/CrearDepartamento.html',
-        'supervisor': '/Modules/JefeSeguridad/CrearSupervisor.html'
+        'supervisor': '/Modules/JefeSeguridad/CrearSupervisor.html',
+        'usuario': '/Modules/JefeSeguridad/CrearUsuario.html',
     };
     
 

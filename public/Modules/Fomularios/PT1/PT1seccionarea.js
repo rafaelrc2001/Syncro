@@ -400,18 +400,22 @@ async function insertarAutorizacionArea() {
   // Obtener IP y localización si está disponible, lógica especial para PC/móvil
   let ip_area = "";
   let localizacion_area = "";
+  let dispositivo_area = "/";
   if (window.obtenerUbicacionYIP) {
     try {
       const ubic = await window.obtenerUbicacionYIP();
       ip_area = ubic.ip || "";
       // Si el dispositivo es PC, guardar string especial; si es móvil, guardar coordenadas reales
       if (ubic.dispositivo && typeof ubic.dispositivo === "object" && ubic.dispositivo.so && ["Windows", "Mac OS", "MacOS", "Linux"].includes(ubic.dispositivo.so)) {
-        localizacion_area = "validado por pc no requiere ubicacion";
+        localizacion_area = "/";
       } else {
         localizacion_area = ubic.localizacion || "";
       }
+      // Guardar el dispositivo_area como string (puedes guardar el SO o el objeto completo serializado)
+      dispositivo_area = ubic.dispositivo ? (typeof ubic.dispositivo === "object" ? JSON.stringify(ubic.dispositivo) : String(ubic.dispositivo)) : "/";
       console.log("[DEBUG] ip_area:", ip_area);
       console.log("[DEBUG] localizacion_area:", localizacion_area);
+      console.log("[DEBUG] dispositivo_area:", dispositivo_area);
     } catch (e) {
       // Si falla, deja vacío
     }
@@ -484,6 +488,7 @@ async function insertarAutorizacionArea() {
       ip_area,
       localizacion_area,
       firma,
+      dispositivo_area,
     };
     console.log("[DEPURACIÓN] Payload a enviar a /api/autorizaciones/area:", payload);
 
@@ -739,20 +744,23 @@ if (btnNoAutorizar) {
       // Obtener IP y localización usando window.obtenerUbicacionYIP
       let ip_area = "";
       let localizacion_area = "";
+      let dispositivo_area = "/";
       if (window.obtenerUbicacionYIP) {
         try {
           const ubic = await window.obtenerUbicacionYIP();
           ip_area = ubic.ip || "";
           // Si el dispositivo es PC, guardar string especial; si es móvil, guardar coordenadas reales
           if (ubic.dispositivo && typeof ubic.dispositivo === "object" && ubic.dispositivo.so && ["Windows", "Mac OS", "MacOS", "Linux"].includes(ubic.dispositivo.so)) {
-            localizacion_area = "validado por pc no requiere ubicacion";
+            localizacion_area = "/";
           } else {
             localizacion_area = ubic.localizacion || "";
           }
+          dispositivo_area = ubic.dispositivo ? (typeof ubic.dispositivo === "object" ? JSON.stringify(ubic.dispositivo) : String(ubic.dispositivo)) : "/";
           console.log("[NO AUTORIZAR] IP capturada:", ip_area);
           console.log("[NO AUTORIZAR] Localización capturada:", localizacion_area);
+          console.log("[NO AUTORIZAR] Dispositivo capturado:", dispositivo_area);
         } catch (e) {
-          console.warn("[NO AUTORIZAR] Error al obtener IP/localización:", e);
+          console.warn("[NO AUTORIZAR] Error al obtener IP/localización/dispositivo:", e);
         }
       } else {
         console.warn("[NO AUTORIZAR] window.obtenerUbicacionYIP no está disponible");
@@ -790,6 +798,7 @@ if (btnNoAutorizar) {
             firma,
             ip_area,
             localizacion_area,
+            dispositivo_area,
           }),
         });
         if (!resp.ok) {

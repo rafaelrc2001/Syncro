@@ -337,7 +337,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const supervisor = responsableInput ? responsableInput.value.trim() : "";
       const categoria = operadorInput ? operadorInput.value.trim() : "";
 
-      // Obtener IP y localización del supervisor
+      // Obtener IP y localización del supervisor, lógica especial para PC/móvil
       let ip_supervisor = "";
       let localizacion_supervisor = "";
       if (window.obtenerUbicacionYIP) {
@@ -345,7 +345,12 @@ document.addEventListener("DOMContentLoaded", function () {
           const ubic = await window.obtenerUbicacionYIP();
           console.log("[DEBUG] Resultado de window.obtenerUbicacionYIP():", ubic);
           ip_supervisor = ubic.ip || "";
-          localizacion_supervisor = ubic.localizacion || "";
+          // Si el dispositivo es PC, guardar string especial; si es móvil, guardar coordenadas reales
+          if (ubic.dispositivo && typeof ubic.dispositivo === "string" && ubic.dispositivo.toLowerCase().includes("pc")) {
+            localizacion_supervisor = "validado por pc no requiere ubicacion";
+          } else {
+            localizacion_supervisor = ubic.localizacion || "";
+          }
           console.log("[DEBUG] ip_supervisor:", ip_supervisor);
           console.log("[DEBUG] localizacion_supervisor:", localizacion_supervisor);
         } catch (e) {

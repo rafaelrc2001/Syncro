@@ -192,7 +192,9 @@ router.post("/permisos-trabajo", async (req, res) => {
     pno_epe_9,
     columna_nopeligrosovalor_valor,
     firma_creacion,
-
+    ip_creacion,
+    dispositivo_creacion,
+    localizacion_crecion,
   } = req.body;
 
   // Validar que los campos obligatorios existan
@@ -221,7 +223,8 @@ router.post("/permisos-trabajo", async (req, res) => {
         PAP_CE_1, PAP_CE_2, PAP_EPE_1, nombre_departamento,
         columna_fuego_valor, columna_altura_valor, columna_apertura_valor, columna_confinado_valor,
         pno_cr_1, pno_cr_2, pno_cr_3, pno_cr_4, pno_cr_5, pno_cr_6, pno_cr_7, pno_cr_8, pno_cr_9, pno_cr_10, pno_cr_11, pno_cr_12, pno_cr_13,
-        pno_epe_1, pno_epe_2, pno_epe_3, pno_epe_4, pno_epe_5, pno_epe_6, pno_epe_7, pno_epe_8, pno_epe_9, columna_nopeligrosovalor_valor , firma_creacion
+        pno_epe_1, pno_epe_2, pno_epe_3, pno_epe_4, pno_epe_5, pno_epe_6, pno_epe_7, pno_epe_8, pno_epe_9, columna_nopeligrosovalor_valor , firma_creacion,
+        ip_creacion, dispositivo_creacion, localizacion_crecion
       ) VALUES (
         $1, $2, $3, $4, $5, $6, $7,
         $8, $9, $10, $11, $12, $13, $14, $15,
@@ -230,7 +233,8 @@ router.post("/permisos-trabajo", async (req, res) => {
         $30, $31, $32, $33, $34, $35, $36,
         $37, $38, $39, $40, $41, $42, $43,
         $44, $45, $46, $47, $48, $49, $50, $51, $52, $53, $54, $55, $56,
-        $57, $58, $59, $60, $61, $62, $63, $64, $65, $66, $67
+        $57, $58, $59, $60, $61, $62, $63, $64, $65, $66, $67,
+        $68, $69, $70
       )
       RETURNING *`,
       [
@@ -301,6 +305,9 @@ router.post("/permisos-trabajo", async (req, res) => {
         pno_epe_9 || null,
         columna_nopeligrosovalor_valor || null,
         firma_creacion || null,
+        ip_creacion || null,
+        dispositivo_creacion || null,
+        localizacion_crecion || null,
       ]
     );
     const id_permiso = result.rows[0].id_permiso;
@@ -374,6 +381,19 @@ router.post("/autorizaciones", async (req, res) => {
     });
   }
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Ruta para insertar en la tabla ast_actividades
 // Ruta para insertar en la tabla ast_actividades

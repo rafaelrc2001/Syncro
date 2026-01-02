@@ -47,6 +47,10 @@ const departamentoConsultaRouter = require("./departamento_consulta");
 const permisoVistaRouter = require("./permiso_vista_routes");
 
 
+
+const detectarDispositivoRouter = require('./obtenciondeipendpoint');
+
+
 const graficasJefesRouter = require("./graficas/graficas_jefes/graficas_jefes");
 const equipoBuscarRouter = require("./equipo_buscar");
 const { verificarAutenticacion, verificarRol, verificarSesion, cerrarSesion } = require("./middleware/auth");
@@ -186,7 +190,7 @@ app.put("/api/areas/:id", verificarAutenticacion, tablasBase.updateArea);
 app.delete("/api/areas/:id", verificarAutenticacion, tablasBase.deleteArea);
 
 
-
+app.use('/api', detectarDispositivoRouter);
 app.use("/api", verificarAutenticacion, permisoVistaRouter);
 
 // Endpoint de estado de la aplicación

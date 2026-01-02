@@ -397,14 +397,21 @@ async function insertarAutorizacionArea() {
   } else {
     console.warn("[DEBUG] No se encontró firma para enviar");
   }
-  // Obtener IP y localización si está disponible
+  // Obtener IP y localización si está disponible, lógica especial para PC/móvil
   let ip_area = "";
   let localizacion_area = "";
   if (window.obtenerUbicacionYIP) {
     try {
       const ubic = await window.obtenerUbicacionYIP();
       ip_area = ubic.ip || "";
-      localizacion_area = ubic.localizacion || "";
+      // Si el dispositivo es PC, guardar string especial; si es móvil, guardar coordenadas reales
+      if (ubic.dispositivo && typeof ubic.dispositivo === "object" && ubic.dispositivo.so && ["Windows", "Mac OS", "MacOS", "Linux"].includes(ubic.dispositivo.so)) {
+        localizacion_area = "validado por pc no requiere ubicacion";
+      } else {
+        localizacion_area = ubic.localizacion || "";
+      }
+      console.log("[DEBUG] ip_area:", ip_area);
+      console.log("[DEBUG] localizacion_area:", localizacion_area);
     } catch (e) {
       // Si falla, deja vacío
     }
@@ -521,6 +528,21 @@ if (btnAutorizar) {
 const btnGuardarFirma = document.getElementById("guardar");
 if (btnGuardarFirma) {
   btnGuardarFirma.addEventListener("click", async function () {
+    // Validar que el lienzo no esté en blanco antes de continuar
+    const canvas = document.getElementById('canvas');
+    const outputFirma = document.getElementById('outputBase64');
+    function isCanvasBlank(c) {
+      if (!c) return true;
+      const blank = document.createElement('canvas');
+      blank.width = c.width;
+      blank.height = c.height;
+      return c.toDataURL() === blank.toDataURL();
+    }
+    if (!canvas || isCanvasBlank(canvas)) {
+      alert('Por favor, firma antes de guardar.');
+      if (outputFirma) outputFirma.value = "";
+      return;
+    }
     // Aquí ya se guardó la firma en el outputBase64, ahora continúa el flujo normal
     await insertarAutorizacionArea();
   });
@@ -646,6 +668,21 @@ if (btnNoAutorizar) {
         const btnCancelarFirma = document.getElementById("btnAgregarFirmaCancelar");
         if (btnContinuarFirma) {
           btnContinuarFirma.onclick = async function () {
+            // Validar que el lienzo no esté en blanco antes de guardar comentario
+            const canvas = document.getElementById('canvas');
+            const outputFirma = document.getElementById('outputBase64');
+            function isCanvasBlank(c) {
+              if (!c) return true;
+              const blank = document.createElement('canvas');
+              blank.width = c.width;
+              blank.height = c.height;
+              return c.toDataURL() === blank.toDataURL();
+            }
+            if (!canvas || isCanvasBlank(canvas)) {
+              alert('Por favor, firma antes de guardar.');
+              if (outputFirma) outputFirma.value = "";
+              return;
+            }
             modalAgregarFirma.style.display = "none";
             // Ejecutar el flujo original de guardar comentario (lo que estaba en este handler)
             await guardarComentarioNoAutorizar();
@@ -678,15 +715,26 @@ if (btnNoAutorizar) {
       const outputFirma = document.getElementById("outputBase64");
       if (outputFirma && outputFirma.value) {
         firma = outputFirma.value;
-        if (firma.startsWith("data:image")) {
-          const base64Solo = firma.split(",")[1];
-          console.log("[NO AUTORIZAR] Firma capturada (Base64):", firma);
-          console.log("[NO AUTORIZAR] Solo Base64:", base64Solo);
-        } else {
-          console.log("[NO AUTORIZAR] Firma capturada:", firma);
-        }
+      }
+      function isFirmaBlank() {
+        const canvas = document.getElementById('canvas');
+        if (!canvas) return true;
+        const blank = document.createElement('canvas');
+        blank.width = canvas.width;
+        blank.height = canvas.height;
+        return canvas.toDataURL() === blank.toDataURL();
+      }
+      if (!firma || isFirmaBlank()) {
+        alert('Por favor, firma antes de guardar.');
+        if (outputFirma) outputFirma.value = "";
+        return;
+      }
+      if (firma.startsWith("data:image")) {
+        const base64Solo = firma.split(",")[1];
+        console.log("[NO AUTORIZAR] Firma capturada (Base64):", firma);
+        console.log("[NO AUTORIZAR] Solo Base64:", base64Solo);
       } else {
-        console.warn("[NO AUTORIZAR] No se encontró firma para enviar");
+        console.log("[NO AUTORIZAR] Firma capturada:", firma);
       }
       // Obtener IP y localización usando window.obtenerUbicacionYIP
       let ip_area = "";
@@ -695,7 +743,12 @@ if (btnNoAutorizar) {
         try {
           const ubic = await window.obtenerUbicacionYIP();
           ip_area = ubic.ip || "";
-          localizacion_area = ubic.localizacion || "";
+          // Si el dispositivo es PC, guardar string especial; si es móvil, guardar coordenadas reales
+          if (ubic.dispositivo && typeof ubic.dispositivo === "object" && ubic.dispositivo.so && ["Windows", "Mac OS", "MacOS", "Linux"].includes(ubic.dispositivo.so)) {
+            localizacion_area = "validado por pc no requiere ubicacion";
+          } else {
+            localizacion_area = ubic.localizacion || "";
+          }
           console.log("[NO AUTORIZAR] IP capturada:", ip_area);
           console.log("[NO AUTORIZAR] Localización capturada:", localizacion_area);
         } catch (e) {
@@ -1099,6 +1152,14 @@ if (btnConfirmarAutorizar) {
 
   if (btnConfirmarNoAutorizar) {
     btnConfirmarNoAutorizar.addEventListener("click", function () {
+      // Validar que el comentario no esté vacío antes de mostrar el modal de firma
+      const comentarioInput = document.getElementById("comentarioNoAutorizar");
+      const comentario = comentarioInput ? comentarioInput.value.trim() : "";
+      if (!comentario) {
+        alert("Por favor agregue un comentario.");
+        if (comentarioInput) comentarioInput.focus();
+        return;
+      }
       // Cerrar modal de confirmación y abrir el modal de firma
       if (modalConfirmarNoAutorizar)
         modalConfirmarNoAutorizar.style.display = "none";

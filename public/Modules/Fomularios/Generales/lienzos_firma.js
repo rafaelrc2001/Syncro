@@ -60,6 +60,20 @@ document.getElementById('limpiar').onclick = () => {
 };
 
 document.getElementById('guardar').onclick = () => {
+    // Validar que el canvas no esté en blanco
+    const isCanvasBlank = (c) => {
+        const blank = document.createElement('canvas');
+        blank.width = c.width;
+        blank.height = c.height;
+        return c.toDataURL() === blank.toDataURL();
+    };
+    if (isCanvasBlank(canvas)) {
+        alert('Por favor, firma antes de guardar.');
+        console.warn('[FIRMA] Intento de guardar firma en blanco');
+        // Bloquear el flujo: no guardar, no continuar, no enviar nada
+        if (output) output.value = "";
+        return;
+    }
     const dataURL = canvas.toDataURL("image/png"); // AQUÍ SE CREA LA CADENA
     if (output) {
         output.value = dataURL; // Solo guardar en variable oculta
@@ -68,7 +82,7 @@ document.getElementById('guardar').onclick = () => {
         console.error('[FIRMA] No se pudo guardar en outputBase64');
     }
     localStorage.setItem('firma_data', dataURL); // Opcional: guardar en memoria
-    // Continuar flujo automáticamente
+    // Continuar flujo automáticamente SOLO si hay firma
     const btnContinuar = document.getElementById('btnAgregarFirmaContinuar');
     if (btnContinuar) {
         console.log('[FIRMA] Click automático en btnAgregarFirmaContinuar');

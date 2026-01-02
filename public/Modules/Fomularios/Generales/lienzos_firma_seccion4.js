@@ -2,6 +2,28 @@
 // Canvas especial para la firma en la sección 4 (id: canvasFirma)
 
 document.addEventListener('DOMContentLoaded', function() {
+
+        // Función para validar si el canvas está en blanco
+        function isCanvasBlank(c) {
+            const blank = document.createElement('canvas');
+            blank.width = c.width;
+            blank.height = c.height;
+            return c.toDataURL() === blank.toDataURL();
+        }
+
+        // Botón guardar (si existe)
+        const guardarBtn = document.getElementById('guardarFirma');
+        if (guardarBtn) {
+            guardarBtn.onclick = function() {
+                if (isCanvasBlank(canvas)) {
+                    alert('Por favor, firma antes de guardar.');
+                    console.warn('[FIRMA S4] Intento de guardar firma en blanco');
+                    return;
+                }
+                if (output) output.value = canvas.toDataURL('image/png');
+                // Aquí puedes continuar el flujo si es necesario
+            };
+        }
     const canvas = document.getElementById('canvasFirma');
     const ctx = canvas ? canvas.getContext('2d') : null;
     const output = document.getElementById('outputBase64Firma');

@@ -56,14 +56,18 @@ async function obtenerUbicacionYIP() {
         <button id='btnCerrarModalUbicacion'>Aceptar</button>
       </div>`;
       document.body.appendChild(modal);
-      document.getElementById('btnCerrarModalUbicacion').onclick = function() {
-        modal.style.display = 'none';
-      };
     } else {
       modal.style.display = 'flex';
     }
     // Pedir ubicación obligatoria
     return new Promise((resolve) => {
+      function bloquearYRecargar() {
+        // Oculta el loader y recarga la página
+        ocultarLoader();
+        if (modal) modal.style.display = 'none';
+        alert('No se pudo obtener la ubicación. La página se recargará para intentarlo de nuevo.');
+        window.location.reload();
+      }
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (pos) => {
@@ -74,9 +78,8 @@ async function obtenerUbicacionYIP() {
             resolve({ ip, localizacion, dispositivo });
           },
           (err) => {
-            localizacion = `Error GPS: ${err.message}`;
-            ocultarLoader();
-            resolve({ ip, localizacion, dispositivo });
+            // Si falla la ubicación, bloquear flujo y recargar
+            bloquearYRecargar();
           },
           {
             enableHighAccuracy: true,
@@ -85,9 +88,8 @@ async function obtenerUbicacionYIP() {
           }
         );
       } else {
-        localizacion = "Geolocalización no soportada";
-        ocultarLoader();
-        resolve({ ip, localizacion, dispositivo });
+        // Si no soporta geolocalización, bloquear flujo y recargar
+        bloquearYRecargar();
       }
     });
   }

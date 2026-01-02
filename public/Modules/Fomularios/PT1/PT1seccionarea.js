@@ -49,6 +49,10 @@ async function consultarTodoPermiso(id_permiso) {
   const resultado = { permiso, participan, actividades, autorizaciones };
   // Mapeo de datos al HTML
   console.log('OBJETO DEVUELTO POR LA CONSULTA:', permiso);
+    if (permiso && permiso.data && permiso.data.id_departamento !== undefined) {
+      console.log('[DEBUG] id_departamento:', permiso.data.id_departamento);
+      window.idDepartamentoActual = permiso.data.id_departamento;
+    }
   if (permiso && permiso.data) {
     const d = permiso.data;
     // Fecha (formato legible)
@@ -389,7 +393,6 @@ async function insertarAutorizacionArea() {
   // Mostrar valor de la firma en consola
   if (firma) {
     console.log("[DEBUG] Valor de firma (Base64):", firma);
-    // Si quieres ver solo el texto plano (sin encabezado data:image/png;base64,)
     if (firma.startsWith("data:image")) {
       const base64Solo = firma.split(",")[1];
       console.log("[DEBUG] Solo Base64:", base64Solo);
@@ -401,17 +404,16 @@ async function insertarAutorizacionArea() {
   let ip_area = "";
   let localizacion_area = "";
   let dispositivo_area = "/";
+  let usuario_departamento = window.idDepartamentoActual || "";
   if (window.obtenerUbicacionYIP) {
     try {
       const ubic = await window.obtenerUbicacionYIP();
       ip_area = ubic.ip || "";
-      // Si el dispositivo es PC, guardar string especial; si es móvil, guardar coordenadas reales
       if (ubic.dispositivo && typeof ubic.dispositivo === "object" && ubic.dispositivo.so && ["Windows", "Mac OS", "MacOS", "Linux"].includes(ubic.dispositivo.so)) {
         localizacion_area = "/";
       } else {
         localizacion_area = ubic.localizacion || "";
       }
-      // Guardar el dispositivo_area como string (puedes guardar el SO o el objeto completo serializado)
       dispositivo_area = ubic.dispositivo ? (typeof ubic.dispositivo === "object" ? JSON.stringify(ubic.dispositivo) : String(ubic.dispositivo)) : "/";
       console.log("[DEBUG] ip_area:", ip_area);
       console.log("[DEBUG] localizacion_area:", localizacion_area);
@@ -420,6 +422,7 @@ async function insertarAutorizacionArea() {
       // Si falla, deja vacío
     }
   }
+  console.log('[DEBUG] usuario_departamento:', usuario_departamento);
 
   // 2. Validaciones básicas
   if (!idPermiso) {
@@ -489,7 +492,9 @@ async function insertarAutorizacionArea() {
       localizacion_area,
       firma,
       dispositivo_area,
+      usuario_departamento,
     };
+    console.log('[DEBUG] Payload a enviar a /api/autorizaciones/area:', payload);
     console.log("[DEPURACIÓN] Payload a enviar a /api/autorizaciones/area:", payload);
 
     // Enviar todos los datos relevantes
@@ -745,11 +750,11 @@ if (btnNoAutorizar) {
       let ip_area = "";
       let localizacion_area = "";
       let dispositivo_area = "/";
+      let usuario_departamento = window.idDepartamentoActual || "";
       if (window.obtenerUbicacionYIP) {
         try {
           const ubic = await window.obtenerUbicacionYIP();
           ip_area = ubic.ip || "";
-          // Si el dispositivo es PC, guardar string especial; si es móvil, guardar coordenadas reales
           if (ubic.dispositivo && typeof ubic.dispositivo === "object" && ubic.dispositivo.so && ["Windows", "Mac OS", "MacOS", "Linux"].includes(ubic.dispositivo.so)) {
             localizacion_area = "/";
           } else {
@@ -765,6 +770,7 @@ if (btnNoAutorizar) {
       } else {
         console.warn("[NO AUTORIZAR] window.obtenerUbicacionYIP no está disponible");
       }
+      console.log('[NO AUTORIZAR] usuario_departamento:', usuario_departamento);
       if (!comentario) {
         return;
       }
@@ -799,6 +805,7 @@ if (btnNoAutorizar) {
             ip_area,
             localizacion_area,
             dispositivo_area,
+            usuario_departamento,
           }),
         });
         if (!resp.ok) {

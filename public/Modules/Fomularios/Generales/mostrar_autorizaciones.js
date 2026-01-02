@@ -63,7 +63,7 @@ async function cargarResponsablesAutorizacion(id_permiso) {
 					   html += `<td>Responsable area</td>`;
                        html += `<td style='vertical-align:middle;padding:6px 8px;'>` +
 								    `<div style='font-size:8px;line-height:1.3;'>` +
-									`${info.usuario_departamento ? info.usuario_departamento: '<span style=\'color:#c0392b\'>Sin dato</span>'}` +
+									`${info.nombre_usuario_departamento ? info.nombre_usuario_departamento: '<span style=\'color:#c0392b\'>Sin dato</span>'}` +
 								    `Fecha: ${info.fecha_hora_area ? info.fecha_hora_area : '<span style=\'color:#c0392b\'>Sin dato</span>'}` +
 								    `${info.dispositivo_area ? info.dispositivo_area: '<span style=\'color:#c0392b\'>Sin dato</span>'}` +  
 								    `GPS: ${info.localizacion_area ? info.localizacion_area : '<span style=\'color:#c0392b\'>Sin dato</span>'}` +
@@ -86,7 +86,7 @@ async function cargarResponsablesAutorizacion(id_permiso) {
 					   html += `<td>Operador area</td>`;
 							   html += `<td style='vertical-align:middle;padding:6px 8px;'>` +
 								   `<div style='font-size:8px;line-height:1.3;'>` +
-								   	`${info.usuario_departamento ? info.usuario_departamento: '<span style=\'color:#c0392b\'>Sin dato</span>'}` +
+								   	`${info.nombre_usuario_departamento ? info.nombre_usuario_departamento: '<span style=\'color:#c0392b\'>Sin dato</span>'}` +
 								   `Fecha: ${info.fecha_hora_area ? info.fecha_hora_area : '<span style=\'color:#c0392b\'>Sin dato</span>'}` +
 								 	 `${info.dispositivo_area ? info.dispositivo_area: '<span style=\'color:#c0392b\'>Sin dato</span>'}` +  
 								   `GPS: ${info.localizacion_area ? info.localizacion_area : '<span style=\'color:#c0392b\'>Sin dato</span>'}` +
@@ -111,7 +111,7 @@ async function cargarResponsablesAutorizacion(id_permiso) {
 					   html += `<td>Supervisor</td>`;
 					   html += `<td style='vertical-align:middle;padding:6px 8px;'>` +
 						   `<div style='font-size:8px;line-height:1.3;'>` +
-						`${info.usuario_supervisor ? info.usuario_supervisor: '<span style=\'color:#c0392b\'>Sin dato</span>'}` +
+						`${info.usuario_supervisor ? info.unombre_suario_supervisor: '<span style=\'color:#c0392b\'>Sin dato</span>'}` +
 								
 						   `Fecha: ${info.fecha_hora_supervisor ? info.fecha_hora_supervisor : '<span style=\'color:#c0392b\'>Sin dato</span>'}` +
 						    `Fecha: ${info.dispositivo_supervisor ? info.dispositivo_supervisor : '<span style=\'color:#c0392b\'>Sin dato</span>'}` +

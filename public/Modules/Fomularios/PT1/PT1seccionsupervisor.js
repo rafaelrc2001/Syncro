@@ -1,4 +1,24 @@
+
+
+    let id_supervisor = null;
+    try {
+      const usuarioStr = localStorage.getItem("usuario");
+      if (usuarioStr) {
+        const usuarioObj = JSON.parse(usuarioStr);
+        if (usuarioObj && usuarioObj.id) {
+          id_supervisor = usuarioObj.id;
+          console.log("[DEBUG] id_supervisor obtenido de localStorage:", id_supervisor);
+        }
+      }
+    } catch (e) {
+      console.warn("[DEBUG] No se pudo obtener id_supervisor de localStorage:", e);
+    }
+
+
+
 // Función para mostrar u ocultar el botón de validación según el estatus
+
+
 async function mostrarBotonPorEstatus(idPermiso) {
   try {
     const resp = await fetch(`/api/estatus-solo/${idPermiso}`);
@@ -376,6 +396,19 @@ document.addEventListener("DOMContentLoaded", function () {
       const operadorInput = document.getElementById("responsable-aprobador2");
       const supervisor = responsableInput ? responsableInput.value.trim() : "";
       const categoria = operadorInput ? operadorInput.value.trim() : "";
+      // Obtener el id del supervisor desde localStorage
+      let usuario_supervisor = null;
+      try {
+        const usuarioStr = localStorage.getItem("usuario");
+        if (usuarioStr) {
+          const usuarioObj = JSON.parse(usuarioStr);
+          if (usuarioObj && usuarioObj.id) {
+            usuario_supervisor = usuarioObj.id;
+          }
+        }
+      } catch (e) {
+        console.warn("[DEBUG] No se pudo obtener usuario_supervisor de localStorage:", e);
+      }
 
       // Obtener IP y localización del supervisor, lógica especial para PC/móvil
       let ip_supervisor = "";
@@ -456,6 +489,7 @@ document.addEventListener("DOMContentLoaded", function () {
           localizacion_supervisor,
           dispositivo_supervisor,
           firma_supervisor,
+          usuario_supervisor,
         });
 
         await fetch("/api/autorizaciones/supervisor-categoria", {
@@ -470,6 +504,7 @@ document.addEventListener("DOMContentLoaded", function () {
             localizacion_supervisor,
             dispositivo_supervisor,
             firma_supervisor,
+            usuario_supervisor,
           }),
         });
       } catch (err) {

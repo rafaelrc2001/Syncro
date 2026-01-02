@@ -360,12 +360,27 @@ document.addEventListener("DOMContentLoaded", function () {
         console.warn("[DEBUG] window.obtenerUbicacionYIP no está disponible");
       }
 
-      // Obtener la firma del supervisor desde el input oculto
+           // Obtener la firma del supervisor desde el input oculto y validar que no esté en blanco
       let firma_supervisor = "";
       const inputFirma = document.getElementById("outputBase64");
       if (inputFirma) {
         firma_supervisor = inputFirma.value;
       }
+      // Validar que la firma no esté en blanco (canvas vacío)
+      function isFirmaBlank() {
+        const canvas = document.getElementById('canvas');
+        if (!canvas) return true;
+        const blank = document.createElement('canvas');
+        blank.width = canvas.width;
+        blank.height = canvas.height;
+        return canvas.toDataURL() === blank.toDataURL();
+      }
+      if (!firma_supervisor || isFirmaBlank()) {
+        alert('Por favor, firma antes de validar.');
+        if (inputFirma) inputFirma.value = "";
+        return;
+      }
+
 
       // Mostrar valor de la firma en consola
       if (firma_supervisor) {

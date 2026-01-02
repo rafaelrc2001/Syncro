@@ -199,12 +199,38 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
       try {
-        // === Validar sección 4
+        // === Validar sección 4 ===
         const section4 = document.querySelector(
           '.form-section[data-section="4"]'
         );
         const requiredFields = section4.querySelectorAll("[required]");
         let allFilled = true;
+
+        // Validar que exista al menos una actividad
+        const astActivitiesContainer1 = document.querySelector(".ast-activities");
+        const activityDivs = astActivitiesContainer1 ? astActivitiesContainer1.querySelectorAll(".ast-activity") : [];
+        if (!activityDivs || activityDivs.length === 0) {
+          alert("Debe agregar al menos una actividad antes de continuar.");
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalHTML;
+          return;
+        }
+
+        // Validar que la firma no esté vacía (canvas)
+        const canvasFirma = document.getElementById('canvasFirma');
+        function isCanvasBlank(c) {
+          if (!c) return true;
+          const blank = document.createElement('canvas');
+          blank.width = c.width;
+          blank.height = c.height;
+          return c.toDataURL() === blank.toDataURL();
+        }
+        if (isCanvasBlank(canvasFirma)) {
+          alert('Por favor, firma antes de enviar el permiso.');
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalHTML;
+          return;
+        }
 
         requiredFields.forEach((field) => {
           if (!field.value.trim()) {

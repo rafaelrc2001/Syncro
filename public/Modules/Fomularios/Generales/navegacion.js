@@ -66,6 +66,27 @@ function initNavigation() {
                 return;
             }
 
+            // Validación especial: en sección 2, debe haber al menos un permiso seleccionado en el drag and drop
+            if (parseInt(currentSectionNumber) === 2 && parseInt(nextSectionNumber) === 3) {
+                const dropZone = document.getElementById('dropZone');
+                if (dropZone) {
+                    const permisosSeleccionados = dropZone.querySelectorAll('.added-form');
+                    if (!permisosSeleccionados || permisosSeleccionados.length === 0) {
+                        alert('Debe seleccionar al menos un permiso en el constructor de formato antes de continuar.');
+                        return;
+                    }
+                }
+            }
+
+            // Validación especial: en sección 3, debe haber al menos un participante antes de pasar a la 4
+            if (parseInt(currentSectionNumber) === 3 && parseInt(nextSectionNumber) === 4) {
+                const participantes = document.querySelectorAll('.participant-row');
+                if (!participantes || participantes.length === 0) {
+                    alert('Debe agregar al menos un participante antes de continuar.');
+                    return;
+                }
+            }
+
             // Solo cambiar de sección al hacer click en siguiente
             showSection(nextSectionNumber);
         });

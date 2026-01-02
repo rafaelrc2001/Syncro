@@ -516,7 +516,10 @@ document.addEventListener("DOMContentLoaded", () => {
         if (window.datosDispositivoUbicacion) {
           ip_creacion = window.datosDispositivoUbicacion.ip || null;
           dispositivo_creacion = window.datosDispositivoUbicacion.modelo || null;
-          localizacion_creacion = window.datosDispositivoUbicacion.localizacion || null;
+          localizacion_creacion = window.datosDispositivoUbicacion.localizacion;
+          if (!localizacion_creacion || localizacion_creacion === 'null' || localizacion_creacion === '') {
+            localizacion_creacion = '/';
+          }
         }
         console.log('[DEBUG][submit] ip_creacion:', ip_creacion, 'dispositivo_creacion:', dispositivo_creacion, 'localizacion_creacion:', localizacion_creacion);
         // Si es móvil y localizacion_creacion sigue null, advertir al usuario y bloquear envío

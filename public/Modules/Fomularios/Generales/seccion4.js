@@ -1,4 +1,107 @@
+// ==============================
+// Función especial para obtener IP, ubicación y modelo de dispositivo
+// Inspirada en obtenerUbicacionYIP.js pero autocontenida para seccion4
+async function obtenerDatosDispositivoUbicacion() {
+  // Mostrar loader si existe
+  if (typeof mostrarLoader === 'function') mostrarLoader();
+  let ip = null;
+  let localizacion = null;
+  let modelo = null;
+  // 1. Detectar dispositivo desde backend
+  let dispositivo = null;
+  try {
+    const res = await fetch('/api/detectar-dispositivo');
+    dispositivo = await res.json();
+    modelo = dispositivo?.modelo || dispositivo?.userAgent || JSON.stringify(dispositivo);
+    console.log('[DEBUG][obtenerDatosDispositivoUbicacion] Dispositivo:', dispositivo);
+  } catch (e) {
+    console.warn('[obtenerDatosDispositivoUbicacion] No se pudo obtener info de dispositivo:', e);
+  }
+  // 2. Obtener IP pública
+  try {
+    const ipRes = await fetch('https://api.ipify.org?format=json');
+    const ipData = await ipRes.json();
+    ip = ipData.ip || 'No disponible';
+    console.log('[DEBUG][obtenerDatosDispositivoUbicacion] IP:', ip);
+  } catch (e) {
+    ip = 'Error obteniendo IP';
+    console.warn('[obtenerDatosDispositivoUbicacion] Error IP:', e);
+  }
+  // 3. Obtener ubicación (si es móvil, forzar; si es PC, opcional)
+  function getUbicacionPromise() {
+    return new Promise((resolve) => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            const lat = pos.coords.latitude.toFixed(6);
+            const lon = pos.coords.longitude.toFixed(6);
+            localizacion = `${lat},${lon}`;
+            console.log('[DEBUG][obtenerDatosDispositivoUbicacion] Ubicación:', localizacion);
+            resolve(localizacion);
+          },
+          (err) => {
+            console.warn('[obtenerDatosDispositivoUbicacion] Error ubicación:', err);
+            resolve(null);
+          },
+          { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+        );
+      } else {
+        resolve(null);
+      }
+    });
+  }
+  localizacion = await getUbicacionPromise();
+  if (typeof ocultarLoader === 'function') ocultarLoader();
+  return { ip, localizacion, modelo, dispositivo };
+}
 document.addEventListener("DOMContentLoaded", () => {
+  // ==============================
+  // 0.1. Verificación de ubicación obligatoria en móviles
+  // ==============================
+  function esDispositivoMovil() {
+    const ua = navigator.userAgent || navigator.vendor || window.opera;
+    return /android|iphone|ipad|ipod|ios/i.test(ua);
+  }
+
+  function mostrarAdvertenciaUbicacion() {
+    // Overlay bloqueador
+    let overlay = document.getElementById('ubicacion-overlay');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'ubicacion-overlay';
+      overlay.style.position = 'fixed';
+      overlay.style.top = '0';
+      overlay.style.left = '0';
+      overlay.style.width = '100vw';
+      overlay.style.height = '100vh';
+      overlay.style.background = 'rgba(255,243,205,0.98)';
+      overlay.style.zIndex = '99999';
+      overlay.style.display = 'flex';
+      overlay.style.flexDirection = 'column';
+      overlay.style.alignItems = 'center';
+      overlay.style.justifyContent = 'center';
+      overlay.innerHTML = '<div style="background:#fff3cd;border:1px solid #ffeeba;padding:32px 24px;border-radius:12px;box-shadow:0 2px 16px #0002;font-weight:bold;color:#856404;font-size:1.2em;text-align:center;max-width:90vw;">Debes activar la ubicación para continuar.<br>Actívala en tu dispositivo y acepta el permiso de ubicación.<br><br><span style="font-size:0.95em;font-weight:normal;">Esta pantalla se quitará automáticamente cuando se detecte la ubicación.</span></div>';
+      document.body.appendChild(overlay);
+    }
+  }
+  function ocultarAdvertenciaUbicacion() {
+    const overlay = document.getElementById('ubicacion-overlay');
+    if (overlay) overlay.remove();
+  }
+
+  // Si es móvil, verificar ubicación periódicamente
+  if (esDispositivoMovil()) {
+    // Checar cada 1s si window.datosDispositivoUbicacion.localizacion tiene valor
+    const checkUbicacion = setInterval(() => {
+      const loc = window.datosDispositivoUbicacion?.localizacion;
+      if (!loc || loc === 'null' || loc === '' || loc === undefined) {
+        mostrarAdvertenciaUbicacion();
+      } else {
+        ocultarAdvertenciaUbicacion();
+        clearInterval(checkUbicacion);
+      }
+    }, 1000);
+  }
     // Mostrar/ocultar campo 'Otro (especifique)' según selección
     const maintenanceTypeSelect = document.getElementById("maintenance-type");
     const otherMaintenanceContainer = document.getElementById("other-maintenance-container");
@@ -404,6 +507,29 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
+        // === Obtener IP, dispositivo y localización desde window.datosDispositivoUbicacion ===
+        let ip_creacion = null;
+        let dispositivo_creacion = null;
+        let localizacion_creacion = null;
+        // DEBUG: Mostrar el objeto global antes de usarlo
+        console.log('[DEBUG][submit] window.datosDispositivoUbicacion:', window.datosDispositivoUbicacion);
+        if (window.datosDispositivoUbicacion) {
+          ip_creacion = window.datosDispositivoUbicacion.ip || null;
+          dispositivo_creacion = window.datosDispositivoUbicacion.modelo || null;
+          localizacion_creacion = window.datosDispositivoUbicacion.localizacion || null;
+        }
+        console.log('[DEBUG][submit] ip_creacion:', ip_creacion, 'dispositivo_creacion:', dispositivo_creacion, 'localizacion_creacion:', localizacion_creacion);
+        // Si es móvil y localizacion_creacion sigue null, advertir al usuario y bloquear envío
+        function esDispositivoMovil() {
+          const ua = navigator.userAgent || navigator.vendor || window.opera;
+          return /android|iphone|ipad|ipod|ios/i.test(ua);
+        }
+        if (esDispositivoMovil() && (!localizacion_creacion || localizacion_creacion === 'null' || localizacion_creacion === '')) {
+          alert('Debes activar la ubicación en tu dispositivo para poder guardar el permiso.');
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalHTML;
+          return;
+        }
         // 1. Insertar permiso (ahora todo va a permisos_trabajo)
         const permisoResponse = await fetch("/api/permisos-trabajo", {
           method: "POST",
@@ -480,6 +606,9 @@ document.addEventListener("DOMContentLoaded", () => {
 firma_creacion,
 
 
+ip_creacion,
+            dispositivo_creacion,
+            localizacion_creacion,
 
 
 

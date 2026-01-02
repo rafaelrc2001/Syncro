@@ -39,6 +39,9 @@ async function cargarResponsablesAutorizacion(id_permiso) {
 								   `<div style='font-size:8px;line-height:1.3;'>` +
 								    `${ info.usuario_usuario ? info.usuario_usuario: '<span style=\'color:#c0392b\'>Sin dato</span>'}` +
 								   `Fecha:${ info.fecha_hora ? info.fecha_hora: '<span style=\'color:#c0392b\'>Sin dato</span>'}` +
+								   `${info.dispositivo_creacion? info.dispositivo_creacion: '<span style=\'color:#c0392b\'>Sin dato</span>'}` +
+								  `GPS: ${info.localizacion_creacion ? info.localizacion_creacion : '<span style=\'color:#c0392b\'>Sin dato</span>'}` +
+								    `IP: ${info.ip_creacion ? info.ip_creacion : '<span style=\'color:#c0392b\'>Sin dato</span>'}`+  
 								   `</div>` +
 							   `</td>`;
 						   

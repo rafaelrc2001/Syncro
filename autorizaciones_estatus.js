@@ -927,26 +927,30 @@ router.get("/autorizaciones/detalle/:id_permiso", async (req, res) => {
   try {
     const result = await db.query(
       `
-      SELECT 
-      a.*,                              
-      p.id_permiso,
-      p.nombre_solicitante,
-      p.firma_creacion,
-      p.fecha_hora,
-      s.nombre AS nombre_supervisor,
-      s.usuario AS usuario_supervisor,
-    u.usuario AS usuario_usuario,
-    d.nombre AS usuario_departamento
-    FROM permisos_trabajo p
-    LEFT JOIN autorizaciones a 
-        ON a.id_permiso = p.id_permiso
-    LEFT JOIN supervisores s
-        ON a.id_supervisor = s.id_supervisor
-    LEFT JOIN departamentos d
-        ON p.id_departamento = d.id_departamento
-    LEFT JOIN usuarios u
-        ON p.id_usuario = u.id_usuario  -- Cambié a.id_usuario por p.id_usuario
-    WHERE p.id_permiso = $1`,
+            SELECT 
+          a.*,                              
+          p.id_permiso,
+          p.nombre_solicitante,
+          p.firma_creacion,
+          p.fecha_hora,
+        p.dispositivo_creacion,
+        p.ip_creacion,
+        p.localizacion_creacion,
+          s.nombre AS nombre_supervisor,
+          s.usuario AS usuario_supervisor,
+        u.usuario AS usuario_usuario,
+          d.nombre AS usuario_departamento
+      FROM permisos_trabajo p
+      LEFT JOIN autorizaciones a 
+          ON a.id_permiso = p.id_permiso
+      LEFT JOIN supervisores s
+          ON a.id_supervisor = s.id_supervisor
+      -- JOIN con la tabla departamentos
+      LEFT JOIN departamentos d
+          ON p.id_departamento = d.id_departamento
+      LEFT JOIN usuarios u
+          ON p.id_usuario = u.id_usuario  -- Cambié a.id_usuario por p.id_usuario
+      WHERE p.id_permiso = $1`,
       [id_permiso]
     );
     if (result.rows.length === 0) {

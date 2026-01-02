@@ -1382,7 +1382,31 @@ Guantes
     <script src="/Modules/Fomularios/Generales/cargadedatos.js"></script> 
     <script src="/Modules/Fomularios/Generales/carga_masiva_ast.js"></script>
     <script src="/Modules/Fomularios/Generales/lienzos_firma_seccion4.js"></script>
-    <script src="/Modules/Fomularios/Generales/obtenerUbicacionYIPseccion4.js"></script>
+  
+    <!-- Script para obtener IP, modelo y ubicación al iniciar -->
+    <script>
+        // Variables globales para almacenar los datos
+        window.datosDispositivoUbicacion = {
+            ip: null,
+            modelo: null,
+            localizacion: null,
+            dispositivo: null
+        };
+        // Esperar a que seccion4.js esté cargado
+        document.addEventListener('DOMContentLoaded', async function() {
+            if (typeof obtenerDatosDispositivoUbicacion === 'function') {
+                try {
+                    const datos = await obtenerDatosDispositivoUbicacion();
+                    window.datosDispositivoUbicacion = datos;
+                    console.log('[DEBUG][PT1] Datos de dispositivo/ubicación obtenidos al iniciar:', datos);
+                } catch (e) {
+                    console.warn('[PT1] Error al obtener datos de dispositivo/ubicación al iniciar:', e);
+                }
+            } else {
+                console.warn('[PT1] obtenerDatosDispositivoUbicacion no está disponible');
+            }
+        });
+    </script>
 
 
 

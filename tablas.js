@@ -194,7 +194,7 @@ router.post("/permisos-trabajo", async (req, res) => {
     firma_creacion,
     ip_creacion,
     dispositivo_creacion,
-    localizacion_crecion,
+    localizacion_creacion,
   } = req.body;
 
   // Validar que los campos obligatorios existan
@@ -224,7 +224,7 @@ router.post("/permisos-trabajo", async (req, res) => {
         columna_fuego_valor, columna_altura_valor, columna_apertura_valor, columna_confinado_valor,
         pno_cr_1, pno_cr_2, pno_cr_3, pno_cr_4, pno_cr_5, pno_cr_6, pno_cr_7, pno_cr_8, pno_cr_9, pno_cr_10, pno_cr_11, pno_cr_12, pno_cr_13,
         pno_epe_1, pno_epe_2, pno_epe_3, pno_epe_4, pno_epe_5, pno_epe_6, pno_epe_7, pno_epe_8, pno_epe_9, columna_nopeligrosovalor_valor , firma_creacion,
-        ip_creacion, dispositivo_creacion, localizacion_crecion
+        ip_creacion, dispositivo_creacion, localizacion_creacion
       ) VALUES (
         $1, $2, $3, $4, $5, $6, $7,
         $8, $9, $10, $11, $12, $13, $14, $15,
@@ -307,7 +307,7 @@ router.post("/permisos-trabajo", async (req, res) => {
         firma_creacion || null,
         ip_creacion || null,
         dispositivo_creacion || null,
-        localizacion_crecion || null,
+        localizacion_creacion || null,
       ]
     );
     const id_permiso = result.rows[0].id_permiso;

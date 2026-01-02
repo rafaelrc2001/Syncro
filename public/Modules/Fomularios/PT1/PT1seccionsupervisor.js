@@ -1,3 +1,31 @@
+// Función para mostrar u ocultar el botón de validación según el estatus
+async function mostrarBotonPorEstatus(idPermiso) {
+  try {
+    const resp = await fetch(`/api/estatus-solo/${idPermiso}`);
+    if (!resp.ok) {
+      console.error('[DEBUG] Error HTTP al consultar /estatus-solo:', resp.status);
+      return;
+    }
+    const data = await resp.json();
+    // El estatus puede venir como data.estatus, data.data.estatus, o data.data[0].estatus
+    let estatus = data.estatus || (data.data && data.data.estatus) || (data.data && data.data[0] && data.data[0].estatus) || null;
+    const btnGuardar = document.getElementById('btn-guardar-campos');
+    console.log('[DEBUG] Valor de estatus recibido:', estatus);
+    if (btnGuardar) {
+      if (estatus === 'activo') {
+        btnGuardar.style.display = '';
+        console.log('[DEBUG] Botón mostrado (estatus == "activo")');
+      } else {
+        btnGuardar.style.display = 'none';
+        console.log('[DEBUG] Botón oculto (estatus != "activo")');
+      }
+    } else {
+      console.warn('[DEBUG] No se encontró el botón btn-guardar-campos en el DOM');
+    }
+  } catch (e) {
+    console.error('[DEBUG] Error al consultar estatus-solo:', e);
+  }
+}
 // Valida que ambos campos estén seleccionados antes de autorizar
 
 
@@ -6,6 +34,18 @@ document.addEventListener("DOMContentLoaded", function () {
   const params = new URLSearchParams(window.location.search);
   const idPermiso = params.get("id");
   if (idPermiso) {
+    // Esperar a que el botón esté en el DOM antes de consultar el estatus
+    function esperarYMostrarBoton(retries = 20) {
+      const btnGuardar = document.getElementById('btn-guardar-campos');
+      if (btnGuardar) {
+        mostrarBotonPorEstatus(idPermiso);
+      } else if (retries > 0) {
+        setTimeout(() => esperarYMostrarBoton(retries - 1), 150);
+      } else {
+        console.warn('[DEBUG] No se encontró el botón btn-guardar-campos tras esperar');
+      }
+    }
+    esperarYMostrarBoton();
     consultarTodoPermiso(idPermiso).then((resultado) => {
       // Mostrar permisos según los valores columna_*_valor
       if (resultado && resultado.permiso && resultado.permiso.data) {

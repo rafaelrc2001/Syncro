@@ -936,33 +936,42 @@ router.get("/autorizaciones/detalle/:id_permiso", async (req, res) => {
     const result = await db.query(
       `
             SELECT 
-              a.*,                              
-              p.id_permiso,
-              p.nombre_solicitante,
-              p.firma_creacion,
-              p.fecha_hora,
-              p.dispositivo_creacion,
-              p.ip_creacion,
-              p.localizacion_creacion,
-              s.nombre AS nombre_supervisor,
-              u.usuario AS usuario_usuario,
-              -- Agregar el usuario del supervisor desde la tabla supervisores
-              s2.usuario AS nombre_usuario_supervisor
-          FROM permisos_trabajo p
-          LEFT JOIN autorizaciones a 
-              ON a.id_permiso = p.id_permiso
-          -- Primer JOIN con supervisores para el id_supervisor
-          LEFT JOIN supervisores s
-              ON a.id_supervisor = s.id_supervisor
-          -- SEGUNDO JOIN con supervisores para el usuario_supervisor
-          LEFT JOIN supervisores s2
-              ON a.usuario_supervisor = s2.id_supervisor
-          -- JOIN con la tabla departamentos
-          LEFT JOIN departamentos d
-              ON p.id_departamento = d.id_departamento
-          LEFT JOIN usuarios u
-              ON p.id_usuario = u.id_usuario
-          WHERE p.id_permiso = $1`,
+    a.*,                              
+    p.id_permiso,
+    p.nombre_solicitante,
+    p.firma_creacion,
+    p.fecha_hora,
+    p.dispositivo_creacion,
+    p.ip_creacion,
+    p.localizacion_creacion,
+    s.nombre AS nombre_supervisor,
+    s.usuario AS usuario_supervisor,
+    u.usuario AS usuario_usuario,
+    -- Nombre del departamento basado en usuario_departamento
+    d_usuario.nombre AS nombre_usuario_departamento,
+    -- Usuario del supervisor desde usuario_supervisor
+    s2.usuario AS nombre_usuario_supervisor,
+    -- Nombre del departamento del permiso (opcional)
+    d_permiso.nombre AS nombre_departamento_permiso
+FROM permisos_trabajo p
+LEFT JOIN autorizaciones a 
+    ON a.id_permiso = p.id_permiso
+-- Primer JOIN con supervisores para id_supervisor
+LEFT JOIN supervisores s
+    ON a.id_supervisor = s.id_supervisor
+-- Segundo JOIN con supervisores para usuario_supervisor
+LEFT JOIN supervisores s2
+    ON a.usuario_supervisor = s2.id_supervisor
+-- JOIN para departamento del permiso
+LEFT JOIN departamentos d_permiso
+    ON p.id_departamento = d_permiso.id_departamento
+-- JOIN para usuario_departamento de autorizaciones
+LEFT JOIN departamentos d_usuario
+    ON a.usuario_departamento = d_usuario.id_departamento
+-- JOIN con usuarios
+LEFT JOIN usuarios u
+    ON p.id_usuario = u.id_usuario
+WHERE p.id_permiso = $1`,
       [id_permiso]
     );
     if (result.rows.length === 0) {

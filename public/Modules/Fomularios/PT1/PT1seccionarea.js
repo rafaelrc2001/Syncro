@@ -411,7 +411,7 @@ async function insertarAutorizacionArea() {
   let ip_area = "";
   let localizacion_area = "";
   let dispositivo_area = "/";
-  let usuario_departamento = window.idDepartamentoActual || "";
+  let usuario_departamento = usuario.id;
   if (window.obtenerUbicacionYIP) {
     try {
       const ubic = await window.obtenerUbicacionYIP();
@@ -757,7 +757,7 @@ if (btnNoAutorizar) {
       let ip_area = "";
       let localizacion_area = "";
       let dispositivo_area = "/";
-      let usuario_departamento = window.idDepartamentoActual || "";
+      let usuario_departamento = usuario.id;
       if (window.obtenerUbicacionYIP) {
         try {
           const ubic = await window.obtenerUbicacionYIP();

@@ -1,6 +1,13 @@
 
 // Ejecutar consulta automática al cargar si hay id en la URL
 document.addEventListener("DOMContentLoaded", function () {
+  // Mostrar nombre e id del usuario como en MenuDepartamento.js
+  const usuario = JSON.parse(localStorage.getItem("usuario"));
+  if (usuario && usuario.nombre && usuario.id) {
+    console.log(
+      `Entraste al departamento ${usuario.nombre} con el id: ${usuario.id}`
+    );
+  }
   const params = new URLSearchParams(window.location.search);
   const idPermiso = params.get("id");
   if (idPermiso) {

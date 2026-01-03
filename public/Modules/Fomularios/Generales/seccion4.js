@@ -533,6 +533,90 @@ document.addEventListener("DOMContentLoaded", () => {
           submitBtn.innerHTML = originalHTML;
           return;
         }
+
+
+        const datosPermisos = {
+           id_area,
+            id_departamento,
+            id_sucursal,
+            contrato,
+            fecha_hora,
+            id_usuario,
+            tipo_mantenimiento,
+            ot_numero,
+            tag,
+            hora_inicio,
+            equipo_intervenir,
+            descripcion_trabajo,
+            nombre_solicitante,
+            empresa,
+            PAL_EPP_1,
+            PAL_EPP_2,
+            PAL_FA_1,
+            PAL_FA_2,
+            PAL_EPC_1,
+            PAL_EPC_2,
+            PAL_CR_1,
+            PCO_EH_1,
+            PCO_MA_1,
+            PCO_MA_2,
+            PCO_MA_3,
+            PCO_MA_4,
+            PCO_MA_5,
+            PCO_ERA_1,
+            PFG_CR_1,
+            PFG_CR_1A,
+            PFG_EPPE_1,
+            PFG_EPPE_2,
+            PFG_MA_1,
+            PFG_MA_2,
+            PFG_MA_3,
+            PAP_CE_1,
+            PAP_CE_2,
+            PAP_EPE_1,
+            nombre_departamento,
+            columna_fuego_valor,
+            columna_altura_valor,
+            columna_apertura_valor,
+            columna_confinado_valor,
+            pno_cr_1,
+            pno_cr_2,
+            pno_cr_3,
+            pno_cr_4,
+            pno_cr_5,
+            pno_cr_6,
+            pno_cr_7,
+            pno_cr_8,
+            pno_cr_9,
+            pno_cr_10,
+            pno_cr_11,
+            pno_cr_12,
+            pno_cr_13,
+            pno_epe_1,
+            pno_epe_2,
+            pno_epe_3,
+            pno_epe_4,
+            pno_epe_5,
+            pno_epe_6,
+            pno_epe_7,
+            pno_epe_8,
+            pno_epe_9,
+            columna_nopeligrosovalor_valor,
+
+
+firma_creacion,
+
+
+ip_creacion,
+            dispositivo_creacion,
+            localizacion_creacion,
+
+        };
+
+
+        console.log('[PERMISO][ENVIAR] Valores a la base de datos:', datosPermiso);
+
+        
         // 1. Insertar permiso (ahora todo va a permisos_trabajo)
         const permisoResponse = await fetch("/api/permisos-trabajo", {
           method: "POST",

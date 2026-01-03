@@ -620,7 +620,7 @@ ip_creacion,
         };
 
 
-        console.log('[PERMISO][ENVIAR] Valores a la base de datos:', datosPermiso);
+  console.log('[PERMISO][ENVIAR] Valores a la base de datos:', datosPermisos);
 
         
         // 1. Insertar permiso (ahora todo va a permisos_trabajo)

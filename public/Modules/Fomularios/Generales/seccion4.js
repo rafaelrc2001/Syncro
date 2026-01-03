@@ -231,7 +231,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const usuario = JSON.parse(localStorage.getItem("usuario"));
       const id_usuario = usuario?.id_usuario;
-      const id_departamento = usuario?.id_departamento;
+      // Obtener id_departamento desde el input hidden (rellenado por el autocompletado)
+      let id_departamento = null;
+      const departamentoIdHidden = document.getElementById("departamento-id-hidden");
+      if (departamentoIdHidden && departamentoIdHidden.value && !isNaN(Number(departamentoIdHidden.value))) {
+        id_departamento = Number(departamentoIdHidden.value);
+      
+      }
       // ==============================
 
       if (!id_departamento || isNaN(Number(id_departamento))) {

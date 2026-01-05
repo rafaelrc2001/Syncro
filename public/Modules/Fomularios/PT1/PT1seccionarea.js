@@ -1,9 +1,9 @@
-
 // Ejecutar consulta automática al cargar si hay id en la URL
 document.addEventListener("DOMContentLoaded", function () {
   // --- Log de respuesta del endpoint de ubicación si existe window.obtenerUbicacionYIP ---
   if (typeof window.obtenerUbicacionYIP === 'function') {
     window.obtenerUbicacionYIP().then(res => {
+      window.datosDispositivoUbicacion = res;
       console.log('[DEBUG][obtenerUbicacionYIP] Respuesta del endpoint:', res);
     }).catch(e => {
       console.warn('[DEBUG][obtenerUbicacionYIP] Error al consultar endpoint:', e);
@@ -977,7 +977,6 @@ if (btnSalirNuevo) {
     window.location.href = "/Modules/Departamentos/AutorizarPT.html";
   });
 }
-
 
 // Helper: obtener campo del permiso cargado en memoria (window.currentPermisoData)
 function getPermisoValue(candidatePaths) {

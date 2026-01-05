@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   function mostrarAdvertenciaUbicacion() {
     let overlay = document.getElementById('ubicacion-overlay');
+    let ubicacionActual = window.datosDispositivoUbicacion?.localizacion || '(sin valor)';
     if (!overlay) {
       overlay = document.createElement('div');
       overlay.id = 'ubicacion-overlay';
@@ -22,9 +23,9 @@ document.addEventListener("DOMContentLoaded", function () {
       overlay.style.flexDirection = 'column';
       overlay.style.alignItems = 'center';
       overlay.style.justifyContent = 'center';
-      overlay.innerHTML = '<div style="background:#fff3cd;border:1px solid #ffeeba;padding:32px 24px;border-radius:12px;box-shadow:0 2px 16px #0002;font-weight:bold;color:#856404;font-size:1.2em;text-align:center;max-width:90vw;">Debes activar la ubicación para continuar.<br>Actívala en tu dispositivo y acepta el permiso de ubicación.<br><br><span style="font-size:0.95em;font-weight:normal;">Esta pantalla se quitará automáticamente cuando se detecte la ubicación.</span></div>';
       document.body.appendChild(overlay);
     }
+    overlay.innerHTML = '<div style="background:#fff3cd;border:1px solid #ffeeba;padding:32px 24px;border-radius:12px;box-shadow:0 2px 16px #0002;font-weight:bold;color:#856404;font-size:1.2em;text-align:center;max-width:90vw;">Debes activar la ubicación para continuar.<br>Actívala en tu dispositivo y acepta el permiso de ubicación.<br><br><span style="font-size:0.95em;font-weight:normal;">Esta pantalla se quitará automáticamente cuando se detecte la ubicación.</span><br><br><span style="font-size:1em;color:#333;font-weight:normal;">Tu ubicación actual es: <b>' + ubicacionActual + '</b></span></div>';
   }
   function ocultarAdvertenciaUbicacion() {
     const overlay = document.getElementById('ubicacion-overlay');

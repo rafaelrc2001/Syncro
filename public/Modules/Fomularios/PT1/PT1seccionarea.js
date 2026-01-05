@@ -446,6 +446,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // --- Lógica reutilizable para insertar autorización de área ---
 async function insertarAutorizacionArea() {
+
+
+
+
+
+  const usuario = JSON.parse(localStorage.getItem("usuario"));
+
   // --- Validación lógica de ubicación en móvil antes de enviar ---
   function esDispositivoMovil() {
     const ua = navigator.userAgent || navigator.vendor || window.opera;
@@ -604,6 +611,9 @@ async function insertarAutorizacionArea() {
     console.error("[DEPURACIÓN] Error al insertar autorización de área:", err);
   }
 }
+
+
+
 
 // --- Botón Autorizar ---
 const btnAutorizar = document.getElementById("btn-guardar-campos");
@@ -786,6 +796,9 @@ if (btnNoAutorizar) {
 
   // Extraer la lógica original de guardar comentario a una función reutilizable
   async function guardarComentarioNoAutorizar() {
+
+    const usuario = JSON.parse(localStorage.getItem("usuario"));
+
       const comentario = document
         .getElementById("comentarioNoAutorizar")
         .value.trim();

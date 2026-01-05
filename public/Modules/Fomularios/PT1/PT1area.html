@@ -480,49 +480,38 @@
         .main-container-flex > div { min-width: 0; }
     }
         @media screen and (max-width: 900px) and (orientation: landscape) {
-                .modal-confirmar, .modal {
-                    align-items: flex-start !important;
-                    justify-content: center !important;
-                    min-height: 100vh;
-                    padding: 0;
-                }
-                .modal-confirmar-content, .modal-content {
-                    max-width: 92vw !important;
-                    width: 92vw !important;
-                    min-width: 0 !important;
-                    box-sizing: border-box;
-                    padding: 0.7em 0.3em 2.5em 0.3em !important;
-                    border-radius: 10px !important;
-                    font-size: 0.95em !important;
-                    overflow-y: auto;
-                    max-height: 80vh !important;
-                    position: relative;
-                }
-                .modal-confirmar-content::after, .modal-content::after {
-                    content: "Desliza para ver más";
-                    position: absolute;
-                    left: 0; right: 0; bottom: 0;
-                    background: linear-gradient(to top, #fff 80%, transparent 100%);
-                    color: #888;
-                    font-size: 0.85em;
-                    text-align: center;
-                    padding: 8px 0 4px 0;
-                    pointer-events: none;
-                }
-                .modal-confirmar-actions, .modal-actions {
-                    position: sticky;
-                    bottom: 0;
-                    background: #fff;
-                    z-index: 2;
-                    padding-bottom: 8px;
-                }
-                .modal-confirmar-details, .modal-actions {
-                    flex-wrap: wrap;
-                    word-break: break-word;
-                }
-                textarea, input {
-                    font-size: 1em !important;
-                }
+                    .modal-confirmar, .modal {
+                        align-items: flex-start !important;
+                        justify-content: center !important;
+                        min-height: 100vh;
+                        padding: 0;
+                    }
+                    .modal-confirmar-content, .modal-content {
+                        max-width: 92vw !important;
+                        width: 92vw !important;
+                        min-width: 0 !important;
+                        box-sizing: border-box;
+                        padding: 0.7em 0.3em 2.5em 0.3em !important;
+                        border-radius: 10px !important;
+                        font-size: 0.95em !important;
+                        overflow-y: auto;
+                        max-height: 80vh !important;
+                        position: relative;
+                    }
+                    /* Removed 'Desliza para ver más' indicator */
+                    .modal-confirmar-actions, .modal-actions {
+                        /* Remove sticky positioning, just keep at the bottom of modal content */
+                        background: #fff;
+                        z-index: 2;
+                        padding-bottom: 8px;
+                    }
+                    .modal-confirmar-details, .modal-actions {
+                        flex-wrap: wrap;
+                        word-break: break-word;
+                    }
+                    textarea, input {
+                        font-size: 1em !important;
+                    }
         }
 </style>
 
@@ -599,6 +588,8 @@
                     </div>
                 </div>
 
+
+                 <div id="contenedor-responsables"></div>
 
  
 

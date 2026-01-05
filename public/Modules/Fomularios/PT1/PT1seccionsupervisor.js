@@ -1,3 +1,16 @@
+// --- Obtener ubicación e IP al cargar, igual que área ---
+document.addEventListener("DOMContentLoaded", function () {
+  if (typeof window.obtenerUbicacionYIP === 'function') {
+    window.obtenerUbicacionYIP().then(res => {
+      window.datosDispositivoUbicacion = res;
+      console.log('[DEBUG][obtenerUbicacionYIP] Respuesta del endpoint:', res);
+    }).catch(e => {
+      console.warn('[DEBUG][obtenerUbicacionYIP] Error al consultar endpoint:', e);
+    });
+  } else {
+    console.warn('[DEBUG][obtenerUbicacionYIP] No existe la función window.obtenerUbicacionYIP');
+  }
+});
 
 // --- Validación visual de ubicación en móvil (igual que área) ---
 function esDispositivoMovil() {

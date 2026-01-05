@@ -480,30 +480,49 @@
         .main-container-flex > div { min-width: 0; }
     }
         @media screen and (max-width: 900px) and (orientation: landscape) {
-            .modal-confirmar, .modal {
-                align-items: flex-start !important;
-                justify-content: center !important;
-                min-height: 100vh;
-                padding: 0;
-            }
-            .modal-confirmar-content, .modal-content {
-                max-width: 98vw !important;
-                width: 98vw !important;
-                min-width: 0 !important;
-                box-sizing: border-box;
-                padding: 1em 0.5em !important;
-                border-radius: 10px !important;
-                font-size: 0.98em !important;
-                overflow-y: auto;
-                max-height: 95vh !important;
-            }
-            .modal-confirmar-details, .modal-actions {
-                flex-wrap: wrap;
-                word-break: break-word;
-            }
-            textarea, input {
-                font-size: 1em !important;
-            }
+                .modal-confirmar, .modal {
+                    align-items: flex-start !important;
+                    justify-content: center !important;
+                    min-height: 100vh;
+                    padding: 0;
+                }
+                .modal-confirmar-content, .modal-content {
+                    max-width: 92vw !important;
+                    width: 92vw !important;
+                    min-width: 0 !important;
+                    box-sizing: border-box;
+                    padding: 0.7em 0.3em 2.5em 0.3em !important;
+                    border-radius: 10px !important;
+                    font-size: 0.95em !important;
+                    overflow-y: auto;
+                    max-height: 80vh !important;
+                    position: relative;
+                }
+                .modal-confirmar-content::after, .modal-content::after {
+                    content: "Desliza para ver más";
+                    position: absolute;
+                    left: 0; right: 0; bottom: 0;
+                    background: linear-gradient(to top, #fff 80%, transparent 100%);
+                    color: #888;
+                    font-size: 0.85em;
+                    text-align: center;
+                    padding: 8px 0 4px 0;
+                    pointer-events: none;
+                }
+                .modal-confirmar-actions, .modal-actions {
+                    position: sticky;
+                    bottom: 0;
+                    background: #fff;
+                    z-index: 2;
+                    padding-bottom: 8px;
+                }
+                .modal-confirmar-details, .modal-actions {
+                    flex-wrap: wrap;
+                    word-break: break-word;
+                }
+                textarea, input {
+                    font-size: 1em !important;
+                }
         }
 </style>
 
@@ -832,5 +851,21 @@
         <script src="/Modules/Fomularios/Generales/obtenerUbicacionYIP.js"></script>
         <script src="/Modules/Fomularios/PT1/PT1seccionarea.js"></script>
         <script src="/Modules/Fomularios/Generales/lienzos_firma.js"></script>
+
+        <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const params = new URLSearchParams(window.location.search);
+    const idPermiso = params.get('id');
+    if (idPermiso && typeof cargarResponsablesAutorizacion === 'function') {
+        cargarResponsablesAutorizacion(idPermiso);
+    } else {
+        const contenedor = document.getElementById('contenedor-responsables');
+        if (contenedor) {
+            contenedor.innerHTML = '<div class="section-header"><h3>Responsables</h3></div><div class="ast-summary"><table class="ast-table ast-table-responsables"><thead><tr><th>Nombre</th><th>Cargo</th><th>Firma Digital</th><th>Firma</th></tr></thead><tbody><tr><td colspan="4" style="color:#c0392b;font-weight:600;text-align:center;">No se pudo cargar la información de autorizaciones</td></tr></tbody></table></div>';
+        }
+    }
+});
+</script>
+
 </body>
 </html>

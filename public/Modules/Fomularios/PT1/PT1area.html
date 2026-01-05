@@ -479,6 +479,32 @@
         .main-container-flex { flex-direction: column; gap: 0.7rem; }
         .main-container-flex > div { min-width: 0; }
     }
+        @media screen and (max-width: 900px) and (orientation: landscape) {
+            .modal-confirmar, .modal {
+                align-items: flex-start !important;
+                justify-content: center !important;
+                min-height: 100vh;
+                padding: 0;
+            }
+            .modal-confirmar-content, .modal-content {
+                max-width: 98vw !important;
+                width: 98vw !important;
+                min-width: 0 !important;
+                box-sizing: border-box;
+                padding: 1em 0.5em !important;
+                border-radius: 10px !important;
+                font-size: 0.98em !important;
+                overflow-y: auto;
+                max-height: 95vh !important;
+            }
+            .modal-confirmar-details, .modal-actions {
+                flex-wrap: wrap;
+                word-break: break-word;
+            }
+            textarea, input {
+                font-size: 1em !important;
+            }
+        }
 </style>
 
 

@@ -1,0 +1,19 @@
+/* Ajuste responsivo para .safety-grid en orientación horizontal */
+@media screen and (max-width: 900px) and (orientation: landscape) {
+	.safety-grid {
+		grid-template-columns: 1fr 1fr;
+		gap: 10px;
+		margin-top: 0.5rem;
+	}
+	.safety-item {
+		padding: 4px 4px;
+		font-size: 12px;
+	}
+	.safety-list li {
+		font-size: 10px;
+		padding: 0.5px 0;
+	}
+	.safety-item h4 {
+		font-size: 12px;
+	}
+}

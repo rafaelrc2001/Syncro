@@ -478,6 +478,10 @@
     @media (max-width: 900px) {
         .main-container-flex { flex-direction: column; gap: 0.7rem; }
         .main-container-flex > div { min-width: 0; }
+        /* Ajuste para modales verticales: más espacio abajo para los botones */
+        .modal-confirmar-content, .modal-content {
+            padding-bottom: 80px !important;
+        }
     }
         @media screen and (max-width: 900px) and (orientation: landscape) {
                     .modal-confirmar, .modal {

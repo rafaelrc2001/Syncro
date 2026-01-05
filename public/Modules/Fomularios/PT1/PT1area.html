@@ -482,7 +482,40 @@
         .modal-confirmar-content, .modal-content {
             padding-bottom: 80px !important;
         }
-    }
+
+            /* Modal de firma: canvas y botones responsivos */
+            #modalAgregarFirma .modal-confirmar-content {
+                max-width: 98vw !important;
+                width: 98vw !important;
+                min-width: 0 !important;
+                box-sizing: border-box;
+                padding: 1em 0.2em 1.5em 0.2em !important;
+            }
+            #modalAgregarFirma .container {
+                padding: 0 !important;
+            }
+            #modalAgregarFirma h2 {
+                font-size: 1.1em !important;
+            }
+            #modalAgregarFirma canvas {
+                width: 95vw !important;
+                max-width: 400px;
+                min-width: 180px;
+                height: 160px !important;
+                display: block;
+                margin: 0 auto 10px auto;
+            }
+            #modalAgregarFirma .controls {
+                flex-direction: column !important;
+                gap: 10px !important;
+                margin-bottom: 0 !important;
+            }
+            #modalAgregarFirma .controls button {
+                width: 100%;
+                margin-left: 0 !important;
+            }
+        }
+    
         @media screen and (max-width: 900px) and (orientation: landscape) {
                     .modal-confirmar, .modal {
                         align-items: flex-start !important;

@@ -5,6 +5,7 @@ const db = require("./database");
 const { pool } = require("./database");
 
 // Nueva ruta para obtener todos los estatus distintos
+//
 router.get("/estatus/lista", async (req, res) => {
   try {
     const result = await db.query(

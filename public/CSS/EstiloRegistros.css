@@ -3,8 +3,8 @@
 /* Estilo para el encabezado de la tabla con degradado */
 .table-crud thead tr,
 #categorias-table thead tr {
-    /* Degradado que va de azul petróleo (#003B5C) a un azul más claro (#005f99) de izquierda a derecha */
-    background: linear-gradient(to right, #003B5C, #005f99);
+    /* Degradado que va de azul petróleo (#262626) a un azul más claro (#005f99) de izquierda a derecha */
+    background: linear-gradient(to right, #262626, #005f99);
 
 }
 
@@ -30,7 +30,7 @@
     min-width: 140px;  /* Ancho mínimo para mejor apariencia */
     gap: 8px;
     padding: 0 20px;  /* Ajuste de padding vertical a 0 ya que usamos height */
-    background-color: #00BFA5;  /* Color azul verdoso */
+    background-color: #eac102;  /* Color azul verdoso */
     color: white;
     border: none;
     border-radius: 4px;

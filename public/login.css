@@ -1,11 +1,25 @@
+/* Base Styles 
 :root {
-    --carbon: #1d99e0;
-    --tech-blue: #007ACC;
-    --electric-blue: #00B4FF;
-    --dark-purple: #3c1364;
+    --azul-petroleo: #262626;
+    --gris-acero: #4A4A4A;
+    --plata-industrial: #B0BEC5;
+    --naranja-seguridad: #FF6F00;
+    --verde-tecnico: #eac102;
+    --blanco-neutro: #F5F5F5;
+    --negro-carbon: #1C1C1C;
+    --rojo-alerta: #D32F2F;
+}
+*/
+
+
+:root {
+    --carbon:  #262626;
+    --tech-blue:  #262626;
+    --electric-blue:  #262626;
+    --dark-purple:  #262626;
     --neutral-gray: #D9D9D9;
-    --lime-green: #A4C400;
-    --alert-red: #FF4D4D;
+    --lime-green: #262626;
+    --alert-red: #f62238;
     --pure-white: #FFFFFF;
     --graphite: #107c30;
 }
@@ -34,15 +48,15 @@ body {
 .login-container {
     position: relative;
     z-index: 1;
-    max-width: 420px;
+    max-width: 630px; /*esto es lo que indica el ancho de mi login*/
     width: 90%;
     margin: 5% auto;
     padding: 2.5rem;
     background: 003b5C;
     backdrop-filter: blur(10px);
     border-radius: 16px;
-    box-shadow: 0 8px 32px rgb(252, 252, 252);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    
+   
     animation: fadeIn 0.8s ease-out;
 }
 
@@ -54,9 +68,9 @@ body {
 /* ESTILOS NUEVOS PARA LOS LOGOS (REEMPLAZAN A .logo) */
 .logos-container {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    gap: 70px;
+    gap: 140px;
     margin-bottom: 1.5rem;
     max-height: 60px;
     padding: 0 10px;
@@ -73,8 +87,8 @@ body {
 
 /* Estilo para el logo principal */
 .login-header > .logo-main {
-    max-height: 90px;
-    max-width: 240px;
+    max-height: 220px;
+    max-width: 350px;
     width: auto;
     height: auto;
     object-fit: contain;
@@ -107,13 +121,56 @@ body {
     margin-bottom: 1.5rem;
 }
 
+
+
+
+
+
+
+
+/* Quitar iconos de boxicons y usar imágenes */
 .input-group i {
+    display: none;
+}
+
+/* Icono de imagen personalizado */
+.input-icon-img {
     position: absolute;
     top: 50%;
     left: 15px;
     transform: translateY(-50%);
-    color: var(--neutral-gray);
-    transition: all 0.3s;
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 0 #eac102) brightness(1.1);
+    z-index: 2;
+    border-right: 4px solid var(--verde-tecnico);
+    padding-right: 8px;
+}
+
+/* Input group personalizado para borde amarillo */
+.custom-input-group input {
+    border: 2px solid var(--verde-tecnico);
+    padding-left: 55px;
+    color: var(--pure-white);
+    background: rgba(255,255,255,0.08);
+}
+
+.custom-input-group input:focus {
+    border-color: var(--verde-tecnico);
+    box-shadow: 0 0 0 2px rgba(234, 193, 2, 0.2);
+}
+
+.custom-input-group label {
+    left: 55px;
+    color: var(--verde-tecnico);
+    text-transform: lowercase;
+}
+
+.custom-input-group input:focus + label,
+.custom-input-group input:valid + label {
+    color: var(--verde-tecnico);
+    background: var(--carbon);
 }
 
 .input-group input {
@@ -155,10 +212,12 @@ body {
     transition: all 0.3s;
 }
 
+
+
 .login-btn {
     position: relative;
     padding: 15px;
-    background: linear-gradient(90deg, var(--tech-blue), var(--electric-blue));
+    background: var(--alert-red);
     color: white;
     border: none;
     border-radius: 8px;
@@ -168,14 +227,19 @@ body {
     overflow: hidden;
     transition: all 0.3s;
     margin-top: 1rem;
+    box-shadow: 0 2px 8px rgba(246,34,56,0.10);
 }
+
 
 .login-btn:hover {
+    background: #c91b2c;
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgb(251, 254, 255);
+    box-shadow: 0 5px 15px rgba(246,34,56,0.18);
 }
 
+
 .login-btn:active {
+    background: #a11422;
     transform: translateY(0);
 }
 

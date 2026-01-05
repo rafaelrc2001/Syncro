@@ -1,6 +1,16 @@
 
 // Ejecutar consulta automática al cargar si hay id en la URL
 document.addEventListener("DOMContentLoaded", function () {
+  // --- Log de respuesta del endpoint de ubicación si existe window.obtenerUbicacionYIP ---
+  if (typeof window.obtenerUbicacionYIP === 'function') {
+    window.obtenerUbicacionYIP().then(res => {
+      console.log('[DEBUG][obtenerUbicacionYIP] Respuesta del endpoint:', res);
+    }).catch(e => {
+      console.warn('[DEBUG][obtenerUbicacionYIP] Error al consultar endpoint:', e);
+    });
+  } else {
+    console.warn('[DEBUG][obtenerUbicacionYIP] No existe la función window.obtenerUbicacionYIP');
+  }
   // --- Validación visual de ubicación en móvil ---
   function esDispositivoMovil() {
     const ua = navigator.userAgent || navigator.vendor || window.opera;
@@ -35,6 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (esDispositivoMovil()) {
     const checkUbicacion = setInterval(() => {
       let loc = window.datosDispositivoUbicacion?.localizacion;
+      console.log('[DEBUG][ubicacion] Valor actual de localizacion:', loc);
       // Considerar válida si es string tipo 'lat,lon' y no es null, vacío ni undefined
       let esValida = false;
       if (typeof loc === 'string' && loc.trim() && loc !== 'null' && loc !== '/') {

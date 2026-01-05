@@ -33,8 +33,17 @@ document.addEventListener("DOMContentLoaded", function () {
   // Si es móvil, verificar ubicación periódicamente
   if (esDispositivoMovil()) {
     const checkUbicacion = setInterval(() => {
-      const loc = window.datosDispositivoUbicacion?.localizacion;
-      if (!loc || loc === 'null' || loc === '' || loc === undefined) {
+      let loc = window.datosDispositivoUbicacion?.localizacion;
+      // Considerar válida si es string tipo 'lat,lon' y no es null, vacío ni undefined
+      let esValida = false;
+      if (typeof loc === 'string' && loc.trim() && loc !== 'null' && loc !== '/') {
+        // Debe tener formato lat,lon y no ser '0,0'
+        const partes = loc.split(',');
+        if (partes.length === 2 && !/^0+(\.0+)?$/.test(partes[0].trim()) && !/^0+(\.0+)?$/.test(partes[1].trim())) {
+          esValida = true;
+        }
+      }
+      if (!esValida) {
         mostrarAdvertenciaUbicacion();
       } else {
         ocultarAdvertenciaUbicacion();

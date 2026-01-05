@@ -33,38 +33,11 @@ async function obtenerUbicacionYIP() {
     return { ip, localizacion: "No requerida en PC", dispositivo };
   }
 
-  // Si es móvil, pedir ubicación obligatoria y mostrar modal
+  // Si es móvil, pedir ubicación obligatoria (sin mostrar modal aquí)
   if (dispositivo && (dispositivo.so === "Android" || dispositivo.so === "iOS")) {
-    // Crear modal si no existe
-    let modal = document.getElementById("modal-ubicacion-obligatoria");
-    if (!modal) {
-      modal = document.createElement("div");
-      modal.id = "modal-ubicacion-obligatoria";
-      modal.style.position = "fixed";
-      modal.style.top = "0";
-      modal.style.left = "0";
-      modal.style.width = "100vw";
-      modal.style.height = "100vh";
-      modal.style.background = "rgba(0,0,0,0.7)";
-      modal.style.display = "flex";
-      modal.style.alignItems = "center";
-      modal.style.justifyContent = "center";
-      modal.style.zIndex = "9999";
-      modal.innerHTML = `<div style='background:#fff;padding:2em;border-radius:10px;text-align:center;max-width:350px;'>
-        <h3>Dispositivo móvil detectado</h3>
-        <p>Debes activar la ubicación para continuar.<br>De lo contrario no se podrá continuar.</p>
-        <button id='btnCerrarModalUbicacion'>Aceptar</button>
-      </div>`;
-      document.body.appendChild(modal);
-    } else {
-      modal.style.display = 'flex';
-    }
-    // Pedir ubicación obligatoria
     return new Promise((resolve) => {
       function bloquearYRecargar() {
-        // Oculta el loader y recarga la página
         ocultarLoader();
-        if (modal) modal.style.display = 'none';
         alert('No se pudo obtener la ubicación. La página se recargará para intentarlo de nuevo.');
         window.location.reload();
       }
@@ -78,7 +51,6 @@ async function obtenerUbicacionYIP() {
             resolve({ ip, localizacion, dispositivo });
           },
           (err) => {
-            // Si falla la ubicación, bloquear flujo y recargar
             bloquearYRecargar();
           },
           {
@@ -88,7 +60,6 @@ async function obtenerUbicacionYIP() {
           }
         );
       } else {
-        // Si no soporta geolocalización, bloquear flujo y recargar
         bloquearYRecargar();
       }
     });

@@ -228,7 +228,7 @@ if(pno_epe_9) pno_epe_9.textContent = d.pno_epe_9 || "-";
       tbody.innerHTML = "";
       participan.data.forEach(p => {
         const tr = document.createElement("tr");
-        tr.innerHTML = `<td>${p.nombre || "-"}</td><td>${p.funcion || "-"}</td><td>${p.credencial || "-"}</td><td>${p.cargo || "-"}</td><td></td>`;
+        tr.innerHTML = `<td>${p.nombre || "-"}</td><td>${p.credencial || "-"}</td><td>${p.cargo || "-"}</td><td>${p.funcion || "-"}</td><td></td>`;
         tbody.appendChild(tr);
       });
     }

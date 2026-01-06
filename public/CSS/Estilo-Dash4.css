@@ -1,3 +1,17 @@
+/* Mostrar ambas imágenes cuando el sidebar está expandido */
+.sidebar .logo-main,
+.sidebar .logo-collapse {
+    display: inline;
+}
+/* Cuando el sidebar está colapsado, solo mostrar logo-collapse */
+.sidebar.collapsed .logo-main {
+    display: none !important;
+}
+.sidebar.collapsed .logo-collapse {
+    display: inline !important;
+}
+
+
 * Base Styles */
 :root {
     --azul-petroleo: #262626;

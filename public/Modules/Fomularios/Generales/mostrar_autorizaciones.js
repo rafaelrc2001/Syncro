@@ -159,21 +159,21 @@ async function cargarResponsablesAutorizacion(id_permiso) {
 								
 						   `Fecha: ${info.fecha_hora_supervisor ? info.fecha_hora_supervisor : '<span style=\'color:#c0392b\'>Sin dato</span>'};` + `<br>` +
 						   `${(() => {
-  let val = info.dispositivo_supervisor;
-  if (!val) return "<span style='color:#c0392b'>Sin dato</span>";
-  if (typeof val === "string") {
-    try { val = JSON.parse(val); } catch { return info.dispositivo_supervisor; }
-  }
-  if (typeof val === "object" && val !== null) {
-    let out = [];
-    if (val.so) out.push(`so:${val.so}`);
-    if (val.dispositivo) out.push(`dispositivo:${val.dispositivo}`);
-    if (val.modelo !== undefined && val.modelo !== null && val.modelo !== "") out.push(val.modelo);
-    return out.join(",");
-  }
-  return info.dispositivo_supervisor;
-})()};`+
-						   `GPS:${info.localizacion_supervisor ? info.localizacion_supervisor : '<span style=\'color:#c0392b\'>Sin dato</span>'};` +
+							let val = info.dispositivo_supervisor;
+							if (!val) return "<span style='color:#c0392b'>Sin dato</span>";
+							if (typeof val === "string") {
+								try { val = JSON.parse(val); } catch { return info.dispositivo_supervisor; }
+							}
+							if (typeof val === "object" && val !== null) {
+								let out = [];
+								if (val.so) out.push(`so:${val.so}`);
+								if (val.dispositivo) out.push(`dispositivo:${val.dispositivo}`);
+								if (val.modelo !== undefined && val.modelo !== null && val.modelo !== "") out.push(val.modelo);
+								return out.join(",");
+							}
+							return info.dispositivo_supervisor;
+							})()};`+
+						   `GPS:${info.localizacion_supervisor ? info.localizacion_supervisor : '<span style=\'color:#c0392b\'>Sin dato</span>'};` + `<br>` +
 						   `IP: ${info.ip_supervisor ? info.ip_supervisor : '<span style=\'color:#c0392b\'>Sin dato</span>'};` +
 						    	   `</div>` +
 					   `</td>`;

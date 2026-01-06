@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     input.addEventListener("blur", function () {
       if (!this.value) {
-        this.parentElement.querySelector("i").style.color = "#D9D9D9";
+        this.parentElement.querySelector("i").style.color = "#262626";
       }
     });
   });

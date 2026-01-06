@@ -1,3 +1,31 @@
+/* Fondo oscuro y letras blancas en autocompletado */
+input:-webkit-autofill,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:active {
+    background: #262626 !important;
+    -webkit-box-shadow: 0 0 0 1000px #262626 inset !important;
+    box-shadow: 0 0 0 1000px #262626 inset !important;
+    -webkit-text-fill-color: #fff !important;
+    color: #fff !important;
+    border: 2px solid var(--verde-tecnico) !important;
+    caret-color: #fff !important;
+    transition: background-color 5000s ease-in-out 0s !important;
+}
+/* Forzar fondo y color en autocompletado Chrome/Edge */
+input:-webkit-autofill,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:active {
+    background: rgba(255,255,255,0.08) !important;
+    -webkit-box-shadow: 0 0 0 1000px rgba(255,255,255,0.08) inset !important;
+    box-shadow: 0 0 0 1000px rgba(255,255,255,0.08) inset !important;
+    -webkit-text-fill-color: var(--pure-white) !important;
+    color: var(--pure-white) !important;
+    border: 2px solid var(--verde-tecnico) !important;
+    caret-color: var(--pure-white) !important;
+    transition: background-color 5000s ease-in-out 0s !important;
+}
 /* Base Styles 
 :root {
     --azul-petroleo: #262626;
@@ -139,8 +167,8 @@ body {
     top: 50%;
     left: 15px;
     transform: translateY(-50%);
-    width: 28px;
-    height: 28px;
+    width: 33px;
+    height: 33px;
     object-fit: contain;
     filter: drop-shadow(0 0 0 #eac102) brightness(1.1);
     z-index: 2;
@@ -370,7 +398,7 @@ body {
 }
 
 .forgot-modal-content {
-  background: #fff;
+  background: #252525;
   color: #2c3e50;
   border-radius: 16px;
   max-width: 350px;
@@ -425,3 +453,4 @@ body {
 .forgot-modal-btn:hover {
   background: #007ACC;
 }
+

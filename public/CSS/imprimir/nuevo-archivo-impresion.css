@@ -435,6 +435,11 @@
   th, td {
     text-align: center !important;
   }
+	.executive-item p {
+		background: #fff !important;
+		border: none !important;
+		box-shadow: none !important;
+	}
 	/* Controlar tamaño de letra de EPP Requerido y su lista */
 	.safety-item h4 {
 		font-size: 7pt !important;
@@ -453,3 +458,4 @@
 		letter-spacing: 0.1pt !important;
 	}
 }
+

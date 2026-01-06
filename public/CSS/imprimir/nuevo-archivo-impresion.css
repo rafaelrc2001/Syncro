@@ -1,5 +1,35 @@
-
-	/* Ocultar todos los íconos de logs/remixicon y logos al imprimir */
+@media print {
+	/* Forzar el contenedor de la tabla AST a ocupar todo el ancho */
+	.ast-summary, .executive-section, .form-section, section.form-section {
+		width: 100% !important;
+		max-width: 100% !important;
+		margin: 0 !important;
+		padding: 0 !important;
+	}
+	/* Forzar la tabla AST a ocupar todo el ancho */
+	.ast-table {
+		width: 100% !important;
+		max-width: 100% !important;
+		min-width: 100% !important;
+		table-layout: fixed !important;
+		border-collapse: collapse !important;
+	}
+	/* Forzar los anchos de las columnas */
+	.ast-table th, .ast-table td {
+		padding: 2pt 4pt !important;
+		font-size: 7pt !important;
+		box-sizing: border-box !important;
+	}
+	/* Forzar que todos los th estén alineados a la izquierda */
+	th {
+		text-align: right !important;
+	}
+	.ast-table th:nth-child(1), .ast-table td:nth-child(1) { width: 10% !important; }
+	.ast-table th:nth-child(2), .ast-table td:nth-child(2) { width: 30% !important; }
+	.ast-table th:nth-child(3), .ast-table td:nth-child(3) { width: 30% !important; }
+	.ast-table th:nth-child(4), .ast-table td:nth-child(4) { width: 30% !important; }
+}
+/* Ocultar todos los íconos de logs/remixicon y logos al imprimir */
 	[class^="ri-"], [class*=" ri-"],
 	
 	
@@ -14,6 +44,42 @@
 		padding: 0 !important;
 	}
 @media print {
+  /* Controlar tamaño de letra de los títulos principales */
+  .section-header h3 {
+    font-size: 7pt !important;
+    font-weight: 700 !important;
+    color: #222 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    letter-spacing: 0.5pt !important;
+    text-align: left !important;
+  }
+}
+@media print {
+			/* Eliminar centrado del div padre para impresión */
+			body > div[style*="display: flex"],
+			body > div[style*="justify-content: center"] {
+				display: block !important;
+				width: 100% !important;
+				justify-content: flex-start !important;
+				align-items: flex-start !important;
+				min-height: auto !important;
+				margin: 0 !important;
+				padding: 0 !important;
+				background: #fff !important;
+			}
+		/* Eliminar restricciones del div padre y .form-section para impresión */
+		body > div,
+		.form-section,
+		section.form-section {
+			width: 100% !important;
+			max-width: 100% !important;
+			margin: 0 !important;
+			padding: 0 !important;
+			border-radius: 0 !important;
+			box-shadow: none !important;
+			background: #fff !important;
+		}
 	/* Ocultar líneas de encabezado en impresión */
 	.added-form-header:before,
 	.added-form-header:after {
@@ -30,7 +96,7 @@
 		font-family: Arial, Helvetica, sans-serif !important;
 		font-size: 7pt !important;
 		color: #222 !important;
-		background: #fff !important;
+	/*	background: #fff !important;*/
 		margin: 0 !important;
 		padding: 0 !important;
 		width: 100% !important;
@@ -127,7 +193,7 @@
 		font-size: 7pt !important;
 		border: none !important;
 		border-radius: 0 !important;
-		background: #fff !important;
+		/*background: #fff !important;*/
 		box-sizing: border-box !important;
 	}
 	.main-container-flex .footer-row {
@@ -289,4 +355,101 @@
 
 
 
+}
+
+
+
+@media print {
+  /* Tabla AST - Análisis de Seguridad en el Trabajo
+     Columnas: No., Secuencia de la Actividad, Peligros Potenciales, Acciones Preventivas */
+  .ast-table th:nth-child(1), .ast-table td:nth-child(1) { width: 10% !important; /* No. */ }
+  .ast-table th:nth-child(2), .ast-table td:nth-child(2) { width: 30% !important; /* Secuencia de la Actividad */ }
+  .ast-table th:nth-child(3), .ast-table td:nth-child(3) { width: 30% !important; /* Peligros Potenciales */ }
+  .ast-table th:nth-child(4), .ast-table td:nth-child(4) { width: 30% !important; /* Acciones Preventivas */ }
+
+  /* Tabla Participantes - Personal Involucrado
+     Columnas: Nombre, Función, Credencial, Cargo, Firma */
+  .ast-table-participantes th:nth-child(1), .ast-table-participantes td:nth-child(1) { width: 20% !important; /* Nombre */ }
+  .ast-table-participantes th:nth-child(2), .ast-table-participantes td:nth-child(2) { width: 20% !important; /* Función */ }
+  .ast-table-participantes th:nth-child(3), .ast-table-participantes td:nth-child(3) { width: 20% !important; /* Credencial */ }
+  .ast-table-participantes th:nth-child(4), .ast-table-participantes td:nth-child(4) { width: 20% !important; /* Cargo */ }
+  .ast-table-participantes th:nth-child(5), .ast-table-participantes td:nth-child(5) { width: 20% !important; /* Firma */ }
+
+  /* Tabla Responsables
+     Columnas: Nombre, Cargo, Firma Digital, Firma */
+  .ast-table-responsables th:nth-child(1), .ast-table-responsables td:nth-child(1) { width: 25% !important; /* Nombre */ }
+  .ast-table-responsables th:nth-child(2), .ast-table-responsables td:nth-child(2) { width: 25% !important; /* Cargo */ }
+  .ast-table-responsables th:nth-child(3), .ast-table-responsables td:nth-child(3) { width: 25% !important; /* Firma Digital */ }
+  .ast-table-responsables th:nth-child(4), .ast-table-responsables td:nth-child(4) { width: 25% !important; /* Firma */ }
+}
+
+
+@media print {
+  section.form-section,
+  .form-section {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: #fff !important;
+  }
+	/* Forzar que la sección principal y la tabla AST de 6 columnas abarquen toda la hoja */
+	section.form-section,
+	.form-section {
+		max-width: 100% !important;
+		width: 100% !important;
+		margin: 0 !important;
+		padding: 0 !important;
+		border-radius: 0 !important;
+		box-shadow: none !important;
+		/*background: #fff !important;*/
+	}
+
+	/* Tabla AST - 6 columnas (No., Secuencia, Personal, Peligros, Acciones, Responsable) */
+	.ast-table th:nth-child(1), .ast-table td:nth-child(1) { width: 5% !important; }
+	.ast-table th:nth-child(2), .ast-table td:nth-child(2) { width: 25% !important; }
+	.ast-table th:nth-child(3), .ast-table td:nth-child(3) { width: 20% !important; }
+	.ast-table th:nth-child(4), .ast-table td:nth-child(4) { width: 20% !important; }
+	.ast-table th:nth-child(5), .ast-table td:nth-child(5) { width: 20% !important; }
+	.ast-table th:nth-child(6), .ast-table td:nth-child(6) { width: 10% !important; }
+	.ast-table {
+		width: 100% !important;
+		table-layout: fixed !important;
+		border-collapse: collapse !important;
+	}
+	/* Tabla AST - 4 columnas (No., Secuencia de la Actividad, Peligros Potenciales, Acciones Preventivas) */
+	.ast-table th:nth-child(1), .ast-table td:nth-child(1) { width: 10% !important; }
+	.ast-table th:nth-child(2), .ast-table td:nth-child(2) { width: 30% !important; }
+	.ast-table th:nth-child(3), .ast-table td:nth-child(3) { width: 30% !important; }
+	.ast-table th:nth-child(4), .ast-table td:nth-child(4) { width: 30% !important; }
+	.ast-table {
+		width: 100% !important;
+		table-layout: fixed !important;
+		border-collapse: collapse !important;
+	}
+}
+
+@media print {
+  th, td {
+    text-align: center !important;
+  }
+	/* Controlar tamaño de letra de EPP Requerido y su lista */
+	.safety-item h4 {
+		font-size: 7pt !important;
+		font-weight: 700 !important;
+		color: #222 !important;
+		margin-bottom: 4pt !important;
+		padding: 0 !important;
+		letter-spacing: 0.2pt !important;
+	}
+	.safety-list li {
+		font-size: 6pt !important;
+		color: #222 !important;
+		margin-bottom: 2pt !important;
+		padding: 0 !important;
+		font-weight: 400 !important;
+		letter-spacing: 0.1pt !important;
+	}
 }

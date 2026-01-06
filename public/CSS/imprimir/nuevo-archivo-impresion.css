@@ -1,0 +1,229 @@
+
+	/* Ocultar todos los íconos de logs/remixicon y logos al imprimir */
+	[class^="ri-"], [class*=" ri-"],
+	.company-header img,
+	.section-header i,
+	.added-form-header i,
+	.executive-section i,
+	.safety-item i {
+		display: none !important;
+		visibility: hidden !important;
+		width: 0 !important;
+		height: 0 !important;
+		margin: 0 !important;
+		padding: 0 !important;
+	}
+@media print {
+	/* Ocultar líneas de encabezado en impresión */
+	.added-form-header:before,
+	.added-form-header:after {
+		display: none !important;
+		content: none !important;
+		background: none !important;
+	}
+	@page {
+		size: A4;
+		margin: 10mm 8mm;
+	}
+
+	html, body {
+		font-family: Arial, Helvetica, sans-serif !important;
+		font-size: 7pt !important;
+		color: #222 !important;
+		background: #fff !important;
+		margin: 0 !important;
+		padding: 0 !important;
+		width: 100% !important;
+		line-height: 1.1 !important;
+	}
+
+	/* Compactar todo */
+	* {
+		box-sizing: border-box !important;
+		margin: 0 !important;
+		padding: 0 !important;
+		-webkit-print-color-adjust: exact !important;
+		print-color-adjust: exact !important;
+	}
+
+	/* Encabezado empresa */
+	   .company-header {
+		   display: flex !important;
+		   justify-content: space-between !important;
+		   align-items: center !important;
+		   margin-bottom: 6pt !important;
+		   padding-bottom: 2pt !important;
+		   border-bottom: none !important;
+		   page-break-inside: avoid !important;
+	   }
+	.company-header img {
+		height: 28px !important;
+		max-width: 60px !important;
+	}
+	.company-header h1 {
+		font-size: 7pt !important;
+		font-weight: 600 !important;
+		margin: 0 !important;
+		color: #222 !important;
+	}
+	.company-header p {
+		font-size: 7pt !important;
+		color: #666 !important;
+		margin: 0 !important;
+	}
+
+	/* Títulos y secciones */
+	   .section-header, .added-form-header, .general-box-header span {
+		   background: none !important;
+		   
+		   font-size: 7pt !important;
+		   font-weight: 700 !important;
+		   border: none !important;
+		   border-radius: 0 !important;
+		   padding: 3pt 6pt !important;
+		   margin-bottom: 4pt !important;
+		   text-align: left !important;
+		   box-shadow: none !important;
+		   letter-spacing: 0.2pt !important;
+		   display: block !important;
+	   }
+
+	   /* Grillas compactas: 4 columnas iguales */
+	   .executive-grid {
+		   display: grid !important;
+		   grid-template-columns: repeat(4, 1fr) !important;
+		   gap: 0 !important;
+		   width: 100% !important;
+		   margin-bottom: 4pt !important;
+	   }
+	  .executive-grid > .executive-item {
+		  border: none !important;
+		  border-radius: 0 !important;
+		  padding: 1pt 2pt !important;
+		  font-size: 7pt !important;
+		  background: #fff !important;
+		  min-width: 0 !important;
+		  box-sizing: border-box !important;
+		  display: block !important;
+		  width: auto !important;
+	  }
+	   /* Para que los items se vayan a la siguiente fila cada 4 */
+	   .executive-grid > .executive-item:nth-child(4n+1) {
+		   clear: left;
+	   }
+	   /* main-container-flex sigue igual */
+	   .main-container-flex {
+		   display: table !important;
+		   width: 100% !important;
+		   table-layout: fixed !important;
+		   border-collapse: collapse !important;
+		   margin-bottom: 4pt !important;
+		   gap: 0 !important;
+	   }
+	  .main-container-flex > div {
+		  display: table-cell !important;
+		  vertical-align: top !important;
+		  padding: 1pt 2pt !important;
+		  font-size: 7pt !important;
+		  border: none !important;
+		  border-radius: 0 !important;
+		  min-width: 60px !important;
+		  background: #fff !important;
+	  }
+	.executive-item label {
+		font-size: 6pt !important;
+		font-weight: 600 !important;
+		color: #444 !important;
+		margin-bottom: 1pt !important;
+		display: block !important;
+	}
+	.executive-item p {
+		font-size: 7pt !important;
+		color: #222 !important;
+		margin: 0 !important;
+		font-weight: 400 !important;
+		line-height: 1.1 !important;
+	}
+
+	/* Tablas compactas estilo formulario */
+	   table, th, td {
+		   border: none !important;
+		   border-radius: 0 !important;
+		   font-size: 7pt !important;
+		   padding: 2pt 4pt !important;
+		   background: #fff !important;
+		   color: #222 !important;
+		   text-align: left !important;
+		   vertical-align: middle !important;
+		   border-collapse: collapse !important;
+		   page-break-inside: avoid !important;
+	   }
+	   th {
+		   background: none !important;
+		   font-weight: 700 !important;
+		   text-align: center !important;
+		   text-transform: uppercase !important;
+		   color: #222 !important;
+		   font-size: 7pt !important;
+		   box-shadow: none !important;
+	   }
+	   td.respuesta {
+		   text-align: center !important;
+		   font-weight: 600 !important;
+		   background: none !important;
+		   min-width: 32px !important;
+		   max-width: 60px !important;
+		   box-shadow: none !important;
+	   }
+
+	/* Quitar decoraciones y espacios extra */
+	   .container, .form-section, .executive-section, .ast-summary, .safety-grid, .safety-item, .added-form {
+		   background: none !important;
+		   border: none !important;
+		   box-shadow: none !important;
+		   border-radius: 0 !important;
+		   padding: 0 !important;
+		   margin: 0 !important;
+	   }
+
+	/* Ocultar botones y elementos no imprimibles */
+	.button-group, .btn, #modalComentario, .no-print {
+		display: none !important;
+	}
+
+	/* Espaciado entre secciones */
+	.executive-section, .added-form {
+		margin-bottom: 6pt !important;
+		page-break-inside: avoid !important;
+	}
+
+	/* Forzar texto negro */
+	* {
+		color: #222 !important;
+	}
+
+	/* Quitar bordes de inputs/textareas si hay */
+	input, textarea {
+		border: none !important;
+		box-shadow: none !important;
+		border-radius: 0 !important;
+		background: transparent !important;
+		outline: none !important;
+		font-size: 7pt !important;
+		color: #222 !important;
+		padding: 0 !important;
+	}
+
+	/* Ajustar imágenes */
+	img {
+		max-width: 100% !important;
+		height: auto !important;
+		-webkit-print-color-adjust: exact !important;
+		print-color-adjust: exact !important;
+	}
+
+	/* Control de saltos de página */
+	table, .executive-section, .added-form {
+		page-break-inside: avoid !important;
+	}
+}

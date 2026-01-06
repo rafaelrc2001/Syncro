@@ -1,206 +1,212 @@
-
 @media print {
-    /* Efecto tabla para bloques flex, sin márgenes y letras pequeñas */
-    .main-container-flex {
-        display: table !important;
-        width: 100% !important;
-        table-layout: fixed !important;
-        border-collapse: collapse !important;
-        gap: 0 !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-    .main-container-flex > div {
-        display: table-cell !important;
-        vertical-align: top !important;
-        min-width: 0 !important;
-        padding: 0 !important;
-        border-right: 1px solid #bbb !important;
-        margin: 0 !important;
-    }
-    .main-container-flex > div:last-child {
-        border-right: none !important;
-    }
-    .main-container-flex .footer-row {
-        display: table-row !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        border-bottom: 1px solid #ddd !important;
-        page-break-inside: avoid !important;
-        min-height: 0 !important;
-    }
-    .main-container-flex .footer-label,
-    .main-container-flex .footer-value-fixed {
-        display: table-cell !important;
-        font-size: 9px !important;
-        padding: 0 !important;
-        border: none !important;
-        vertical-align: top !important;
-        background: none !important;
-        min-width: 0 !important;
-        word-break: break-word !important;
-        margin: 0 !important;
-    }
-    .main-container-flex .footer-label {
-        color: #222 !important;
-        font-weight: 500 !important;
-        width: 70% !important;
-        text-align: left !important;
-    }
-    .main-container-flex .footer-value-fixed {
-        color: #222 !important;
-        font-weight: 400 !important;
-        width: 30% !important;
-        text-align: center !important;
-        border-left: 1px solid #eee !important;
-    }
-    .main-container-flex .executive-item {
-        display: table-row !important;
-        font-size: 9px !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        background: none !important;
-        border: none !important;
-    }
-    .main-container-flex .executive-item-label {
-        display: table-cell !important;
-        font-size: 9px !important;
-        font-weight: 600 !important;
-        color: #2b3d4f !important;
-        padding: 0 !important;
-        background: #f4f6fb !important;
-        border-bottom: 1px solid #bbb !important;
-        border-top: 1px solid #bbb !important;
-        border-left: none !important;
-        border-right: none !important;
-        margin: 0 !important;
-    }
-    .main-container-flex .footer-area {
-        display: none !important;
-    }
-  
-}
-@media print {
-    /* ...existing code... */
+  @page {
+    size: A4;
+    margin: 40mm 15mm;
+  }
 
-    /* TABLAS DE FORMULARIO ORDENADAS POR COLUMNAS */
-    table.tabla-formulario {
-        width: 100% !important;
-        border-collapse: collapse !important;
-        table-layout: fixed !important;
-        margin: 0 0 6pt 0 !important;
-        font-size: 7pt !important;
-        border: 1pt solid #000 !important;
-        background: #fff !important;
-    }
-    table.tabla-formulario th,
-    table.tabla-formulario td {
-        border: 0.5pt solid #000 !important;
-        padding: 2pt 4pt !important;
-        font-size: 7pt !important;
-        text-align: left !important;
-        vertical-align: middle !important;
-        background: #fff !important;
-        color: #000 !important;
-        line-height: 1.1 !important;
-    }
-    table.tabla-formulario th {
-        background: #eaeaea !important;
-        font-weight: 700 !important;
-        text-align: center !important;
-        text-transform: uppercase !important;
-        color: #222 !important;
-        font-size: 7pt !important;
-    }
-    table.tabla-formulario td.respuesta {
-        text-align: center !important;
-        font-weight: 600 !important;
-        background: #f7f7f7 !important;
-        min-width: 32px !important;
-        max-width: 60px !important;
-    }
-    table.tabla-formulario tr {
-        page-break-inside: avoid !important;
-    }
-}
-@media print {
-    .company-header {
-        margin-bottom: 0.5rem !important;
-        padding-bottom: 0.2rem !important;
-        border-bottom: 1px solid #aaa !important;
-        gap: 2px !important;
-    }
-    .company-header img {
-        height: 32px !important;
-        max-width: 60px !important;
-    }
-    .company-header h1 {
-        font-size: 0.85rem !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-    .company-header p {
-        font-size: 0.65rem !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-    .company-header .codigo-referencia {
-        font-size: 0.6rem !important;
-        padding: 0.1rem 0.2rem !important;
-        border-radius: 2px !important;
-    }
+  /* Efecto tabla para bloques flex, sin márgenes y letras pequeñas */
+  .main-container-flex {
+    display: table !important;
+    width: 100% !important;
+    table-layout: fixed !important;
+    border-collapse: collapse !important;
+    gap: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .main-container-flex > div {
+    display: table-cell !important;
+    vertical-align: top !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    border-right: 1px solid #bbb !important;
+    margin: 0 !important;
+  }
+  .main-container-flex > div:last-child {
+    border-right: none !important;
+  }
+  .main-container-flex .footer-row {
+    display: table-row !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-bottom: 1px solid #ddd !important;
+    page-break-inside: avoid !important;
+    min-height: 0 !important;
+  }
+  .main-container-flex .footer-label,
+  .main-container-flex .footer-value-fixed {
+    display: table-cell !important;
+    font-size: 9px !important;
+    padding: 0 !important;
 
-    .section-header {
-        border-radius: 0 !important;
-        padding: 2pt 4pt !important;
-        margin-bottom: 2pt !important;
-        margin-top: 2pt !important;
-        font-size: 7pt !important;
-        gap: 4px !important;
-        box-shadow: none !important;
-        background: #000 !important;
-        color: #fff !important;
-        border: 1pt solid #000 !important;
-        text-align: center !important;
-        justify-content: center !important;
-        display: flex !important;
-        align-items: center !important;
-    }
-    .section-header h2, .section-header h3, .section-header span {
-        color: #fff !important;
-        font-size: 8pt !important;
-        font-weight: 600 !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        text-transform: uppercase !important;
-    }
+    vertical-align: top !important;
+    background: none !important;
+    min-width: 0 !important;
+    word-break: break-word !important;
+    margin: 0 !important;
+  }
+  .main-container-flex .footer-label {
+    color: #222 !important;
+    font-weight: 500 !important;
+    width: 70% !important;
+    text-align: left !important;
+  }
+  .main-container-flex .footer-value-fixed {
+    color: #222 !important;
+    font-weight: 400 !important;
+    width: 30% !important;
+    text-align: center !important;
+    border-left: 1px solid #eee !important;
+  }
+  .main-container-flex .executive-item {
+    display: table-row !important;
+    font-size: 9px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: none !important;
+    border: none !important;
+  }
+  .main-container-flex .executive-item-label {
+    display: table-cell !important;
+    font-size: 9px !important;
+    font-weight: 600 !important;
+    color: #2b3d4f !important;
+    padding: 0 !important;
+    background: #f4f6fb !important;
+    border-bottom: 1px solid #bbb !important;
+    border-top: 1px solid #bbb !important;
+    border-left: none !important;
+    border-right: none !important;
+    margin: 0 !important;
+  }
+  .main-container-flex .footer-area {
+    display: none !important;
+  }
 
-    .usuario-box, .area-box {
-        border-radius: 0 !important;
-        padding: 2pt 2pt 1pt 2pt !important;
-        margin-bottom: 4pt !important;
-        border: 0.5pt solid #000 !important;
-        background: #fff !important;
-    }
-    .usuario-box-header, .area-box-header, .general-box-header {
-        margin-bottom: 2pt !important;
-        margin-top: 2pt !important;
-        text-align: center !important;
-        width: 100% !important;
-    }
-    .usuario-box-header span, .area-box-header span, .general-box-header span {
-        padding: 2pt 0 !important;
-        font-size: 7pt !important;
-        border-radius: 0 !important;
-        border: 0.5pt solid #000 !important;
-        background: #222 !important;
-        color: #fff !important;
-        margin: 0 auto !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        text-align: center !important;
-    }
+  /* TABLAS DE FORMULARIO ORDENADAS POR COLUMNAS */
+  table.tabla-formulario {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    table-layout: fixed !important;
+    margin: 0 0 6pt 0 !important;
+    font-size: 7pt !important;
+
+    background: #fff !important;
+  }
+  table.tabla-formulario th,
+  table.tabla-formulario td {
+    padding: 2pt 4pt !important;
+    font-size: 7pt !important;
+    text-align: left !important;
+    vertical-align: middle !important;
+    background: #fff !important;
+    color: #000 !important;
+    line-height: 1.1 !important;
+  }
+  table.tabla-formulario th {
+    background: #eaeaea !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+    text-transform: uppercase !important;
+    color: #222 !important;
+    font-size: 7pt !important;
+  }
+  table.tabla-formulario td.respuesta {
+    text-align: center !important;
+    font-weight: 600 !important;
+    background: #f7f7f7 !important;
+    min-width: 32px !important;
+    max-width: 60px !important;
+  }
+  table.tabla-formulario tr {
+    page-break-inside: avoid !important;
+  }
+
+  .company-header {
+    margin-bottom: 0.5rem !important;
+    padding-bottom: 0.2rem !important;
+    border-bottom: 1px solid #aaa !important;
+    gap: 2px !important;
+  }
+  .company-header img {
+    height: 32px !important;
+    max-width: 60px !important;
+  }
+  .company-header h1 {
+    font-size: 0.85rem !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .company-header p {
+    font-size: 0.65rem !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .company-header .codigo-referencia {
+    font-size: 0.6rem !important;
+    padding: 0.1rem 0.2rem !important;
+    border-radius: 2px !important;
+  }
+
+  .section-header {
+    border-radius: 0 !important;
+    padding: 2pt 4pt !important;
+    margin-bottom: 2pt !important;
+    margin-top: 2pt !important;
+    font-size: 7pt !important;
+    gap: 4px !important;
+    box-shadow: none !important;
+    background: #000 !important;
+    color: #fff !important;
+
+    text-align: center !important;
+    justify-content: center !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+  .section-header h2,
+  .section-header h3,
+  .section-header span {
+    color: #fff !important;
+    font-size: 8pt !important;
+    font-weight: 600 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-transform: uppercase !important;
+  }
+
+  .usuario-box,
+  .area-box {
+    border-radius: 0 !important;
+    padding: 2pt 2pt 1pt 2pt !important;
+    margin-bottom: 4pt !important;
+
+    background: #fff !important;
+  }
+  .usuario-box-header,
+  .area-box-header,
+  .general-box-header {
+    margin-bottom: 2pt !important;
+    margin-top: 2pt !important;
+    text-align: center !important;
+    width: 100% !important;
+  }
+  .usuario-box-header span,
+  .area-box-header span,
+  .general-box-header span {
+    padding: 2pt 0 !important;
+    font-size: 7pt !important;
+    border-radius: 0 !important;
+
+    background: #222 !important;
+    color: #fff !important;
+    margin: 0 auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    text-align: center !important;
+  }
 }
+
 /*============================
    FORMATO DE IMPRESIÓN PT1
    Basado en PT2 y PT3
@@ -208,447 +214,452 @@
 
 /* === ESTILOS COMPACTOS PARA IMPRESIÓN PT1 === */
 @media print {
-    @page {
-        size: A4;
-        margin: 4mm 2mm;
-    }
+  @page {
+    size: A4;
+    margin: 4mm 2mm;
+  }
 
-    * {
-        -webkit-print-color-adjust: economy !important;
-        print-color-adjust: economy !important;
-    }
+  * {
+    -webkit-print-color-adjust: economy !important;
+    print-color-adjust: economy !important;
+  }
 
-    body {
-        background: white !important;
-        font-family: Arial, sans-serif !important;
-        font-size: 7pt !important;
-        line-height: 1.05 !important;
-        color: #000 !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        width: 100% !important;
-    }
+  body {
+    background: white !important;
+    font-family: Arial, sans-serif !important;
+    font-size: 7pt !important;
+    line-height: 1.05 !important;
 
-    /* OCULTAR ELEMENTOS NO IMPRIMIBLES */
-    .button-group,
-    .btn,
-    #modalComentario,
-    .no-print {
-        display: none !important;
-    }
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
 
-    /* TABLAS COMPACTAS CON BORDES RECTOS */
-    table.styled-table,
-    table {
-        width: 100% !important;
-        border-collapse: collapse !important;
-        table-layout: fixed !important;
-        margin: 0 !important;
-        font-size: 8pt !important;
-        page-break-inside: avoid !important;
-        border: 1pt solid #000 !important;
-        border-radius: 0 !important;
-    }
+  /* OCULTAR ELEMENTOS NO IMPRIMIBLES */
+  .button-group,
+  .btn,
+  #modalComentario,
+  .no-print {
+    display: none !important;
+  }
 
-    table.styled-table th,
-    table.styled-table td,
-    table th,
-    table td {
-        padding: 0.5px 1px !important;
-        margin: 0 !important;
-        border: 0.5pt solid #000 !important;
-        border-radius: 0 !important;
-        line-height: 1.0 !important;
-        font-size: 6.5pt !important;
-    }
+  /* TABLAS COMPACTAS CON BORDES RECTOS */
+  table.styled-table,
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    table-layout: fixed !important;
+    margin: 0 !important;
+    font-size: 8pt !important;
+    page-break-inside: avoid !important;
 
-    table.styled-table th,
-    table th {
-        background: #d9d9d9 !important;
-        color: #000 !important;
-        font-weight: 600 !important;
-        text-align: center !important;
-        font-size: 6pt !important;
-        border-radius: 0 !important;
-    }
+    border-radius: 0 !important;
+  }
 
-    /* PERSONAL INVOLUCRADO TABLE */
-    .personal-involucrado-table {
-        width: 100% !important;
-        margin: 0 !important;
-        border-collapse: collapse !important;
-        table-layout: fixed !important;
-    }
-    .personal-involucrado-table th:nth-child(1),
-    .personal-involucrado-table td:nth-child(1) {
-        width: 28% !important;
-        min-width: 140px !important;
-        max-width: 300px !important;
-    }
-    .personal-involucrado-table th:nth-child(n+2),
-    .personal-involucrado-table td:nth-child(n+2) {
-        width: 15% !important;
-        min-width: 120px !important;
-        max-width: none !important;
-    }
-    .personal-involucrado-table th:nth-child(5),
-    .personal-involucrado-table td:nth-child(5) {
-        width: 30% !important;
-        min-width: 190px !important;
-        max-width: 220px !important;
-    }
+  table.styled-table th,
+  table.styled-table td,
+  table th,
+  table td {
+    padding: 0.5px 1px !important;
+    margin: 0 !important;
 
-    /* AST TABLE */
-    .ast-table th:nth-child(1), .ast-table td:nth-child(1) {
-        width: 40px !important;
-        min-width: 30px !important;
-        max-width: 60px !important;
-    }
-    .ast-table th:nth-child(2), .ast-table td:nth-child(2) {
-        width: 180px !important;
-        min-width: 100px !important;
-        max-width: 220px !important;
-    }
-    .ast-table th:nth-child(3), .ast-table td:nth-child(3) {
-        width: 120px !important;
-        min-width: 100px !important;
-        max-width: 160px !important;
-    }
-    .ast-table th:nth-child(4), .ast-table td:nth-child(4) {
-        width: 140px !important;
-        min-width: 100px !important;
-        max-width: 180px !important;
-    }
-    .ast-table th:nth-child(5), .ast-table td:nth-child(5) {
-        width: 140px !important;
-        min-width: 110px !important;
-        max-width: 180px !important;
-    }
-    .ast-table th:nth-child(6), .ast-table td:nth-child(6) {
-        width: 100px !important;
-        min-width: 100px !important;
-        max-width: 140px !important;
-    }
-    .ast-table th:last-child,
-    .ast-table td:last-child {
-        width: 140px !important;   /* O el valor que prefieras */
-        min-width: 120px !important;
-        max-width: 200px !important;
-    }
+    border-radius: 0 !important;
+    line-height: 1.0 !important;
+    font-size: 6.5pt !important;
+  }
 
-    /* REQUISITOS PARA ADMINISTRAR LOS RIESGOS */
-    .tabla-requisitos-riesgos th:nth-child(1),
-    .tabla-requisitos-riesgos td:nth-child(1) {
-        width: 320px !important;
-        min-width: 200px !important;
-        max-width: 400px !important;
-    }
-    .tabla-requisitos-riesgos th:nth-child(2),
-    .tabla-requisitos-riesgos td:nth-child(2) {
-        width: 120px !important;
-        min-width: 100px !important;
-        max-width: 180px !important;
-    }
-    .tabla-requisitos-riesgos th:nth-child(3),
-    .tabla-requisitos-riesgos td:nth-child(3) {
-        width: 180px !important;
-        min-width: 140px !important;
-        max-width: 220px !important;
-    }
+  table.styled-table th,
+  table th {
+    background: #d9d9d9 !important;
 
-    /* ANÁLISIS DE REQUISITOS PARA EFECTUAR EL TRABAJO */
-    .tabla-analisis-requisitos th:nth-child(1),
-    .tabla-analisis-requisitos td:nth-child(1) {
-        width: 340px !important;
-        min-width: 240px !important;
-        max-width: 550px !important;
-    }
-    .tabla-analisis-requisitos th:nth-child(2),
-    .tabla-analisis-requisitos td:nth-child(2) {
-        width: 220px !important;
-        min-width: 100px !important;
-        max-width: 500px !important;
-    }
+    font-weight: 600 !important;
+    text-align: center !important;
+    font-size: 6pt !important;
+    border-radius: 0 !important;
+  }
 
-    /* MEDIDAS/REQUISITOS TABLA */
-    .tabla-medidas th:nth-child(3),
-    .tabla-medidas td:nth-child(3) {
-        width: 220px !important;
-        min-width: 140px !important;
-        max-width: 260px !important;
-    }
+  /* PERSONAL INVOLUCRADO TABLE */
+  .personal-involucrado-table {
+    width: 100% !important;
+    margin: 0 !important;
+    border-collapse: collapse !important;
+    table-layout: fixed !important;
+  }
+  .personal-involucrado-table th:nth-child(1),
+  .personal-involucrado-table td:nth-child(1) {
+    width: 28% !important;
+    min-width: 140px !important;
+    max-width: 300px !important;
+  }
+  .personal-involucrado-table th:nth-child(n+2),
+  .personal-involucrado-table td:nth-child(n+2) {
+    width: 15% !important;
+    min-width: 120px !important;
+    max-width: none !important;
+  }
+  .personal-involucrado-table th:nth-child(5),
+  .personal-involucrado-table td:nth-child(5) {
+    width: 30% !important;
+    min-width: 190px !important;
+    max-width: 220px !important;
+  }
 
-    /* ENCABEZADOS DE IMPRESIÓN - BLANCO Y NEGRO */
-    div.section-header {
-        background: #000 !important;
-        color: white !important;
-        border: 1pt solid #000 !important;
-        border-radius: 0 !important;
-        padding: 3pt 4pt !important;
-        margin: 0 0 2pt 0 !important;
-        text-align: center !important;
-        page-break-after: avoid !important;
-    }
-    div.section-header h3,
-    div.section-header h2,
-    .section-header h3,
-    .section-header h2 {
-        color: white !important;
-        font-size: 10pt !important;
-        font-weight: 600 !important;
-        margin: 0 !important;
-        text-transform: uppercase !important;
-    }
+  /* AST TABLE */
+  .ast-table th:nth-child(1),
+  .ast-table td:nth-child(1) {
+    width: 40px !important;
+    min-width: 30px !important;
+    max-width: 60px !important;
+  }
+  .ast-table th:nth-child(2),
+  .ast-table td:nth-child(2) {
+    width: 180px !important;
+    min-width: 100px !important;
+    max-width: 220px !important;
+  }
+  .ast-table th:nth-child(3),
+  .ast-table td:nth-child(3) {
+    width: 120px !important;
+    min-width: 100px !important;
+    max-width: 160px !important;
+  }
+  .ast-table th:nth-child(4),
+  .ast-table td:nth-child(4) {
+    width: 140px !important;
+    min-width: 100px !important;
+    max-width: 180px !important;
+  }
+  .ast-table th:nth-child(5),
+  .ast-table td:nth-child(5) {
+    width: 140px !important;
+    min-width: 110px !important;
+    max-width: 180px !important;
+  }
+  .ast-table th:nth-child(6),
+  .ast-table td:nth-child(6) {
+    width: 100px !important;
+    min-width: 100px !important;
+    max-width: 140px !important;
+  }
+  .ast-table th:last-child,
+  .ast-table td:last-child {
+    width: 140px !important; /* O el valor que prefieras */
+    min-width: 120px !important;
+    max-width: 200px !important;
+  }
 
-    /* ELIMINAR DECORACIONES */
-    .executive-section,
-    .sections-row,
-    .container {
-        background: white !important;
-        border: none !important;
-        box-shadow: none !important;
-        border-radius: 0 !important;
-        padding: 0 !important;
-        margin: 0.5pt 0 !important;
-    }
+  /* REQUISITOS PARA ADMINISTRAR LOS RIESGOS */
+  .tabla-requisitos-riesgos th:nth-child(1),
+  .tabla-requisitos-riesgos td:nth-child(1) {
+    width: 320px !important;
+    min-width: 200px !important;
+    max-width: 400px !important;
+  }
+  .tabla-requisitos-riesgos th:nth-child(2),
+  .tabla-requisitos-riesgos td:nth-child(2) {
+    width: 120px !important;
+    min-width: 100px !important;
+    max-width: 180px !important;
+  }
+  .tabla-requisitos-riesgos th:nth-child(3),
+  .tabla-requisitos-riesgos td:nth-child(3) {
+    width: 180px !important;
+    min-width: 140px !important;
+    max-width: 220px !important;
+  }
 
-    /* GRID MÁS COMPACTO PARA DATOS GENERALES */
-    .executive-grid {
-        display: grid !important;
-        grid-template-columns: 1fr 1fr 1fr !important;
-        gap: 1pt !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
+  /* ANÁLISIS DE REQUISITOS PARA EFECTUAR EL TRABAJO */
+  .tabla-analisis-requisitos th:nth-child(1),
+  .tabla-analisis-requisitos td:nth-child(1) {
+    width: 340px !important;
+    min-width: 240px !important;
+    max-width: 550px !important;
+  }
+  .tabla-analisis-requisitos th:nth-child(2),
+  .tabla-analisis-requisitos td:nth-child(2) {
+    width: 220px !important;
+    min-width: 100px !important;
+    max-width: 500px !important;
+  }
 
-    .executive-item {
-        margin: 0 !important;
-        padding: 0.5pt !important;
-        border: 0.5pt solid #000 !important;
-        background: white !important;
-    }
-    .executive-item label {
-        font-size: 5.5pt !important;
-        font-weight: 600 !important;
-        margin-bottom: 0.5pt !important;
-        display: block !important;
-        color: #000 !important;
-    }
-    .executive-item p {
-        font-size: 6.5pt !important;
-        margin: 0 !important;
-        padding: 0.5pt 0 !important;
-        color: #000 !important;
-        line-height: 1.05 !important;
-    }
+  /* MEDIDAS/REQUISITOS TABLA */
+  .tabla-medidas th:nth-child(3),
+  .tabla-medidas td:nth-child(3) {
+    width: 220px !important;
+    min-width: 140px !important;
+    max-width: 260px !important;
+  }
 
-    /* NEUTRALIZAR MARCOS EXTERNOS SOLO AL IMPRIMIR */
-    section[style*="max-width"],
-    section[style*="border-radius"],
-    section[style*="box-shadow"],
-    div[style*="border-radius"],
-    div[style*="box-shadow"] {
-        max-width: none !important;
-        width: 100% !important;
-        margin: 0 !important;
-        background: white !important;
-        border-radius: 0 !important;
-        box-shadow: none !important;
-        padding: 0 !important;
-        border: none !important;
-    }
+  /* ENCABEZADOS DE IMPRESIÓN - BLANCO Y NEGRO */
+  div.section-header {
+    background: #000 !important;
+    color: white !important;
 
-    /* NEUTRALIZAR CONTENEDORES FLEX SOLO EN IMPRESIÓN */
-    div[style*="justify-content: center"],
-    div[style*="align-items"],
-    div[style*="min-height: 100vh"] {
-        justify-content: flex-start !important;
-        align-items: flex-start !important;
-        min-height: auto !important;
-        background: white !important;
-        padding: 0 !important;
-        margin: 0 !important;
-    }
+    border-radius: 0 !important;
+    padding: 3pt 4pt !important;
+    margin: 0 0 2pt 0 !important;
+    text-align: center !important;
+    page-break-after: avoid !important;
+  }
+  div.section-header h3,
+  div.section-header h2,
+  .section-header h3,
+  .section-header h2 {
+    color: white !important;
+    font-size: 10pt !important;
+    font-weight: 600 !important;
+    margin: 0 !important;
+    text-transform: uppercase !important;
+  }
 
-    /* OCULTAR TODOS LOS ICONOS EN IMPRESIÓN */
-    .ri-checkbox-circle-line,
-    .ri-information-line,
-    .ri-checkbox-multiple-line,
-    .ri-flask-line,
-    .ri-tools-line,
-    .ri-shield-check-line,
-    .ri-team-line,
-    .ri-shield-user-line,
-    .ri-box-line,
-    [class*="ri-"] {
-        display: none !important;
-    }
-    .section-header i,
-    h2 i,
-    h3 i,
-    h4 i {
-        display: none !important;
-    }
+  /* ELIMINAR DECORACIONES */
+  .executive-section,
+  .sections-row,
+  .container {
+    background: white !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin: 0.5pt 0 !important;
+  }
 
-    /* LIMPIAR ESPACIOS DONDE ESTABAN LOS ICONOS */
-    .section-header {
-        text-align: center !important;
-    }
-    .section-header h2,
-    .section-header h3 {
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-    .executive-section > .section-header:first-child h2 {
-        text-align: center !important;
-        margin: 0 !important;
-    }
+  /* GRID MÁS COMPACTO PARA DATOS GENERALES */
+  .executive-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr !important;
+    gap: 1pt !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
 
-    /* TODAS LAS TABLAS CON BORDES RECTOS EN IMPRESIÓN */
-    table,
-    tbody,
-    thead,
-    tr,
-    th,
-    td {
-        border-radius: 0 !important;
-    }
+  .executive-item {
+    margin: 0 !important;
+    padding: 0.5pt !important;
 
-    /* SPANS PARA RESPUESTAS EN TABLAS */
-    table td span {
-        background: transparent !important;
-        padding: 1pt 2pt !important;
-        border: 0.5pt solid #000 !important;
-        border-radius: 0 !important;
-        display: inline-block !important;
-        min-width: 30pt !important;
-        text-align: center !important;
-        font-weight: 600 !important;
-        color: #000 !important;
-    }
-    table td span:empty::after {
-        content: "____" !important;
-        color: #999 !important;
-        font-weight: normal !important;
-    }
+    background: white !important;
+  }
+  .executive-item label {
+    font-size: 5.5pt !important;
+    font-weight: 600 !important;
+    margin-bottom: 0.5pt !important;
+    display: block !important;
+  }
+  .executive-item p {
+    font-size: 6.5pt !important;
+    margin: 0 !important;
+    padding: 0.5pt 0 !important;
 
-    /* ESTILOS PARA CAMPOS ADICIONALES */
-    div label {
-        font-size: 6pt !important;
-        font-weight: 600 !important;
-        color: #000 !important;
-        margin-right: 4pt !important;
-    }
-    div span {
-        background: transparent !important;
-        padding: 1pt 2pt !important;
-        border: 0.5pt solid #000 !important;
-        border-radius: 0 !important;
-        display: inline-block !important;
-        min-width: 20pt !important;
-        text-align: center !important;
-        font-weight: 600 !important;
-        color: #000 !important;
-        margin-right: 8pt !important;
-    }
+    line-height: 1.05 !important;
+  }
 
-    /* CONTROL DE SALTOS DE PÁGINA */
-    .executive-section {
-        page-break-inside: avoid !important;
-        margin-bottom: 3pt !important;
-    }
-    .section-header {
-        page-break-after: avoid !important;
-    }
-    table {
-        page-break-inside: avoid !important;
-    }
+  /* NEUTRALIZAR MARCOS EXTERNOS SOLO AL IMPRIMIR */
+  section[style*="max-width"],
+  section[style*="border-radius"],
+  section[style*="box-shadow"],
+  div[style*="border-radius"],
+  div[style*="box-shadow"] {
+    max-width: none !important;
+    width: 100% !important;
+    margin: 0 !important;
+    background: white !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    border: none !important;
+  }
 
-    /* FORZAR TEXTO EN NEGRO */
-    * {
-        color: #000 !important;
-    }
+  /* NEUTRALIZAR CONTENEDORES FLEX SOLO EN IMPRESIÓN */
+  div[style*="justify-content: center"],
+  div[style*="align-items"],
+  div[style*="min-height: 100vh"] {
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+    min-height: auto !important;
+    background: white !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
 
-    .styled-table th:last-child,
-    .styled-table td:last-child {
-        width: 120px !important; /* O el valor que prefieras */
-        min-width: 150px !important;
-        max-width: 200px !important;
-    }
+  /* OCULTAR TODOS LOS ICONOS EN IMPRESIÓN */
+  .ri-checkbox-circle-line,
+  .ri-information-line,
+  .ri-checkbox-multiple-line,
+  .ri-flask-line,
+  .ri-tools-line,
+  .ri-shield-check-line,
+  .ri-team-line,
+  .ri-shield-user-line,
+  .ri-box-line,
+  [class*="ri-"] {
+    display: none !important;
+  }
+  .section-header i,
+  h2 i,
+  h3 i,
+  h4 i {
+    display: none !important;
+  }
 
-     /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
-      /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
-       /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
-        /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
-         /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
-          /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
-           /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
-    /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
-    .ast-table-responsables th:nth-child(1),
-    .ast-table-responsables td:nth-child(1) {
-        width: 47% !important;
-        min-width: 144px !important;
-        max-width: 360px !important;
-    }
-    .ast-table-responsables th:nth-child(2),
-    .ast-table-responsables td:nth-child(2) {
-        width: 53% !important;
-        min-width: 144px !important;
-        max-width: 420px !important;
-    }
-    .ast-table-responsables th:nth-child(3),
-    .ast-table-responsables td:nth-child(3) {
-        width: 45% !important;
-        min-width: 144px !important;
-        max-width: 285px !important;
-    }
+  /* LIMPIAR ESPACIOS DONDE ESTABAN LOS ICONOS */
+  .section-header {
+    text-align: center !important;
+  }
+  .section-header h2,
+  .section-header h3 {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .executive-section > .section-header:first-child h2 {
+    text-align: center !important;
+    margin: 0 !important;
+  }
 
-    /* === REGLAS ESPECÍFICAS PARA TABLA DE PARTICIPANTES === */
-     /* === REGLAS ESPECÍFICAS PARA TABLA DE PARTICIPANTES === */
-      /* === REGLAS ESPECÍFICAS PARA TABLA DE PARTICIPANTES === */
-       /* === REGLAS ESPECÍFICAS PARA TABLA DE PARTICIPANTES === */
-        /* === REGLAS ESPECÍFICAS PARA TABLA DE PARTICIPANTES === */
-         /* === REGLAS ESPECÍFICAS PARA TABLA DE PARTICIPANTES === */
-          /* === REGLAS ESPECÍFICAS PARA TABLA DE PARTICIPANTES === */
-          
-    .ast-table-participantes th:nth-child(1),
-    .ast-table-participantes td:nth-child(1) {
-        width: 32% !important;
-        min-width: 140px !important;
-        max-width: 320px !important;
-    }
-    .ast-table-participantes th:nth-child(2),
-    .ast-table-participantes td:nth-child(2) {
-        width: 20% !important;
-        min-width: 80px !important;
-        max-width: 160px !important;
-    }
-    .ast-table-participantes th:nth-child(3),
-    .ast-table-participantes td:nth-child(3) {
-        width: 20% !important;
-        min-width: 80px !important;
-        max-width: 160px !important;
-    }
-    .ast-table-participantes th:nth-child(4),
-    .ast-table-participantes td:nth-child(4) {
-        width: 24% !important;
-        min-width: 100px !important;
-        max-width: 220px !important;
-    }
-    .ast-table-participantes th:nth-child(5),
-    .ast-table-participantes td:nth-child(5) {
-        width: 24% !important;
-        min-width: 100px !important;
-        max-width: 220px !important;
-    }
+  /* TODAS LAS TABLAS CON BORDES RECTOS EN IMPRESIÓN */
+  table,
+  tbody,
+  thead,
+  tr,
+  th,
+  td {
+    border-radius: 0 !important;
+  }
+
+  /* SPANS PARA RESPUESTAS EN TABLAS */
+  table td span {
+    background: transparent !important;
+    padding: 1pt 2pt !important;
+
+    border-radius: 0 !important;
+    display: inline-block !important;
+    min-width: 30pt !important;
+    text-align: center !important;
+    font-weight: 600 !important;
+    color: #000 !important;
+  }
+  table td span:empty::after {
+    content: "____" !important;
+    color: #999 !important;
+    font-weight: normal !important;
+  }
+
+  /* ESTILOS PARA CAMPOS ADICIONALES */
+  div label {
+    font-size: 6pt !important;
+    font-weight: 600 !important;
+    color: #000 !important;
+    margin-right: 4pt !important;
+  }
+  div span {
+    background: transparent !important;
+    padding: 1pt 2pt !important;
+
+    border-radius: 0 !important;
+    display: inline-block !important;
+    min-width: 20pt !important;
+    text-align: center !important;
+    font-weight: 600 !important;
+    color: #000 !important;
+    margin-right: 8pt !important;
+  }
+
+  /* CONTROL DE SALTOS DE PÁGINA */
+  .executive-section {
+    page-break-inside: avoid !important;
+    margin-bottom: 3pt !important;
+  }
+  .section-header {
+    page-break-after: avoid !important;
+  }
+  table {
+    page-break-inside: avoid !important;
+  }
+
+  /* FORZAR TEXTO EN NEGRO */
+  * {
+    color: #000 !important;
+  }
+
+  .styled-table th:last-child,
+  .styled-table td:last-child {
+    width: 120px !important; /* O el valor que prefieras */
+    min-width: 150px !important;
+    max-width: 200px !important;
+  }
+
+  /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
+  /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
+  /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
+  /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
+  /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
+  /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
+  /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
+  /* === REGLAS ESPECÍFICAS PARA TABLA DE RESPONSABLES === */
+  .ast-table-responsables th:nth-child(1),
+  .ast-table-responsables td:nth-child(1) {
+    width: 47% !important;
+    min-width: 144px !important;
+    max-width: 360px !important;
+  }
+  .ast-table-responsables th:nth-child(2),
+  .ast-table-responsables td:nth-child(2) {
+    width: 53% !important;
+    min-width: 144px !important;
+    max-width: 420px !important;
+  }
+  .ast-table-responsables th:nth-child(3),
+  .ast-table-responsables td:nth-child(3) {
+    width: 45% !important;
+    min-width: 144px !important;
+    max-width: 285px !important;
+  }
+
+  /* === REGLAS ESPECÍFICAS PARA TABLA DE PARTICIPANTES === */
+  /* === REGLAS ESPECÍFICAS PARA TABLA DE PARTICIPANTES === */
+  /* === REGLAS ESPECÍFICAS PARA TABLA DE PARTICIPANTES === */
+  /* === REGLAS ESPECÍFICAS PARA TABLA DE PARTICIPANTES === */
+  /* === REGLAS ESPECÍFICAS PARA TABLA DE PARTICIPANTES === */
+  /* === REGLAS ESPECÍFICAS PARA TABLA DE PARTICIPANTES === */
+  /* === REGLAS ESPECÍFICAS PARA TABLA DE PARTICIPANTES === */
+
+  .ast-table-participantes th:nth-child(1),
+  .ast-table-participantes td:nth-child(1) {
+    width: 32% !important;
+    min-width: 140px !important;
+    max-width: 320px !important;
+  }
+  .ast-table-participantes th:nth-child(2),
+  .ast-table-participantes td:nth-child(2) {
+    width: 20% !important;
+    min-width: 80px !important;
+    max-width: 160px !important;
+  }
+  .ast-table-participantes th:nth-child(3),
+  .ast-table-participantes td:nth-child(3) {
+    width: 20% !important;
+    min-width: 80px !important;
+    max-width: 160px !important;
+  }
+  .ast-table-participantes th:nth-child(4),
+  .ast-table-participantes td:nth-child(4) {
+    width: 24% !important;
+    min-width: 100px !important;
+    max-width: 220px !important;
+  }
+  .ast-table-participantes th:nth-child(5),
+  .ast-table-participantes td:nth-child(5) {
+    width: 24% !important;
+    min-width: 100px !important;
+    max-width: 220px !important;
+  }
 }
 
 /* === ESTILOS PARA PANTALLA (NO MODIFICAN EL DISEÑO EXISTENTE) === */
 img {
-    max-width: 100%;
-    height: auto;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
+  max-width: 100%;
+  height: auto;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
 }
 
 

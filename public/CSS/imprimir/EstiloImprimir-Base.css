@@ -34,7 +34,7 @@
 
 .company-header .codigo-referencia {
     background: #f8f9fa !important;
-    border: 1px solid #dee2e6 !important;
+  
     border-radius: 4px !important;
     padding: 0.3rem 0.6rem !important;
     font-size: 0.75rem !important;
@@ -44,36 +44,6 @@
 }
 
 /* Responsive para impresión */
-@media print {
-    .company-header {
-        margin-bottom: 1.5rem !important;
-        padding-bottom: 0.8rem !important;
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
-    }
-    
-    .company-header img {
-        height: 50px !important;
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
-    }
-    
-    .company-header h1 {
-        font-size: 1.3rem !important;
-    }
-    
-    .company-header p {
-        font-size: 0.8rem !important;
-    }
-    
-    .company-header .codigo-referencia {
-        background: #f8f9fa !important;
-        border: 1px solid #dee2e6 !important;
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
-        font-size: 0.7rem !important;
-    }
-}
 
 
 
@@ -103,19 +73,19 @@
 
 .usuario .section-header {
     background: rgba(13, 97, 34, 0.08) !important;
-    border: 2px solid rgba(13, 97, 34, 0.3) !important;
+    
 }
 
 /* Fondo azul con marco para headers de proceso */
 .area .section-header {
     background: rgba(2, 200, 250, 0.08) !important;
-    border: 2px solid rgba(2, 200, 250, 0.3) !important;
+   
 }
 
 /* Fondo rojo oscuro con headers de riesgos y pruebas */
 .supervisor .section-header{
     background: rgba(252, 12, 12, 0.1) !important;
-    border: 2px solid rgba(126, 21, 24, 0.5) !important;
+    
 }
 
 
@@ -138,7 +108,7 @@
      border-radius: 10px !important;
     padding: 18px 18px 8px 18px !important;
     margin-bottom: 28px !important;
-    border: 2px solid #41da67 !important;
+
     background: #f8fcf9 !important;
 }
 
@@ -146,7 +116,7 @@
      border-radius: 10px !important;
     padding: 18px 18px 8px 18px !important;
     margin-bottom: 28px !important;
-    border: 2px solid #0d1c61 !important;
+
     background: #f8f8fc !important;
 }
 
@@ -173,7 +143,7 @@
     border-radius: 8px !important;
     font-size: 1.1rem !important;
     letter-spacing: 0.2px !important;
-    border: 1.5px solid #b6e2c6 !important;
+
     width: 100% !important;
     max-width: 100% !important;
     text-align: center !important;
@@ -190,7 +160,7 @@
     border-radius: 8px !important;
     font-size: 1.35rem !important;
     letter-spacing: 0.2px !important;
-    border: 1.5px solid #b6e2c6 !important;
+  
     width: 100% !important;
     max-width: 100% !important;
     text-align: center !important;
@@ -207,7 +177,7 @@
     border-radius: 8px !important;
     font-size: 1.35rem !important;
     letter-spacing: 0.2px !important;
-    border: 1.5px solid #b6c6e2 !important;
+ 
     width: 100% !important;
     max-width: 100% !important;
     text-align: center !important;
@@ -224,7 +194,7 @@
     border-radius: 8px !important;
     font-size: 1.35rem !important;
     letter-spacing: 0.2px !important;
-    border: 1.5px solid #b6c6e2 !important;
+ 
     width: 100% !important;
     max-width: 100% !important;
     text-align: center !important;

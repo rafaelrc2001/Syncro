@@ -157,7 +157,7 @@ async function cargarResponsablesAutorizacion(id_permiso) {
 						   `<div style='font-size:5px;line-height:1.3;'>` +
 						`${info.nombre_usuario_supervisor ? info.nombre_usuario_supervisor: '<span style=\'color:#c0392b\'>Sin dato</span>'};` +
 								
-						   `Fecha: ${info.fecha_hora_supervisor ? info.fecha_hora_supervisor : '<span style=\'color:#c0392b\'>Sin dato</span>'};` +
+						   `Fecha: ${info.fecha_hora_supervisor ? info.fecha_hora_supervisor : '<span style=\'color:#c0392b\'>Sin dato</span>'};` + `<br>` +
 						   `${(() => {
   let val = info.dispositivo_supervisor;
   if (!val) return "<span style='color:#c0392b'>Sin dato</span>";

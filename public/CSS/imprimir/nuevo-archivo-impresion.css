@@ -459,3 +459,23 @@
 	}
 }
 
+
+
+@media print {
+  .ast-summary {
+    background: #fff !important;
+  }
+  /* O el div que envuelve la tabla, por ejemplo: */
+  #contenedor-responsables > div {
+    background: #fff !important;
+  }
+}
+
+
+@media print {
+	html, body, div, section, table, tbody, thead, tfoot, tr, td, th {
+		background: #fff !important;
+		box-shadow: none !important;
+	}
+}
+

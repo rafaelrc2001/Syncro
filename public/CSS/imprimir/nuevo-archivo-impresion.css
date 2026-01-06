@@ -1,3 +1,4 @@
+
 @media print {
 	/* Forzar el contenedor de la tabla AST a ocupar todo el ancho */
 	.ast-summary, .executive-section, .form-section, section.form-section {
@@ -479,3 +480,44 @@
 	}
 }
 
+@media print {
+  .campo-label, .campo-valor {
+    display: inline !important;
+    margin-right: 8pt !important; /* Espacio entre campos, opcional */
+  }
+}
+
+
+
+@media print {
+	.executive-grid {
+		display: grid !important;
+		grid-template-columns: repeat(4, 1fr) !important;
+		gap: 4pt 12pt !important; /* 4pt vertical, 12pt horizontal */
+		align-items: flex-start !important;
+		width: 100% !important;
+	}
+	.executive-grid > * {
+		display: flex !important;
+		flex-direction: row !important;
+		align-items: center !important;
+		gap: 2pt !important;
+		margin-bottom: 0 !important;
+		margin-right: 0 !important;
+		white-space: nowrap !important;
+		line-height: 1.05 !important;
+		padding-bottom: 0 !important;
+		width: 100%;
+		box-sizing: border-box !important;
+	}
+	.executive-item label, .executive-item p, .executive-item span, .executive-item b, .executive-item strong {
+		display: inline !important;
+		margin: 0 !important;
+		padding: 0 !important;
+		font-size: 7pt !important;
+		font-weight: 600 !important;
+		color: #222 !important;
+		white-space: pre !important;
+		line-height: 1.05 !important;
+	}
+}

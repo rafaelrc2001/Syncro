@@ -1,3 +1,32 @@
+@media print {
+	/* Aplica el estilo solo al header del AST en impresión */
+	.section-header h3 {
+		color: #2b3d4f !important;
+		font-family: 'Roboto', Arial, sans-serif !important;
+		font-size: 1.08em !important;
+		font-weight: 600 !important;
+		margin: 0 !important;
+		letter-spacing: 0.5px !important;
+		text-align: center !important;
+	}
+	.section-header h3.ast-header {
+		background: none !important;
+		color: #2b3d4f !important;
+		font-weight: 600 !important;
+		font-size: 1.08em !important;
+		padding: 8px 14px !important;
+		border-radius: 8px !important;
+		margin-bottom: 10px !important;
+		margin-top: 10px !important;
+		letter-spacing: 0.5px !important;
+		box-shadow: 0 1px 4px rgba(44,62,80,0.06) !important;
+		display: flex !important;
+		align-items: center !important;
+		gap: 8px !important;
+		justify-content: center !important;
+		text-align: center !important;
+	}
+}
 
 @media print {
 	/* Forzar el contenedor de la tabla AST a ocupar todo el ancho */
@@ -493,7 +522,7 @@
 	.executive-grid {
 		display: grid !important;
 		grid-template-columns: repeat(4, 1fr) !important;
-		gap: 4pt 12pt !important; /* 4pt vertical, 12pt horizontal */
+		gap: 2pt 2pt !important; /* 4pt vertical, 12pt horizontal */
 		align-items: flex-start !important;
 		width: 100% !important;
 	}
@@ -510,14 +539,28 @@
 		width: 100%;
 		box-sizing: border-box !important;
 	}
-	.executive-item label, .executive-item p, .executive-item span, .executive-item b, .executive-item strong {
+	.executive-item label, .executive-item span, .executive-item b, .executive-item strong {
 		display: inline !important;
 		margin: 0 !important;
 		padding: 0 !important;
 		font-size: 7pt !important;
 		font-weight: 600 !important;
 		color: #222 !important;
-		white-space: pre !important;
+		white-space: normal !important;
 		line-height: 1.05 !important;
 	}
+
+    .executive-item p {
+		display: inline !important;
+		margin: 0 !important;
+		padding: 0 !important;
+		font-size: 7pt !important;
+		font-weight: 400 !important;
+		color: #222 !important;
+		white-space: normal !important;
+		line-height: 1.05 !important;
+	}
+
 }
+
+

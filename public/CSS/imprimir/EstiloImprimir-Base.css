@@ -136,7 +136,7 @@
 /* En esta parte ajusto con la caracteristica de padding el valor del alto y el ancho */
 .general-box-header span {
     display: block !important;
-    background: #003B5C !important;
+    background: #262626 !important;
     color: #ffffff !important;
     font-weight: 500 !important;
     padding: 1px 0 !important;

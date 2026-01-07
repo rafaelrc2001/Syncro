@@ -21,7 +21,7 @@
 }
 
 .added-form-header {
-    background: linear-gradient(135deg, #eac102 0%, #eac102 100%);
+    background: linear-gradient(135deg, #252525 0%, #252525 100%);
     color: white;
     padding: 12px 18px;
     display: flex;
@@ -63,7 +63,7 @@
 
 /* --- HEADERS DE SECCIÓN --- */
 .section-header {
-    background: linear-gradient(135deg, #eac102 0%, #eac102 100%);
+    background: linear-gradient(135deg, #252525 0%, #252525 100%);
     color: white;
     padding: 3px 6px;
     font-weight: 600;
@@ -74,7 +74,7 @@
 }
 
 .header-orange {
-    background: linear-gradient(135deg, #eac102 0%, #eac102 100%);
+    background: linear-gradient(135deg, #252525 0%, #252525 100%);
     color: white;
     padding: 3px 6px;
     font-weight: 600;

@@ -1,3 +1,5 @@
+
+
 @media print {
 	.section-header.header-centered {
 		position: relative !important;
@@ -286,7 +288,7 @@
 		align-items: flex-start !important;
 		margin-bottom: 2pt !important;
 		padding-bottom: 0 !important;
-		border-bottom: none !important;
+		border-bottom: 1px solid #bbb !important;
 		gap: 0 !important;
 	}
 	.main-container-flex .footer-label {
@@ -617,5 +619,26 @@
 
 }
 
+
+@media print {
+	/* Línea de separación solo para filas de contenido (footer-row), no encabezados */
+	.main-container-flex .footer-row {
+		border-bottom: 1px solid #bbb !important;
+		padding-bottom: 2px !important;
+		margin-bottom: 2px !important;
+	}
+	/* Quitar border a la última fila de cada grupo */
+	/*.main-container-flex > div > .footer-row:last-child {
+		border-bottom: none !important;
+	}*/
+
+		/* Línea de separación solo para filas de contenido de tablas (no encabezados) */
+	.ast-table tbody tr , .ast-table thead tr {
+		border-bottom: 1px solid #bbb !important;
+	}
+	.ast-table tbody tr:last-child {
+		border-bottom: none !important;
+	}
+}
 
 

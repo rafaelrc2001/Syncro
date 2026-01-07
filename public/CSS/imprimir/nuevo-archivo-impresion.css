@@ -665,8 +665,8 @@
 	/* Línea de separación solo para filas de contenido (footer-row), no encabezados */
 	.main-container-flex .footer-row {
 		border-bottom: 1px solid #bbb !important;
-		padding-bottom: 2px !important;
-		margin-bottom: 2px !important;
+		padding-bottom: 1px !important;
+		margin-bottom: 1px !important;
 	}
 	/* Quitar border a la última fila de cada grupo */
 	/*.main-container-flex > div > .footer-row:last-child {

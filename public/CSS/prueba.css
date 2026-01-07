@@ -160,14 +160,14 @@
 }
 /* ==================== VARIABLES Y RAÍZ ====================*/
 :root {
-    --azul-industrial: #262626;
-    --azul-petroleo: #262626;
-    --azul-acento: #262626;
+    --azul-industrial: #2d2d2d;
+    --azul-petroleo: #2d2d2d;
+    --azul-acento: #2d2d2d;
     --azul-claro: #7e7676;
     
-    --gris-carbon: #262626;
-    --gris-oscuro: #262626;
-    --gris-medio: #262626;
+    --gris-carbon: #2d2d2d;
+    --gris-oscuro: #2d2d2d;
+    --gris-medio: #2d2d2d;
     --gris-claro: #d4d2d2;
     --gris-suave: #F1F3F5;
     

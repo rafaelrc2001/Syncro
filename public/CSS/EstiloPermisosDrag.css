@@ -197,7 +197,7 @@ table th {
 
 .editable-blue {
     min-width: 160px;
-    border: 2px solid #262626;
+    border: 2px solid #2d2d2d;
     background: #F0F8FF;
 }
 
@@ -208,13 +208,13 @@ table th {
 }
 
 .editable-blue:hover {
-    border-color: #262626;
+    border-color: #2d2d2d;
     box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
 }
 
 .editable-blue:focus {
     outline: none;
-    border-color: #262626;
+    border-color: #2d2d2d;
     box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.15);
 }
 

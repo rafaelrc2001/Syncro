@@ -23,7 +23,7 @@
 /* ===== PANEL DE FORMULARIOS DISPONIBLES ===== */
 /* Panel superior con los formularios arrastrables */
 .forms-panel {
-    /*background: linear-gradient(135deg, #eac102 0%, #262626 100%);*/
+    /*background: linear-gradient(135deg, #eac102 0%, #2d2d2d 100%);*/
     background: linear-gradient(135deg, #252525 0%, #252525  100%);
     border-radius: 12px;
     padding: 12px;

@@ -133,7 +133,7 @@
     margin-bottom: 2px !important;
     display: block !important;
     font-weight: 600 !important;
-    color: #262626 !important;
+    color: #2d2d2d !important;
   }
   .form-group input,
   .form-group select,
@@ -324,7 +324,7 @@
     transform: translateY(-50%) !important;
     pointer-events: none !important;
     font-size: 1.3em !important;
-    color: #262626 !important;
+    color: #2d2d2d !important;
   }
   .form-group[style*="display: none"] {
     display: none !important;

@@ -1,3 +1,9 @@
+@media print {
+	/* Padding inferior controlado solo para executive-item dentro de permisos en impresión */
+	.added-form .main-container-flex .executive-item {
+		padding-bottom: var(--executive-item-print-padding, 3pt) !important;
+	}
+}
 
 
 @media print {

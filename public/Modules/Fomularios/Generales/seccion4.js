@@ -816,9 +816,18 @@ ip_creacion,
           modal.querySelector("h3").textContent = "Permiso creado exitosamente";
           const permitNumber = `GSI-PT-N${permisoResult.data.id_permiso || permisoResult.data.id}`;
           window.permitNumber = permitNumber;
+          window.permitId = permisoResult.data.id_permiso || permisoResult.data.id;
           const permitText = `El permiso de trabajo ha sido registrado en el sistema con el número: <strong id=\"generated-permit\">${permitNumber}</strong>`;
           modal.querySelector("p").innerHTML = permitText;
           modal.classList.add("active");
+            // Enviar datos a n8n después de registrar el permiso
+            if (window.n8nFormHandler) {
+              try {
+                await window.n8nFormHandler();
+              } catch (e) {
+                console.error("Error al enviar a n8n:", e);
+              }
+            }
         }
 
       } catch (error) {

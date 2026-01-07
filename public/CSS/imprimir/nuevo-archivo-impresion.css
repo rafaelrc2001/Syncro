@@ -664,7 +664,7 @@
 @media print {
 	/* Línea de separación solo para filas de contenido (footer-row), no encabezados */
 	.main-container-flex .footer-row {
-		border-bottom: 1px solid #bbb !important;
+		border-bottom: 1px solid #e4e4e4 !important;
 		padding-bottom: 1px !important;
 		margin-bottom: 1px !important;
 	}
@@ -675,7 +675,7 @@
 
 		/* Línea de separación solo para filas de contenido de tablas (no encabezados) */
 	.ast-table tbody tr , .ast-table thead tr {
-		border-bottom: 1px solid #bbb !important;
+		border-bottom: 1px solid #e4e4e4 !important;
 	}
 	.ast-table tbody tr:last-child {
 		border-bottom: none !important;

@@ -1,4 +1,11 @@
 @media print {
+	.ast-table-participantes td:first-child,
+	.ast-table-responsables td:first-child {
+		white-space: nowrap !important;
+		word-break: normal !important;
+	}
+}
+@media print {
 	/* Aplica el estilo solo al header del AST en impresión */
 	.section-header h3 {
 		color: #2b3d4f !important;
@@ -26,7 +33,9 @@
 		justify-content: center !important;
 		text-align: center !important;
 	}
-}
+	
+	}
+	
 
 @media print {
 	/* Forzar el contenedor de la tabla AST a ocupar todo el ancho */
@@ -58,6 +67,10 @@
 	.ast-table th:nth-child(2), .ast-table td:nth-child(2) { width: 30% !important; }
 	.ast-table th:nth-child(3), .ast-table td:nth-child(3) { width: 30% !important; }
 	.ast-table th:nth-child(4), .ast-table td:nth-child(4) { width: 30% !important; }
+	/* Separación visual entre secciones principales en impresión */
+	
+
+
 }
 /* Ocultar todos los íconos de logs/remixicon y logos al imprimir */
 	[class^="ri-"], [class*=" ri-"],
@@ -171,10 +184,11 @@
 	/* Títulos y secciones */
 	   .section-header, .added-form-header, .general-box-header span {
 		   background: none !important;
-		   
 		   font-size: 7pt !important;
 		   font-weight: 700 !important;
-		   border: none !important;
+		   border-right: none !important;
+		   border-bottom: none !important;
+		   border-left: none !important;
 		   border-radius: 0 !important;
 		   padding: 3pt 6pt !important;
 		   margin-bottom: 4pt !important;
@@ -183,6 +197,24 @@
 		   letter-spacing: 0.2pt !important;
 		   display: block !important;
 	   }
+@media print {
+	/* Reforzar borde superior azul para encabezados, después de cualquier border:none */
+	.added-form-header,
+	/*.section-header,*/
+	.section-header:not(.header-centered),
+	.safety-item h4 {
+		border-top: 1.5px solid #000000 !important;
+		display: block !important;
+		width: 100% !important;
+	}
+
+	
+	/*.section-header {
+		border-bottom: 1.5px solid #000000 !important;
+		display: block !important;
+		width: 100% !important;*/
+	}
+}
 
 	   /* Grillas compactas: 4 columnas iguales */
 	   .executive-grid {
@@ -385,7 +417,7 @@
 
 
 
-}
+
 
 
 
@@ -561,6 +593,11 @@
 		line-height: 1.05 !important;
 	}
 
+
+
+    
+
 }
+
 
 

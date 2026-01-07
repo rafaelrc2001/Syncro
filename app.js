@@ -83,7 +83,7 @@ app.use(
     cookie: {
       secure: false, // Cambiar a true si usas HTTPS
       httpOnly: true,
-      maxAge: 1000 * 60 * 10, // 10 minutos
+      maxAge: 1000 * 60 * 20, // 20 minutos
     },
   })
 );

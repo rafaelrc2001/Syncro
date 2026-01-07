@@ -21,7 +21,7 @@
 }
 
 .added-form-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #eac102 0%, #eac102 100%);
     color: white;
     padding: 12px 18px;
     display: flex;
@@ -63,7 +63,7 @@
 
 /* --- HEADERS DE SECCIÓN --- */
 .section-header {
-    background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
+    background: linear-gradient(135deg, #eac102 0%, #eac102 100%);
     color: white;
     padding: 3px 6px;
     font-weight: 600;
@@ -74,7 +74,7 @@
 }
 
 .header-orange {
-    background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
+    background: linear-gradient(135deg, #eac102 0%, #eac102 100%);
     color: white;
     padding: 3px 6px;
     font-weight: 600;
@@ -197,7 +197,7 @@ table th {
 
 .editable-blue {
     min-width: 160px;
-    border: 2px solid #4A90E2;
+    border: 2px solid #262626;
     background: #F0F8FF;
 }
 
@@ -208,13 +208,13 @@ table th {
 }
 
 .editable-blue:hover {
-    border-color: #357ABD;
+    border-color: #262626;
     box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
 }
 
 .editable-blue:focus {
     outline: none;
-    border-color: #357ABD;
+    border-color: #262626;
     box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.15);
 }
 

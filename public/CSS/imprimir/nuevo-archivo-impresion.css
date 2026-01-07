@@ -695,3 +695,46 @@
 	}
 }
 
+@media print {
+	@page {
+		size: A4;
+		margin: 0;
+	}
+	html, body {
+		width: 210mm !important;
+		min-width: 210mm !important;
+		max-width: 210mm !important;
+		margin: 0 !important;
+		padding: 0 !important;
+		background: #fff !important;
+		box-sizing: border-box !important;
+	}
+	.app-container,
+	.main-content,
+	.form-section,
+	section.form-section,
+	.ast-summary,
+	.executive-section,
+	#contenedor-responsables > div,
+	.container,
+	.added-form {
+		width: 210mm !important;
+		min-width: 210mm !important;
+		max-width: 210mm !important;
+		margin: 0 auto !important;
+		box-sizing: border-box !important;
+		background: #fff !important;
+		padding: 0 !important;
+		border-radius: 0 !important;
+		box-shadow: none !important;
+	}
+	/* Remove all possible extra margins/paddings from all elements */
+	* {
+		margin: 0 !important;
+		padding: 0 !important;
+		box-sizing: border-box !important;
+		-webkit-print-color-adjust: exact !important;
+		print-color-adjust: exact !important;
+	}
+}
+

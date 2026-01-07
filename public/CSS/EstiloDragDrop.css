@@ -23,7 +23,8 @@
 /* ===== PANEL DE FORMULARIOS DISPONIBLES ===== */
 /* Panel superior con los formularios arrastrables */
 .forms-panel {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    /*background: linear-gradient(135deg, #eac102 0%, #262626 100%);*/
+    background: linear-gradient(135deg, #eac102 0%, #eac102 100%);
     border-radius: 12px;
     padding: 12px;
     width: 100%;
@@ -68,7 +69,7 @@
 /* Estado hover - cuando el cursor está sobre el item */
 .form-item:hover {
     background: #f7fafc;
-    border-color: #667eea;
+    border-color: #eac102;
     transform: translateY(-3px);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
@@ -84,7 +85,7 @@
 /* Iconos dentro de los items */
 .form-item i {
     font-size: 1rem;
-    color: #667eea;
+    color: #eac102;
 }
 
 /* ===== FORMATO PRINCIPAL (ZONA DE DROP) ===== */
@@ -127,7 +128,7 @@
 /* Estado hover - cuando se arrastra un elemento sobre la zona */
 .drop-zone.dragover {
     background: linear-gradient(135deg, #ebf4ff 0%, #e6fffa 100%);
-    border-color: #667eea;
+    border-color: #eac102;
     border-style: solid;
     box-shadow: 0 0 20px rgba(102, 126, 234, 0.2) inset;
 }
@@ -188,7 +189,7 @@
 
 /* ===== ENCABEZADO DEL FORMULARIO AGREGADO ===== */
 .added-form-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #eac102 0%, #eac102 100%);
     padding: 15px 20px;
     display: flex;
     justify-content: space-between;
@@ -309,8 +310,8 @@
 
 /* Estado checked del radio button */
 .question-options .radio-option input[type="radio"]:checked ~ .radio-custom {
-    border-color: #667eea;
-    background: #667eea;
+    border-color: #eac102;
+    background: #eac102;
 }
 
 /* Punto interior del radio button cuando está checked */
@@ -329,7 +330,7 @@
 /* Label text de la opción */
 .question-options .radio-option input[type="radio"]:checked ~ span:not(.radio-custom) {
     font-weight: 600;
-    color: #667eea;
+    color: #eac102;
 }
 
 /* ===== RESPONSIVE DESIGN ===== */
@@ -402,7 +403,7 @@
     transform: translate(-50%, -50%);
     font-size: 1.5rem;
     font-weight: 600;
-    color: #667eea;
+    color: #eac102;
     animation: pulse 1s infinite;
     z-index: 1;
 }

@@ -160,22 +160,22 @@
 }
 /* ==================== VARIABLES Y RAÍZ ====================*/
 :root {
-    --azul-industrial: #0A2E5A;
-    --azul-petroleo: #003B5C;
-    --azul-acento: #0066A1;
-    --azul-claro: #E6F0FF;
+    --azul-industrial: #262626;
+    --azul-petroleo: #262626;
+    --azul-acento: #262626;
+    --azul-claro: #7e7676;
     
-    --gris-carbon: #1C1C1C;
-    --gris-oscuro: #2A2D34;
-    --gris-medio: #5C6370;
-    --gris-claro: #D1D5DE;
+    --gris-carbon: #262626;
+    --gris-oscuro: #262626;
+    --gris-medio: #262626;
+    --gris-claro: #d4d2d2;
     --gris-suave: #F1F3F5;
     
-    --naranja-primario: #FF6B35;
-    --naranja-seguridad: #FF6F00;
-    --naranja-suave: #FFF4E6;
+    --naranja-primario: #eac102;
+    --naranja-seguridad: #eac102;
+    --naranja-suave: #ffffff;
     
-    --verde-industrial: #2E8E7D;
+    --verde-industrial: #eac102;
     --verde-exito: #eac102;
     --verde-suave: #E8F5F2;
     

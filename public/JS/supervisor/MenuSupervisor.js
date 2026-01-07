@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     // 1. Mapeo de rutas para el menú del supervisor
     const menuRoutes = {
-        'dashboard': '/Modules/SupSeguridad/Dash-Supervisor.html',
+        'tablero': '/Modules/SupSeguridad/Dash-Supervisor.html',
         'autorizar permisos': '/Modules/SupSeguridad/SupSeguridad.html'
         // Rutas específicas para el rol de supervisor
     };

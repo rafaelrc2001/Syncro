@@ -135,7 +135,22 @@ async function mostrarBotonPorEstatus(idPermiso) {
 
 
 // Ejecutar consulta automática al cargar si hay id en la URL
+
 document.addEventListener("DOMContentLoaded", function () {
+  // Verifica si el usuario está autenticado
+  const usuarioStr = localStorage.getItem("usuario");
+  if (!usuarioStr) {
+    // No autenticado, guardar la URL actual para redirigir después del login
+    const requestedUrl = window.location.origin + window.location.pathname + window.location.search;
+    // Solo permite rutas internas de PT1 para evitar open redirect
+    if (window.location.pathname.startsWith("/Modules/Fomularios/PT1/")) {
+      localStorage.setItem("redirectAfterLogin", requestedUrl);
+    }
+    window.location.href = "/login.html";
+    return;
+  }
+
+  // Lógica original si está autenticado
   const params = new URLSearchParams(window.location.search);
   const idPermiso = params.get("id");
   if (idPermiso) {

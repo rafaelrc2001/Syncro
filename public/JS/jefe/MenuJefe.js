@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     // 1. Mapeo de rutas para el menú del supervisor
     const menuRoutes = {
-        'dashboard': '/Modules/JefeSeguridad/Dash-Jefe.html',
+        'tablero': '/Modules/JefeSeguridad/Dash-Jefe.html',
         'autorizar permisos': '/Modules/JefeSeguridad/JefeSeguridad.html',
         'área': '/Modules/JefeSeguridad/CrearArea.html',
         'categoria': '/Modules/JefeSeguridad/CrearCategoria.html',

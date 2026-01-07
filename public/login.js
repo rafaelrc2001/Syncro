@@ -62,17 +62,38 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("[LOGIN] Usuario recibido:", data.usuario);
         // Guardar en localStorage (compatibilidad con código existente)
         localStorage.setItem("usuario", JSON.stringify(data.usuario));
-        // La sesión ya se guardó en el servidor automáticamente
-        if (data.usuario.rol === "usuario") {
-          window.location.href = "Modules/Usuario/Dash-Usuario.html";
-        } else if (data.usuario.rol === "supervisor") {
-          window.location.href = "Modules/SupSeguridad/Dash-Supervisor.html";
-        } else if (data.usuario.rol === "jefe") {
-          window.location.href = "Modules/JefeSeguridad/Dash-Jefe.html";
-        } else if (data.usuario.rol === "departamentos") {
-          window.location.href = "Modules/Departamentos/Dash-Usuario.html";
+        // Redirección segura post-login
+        const redirectUrl = localStorage.getItem("redirectAfterLogin");
+        // Protecciones: solo URLs internas permitidas
+        function isSafeInternalUrl(url) {
+          try {
+            const allowedBase = window.location.origin;
+            const u = new URL(url, allowedBase);
+            // Solo permite rutas internas bajo el mismo origen y rutas conocidas
+            if (u.origin !== allowedBase) return false;
+            // Opcional: solo permite rutas que empiecen por /Modules/Fomularios/PT1/
+            if (!u.pathname.startsWith("/Modules/Fomularios/PT1/")) return false;
+            return true;
+          } catch (e) {
+            return false;
+          }
+        }
+        if (redirectUrl && isSafeInternalUrl(redirectUrl)) {
+          localStorage.removeItem("redirectAfterLogin");
+          window.location.href = redirectUrl;
         } else {
-          alert("Rol no reconocido.");
+          // Fallback seguro por rol
+          if (data.usuario.rol === "usuario") {
+            window.location.href = "Modules/Usuario/Dash-Usuario.html";
+          } else if (data.usuario.rol === "supervisor") {
+            window.location.href = "Modules/SupSeguridad/Dash-Supervisor.html";
+          } else if (data.usuario.rol === "jefe") {
+            window.location.href = "Modules/JefeSeguridad/Dash-Jefe.html";
+          } else if (data.usuario.rol === "departamentos") {
+            window.location.href = "Modules/Departamentos/Dash-Usuario.html";
+          } else {
+            alert("Rol no reconocido.");
+          }
         }
       } else {
         alert("Usuario o contraseña incorrectos");

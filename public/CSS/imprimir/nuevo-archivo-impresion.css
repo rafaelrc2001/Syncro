@@ -1,4 +1,39 @@
 @media print {
+	/* Eliminar todo el espacio vertical entre encabezados principales en impresión */
+	.company-header,
+	.company-header > *,
+	.section-header.header-centered,
+	.section-header.header-centered > *,
+	.general-box-header,
+	.general-box-header > *,
+	#hora-creacion-header,
+	#hora-creacion-header > * {
+		margin: 0 !important;
+		padding: 0 !important;
+	}
+}
+@media print {
+	/* Reducir espacio vertical entre Permiso de Trabajo, Información General y Hora de creación */
+	.general-box-header {
+		margin-top: 0 !important;
+		margin-bottom: 0 !important;
+		padding-top: 0 !important;
+		padding-bottom: 0 !important;
+	}
+	.general-box-header span {
+		padding-top: 0 !important;
+		padding-bottom: 0 !important;
+		margin: 0 !important;
+	}
+	#hora-creacion-header {
+		margin-top: 0 !important;
+		margin-bottom: 0 !important;
+		padding-top: 0 !important;
+		padding-bottom: 0 !important;
+	}
+}
+
+@media print {
 	/* Padding inferior controlado solo para executive-item dentro de permisos en impresión */
 	.added-form .main-container-flex .executive-item {
 		padding-bottom: var(--executive-item-print-padding, 3pt) !important;
@@ -647,4 +682,16 @@
 	}
 }
 
+
+@media print {
+	/* Controlar espacio entre Permiso de Trabajo y Hora de creación */
+	.section-header.header-centered {
+		margin-bottom: var(--header-centered-print-margin-bottom, 2pt) !important;
+		padding-bottom: 0 !important;
+	}
+	#hora-creacion-header {
+		margin-top: var(--hora-creacion-header-print-margin-top, 0.5pt) !important;
+		padding-top: 0 !important;
+	}
+}
 

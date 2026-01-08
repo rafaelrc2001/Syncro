@@ -45,8 +45,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   // 1. Mapeo de rutas para el menú
   const menuRoutes = {
-    "dashboard": "/Modules/Departamentos/Dash-Usuario.html",
-    "permisos creados": "/Modules/Departamentos/CrearPT.html",
+    "tablero": "/Modules/Departamentos/Dash-Usuario.html",
+    "mis permisos": "/Modules/Departamentos/CrearPT.html",
     "autorizar permisos": "/Modules/Departamentos/AutorizarPT.html",
     // Agregar más rutas según sea necesario
   };
@@ -56,18 +56,16 @@ document.addEventListener("DOMContentLoaded", function () {
   const currentPath = window.location.pathname.toLowerCase();
 
   menuItems.forEach((item) => {
-    const menuText = item.querySelector("span").textContent.toLowerCase();
-
-    // Configurar la ruta si existe en menuRoutes
-    if (menuRoutes[menuText]) {
-      item.setAttribute("href", menuRoutes[menuText]);
-
-      // Marcar como activo si coincide con la ruta actual
-      if (menuRoutes[menuText].toLowerCase() === currentPath) {
+    // Normaliza el texto eliminando espacios extra
+    const menuText = item.querySelector("span").textContent.toLowerCase().replace(/\s+/g, " ").trim();
+    // Busca la clave normalizada en menuRoutes
+    const routeKey = Object.keys(menuRoutes).find(key => key === menuText);
+    if (routeKey) {
+      item.setAttribute("href", menuRoutes[routeKey]);
+      if (menuRoutes[routeKey].toLowerCase() === currentPath) {
         item.parentElement.classList.add("active");
       }
     } else {
-      // Si no existe en menuRoutes, prevenir el comportamiento por defecto
       item.addEventListener("click", function (e) {
         e.preventDefault();
       });

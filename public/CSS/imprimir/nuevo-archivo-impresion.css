@@ -231,8 +231,10 @@
 		   page-break-inside: avoid !important;
 	   }
 	.company-header img {
-		height: 28px !important;
-		max-width: 60px !important;
+		/*height: 28px !important;
+		max-width: 60px !important;*/
+		height: 56px !important;
+		max-width: 120px !important;
 	}
 	.company-header h1 {
 		font-size: 7pt !important;

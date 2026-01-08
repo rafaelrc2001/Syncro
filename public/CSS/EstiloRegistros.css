@@ -3,8 +3,8 @@
 /* Estilo para el encabezado de la tabla con degradado */
 .table-crud thead tr,
 #categorias-table thead tr {
-    /* Degradado que va de azul petróleo (#262626) a un azul más claro (#005f99) de izquierda a derecha */
-    background: linear-gradient(to right, #262626, #005f99);
+    /* Degradado que va de azul petróleo (#4d4d4d) a un azul más claro (#005f99) de izquierda a derecha */
+    background: linear-gradient(to right, #4d4d4d, #4d4d4d);
 
 }
 

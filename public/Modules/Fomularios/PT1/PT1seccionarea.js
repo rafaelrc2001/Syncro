@@ -1108,7 +1108,6 @@ if (modalConfirmarAutorizar) {
 
 // Procesar autorización al confirmar
 if (btnConfirmarAutorizar) {
-
   // Referenciar el modal ya presente en el HTML
   const modalAgregarFirma = document.getElementById("modalAgregarFirma");
 
@@ -1141,6 +1140,13 @@ if (btnConfirmarAutorizar) {
             const outputFirma = document.getElementById("outputBase64");
             if (outputFirma && outputFirma.value) {
               firma = outputFirma.value;
+            }
+
+            // Obtener la firma del operador del área (canvas)
+            let firma_operador_area = "";
+            const outputFirmaOperador = document.getElementById("outputBase64FirmaOperador");
+            if (outputFirmaOperador && outputFirmaOperador.value) {
+              firma_operador_area = outputFirmaOperador.value;
             }
 
             // 2. Validaciones básicas
@@ -1202,6 +1208,7 @@ if (btnConfirmarAutorizar) {
                 ip_area: ip,
                 localizacion_area: localizacion,
                 firma,
+                firma_operador_area: (document.getElementById("outputBase64FirmaOperador") && document.getElementById("outputBase64FirmaOperador").value) ? document.getElementById("outputBase64FirmaOperador").value : ""
               }),
             });
 
@@ -1235,6 +1242,16 @@ if (btnConfirmarAutorizar) {
     }
   });
 }
+
+
+
+
+
+
+
+
+
+
 
 // --- FUNCIONES DE LA VISTA ---
 
@@ -1287,6 +1304,17 @@ if (btnConfirmarAutorizar) {
     });
   }
 })();
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1402,5 +1430,43 @@ function llenarTablaResponsables(idPermiso) {
       console.error("Error al consultar personas de autorización:", err);
     });
 }
+
+
+
+
+document.addEventListener('DOMContentLoaded', async function() {
+  const firmaAreaDiv = document.getElementById('firma-area-operador');
+  const params = new URLSearchParams(window.location.search);
+  const idPermiso = params.get('id') || window.idPermisoActual;
+
+  if (idPermiso && firmaAreaDiv) {
+    try {
+      const resp = await fetch(`/api/autorizaciones/ver-firma-operador-area/${idPermiso}`);
+      if (resp.ok) {
+        const data = await resp.json();
+        if (
+          data && data.success && data.data && (
+            data.data.firma_operador_area ||
+            data.data.operador_area === null ||
+            data.data.operador_area === undefined ||
+            data.data.operador_area === ''
+          )
+        ) {
+          // Si ya hay firma, o no se requiere operador_area, ocultar el área de firma
+          firmaAreaDiv.style.display = 'none';
+        } else {
+          // Si no hay firma y sí se requiere operador_area, mostrar el área
+          firmaAreaDiv.style.display = '';
+        }
+      }
+    } catch (err) {
+      // Si hay error, mostrar el área por defecto
+      firmaAreaDiv.style.display = '';
+    }
+  }
+});
+
+
+
 }
 

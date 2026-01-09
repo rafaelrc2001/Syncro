@@ -44,6 +44,8 @@ const departamentoConsultaRouter = require("./departamento_consulta");
 
 
 
+
+
 const permisoVistaRouter = require("./permiso_vista_routes");
 
 
@@ -190,6 +192,7 @@ app.put("/api/areas/:id", verificarAutenticacion, tablasBase.updateArea);
 app.delete("/api/areas/:id", verificarAutenticacion, tablasBase.deleteArea);
 
 
+app.use("/api", verificarAutenticacion, autorizacionesEstatusRouter);
 app.use('/api', detectarDispositivoRouter);
 app.use("/api", verificarAutenticacion, permisoVistaRouter);
 

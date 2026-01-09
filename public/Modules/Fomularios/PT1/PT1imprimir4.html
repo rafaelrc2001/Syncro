@@ -591,6 +591,21 @@
 
 
 
+                                 <!-- Área de firma digital del operador del área -->
+                    <div id="firma-area-operador" style="margin: 32px 0;">
+                        <h3 style="margin-bottom: 8px;">Firma del operador del área</h3>
+                        <canvas id="canvasFirmaOperador" width="400" height="200" style="border:1px solid #ccc; border-radius:8px; background:#fff; cursor:crosshair;"></canvas>
+                        <input type="hidden" id="outputBase64FirmaOperador" />
+                        <div class="controls" style="margin: 16px 0; display: flex; gap: 12px;">
+                            <button class="btn-clear" id="limpiarFirmaOperador" type="button" style="background:#eee; color:#333; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Limpiar área</button>
+                            <button class="btn-save" id="guardarFirmaOperador" type="button" style="background:#2980b9; color:#fff; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Guardar firma operador</button>
+                        </div>
+                        <div id="mensajeFirmaOperador" style="margin-top:8px; color:#888; font-size:0.95em;"></div>
+                        <div style="margin-top:8px; color:#888; font-size:0.95em;">Utilice el área para firmar antes de guardar el permiso.</div>
+                    </div>
+
+                   
+ 
             
 
 
@@ -731,10 +746,12 @@
      <script src="/Modules/Fomularios/Generales/comentarios.js"></script>
      <script src="/Modules/Fomularios/Generales/fecha_hora.js"></script>
    <!--  <script src="/Modules/Fomularios/PT1/PT1seccionimprimir4.js"></script>-->        
-     <script src="/Modules/Fomularios/PT1/PT1seccionimprimir-unificado.js"></script>
+    <script src="/Modules/Fomularios/PT1/PT1seccionimprimir-unificado.js"></script>
 
 
-     <script src="/Modules/Fomularios/Generales/mostrar_autorizaciones.js"></script>
+    <script src="/Modules/Fomularios/Generales/mostrar_autorizaciones.js"></script>
+    <script src="/Modules/Fomularios/Generales/lienzos_firma_operador.js"></script>
+
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

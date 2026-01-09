@@ -632,6 +632,8 @@
  
 
 
+
+
                 <div class="executive-section" style="display: flex; gap: 24px; align-items: flex-end">
                     <div style="flex: 1">
                         <label for="responsable-aprobador" style="font-weight: 600; display: block; margin-bottom: 8px">
@@ -646,6 +648,23 @@
                         <input type="text" id="responsable-aprobador2" placeholder="Nombre del operador del área" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;" />
                     </div>
                 </div>
+
+                                 <!-- Área de firma digital del operador del área -->
+                    <div id="firma-area-operador" style="margin: 32px 0;">
+                        <h3 style="margin-bottom: 8px;">Firma del operador del área(Opcional para crear el permiso)</h3>
+                        <canvas id="canvasFirmaOperador" width="400" height="200" style="border:1px solid #ccc; border-radius:8px; background:#fff; cursor:crosshair;"></canvas>
+                        <input type="hidden" id="outputBase64FirmaOperador" />
+                        <div class="controls" style="margin: 16px 0; display: flex; gap: 12px;">
+                            <button class="btn-clear" id="limpiarFirmaOperador" type="button" style="background:#eee; color:#333; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Limpiar área</button>
+                        </div>
+                        <div style="margin-top:8px; color:#888; font-size:0.95em;">Utilice el área para firmar antes de guardar el permiso.</div>
+                    </div>
+
+
+                    <button id="btnAgregarFirmaContinuarOperador" type="button" style="display:none"></button>
+                                    
+
+
 
           
 
@@ -883,7 +902,8 @@
 
         <script src="/Modules/Fomularios/Generales/mostrar_autorizaciones.js"></script>
 
-
+        <script src="/Modules/Fomularios/Generales/lienzos_firma_operador.js"></script>
+        
         <script>
 document.addEventListener('DOMContentLoaded', function() {
     const params = new URLSearchParams(window.location.search);

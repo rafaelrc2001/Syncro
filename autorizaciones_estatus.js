@@ -431,6 +431,7 @@ router.post("/autorizaciones/area", async (req, res) => {
     firma,
     dispositivo_area,
     usuario_departamento,
+    firma_operador_area,
   } = req.body;
 
   // Validar que los campos requeridos estén presentes
@@ -459,8 +460,9 @@ router.post("/autorizaciones/area", async (req, res) => {
                  localizacion_area = COALESCE($5, localizacion_area),
                  firma = COALESCE($6, firma),
                  dispositivo_area = COALESCE($7, dispositivo_area),
-                 usuario_departamento = COALESCE($8, usuario_departamento)
-             WHERE id_permiso = $9
+                 usuario_departamento = COALESCE($8, usuario_departamento),
+                 firma_operador_area = COALESCE($9, firma_operador_area)
+             WHERE id_permiso = $10
              RETURNING *`,
           [
             responsable_area,
@@ -471,6 +473,7 @@ router.post("/autorizaciones/area", async (req, res) => {
             firma || null,
             dispositivo_area || null,
             usuario_departamento || null,
+            firma_operador_area || null,
             id_permiso,
           ]
         );
@@ -502,8 +505,8 @@ router.post("/autorizaciones/area", async (req, res) => {
   try {
     const result = await db.query(
       `INSERT INTO autorizaciones (
-        id_permiso, id_supervisor, id_categoria, responsable_area, operador_area, fecha_hora_area, ip_area, localizacion_area, firma, dispositivo_area, usuario_departamento
-      ) VALUES ($1, $2, $3, $4, $5, COALESCE($6, NOW()), $7, $8, $9, $10, $11)
+        id_permiso, id_supervisor, id_categoria, responsable_area, operador_area, fecha_hora_area, ip_area, localizacion_area, firma, dispositivo_area, usuario_departamento, firma_operador_area
+      ) VALUES ($1, $2, $3, $4, $5, COALESCE($6, NOW()), $7, $8, $9, $10, $11, $12)
       RETURNING *`,
       [
         id_permiso,
@@ -517,6 +520,7 @@ router.post("/autorizaciones/area", async (req, res) => {
         firma || null,
         dispositivo_area || '/',
         usuario_departamento || null,
+        firma_operador_area || null,
       ]
     );
     res.status(201).json({
@@ -995,6 +999,79 @@ WHERE p.id_permiso = $1`,
   }
 });
 
+
+router.post("/autorizaciones/firma-operador-area", async (req, res) => {
+  const { id_permiso, firma_operador_area } = req.body;
+  if (!id_permiso || !firma_operador_area) {
+    return res.status(400).json({
+      success: false,
+      error: "id_permiso y firma_operador_area son requeridos",
+    });
+  }
+  try {
+    const result = await db.query(
+      `UPDATE autorizaciones SET firma_operador_area = $1 WHERE id_permiso = $2 RETURNING id_permiso, firma_operador_area`,
+      [firma_operador_area, id_permiso]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: "No se encontró el permiso para actualizar la firma",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: "Firma del operador de área guardada exitosamente",
+      data: result.rows[0],
+    });
+  } catch (err) {
+    console.error("Error al guardar firma_operador_area:", err);
+    res.status(500).json({
+      success: false,
+      error: "Error al guardar la firma del operador de área",
+      details: err.message,
+    });
+  }
+});
+
+// Nuevo endpoint GET para obtener la firma del operador de área por id_permiso
+
+
+
+
+// Endpoint alternativo para obtener la firma del operador de área por id_permiso con la ruta solicitada
+router.get("/autorizaciones/ver-firma-operador-area/:id_permiso", async (req, res) => {
+  const { id_permiso } = req.params;
+  if (!id_permiso) {
+    return res.status(400).json({
+      success: false,
+      error: "id_permiso es requerido",
+    });
+  }
+  try {
+    const result = await db.query(
+      `SELECT id_permiso, firma_operador_area,operador_area  FROM autorizaciones WHERE id_permiso = $1`,
+      [id_permiso]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: "No se encontró el permiso para consultar la firma",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      data: result.rows[0],
+    });
+  } catch (err) {
+    console.error("Error al consultar firma_operador_area:", err);
+    res.status(500).json({
+      success: false,
+      error: "Error al consultar la firma del operador de área",
+      details: err.message,
+    });
+  }
+});
 
 
 

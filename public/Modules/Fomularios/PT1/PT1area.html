@@ -210,19 +210,19 @@
                                             <div class="footer-row">
                                             <div class="footer-label">Temperatura</div>
                                             <div class="footer-value-fixed">
-                                                <input type="text" class="editable-blue" id="temp_confinado" maxlength="29" style="width: 100px;"/>
+                                                <input type="text" class="editable-blue" id="temp_confinado" maxlength="29" style="width: 100px;" required/>
                                             </div>
                                             </div>
                                             <div class="footer-row">
                                             <div class="footer-label">Fluido</div>
                                             <div class="footer-value-fixed">
-                                                <input type="text" class="editable-blue" id="fluido_confinado" maxlength="29" style="width: 100px;"/>
+                                                <input type="text" class="editable-blue" id="fluido_confinado" maxlength="29" style="width: 100px;" required/>
                                             </div>
                                             </div>
                                             <div class="footer-row">
                                             <div class="footer-label">Presión</div>
                                             <div class="footer-value-fixed">
-                                                <input type="text" class="editable-blue" id="presion_confinado" maxlength="29" style="width: 100px;"/>
+                                                <input type="text" class="editable-blue" id="presion_confinado" maxlength="29" style="width: 100px;" required/>
                                             </div>
                                             </div>
 
@@ -304,19 +304,19 @@
                                                 <div class="footer-row">
                                                 <div class="footer-label">Temperatura</div>
                                                 <div class="footer-value-fixed">
-                                                    <input type="text" class="editable-blue" id="temp_fuego" maxlength="29" style="width: 100px;"/>
+                                                    <input type="text" class="editable-blue" id="temp_fuego" maxlength="29" style="width: 100px;" required/>
                                                 </div>
                                                 </div>
                                                 <div class="footer-row">
                                                 <div class="footer-label">Fluido</div>
                                                 <div class="footer-value-fixed">
-                                                    <input type="text" class="editable-blue" id="fluido_fuego" maxlength="29" style="width: 100px;"/>
+                                                    <input type="text" class="editable-blue" id="fluido_fuego" maxlength="29" style="width: 100px;" required/>
                                                 </div>
                                                 </div>
                                                 <div class="footer-row">
                                                 <div class="footer-label">Presión</div>
                                                 <div class="footer-value-fixed">
-                                                    <input type="text" class="editable-blue" id="presion_fuego" maxlength="29" style="width: 100px;"/>
+                                                    <input type="text" class="editable-blue" id="presion_fuego" maxlength="29" style="width: 100px;" required/>
                                                 </div>
                                                 </div>
 
@@ -384,19 +384,19 @@
                                                     <div class="footer-row">
                                                     <div class="footer-label">Temperatura</div>
                                                     <div class="footer-value-fixed">
-                                                        <input type="text" class="editable-blue" id="temp_apertura" maxlength="29" style="width: 100px;"/>
+                                                        <input type="text" class="editable-blue" id="temp_apertura" maxlength="29" style="width: 100px;" required/>
                                                     </div>
                                                     </div>
                                                     <div class="footer-row">
                                                     <div class="footer-label">Fluido</div>
                                                     <div class="footer-value-fixed">
-                                                        <input type="text" class="editable-blue" id="fluido_apertura" maxlength="29" style="width: 100px;"/>
+                                                        <input type="text" class="editable-blue" id="fluido_apertura" maxlength="29" style="width: 100px;" required/>
                                                     </div>
                                                     </div>
                                                     <div class="footer-row">
                                                     <div class="footer-label">Presión</div>
                                                     <div class="footer-value-fixed">
-                                                        <input type="text" class="editable-blue" id="presion_apertura" maxlength="29" style="width: 100px;"/>
+                                                        <input type="text" class="editable-blue" id="presion_apertura" maxlength="29" style="width: 100px;" required/>
                                                     </div>
                                                     </div>
 
@@ -420,83 +420,87 @@
                                             esta es la parte de la seccion de no peligroso
 
                                             -->
-                                          
 
 
+                                   <div class="added-form" data-form-type="nopeligroso" id="permiso-nopeligroso" style="display:none;">
+                                    <div class="added-form-header">
+                                        <h4><i class="ri-lock-unlock-line"></i> Permiso No Peligroso</h4>
+                                    </div>
 
-
-
-
-
-
-                                    <div class="added-form" data-form-type="nopeligroso" id="permiso-nopeligroso" style="display:none;">
+                                    <div class="main-container-flex">
                                         
-                                        <div class="added-form-header">
-                                            <h4><i class="ri-lock-unlock-line"></i> Permiso No Peligroso</h4>
-                                        </div>
-                                        <div class="main-container-flex" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
-                                            <!-- Header abarcando dos columnas -->
-                                            <div class="section-header" style="grid-column: 1 / span 2; text-align: center;">Control de Riesgos:</div>
-                                            <div class="section-header" style="grid-column: 3 / span 1; text-align: center;">Equipo de Protección Especial:</div>
-                                            <!-- Columna 1 -->
-                                            <div>
-                                                <div class="footer-row"><div class="footer-label">Tropiezos, resbalones, caídas un mismo nivel</div><div class="footer-value-fixed">SI</div></div>
-                                                <div class="footer-row"><div class="footer-label">Caída a cuerpo de agua</div><div class="footer-value-fixed" id="pno_cr_1">-</div></div>
-                                                <div class="footer-row"><div class="footer-label">Atrapado en o entre</div><div class="footer-value-fixed">SI</div></div>
-                                                <div class="footer-row"><div class="footer-label">Sobre esfuerzo, estiramiento</div><div class="footer-value-fixed" id="pno_cr_2">-</div></div>
-                                                <div class="footer-row"><div class="footer-label">Exposición a vibraciones</div><div class="footer-value-fixed" id="pno_cr_3">-</div></div>
-                                                <div class="footer-row"><div class="footer-label">Exposición a ruidos</div><div class="footer-value-fixed" id="pno_cr_4">-</div></div>
-                                                <div class="footer-row"><div class="footer-label">Exposición a polvos</div><div class="footer-value-fixed" id="pno_cr_5">-</div></div>
-                                                <div class="footer-row"><div class="footer-label">Exposición a químicos</div><div class="footer-value-fixed" id="pno_cr_6">-</div></div>
-                                                <div class="footer-row"><div class="footer-label">Fauna nociva</div><div class="footer-value-fixed" id="pno_cr_7">-</div></div>
-                                                <div class="footer-row"><div class="footer-label">Proyección de partículas</div><div class="footer-value-fixed" id="pno_cr_8">-</div></div>
+                                        <!-- COLUMNA 1 -->
+                                        <div>
+                                            <div class="executive-item">
+                                                <label class="executive-item-label">Control de Riesgos</label>
                                             </div>
-                                            <!-- Columna 2 -->
-                                            <div>
-                                                <div class="footer-row"><div class="footer-label">Carga suspendida</div><div class="footer-value-fixed" id="pno_cr_9">-</div></div>
-                                                <div class="footer-row"><div class="footer-label">Operación de maquinaria pesada</div><div class="footer-value-fixed" id="pno_cr_10">-</div></div>
-                                                <div class="footer-row"><div class="footer-label">Izamiento de carga</div><div class="footer-value-fixed" id="pno_cr_11">-</div></div>
-                                                <div class="footer-row"><div class="footer-label">Izamiento de personal</div><div class="footer-value-fixed" id="pno_cr_12">-</div></div>
-                                                <div class="footer-row"><div class="footer-label">Excavación con menos de 1.5 metros de profundidad</div><div class="footer-value-fixed" id="pno_cr_13">-</div></div>
-                                            
 
-                                                <div class="section-header" style="text-align: center;">Monitoreo de atmosfera</div>
-                                                <div class="footer-row">
+                                            <div class="footer-row"><div class="footer-label">Tropiezos, resbalones, caídas un mismo nivel</div><div class="footer-value-fixed">SI</div></div>
+                                            <div class="footer-row"><div class="footer-label">Caída a cuerpo de agua</div><div id="pno_cr_1" class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Atrapado en o entre</div><div class="footer-value-fixed">SI</div></div>
+                                            <div class="footer-row"><div class="footer-label">Sobre esfuerzo, estiramiento</div><div id="pno_cr_2" class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Exposición a vibraciones</div><div id="pno_cr_3" class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Exposición a ruidos</div><div id="pno_cr_4" class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Exposición a polvos</div><div id="pno_cr_5" class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Exposición a químicos</div><div id="pno_cr_6" class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Fauna nociva</div><div id="pno_cr_7" class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Proyección de partículas</div><div id="pno_cr_8" class="footer-value-fixed">-</div></div>
+                                        </div>
+
+                                        <!-- COLUMNA 2 -->
+                                        <div>
+                                            <div class="footer-row"><div class="footer-label">Carga suspendida</div><div id="pno_cr_9" class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Operación de maquinaria pesada</div><div id="pno_cr_10" class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Izamiento de carga</div><div id="pno_cr_11" class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Izamiento de personal</div><div id="pno_cr_12" class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Excavación con menos de 1.5 metros de profundidad</div><div id="pno_cr_13" class="footer-value-fixed">-</div></div>
+
+                                            <div class="executive-item">
+                                                <label class="executive-item-label">Monitoreo de Atmosfera</label>
+                                            </div>
+
+                                            <div class="footer-row">
                                                 <div class="footer-label">Temperatura</div>
                                                 <div class="footer-value-fixed">
-                                                    <input type="text" class="editable-blue" id="temp_no_peligroso" maxlength="29">
+                                                    <input type="text" class="editable-blue" id="temp_no_peligroso" maxlength="29" style="width:100px;" required>
                                                 </div>
-                                                </div>
-                                                <div class="footer-row">
+                                            </div>
+                                            <div class="footer-row">
                                                 <div class="footer-label">Fluido</div>
                                                 <div class="footer-value-fixed">
-                                                    <input type="text" class="editable-blue" id="fluido_no_peligroso" maxlength="29">
+                                                    <input type="text" class="editable-blue" id="fluido_no_peligroso" maxlength="29" style="width:100px;" required>
                                                 </div>
-                                                </div>
-                                                <div class="footer-row">
+                                            </div>
+                                            <div class="footer-row">
                                                 <div class="footer-label">Presión</div>
                                                 <div class="footer-value-fixed">
-                                                    <input type="text" class="editable-blue" id="presion_no_peligroso" maxlength="29">
+                                                    <input type="text" class="editable-blue" id="presion_no_peligroso" maxlength="29" style="width:100px;" required>
                                                 </div>
-                                                </div>
-
-                                               
-                                            
-                                            </div>
-                                            <!-- Columna 3 -->
-                                            <div>
-                                                <div class="footer-row"><div class="footer-label">Careta facial</div><div class="footer-value-fixed" id="pno_epe_1">-</div></div>
-                                                <div class="footer-row"><div class="footer-label">Peto, guantes, polainas, mangas de carnaza</div><div class="footer-value-fixed" id="pno_epe_2">-</div></div>
-                                                <div class="footer-row"><div class="footer-label">Mascarilla contra polvos</div><div class="footer-value-fixed" id="pno_epe_3">-</div></div>
-                                                <div class="footer-row"><div class="footer-label">Mascarilla contra gases</div><div class="footer-value-fixed" id="pno_epe_4">-</div></div>
-                                                <div class="footer-row"><div class="footer-label">Viboreras</div><div class="footer-value-fixed" id="pno_epe_5">-</div></div>
-                                                <div class="footer-row"><div class="footer-label">Peto, guantes de hule</div><div class="footer-value-fixed" id="pno_epe_6">-</div></div>
-                                                <div class="footer-row"><div class="footer-label">Rodilleras</div><div class="footer-value-fixed" id="pno_epe_7">-</div></div>
-                                                <div class="footer-row"><div class="footer-label">Otro</div><div class="footer-value-fixed" id="pno_epe_8">-</div></div>
-                                                <div class="footer-row"><div class="footer-label">Otro</div><div class="footer-value-fixed" id="pno_epe_9">-</div></div>
                                             </div>
                                         </div>
+
+                                        <!-- COLUMNA 3 -->
+                                        <div>
+                                            <div class="executive-item">
+                                                <label class="executive-item-label">Equipo de Protección Especial</label>
+                                            </div>
+
+                                            <div class="footer-row"><div class="footer-label">Careta facial</div><div id="pno_epe_1" class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Peto, guantes, polainas, mangas de carnaza</div><div id="pno_epe_2" class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Mascarilla contra polvos</div><div id="pno_epe_3" class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Mascarilla contra gases</div><div id="pno_epe_4" class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Viboreras</div><div id="pno_epe_5" class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Peto, guantes de hule</div><div id="pno_epe_6" class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Rodilleras</div><div id="pno_epe_7" class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Otro</div><div id="pno_epe_8" class="footer-value-fixed">-</div></div>
+                                            <div class="footer-row"><div class="footer-label">Otro</div><div id="pno_epe_9" class="footer-value-fixed">-</div></div>
+
+                                            <div class="footer-area"></div>
+                                        </div>
+
                                     </div>
+                                </div>
+
 
                           
 
@@ -783,7 +787,7 @@
 
                                  <!-- Área de firma digital del operador del área -->
                     <div id="firma-area-operador" style="margin: 32px 0;">
-                        <h3 style="margin-bottom: 8px;">Firma del operador del área(Opcional para crear el permiso)</h3>
+                        <h3 style="margin-bottom: 8px;">Firma del operador del área</h3>
                         <canvas id="canvasFirmaOperador" width="400" height="200" style="border:1px solid #ccc; border-radius:8px; background:#fff; cursor:crosshair;"></canvas>
                         <input type="hidden" id="outputBase64FirmaOperador" />
                         <div class="controls" style="margin: 16px 0; display: flex; gap: 12px;">

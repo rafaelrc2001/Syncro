@@ -345,6 +345,18 @@ document.addEventListener('DOMContentLoaded', function () {
   const modalCierre = document.getElementById('modalConfirmarCierre');
   const btnCancelarCierre = document.getElementById('btnCancelarCierre');
   const btnConfirmarCierre = document.getElementById('btnConfirmarCierre');
+
+  const outputFirmaOperador = document.getElementById('outputBase64FirmaOperador');
+// (Eliminado: la firma se leerá justo antes de enviar)
+
+
+
+
+
+
+const params = new URLSearchParams(window.location.search);
+const idPermiso = params.get('id') || window.idPermisoActual;
+
   if (btnCierrePermiso && modalCierre) {
     btnCierrePermiso.addEventListener('click', function () {
       modalCierre.style.display = 'flex';
@@ -361,7 +373,6 @@ document.addEventListener('DOMContentLoaded', function () {
       const params = new URLSearchParams(window.location.search);
       const idPermiso = params.get('id') || window.idPermisoActual;
       if (!idPermiso) {
-      
         return;
       }
       // Consultar el id_estatus desde permisos_trabajo
@@ -376,11 +387,29 @@ document.addEventListener('DOMContentLoaded', function () {
         // Error al consultar id_estatus
       }
       if (!idEstatus) {
-       
         return;
       }
-      // Actualizar el estatus a 'cierre'
+
+      // 1. Leer la firma actualizada justo antes de enviar
+      const outputFirmaOperador = document.getElementById('outputBase64FirmaOperador');
+      const firmaOperador = outputFirmaOperador ? outputFirmaOperador.value : '';
+      // 2. Construir el payload solo si hay firma
+      const payloadFirma = { id_permiso: idPermiso };
+      if (firmaOperador) {
+        payloadFirma.firma_operador_area = firmaOperador;
+      }
+      console.log('[DEBUG] Payload a enviar a /api/autorizaciones/firma-operador-area:', payloadFirma);
       try {
+        const respFirma = await fetch('/api/autorizaciones/firma-operador-area', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payloadFirma)
+        });
+        if (!respFirma.ok) {
+          alert('Error al guardar la firma del operador.');
+          return;
+        }
+        // 3. Si la firma fue exitosa, actualizar el estatus a "cierre"
         const respCierre = await fetch('/api/estatus/cierre', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -388,21 +417,27 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         if (!respCierre.ok) {
           alert('Error al cerrar el permiso.');
-        } else {
-          modalCierre.style.display = 'none';
-          alert('Permiso cerrado correctamente.');
-          window.location.href = "/Modules/Departamentos/AutorizarPT.html";
-
-
-
-
+          return;
         }
+        modalCierre.style.display = 'none';
+        alert('Permiso cerrado correctamente.');
+        window.location.href = "/Modules/Departamentos/AutorizarPT.html";
       } catch (err) {
-        alert('Error al cerrar el permiso.');
+        alert('Error al guardar la firma o cerrar el permiso.');
       }
+
+
+
     });
   }
 });
+
+
+
+
+
+
+
 // Lógica para mostrar/ocultar botones según el estatus del permiso
 document.addEventListener('DOMContentLoaded', function () {
   // Obtener el id del permiso de la URL
@@ -1243,16 +1278,6 @@ if (btnConfirmarAutorizar) {
   });
 }
 
-
-
-
-
-
-
-
-
-
-
 // --- FUNCIONES DE LA VISTA ---
 
 // Handlers para el modal específico de "No Autorizar"
@@ -1431,8 +1456,8 @@ function llenarTablaResponsables(idPermiso) {
     });
 }
 
-
-
+//esta es la funcionalidad que ocuparia para la parte de que solo se muestre el valor de firma para cuando el usuario no a firmado 
+// o cuando el usaurio no escribio el nombre de el operador 
 
 document.addEventListener('DOMContentLoaded', async function() {
   const firmaAreaDiv = document.getElementById('firma-area-operador');
@@ -1468,5 +1493,81 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 
 
-}
 
+// --- Deshabilitar botón de cierre si operador_area requiere firma pero no ha firmado ---
+document.addEventListener('DOMContentLoaded', async function() {
+    const btnCierrePermiso = document.getElementById('btn-cierre-permiso');
+    const params = new URLSearchParams(window.location.search);
+    const idPermiso = params.get('id') || window.idPermisoActual;
+    // Crear/obtener el mensaje debajo del botón
+    let aviso = document.getElementById('aviso-firma-operador-cierre');
+    if (!aviso && btnCierrePermiso) {
+        aviso = document.createElement('div');
+        aviso.id = 'aviso-firma-operador-cierre';
+        aviso.style.color = '#e53935';
+        aviso.style.fontWeight = '600';
+        aviso.style.marginTop = '8px';
+        aviso.style.fontSize = '1em';
+        btnCierrePermiso.parentNode.insertBefore(aviso, btnCierrePermiso.nextSibling);
+    }
+    // Función para validar si el canvas está en blanco
+    function isCanvasFirmaOperadorBlank() {
+        const canvas = document.getElementById('canvasFirmaOperador');
+        if (!canvas) return true;
+        const blank = document.createElement('canvas');
+        blank.width = canvas.width;
+        blank.height = canvas.height;
+        return canvas.toDataURL() === blank.toDataURL();
+    }
+    // Handler para actualizar el estado del botón en tiempo real
+    function actualizarEstadoCierre() {
+        if (idPermiso && btnCierrePermiso) {
+            fetch(`/api/autorizaciones/ver-firma-operador-area/${idPermiso}`)
+                .then(resp => resp.ok ? resp.json() : null)
+                .then(data => {
+                    const operador = data?.data?.operador_area;
+                    const firma = data?.data?.firma_operador_area;
+                    // Si hay operador, pero no hay firma en BD, validar si hay garabato en canvas
+                    if (operador && operador.trim() !== '') {
+                        if (!firma || firma.trim() === '') {
+                            // Si el canvas tiene garabato, permitir cierre
+                            if (!isCanvasFirmaOperadorBlank()) {
+                                btnCierrePermiso.disabled = false;
+                                btnCierrePermiso.title = '';
+                                if (aviso) aviso.textContent = '';
+                            } else {
+                                btnCierrePermiso.disabled = true;
+                                btnCierrePermiso.title = 'El operador del área debe firmar antes de cerrar el permiso.';
+                                if (aviso) aviso.textContent = 'El operador del área debe firmar antes de cerrar el permiso.';
+                            }
+                        } else {
+                            btnCierrePermiso.disabled = false;
+                            btnCierrePermiso.title = '';
+                            if (aviso) aviso.textContent = '';
+                        }
+                    } else {
+                        // Si no hay operador, se habilita el botón y se oculta el aviso
+                        btnCierrePermiso.disabled = false;
+                        btnCierrePermiso.title = '';
+                        if (aviso) aviso.textContent = '';
+                    }
+                })
+                .catch(() => {
+                    btnCierrePermiso.disabled = false;
+                    btnCierrePermiso.title = '';
+                    if (aviso) aviso.textContent = '';
+                });
+        }
+    }
+    // Actualizar al cargar
+    actualizarEstadoCierre();
+    // Actualizar en tiempo real cuando el usuario dibuja en el canvas
+    const canvasFirmaOperador = document.getElementById('canvasFirmaOperador');
+    if (canvasFirmaOperador) {
+        ['mouseup', 'touchend', 'mousemove', 'touchmove'].forEach(evt => {
+            canvasFirmaOperador.addEventListener(evt, actualizarEstadoCierre);
+        });
+    }
+});
+
+}

@@ -203,10 +203,30 @@
                                         </div>
                                         <div>
                                             
-                                             <div class="executive-item">
+                                            <div class="executive-item">
                                             <label class="executive-item-label">Monitoreo de Atmosferas</label>
                                             </div>
-                                            <div class="footer-row"><div class="footer-label">Temperatura</div><div id="pco_ma_1" class="footer-value-fixed">-</div></div>
+
+                                            <div class="footer-row">
+                                            <div class="footer-label">Temperatura</div>
+                                            <div class="footer-value-fixed">
+                                                <input type="text" class="editable-blue" id="temp_confinado" maxlength="29" style="width: 100px;"/>
+                                            </div>
+                                            </div>
+                                            <div class="footer-row">
+                                            <div class="footer-label">Fluido</div>
+                                            <div class="footer-value-fixed">
+                                                <input type="text" class="editable-blue" id="fluido_confinado" maxlength="29" style="width: 100px;"/>
+                                            </div>
+                                            </div>
+                                            <div class="footer-row">
+                                            <div class="footer-label">Presión</div>
+                                            <div class="footer-value-fixed">
+                                                <input type="text" class="editable-blue" id="presion_confinado" maxlength="29" style="width: 100px;"/>
+                                            </div>
+                                            </div>
+
+
                                             <div class="footer-row"><div class="footer-label">Nombre del Guardavida</div><div id="pco_ma_2" class="footer-value-fixed">-</div></div>
                                             <div class="footer-row"><div class="footer-label">Nombre del guardavida suplente</div><div id="pco_ma_3" class="footer-value-fixed">-</div></div>
                                             <div class="footer-row"><div class="footer-label">Realizar monitoreo inicial de O2 (19.5%-23.5%), CO (0ppm),LEL (0%), NH3 (0 ppm)</div><div class="footer-value-fixed">SI</div></div>
@@ -280,7 +300,27 @@
                                                 <div class="executive-item">
                                                 <label class="executive-item-label">Monitoreo de atmosfera</label>
                                                 </div>
-                                                <div class="footer-row"><div class="footer-label">Temperatura</div><div id="pfg_ma_1" class="footer-value-fixed">-</div></div>
+                                                
+                                                <div class="footer-row">
+                                                <div class="footer-label">Temperatura</div>
+                                                <div class="footer-value-fixed">
+                                                    <input type="text" class="editable-blue" id="temp_fuego" maxlength="29" style="width: 100px;"/>
+                                                </div>
+                                                </div>
+                                                <div class="footer-row">
+                                                <div class="footer-label">Fluido</div>
+                                                <div class="footer-value-fixed">
+                                                    <input type="text" class="editable-blue" id="fluido_fuego" maxlength="29" style="width: 100px;"/>
+                                                </div>
+                                                </div>
+                                                <div class="footer-row">
+                                                <div class="footer-label">Presión</div>
+                                                <div class="footer-value-fixed">
+                                                    <input type="text" class="editable-blue" id="presion_fuego" maxlength="29" style="width: 100px;"/>
+                                                </div>
+                                                </div>
+
+
                                                 <div class="footer-row"><div class="footer-label">Nombre del Vigía de fuego</div><div id="pfg_ma_2" class="footer-value-fixed">-</div></div>
                                                 <div class="footer-row"><div class="footer-label">Nombre del Vigía de fuego suplente</div><div id="pfg_ma_3" class="footer-value-fixed">-</div></div>
                                                 <div class="footer-row"><div class="footer-label">Realizar monitoreo inicial de O2 (19.5%-23.5%), CO (0ppm), LEL (0%), NH3 (0 ppm)</div><div class="footer-value-fixed">SI</div></div>
@@ -319,9 +359,10 @@
                                                     <div class="footer-row"><div class="footer-label">Delimitar el área</div><div class="footer-value-fixed">SI</div></div>
                                                     <div class="footer-row"><div class="footer-label">Conocer la sustancia que estuvo contenida</div><div class="footer-value-fixed">SI</div></div>
                                                     </div>
+                                                    
                                                     <div>
              
-                                                      <div class="executive-item">
+                                                    <div class="executive-item">
                                                     <label class="executive-item-label">Equipo de Protección Especial</label>
                                                     </div>
                                                     <div class="footer-row"><div class="footer-label">Capucha, chamarra y pantalón antiácido</div><div class="footer-value-fixed">SI</div></div>
@@ -331,15 +372,65 @@
                                                     <div class="footer-row"><div class="footer-label">Botas y guantes de hule</div><div class="footer-value-fixed">SI</div></div>
                                                     <div class="footer-area"></div>
                                                     </div>
+
+
+
+                                                    <div>
+             
+                                                    <div class="executive-item">
+                                                    <label class="executive-item-label">Monitoreo de atmosfera</label>
+                                                    </div>
+                                                    
+                                                    <div class="footer-row">
+                                                    <div class="footer-label">Temperatura</div>
+                                                    <div class="footer-value-fixed">
+                                                        <input type="text" class="editable-blue" id="temp_apertura" maxlength="29" style="width: 100px;"/>
+                                                    </div>
+                                                    </div>
+                                                    <div class="footer-row">
+                                                    <div class="footer-label">Fluido</div>
+                                                    <div class="footer-value-fixed">
+                                                        <input type="text" class="editable-blue" id="fluido_apertura" maxlength="29" style="width: 100px;"/>
+                                                    </div>
+                                                    </div>
+                                                    <div class="footer-row">
+                                                    <div class="footer-label">Presión</div>
+                                                    <div class="footer-value-fixed">
+                                                        <input type="text" class="editable-blue" id="presion_apertura" maxlength="29" style="width: 100px;"/>
+                                                    </div>
+                                                    </div>
+
+
+
                                                     <div>
                                                     <!-- Puedes agregar aquí otra sección si lo necesitas, o dejarla vacía para mantener el formato de tres columnas -->
                                                     <div class="footer-area"></div>
                                                     </div>
                                                 </div>
-                                                </div>
+                                            </div>
 
 
-                                         <div class="added-form" data-form-type="nopeligroso" id="permiso-nopeligroso" style="display:none;">
+
+
+
+
+
+                                            <!--    
+                                            
+                                            esta es la parte de la seccion de no peligroso
+
+                                            -->
+                                          
+
+
+
+
+
+
+
+
+                                    <div class="added-form" data-form-type="nopeligroso" id="permiso-nopeligroso" style="display:none;">
+                                        
                                         <div class="added-form-header">
                                             <h4><i class="ri-lock-unlock-line"></i> Permiso No Peligroso</h4>
                                         </div>
@@ -367,6 +458,30 @@
                                                 <div class="footer-row"><div class="footer-label">Izamiento de carga</div><div class="footer-value-fixed" id="pno_cr_11">-</div></div>
                                                 <div class="footer-row"><div class="footer-label">Izamiento de personal</div><div class="footer-value-fixed" id="pno_cr_12">-</div></div>
                                                 <div class="footer-row"><div class="footer-label">Excavación con menos de 1.5 metros de profundidad</div><div class="footer-value-fixed" id="pno_cr_13">-</div></div>
+                                            
+
+                                                <div class="section-header" style="text-align: center;">Monitoreo de atmosfera</div>
+                                                <div class="footer-row">
+                                                <div class="footer-label">Temperatura</div>
+                                                <div class="footer-value-fixed">
+                                                    <input type="text" class="editable-blue" id="temp_no_peligroso" maxlength="29">
+                                                </div>
+                                                </div>
+                                                <div class="footer-row">
+                                                <div class="footer-label">Fluido</div>
+                                                <div class="footer-value-fixed">
+                                                    <input type="text" class="editable-blue" id="fluido_no_peligroso" maxlength="29">
+                                                </div>
+                                                </div>
+                                                <div class="footer-row">
+                                                <div class="footer-label">Presión</div>
+                                                <div class="footer-value-fixed">
+                                                    <input type="text" class="editable-blue" id="presion_no_peligroso" maxlength="29">
+                                                </div>
+                                                </div>
+
+                                               
+                                            
                                             </div>
                                             <!-- Columna 3 -->
                                             <div>
@@ -391,6 +506,20 @@
         display: flex;
         gap: 12px;
     }
+        /* Wider and responsive .editable-blue inputs except for Permiso No Peligroso */
+        .added-form:not([data-form-type="nopeligroso"]) .editable-blue {
+            min-width: 180px;
+            width: 100%;
+            max-width: 350px;
+            box-sizing: border-box;
+            font-size: 1.08em;
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid #bfc9d8;
+            background: #f8fafc;
+            margin: 2px 0;
+            display: block;
+        }
     .main-container-flex > div {
         flex: 1 1 0;
         min-width: 180px;
@@ -515,6 +644,9 @@
                 width: 100%;
                 margin-left: 0 !important;
             }
+
+
+            
         }
     
         @media screen and (max-width: 900px) and (orientation: landscape) {

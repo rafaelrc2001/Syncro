@@ -486,6 +486,11 @@ async function insertarAutorizacionArea() {
 
 
 
+//trae los valores de los campos
+
+
+
+
 
   const usuario = JSON.parse(localStorage.getItem("usuario"));
 
@@ -556,6 +561,7 @@ async function insertarAutorizacionArea() {
 
   // 3. Insertar autorización de área vía API
   try {
+
     let idEstatus = null;
     try {
       const respEstatus = await fetch(`/api/estatus/permiso/${idPermiso}`);
@@ -635,6 +641,46 @@ async function insertarAutorizacionArea() {
       return;
     }
 
+    // Si la autorización fue exitosa, actualizar condiciones de proceso
+    try {
+      const temp_fuego = document.getElementById('temp_fuego')?.value || '';
+      const fluido_fuego = document.getElementById('fluido_fuego')?.value || '';
+      const presion_fuego = document.getElementById('presion_fuego')?.value || '';
+      const temp_apertura = document.getElementById('temp_apertura')?.value || '';
+      const fluido_apertura = document.getElementById('fluido_apertura')?.value || '';
+      const presion_apertura = document.getElementById('presion_apertura')?.value || '';
+      const temp_confinado = document.getElementById('temp_confinado')?.value || '';
+      const fluido_confinado = document.getElementById('fluido_confinado')?.value || '';
+      const presion_confinado = document.getElementById('presion_confinado')?.value || '';
+      const temp_no_peligroso = document.getElementById('temp_no_peligroso')?.value || '';
+      const fluido_no_peligroso = document.getElementById('fluido_no_peligroso')?.value || '';
+      const presion_no_peligroso = document.getElementById('presion_no_peligroso')?.value || '';
+
+      await fetch(`/api/permisos-trabajo/condiciones/${idPermiso}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          temp_fuego,
+          fluido_fuego,
+          presion_fuego,
+          temp_apertura,
+          fluido_apertura,
+          presion_apertura,
+          temp_confinado,
+          fluido_confinado,
+          presion_confinado,
+          temp_no_peligroso,
+          fluido_no_peligroso,
+          presion_no_peligroso
+        })
+      });
+      const data = await resp.json().catch(() => ({}));
+      console.log('Respuesta condiciones proceso:', resp.status, data);
+      
+      } catch (e) {
+        
+      }
+
     const confirmationModal = document.getElementById("confirmation-modal");
     if (confirmationModal) {
       confirmationModal.style.display = "flex";
@@ -654,7 +700,40 @@ async function insertarAutorizacionArea() {
 // --- Botón Autorizar ---
 const btnAutorizar = document.getElementById("btn-guardar-campos");
 if (btnAutorizar) {
-  btnAutorizar.addEventListener("click", insertarAutorizacionArea);
+  btnAutorizar.addEventListener("click", async function () {
+    // Validación de firma de operador antes de autorizar
+    const params = new URLSearchParams(window.location.search);
+    const idPermiso = params.get("id") || window.idPermisoActual;
+    // Función para validar si el canvas está en blanco
+    function isCanvasFirmaOperadorBlank() {
+      const canvas = document.getElementById('canvasFirmaOperador');
+      if (!canvas) return true;
+      const blank = document.createElement('canvas');
+      blank.width = canvas.width;
+      blank.height = canvas.height;
+      return canvas.toDataURL() === blank.toDataURL();
+    }
+    try {
+      const resp = await fetch(`/api/autorizaciones/ver-firma-operador-area/${idPermiso}`);
+      if (resp.ok) {
+        const data = await resp.json();
+        const operador = data?.data?.operador_area;
+        const firma = data?.data?.firma_operador_area;
+        if (operador && operador.trim() !== '') {
+          if (!firma || firma.trim() === '') {
+            if (isCanvasFirmaOperadorBlank()) {
+              alert('El operador del área debe firmar antes de autorizar el permiso.');
+              return;
+            }
+          }
+        }
+      }
+    } catch (e) {
+      // Si hay error, continuar con el flujo normal
+    }
+    // Si pasa la validación, continuar con la autorización normal
+    insertarAutorizacionArea();
+  });
 }
 
 // --- Botón Guardar y Continuar (firma) ---

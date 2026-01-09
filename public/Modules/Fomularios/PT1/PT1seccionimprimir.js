@@ -216,6 +216,44 @@ if(pno_epe_9) pno_epe_9.textContent = d.pno_epe_9 || "-";
 
 
 
+//estos son los de atosfera
+
+const temp_fuego = document.getElementById("temp_fuego");
+if (temp_fuego) temp_fuego.textContent = d.temp_fuego || "-";
+
+const fluido_fuego = document.getElementById("fluido_fuego");
+if (fluido_fuego) fluido_fuego.textContent = d.fluido_fuego || "-";
+
+const presion_fuego = document.getElementById("presion_fuego");
+if (presion_fuego) presion_fuego.textContent = d.presion_fuego || "-";
+
+const temp_apertura = document.getElementById("temp_apertura");
+if (temp_apertura) temp_apertura.textContent = d.temp_apertura || "-";
+
+const fluido_apertura = document.getElementById("fluido_apertura");
+if (fluido_apertura) fluido_apertura.textContent = d.fluido_apertura || "-";
+
+const presion_apertura = document.getElementById("presion_apertura");
+if (presion_apertura) presion_apertura.textContent = d.presion_apertura || "-";
+
+const temp_confinado = document.getElementById("temp_confinado");
+if (temp_confinado) temp_confinado.textContent = d.temp_confinado || "-";
+
+const fluido_confinado = document.getElementById("fluido_confinado");
+if (fluido_confinado) fluido_confinado.textContent = d.fluido_confinado || "-";
+
+const presion_confinado = document.getElementById("presion_confinado");
+if (presion_confinado) presion_confinado.textContent = d.presion_confinado || "-";
+
+const temp_no_peligroso = document.getElementById("temp_no_peligroso");
+if (temp_no_peligroso) temp_no_peligroso.textContent = d.temp_no_peligroso || "-";
+
+const fluido_no_peligroso = document.getElementById("fluido_no_peligroso");
+if (fluido_no_peligroso) fluido_no_peligroso.textContent = d.fluido_no_peligroso || "-";
+
+const presion_no_peligroso = document.getElementById("presion_no_peligroso");
+if (presion_no_peligroso) presion_no_peligroso.textContent = d.presion_no_peligroso || "-";
+
 
 
 

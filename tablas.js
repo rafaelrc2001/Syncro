@@ -509,4 +509,70 @@ router.get("/ast-participan/estatus/:id_estatus", async (req, res) => {
   }
 });
 
+
+
+
+
+
+// Endpoint para actualizar solo los campos de condiciones de proceso (fuego, apertura, confinado, no peligroso)
+
+// Endpoint para actualizar solo los campos de condiciones de proceso (fuego, apertura, confinado, no peligroso)
+// Endpoint para actualizar solo los campos de condiciones de proceso (fuego, apertura, confinado, no peligroso)
+router.put("/permisos-trabajo/condiciones/:id_permiso", async (req, res) => {
+  const { id_permiso } = req.params;
+  const {
+    temp_fuego,
+    fluido_fuego,
+    presion_fuego,
+    temp_apertura,
+    fluido_apertura,
+    presion_apertura,
+    temp_confinado,
+    fluido_confinado,
+    presion_confinado,
+    temp_no_peligroso,
+    fluido_no_peligroso,
+    presion_no_peligroso
+  } = req.body;
+
+  // Construir dinámicamente el query y los valores a actualizar
+  const campos = [
+    ["temp_fuego", temp_fuego],
+    ["fluido_fuego", fluido_fuego],
+    ["presion_fuego", presion_fuego],
+    ["temp_apertura", temp_apertura],
+    ["fluido_apertura", fluido_apertura],
+    ["presion_apertura", presion_apertura],
+    ["temp_confinado", temp_confinado],
+    ["fluido_confinado", fluido_confinado],
+    ["presion_confinado", presion_confinado],
+    ["temp_no_peligroso", temp_no_peligroso],
+    ["fluido_no_peligroso", fluido_no_peligroso],
+    ["presion_no_peligroso", presion_no_peligroso]
+  ].filter(([_, v]) => typeof v !== 'undefined');
+
+  if (campos.length === 0) {
+    return res.status(400).json({
+      success: false,
+      error: "No se recibieron campos válidos para actualizar"
+    });
+  }
+
+  const setClause = campos.map(([k], i) => `${k} = $${i + 1}`).join(", ");
+  const values = campos.map(([_, v]) => v);
+  values.push(id_permiso);
+
+  const query = `UPDATE permisos_trabajo SET ${setClause} WHERE id_permiso = $${values.length} RETURNING *`;
+  try {
+    const result = await db.query(query, values);
+    if (result.rowCount === 0) {
+      return res.status(404).json({ success: false, error: "Permiso no encontrado" });
+    }
+    res.json({ success: true, message: "Condiciones de proceso actualizadas", data: result.rows[0] });
+  } catch (err) {
+    console.error("Error al actualizar condiciones de proceso:", err);
+    res.status(500).json({ success: false, error: "Error al actualizar condiciones de proceso", details: err.message });
+  }
+});
+
 module.exports = router;

@@ -986,16 +986,16 @@ WHERE p.id_permiso = $1`,
 
 router.post("/autorizaciones/firma-operador-area", async (req, res) => {
   const { id_permiso, firma_operador_area } = req.body;
-  if (!id_permiso || !firma_operador_area) {
+  if (!id_permiso) {
     return res.status(400).json({
       success: false,
-      error: "id_permiso y firma_operador_area son requeridos",
+      error: "id_permiso es requerido",
     });
   }
   try {
     const result = await db.query(
       `UPDATE autorizaciones SET firma_operador_area = $1 WHERE id_permiso = $2 RETURNING id_permiso, firma_operador_area`,
-      [firma_operador_area, id_permiso]
+      [typeof firma_operador_area !== "undefined" ? firma_operador_area : null, id_permiso]
     );
     if (result.rows.length === 0) {
       return res.status(404).json({

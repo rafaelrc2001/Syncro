@@ -6,7 +6,7 @@ const db = require('./database');
 router.get('/departamentos', async (req, res) => {
     try {
         const result = await db.query(
-            'SELECT id_departamento as id, nombre FROM departamentos ORDER BY nombre'
+            'SELECT id_departamento as id, nombre FROM departamentos WHERE visibilidad = true ORDER BY nombre'
         );
         res.json(result.rows);
     } catch (error) {

@@ -124,6 +124,27 @@ async function obtenerPermisosPorDepartamento(id_departamento) {
 router.get("/autorizar/:id_departamento", async (req, res) => {
   const { id_departamento } = req.params;
   try {
+    // 1. Obtener el nombre del departamento del usuario
+    const usuarioResult = await pool.query(
+      `SELECT departamento FROM usuarios WHERE id_usuario = $1`,
+      [id_departamento]
+    );
+    if (usuarioResult.rows.length === 0) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
+    }
+    const nombreDepartamentoUsuario = usuarioResult.rows[0].departamento;
+
+    // 2. Buscar el id_departamento correspondiente en departamentos (ignorando mayúsculas/minúsculas y espacios)
+    const depResult = await pool.query(
+      `SELECT id_departamento FROM departamentos WHERE REPLACE(LOWER(nombre), ' ', '') = REPLACE(LOWER($1), ' ', '')`,
+      [nombreDepartamentoUsuario]
+    );
+    if (depResult.rows.length === 0) {
+      return res.status(404).json({ error: "Departamento no encontrado" });
+    }
+    const idDepartamento = depResult.rows[0].id_departamento;
+
+    // 3. Buscar los permisos de ese departamento (por id)
     const result = await pool.query(
       `
         SELECT 
@@ -139,10 +160,10 @@ router.get("/autorizar/:id_departamento", async (req, res) => {
         FROM permisos_trabajo pt
         INNER JOIN areas a ON pt.id_area = a.id_area
         INNER JOIN estatus e ON pt.id_permiso = e.id_permiso
-        WHERE a.id_departamento = $1
+        WHERE pt.id_departamento = $1
         ORDER BY pt.fecha_hora DESC;
       `,
-      [id_departamento]
+      [idDepartamento]
     );
     res.json(result.rows);
   } catch (error) {

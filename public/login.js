@@ -14,47 +14,14 @@ document.addEventListener("DOMContentLoaded", function () {
     const password = document.getElementById("password").value;
 
     try {
-      // 1. Intentar login de departamento
-      let response = await fetch("/endpoints/loginDepartamento", {
+      // Login único contra usuarios
+      let response = await fetch("/endpoints/loginUsuario", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ email: departamentoNombre, password }),
+        body: JSON.stringify({ usuario: departamentoNombre, password }),
       });
       let data = await response.json();
-
-      // 2. Si falla, intentar login de usuario (tabla usuarios)
-      if (!data.success || !data.usuario) {
-        response = await fetch("/endpoints/loginUsuario", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify({ email: departamentoNombre, password }),
-        });
-        data = await response.json();
-      }
-
-      // 3. Si falla, intentar login de jefe
-      if (!data.success || !data.usuario) {
-        response = await fetch("/endpoints/loginJefe", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify({ usuario: departamentoNombre, password }),
-        });
-        data = await response.json();
-      }
-
-      // 4. Si falla, intentar login de supervisor
-      if (!data.success || !data.usuario) {
-        response = await fetch("/endpoints/loginSupervisor", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify({ usuario: departamentoNombre, password }),
-        });
-        data = await response.json();
-      }
 
       loginBtn.classList.remove("loading");
       if (data.success && data.usuario) {

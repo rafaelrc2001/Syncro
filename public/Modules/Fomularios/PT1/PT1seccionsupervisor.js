@@ -465,14 +465,22 @@ if (presion_no_peligroso) presion_no_peligroso.textContent = d.presion_no_peligr
 
 
 function validarSupervisorYCategoria() {
+  // Supervisor: si el input autocompletado existe y el select está oculto, usar el input
+  let supervisor = "";
   const supervisorInput = document.getElementById("responsable-aprobador");
+  const supervisorAutoInput = document.getElementById("nombre-supervisor-auto");
+  if (supervisorAutoInput && supervisorInput && supervisorInput.style.display === "none") {
+    supervisor = supervisorAutoInput.value.trim();
+  } else if (supervisorInput) {
+    supervisor = supervisorInput.value.trim();
+  }
   const categoriaInput = document.getElementById("responsable-aprobador2");
-  const supervisor = supervisorInput ? supervisorInput.value.trim() : "";
   const categoria = categoriaInput ? categoriaInput.value.trim() : "";
   if (!supervisor || !categoria) {
     alert("Debes seleccionar el supervisor y la categoría antes de autorizar.");
-    if (!supervisor && supervisorInput) supervisorInput.focus();
-    else if (!categoria && categoriaInput) categoriaInput.focus();
+    if (!supervisor && (supervisorAutoInput || supervisorInput)) {
+      (supervisorAutoInput || supervisorInput).focus();
+    } else if (!categoria && categoriaInput) categoriaInput.focus();
     return false;
   }
   return true;
@@ -534,10 +542,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const params = new URLSearchParams(window.location.search);
       const idPermiso = params.get("id") || window.idPermisoActual;
-      const responsableInput = document.getElementById("responsable-aprobador");
+      const supervisorAutoInput = document.getElementById("nombre-supervisor-auto");
       const operadorInput = document.getElementById("responsable-aprobador2");
-      const supervisor = responsableInput ? responsableInput.value.trim() : "";
+      // Usar el nombre completo del supervisor del input de solo lectura
+      const supervisor = supervisorAutoInput ? supervisorAutoInput.value.trim() : "";
       const categoria = operadorInput ? operadorInput.value.trim() : "";
+      console.log('[DEBUG] Este es el dato que se manda para supervisor:', supervisor, 'de la variable supervisor');
       // Obtener el id del supervisor desde localStorage
       let usuario_supervisor = null;
       try {
@@ -973,22 +983,50 @@ document.addEventListener("DOMContentLoaded", function () {
       // La lógica del modal de comentarios se maneja en setupModalComentario()
     });
   }
-  // Llenar select de supervisores desde la base de datos
-  fetch("/api/supervisores")
-    .then((res) => res.json())
-    .then((data) => {
-      const select = document.getElementById("responsable-aprobador");
-      if (select) {
-        select.innerHTML =
-          '<option value="" disabled selected>Seleccione un supervisor...</option>';
-        data.forEach((sup) => {
-          const option = document.createElement("option");
-          option.value = sup.nombre;
-          option.textContent = sup.nombre;
-          select.appendChild(option);
-        });
+  // Obtener el id del usuario desde localStorage y asignar el nombre automáticamente
+  const usuarioStr = localStorage.getItem("usuario");
+  let id_usuario = null;
+  if (usuarioStr) {
+    try {
+      const usuarioObj = JSON.parse(usuarioStr);
+      if (usuarioObj && usuarioObj.id_usuario) {
+        id_usuario = usuarioObj.id_usuario;
       }
-    });
+    } catch (e) {
+      console.warn("[DEBUG] No se pudo obtener id_usuario de localStorage:", e);
+    }
+  }
+  if (id_usuario) {
+    // Consultar el nombre completo del supervisor usando el id_usuario
+    fetch(`/api/usuarios/${id_usuario}`)
+      .then((res) => res.json())
+      .then((data) => {
+        const select = document.getElementById("responsable-aprobador");
+        if (select) {
+          // Ocultar el select y mostrar el nombre completo en un campo de solo lectura
+          select.style.display = "none";
+          let nombreSupervisor = "(No encontrado)";
+          if (data && (data.nombre || data.apellidop || data.apellidom)) {
+            // Unir nombre y apellidos si existen (usando apellidop y apellidom)
+            nombreSupervisor = [data.nombre, data.apellidop, data.apellidom]
+              .filter(Boolean)
+              .join(" ");
+          }
+          // Crear un input de solo lectura para mostrar el nombre completo
+          let inputNombre = document.createElement("input");
+          inputNombre.type = "text";
+          inputNombre.id = "nombre-supervisor-auto";
+          inputNombre.value = nombreSupervisor;
+          inputNombre.readOnly = true;
+          inputNombre.style.width = "100%";
+          inputNombre.style.marginBottom = "8px";
+          select.parentNode.insertBefore(inputNombre, select);
+        }
+      })
+      .catch((err) => {
+        console.error("Error al obtener nombre completo del supervisor:", err);
+      });
+  }
 
   // Llenar select de categorías desde la base de datos
   fetch("/api/categorias")
@@ -1120,9 +1158,10 @@ function setupModalComentario() {
     // Obtener valores actuales de la página
     const params = new URLSearchParams(window.location.search);
     const idPermiso = params.get("id") || window.idPermisoActual;
-    const responsableInput = document.getElementById("responsable-aprobador");
+    const supervisorAutoInput = document.getElementById("nombre-supervisor-auto");
     const operadorInput = document.getElementById("responsable-aprobador2");
-    const supervisor = responsableInput ? responsableInput.value.trim() : "";
+    // Usar el nombre completo del supervisor del input de solo lectura
+    const supervisor = supervisorAutoInput ? supervisorAutoInput.value.trim() : "";
     const categoria = operadorInput ? operadorInput.value.trim() : "";
 
     if (!idPermiso) {

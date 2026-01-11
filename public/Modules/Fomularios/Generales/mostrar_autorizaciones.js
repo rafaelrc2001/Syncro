@@ -78,7 +78,7 @@ async function cargarResponsablesAutorizacion(id_permiso) {
 					   html += `<td>Responsable area</td>`;
                        html += `<td style='vertical-align:middle;padding:6px 8px;'>` +
 								    `<div style='font-size:5px;line-height:1.3;'>` +
-									`${info.nombre_usuario_departamento ? info.nombre_usuario_departamento: '<span style=\'color:#c0392b\'>Sin dato</span>' };` +
+									`${info.responsable_area ? info.responsable_area: '<span style=\'color:#c0392b\'>Sin dato</span>' };` +
 								    `Fecha: ${info.fecha_hora_area ? info.fecha_hora_area : '<span style=\'color:#c0392b\'>Sin dato</span>'};` + `<br>` +
 																		`${(() => {
   let val = info.dispositivo_area;
@@ -151,11 +151,11 @@ async function cargarResponsablesAutorizacion(id_permiso) {
 
 					   // Fila 3: Supervisor
 					   html += `<tr>`;
-					   html += `<td>${mostrarCampo(info.nombre_supervisor, 'supervisor')}</td>`;
+					   html += `<td>${mostrarCampo(info.supervisor, 'supervisor')}</td>`;
 					   html += `<td>Supervisor</td>`;
 					   html += `<td style='vertical-align:middle;padding:6px 8px;'>` +
 						   `<div style='font-size:5px;line-height:1.3;'>` +
-						`${info.nombre_usuario_supervisor ? info.nombre_usuario_supervisor: '<span style=\'color:#c0392b\'>Sin dato</span>'};` +
+						`${info.supervisor ? info.supervisor: '<span style=\'color:#c0392b\'>Sin dato</span>'};` +
 								
 						   `Fecha: ${info.fecha_hora_supervisor ? info.fecha_hora_supervisor : '<span style=\'color:#c0392b\'>Sin dato</span>'};` + `<br>` +
 						   `${(() => {

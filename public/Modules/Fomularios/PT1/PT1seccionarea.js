@@ -1,3 +1,29 @@
+  // Función para obtener el nombre completo del usuario logueado y llenar el campo responsable
+  async function llenarResponsableArea() {
+    const usuario = JSON.parse(localStorage.getItem("usuario"));
+    const id_usuario = usuario && usuario.id_usuario ? usuario.id_usuario : null;
+    if (!id_usuario) return;
+    try {
+      const response = await fetch(`/api/usuarios/${id_usuario}`);
+      if (!response.ok) throw new Error("No se pudo obtener el usuario");
+      const data = await response.json();
+      if (!data || !data.nombre) throw new Error("Datos de usuario incompletos");
+      const nombreCompleto = `${data.nombre} ${data.apellidop || ''} ${data.apellidom || ''}`.trim();
+      // Llenar el campo de responsable en el formulario de autorizar
+      const responsableInput = document.getElementById("responsable-aprobador");
+      if (responsableInput) {
+        responsableInput.value = nombreCompleto;
+        responsableInput.readOnly = true;
+      }
+      // Llenar el campo de responsable en el formulario de no autorizar (si es diferente)
+
+    } catch (err) {
+      console.error("Error al obtener responsable de área:", err);
+    }
+  }
+
+  // Ejecutar al cargar la sección
+  document.addEventListener("DOMContentLoaded", llenarResponsableArea);
   // --- Validación visual de ubicación en móvil ---
   function esDispositivoMovil() {
     const ua = navigator.userAgent || navigator.vendor || window.opera;
@@ -553,11 +579,7 @@ async function insertarAutorizacionArea() {
   if (!idPermiso) {
     return;
   }
-  if (!responsable_area) {
-    alert("Debes ingresar el nombre del responsable del área 1.");
-    if (responsableInput) responsableInput.focus();
-    return;
-  }
+  
 
   // 3. Insertar autorización de área vía API
   try {
@@ -1190,11 +1212,7 @@ if (btnPreguntaAutorizar) {
       ? responsableInput.value.trim()
       : "";
 
-    if (!responsable_area) {
-      alert("Debes ingresar el nombre del responsable del área.");
-      if (responsableInput) responsableInput.focus();
-      return;
-    }
+  
 
     if (modalConfirmarAutorizar) {
       modalConfirmarAutorizar.style.display = "flex";

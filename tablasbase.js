@@ -1,3 +1,25 @@
+
+// ================= USUARIOS =================
+exports.getUsuarioById = async (req, res) => {
+  const { id } = req.params;
+  const idInt = parseInt(id, 10);
+  if (isNaN(idInt)) {
+    return res.status(400).json({ error: "ID de usuario inválido" });
+  }
+  try {
+    const result = await db.query(
+      "SELECT nombre, apellidop, apellidom FROM usuarios WHERE id_usuario = $1",
+      [idInt]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
+    }
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error("Error al obtener usuario:", err);
+    res.status(500).json({ error: "Error al obtener el usuario" });
+  }
+};
 const db = require("./database");
 
 // ================= CATEGORIAS =================

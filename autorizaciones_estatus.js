@@ -505,7 +505,7 @@ router.post("/autorizaciones/area", async (req, res) => {
   try {
     const result = await db.query(
       `INSERT INTO autorizaciones (
-        id_permiso, id_supervisor, id_categoria, responsable_area, operador_area, fecha_hora_area, ip_area, localizacion_area, firma, dispositivo_area, usuario_departamento, firma_operador_area
+        id_permiso, usuario_supervisor, id_categoria, responsable_area, operador_area, fecha_hora_area, ip_area, localizacion_area, firma, dispositivo_area, usuario_departamento, firma_operador_area
       ) VALUES ($1, $2, $3, $4, $5, COALESCE($6, NOW()), $7, $8, $9, $10, $11, $12)
       RETURNING *`,
       [
@@ -591,7 +591,7 @@ router.post("/estatus/no_autorizado", async (req, res) => {
 // Endpoint para actualizar supervisor y categoría (solo nombres) en autorizaciones
 // Ahora acepta usuario_supervisor
 router.put("/autorizaciones/supervisor-categoria", async (req, res) => {
-  const { id_permiso, supervisor, categoria, fecha_hora_supervisor, ip_supervisor, localizacion_supervisor, firma_supervisor, dispositivo_supervisor, usuario_supervisor } = req.body;
+  const { id_permiso, supervisor, categoria, fecha_hora_supervisor, ip_supervisor, localizacion_supervisor, firma_supervisor, dispositivo_supervisor } = req.body;
 
   if (!id_permiso || !supervisor || !categoria) {
     return res.status(400).json({
@@ -601,19 +601,6 @@ router.put("/autorizaciones/supervisor-categoria", async (req, res) => {
   }
 
   try {
-    // Buscar el ID del supervisor por nombre
-    const supResult = await db.query(
-      "SELECT id_supervisor FROM supervisores WHERE nombre = $1 LIMIT 1",
-      [supervisor]
-    );
-    if (supResult.rows.length === 0) {
-      return res.status(404).json({
-        success: false,
-        error: "Supervisor no encontrado",
-      });
-    }
-    const idSupervisor = supResult.rows[0].id_supervisor;
-
     // Buscar el ID de la categoría por nombre en categorias_seguridad
     const catResult = await db.query(
       "SELECT id_categoria FROM categorias_seguridad WHERE nombre = $1 LIMIT 1",
@@ -637,25 +624,23 @@ router.put("/autorizaciones/supervisor-categoria", async (req, res) => {
       // Si existe, actualizar los campos y la fecha del supervisor (sin sobreescribir si no se envía)
       const result = await db.query(
         `UPDATE autorizaciones
-         SET id_supervisor = $1,
+         SET supervisor = $1,
              id_categoria = $2,
              fecha_hora_supervisor = COALESCE($3, fecha_hora_supervisor),
              ip_supervisor = COALESCE($4, ip_supervisor),
              localizacion_supervisor = COALESCE($5, localizacion_supervisor),
              firma_supervisor = COALESCE($6, firma_supervisor),
-             dispositivo_supervisor = COALESCE($7, dispositivo_supervisor),
-             usuario_supervisor = COALESCE($8, usuario_supervisor)
-         WHERE id_permiso = $9
+             dispositivo_supervisor = COALESCE($7, dispositivo_supervisor)
+         WHERE id_permiso = $8
          RETURNING *`,
         [
-          idSupervisor,
+          supervisor,
           idCategoria,
           fecha_hora_supervisor || null,
           ip_supervisor || null,
           localizacion_supervisor || null,
           firma_supervisor || null,
           dispositivo_supervisor || null,
-          usuario_supervisor || null,
           id_permiso
         ]
       );
@@ -674,12 +659,12 @@ router.put("/autorizaciones/supervisor-categoria", async (req, res) => {
       // Si no existe, insertar una nueva fila incluyendo la fecha (si no se envía, usar NOW())
       const insert = await db.query(
         `INSERT INTO autorizaciones (
-          id_permiso, id_supervisor, id_categoria, responsable_area, operador_area, fecha_hora_supervisor, ip_supervisor, localizacion_supervisor, firma_supervisor, dispositivo_supervisor, usuario_supervisor
-        ) VALUES ($1, $2, $3, $4, $5, COALESCE($6, NOW()), $7, $8, $9, $10, $11)
+          id_permiso, supervisor, id_categoria, responsable_area, operador_area, fecha_hora_supervisor, ip_supervisor, localizacion_supervisor, firma_supervisor, dispositivo_supervisor
+        ) VALUES ($1, $2, $3, $4, $5, COALESCE($6, NOW()), $7, $8, $9, $10)
         RETURNING *`,
         [
           id_permiso,
-          idSupervisor,
+          supervisor,
           idCategoria,
           null,
           null,
@@ -687,8 +672,7 @@ router.put("/autorizaciones/supervisor-categoria", async (req, res) => {
           ip_supervisor || null,
           localizacion_supervisor || null,
           firma_supervisor || null,
-          dispositivo_supervisor || null,
-          usuario_supervisor || null
+          dispositivo_supervisor || null
         ]
       );
       return res.status(201).json({
@@ -756,7 +740,7 @@ router.get("/autorizaciones/personas/:id", async (req, res) => {
   a.ip_area,
   a.localizacion_area
 FROM autorizaciones a
-LEFT JOIN supervisores s ON a.id_supervisor = s.id_supervisor
+LEFT JOIN usuarios s ON a.usuario_supervisor = s.id_usuario AND s.rol = 'supervisor'
 WHERE a.id_permiso = $1`,
       [id]
     );
@@ -805,7 +789,7 @@ router.get("/autorizaciones/personas/:id_permiso", async (req, res) => {
   a.ip_area,
   a.localizacion_area
 FROM autorizaciones a
-LEFT JOIN supervisores s ON a.id_supervisor = s.id_supervisor
+LEFT JOIN usuarios s ON a.usuario_supervisor = s.id_usuario AND s.rol = 'supervisor'
 WHERE a.id_permiso = $1`,
       [id_permiso]
     );
@@ -961,12 +945,12 @@ router.get("/autorizaciones/detalle/:id_permiso", async (req, res) => {
 FROM permisos_trabajo p
 LEFT JOIN autorizaciones a 
     ON a.id_permiso = p.id_permiso
--- Primer JOIN con supervisores para id_supervisor
-LEFT JOIN supervisores s
-    ON a.id_supervisor = s.id_supervisor
--- Segundo JOIN con supervisores para usuario_supervisor
-LEFT JOIN supervisores s2
-    ON a.usuario_supervisor = s2.id_supervisor
+-- Primer JOIN con usuarios para usuario_supervisor
+LEFT JOIN usuarios s
+  ON a.usuario_supervisor = s.id_usuario AND s.rol = 'supervisor'
+-- Segundo JOIN con usuarios para usuario_supervisor
+LEFT JOIN usuarios s2
+  ON a.usuario_supervisor = s2.id_usuario AND s2.rol = 'supervisor'
 -- JOIN para departamento del permiso
 LEFT JOIN departamentos d_permiso
     ON p.id_departamento = d_permiso.id_departamento

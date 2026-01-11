@@ -191,6 +191,7 @@ app.post("/api/areas", verificarAutenticacion, tablasBase.createArea);
 app.put("/api/areas/:id", verificarAutenticacion, tablasBase.updateArea);
 app.delete("/api/areas/:id", verificarAutenticacion, tablasBase.deleteArea);
 
+app.get("/api/usuarios/:id", verificarAutenticacion, tablasBase.getUsuarioById);
 
 app.use("/api", verificarAutenticacion, autorizacionesEstatusRouter);
 app.use('/api', detectarDispositivoRouter);

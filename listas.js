@@ -114,11 +114,11 @@ router.get("/correo-area", async (req, res) => {
 // Endpoint para obtener todos los supervisores
 router.get("/supervisores", async (req, res) => {
   try {
-    // Solo supervisores visibles y con relaciones visibles
+    // Solo usuarios con rol supervisor visibles
     const result = await db.query(
-      `SELECT s.id_supervisor, s.nombre
-      FROM supervisores s
-      WHERE s.visibilidad = true
+      `SELECT s.id_usuario as id_supervisor, s.nombre
+      FROM usuarios s
+      WHERE s.visibilidad = true AND s.rol = 'supervisor'
       ORDER BY s.nombre ASC`
     );
     res.json(result.rows);

@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // --- Lógica de usuario, avatar y logout ---
   // Muestra el nombre del usuario, iniciales en el avatar y gestiona el cierre de sesión
   const usuario = JSON.parse(localStorage.getItem("usuario"));
-  if (usuario && usuario.nombre && usuario.id) {
+  if (usuario && usuario.nombre && usuario.id_usuario) {
     // Nombre en el sidebar/footer
     document.querySelectorAll(".user-info .name").forEach((el) => {
       el.textContent = usuario.nombre;

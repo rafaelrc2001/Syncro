@@ -17,7 +17,7 @@ import {
 async function cargarTargetasDesdeAutorizar() {
   try {
     const usuario = JSON.parse(localStorage.getItem("usuario"));
-    const id_departamento = usuario && usuario.id ? usuario.id : null;
+    const id_departamento = usuario && usuario.id_usuario ? usuario.id_usuario : null;
     if (!id_departamento)
       throw new Error("No se encontró el id de departamento del usuario");
     const response = await fetch(`/api/autorizar/${id_departamento}`);
@@ -191,7 +191,7 @@ function asignarEventosVer() {
 async function cargarPermisosTabla() {
   try {
     const usuario = JSON.parse(localStorage.getItem("usuario"));
-    const id_departamento = usuario && usuario.id ? usuario.id : null;
+    const id_departamento = usuario && usuario.id_usuario ? usuario.id_usuario : null;
     if (!id_departamento)
       throw new Error("No se encontró el id de departamento del usuario");
     const response = await fetch(`/api/autorizar/${id_departamento}`);

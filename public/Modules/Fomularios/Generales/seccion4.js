@@ -230,7 +230,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const fecha_hora = obtenerFechaHoraLocal();
 
       const usuario = JSON.parse(localStorage.getItem("usuario"));
-      const id_usuario = usuario?.id_usuario;
+      // Intenta obtener el id del usuario desde varias posibles propiedades
+      const id_usuario = usuario?.id_usuario || usuario?.id || usuario?.usuario;
       // Obtener id_departamento desde el input hidden (rellenado por el autocompletado)
       let id_departamento = null;
       const departamentoIdHidden = document.getElementById("departamento-id-hidden");
@@ -821,13 +822,13 @@ ip_creacion,
           modal.querySelector("p").innerHTML = permitText;
           modal.classList.add("active");
             // Enviar datos a n8n después de registrar el permiso
-            if (window.n8nFormHandler) {
+          /*  if (window.n8nFormHandler) {
               try {
                 await window.n8nFormHandler();
               } catch (e) {
                 console.error("Error al enviar a n8n:", e);
               }
-            }
+            }*/
         }
 
       } catch (error) {

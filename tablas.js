@@ -349,23 +349,23 @@ router.post("/permisos-trabajo", async (req, res) => {
 // Ruta para insertar en la tabla autorizaciones
 
 router.post("/autorizaciones", async (req, res) => {
-  let { id_permiso, id_supervisor, id_categoria, responsable_area } = req.body;
+  let { id_permiso, usuario_supervisor, id_categoria, responsable_area } = req.body;
 
   // Asignar valores por defecto si no vienen en el body
   if (!id_permiso)
     return res
       .status(400)
       .json({ success: false, error: "id_permiso es requerido" });
-  if (!id_supervisor) id_supervisor = 2; // Cambia este valor por el que corresponda
+  if (!usuario_supervisor) usuario_supervisor = 2; // Cambia este valor por el que corresponda
   if (!id_categoria) id_categoria = 7; // Cambia este valor por el que corresponda
   if (!responsable_area) responsable_area = "Por Defecto"; // Cambia este valor por el que corresponda
 
   try {
     const result = await db.query(
-      `INSERT INTO autorizaciones (id_permiso, id_supervisor, id_categoria, responsable_area)
-       VALUES ($1, $2, $3, $4)
-       RETURNING *`,
-      [id_permiso, id_supervisor, id_categoria, responsable_area]
+      `INSERT INTO autorizaciones (id_permiso, usuario_supervisor, id_categoria, responsable_area)
+      VALUES ($1, $2, $3, $4)
+      RETURNING *`,
+      [id_permiso, usuario_supervisor, id_categoria, responsable_area]
     );
     res.status(201).json({
       success: true,

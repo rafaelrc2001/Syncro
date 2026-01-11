@@ -1058,7 +1058,45 @@ router.get("/autorizaciones/ver-firma-operador-area/:id_permiso", async (req, re
 });
 
 
+// Endpoint para insertar una revalidación
+router.post('/revalidaciones', async (req, res) => {
+    try {
+        const { id_permiso, usuario_fecha, hora, comentario, firma } = req.body;
+        if (!id_permiso || !comentario || !firma) {
+            return res.status(400).json({ error: 'Faltan campos obligatorios.' });
+        }
+        const result = await db.query(
+            `INSERT INTO revalidaciones (id_permiso, usuario_fecha, hora, comentario, firma)
+             VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+            [id_permiso, usuario_fecha || null, hora || null, comentario, firma]
+        );
+        res.status(201).json({ revalidacion: result.rows[0] });
+    } catch (err) {
+        console.error('Error al insertar revalidación:', err);
+        res.status(500).json({ error: 'Error interno del servidor.' });
+    }
+});
 
+// Endpoint para obtener todas las revalidaciones de un permiso por id_permiso
+router.get('/mostrar-revalidaciones/:id_permiso', async (req, res) => {
+  const { id_permiso } = req.params;
+  if (!id_permiso) {
+    return res.status(400).json({ error: 'id_permiso es requerido' });
+  }
+  try {
+    const result = await db.query(
+      `SELECT * FROM revalidaciones WHERE id_permiso = $1 ORDER BY id_revalidacion ASC`,
+      [id_permiso]
+    );
+    res.status(200).json({
+      success: true,
+      revalidaciones: result.rows
+    });
+  } catch (err) {
+    console.error('Error al obtener revalidaciones:', err);
+    res.status(500).json({ error: 'Error interno del servidor.' });
+  }
+});
 
 
 // Dejar solo un module.exports al final

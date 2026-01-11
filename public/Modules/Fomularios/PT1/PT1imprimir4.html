@@ -622,7 +622,9 @@
                 
                 
                 <div id="contenedor-responsables"></div>
+                    
 
+                 <div id="contenedor-revalidaciones"></div>
 
                 <div id="comentarios-permiso" style="display:none; margin-top:2em;">
                 <div style="background:#fff; border-radius:10px; box-shadow:0 2px 8px rgba(44,62,80,0.08); padding:1.2em 1.5em; ">
@@ -687,10 +689,11 @@
                         </button>
 
 
-                          <button id="btn-revalidar-permiso" class="btn btn-pt1 btn-guardar-azulpetroleo" type="button">
+                    <!--     <button id="btn-revalidar-permiso" class="btn btn-pt1 btn-guardar-azulpetroleo" type="button">
                             <i class="ri-printer-line" style="margin-right: 8px;"></i>Revalidaciones
                         </button>
 
+                        --> 
                     </div>
                 </div>
 
@@ -809,17 +812,28 @@
     <script src="/Modules/Fomularios/Generales/mostrar_autorizaciones.js"></script>
     <script src="/Modules/Fomularios/Generales/lienzos_firma_operador.js"></script>
 
+    <script src="/Modules/Fomularios/Generales/mostrar-revalidaciones.js"></script>
 
-<script>
+
+    <script>
 document.addEventListener('DOMContentLoaded', function() {
     const params = new URLSearchParams(window.location.search);
     const idPermiso = params.get('id');
-    if (idPermiso && typeof cargarResponsablesAutorizacion === 'function') {
-        cargarResponsablesAutorizacion(idPermiso);
+    if (idPermiso) {
+        if (typeof cargarResponsablesAutorizacion === 'function') {
+            cargarResponsablesAutorizacion(idPermiso);
+        }
+        if (typeof cargarRevalidaciones === 'function') {
+            cargarRevalidaciones(idPermiso);
+        }
     } else {
         const contenedor = document.getElementById('contenedor-responsables');
         if (contenedor) {
             contenedor.innerHTML = '<div class="section-header"><h3>Responsables</h3></div><div class="ast-summary"><table class="ast-table ast-table-responsables"><thead><tr><th>Nombre</th><th>Cargo</th><th>Firma Digital</th><th>Firma</th></tr></thead><tbody><tr><td colspan="4" style="color:#c0392b;font-weight:600;text-align:center;">No se pudo cargar la información de autorizaciones</td></tr></tbody></table></div>';
+        }
+        const contenedorRev = document.getElementById('contenedor-revalidaciones');
+        if (contenedorRev) {
+            contenedorRev.innerHTML = '<div class="section-header"><h3>Revalidaciones</h3></div><div class="ast-summary"><table class="ast-table ast-table-revalidaciones"><thead><tr><th>#</th><th>Usuario</th><th>Hora</th><th>Comentario</th><th>Firma</th></tr></thead><tbody><tr><td colspan="5" style="color:#c0392b;font-weight:600;text-align:center;">No se pudo cargar la información de revalidaciones</td></tr></tbody></table></div>';
         }
     }
 });

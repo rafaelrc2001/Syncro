@@ -10,6 +10,10 @@ async function fetchDepartamentoSuggestions() {
         const response = await fetch('/api/departamentos');
         const departamentos = await response.json();
         console.log('[FETCH DEPTOS] Departamentos recibidos:', departamentos);
+        // Mostrar explícitamente los valores que se van a mapear
+        departamentos.forEach((depto, idx) => {
+            console.log(`[MAPEO DEPARTAMENTO][${idx}] id:`, depto.id || depto.id_departamento, ', nombre:', depto.nombre);
+        });
         window.departamentos = departamentos; // Guardar departamentos globalmente para buscar el id
         departamentoSuggestions = departamentos.map(depto => depto.nombre);
         console.log('[FETCH DEPTOS] Sugerencias mapeadas:', departamentoSuggestions);

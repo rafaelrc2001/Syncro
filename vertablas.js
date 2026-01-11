@@ -207,33 +207,32 @@ router.get("/autorizar-jefe", async (req, res) => {
 
 
 
-router.get('/usuario-por-credencial', (req, res) => {
-    const { no_empleado } = req.query;
 
-    if (!no_empleado) {
-        return res.status(400).json({ success: false, error: 'El parámetro no_empleado es requerido' });
+router.get('/usuario-por-credencial', async (req, res) => {
+  const { no_empleado } = req.query;
+
+  if (!no_empleado) {
+    return res.status(400).json({ success: false, error: 'El parámetro no_empleado es requerido' });
+  }
+
+  const query = `
+    SELECT nombre, apellidop, apellidom, cargo, no_empleado
+    FROM usuarios
+    WHERE TRIM(no_empleado) = TRIM($1)
+    LIMIT 1
+  `;
+
+  try {
+    const results = await pool.query(query, [no_empleado]);
+    const rows = results.rows || results;
+    if (rows.length === 0) {
+      return res.json({ success: false, usuario: null, mensaje: 'No se encontró usuario con ese número de credencial' });
     }
-
-    const query = `
-        SELECT nombre, apellidop, apellidom, cargo, no_empleado
-        FROM usuarios
-        WHERE TRIM(no_empleado) = TRIM($1)
-        LIMIT 1
-    `;
-
-    db.query(query, [no_empleado], (err, results) => {
-        if (err) {
-            console.error('Error al buscar usuario por credencial:', err);
-            return res.status(500).json({ success: false, error: 'Error en el servidor' });
-        }
-
-        const rows = results.rows || results;
-        if (rows.length === 0) {
-            return res.json({ success: false, usuario: null, mensaje: 'No se encontró usuario con ese número de credencial' });
-        }
-
-        res.json({ success: true, usuario: rows[0] });
-    });
+    res.json({ success: true, usuario: rows[0] });
+  } catch (err) {
+    console.error('Error al buscar usuario por credencial:', err);
+    return res.status(500).json({ success: false, error: 'Error en el servidor' });
+  }
 });
 
 

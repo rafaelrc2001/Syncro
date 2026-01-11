@@ -60,6 +60,10 @@ const { verificarAutenticacion, verificarRol, verificarSesion, cerrarSesion } = 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const usuarioCredencialRouter = require("./usuario_credencial");
+
+
+
 // Configuración de CORS (debe ir antes de cualquier ruta)
 // const corsOptions = {
 //   origin: [
@@ -142,6 +146,7 @@ app.use("/api/graficas_jefes", verificarAutenticacion, graficasJefesRouter);
 app.use("/api/graficas_jefes", verificarAutenticacion, graficaMesesRouter);
 app.use("/api", verificarAutenticacion, departamentoConsultaRouter);
 app.use("/api", verificarAutenticacion, equipoBuscarRouter); // Ruta para buscar equipo por TAG
+app.use("/api", verificarAutenticacion, usuarioCredencialRouter); // Ruta para buscar usuario por número de credencial
 
 // ================= RUTAS DE TABLAS BASE =================
 const tablasBase = require("./tablasbase");

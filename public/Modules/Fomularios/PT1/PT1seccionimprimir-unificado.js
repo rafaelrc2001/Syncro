@@ -79,7 +79,7 @@ async function consultarTodoPermiso(id_permiso) {
     const plantLabel = document.getElementById("plant-label");
     if(plantLabel) plantLabel.textContent =  d.nombre_departamento_id ||   "-";
     const ubicacionLabel = document.getElementById("ubicacion");
-    if(ubicacionLabel) ubicacionLabel.textContent = d.nombre_area_id  || "-";
+    if(ubicacionLabel) ubicacionLabel.textContent = d.id_area  || "-";
     const responsableTrabajoLabel = document.getElementById("responsable-trabajo-label");
     if(responsableTrabajoLabel) responsableTrabajoLabel.textContent = d.nombre_solicitante || "-";
     const descripcionTrabajoLabel = document.getElementById("descripcion-trabajo-label");

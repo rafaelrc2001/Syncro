@@ -13,11 +13,10 @@ router.get("/permiso", async (req, res) => {
     const result = await db.query(
       `SELECT 
         pt.*,
-        a.nombre AS nombre_area_id,
+        pt.id_area AS area,
         d.nombre AS nombre_departamento_id,
         s.nombre AS nombre_sucursal_id
       FROM permisos_trabajo pt
-      LEFT JOIN areas a ON pt.id_area = a.id_area
       LEFT JOIN departamentos d ON pt.id_departamento = d.id_departamento
       LEFT JOIN sucursales s ON pt.id_sucursal = s.id_sucursal
       WHERE pt.id_permiso = $1

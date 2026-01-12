@@ -248,37 +248,11 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      // Validar que plant_value no esté vacío antes de continuar
-      let plantValue = sessionStorage.getItem("plant_value");
-      // Si no está en sessionStorage, intenta leer del input hidden
-      if (!plantValue || isNaN(parseInt(plantValue, 10))) {
-        const plantIdHidden = document.getElementById("plant-id-hidden");
-        if (
-          plantIdHidden &&
-          plantIdHidden.value &&
-          !isNaN(parseInt(plantIdHidden.value, 10))
-        ) {
-          plantValue = plantIdHidden.value;
-          sessionStorage.setItem("plant_value", plantValue); // Sincroniza por si acaso
-        }
-      }
-      if (!plantValue || isNaN(parseInt(plantValue, 10))) {
-        // Mostrar advertencia visual en el input de área si existe
-        const plantInput = document.getElementById("plant");
-        let warning = document.getElementById("plant-warning");
-        if (plantInput && !warning) {
-          warning = document.createElement("div");
-          warning.id = "plant-warning";
-          warning.style.color = "#d9534f";
-          warning.style.fontSize = "0.95em";
-          warning.style.marginTop = "4px";
-          warning.textContent =
-            "Debe seleccionar un área válida de la lista antes de continuar.";
-          plantInput.parentNode.insertBefore(warning, plantInput.nextSibling);
-        }
-        alert(
-          "Debe seleccionar un área válida de la lista antes de continuar."
-        );
+      // Validar que el campo 'plant' tenga texto (ubicación libre)
+      const plantInput = document.getElementById("plant");
+      if (!plantInput || !plantInput.value.trim()) {
+        alert("Por favor, ingrese la ubicación antes de continuar.");
+        plantInput.focus();
         e.preventDefault();
         return;
       }
@@ -374,22 +348,14 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
-        // Recuperar y validar los ids
-        const id_area = parseInt(sessionStorage.getItem("plant_value"), 10);
-        // Obtener id del departamento del usuario logueado
-        //let id_departamento = 1;
-        //const usuario = JSON.parse(localStorage.getItem("usuario"));
-        //if (usuario && usuario.id) {
-        //  id_departamento = Number(usuario.id);
-        //}
+        // id_area ahora es texto: se toma directamente del input 'plant'
+        const id_area = document.getElementById("plant")?.value?.trim() || null;
         const id_sucursal = parseInt(sessionStorage.getItem("id_sucursal"), 10);
-        // id_tipo_permiso eliminado, ya no se usa
-        // id_estatus eliminado, ya no se usa
         // Log para depuración de IDs
         console.log("[DEBUG] Validación de IDs:", {
-          id_area,
           id_departamento,
-          id_sucursal
+          id_sucursal,
+          id_area
         });
 
         // === NUEVOS CAMPOS A ENVIAR ===
@@ -408,6 +374,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const nombre_solicitante = document.getElementById("applicant")?.value || null;
         const empresa = document.getElementById("company")?.value || null;
         const nombre_departamento = document.getElementById("subcontract")?.value || null;
+        const ubicacion = document.getElementById("plant")?.value || null;
 
         // Permiso altura y otros campos especiales
         const PAL_EPP_1 = document.getElementById("linea_vida")?.value || null;
@@ -498,17 +465,9 @@ document.addEventListener("DOMContentLoaded", () => {
           sessionStorage.getItem("id_sucursal")
         );
 
-        // Validar que todos los ids sean números válidos (sin id_estatus)
-        if (
-          [
-            id_area,
-            id_departamento,
-            id_sucursal
-          ].some((v) => isNaN(v) || typeof v !== "number")
-        ) {
-          alert(
-            "Error: Debe seleccionar correctamente todas las listas (área, sucursal, etc)."
-          );
+        // Validar que id_departamento e id_sucursal sean números válidos
+        if ([id_departamento, id_sucursal].some((v) => isNaN(v) || typeof v !== "number")) {
+          alert("Error: Debe seleccionar correctamente la sucursal.");
           submitBtn.disabled = false;
           submitBtn.innerHTML = originalHTML;
           return;
@@ -543,7 +502,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         const datosPermisos = {
-           id_area,
+            // id_area eliminado, solo se envía ubicación como texto
+            id_area,
             id_departamento,
             id_sucursal,
             contrato,
@@ -609,12 +569,8 @@ document.addEventListener("DOMContentLoaded", () => {
             pno_epe_8,
             pno_epe_9,
             columna_nopeligrosovalor_valor,
-
-
-firma_creacion,
-
-
-ip_creacion,
+            firma_creacion,
+            ip_creacion,
             dispositivo_creacion,
             localizacion_creacion,
 
@@ -629,6 +585,7 @@ ip_creacion,
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
+            // id_area eliminado, solo se envía ubicación como texto
             id_area,
             id_departamento,
             id_sucursal,

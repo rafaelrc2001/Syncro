@@ -360,13 +360,13 @@ function initDepartamentoAutocomplete() {
             await fetchPlantSuggestions(selectedDepartamento.id);
             
             // Limpiar el campo de ubicación ya que cambió el departamento
-            const plantInput = document.getElementById('plant');
+      /*      const plantInput = document.getElementById('plant');
             if (plantInput) {
                 plantInput.value = '';
                 sessionStorage.setItem('plant_value', '');
                 const plantIdHidden = document.getElementById('plant-id-hidden');
                 if (plantIdHidden) plantIdHidden.value = '';
-            }
+            }*/
         } else {
             sessionStorage.setItem('departamento_value', '');
             if (departamentoIdHidden) departamentoIdHidden.value = '';
@@ -374,7 +374,7 @@ function initDepartamentoAutocomplete() {
             
             // Si no hay departamento válido, cargar todas las áreas
             await fetchPlantSuggestions();
-            
+          /*  
             if (this.value.trim() && !warning) {
                 warning = document.createElement('div');
                 warning.id = warningId;
@@ -385,7 +385,7 @@ function initDepartamentoAutocomplete() {
                 departamentoInput.parentNode.insertBefore(warning, departamentoInput.nextSibling);
             } else if (!this.value.trim() && warning) {
                 warning.remove();
-            }
+            }*/
         }
     });
 
@@ -798,7 +798,7 @@ async function fetchCombinedSuggestions() {
 document.addEventListener('DOMContentLoaded', async () => {
     await fetchPlantSuggestions();
     await fetchDepartamentoSuggestions();
-    initPlantAutocomplete();
+    //initPlantAutocomplete(); // Autocompletado de ubicación deshabilitado para permitir texto libre
     initDepartamentoAutocomplete();
     populateSucursales();
     initBackButton();

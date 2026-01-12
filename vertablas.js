@@ -13,14 +13,13 @@ router.get("/vertablas", async (req, res) => {
       pt.id_permiso,
       pt.prefijo,
       pt.contrato,
-      a.nombre AS area,
+      pt.id_area AS area,
       pt.fecha_hora,
       pt.descripcion_trabajo AS descripcion,
       pt.nombre_solicitante AS solicitante,
       e.estatus,
       e.subestatus
     FROM permisos_trabajo pt
-    INNER JOIN areas a ON pt.id_area = a.id_area
     INNER JOIN estatus e ON pt.id_permiso = e.id_permiso
     ORDER BY pt.fecha_hora DESC;
     `);
@@ -40,14 +39,13 @@ router.get("/vertablas/:id_departamento", async (req, res) => {
           pt.id_permiso,
           pt.prefijo,
           pt.contrato,
-          a.nombre AS area,
+          pt.id_area AS area,
           pt.fecha_hora,
           pt.descripcion_trabajo AS descripcion,
           pt.nombre_solicitante AS solicitante,
           e.estatus,
           e.subestatus
         FROM permisos_trabajo pt
-        INNER JOIN areas a ON pt.id_area = a.id_area
         INNER JOIN estatus e ON pt.id_permiso = e.id_permiso
         WHERE pt.id_departamento = $1
         ORDER BY pt.fecha_hora DESC;
@@ -70,14 +68,13 @@ router.get("/vertablasUsuarios/:id_usuario", async (req, res) => {
           pt.id_permiso,
           pt.prefijo,
           pt.contrato,
-          a.nombre AS area,
+          pt.id_area AS area,
           pt.fecha_hora,
           pt.descripcion_trabajo AS descripcion,
           pt.nombre_solicitante AS solicitante,
           e.estatus,
           e.subestatus
         FROM permisos_trabajo pt
-        INNER JOIN areas a ON pt.id_area = a.id_area
         INNER JOIN estatus e ON pt.id_permiso = e.id_permiso
         WHERE pt.id_usuario = $1
         ORDER BY pt.fecha_hora DESC;
@@ -100,14 +97,13 @@ async function obtenerPermisosPorDepartamento(id_departamento) {
           pt.id_permiso,
           pt.prefijo,
           pt.contrato,
-          a.nombre AS area,
+          pt.id_area AS area,
           pt.fecha_hora,
           pt.descripcion_trabajo AS descripcion,
           pt.nombre_solicitante AS solicitante,
           e.estatus,
           e.subestatus
         FROM permisos_trabajo pt
-        INNER JOIN areas a ON pt.id_area = a.id_area
         INNER JOIN estatus e ON pt.id_permiso = e.id_permiso
         WHERE pt.id_departamento = $1
         ORDER BY pt.fecha_hora DESC;
@@ -151,14 +147,13 @@ router.get("/autorizar/:id_departamento", async (req, res) => {
           pt.id_permiso,
           pt.prefijo,
           pt.contrato,
-          a.nombre AS area,
+          pt.id_area AS area,
           pt.fecha_hora,
           pt.descripcion_trabajo AS descripcion,
           pt.nombre_solicitante AS solicitante,
           e.estatus,
           e.subestatus
         FROM permisos_trabajo pt
-        INNER JOIN areas a ON pt.id_area = a.id_area
         INNER JOIN estatus e ON pt.id_permiso = e.id_permiso
         WHERE pt.id_departamento = $1
         ORDER BY pt.fecha_hora DESC;
@@ -185,14 +180,13 @@ router.get("/autorizar-jefe", async (req, res) => {
           pt.id_permiso,
           pt.prefijo,
           pt.contrato,
-          a.nombre AS area,
+          pt.id_area AS area,
           pt.fecha_hora,
           pt.descripcion_trabajo AS descripcion,
           pt.nombre_solicitante AS solicitante,
           e.estatus,
           e.subestatus
         FROM permisos_trabajo pt
-        INNER JOIN areas a ON pt.id_area = a.id_area
         INNER JOIN estatus e ON pt.id_permiso = e.id_permiso
         ORDER BY pt.fecha_hora DESC;
     `);

@@ -39,6 +39,25 @@ router.get("/sucursales", async (req, res) => {
   }
 });
 
+
+
+//Endpoint para obtener todos los proveedores
+//Endpoint para obtener todos los proveedores
+//Endpoint para obtener todos los proveedores
+//Endpoint para obtener todos los proveedores
+router.get("/proveedores", async (req, res) => {
+  try {
+    const result = await db.query(
+      "SELECT id_proveedor, nombre FROM proveedores WHERE visibilidad = true ORDER BY nombre ASC"
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error("Error al obtener proveedor:", err);
+    res.status(500).json({ error: "Error al obtener provedor" });
+  }
+});
+
+
 // Endpoint para obtener todas las áreas
 // Endpoint para obtener todas las áreas
 // Endpoint para obtener todas las áreas

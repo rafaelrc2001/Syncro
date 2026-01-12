@@ -513,6 +513,17 @@ async function setDefaultDepartment() {
     }
 }
 
+
+const departmentField = document.getElementById('subcontract');
+if (departmentField && !departmentField.value) {
+    const usuario = JSON.parse(localStorage.getItem('usuario'));
+    if (usuario && usuario.departamento) {
+        departmentField.value = usuario.departamento;
+    }
+}
+
+
+
 // === Inicializar todo ===
 document.addEventListener('DOMContentLoaded', async () => {
     await fetchPlantSuggestions();

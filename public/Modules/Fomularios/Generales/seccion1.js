@@ -1,3 +1,219 @@
+// === Inicializar autocompletado combinado ===
+async function initSubcontractAutocomplete() {
+    const subcontractInput = document.getElementById('subcontract');
+    if (!subcontractInput) {
+        console.error('[SUBCONTRACT] No se encontró el input con id="subcontract"');
+        return;
+    }
+
+    console.log('[SUBCONTRACT] Inicializando autocompletado...');
+
+    // 1. Configurar atributos del input
+    subcontractInput.setAttribute('autocomplete', 'off');
+    subcontractInput.setAttribute('spellcheck', 'false');
+
+    // 2. Crear contenedor de sugerencias si no existe
+    let suggestionsContainer = document.getElementById('subcontract-suggestions');
+    if (!suggestionsContainer) {
+        suggestionsContainer = document.createElement('div');
+        suggestionsContainer.id = 'subcontract-suggestions';
+        suggestionsContainer.className = 'autocomplete-suggestions';
+        // Insertar después del input
+        subcontractInput.parentNode.appendChild(suggestionsContainer);
+    }
+
+    // 3. Cargar datos combinados
+    await fetchCombinedSuggestions();
+
+    // 4. Establecer valor por defecto si no tiene
+    if (!subcontractInput.value) {
+        await setDefaultDepartment();
+    }
+
+    // Marcar si es valor por defecto
+    if (subcontractInput.value) {
+        subcontractInput.dataset.default = 'true';
+        subcontractInput.dataset.originalValue = subcontractInput.value;
+    }
+
+    // 5. Evento de input - manejar escritura del usuario
+    subcontractInput.addEventListener('input', function () {
+        const currentValue = this.value.trim();
+        const originalValue = this.dataset.originalValue || '';
+        // Si el usuario empieza a modificar el valor por defecto
+        if (this.dataset.default === 'true' && currentValue !== originalValue) {
+            delete this.dataset.default;
+            delete this.dataset.originalValue;
+        }
+        // Mostrar sugerencias
+        showCombinedSuggestions(this, suggestionsContainer);
+    });
+
+    // 6. Evento de focus - seleccionar texto si es valor por defecto
+    subcontractInput.addEventListener('focus', function () {
+        if (this.dataset.default === 'true') {
+            this.select();
+        }
+        // Si ya hay texto, mostrar sugerencias
+        if (this.value.trim().length > 0 && this.dataset.default !== 'true') {
+            showCombinedSuggestions(this, suggestionsContainer);
+        }
+    });
+
+    // 7. Evento de blur - limpiar si está vacío o manejar texto libre
+    subcontractInput.addEventListener('blur', function () {
+        setTimeout(() => {
+            const value = this.value.trim();
+            // Si el usuario escribió algo pero no seleccionó sugerencia
+            if (value && !allSuggestionsData.some(item => item.displayName === value)) {
+                // Texto libre - guardar como proveedor por defecto
+                sessionStorage.setItem('subcontract_type', 'texto_libre');
+                sessionStorage.setItem('subcontract_nombre', value);
+                console.log('[SUBCONTRACT] Texto libre guardado:', value);
+            }
+            // Ocultar sugerencias
+            suggestionsContainer.style.display = 'none';
+        }, 200);
+    });
+
+    // 8. Navegación con teclado
+    subcontractInput.addEventListener('keydown', function (e) {
+        const suggestions = suggestionsContainer.querySelectorAll('.autocomplete-suggestion');
+        if (suggestions.length === 0) return;
+
+        let activeSuggestion = suggestionsContainer.querySelector('.autocomplete-suggestion.active');
+        let activeIndex = Array.from(suggestions).indexOf(activeSuggestion);
+
+        switch (e.key) {
+            case 'ArrowDown':
+                e.preventDefault();
+                if (activeSuggestion) activeSuggestion.classList.remove('active');
+                const nextIndex = activeIndex < suggestions.length - 1 ? activeIndex + 1 : 0;
+                suggestions[nextIndex].classList.add('active');
+                suggestions[nextIndex].scrollIntoView({ block: 'nearest' });
+                break;
+            case 'ArrowUp':
+                e.preventDefault();
+                if (activeSuggestion) activeSuggestion.classList.remove('active');
+                const prevIndex = activeIndex > 0 ? activeIndex - 1 : suggestions.length - 1;
+                suggestions[prevIndex].classList.add('active');
+                suggestions[prevIndex].scrollIntoView({ block: 'nearest' });
+                break;
+            case 'Enter':
+                e.preventDefault();
+                if (activeSuggestion) {
+                    activeSuggestion.click();
+                }
+                break;
+            case 'Escape':
+                suggestionsContainer.style.display = 'none';
+                break;
+        }
+    });
+
+    // 9. Cerrar al hacer click fuera
+    document.addEventListener('click', function (e) {
+        if (!subcontractInput.contains(e.target) && !suggestionsContainer.contains(e.target)) {
+            suggestionsContainer.style.display = 'none';
+        }
+    });
+
+    console.log('[SUBCONTRACT] Autocompletado inicializado correctamente');
+}
+// === Mostrar sugerencias combinadas de departamento o contratista ===
+function showCombinedSuggestions(input, suggestionsContainer) {
+    const inputValue = input.value.toLowerCase().trim();
+    suggestionsContainer.innerHTML = '';
+    suggestionsContainer.style.display = 'none';
+
+    // Si el input está vacío o es el valor por defecto, no mostrar
+    if (inputValue.length === 0 || input.dataset.default === 'true') {
+        return;
+    }
+
+    // Filtrar sugerencias
+    const filteredData = allSuggestionsData.filter(item =>
+        item.displayName.toLowerCase().includes(inputValue)
+    );
+
+    console.log('[SUBCONTRACT] Filtrado:', {
+        inputValue,
+        totalSugerencias: filteredData.length,
+        sugerencias: filteredData.map(f => f.displayName)
+    });
+
+    // Si no hay resultados
+    if (filteredData.length === 0) {
+        const noResults = document.createElement('div');
+        noResults.className = 'autocomplete-suggestion no-results';
+        noResults.textContent = 'No se encontraron resultados';
+        suggestionsContainer.appendChild(noResults);
+        suggestionsContainer.style.display = 'block';
+        return;
+    }
+
+    // Agrupar por tipo
+    const groupedByType = {
+        departamento: filteredData.filter(item => item.tipo === 'departamento'),
+        proveedor: filteredData.filter(item => item.tipo === 'proveedor')
+    };
+
+    // Crear sugerencias con agrupación visual
+    Object.keys(groupedByType).forEach(tipo => {
+        const items = groupedByType[tipo];
+        if (items.length === 0) return;
+
+        // Encabezado de grupo
+        const groupHeader = document.createElement('div');
+        groupHeader.className = 'autocomplete-group-header';
+        groupHeader.textContent = tipo === 'departamento' ? 'Departamentos' : 'Proveedores';
+        suggestionsContainer.appendChild(groupHeader);
+
+        // Items del grupo
+        items.forEach(item => {
+            const suggestionElement = document.createElement('div');
+            suggestionElement.className = 'autocomplete-suggestion';
+            suggestionElement.dataset.tipo = item.tipo;
+            suggestionElement.dataset.id = item.id || item.id_departamento || item.id_proveedor;
+            // Crear contenido con icono según tipo
+            const icon = item.tipo === 'departamento' ? '🏢' : '👨‍💼';
+            suggestionElement.innerHTML = `
+                <span class="suggestion-icon">${icon}</span>
+                <span class="suggestion-text">${item.displayName}</span>
+                <span class="suggestion-type">${item.tipo}</span>
+            `;
+
+
+         /*   suggestionElement.innerHTML = `
+                
+                <span class="suggestion-text">${item.displayName}</span>
+                <span class="suggestion-type">${item.tipo}</span>
+            `;*/
+
+            suggestionElement.addEventListener('click', function () {
+                input.value = item.displayName;
+                // Eliminar marca de valor por defecto
+                delete input.dataset.default;
+                // Guardar información según tipo
+                if (item.tipo === 'departamento') {
+                    sessionStorage.setItem('subcontract_type', 'departamento');
+                    sessionStorage.setItem('subcontract_id', item.id || item.id_departamento);
+                    sessionStorage.setItem('subcontract_nombre', item.displayName);
+                } else {
+                    sessionStorage.setItem('subcontract_type', 'proveedor');
+                    sessionStorage.setItem('subcontract_id', item.id || item.id_proveedor);
+                    sessionStorage.setItem('subcontract_nombre', item.displayName);
+                }
+                suggestionsContainer.style.display = 'none';
+                console.log(`[SUBCONTRACT] ${item.tipo} seleccionado:`, item.displayName);
+            });
+
+            suggestionsContainer.appendChild(suggestionElement);
+        });
+    });
+
+    suggestionsContainer.style.display = 'block';
+}
 // Autocompletado de planta dinámico desde /api/areas
 let plantSuggestions = [];
 
@@ -524,6 +740,60 @@ if (departmentField && !departmentField.value) {
 
 
 
+// === Cargar sugerencias combinadas de departamentos y proveedores ===
+async function fetchCombinedSuggestions() {
+    try {
+        console.log('[SUBCONTRACT] Cargando sugerencias combinadas...');
+        
+        // Cargar departamentos
+        const deptResponse = await fetch('/api/departamentos');
+        const departamentos = await deptResponse.json();
+        
+        // Cargar proveedores
+        const provResponse = await fetch('/api/proveedores');
+        const proveedores = await provResponse.json();
+        
+        console.log('[SUBCONTRACT] Departamentos cargados:', departamentos.length);
+        console.log('[SUBCONTRACT] Proveedores cargados:', proveedores.length);
+        
+        // Guardar datos individualmente
+        window.departamentos = departamentos;
+        window.proveedores = proveedores;
+        departamentoSuggestions = departamentos.map(d => d.nombre);
+        proveedorSuggestions = proveedores.map(p => p.nombre);
+        
+        // Combinar y marcar tipo
+        allSuggestionsData = [
+            ...departamentos.map(depto => ({
+                ...depto,
+                tipo: 'departamento',
+                displayName: depto.nombre
+            })),
+            ...proveedores.map(prov => ({
+                ...prov,
+                tipo: 'proveedor',
+                displayName: prov.nombre
+            }))
+        ];
+        
+        subcontractSuggestions = allSuggestionsData.map(item => item.displayName);
+        
+        console.log('[SUBCONTRACT] Sugerencias combinadas:', subcontractSuggestions);
+        console.log('[SUBCONTRACT] Datos completos:', allSuggestionsData);
+        
+        return allSuggestionsData;
+        
+    } catch (err) {
+        console.error('[SUBCONTRACT] Error cargando sugerencias combinadas:', err);
+        return [];
+    }
+}
+
+
+
+
+
+
 // === Inicializar todo ===
 document.addEventListener('DOMContentLoaded', async () => {
     await fetchPlantSuggestions();
@@ -534,85 +804,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     initBackButton();
     setDefaultDateTime();
     setDefaultApplicant(); // Llenar automáticamente el responsable del trabajo
-   // await setDefaultDepartment(); // Llenar automáticamente el nombre del departamento
-
-    // --- Lógica de inserción de estatus en sección 1 comentada por migración a sección 4 ---
-    /*
-    // Lógica para enviar estatus al hacer click en siguiente de sección 1
-    const nextBtn = document.querySelector('.next-step[data-next="2"]');
-    if (nextBtn) {
-        nextBtn.addEventListener('click', async function (e) {
-            // Validar campos requeridos antes de enviar estatus
-            const section = document.querySelector('.form-section[data-section="1"]');
-            let isValid = true;
-            if (section) {
-                const requiredFields = section.querySelectorAll('[required]');
-                requiredFields.forEach(field => {
-                    if (!field.value.trim()) {
-                        isValid = false;
-                        field.style.borderColor = '#ff4444';
-                        field.addEventListener('input', function () {
-                            this.style.borderColor = '#dee2e6';
-                        }, { once: true });
-                    }
-                });
-            }
-            if (!isValid) {
-                alert('Por favor complete todos los campos requeridos antes de continuar.');
-                e.preventDefault();
-                return;
-            }
-
-            // Mostrar indicador de carga
-            const originalHTML = this.innerHTML;
-            this.innerHTML = '<i class="ri-loader-4-line spin"></i> Procesando...';
-            this.disabled = true;
-
-            try {
-                // Realizar la petición al endpoint de estatus
-                const response = await fetch('/api/estatus/default', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    credentials: 'same-origin'
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json().catch(() => ({}));
-                    throw new Error(errorData.message || `Error HTTP: ${response.status}`);
-                }
-
-                // Después de recibir la respuesta exitosa del fetch
-                const data = await response.json();
-                if (data && data.data && data.data.id) {
-                    sessionStorage.setItem('id_estatus', data.data.id);
-                    poblarSelectParticipantes(); // <-- Llama aquí la función de la sección 4
-                }
-
-                // Si todo sale bien, dejar que navegacion.js cambie de sección
-            } catch (error) {
-                console.error('Error en la petición de estatus:', error);
-                let errorMessage = 'Error de conexión. ';
-                if (error.name === 'TypeError') {
-                    errorMessage += 'No se pudo conectar al servidor. Verifique que el servidor esté en ejecución.';
-                } else if (error.message && error.message.includes('Failed to fetch')) {
-                    errorMessage += 'No se pudo realizar la petición. Verifique su conexión a internet.';
-                } else if (typeof error === 'string') {
-                    errorMessage = error;
-                } else {
-                    errorMessage += `Detalles: ${error.message || error}`;
-                }
-                alert(errorMessage);
-                e.preventDefault();
-            } finally {
-                this.innerHTML = originalHTML;
-                this.disabled = false;
-            }
-        });
-    }
-    */
+    // await setDefaultDepartment(); // Llenar automáticamente el nombre del departamento
+    await initSubcontractAutocomplete(); // Inicializar autocompletado combinado para subcontract
 });
 
 

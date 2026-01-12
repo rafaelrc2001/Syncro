@@ -111,7 +111,10 @@
 
                             <div class="form-group">
                                 <label for="subcontract">Departamento o contratista</label>
-                                <input type="text" id="subcontract" name="subcontract" required placeholder="Escriba o seleccione...">
+                                <div class="autocomplete-container">
+                                    <input type="text" id="subcontract" name="subcontract" required placeholder="Escriba o seleccione..." class="autocomplete-input" autocomplete="off">
+                                    <div id="subcontract-suggestions" class="autocomplete-suggestions"></div>
+                                </div>
                             </div>
 
                           

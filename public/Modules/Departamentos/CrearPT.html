@@ -18,6 +18,17 @@
     <link rel="stylesheet" href="/CSS/EstiloVer.css" />
   </head>
   <body>
+
+       <style>
+              th.descripcion-col, td.descripcion-col {
+                max-width: 260px;
+                min-width: 160px;
+                width: 220px;
+                word-break: break-word;
+                white-space: pre-line;
+              }
+            </style>
+
     <div class="app-container">
       <!-- Sidebar -->
       <aside class="sidebar">
@@ -124,12 +135,13 @@
           <div class="table-header">
             <h3>Listado de Permisos</h3>
           </div>
+         
           <div class="table-container">
             <table>
               <thead>
                 <tr>
                   <th>Permiso</th>
-                  <th>Descripción del Trabajo</th>
+                  <th class="descripcion-col">Descripción del Trabajo</th>
                   <th>Área</th>
                   <th>Solicitante</th>
                   <th>Fecha y hora</th>
@@ -232,7 +244,7 @@
             style="width: 100%"
             placeholder="Escribe tu comentario aquí..."
           ></textarea>
-        </div>
+                          <th class="descripcion-col">Descripción del Trabajo</th>
         <div class="modal-footer">
           <button class="btn cancelar-btn">
             <i class="ri-arrow-go-back-line"></i> Cancelar

@@ -1,4 +1,28 @@
 document.addEventListener('DOMContentLoaded', function() {
+        // --- Lógica de usuario, avatar y nombre en el sidebar/footer ---
+        const usuario = JSON.parse(localStorage.getItem("usuario"));
+        if (usuario && usuario.nombre && usuario.id_usuario) {
+            // Nombre en el sidebar/footer
+            document.querySelectorAll(".user-info .name").forEach((el) => {
+                el.textContent = usuario.nombre;
+            });
+            // Avatar con iniciales
+            const avatarDiv = document.querySelector(".user-profile .avatar");
+            if (avatarDiv && usuario.nombre) {
+                const partes = usuario.nombre.trim().split(" ");
+                let iniciales = "";
+                if (partes.length === 1) {
+                    iniciales = partes[0].substring(0, 2).toUpperCase();
+                } else {
+                    iniciales = (partes[0][0] + partes[1][0]).toUpperCase();
+                }
+                avatarDiv.textContent = iniciales;
+            }
+            // Mensaje de entrada por consola
+            console.log(
+                `Entraste como supervisor ${usuario.nombre} con el id: ${usuario.id}`
+            );
+        }
     // 1. Mapeo de rutas para el menú del supervisor
     const menuRoutes = {
         'tablero': '/Modules/SupSeguridad/Dash-Supervisor.html',

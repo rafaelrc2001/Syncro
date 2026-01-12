@@ -26,8 +26,8 @@ function mostrarModalRevalidar() {
 						</div>
 					</div>
 					<div style="display:flex; justify-content:flex-end; gap:10px;">
+						<button id="btnGuardarRevalidar" type="button" class="btn-save" style="background:#27ae60; color:#fff; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Guardar</button>			
 						<button id="btnCancelarRevalidar" type="button" class="btn-cancel" style="background:#eee; color:#333; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Cancelar</button>
-						<button id="btnGuardarRevalidar" type="button" class="btn-save" style="background:#27ae60; color:#fff; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Guardar</button>
 					</div>
 				</div>
 			</div>

@@ -1,4 +1,15 @@
 @media print {
+	/* Hacer más grande la firma de revalidaciones al imprimir */
+	.ast-table-revalidaciones td img[alt="Firma"] {
+		width: 120px !important;
+		height: 48px !important;
+		max-width: none !important;
+		max-height: none !important;
+		display: inline-block !important;
+		vertical-align: middle !important;
+	}
+}
+@media print {
 	/* Eliminar todo el espacio vertical entre encabezados principales en impresión */
 	.company-header,
 	.company-header > *,

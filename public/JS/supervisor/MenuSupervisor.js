@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (usuario && usuario.nombre && usuario.id_usuario) {
             // Nombre en el sidebar/footer
             document.querySelectorAll(".user-info .name").forEach((el) => {
-                el.textContent = usuario.nombre;
+               el.textContent = `${usuario.nombre} ${usuario.apellidop || ""} ${usuario.apellidom || ""}`.trim();
             });
             // Avatar con iniciales
             const avatarDiv = document.querySelector(".user-profile .avatar");

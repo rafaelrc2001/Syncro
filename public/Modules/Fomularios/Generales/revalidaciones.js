@@ -128,6 +128,7 @@ function mostrarModalRevalidar() {
 					modal.style.display = 'none';
 					alert('Revalidación guardada correctamente.');
 					console.log('[Revalidaciones] Revalidación guardada correctamente.');
+					location.reload();
 				} else {
 					let data = {};
 					try { data = await response.json(); } catch(e){}
@@ -146,48 +147,42 @@ function mostrarModalRevalidar() {
 }
 
 // Mostrar el botón de revalidar solo si el estatus es 'validado por seguridad'
-document.addEventListener('DOMContentLoaded', async function() {
-	// Obtener id_permiso de la URL
-	const params = new URLSearchParams(window.location.search);
-	const id_permiso = params.get('id');
-	if (!id_permiso) return;
-
-	// Buscar el contenedor donde insertar el botón (después de #contenedor-revalidaciones si existe, si no al final del body)
-	let contenedor = document.getElementById('contenedor-revalidaciones');
-	if (!contenedor) contenedor = document.body;
-
-	// Consultar el estatus
-	try {
-		const resp = await fetch(`/api/estatus-solo/${id_permiso}`);
-		const data = await resp.json();
-		// El backend debe devolver { estatus: '...' }
-		if (data && typeof data.estatus === 'string' && data.estatus.trim().toLowerCase() === 'validado por seguridad') {
-			// Si no existe el botón, lo agregamos
-			if (!document.getElementById('btn-revalidar-permiso')) {
-				const btn = document.createElement('button');
-				btn.id = 'btn-revalidar-permiso';
-				btn.className = 'btn btn-pt1 btn-guardar-azulpetroleo';
-				btn.type = 'button';
-				btn.innerHTML = '<i class="ri-refresh-line icon-revalidar" style="margin-right: 8px;"></i>Revalidar Permiso';
-				// Insertar después del contenedor de revalidaciones si existe, si no al final del body
-				if (contenedor && contenedor.parentNode) {
-					contenedor.parentNode.insertBefore(btn, contenedor.nextSibling);
-				} else {
-					document.body.appendChild(btn);
-				}
-				btn.addEventListener('click', function(e) {
-					console.log('[Revalidaciones] Click en #btn-revalidar-permiso');
-					mostrarModalRevalidar();
-				});
-				console.log('[Revalidaciones] Botón de revalidar insertado y listener agregado');
-			}
-		} else {
-			// Si existe el botón pero no debe mostrarse, lo quitamos
-			const btn = document.getElementById('btn-revalidar-permiso');
-			if (btn) btn.remove();
-			console.log('[Revalidaciones] El estatus no es "validado por seguridad", botón oculto');
-		}
-	} catch (e) {
-		console.error('[Revalidaciones] Error consultando estatus-solo:', e);
+document.addEventListener('DOMContentLoaded', function () {
+	const btn = document.getElementById('btn-revalidar-permiso');
+	if (!btn) {
+		console.warn('[Revalidaciones] No existe el botón');
+		return;
 	}
+
+	btn.addEventListener('click', function () {
+		console.log('[Revalidaciones] Click en botón revalidar');
+		mostrarModalRevalidar();
+	});
 });
+
+
+
+
+document.addEventListener('DOMContentLoaded', async function () {
+    // Obtén el id del permiso desde la URL
+    const params = new URLSearchParams(window.location.search);
+    const id_permiso = params.get('id');
+    if (!id_permiso) return;
+
+    try {
+        const resp = await fetch(`/api/estatus-solo/${id_permiso}`);
+        const data = await resp.json();
+        // Solo muestra el botón si el estatus es "validado por seguridad"
+        const btn = document.getElementById('btn-revalidar-permiso');
+        if (btn) {
+            if (!(data && typeof data.estatus === 'string' && data.estatus.trim().toLowerCase() === 'validado por seguridad')) {
+                btn.style.display = 'none';
+            } else {
+                btn.style.display = ''; // Asegura que se muestre si corresponde
+            }
+        }
+    } catch (e) {
+        console.error('[Revalidaciones] Error consultando estatus-solo:', e);
+    }
+});
+

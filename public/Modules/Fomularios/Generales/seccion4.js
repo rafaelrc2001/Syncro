@@ -822,13 +822,13 @@ ip_creacion,
           modal.querySelector("p").innerHTML = permitText;
           modal.classList.add("active");
             // Enviar datos a n8n después de registrar el permiso
-          /*  if (window.n8nFormHandler) {
+            if (window.n8nFormHandler) {
               try {
                 await window.n8nFormHandler();
               } catch (e) {
                 console.error("Error al enviar a n8n:", e);
               }
-            }*/
+            }
         }
 
       } catch (error) {

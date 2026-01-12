@@ -18,7 +18,7 @@ async function cargarRevalidaciones(id_permiso) {
             html += `<td>${rev.usuario_fecha ? rev.usuario_fecha : "<span style=\"color:#c0392b;font-weight:600;\">Sin dato</span>"}</td>`;
             html += `<td>${rev.hora ? rev.hora : "<span style=\"color:#c0392b;font-weight:600;\">Sin dato</span>"}</td>`;
             html += `<td>${rev.comentario ? rev.comentario : "<span style=\"color:#c0392b;font-weight:600;\">Sin comentario</span>"}</td>`;
-            html += `<td>${rev.firma ? `<img src=\"${rev.firma}\" alt=\"Firma\" style=\"max-width:120px;max-height:60px;\">` : "<span style=\"color:#c0392b;font-weight:600;\">Sin firma</span>"}</td>`;
+                html += `<td>${rev.firma ? `<img src=\"${rev.firma}\" alt=\"Firma\" style=\"max-width:160px;max-height:100px;\">` : "<span style=\"color:#c0392b;font-weight:600;\">Sin firma</span>"}</td>`;
             html += `</tr>`;
         });
         html += `</tbody></table></div>`;

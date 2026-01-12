@@ -180,7 +180,7 @@ function showCombinedSuggestions(input, suggestionsContainer) {
             suggestionElement.innerHTML = `
                 <span class="suggestion-icon">${icon}</span>
                 <span class="suggestion-text">${item.displayName}</span>
-                <span class="suggestion-type">${item.tipo}</span>
+              
             `;
 
 

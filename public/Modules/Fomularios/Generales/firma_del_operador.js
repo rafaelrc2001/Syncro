@@ -20,10 +20,17 @@ document.addEventListener('DOMContentLoaded', function () {
         const respFirma = await fetch(`/api/autorizaciones/ver-firma-operador-area/${idPermiso}`);
         if (respFirma.ok) {
           const data = await respFirma.json();
+          const operadorArea = data && data.data && typeof data.data.operador_area !== 'undefined' ? data.data.operador_area : null;
           const firmaBD = data && data.data && typeof data.data.firma_operador_area !== 'undefined' ? data.data.firma_operador_area : null;
-          if (firmaBD === null || firmaBD === undefined || (typeof firmaBD === 'string' && firmaBD.trim() === '')) {
-            alert('El operador debe firmar antes de continuar.');
-            return;
+          // Si NO hay operador_area, no se requiere firma y el flujo puede continuar
+          if (operadorArea === null || operadorArea === undefined || (typeof operadorArea === 'string' && operadorArea.trim() === '')) {
+            // No hay operador, continuar
+          } else {
+            // Si hay operador, sí se requiere firma
+            if (firmaBD === null || firmaBD === undefined || (typeof firmaBD === 'string' && firmaBD.trim() === '')) {
+              alert('El operador debe firmar antes de continuar.');
+              return;
+            }
           }
         } else {
           alert('No se pudo validar la firma del operador.');

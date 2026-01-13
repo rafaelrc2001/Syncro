@@ -813,6 +813,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (typeof cargarRevalidaciones === 'function') {
             cargarRevalidaciones(idPermiso);
         }
+        // Llama también la función de cierre si existe el idPermiso
+        if (typeof cargarDatosCierre === 'function') {
+            cargarDatosCierre(idPermiso);
+        }
     } else {
         const contenedor = document.getElementById('contenedor-responsables');
         if (contenedor) {
@@ -824,8 +828,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
          const contenedorCierre = document.getElementById('contenedor-cierre');
-        if (contenedorRev) {
-            contenedorRev.innerHTML = '<div class="section-header"><h3>Cierre</h3></div><div class="ast-summary"><table class="ast-table ast-table-revalidaciones"><thead><tr><th>#</th><th>Usuario</th><th>Hora</th><th>Comentario</th><th>Firma</th></tr></thead><tbody><tr><td colspan="5" style="color:#c0392b;font-weight:600;text-align:center;">No se pudo cargar la información de cierre</td></tr></tbody></table></div>';
+        if (contenedorCierre) {
+            contenedorCierre.innerHTML = '<div class="section-header"><h3>Cierre</h3></div><div class="ast-summary"><table class="ast-table ast-table-revalidaciones"><thead><tr><th>#</th><th>Usuario</th><th>Hora</th><th>Comentario</th><th>Firma</th></tr></thead><tbody><tr><td colspan="5" style="color:#c0392b;font-weight:600;text-align:center;">No se pudo cargar la información de cierre</td></tr></tbody></table></div>';
         }
     }
 });

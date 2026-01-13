@@ -253,7 +253,9 @@ function mostrarPermisosFiltrados(filtro) {
   paginaDatos.forEach((permiso) => {
     const row = document.createElement("tr");
     let estatusNorm = (permiso.estatus || "").toLowerCase().trim();
-    const puedeEditar = estatusNorm === "en espera del área" || estatusNorm === "espera liberacion del area";
+    //const puedeEditar = estatusNorm === "en espera del área" || estatusNorm === "espera liberacion del area";
+    const puedeEditar = estatusNorm === "en espera del área" ;
+  
     let badgeClass = "";
     switch (estatusNorm) {
       case "por autorizar": badgeClass = "wait-area"; break;

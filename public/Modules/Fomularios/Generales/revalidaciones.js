@@ -95,7 +95,16 @@ function mostrarModalRevalidar() {
 			}
 			// Obtener hora actual (formato HH:mm:ss)
 			const now = new Date();
-			const hora = now.toLocaleTimeString('es-MX', { hour12: false });
+			const hora = now.toLocaleString('es-MX', {
+				day: '2-digit',
+				month: '2-digit',
+				year: 'numeric',
+				hour: '2-digit',
+				minute: '2-digit',
+				second: '2-digit',
+				hour12: false
+			});
+
 
 			// Validar campos obligatorios
 			if (!id_permiso || !comentario || !firma) {

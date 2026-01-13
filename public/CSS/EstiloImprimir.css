@@ -52,7 +52,7 @@
         overflow-y: auto !important;
         border-radius: 10px !important;
         box-sizing: border-box !important;
-        display: flex !important;
+        display: flex;
         flex-direction: column !important;
         align-items: center !important;
         justify-content: flex-start !important;
@@ -827,4 +827,17 @@ textarea {
         font-size: 0.98em;
         width: 100%;
     }
+}
+
+
+
+
+.modal-confirmar {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  background: rgba(44,62,80,0.25);
 }

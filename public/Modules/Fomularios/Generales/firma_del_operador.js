@@ -11,7 +11,29 @@ document.addEventListener('DOMContentLoaded', function () {
   const idPermiso = params.get('id') || window.idPermisoActual;
 
   if (btnCierrePermiso && modalCierre) {
-    btnCierrePermiso.addEventListener('click', function () {
+    btnCierrePermiso.addEventListener('click', async function () {
+      // Validar firma del operador ANTES de mostrar el modal
+      const params = new URLSearchParams(window.location.search);
+      const idPermiso = params.get('id') || window.idPermisoActual;
+      if (!idPermiso) return;
+      try {
+        const respFirma = await fetch(`/api/autorizaciones/ver-firma-operador-area/${idPermiso}`);
+        if (respFirma.ok) {
+          const data = await respFirma.json();
+          const firmaBD = data && data.data && typeof data.data.firma_operador_area !== 'undefined' ? data.data.firma_operador_area : null;
+          if (firmaBD === null || firmaBD === undefined || (typeof firmaBD === 'string' && firmaBD.trim() === '')) {
+            alert('El operador debe firmar antes de continuar.');
+            return;
+          }
+        } else {
+          alert('No se pudo validar la firma del operador.');
+          return;
+        }
+      } catch (e) {
+        alert('No se pudo validar la firma del operador.');
+        return;
+      }
+      // Si hay firma, mostrar el modal
       modalCierre.style.display = 'block';
     });
   }
@@ -21,11 +43,33 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
   if (btnConfirmarCierre && modalCierre) {
-    btnConfirmarCierre.addEventListener('click', async function () {
-      // Obtener el id_estatus usando el id_permiso
+    btnConfirmarCierre.addEventListener('click', async function (e) {
+      if (e) e.preventDefault(); // Previene submit accidental si está en un <form>
+      // Validar firma del operador en la base de datos antes de continuar
       const params = new URLSearchParams(window.location.search);
       const idPermiso = params.get('id') || window.idPermisoActual;
       if (!idPermiso) return;
+      try {
+        const respFirma = await fetch(`/api/autorizaciones/ver-firma-operador-area/${idPermiso}`);
+        if (respFirma.ok) {
+          const data = await respFirma.json();
+          // Validación robusta: null, undefined, string vacío, o solo espacios
+          const firmaBD = data && data.data && typeof data.data.firma_operador_area !== 'undefined' ? data.data.firma_operador_area : null;
+          console.log('VALIDANDO FIRMA:', firmaBD); // Log para depuración
+          if (firmaBD === null || firmaBD === undefined || (typeof firmaBD === 'string' && firmaBD.trim() === '')) {
+            alert('El operador debe firmar antes de continuar.');
+            return;
+          }
+        } else {
+          alert('No se pudo validar la firma del operador.');
+          return;
+        }
+      } catch (e) {
+        alert('No se pudo validar la firma del operador.');
+        return;
+      }
+
+      // Obtener el id_estatus usando el id_permiso
       let id_estatus = null;
       try {
         const resp = await fetch(`/api/estatus/permiso/${idPermiso}`);
@@ -102,7 +146,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
   }
 });
-
+/*
 // --- Deshabilitar botón de cierre si operador_area requiere firma pero no ha firmado ---
 document.addEventListener('DOMContentLoaded', async function() {
     const btnCierrePermiso = document.getElementById('btn-cierre-permiso');
@@ -178,7 +222,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
     }
 });
-
+*/
 
 
 document.addEventListener('DOMContentLoaded', async function () {

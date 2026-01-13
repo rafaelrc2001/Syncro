@@ -22,46 +22,33 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   if (btnConfirmarCierre && modalCierre) {
     btnConfirmarCierre.addEventListener('click', async function () {
-      // Aquí va la lógica para confirmar el cierre del permiso
-      // Obtener datos necesarios para el cierre
-      const usuario = JSON.parse(localStorage.getItem('usuario'));
-      let firma = '';
-      if (outputFirmaOperador && outputFirmaOperador.value) {
-        firma = outputFirmaOperador.value;
-      }
-      let ip_area = '';
-      let localizacion_area = '';
-      let dispositivo_area = '/';
-      let usuario_departamento = usuario?.id;
-      if (window.datosDispositivoUbicacion) {
-        ip_area = window.datosDispositivoUbicacion.ip || '';
-        localizacion_area = window.datosDispositivoUbicacion.localizacion || '';
-        dispositivo_area = window.datosDispositivoUbicacion.modelo || '/';
-        if (
-          window.datosDispositivoUbicacion.dispositivo &&
-          typeof window.datosDispositivoUbicacion.dispositivo === 'object' &&
-          window.datosDispositivoUbicacion.dispositivo.so &&
-          ['Windows', 'Mac OS', 'MacOS', 'Linux'].includes(window.datosDispositivoUbicacion.dispositivo.so)
-        ) {
-          localizacion_area = '/';
-        }
-      }
-      // Validaciones básicas
+      // Obtener el id_estatus usando el id_permiso
+      const params = new URLSearchParams(window.location.search);
+      const idPermiso = params.get('id') || window.idPermisoActual;
       if (!idPermiso) return;
-      // Payload para cierre
-      const payload = {
-        id_permiso: idPermiso,
-        firma,
-        ip_area,
-        localizacion_area,
-        dispositivo_area,
-        usuario_departamento,
-      };
+      let id_estatus = null;
       try {
-        const respCierre = await fetch('/api/autorizaciones/cierre', {
+        const resp = await fetch(`/api/estatus/permiso/${idPermiso}`);
+        if (resp.ok) {
+          const data = await resp.json();
+          id_estatus = data?.data?.id_estatus;
+        }
+      } catch (e) {
+        alert('No se pudo obtener el estatus del permiso.');
+        modalCierre.style.display = 'none';
+        return;
+      }
+      if (!id_estatus) {
+        alert('No se encontró el estatus para este permiso.');
+        modalCierre.style.display = 'none';
+        return;
+      }
+      // Enviar el cierre
+      try {
+        const respCierre = await fetch('/api/estatus/cierre', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
+          body: JSON.stringify({ id_estatus }),
         });
         let respCierreData = {};
         try {
@@ -204,9 +191,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         const resp = await fetch(`/api/estatus-solo/${id_permiso}`);
         const data = await resp.json();
         // Solo muestra el botón si el estatus es "validado por seguridad"
-        const btn = document.getElementById('btn-revalidar-permiso');
+        const btn = document.getElementById('btn-cierre-permiso');
         if (btn) {
-            if (!(data && typeof data.estatus === 'string' && data.estatus.trim().toLowerCase() === 'espera ')) {
+            if (!(data && typeof data.estatus === 'string' && data.estatus.trim().toLowerCase() === 'espera liberacion del area')) {
                 btn.style.display = 'none';
             } else {
                 btn.style.display = ''; // Asegura que se muestre si corresponde

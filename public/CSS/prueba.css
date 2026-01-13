@@ -53,7 +53,8 @@
     border-bottom: none;
 }
 .form-table-label {
-    flex: 1.2;
+    /*flex: 1.2;*/
+    flex:1;
     display: flex;
     align-items: center;
     font-weight: 500;
@@ -768,7 +769,7 @@ input[type="checkbox"]:checked + .checkbox-custom::after {
 
 .participants-header {
     display: grid;
-    grid-template-columns: 60px 2fr 1.5fr 1.5fr 1.5fr 100px;
+    grid-template-columns: 60px 1.5fr 1fr 1.5fr 1.5fr 100px;
     background: linear-gradient(135deg, var(--azul-industrial) 0%, var(--azul-petroleo) 100%);
     padding: var(--space-lg);
     font-weight: 700;
@@ -781,7 +782,7 @@ input[type="checkbox"]:checked + .checkbox-custom::after {
 
 .participant-row {
     display: grid;
-    grid-template-columns: 60px 2fr 1.5fr 1.5fr 1.5fr 100px;
+    grid-template-columns: 60px .6fr 1.8fr 1.8fr .6fr 100px;
     padding: var(--space-lg);
     border-bottom: 1px solid var(--gris-claro);
     align-items: center;
@@ -1059,4 +1060,19 @@ input[type="checkbox"]:checked + .checkbox-custom::after {
 /* Hacer los h3 de .comparative-table > .table-header blancos */
 .comparative-table > .table-header > h3 {
     color: white !important;
+}
+
+
+
+.participant-field.col-nombre {
+    flex: 2.2;
+    min-width: 180px;
+}
+.participant-field.col-cargo {
+    flex: 2;
+    min-width: 150px;
+}
+.participant-field {
+    flex: 1;
+    min-width: 100px;
 }

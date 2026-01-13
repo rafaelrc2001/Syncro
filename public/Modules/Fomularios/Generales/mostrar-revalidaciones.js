@@ -11,7 +11,7 @@ async function cargarRevalidaciones(id_permiso) {
             return;
         }
         let html = `<div class="section-header"><i class="ri-refresh-line"></i><h3>Revalidaciones</h3></div>`;
-        html += `<div class="ast-summary"><table class="ast-table ast-table-revalidaciones"><thead><tr><th>#</th><th>Usuario</th><th>Hora</th><th>Comentario</th><th>Firma</th></tr></thead><tbody>`;
+        html += `<div class="ast-summary"><table class="ast-table ast-table-revalidaciones"><thead><tr><th>#</th><th>Usuario</th><th>Fecha y Hora</th><th>Comentario</th><th>Firma</th></tr></thead><tbody>`;
         data.revalidaciones.forEach((rev, idx) => {
             html += `<tr>`;
             html += `<td>${idx + 1}</td>`;

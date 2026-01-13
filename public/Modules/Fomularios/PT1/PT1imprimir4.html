@@ -717,11 +717,11 @@
                         </button>
 
 
-                         <button id="btn-cierre-permiso" class="btn btn-pt1 btn-guardar-azulpetroleo" type="button">
+                        <button id="btn-cierre-permiso" class="btn btn-pt1 btn-guardar-azulpetroleo" type="button">
                             <i class="ri-close-circle-line" style="margin-right: 8px;"></i>Autorización cierre del trabajo
                         </button>
 
-                    <!--     <button id="btn-revalidar-permiso" class="btn btn-pt1 btn-guardar-azulpetroleo" type="button">
+                    <!--<button id="btn-revalidar-permiso" class="btn btn-pt1 btn-guardar-azulpetroleo" type="button">
                             <i class="ri-printer-line" style="margin-right: 8px;"></i>Revalidaciones
                         </button>
 
@@ -735,7 +735,28 @@
 
 
 
-   <div id="modalComentario" class="modal-comentario" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(44,62,80,0.25); z-index:1000; justify-content:center; align-items:center;">
+                                        <!-- Modal de confirmación de cierre de permiso -->
+                                        <div id="modalConfirmarCierre" class="modal-confirmar" style="display:none;">
+                                            <div class="modal-confirmar-content">
+                                                <div class="modal-confirmar-icon modal-cierre-icon">
+                                                    <i class="ri-close-circle-line" style="color:#2c3e50; font-size:2em;"></i>
+                                                </div>
+                                                <h3>¿Confirma la recepción del trabajo finalizado?</h3>
+                                                <p class="modal-confirmar-warning">
+                                                    <i class="ri-alert-line" style="color:#e53935; font-size:1.3em; vertical-align:middle; margin-right:6px;"></i>
+                                                    Esta acción no se podrá deshacer y el permiso será marcado como cerrado.
+                                                </p>
+                                                <div class="modal-confirmar-actions">
+                                                    <button id="btnConfirmarCierre" type="button" class="btn-confirm">Confirmar</button>
+                                                    <button id="btnCancelarCierre" type="button" class="btn-cancel">Cancelar</button>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        
+
+                                        <div id="modalComentario" class="modal-comentario" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(44,62,80,0.25); z-index:1000; justify-content:center; align-items:center;">
                                             <div style="background:#fff; border-radius:12px; max-width:400px; width:90vw; padding:2em 1.5em; box-shadow:0 4px 24px rgba(44,62,80,0.18); display:flex; flex-direction:column; gap:1em;">
                                                 <h3 style="margin:0 0 0.5em 0; font-size:1.2em; color:#c0392b;"><i class="ri-close-circle-line" style="margin-right:8px;"></i>Motivo de No Autorización</h3>
                                                 <textarea id="comentarioNoAutorizar" rows="4" style="width:100%; border:1px solid #d0d7de; border-radius:6px; padding:8px; resize:vertical;" placeholder="Escribe el motivo del rechazo..."></textarea>
@@ -835,8 +856,8 @@
         // El contenido se carga normalmente si está autenticado
       })();
     </script>
-     <script src="/Modules/Fomularios/Generales/comentarios.js"></script>
-     <script src="/Modules/Fomularios/Generales/fecha_hora.js"></script>
+    <script src="/Modules/Fomularios/Generales/comentarios.js"></script>
+    <script src="/Modules/Fomularios/Generales/fecha_hora.js"></script>
    <!--  <script src="/Modules/Fomularios/PT1/PT1seccionimprimir4.js"></script>-->        
     <script src="/Modules/Fomularios/PT1/PT1seccionimprimir-unificado.js"></script>
 
@@ -849,7 +870,7 @@
 
     <script src="/Modules/Fomularios/Generales/revalidaciones.js"></script>
 
-  <script src="/Modules/Fomularios/Generales/firma_del_operador.js"></script>
+    <script src="/Modules/Fomularios/Generales/firma_del_operador.js"></script>
 
 
 

@@ -48,11 +48,13 @@ document.addEventListener("DOMContentLoaded", () => {
       newParticipant.innerHTML = `
             <div class="participant-number">${newIndex}</div>
             <div class="participant-field">
-                <input  placeholder="Nombre participante" type="text" name="participant-name-${newIndex}" required>
-            </div>
-            <div class="participant-field">
                 <input type="text" placeholder="Numero de credencial" name="participant-credential-${newIndex}" required>
             </div>
+          
+            <div class="participant-field">
+                <input  placeholder="Nombre participante" type="text" name="participant-name-${newIndex}" required>
+            </div>
+          
             <div class="participant-field">
                 <input type="text" placeholder="Cargo" name="participant-position-${newIndex}" required>
             </div>

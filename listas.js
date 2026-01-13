@@ -187,4 +187,25 @@ router.get("/buscar_departamentos/correo", async (req, res) => {
   }
 });
 
+
+
+
+
+// Endpoint para obtener todos las usuarios
+// Endpoint para obtener todos los usuarios
+// Endpoint para obtener todos los usuarios
+router.get("/usuarios_lista", async (req, res) => {
+  try {
+    const result = await db.query(
+      "SELECT id_usuario,nombre,apellidop,apellidom FROM usuarios WHERE visibilidad = true "
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error("Error al obtener categorias:", err);
+    res.status(500).json({ error: "Error al obtener categorias" });
+  }
+});
+
+
+
 module.exports = router;

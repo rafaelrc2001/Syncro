@@ -767,9 +767,11 @@ input[type="checkbox"]:checked + .checkbox-custom::after {
     box-shadow: var(--shadow-medium);
 }
 
+
+/*aca se ajusta la parte de participantes*/
 .participants-header {
     display: grid;
-    grid-template-columns: 60px 1.5fr 1fr 1.5fr 1.5fr 100px;
+    grid-template-columns: 60px 1.5fr 1.5fr 1.3fr .6fr 100px;
     background: linear-gradient(135deg, var(--azul-industrial) 0%, var(--azul-petroleo) 100%);
     padding: var(--space-lg);
     font-weight: 700;

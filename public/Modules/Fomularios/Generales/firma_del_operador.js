@@ -51,8 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   if (btnConfirmarCierre && modalCierre) {
     btnConfirmarCierre.addEventListener('click', async function (e) {
-      if (e) e.preventDefault(); // Previene submit accidental si está en un <form>
-      // Validar firma del operador en la base de datos antes de continuar
+      if (e) e.preventDefault();
       const params = new URLSearchParams(window.location.search);
       const idPermiso = params.get('id') || window.idPermisoActual;
       if (!idPermiso) return;
@@ -60,12 +59,16 @@ document.addEventListener('DOMContentLoaded', function () {
         const respFirma = await fetch(`/api/autorizaciones/ver-firma-operador-area/${idPermiso}`);
         if (respFirma.ok) {
           const data = await respFirma.json();
-          // Validación robusta: null, undefined, string vacío, o solo espacios
+          const operadorArea = data && data.data && typeof data.data.operador_area !== 'undefined' ? data.data.operador_area : null;
           const firmaBD = data && data.data && typeof data.data.firma_operador_area !== 'undefined' ? data.data.firma_operador_area : null;
-          console.log('VALIDANDO FIRMA:', firmaBD); // Log para depuración
-          if (firmaBD === null || firmaBD === undefined || (typeof firmaBD === 'string' && firmaBD.trim() === '')) {
-            alert('El operador debe firmar antes de continuar.');
-            return;
+          // Lógica correcta: si no hay operador, no se exige firma
+          if (operadorArea === null || operadorArea === undefined || (typeof operadorArea === 'string' && operadorArea.trim() === '')) {
+            // No hay operador, continuar
+          } else {
+            if (firmaBD === null || firmaBD === undefined || (typeof firmaBD === 'string' && firmaBD.trim() === '')) {
+              alert('El operador debe firmar antes de continuar.');
+              return;
+            }
           }
         } else {
           alert('No se pudo validar la firma del operador.');

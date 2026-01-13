@@ -52,70 +52,98 @@ document.addEventListener('DOMContentLoaded', function () {
   if (btnConfirmarCierre && modalCierre) {
     btnConfirmarCierre.addEventListener('click', async function (e) {
       if (e) e.preventDefault();
+      console.log('[CierreArea] Click en Confirmar Cierre');
       const params = new URLSearchParams(window.location.search);
       const idPermiso = params.get('id') || window.idPermisoActual;
-      if (!idPermiso) return;
+      console.log('[CierreArea] idPermiso:', idPermiso);
+      if (!idPermiso) {
+        console.warn('[CierreArea] No se encontró idPermiso');
+        return;
+      }
       try {
         const respFirma = await fetch(`/api/autorizaciones/ver-firma-operador-area/${idPermiso}`);
+        console.log('[CierreArea] Respuesta fetch firma:', respFirma);
         if (respFirma.ok) {
           const data = await respFirma.json();
+          console.log('[CierreArea] Data firma:', data);
           const operadorArea = data && data.data && typeof data.data.operador_area !== 'undefined' ? data.data.operador_area : null;
           const firmaBD = data && data.data && typeof data.data.firma_operador_area !== 'undefined' ? data.data.firma_operador_area : null;
+          console.log('[CierreArea] operadorArea:', operadorArea, '| firmaBD:', firmaBD);
           // Lógica correcta: si no hay operador, no se exige firma
           if (operadorArea === null || operadorArea === undefined || (typeof operadorArea === 'string' && operadorArea.trim() === '')) {
+            console.log('[CierreArea] No hay operador, se permite continuar');
             // No hay operador, continuar
           } else {
             if (firmaBD === null || firmaBD === undefined || (typeof firmaBD === 'string' && firmaBD.trim() === '')) {
+              console.warn('[CierreArea] El operador debe firmar antes de continuar.');
               alert('El operador debe firmar antes de continuar.');
               return;
             }
           }
         } else {
+          console.error('[CierreArea] No se pudo validar la firma del operador. Status:', respFirma.status);
           alert('No se pudo validar la firma del operador.');
           return;
         }
       } catch (e) {
+        console.error('[CierreArea] Error en fetch firma:', e);
         alert('No se pudo validar la firma del operador.');
         return;
       }
 
-      // Obtener el id_estatus usando el id_permiso
-      let id_estatus = null;
+      // Obtener usuario desde localStorage
+      let usuario = null;
       try {
-        const resp = await fetch(`/api/estatus/permiso/${idPermiso}`);
-        if (resp.ok) {
-          const data = await resp.json();
-          id_estatus = data?.data?.id_estatus;
-        }
+        const usuarioObj = JSON.parse(localStorage.getItem('usuario'));
+        console.log('[CierreArea] usuarioObj:', usuarioObj);
+        usuario = usuarioObj && usuarioObj.usuario ? usuarioObj.usuario : null;
       } catch (e) {
-        alert('No se pudo obtener el estatus del permiso.');
+        console.error('[CierreArea] Error parseando usuario localStorage:', e);
+        usuario = null;
+      }
+      if (!usuario) {
+        console.error('[CierreArea] No se pudo obtener el usuario actual.');
+        alert('No se pudo obtener el usuario actual.');
         modalCierre.style.display = 'none';
         return;
       }
-      if (!id_estatus) {
-        alert('No se encontró el estatus para este permiso.');
-        modalCierre.style.display = 'none';
-        return;
-      }
-      // Enviar el cierre
+
+      // Preparar datos para el cierre de área
+      const cierre_area = usuario;
+      const fecha_hora_cierre_area = new Date().toISOString();
+      console.log('[CierreArea] Datos a enviar:', { id_permiso: idPermiso, cierre_area, fecha_hora_cierre_area });
+
+      // Enviar el cierre de área
       try {
-        const respCierre = await fetch('/api/estatus/cierre', {
-          method: 'POST',
+        const respCierre = await fetch('/api/autorizaciones/cierre-area', {
+          method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id_estatus }),
+          body: JSON.stringify({
+            id_permiso: idPermiso,
+            cierre_area,
+            fecha_hora_cierre_area
+          }),
         });
+        console.log('[CierreArea] Respuesta fetch cierre-area:', respCierre);
         let respCierreData = {};
         try {
           respCierreData = await respCierre.json();
-        } catch (e) {}
+          console.log('[CierreArea] Data cierre-area:', respCierreData);
+        } catch (e) {
+          console.error('[CierreArea] Error parseando respuesta cierre-area:', e);
+        }
         if (respCierre.ok) {
-          alert('Cierre de permiso realizado correctamente.');
+          console.log('[CierreArea] Cierre de área realizado correctamente.');
+          alert('Cierre de área realizado correctamente.');
           window.location.reload();
         } else {
-          alert('Error al cerrar el permiso.');
+          const errorMsg = respCierreData && respCierreData.error ? respCierreData.error : 'Error al cerrar el área.';
+          console.error('[CierreArea] Error al cerrar el área:', errorMsg);
+          alert(errorMsg);
         }
       } catch (err) {
-        alert('Error de red al intentar cerrar el permiso.');
+        console.error('[CierreArea] Error de red al intentar cerrar el área:', err);
+        alert('Error de red al intentar cerrar el área.');
       }
       modalCierre.style.display = 'none';
     });

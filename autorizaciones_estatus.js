@@ -1147,9 +1147,9 @@ router.put("/autorizaciones/cierre-area", async (req, res) => {
     const result = await db.query(
       `UPDATE autorizaciones SET 
         cierre_area = $1, 
-        fecha_hora_cierre_area = $2,
+        fecha_hora_cierre_area = $2
       WHERE id_permiso = $3 
-      RETURNING id_permiso, cierre_area, fecha_hora_cierre_area, `,
+      RETURNING id_permiso, cierre_area, fecha_hora_cierre_area`,
       [
         cierre_area || null,
         fecha_hora_cierre_area || null,

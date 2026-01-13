@@ -180,13 +180,52 @@ async function cargarResponsablesAutorizacion(id_permiso) {
 					   html += `<td>${getFirmaImg(info.firma_supervisor, 'firma_supervisor')}</td>`;
 					   html += `</tr>`;
 				   }
-				   html += `</tbody></table></div>`;
-				   contenedor.innerHTML = html;
+				   
+					html += `</tbody></table></div>`;
+		
+				contenedor.innerHTML = html;
 	} catch (error) {
 		document.getElementById("modal-ast-responsable-body").innerHTML = `<tr><td colspan='4'>Error al cargar responsables</td></tr>`;
 		console.error("Error al cargar responsables:", error);
 	}
 }
 
+
+
+
+
+
+
+
+
+
+
 // Llama a la función con el id_permiso que desees mostrar
 // Ejemplo: cargarResponsablesAutorizacion(537);
+
+// Función para mostrar datos de cierre en el div 'contenedor-cierre'
+async function cargarDatosCierre(id_permiso) {
+	try {
+		const response = await fetch(`/api/autorizaciones/detalle/${id_permiso}`);
+		const data = await response.json();
+		console.log('[DEBUG] Respuesta endpoint detalle autorizaciones (cierre):', data);
+		const contenedorCierre = document.getElementById('contenedor-cierre');
+		if (!contenedorCierre) return;
+		let html = '';
+		if (!data.success || !data.data) {
+			html += `<div style="margin-top:24px;text-align:center;font-size:1.1em;color:#c0392b;font-weight:600;">No se encontraron datos de cierre</div>`;
+		} else {
+			const info = data.data;
+			html += `<div style="margin-top:24px;text-align:center;font-size:1.1em;color:#2d3436;font-weight:600;">`;
+			html += `Trabajo finalizado: [${info.cierre_usuario ? info.cierre_usuario : '<span style="color:#c0392b">Sin dato</span>'}]; [${info.fecha_hora_cierre_usuario ? info.fecha_hora_cierre_usuario : '<span style="color:#c0392b">Sin dato</span>'}]<br>`;
+			html += `Permiso de Trabajo Cerrado: [${info.cierre_area ? info.cierre_area : '<span style="color:#c0392b">Sin dato</span>'}]; [${info.fecha_hora_cierre_area ? info.fecha_hora_cierre_area : '<span style="color:#c0392b">Sin dato</span>'}]`;
+			html += `</div>`;
+		}
+		contenedorCierre.innerHTML = html;
+	} catch (error) {
+		if (document.getElementById('contenedor-cierre')) {
+			document.getElementById('contenedor-cierre').innerHTML = `<div style='color:#c0392b;font-weight:600;'>Error al cargar datos de cierre</div>`;
+		}
+		console.error('Error al cargar datos de cierre:', error);
+	}
+}

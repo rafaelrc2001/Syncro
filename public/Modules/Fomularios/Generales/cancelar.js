@@ -98,6 +98,30 @@ if (btnGuardarCancelarPermiso) {
         return;
       }
 
+        // --- Cierre de usuario: enviar nombre completo y fecha/hora actual ---
+      // Obtener el usuario desde localStorage como en los otros módulos
+      const usuarioObj = JSON.parse(localStorage.getItem("usuario"));
+      const usuario = usuarioObj && usuarioObj.usuario ? usuarioObj.usuario : "";
+      const fechaHoraCierre = new Date().toISOString();
+      const respCierreUsuario = await fetch("/api/autorizaciones/cierre-usuario", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id_permiso: idPermiso,
+          cierre_usuario: usuario,
+          fecha_hora_cierre_usuario: fechaHoraCierre
+        })
+      });
+      let dataCierreUsuario = {};
+      try {
+        dataCierreUsuario = await respCierreUsuario.json();
+      } catch (e) {}
+      if (!respCierreUsuario.ok || !dataCierreUsuario.success) {
+        alert("No se pudo guardar el cierre de usuario.");
+        return;
+      }
+      
+
       console.log(
         "🔄 [CANCELAR] Actualizando estatus → /api/estatus/cancelado"
       );

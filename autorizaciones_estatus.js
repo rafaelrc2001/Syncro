@@ -1099,5 +1099,86 @@ router.get('/mostrar-revalidaciones/:id_permiso', async (req, res) => {
 });
 
 
+// PUT para actualizar cierre_usuario y fecha_hora_cierre_usuario por id_permiso
+router.put("/autorizaciones/cierre-usuario", async (req, res) => {
+  const { id_permiso, cierre_usuario, fecha_hora_cierre_usuario } = req.body;
+  if (!id_permiso) {
+    return res.status(400).json({
+      success: false,
+      error: "id_permiso es requerido",
+    });
+  }
+  try {
+    const result = await db.query(
+      `UPDATE autorizaciones SET cierre_usuario = $1, fecha_hora_cierre_usuario = $2 WHERE id_permiso = $3 RETURNING id_permiso, cierre_usuario, fecha_hora_cierre_usuario`,
+      [cierre_usuario || null, fecha_hora_cierre_usuario || null, id_permiso]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: "No se encontró el permiso para actualizar cierre_usuario",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: "Cierre de usuario actualizado exitosamente",
+      data: result.rows[0],
+    });
+  } catch (err) {
+    console.error("Error al actualizar cierre_usuario:", err);
+    res.status(500).json({
+      success: false,
+      error: "Error al actualizar cierre_usuario",
+      details: err.message,
+    });
+  }
+});
+
+// PUT para actualizar cierre_area y fecha_hora_cierre_area por id_permiso
+router.put("/autorizaciones/cierre-area", async (req, res) => {
+  const { id_permiso, cierre_area, fecha_hora_cierre_area } = req.body;
+  if (!id_permiso) {
+    return res.status(400).json({
+      success: false,
+      error: "id_permiso es requerido",
+    });
+  }
+  try {
+    const result = await db.query(
+      `UPDATE autorizaciones SET 
+        cierre_area = $1, 
+        fecha_hora_cierre_area = $2,
+      WHERE id_permiso = $3 
+      RETURNING id_permiso, cierre_area, fecha_hora_cierre_area, `,
+      [
+        cierre_area || null,
+        fecha_hora_cierre_area || null,
+        id_permiso
+      ]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: "No se encontró el permiso para actualizar cierre_area",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: "Cierre de área actualizado exitosamente",
+      data: result.rows[0],
+    });
+  } catch (err) {
+    console.error("Error al actualizar cierre_area:", err);
+    res.status(500).json({
+      success: false,
+      error: "Error al actualizar cierre_area",
+      details: err.message,
+    });
+  }
+});
+
+
+
+
 // Dejar solo un module.exports al final
 module.exports = router;

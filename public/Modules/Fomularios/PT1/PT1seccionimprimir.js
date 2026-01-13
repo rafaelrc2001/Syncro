@@ -5,6 +5,10 @@
 //esta es la nueva funcion para mostrar
 
 
+const usuarioObj = JSON.parse(localStorage.getItem("usuario"));
+const usuario = usuarioObj && usuarioObj.usuario ? usuarioObj.usuario : "";
+
+
 // Ejecutar consulta automática al cargar si hay id en la URL
 document.addEventListener("DOMContentLoaded", function () {
   const params = new URLSearchParams(window.location.search);
@@ -543,6 +547,37 @@ document.addEventListener("DOMContentLoaded", function () {
           alert("No se pudo guardar el comentario de cierre.");
           return;
         }
+
+
+
+         // --- Cierre de usuario: enviar nombre completo y fecha/hora actual ---
+        // Obtener el usuario desde localStorage como en tabla-crearpt.js
+        const usuarioObj = JSON.parse(localStorage.getItem("usuario"));
+        const usuario = usuarioObj && usuarioObj.usuario ? usuarioObj.usuario : "";
+        // Fecha/hora actual en formato ISO
+        const fechaHoraCierre = new Date().toISOString();
+        // Mostrar por consola el usuario que se enviará
+        console.log('[Cierre usuario] Valor enviado:', usuario);
+        // Llamar al endpoint de cierre_usuario
+        const respCierreUsuario = await fetch("/api/autorizaciones/cierre-usuario", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id_permiso: idPermiso,
+            cierre_usuario: usuario,
+            fecha_hora_cierre_usuario: fechaHoraCierre
+          })
+        });
+        let dataCierreUsuario = {};
+        try {
+          dataCierreUsuario = await respCierreUsuario.json();
+        } catch (e) {}
+        if (!respCierreUsuario.ok || !dataCierreUsuario.success) {
+          alert("No se pudo guardar el cierre de usuario.");
+          return;
+        }
+
+        
         const payloadEstatus = { id_estatus: idEstatus };
         const respEstatus = await fetch(endpoint, {
           method: "POST",

@@ -53,7 +53,8 @@
     border-bottom: none;
 }
 .form-table-label {
-    flex: 1.2;
+    /*flex: 1.2;*/
+    flex:1;
     display: flex;
     align-items: center;
     font-weight: 500;
@@ -171,14 +172,12 @@
     --gris-claro: #d4d2d2;
     --gris-suave: #F1F3F5;
     
-    --naranja-primario: #f6c103
-    ;
-    --naranja-seguridad: #f6c103;
+    --naranja-primario: #eac102;
+    --naranja-seguridad: #eac102;
     --naranja-suave: #ffffff;
     
-    /*COLOR BARRA SUPERIOR PT DERECHA*/
-    --verde-industrial: #f6c103;
-    --verde-exito: #f6c103;
+    --verde-industrial: #eac102;
+    --verde-exito: #eac102;
     --verde-suave: #E8F5F2;
     
     --rojo-alerta: #dc3545;
@@ -249,7 +248,7 @@ body {
     left: 0;
     right: 0;
     height: 4px;
-    background:var(--naranja-seguridad);/*PRIMERA LINEA DE LA PAGINA*/
+    background: linear-gradient(90deg, var(--azul-industrial) 0%, var(--naranja-primario) 50%, var(--verde-industrial) 100%);
     z-index: 1000;
 }
 
@@ -260,7 +259,7 @@ body {
     align-items: center;
     margin-bottom: var(--space-xl);
     padding: var(--space-md) var(--space-lg);
-    background:var(--azul-petroleo);/*TITULO PERMISO DE TRABAJO*/
+    background: linear-gradient(135deg, var(--azul-industrial) 0%, var(--azul-petroleo) 100%);
     border-radius: var(--radius-lg);
     color: white;
     box-shadow: var(--shadow-section);
@@ -275,7 +274,7 @@ body {
     left: 0;
     right: 0;
     height: 3px;
-    background:var(--naranja-seguridad);/*LINEA DE TITULO PERMISO DE TRABAJO*/
+    background: var(--naranja-primario);
 }
 
 .main-header h1 {
@@ -346,12 +345,12 @@ body {
     font-size: 0.66rem;
     font-weight: 600;
     text-align: center;
-    color: var(--gris-medio);/*TITULO DE SECUENCIA-PERMISO,PARTICPANTES,AST*/
+    color: var(--gris-medio);
     transition: all var(--transition-base);
 }
 
 .step.active .step-title {
-    color: var(--azul-industrial);/*TITULO DE SECUENCIA-ENCABEZADO*/
+    color: var(--azul-industrial);
     font-weight: 700;
 }
 
@@ -370,7 +369,7 @@ body {
 }
 
 .form-container {
-    background: var(--blanco-puro);/*FONDO*/
+    background: var(--blanco-puro);
     border-radius: 6px;
     box-shadow: var(--shadow-section);
     padding: 1rem;
@@ -387,7 +386,7 @@ body {
     left: 0;
     right: 0;
     height: 4px;
-    background:white;/*TERCERA LINEA*/
+    background: linear-gradient(90deg, var(--naranja-primario) 0%, var(--azul-acento) 100%);
 }
 
 
@@ -400,7 +399,7 @@ body {
     gap: var(--space-md);
     margin-bottom: var(--space-xl);
     padding: var(--space-md) var(--space-lg);
-    background: var(--azul-petroleo);/*fondo informacion gral del permiso*/
+    background: linear-gradient(135deg, var(--azul-industrial) 0%, var(--azul-petroleo) 100%);
     border-radius: var(--radius-lg);
     color: white;
     box-shadow: var(--shadow-medium);
@@ -415,7 +414,7 @@ body {
     left: 0;
     right: 0;
     height: 3px;
-    background: var(--naranja-seguridad);/*4 LINEA INFORMACION GRAL DEL PERMISO*/
+    background: var(--naranja-primario);
 }
 
 .form-icon {
@@ -633,10 +632,10 @@ select {
     transition: all var(--transition-base);
 }
 
-/*radio button "tiene que intervenir un equipo"*/
+
 input[type="radio"]:checked + .radio-custom {
-    border-color:var(--naranja-seguridad);
-    background: var(--naranja-seguridad);
+    border-color: var(--naranja-primario);
+    background: var(--naranja-primario);
 }
 
 input[type="radio"]:checked + .radio-custom::after {
@@ -651,9 +650,8 @@ input[type="radio"]:checked + .radio-custom::after {
     border-radius: 50%;
 }
 
-/*hover(al pasar el mouses) del radio button "tiene que intervenir un equipo?*/
 .radio-option:hover .radio-custom {
-    border-color:var(--naranja-seguridad);
+    border-color: var(--naranja-primario);
     box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.1);
 }
 
@@ -769,9 +767,11 @@ input[type="checkbox"]:checked + .checkbox-custom::after {
     box-shadow: var(--shadow-medium);
 }
 
+
+/*aca se ajusta la parte de participantes*/
 .participants-header {
     display: grid;
-    grid-template-columns: 60px 2fr 1.5fr 1.5fr 1.5fr 100px;
+    grid-template-columns: 60px 1.5fr 1.5fr 1.3fr .6fr 100px;
     background: linear-gradient(135deg, var(--azul-industrial) 0%, var(--azul-petroleo) 100%);
     padding: var(--space-lg);
     font-weight: 700;
@@ -784,7 +784,7 @@ input[type="checkbox"]:checked + .checkbox-custom::after {
 
 .participant-row {
     display: grid;
-    grid-template-columns: 60px 2fr 1.5fr 1.5fr 1.5fr 100px;
+    grid-template-columns: 60px .6fr 1.8fr 1.8fr .6fr 100px;
     padding: var(--space-lg);
     border-bottom: 1px solid var(--gris-claro);
     align-items: center;
@@ -893,29 +893,24 @@ input[type="checkbox"]:checked + .checkbox-custom::after {
     text-decoration: none;
 }
 
-/*boton siguiente fondo*/
 .btn.primary {
-    background: var(--azul-acento);
+    background: linear-gradient(135deg, var(--naranja-primario) 0%, var(--naranja-seguridad) 100%);
     color: white;
 }
 
-/*boton siguiente hover(al pasar el mouse)*/
 .btn.primary:hover {
-    background:var(--azul-acento);
+    background: linear-gradient(135deg, var(--naranja-seguridad) 0%, #E55A00 100%);
     transform: translateY(-2px);
     box-shadow: var(--shadow-medium);
 }
 
-/*boton volver fondo*/
 .btn.secondary {
-    background: var(--azul-acento);
+    background: linear-gradient(135deg, var(--azul-acento) 0%, var(--azul-petroleo) 100%);
     color: white;
-    border: 1px solid var(--azul-claro);
 }
 
-/*hover(al pasar el mouse), boton volver*/
 .btn.secondary:hover {
-    background: var(--azul-acento);
+    background: linear-gradient(135deg, var(--azul-petroleo) 0%, var(--azul-industrial) 100%);
     transform: translateY(-2px);
     box-shadow: var(--shadow-medium);
 }
@@ -1067,4 +1062,19 @@ input[type="checkbox"]:checked + .checkbox-custom::after {
 /* Hacer los h3 de .comparative-table > .table-header blancos */
 .comparative-table > .table-header > h3 {
     color: white !important;
+}
+
+
+
+.participant-field.col-nombre {
+    flex: 2.2;
+    min-width: 180px;
+}
+.participant-field.col-cargo {
+    flex: 2;
+    min-width: 150px;
+}
+.participant-field {
+    flex: 1;
+    min-width: 100px;
 }

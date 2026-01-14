@@ -555,7 +555,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const usuarioObj = JSON.parse(localStorage.getItem("usuario"));
         const usuario = usuarioObj && usuarioObj.usuario ? usuarioObj.usuario : "";
         // Fecha/hora actual en formato ISO
-        const fechaHoraCierre = new Date().toISOString();
+        const fechaHoraCierre = new Date().toLocaleString('sv-SE', { timeZone: 'America/Mexico_City' }).replace(' ', 'T');
         // Mostrar por consola el usuario que se enviará
         console.log('[Cierre usuario] Valor enviado:', usuario);
         // Llamar al endpoint de cierre_usuario

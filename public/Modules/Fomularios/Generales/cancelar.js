@@ -102,7 +102,7 @@ if (btnGuardarCancelarPermiso) {
       // Obtener el usuario desde localStorage como en los otros módulos
       const usuarioObj = JSON.parse(localStorage.getItem("usuario"));
       const usuario = usuarioObj && usuarioObj.usuario ? usuarioObj.usuario : "";
-      const fechaHoraCierre = new Date().toISOString();
+      const fechaHoraCierre = new Date().toLocaleString('sv-SE', { timeZone: 'America/Mexico_City' }).replace(' ', 'T');
       const respCierreUsuario = await fetch("/api/autorizaciones/cierre-usuario", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },

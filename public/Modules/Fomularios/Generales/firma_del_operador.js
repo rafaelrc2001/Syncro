@@ -110,7 +110,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
       // Preparar datos para el cierre de área
       const cierre_area = usuario;
-      const fecha_hora_cierre_area = new Date().toISOString();
+      // Obtener la hora local de México en formato ISO
+      const fecha_hora_cierre_area = new Date().toLocaleString('sv-SE', { timeZone: 'America/Mexico_City' }).replace(' ', 'T');
       console.log('[CierreArea] Datos a enviar:', { id_permiso: idPermiso, cierre_area, fecha_hora_cierre_area });
 
       // Enviar el cierre de área

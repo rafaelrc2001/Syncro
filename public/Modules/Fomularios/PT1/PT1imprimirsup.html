@@ -622,10 +622,11 @@
                 </div>
                 
           <!-- Sección 5: Aprobaciones -->
-           <div id="contenedor-responsables"></div>
+            <div id="contenedor-responsables"></div>
 
             <div id="contenedor-revalidaciones"></div>
 
+            <div id="contenedor-cierre"></div>
 
                 <div id="comentarios-permiso" style="display:none; margin-top:2em;">
                 <div style="background:#fff; border-radius:10px; box-shadow:0 2px 8px rgba(44,62,80,0.08); padding:1.2em 1.5em; ">
@@ -790,6 +791,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (typeof cargarRevalidaciones === 'function') {
             cargarRevalidaciones(idPermiso);
         }
+         // Llama también la función de cierre si existe el idPermiso
+        if (typeof cargarDatosCierre === 'function') {
+            cargarDatosCierre(idPermiso);
+        }
     } else {
         const contenedor = document.getElementById('contenedor-responsables');
         if (contenedor) {
@@ -798,6 +803,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const contenedorRev = document.getElementById('contenedor-revalidaciones');
         if (contenedorRev) {
             contenedorRev.innerHTML = '<div class="section-header"><h3>Revalidaciones</h3></div><div class="ast-summary"><table class="ast-table ast-table-revalidaciones"><thead><tr><th>#</th><th>Usuario</th><th>Hora</th><th>Comentario</th><th>Firma</th></tr></thead><tbody><tr><td colspan="5" style="color:#c0392b;font-weight:600;text-align:center;">No se pudo cargar la información de revalidaciones</td></tr></tbody></table></div>';
+        }
+          const contenedorCierre = document.getElementById('contenedor-cierre');
+        if (contenedorCierre) {
+            contenedorCierre.innerHTML = '<div class="section-header"><h3>Cierre</h3></div><div class="ast-summary"><table class="ast-table ast-table-revalidaciones"><thead><tr><th>#</th><th>Usuario</th><th>Hora</th><th>Comentario</th><th>Firma</th></tr></thead><tbody><tr><td colspan="5" style="color:#c0392b;font-weight:600;text-align:center;">No se pudo cargar la información de cierre</td></tr></tbody></table></div>';
         }
     }
 });

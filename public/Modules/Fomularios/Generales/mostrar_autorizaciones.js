@@ -213,10 +213,10 @@ async function cargarDatosCierre(id_permiso) {
 		if (!contenedorCierre) return;
 		let html = '';
 		if (!data.success || !data.data) {
-			html += `<div style="margin-top:24px;text-align:center;font-size:1.1em;color:#c0392b;font-weight:600;">No se encontraron datos de cierre</div>`;
+			html += `<div style="margin-top:24px;text-align:center;font-size:.8em;color:#c0392b;font-weight:100;">No se encontraron datos de cierre</div>`;
 		} else {
 			const info = data.data;
-			html += `<div style="margin-top:24px;text-align:center;font-size:1.1em;color:#2d3436;font-weight:600;">`;
+			html += `<div style="margin-top:24px;text-align:center;font-size:.8em;color:#2d3436;font-weight:100;">`;
 			html += `Trabajo finalizado: [${info.cierre_usuario ? info.cierre_usuario : '<span style="color:#c0392b">Sin dato</span>'}]; [${info.fecha_hora_cierre_usuario ? info.fecha_hora_cierre_usuario : '<span style="color:#c0392b">Sin dato</span>'}]<br>`;
 			html += `Permiso de Trabajo Cerrado: [${info.cierre_area ? info.cierre_area : '<span style="color:#c0392b">Sin dato</span>'}]; [${info.fecha_hora_cierre_area ? info.fecha_hora_cierre_area : '<span style="color:#c0392b">Sin dato</span>'}]`;
 			html += `</div>`;

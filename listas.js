@@ -208,4 +208,26 @@ router.get("/usuarios_lista", async (req, res) => {
 
 
 
+// Endpoint para obtener correos por departamento y rol sea 
+// Endpoint para obtener correos por departamento
+// Endpoint para obtener todos los usuarios
+
+router.get('/consulta-correo-por-departamento', async (req, res) => {
+  const departamento = req.query.departamento;
+  if (!departamento) {
+    return res.status(400).json({ error: 'Falta el parámetro departamento' });
+  }
+  try {
+    const query = "SELECT correo FROM usuarios WHERE departamento = ? AND rol = 'departamentos'";
+    db.query(query, [departamento], (err, results) => {
+      if (err) {
+        return res.status(500).json({ error: 'Error en la consulta', details: err });
+      }
+      res.json({ correos: results.map(r => r.correo) });
+    });
+  } catch (e) {
+    res.status(500).json({ error: 'Error interno', details: e });
+  }
+});
+
 module.exports = router;

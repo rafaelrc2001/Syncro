@@ -152,7 +152,7 @@ async function cargarResponsablesAutorizacion(id_permiso) {
 					   // Fila 3: Supervisor
 					   html += `<tr>`;
 					   html += `<td>${mostrarCampo(info.supervisor, 'supervisor')}</td>`;
-					   html += `<td>Supervisor</td>`;
+					   html += `<td>Supervisor de Seguridad</td>`;
 					   html += `<td style='vertical-align:middle;padding:6px 8px;'>` +
 						   `<div style='font-size:5px;line-height:1.3;'>` +
 						`${info.supervisor ? info.supervisor: '<span style=\'color:#c0392b\'>Sin dato</span>'};` +

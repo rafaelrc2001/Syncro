@@ -133,10 +133,53 @@ document.addEventListener('DOMContentLoaded', function () {
         } catch (e) {
           console.error('[CierreArea] Error parseando respuesta cierre-area:', e);
         }
-        if (respCierre.ok) {
-          console.log('[CierreArea] Cierre de área realizado correctamente.');
-          alert('Cierre de área realizado correctamente.');
-          window.location.reload();
+        if (respCierre.ok && respCierreData && respCierreData.success) {
+          // Ahora obtener el id_estatus usando el id_permiso
+          try {
+            const respEstatus = await fetch(`/api/estatus/permiso/${idPermiso}`);
+            console.log('[CierreArea] Respuesta fetch estatus/permiso:', respEstatus);
+            if (respEstatus.ok) {
+              const dataEstatus = await respEstatus.json();
+              console.log('[CierreArea] Data estatus/permiso:', dataEstatus);
+              const id_estatus = dataEstatus && dataEstatus.data && dataEstatus.data.id_estatus;
+              if (id_estatus) {
+                // Actualizar estatus a 'cierre'
+                const respSetCierre = await fetch('/api/estatus/cierre', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ id_estatus }),
+                });
+                console.log('[CierreArea] Respuesta fetch estatus/cierre:', respSetCierre);
+                let respSetCierreData = {};
+                try {
+                  respSetCierreData = await respSetCierre.json();
+                  console.log('[CierreArea] Data estatus/cierre:', respSetCierreData);
+                } catch (e) {
+                  console.error('[CierreArea] Error parseando respuesta estatus/cierre:', e);
+                }
+                if (respSetCierre.ok && respSetCierreData && respSetCierreData.success) {
+                  alert('Cierre de área realizado correctamente.');
+                  window.location.reload();
+                } else {
+                  const errorMsg = respSetCierreData && respSetCierreData.error ? respSetCierreData.error : 'Error al actualizar el estatus a cierre.';
+                  console.error('[CierreArea] Error al actualizar estatus a cierre:', errorMsg);
+                  alert(errorMsg);
+                }
+              } else {
+                console.warn('[CierreArea] No se encontró id_estatus en la respuesta:', dataEstatus);
+                alert('No se encontró el estatus para este permiso. Por favor, contacte a soporte o verifique que el permiso esté correctamente registrado.');
+              }
+            } else if (respEstatus.status === 404) {
+              console.warn('[CierreArea] estatus/permiso devolvió 404 para id_permiso:', idPermiso);
+              alert('No existe un estatus registrado para este permiso. No se puede actualizar a cierre.');
+            } else {
+              console.error('[CierreArea] Error inesperado al obtener estatus/permiso:', respEstatus);
+              alert('No se pudo obtener el estatus del permiso. Intente de nuevo o contacte a soporte.');
+            }
+          } catch (e) {
+            console.error('[CierreArea] Error al obtener o actualizar estatus:', e);
+            alert('Error al actualizar el estatus a cierre.');
+          }
         } else {
           const errorMsg = respCierreData && respCierreData.error ? respCierreData.error : 'Error al cerrar el área.';
           console.error('[CierreArea] Error al cerrar el área:', errorMsg);

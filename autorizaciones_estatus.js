@@ -1178,7 +1178,39 @@ router.put("/autorizaciones/cierre-area", async (req, res) => {
 });
 
 
-
+// Endpoint para obtener el id_estatus a partir de un id_permiso
+router.get("/estatus/buscar_id_estatus/:id_permiso", async (req, res) => {
+  const { id_permiso } = req.params;
+  if (!id_permiso) {
+    return res.status(400).json({
+      success: false,
+      error: "id_permiso es requerido",
+    });
+  }
+  try {
+    const result = await db.query(
+      "SELECT id_estatus FROM estatus WHERE id_permiso = $1 LIMIT 1",
+      [id_permiso]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: "No se encontró estatus para ese permiso",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      id_estatus: result.rows[0].id_estatus,
+    });
+  } catch (err) {
+    console.error("Error al consultar id_estatus por id_permiso:", err);
+    res.status(500).json({
+      success: false,
+      error: "Error al consultar id_estatus",
+      details: err.message,
+    });
+  }
+});
 
 // Dejar solo un module.exports al final
 module.exports = router;

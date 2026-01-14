@@ -115,7 +115,8 @@ window.n8nCierreHandler = async function () {
 	// Enviar datos a n8n
 	try {
 		const response = await fetch(
-			"https://7mhxkntt-5678.usw3.devtunnels.ms/webhook-test/04937dcf-9408-4bd1-89d9-faf24ed2e02d",
+			//"https://7mhxkntt-5678.usw3.devtunnels.ms/webhook-test/04937dcf-9408-4bd1-89d9-faf24ed2e02d",
+			"https://7mhxkntt-5678.usw3.devtunnels.ms/webhook/04937dcf-9408-4bd1-89d9-faf24ed2e02d",
 			{
 				method: "POST",
 				headers: {
@@ -135,3 +136,21 @@ window.n8nCierreHandler = async function () {
 	}
 	return true;
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

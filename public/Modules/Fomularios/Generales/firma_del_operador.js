@@ -138,15 +138,6 @@ document.addEventListener('DOMContentLoaded', function () {
           try {
             const respEstatus = await fetch(`/api/estatus/permiso/${idPermiso}`);
             console.log('[CierreArea] Respuesta fetch estatus/permiso:', respEstatus);
-            
-             if (await window.n8nCierreHandler) {
-                    try {
-                      await window.n8nCierreHandler(); // No await, solo dispara
-                    } catch (e) {
-                      console.warn('No se pudo enviar la notificación de cierre a n8n:', e);
-                    }
-                  }
-            
             if (respEstatus.ok) {
               const dataEstatus = await respEstatus.json();
               console.log('[CierreArea] Data estatus/permiso:', dataEstatus);
@@ -167,9 +158,36 @@ document.addEventListener('DOMContentLoaded', function () {
                   console.error('[CierreArea] Error parseando respuesta estatus/cierre:', e);
                 }
                 if (respSetCierre.ok && respSetCierreData && respSetCierreData.success) {
+
+                  //mensaje de carga
+
+                    let loadingDiv = document.createElement('div');
+                    loadingDiv.id = 'loading-cierre-area';
+                    loadingDiv.style.position = 'fixed';
+                    loadingDiv.style.top = '0';
+                    loadingDiv.style.left = '0';
+                    loadingDiv.style.width = '100vw';
+                    loadingDiv.style.height = '100vh';
+                    loadingDiv.style.background = 'rgba(0,0,0,0.4)';
+                    loadingDiv.style.display = 'flex';
+                    loadingDiv.style.alignItems = 'center';
+                    loadingDiv.style.justifyContent = 'center';
+                    loadingDiv.style.zIndex = '9999';
+                    loadingDiv.innerHTML = '<div style="background:#fff;padding:2em 3em;border-radius:8px;font-size:1.3em;font-weight:600;">Cargando cierre de área...</div>';
+                    document.body.appendChild(loadingDiv);
+
+
                   // Enviar notificación de cierre a n8n, pero no bloquear el flujo si falla
-                 
-                  await window.n8nCierreHandler();
+                  try {
+                    await window.n8nCierreHandler();
+                  } catch (e) {
+                    console.warn('No se pudo enviar la notificación de cierre a n8n:', e);
+                  }
+
+                    // Ocultar mensaje de cargando
+                     document.body.removeChild(loadingDiv);
+
+
                   alert('Cierre de área realizado correctamente.');
                   window.location.reload();
                 } else {

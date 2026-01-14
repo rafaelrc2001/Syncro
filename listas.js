@@ -212,22 +212,33 @@ router.get("/usuarios_lista", async (req, res) => {
 // Endpoint para obtener correos por departamento
 // Endpoint para obtener todos los usuarios
 
+
+
 router.get('/consulta-correo-por-departamento', async (req, res) => {
   const departamento = req.query.departamento;
   if (!departamento) {
     return res.status(400).json({ error: 'Falta el parámetro departamento' });
   }
   try {
-    const query = "SELECT correo FROM usuarios WHERE departamento = ? AND rol = 'departamentos'";
-    db.query(query, [departamento], (err, results) => {
-      if (err) {
-        return res.status(500).json({ error: 'Error en la consulta', details: err });
-      }
-      res.json({ correos: results.map(r => r.correo) });
-    });
+    const query = "SELECT correo FROM usuarios WHERE departamento = $1 AND rol = 'departamentos'";
+    const result = await db.query(query, [departamento]);
+    res.json({ correos: result.rows.map(r => r.correo) });
   } catch (e) {
     res.status(500).json({ error: 'Error interno', details: e });
   }
 });
+
+
+// API para consultar correos de supervisores
+router.get('/correo-supervisor', async (req, res) => {
+  try {
+    const query = "SELECT correo FROM usuarios WHERE rol = 'supervisor'";
+    const result = await db.query(query);
+    res.json({ correos: result.rows.map(r => r.correo) });
+  } catch (e) {
+    res.status(500).json({ error: 'Error interno', details: e });
+  }
+});
+
 
 module.exports = router;

@@ -20,15 +20,45 @@ window.n8nFormHandler = async function () {
   let id_departamento = null;
   let nombre_departamento = "";
   try {
-    const usuario = JSON.parse(localStorage.getItem("usuario"));
-    if (usuario && usuario.id) {
-      id_departamento = Number(usuario.id);
+  const usuario = JSON.parse(localStorage.getItem("usuario"));
+  if (usuario && usuario.id) {
+    id_departamento = Number(usuario.id);
+  }
+} catch (e) {
+  console.error("Error leyendo usuario de localStorage", e);
+}
+
+  // Obtener el departamento seleccionado
+  // Obtener el valor del campo departamento del formulario
+  const departamentoSeleccionado = document.getElementById("departamento")?.value || formData?.departamento;
+
+
+  // Consultar la API para obtener los correos del departamento
+  let correosDepartamento = [];
+  try {
+    const resp = await fetch(`/api/consulta-correo-por-departamento?departamento=${encodeURIComponent(departamentoSeleccionado)}`);
+    if (resp.ok) {
+      const data = await resp.json();
+      correosDepartamento = Array.isArray(data.correos) ? data.correos : [];
     }
   } catch (e) {
-    id_departamento = null;
+    correosDepartamento = [];
   }
 
- 
+  // Consultar la API para obtener los correos de supervisores y agregarlos
+  let correosSupervisores = [];
+  try {
+    const respSup = await fetch('/api/correo-supervisor');
+    if (respSup.ok) {
+      const dataSup = await respSup.json();
+      correosSupervisores = Array.isArray(dataSup.correos) ? dataSup.correos : [];
+    }
+  } catch (e) {
+    correosSupervisores = [];
+  }
+
+  // Unir ambos arreglos y eliminar duplicados
+  const todosCorreos = Array.from(new Set([...correosDepartamento, ...correosSupervisores]));
 
   const formData = {
     id: window.permitId,
@@ -44,14 +74,8 @@ window.n8nFormHandler = async function () {
     descripcionTrabajo: document.getElementById("work-description")?.value,
     fechaSolicitud: fechaSolicitudLocal,
     mantenimiento: document.getElementById("maintenance-type")?.value,
-    departamento: document.getElementById("departamento")?.value,
-
-
-
-    // nombrePermiso: nombrePermiso, // puedes eliminar esta línea si no la necesitas duplicada
-    correo:
-      window.correoDepartamento || document.getElementById("correo")?.value,
-    //correo: window.correoDepartamento ? window.correoDepartamento : '',
+    departamento: departamentoSeleccionado,
+    correo: todosCorreos.join(","), // Enviar como string separado por comas
   };
 
   // Imprimir los datos en consola para prueba
@@ -59,8 +83,8 @@ window.n8nFormHandler = async function () {
 
   // Enviar datos a n8n
   const response = await fetch(
-   //"https://7mhxkntt-5678.usw3.devtunnels.ms/webhook/formulario-PT",
-   "https://7mhxkntt-5678.usw3.devtunnels.ms/webhook-test/formulario-PT",
+   "https://7mhxkntt-5678.usw3.devtunnels.ms/webhook/formulario-PT",
+   //"https://7mhxkntt-5678.usw3.devtunnels.ms/webhook-test/formulario-PT",
     {
       method: "POST",
       headers: {
@@ -78,9 +102,17 @@ window.n8nFormHandler = async function () {
   }
 
   return true;
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    // throw new Error(
+    //   errorData.message || "Error en la respuesta del servidor n8n"
+    // );
+  }
+
+  return true;
 };
 
 // Inicialización si es necesario
 document.addEventListener("DOMContentLoaded", function () {
   // Inicialización si es necesaria
-});
+})

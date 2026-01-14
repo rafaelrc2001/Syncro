@@ -138,6 +138,15 @@ document.addEventListener('DOMContentLoaded', function () {
           try {
             const respEstatus = await fetch(`/api/estatus/permiso/${idPermiso}`);
             console.log('[CierreArea] Respuesta fetch estatus/permiso:', respEstatus);
+            
+             if (await window.n8nCierreHandler) {
+                    try {
+                      await window.n8nCierreHandler(); // No await, solo dispara
+                    } catch (e) {
+                      console.warn('No se pudo enviar la notificación de cierre a n8n:', e);
+                    }
+                  }
+            
             if (respEstatus.ok) {
               const dataEstatus = await respEstatus.json();
               console.log('[CierreArea] Data estatus/permiso:', dataEstatus);
@@ -158,6 +167,9 @@ document.addEventListener('DOMContentLoaded', function () {
                   console.error('[CierreArea] Error parseando respuesta estatus/cierre:', e);
                 }
                 if (respSetCierre.ok && respSetCierreData && respSetCierreData.success) {
+                  // Enviar notificación de cierre a n8n, pero no bloquear el flujo si falla
+                 
+                  await window.n8nCierreHandler();
                   alert('Cierre de área realizado correctamente.');
                   window.location.reload();
                 } else {

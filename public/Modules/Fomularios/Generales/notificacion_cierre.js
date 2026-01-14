@@ -1,0 +1,118 @@
+// Función para manejar el envío del formulario de cierre a n8n
+window.n8nCierreHandler = async function () {
+	console.log('[n8nCierreHandler] INICIANDO ENVÍO DE NOTIFICACIÓN DE CIERRE');
+
+	// Obtener id_permiso de la URL o variable global
+	let id_permiso = null;
+	const params = new URLSearchParams(window.location.search);
+	if (params.get('id')) {
+		id_permiso = params.get('id');
+	} else if (window.permitId) {
+		id_permiso = window.permitId;
+	}
+
+	// Obtener sucursal, area, descripcion, departamento, solicitante, fecha de solicitud
+	// Preferir datos del DOM, si no existen intentar de localStorage o dejar en blanco
+
+	// Sucursal
+	let sucursal = '';
+	const sucursalElem = document.getElementById('sucursal-label');
+	if (sucursalElem) {
+		sucursal = sucursalElem.textContent.trim();
+	}
+
+	// Area
+	let area = '';
+	const areaElem = document.getElementById('dpto-contrato');
+	if (areaElem) {
+		area = areaElem.textContent.trim();
+	}
+
+	// Descripcion
+	let descripcion = '';
+	const descElem = document.getElementById('descripcion-trabajo-label');
+	if (descElem) {
+		descripcion = descElem.textContent.trim();
+	}
+
+	// Departamento
+	let departamento = '';
+	const depElem = document.getElementById('departamento');
+	if (depElem) {
+		departamento = depElem.value || depElem.textContent.trim();
+	} else {
+		// Intenta obtenerlo de localStorage
+		try {
+			const usuario = JSON.parse(localStorage.getItem("usuario"));
+			if (usuario && usuario.departamento) {
+				departamento = usuario.departamento;
+			}
+		} catch (e) {
+			console.warn('[n8nCierreHandler] No se pudo obtener departamento de localStorage');
+		}
+	}
+
+	// Solicitante
+	let solicitante = '';
+	const solicitanteElem = document.getElementById('responsable-trabajo-label');
+	if (solicitanteElem) {
+		solicitante = solicitanteElem.textContent.trim();
+	}
+
+	// Fecha de solicitud
+	let fecha_solicitud = '';
+	const fechaElem = document.getElementById('fecha-label');
+	if (fechaElem) {
+		fecha_solicitud = fechaElem.textContent.trim();
+	}
+
+	// Consultar el correo de supervisor
+	let correoSupervisor = '';
+	try {
+		const resp = await fetch('/api/correo-supervisor');
+		if (resp.ok) {
+			const data = await resp.json();
+			if (Array.isArray(data.correos) && data.correos.length > 0) {
+				correoSupervisor = data.correos[0]; // Primer correo de supervisor
+			}
+		}
+	} catch (e) {
+		console.warn('[n8nCierreHandler] Error obteniendo correo de supervisor:', e);
+	}
+
+	// Construir objeto de datos
+	const datosCierre = {
+		id_permiso,
+		sucursal,
+		area,
+		descripcion,
+		departamento,
+		solicitante,
+		fecha_solicitud,
+		correo: correoSupervisor
+	};
+	console.log('[n8nCierreHandler] Datos a enviar a n8n:', datosCierre);
+
+	// Enviar datos a n8n
+	try {
+		const response = await fetch(
+			"https://7mhxkntt-5678.usw3.devtunnels.ms/webhook-test/04937dcf-9408-4bd1-89d9-faf24ed2e02d",
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(datosCierre),
+			}
+		);
+		if (!response.ok) {
+			const errorData = await response.json().catch(() => ({}));
+			console.warn('[n8nCierreHandler] Error en respuesta de n8n:', errorData);
+		} else {
+			console.log('[n8nCierreHandler] Notificación enviada correctamente a n8n');
+		}
+	} catch (e) {
+		console.error('[n8nCierreHandler] Error enviando notificación a n8n:', e);
+	}
+	return true;
+};

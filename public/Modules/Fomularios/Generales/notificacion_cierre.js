@@ -52,32 +52,51 @@ window.n8nCierreHandler = async function () {
 		}
 	}
 
-	// Solicitante
+	// Solicitante (nombre)
 	let solicitante = '';
 	const solicitanteElem = document.getElementById('responsable-trabajo-label');
 	if (solicitanteElem) {
 		solicitante = solicitanteElem.textContent.trim();
 	}
 
+	// Consultar el correo del solicitante
+	let correoSolicitante = '';
+	if (solicitante) {
+		try {
+			const resp = await fetch(`/api/correo-por-nombre?nombre=${encodeURIComponent(solicitante)}`);
+			if (resp.ok) {
+				const data = await resp.json();
+				if (data.correo) {
+					correoSolicitante = data.correo;
+				}
+			}
+		} catch (e) {
+			console.warn('[n8nCierreHandler] Error obteniendo correo del solicitante:', e);
+		}
+	}
+
+	// Consultar correos de supervisores
+	let correosSupervisores = [];
+	try {
+		const resp = await fetch('/api/correo-supervisor');
+		if (resp.ok) {
+			const data = await resp.json();
+			if (Array.isArray(data.correos)) {
+				correosSupervisores = data.correos;
+			}
+		}
+	} catch (e) {
+		console.warn('[n8nCierreHandler] Error obteniendo correos de supervisores:', e);
+	}
+
+	// Unificar correos en un solo string, separados por coma, sin duplicados ni vacíos
+	let correos = [correoSolicitante, ...correosSupervisores].filter(c => c && c.trim()).filter((v, i, arr) => arr.indexOf(v) === i).join(',');
+
 	// Fecha de solicitud
 	let fecha_solicitud = '';
 	const fechaElem = document.getElementById('fecha-label');
 	if (fechaElem) {
 		fecha_solicitud = fechaElem.textContent.trim();
-	}
-
-	// Consultar el correo de supervisor
-	let correoSupervisor = '';
-	try {
-		const resp = await fetch('/api/correo-supervisor');
-		if (resp.ok) {
-			const data = await resp.json();
-			if (Array.isArray(data.correos) && data.correos.length > 0) {
-				correoSupervisor = data.correos[0]; // Primer correo de supervisor
-			}
-		}
-	} catch (e) {
-		console.warn('[n8nCierreHandler] Error obteniendo correo de supervisor:', e);
 	}
 
 	// Construir objeto de datos
@@ -89,7 +108,7 @@ window.n8nCierreHandler = async function () {
 		departamento,
 		solicitante,
 		fecha_solicitud,
-		correo: correoSupervisor
+		correo: correos
 	};
 	console.log('[n8nCierreHandler] Datos a enviar a n8n:', datosCierre);
 

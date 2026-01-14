@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // 1. Mapeo de rutas para el menú
   const menuRoutes = {
     "tablero": "/Modules/Usuario/Dash-Usuario.html",
-    "crear permisos": "/Modules/Usuario/CrearPT.html",
+    "permisos": "/Modules/Usuario/CrearPT.html",
     "autorizar permisos": "/Modules/Usuario/AutorizarPT.html",
     // Agregar más rutas según sea necesario
   };

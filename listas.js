@@ -241,4 +241,23 @@ router.get('/correo-supervisor', async (req, res) => {
 });
 
 
+// API para consultar correo a partir del nombre completo
+router.get('/correo-por-nombre', async (req, res) => {
+  const nombreCompleto = req.query.nombre;
+  if (!nombreCompleto) {
+    return res.status(400).json({ error: 'Falta el parámetro nombre' });
+  }
+  try {
+    const query = `SELECT correo FROM usuarios WHERE CONCAT(TRIM(nombre), ' ', TRIM(apellidop), ' ', TRIM(apellidom)) = $1 LIMIT 1`;
+    const result = await db.query(query, [nombreCompleto]);
+    if (result.rows && result.rows.length > 0) {
+      res.json({ correo: result.rows[0].correo });
+    } else {
+      res.json({ correo: '' });
+    }
+  } catch (e) {
+    res.status(500).json({ error: 'Error interno', details: e });
+  }
+});
+
 module.exports = router;

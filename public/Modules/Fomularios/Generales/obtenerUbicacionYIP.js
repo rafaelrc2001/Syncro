@@ -32,7 +32,7 @@ async function obtenerUbicacionYIP() {
     console.log("IP obtenida:", ip);
     return { ip, localizacion: "No requerida en PC", dispositivo };
   }
-
+/*
   // Si es móvil, pedir ubicación obligatoria (sin mostrar modal aquí)
   if (dispositivo && (dispositivo.so === "Android" || dispositivo.so === "iOS")) {
     return new Promise((resolve) => {
@@ -63,7 +63,7 @@ async function obtenerUbicacionYIP() {
         bloquearYRecargar();
       }
     });
-  }
+  }*/
 
   // Si no se detecta el SO, comportamiento por defecto (como antes)
   try {
@@ -119,8 +119,4 @@ function ocultarLoader() {
 
 // Exportar globalmente para usar desde cualquier botón
 window.obtenerUbicacionYIP = obtenerUbicacionYIP;
-
-
-
-
 

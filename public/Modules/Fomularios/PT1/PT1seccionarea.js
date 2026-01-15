@@ -1,4 +1,4 @@
-  // Función para obtener el nombre completo del usuario logueado y llenar el campo responsable
+// Función para obtener el nombre completo del usuario logueado y llenar el campo responsable
   async function llenarResponsableArea() {
     const usuario = JSON.parse(localStorage.getItem("usuario"));
     const id_usuario = usuario && usuario.id_usuario ? usuario.id_usuario : null;
@@ -55,27 +55,27 @@
     if (overlay) overlay.remove();
   }
   // Si es móvil, verificar ubicación periódicamente
-  if (esDispositivoMovil()) {
-    const checkUbicacion = setInterval(() => {
-      let loc = window.datosDispositivoUbicacion?.localizacion;
-      console.log('[DEBUG][ubicacion] Valor actual de localizacion:', loc);
-      // Considerar válida si es string tipo 'lat,lon' y no es null, vacío ni undefined
-      let esValida = false;
-      if (typeof loc === 'string' && loc.trim() && loc !== 'null' && loc !== '/') {
-        // Debe tener formato lat,lon y no ser '0,0'
-        const partes = loc.split(',');
-        if (partes.length === 2 && !/^0+(\.0+)?$/.test(partes[0].trim()) && !/^0+(\.0+)?$/.test(partes[1].trim())) {
-          esValida = true;
-        }
-      }
-      if (!esValida) {
-        mostrarAdvertenciaUbicacion();
-      } else {
-        ocultarAdvertenciaUbicacion();
-        clearInterval(checkUbicacion);
-      }
-    }, 1000);
-  }
+  // if (esDispositivoMovil()) {
+  //   const checkUbicacion = setInterval(() => {
+  //     let loc = window.datosDispositivoUbicacion?.localizacion;
+  //     console.log('[DEBUG][ubicacion] Valor actual de localizacion:', loc);
+  //     // Considerar válida si es string tipo 'lat,lon' y no es null, vacío ni undefined
+  //     let esValida = false;
+  //     if (typeof loc === 'string' && loc.trim() && loc !== 'null' && loc !== '/') {
+  //       // Debe tener formato lat,lon y no ser '0,0'
+  //       const partes = loc.split(',');
+  //       if (partes.length === 2 && !/^0+(\.0+)?$/.test(partes[0].trim()) && !/^0+(\.0+)?$/.test(partes[1].trim())) {
+  //         esValida = true;
+  //       }
+  //     }
+  //     if (!esValida) {
+  //       mostrarAdvertenciaUbicacion();
+  //     } else {
+  //       ocultarAdvertenciaUbicacion();
+  //       clearInterval(checkUbicacion);
+  //     }
+  //   }, 1000);
+  // }
 // Ejecutar consulta automática al cargar si hay id en la URL
 document.addEventListener("DOMContentLoaded", function () {
   // --- Log de respuesta del endpoint de ubicación si existe window.obtenerUbicacionYIP ---
@@ -717,9 +717,6 @@ async function insertarAutorizacionArea() {
 }
 
 
-
-
-// --- Botón Autorizar ---
 const btnAutorizar = document.getElementById("btn-guardar-campos");
 if (btnAutorizar) {
   btnAutorizar.addEventListener("click", async function () {
@@ -734,6 +731,25 @@ if (btnAutorizar) {
       blank.width = canvas.width;
       blank.height = canvas.height;
       return canvas.toDataURL() === blank.toDataURL();
+    }
+    // Validación de ubicación solo al hacer clic en autorizar
+    function esDispositivoMovil() {
+      const ua = navigator.userAgent || navigator.vendor || window.opera;
+      return /android|iphone|ipad|ipod|ios/i.test(ua);
+    }
+    if (esDispositivoMovil()) {
+      const loc = window.datosDispositivoUbicacion?.localizacion;
+      let esValida = false;
+      if (typeof loc === 'string' && loc.trim() && loc !== 'null' && loc !== '/') {
+        const partes = loc.split(',');
+        if (partes.length === 2 && !/^0+(\.0+)?$/.test(partes[0].trim()) && !/^0+(\.0+)?$/.test(partes[1].trim())) {
+          esValida = true;
+        }
+      }
+      if (!esValida) {
+        mostrarAdvertenciaUbicacion();
+        return;
+      }
     }
     try {
       const resp = await fetch(`/api/autorizaciones/ver-firma-operador-area/${idPermiso}`);
@@ -1252,13 +1268,33 @@ if (btnConfirmarAutorizar) {
       const btnContinuar = document.getElementById("btnAgregarFirmaContinuar");
       const btnCancelar = document.getElementById("btnAgregarFirmaCancelar");
       if (btnContinuar) {
-        btnContinuar.onclick = async function () {
+      btnContinuar.onclick = async function () {
+        // Detectar si es móvil
+        function esDispositivoMovil() {
+          const ua = navigator.userAgent || navigator.vendor || window.opera;
+          return /android|iphone|ipad|ipod|ios/i.test(ua);
+        }
+        let ubicacionValida = false;
+        let loc = window.datosDispositivoUbicacion?.localizacion;
+        if (esDispositivoMovil()) {
+          if (typeof loc === 'string' && loc.trim() && loc !== 'null' && loc !== '/' &&
+              !/error|denied|rechazad|no permitido|not allowed|gps/i.test(loc)) {
+            const partes = loc.split(',');
+            if (partes.length === 2 && !/^0+(\.0+)?$/.test(partes[0].trim()) && !/^0+(\.0+)?$/.test(partes[1].trim())) {
+              ubicacionValida = true;
+            }
+          }
+          if (!ubicacionValida) {
+            alert('Debes activar la ubicación en tu dispositivo y otorgar permisos para poder autorizar.');
+            return;
+          }
+        }
+          // Lógica original:
           modalAgregarFirma.style.display = "none";
           try {
             if (modalConfirmarAutorizar) {
               modalConfirmarAutorizar.style.display = "none";
             }
-
             // 1. Obtener datos necesarios
             const params = new URLSearchParams(window.location.search);
             const idPermiso = params.get("id") || window.idPermisoActual;
@@ -1266,21 +1302,18 @@ if (btnConfirmarAutorizar) {
             const operadorInput = document.getElementById("responsable-aprobador2");
             const responsable_area = responsableInput ? responsableInput.value.trim() : "";
             const operador_area = operadorInput ? operadorInput.value.trim() : "";
-
             // Obtener la firma desde el textarea generado por lienzos_firma.js
             let firma = "";
             const outputFirma = document.getElementById("outputBase64");
             if (outputFirma && outputFirma.value) {
               firma = outputFirma.value;
             }
-
             // Obtener la firma del operador del área (canvas)
             let firma_operador_area = "";
             const outputFirmaOperador = document.getElementById("outputBase64FirmaOperador");
             if (outputFirmaOperador && outputFirmaOperador.value) {
               firma_operador_area = outputFirmaOperador.value;
             }
-
             // 2. Validaciones básicas
             if (!idPermiso) return;
             if (!responsable_area) {
@@ -1288,7 +1321,6 @@ if (btnConfirmarAutorizar) {
               if (responsableInput) responsableInput.focus();
               return;
             }
-
             // 3. Consultar el id_estatus desde permisos_trabajo
             let idEstatus = null;
             try {
@@ -1303,8 +1335,7 @@ if (btnConfirmarAutorizar) {
             } catch (err) {
               console.error("[DEPURACIÓN] Error al consultar id_estatus:", err);
             }
-
-            // 4. Actualizar el estatus si se obtuvo el id_estatus
+            // 4. Actualizar el estatus si se obtuvo el idEstatus
             if (idEstatus) {
               try {
                 const payloadEstatus = { id_estatus: idEstatus };
@@ -1322,11 +1353,9 @@ if (btnConfirmarAutorizar) {
                 console.error("[DEPURACIÓN] Excepción al actualizar estatus de activo:", err);
               }
             }
-
             // 5. Generar timestamp y guardar autorización
             const now = new Date();
             const fechaHoraAutorizacion = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString();
-
             const { ip, localizacion } = await window.obtenerUbicacionYIP();
             // Enviar la firma al backend
             const respAutorizacion = await fetch("/api/autorizaciones/area", {
@@ -1343,11 +1372,9 @@ if (btnConfirmarAutorizar) {
                 firma_operador_area: (document.getElementById("outputBase64FirmaOperador") && document.getElementById("outputBase64FirmaOperador").value) ? document.getElementById("outputBase64FirmaOperador").value : ""
               }),
             });
-
             if (!respAutorizacion.ok) {
               throw new Error("Error al guardar la autorización del área");
             }
-
             // 6. Mostrar modal de éxito o redirigir
             const confirmationModal = document.getElementById("confirmation-modal");
             if (confirmationModal) {
@@ -1431,15 +1458,6 @@ if (btnConfirmarAutorizar) {
 
 
 
-
-
-
-
-
-
-
-
-
 function llenarTablaResponsables(idPermiso) {
   /**
    * Función para llenar la tabla de responsables en el modal AST.
@@ -1503,21 +1521,26 @@ function llenarTablaResponsables(idPermiso) {
           },
         ];
 
+
         let hayResponsables = false;
         filas.forEach((fila) => {
           if (fila.nombre && fila.nombre.trim() !== "") {
             hayResponsables = true;
             const tr = document.createElement("tr");
             tr.innerHTML = `
+
   <td>${fila.nombre}</td>
   <td>${fila.cargo}</td>
   <td>
     ${fila.fecha || ""}<br>
      ${ip_area || "-"}<br>
      ${localizacion_area || "-"}
+
   </td>
   <td></td>
 `;
+
+
             tbody.appendChild(tr);
           }
         });
@@ -1587,7 +1610,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
   }
 });
-
 
 
 

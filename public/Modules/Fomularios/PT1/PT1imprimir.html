@@ -642,6 +642,25 @@
 
 
 
+
+                                                            <!-- Área de firma digital visible automáticamente -->
+                        <div id="firma-area" style="margin: 32px 0;">
+                            <h3 style="margin-bottom: 8px;">Firma del responsable del permiso</h3>
+                            <canvas id="canvasFirma" width="400" height="200" style="border:1px solid #ccc; border-radius:8px; background:#fff; cursor:crosshair;"></canvas>
+                            <input type="hidden" id="outputBase64Firma" />
+                            <div class="controls" style="margin: 16px 0; display: flex; gap: 12px;">
+                                <button class="btn-clear" id="limpiarFirma" type="button" style="background:#eee; color:#333; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Limpiar área</button>
+                            </div>
+                             <div class="enviar" style="margin: 16px 0; display: flex; gap: 12px;">
+                                <button class="btn-enviar" id="enviarFirma" type="button" style="background:#333; color:#eee; border:none; border-radius:4px; padding:6px 16px; cursor:pointer;">Guardar Firma</button>
+                            </div>
+                            <div style="margin-top:8px; color:#888; font-size:0.95em;">Utilice el área para firmar antes de guardar el permiso.</div>
+                        </div>
+
+                                            <button id="btnAgregarFirmaContinuarCreacion" type="button" style="display:none"></button>
+
+
+
             
 
 
@@ -771,6 +790,13 @@
                                             </div>
                                             </div>
 
+
+
+
+
+       
+
+
 </body>
     
 </html>
@@ -788,6 +814,8 @@
         if (!usuario) return; // auth-check.js ya redirigió
         // El contenido se carga normalmente si está autenticado
       })();
+
+      
     </script>
 
     <script>
@@ -800,6 +828,42 @@
 <script src="/Modules/Fomularios/Generales/cancelar.js"></script>
 <script src="/Modules/Fomularios/Generales/mostrar_autorizaciones.js"></script>
 <script src="/Modules/Fomularios/Generales/mostrar-revalidaciones.js"></script>
+<script src="/Modules/Fomularios/Generales/lienzos_firma_seccion4.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const btnEnviarFirma = document.getElementById('enviarFirma');
+    const inputBase64 = document.getElementById('outputBase64Firma');
+    const params = new URLSearchParams(window.location.search);
+    const idPermiso = params.get('id');
+    if (btnEnviarFirma && inputBase64 && idPermiso) {
+        btnEnviarFirma.addEventListener('click', async function() {
+            const base64 = inputBase64.value;
+            if (!base64 || base64.trim() === "") {
+                alert('Por favor, firma antes de enviar.');
+                return;
+            }
+            try {
+                const resp = await fetch('/api/permiso/actualizar-firma-creacion', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id_permiso: idPermiso, firma_creacion: base64 })
+                });
+                const data = await resp.json();
+                if (resp.ok && data.success) {
+                    alert('Firma guardada correctamente.');
+                    window.location.reload();
+                } else {
+                    alert('No se pudo guardar la firma.');
+                }
+            } catch (err) {
+                alert('Error al enviar la firma.');
+                console.error(err);
+            }
+        });
+    }
+});
+</script>
 
 
 <script>
@@ -833,6 +897,37 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const params = new URLSearchParams(window.location.search);
+    const idPermiso = params.get('id');
+    if (idPermiso) {
+        // ...existing code...
+
+        // Verificar firma de creación y mostrar/ocultar área de firma y modal
+        
+        fetch(`/api/permiso/obtener-firma-creacion/${idPermiso}`)
+          .then(res => res.json())
+          .then(data => {
+            console.log('[DEBUG][firma_creacion] Respuesta del API:', data);
+            if (data.success && (!data.firma_creacion || data.firma_creacion === "")) {
+              // No hay firma: mostrar modal y área de firma
+              document.getElementById("modalAgregarFirmaCreacion").style.display = "block";
+              document.getElementById("firma-area").style.display = "block";
+            } else {
+              // Ya hay firma: ocultar área de firma
+              document.getElementById("firma-area").style.display = "none";
+            }
+          })
+          .catch(err => {
+            console.error("Error al verificar firma de creación:", err);
+          });
+    }
+    // ...existing code...
+});
+
+
+
 </script>
 
 

@@ -301,7 +301,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // Validar que la firma no esté vacía (canvas)
-        const canvasFirma = document.getElementById('canvasFirma');
+     /*   const canvasFirma = document.getElementById('canvasFirma');
         function isCanvasBlank(c) {
           if (!c) return true;
           const blank = document.createElement('canvas');
@@ -314,7 +314,7 @@ document.addEventListener("DOMContentLoaded", () => {
           submitBtn.disabled = false;
           submitBtn.innerHTML = originalHTML;
           return;
-        }
+        }*/
 
         requiredFields.forEach((field) => {
           if (!field.value.trim()) {

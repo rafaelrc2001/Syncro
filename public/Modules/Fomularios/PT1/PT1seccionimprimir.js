@@ -787,4 +787,37 @@ if (botonImprimir) {
 
 console.log("Funcionalidad de impresión PT1 inicializada correctamente");
 
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const params = new URLSearchParams(window.location.search);
+    const idPermiso = params.get('id');
+    if (idPermiso) {
+        // ...existing code...
+
+        // Verificar firma de creación y mostrar/ocultar área de firma y modal
+        fetch(`/permiso/obtener-firma-creacion/${idPermiso}`)
+          .then(res => res.json())
+          .then(data => {
+            console.log('[DEBUG][firma_creacion] Respuesta del API:', data);
+            if (data.success && (!data.firma_creacion || data.firma_creacion === "")) {
+              // No hay firma: mostrar modal y área de firma
+              document.getElementById("modalAgregarFirmaCreacion").style.display = "block";
+              document.getElementById("firma-area").style.display = "block";
+            } else {
+              // Ya hay firma: ocultar área de firma
+              document.getElementById("firma-area").style.display = "none";
+            }
+          })
+          .catch(err => {
+            console.error("Error al verificar firma de creación:", err);
+          });
+    }
+    // ...existing code...
+});
+
+
+// Llama a esta función cuando cargues el permiso, pasando el id_permiso correspondiente
+// verificarFirmaCreacion(id_permiso);
 // Eliminado: la tabla de responsables ahora solo la controla mostrar_autorizaciones.js

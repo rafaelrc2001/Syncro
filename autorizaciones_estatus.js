@@ -1,4 +1,5 @@
 
+
 const express = require("express");
 const router = express.Router();
 const db = require("./database");
@@ -1207,6 +1208,77 @@ router.get("/estatus/buscar_id_estatus/:id_permiso", async (req, res) => {
     res.status(500).json({
       success: false,
       error: "Error al consultar id_estatus",
+      details: err.message,
+    });
+  }
+});
+
+
+// Nuevo endpoint para obtener la firma de creación de un permiso por id_permiso
+router.get("/permiso/obtener-firma-creacion/:id_permiso", async (req, res) => {
+  const { id_permiso } = req.params;
+  if (!id_permiso) {
+    return res.status(400).json({
+      success: false,
+      error: "id_permiso es requerido",
+    });
+  }
+  try {
+    const result = await db.query(
+      "SELECT firma_creacion FROM permisos_trabajo WHERE id_permiso = $1",
+      [id_permiso]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: "No se encontró el permiso para consultar la firma",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      firma_creacion: result.rows[0].firma_creacion,
+    });
+  } catch (err) {
+    console.error("Error al consultar firma_creacion:", err);
+    res.status(500).json({
+      success: false,
+      error: "Error al consultar la firma de creación",
+      details: err.message,
+    });
+  }
+});
+
+
+//actualizacion de la firma en la abse de datos
+router.put("/permiso/actualizar-firma-creacion", async (req, res) => {
+  const { id_permiso, firma_creacion } = req.body;
+  if (!id_permiso || !firma_creacion) {
+    return res.status(400).json({
+      success: false,
+      error: "id_permiso y firma_creacion son requeridos",
+    });
+  }
+  try {
+    const result = await db.query(
+      "UPDATE permisos_trabajo SET firma_creacion = $1 WHERE id_permiso = $2 RETURNING id_permiso, firma_creacion",
+      [firma_creacion, id_permiso]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: "No se encontró el permiso para actualizar la firma",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: "Firma de creación actualizada exitosamente",
+      data: result.rows[0],
+    });
+  } catch (err) {
+    console.error("Error al actualizar firma_creacion:", err);
+    res.status(500).json({
+      success: false,
+      error: "Error al actualizar la firma de creación",
       details: err.message,
     });
   }

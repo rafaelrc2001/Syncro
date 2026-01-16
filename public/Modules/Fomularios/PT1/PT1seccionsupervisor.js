@@ -40,8 +40,8 @@ if (esDispositivoMovil()) {
       const partes = loc.split(',');
       if (
         partes.length === 2 &&
-        Math.abs(parseFloat(partes[0])) > 0.0001 &&
-        Math.abs(parseFloat(partes[1])) > 0.0001
+        !isNaN(parseFloat(partes[0])) &&
+        !isNaN(parseFloat(partes[1]))
       ) {
         esValida = true;
       }

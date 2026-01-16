@@ -47,7 +47,7 @@ if (esDispositivoMovil()) {
       }
     }
     if (!esValida) {
-      if (typeof mostrarAdvertenciaUbicacion === 'function') mostrarAdvertenciaUbicacion();
+      // Ya no mostrar alert ni advertencia, solo esperar a que sea válida
     } else {
       ocultarLoader();
       ocultarAdvertenciaUbicacion();

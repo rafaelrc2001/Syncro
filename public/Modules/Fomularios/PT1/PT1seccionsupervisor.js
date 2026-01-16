@@ -28,23 +28,28 @@ if (esDispositivoMovil()) {
     let loc = window.datosDispositivoUbicacion?.localizacion;
     // Considerar válida si es string tipo 'lat,lon' y no es null, vacío ni undefined
     let esValida = false;
-    if (typeof loc === 'string' && loc.trim() && loc !== 'null' && loc !== '/' && !loc.startsWith('Error')) {
+    if (
+      typeof loc === 'string' &&
+      loc.trim() &&
+      loc !== 'null' &&
+      loc !== '/' &&
+      !loc.startsWith('Error') &&
+      /^-?\d+(\.\d+)?,-?\d+(\.\d+)?$/.test(loc.trim())
+    ) {
       // Debe tener formato lat,lon y no ser '0,0'
       const partes = loc.split(',');
       if (
         partes.length === 2 &&
-        !/^0+(\.0+)?$/.test(partes[0].trim()) &&
-        !/^0+(\.0+)?$/.test(partes[1].trim()) &&
-        !isNaN(parseFloat(partes[0])) &&
-        !isNaN(parseFloat(partes[1]))
+        Math.abs(parseFloat(partes[0])) > 0.0001 &&
+        Math.abs(parseFloat(partes[1])) > 0.0001
       ) {
         esValida = true;
       }
     }
     if (!esValida) {
-      // Si la ubicación es inválida, mostrar advertencia (si existe la función)
       if (typeof mostrarAdvertenciaUbicacion === 'function') mostrarAdvertenciaUbicacion();
     } else {
+      ocultarLoader();
       ocultarAdvertenciaUbicacion();
       clearInterval(checkUbicacion);
     }

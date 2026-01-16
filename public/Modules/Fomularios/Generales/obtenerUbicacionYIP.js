@@ -30,7 +30,7 @@ async function obtenerUbicacionYIP() {
     ocultarLoader();
     ip = await fetch("https://api.ipify.org?format=json").then(r => r.json()).then(d => d.ip || "No disponible").catch(() => "Error obteniendo IP");
     console.log("IP obtenida:", ip);
-    return { ip, localizacion: "No requerida en PC", dispositivo };
+    return { ip, localizacion: "/", dispositivo };
   }
 /*
   // Si es móvil, pedir ubicación obligatoria (sin mostrar modal aquí)

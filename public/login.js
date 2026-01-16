@@ -98,4 +98,52 @@ document.addEventListener("DOMContentLoaded", function () {
       forgotModal.style.display = "none";
     });
   }
+
+  // Modal actualizar contraseña
+  const btnActualizar = document.getElementById("btn-actualizar-contraseña");
+  const modalActualizar = document.getElementById("actualizar-contraseña");
+  const closeActualizar = document.getElementById("close-actualizar-modal");
+  const btnGuardarActualizar = document.getElementById("btn-guardar-actualizar");
+
+  if (btnActualizar && modalActualizar) {
+    btnActualizar.addEventListener("click", function (e) {
+      e.preventDefault();
+      modalActualizar.style.display = "flex";
+    });
+  }
+  if (closeActualizar && modalActualizar) {
+    closeActualizar.addEventListener("click", function () {
+      modalActualizar.style.display = "none";
+    });
+  }
+  if (btnGuardarActualizar && modalActualizar) {
+    btnGuardarActualizar.addEventListener("click", async function () {
+      const usuario = document.getElementById("username-actualizar").value.trim();
+      const password = document.getElementById("password-actualizar").value.trim();
+      const passwordNueva = document.getElementById("password_nueva").value.trim();
+      if (!usuario || !password || !passwordNueva) {
+        alert("Completa todos los campos.");
+        return;
+      }
+      btnGuardarActualizar.classList.add("loading");
+      try {
+        let response = await fetch("/endpoints/actualizarContrasena", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ usuario, password, passwordNueva }),
+        });
+        let data = await response.json();
+        btnGuardarActualizar.classList.remove("loading");
+        if (data.success) {
+          alert("Contraseña actualizada correctamente");
+          modalActualizar.style.display = "none";
+        } else {
+          alert(data.message || "No se pudo actualizar la contraseña");
+        }
+      } catch (err) {
+        btnGuardarActualizar.classList.remove("loading");
+        alert("Error al actualizar la contraseña");
+      }
+    });
+  }
 });

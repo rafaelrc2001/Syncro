@@ -54,7 +54,10 @@
         </button>
 
         <div class="login-footer">
-          <a href="#">¿Olvidaste tu contraseña?</a>
+          <button type="button" id="btn-actualizar-contraseña" class="login-btn" style="background-color: #262626;">
+            <span class="btn-text">Actualizar contraseña</span>
+            <div class="btn-loader"></div>
+          </button>
         </div>
       </form>
     </div>
@@ -64,6 +67,29 @@
 
 
 
+
+
+    <div id="actualizar-contraseña" class="forgot-modal" style="display: none">
+      <div class="forgot-modal-content">
+        <h3 style="color: white;">Actualizar Contraseña</h3>
+        <div class="input-group custom-input-group">        
+          <span class="input-vertical-bar"></span>
+          <input type="text" id="username-actualizar" required />
+          <label for="username-actualizar">usuario</label>
+        </div>
+        <div class="input-group custom-input-group">       
+          <span class="input-vertical-bar"></span>
+          <input type="password" id="password-actualizar" required />
+          <label for="password-actualizar">contraseña</label>
+        </div>
+        <div class="input-group custom-input-group">
+          <input type="password" id="password_nueva" required />
+          <label for="password_nueva">nueva contraseña</label>
+        </div>
+        <button id="btn-guardar-actualizar" class="login-btn" style="background-color: #262626; margin-top: 12px;">Guardar</button>
+         <button id="close-actualizar-modal" class="forgot-modal-btn">Cerrar</button>
+      </div>
+    </div>
 
 
 

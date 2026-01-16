@@ -527,8 +527,16 @@ async function insertarAutorizacionArea() {
   }
   if (esDispositivoMovil()) {
     const loc = window.datosDispositivoUbicacion?.localizacion;
-    if (!loc || loc === 'null' || loc === '' || loc === undefined) {
-      alert('Debes activar la ubicación en tu dispositivo para poder guardar el permiso.');
+    let esValida = false;
+    if (typeof loc === 'string' && loc.trim() && loc !== 'null' && loc !== '/' &&
+        !/error|denied|rechazad|no permitido|not allowed|gps/i.test(loc)) {
+      const partes = loc.split(',');
+      if (partes.length === 2 && !/^0+(\.0+)?$/.test(partes[0].trim()) && !/^0+(\.0+)?$/.test(partes[1].trim())) {
+        esValida = true;
+      }
+    }
+    if (!esValida) {
+      alert('Debes activar la ubicación en tu dispositivo y otorgar permisos para poder autorizar.');
       return;
     }
   }
@@ -994,9 +1002,10 @@ if (btnNoAutorizar) {
       let localizacion_area = "";
       let dispositivo_area = "/";
       let usuario_departamento = usuario.id;
+      let ubic = null;
       if (window.obtenerUbicacionYIP) {
         try {
-          const ubic = await window.obtenerUbicacionYIP();
+          ubic = await window.obtenerUbicacionYIP();
           ip_area = ubic.ip || "";
           if (ubic.dispositivo && typeof ubic.dispositivo === "object" && ubic.dispositivo.so && ["Windows", "Mac OS", "MacOS", "Linux"].includes(ubic.dispositivo.so)) {
             localizacion_area = "/";
@@ -1012,6 +1021,27 @@ if (btnNoAutorizar) {
         }
       } else {
         console.warn("[NO AUTORIZAR] window.obtenerUbicacionYIP no está disponible");
+      }
+
+      // Validación de ubicación en móvil antes de guardar rechazo
+      function esDispositivoMovil() {
+        const ua = navigator.userAgent || navigator.vendor || window.opera;
+        return /android|iphone|ipad|ipod|ios/i.test(ua);
+      }
+      if (esDispositivoMovil()) {
+        let loc = ubic?.localizacion || window.datosDispositivoUbicacion?.localizacion;
+        let esValida = false;
+        if (typeof loc === 'string' && loc.trim() && loc !== 'null' && loc !== '/' &&
+            !/error|denied|rechazad|no permitido|not allowed|gps/i.test(loc)) {
+          const partes = loc.split(',');
+          if (partes.length === 2 && !/^0+(\.0+)?$/.test(partes[0].trim()) && !/^0+(\.0+)?$/.test(partes[1].trim())) {
+            esValida = true;
+          }
+        }
+        if (!esValida) {
+          alert('Debes activar la ubicación en tu dispositivo y otorgar permisos para poder rechazar el permiso.');
+          return;
+        }
       }
       console.log('[NO AUTORIZAR] usuario_departamento:', usuario_departamento);
       if (!comentario) {

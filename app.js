@@ -111,7 +111,7 @@ app.use(
 
 // Endpoint de login de usuario departamento
 app.use("/endpoints", loginconsultaRouter);
-
+app.post("/endpoints/actualizarContrasena", loginconsultaRouter);
 // Endpoints de autenticación (públicos)
 app.get("/api/verificar-sesion", verificarSesion);
 app.post("/api/cerrar-sesion", cerrarSesion);

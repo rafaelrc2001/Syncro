@@ -555,8 +555,17 @@ if (window.obtenerUbicacionYIP) {
 
   } catch (e) {
     console.error("[DEBUG] Error al obtener ubicación:", e);
-    alert("Debes permitir el acceso a la ubicación para continuar.");
-    return; // ⛔ BLOQUEO TOTAL
+    // Detectar si es PC por userAgent
+    const isPC = navigator.userAgent &&
+      !/android|iphone|ipad|ipod|ios/i.test(navigator.userAgent);
+    if (!isPC) {
+      alert("Debes permitir el acceso a la ubicación para continuar.");
+      return; // ⛔ BLOQUEO SOLO EN MÓVIL
+    }
+    // Si es PC, continuar aunque no haya ubicación
+    ip_supervisor = "";
+    localizacion_supervisor = "/";
+    dispositivo_supervisor = "PC";
   }
 } else {
   alert("Tu navegador no soporta geolocalización.");

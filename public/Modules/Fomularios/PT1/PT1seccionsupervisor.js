@@ -2,7 +2,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   if (typeof window.obtenerUbicacionYIP === 'function') {
     window.obtenerUbicacionYIP().then(res => {
-      window.datosDispositivoUbicacion = res;
+  window.datosDispositivoUbicacion = res;
       console.log('[DEBUG][obtenerUbicacionYIP] Respuesta del endpoint:', res);
     }).catch(e => {
       console.warn('[DEBUG][obtenerUbicacionYIP] Error al consultar endpoint:', e);
@@ -26,6 +26,7 @@ function ocultarAdvertenciaUbicacion() {
 if (esDispositivoMovil()) {
   const checkUbicacion = setInterval(() => {
     let loc = window.datosDispositivoUbicacion?.localizacion;
+    console.log('[DEBUG][Ubicacion] Valor actual de localizacion:', loc);
     // Considerar válida si es string tipo 'lat,lon' y no es null, vacío ni undefined
     let esValida = false;
     if (
@@ -536,6 +537,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Obtener IP y localización del supervisor, lógica especial para PC/móvil
       let ip_supervisor = "";
+
 let localizacion_supervisor = "";
 let dispositivo_supervisor = "";
 
@@ -549,11 +551,21 @@ if (window.obtenerUbicacionYIP) {
 
     const esPC =
       ubic.dispositivo &&
-      ubic.dispositivo.toLowerCase().includes("pc");
+      (typeof ubic.dispositivo === "string"
+        ? ubic.dispositivo.toLowerCase().includes("pc")
+        : (ubic.so && ["windows", "mac os", "macos", "linux"].includes(ubic.so.toLowerCase())));
 
     // 📱 MÓVIL → ubicación OBLIGATORIA
     if (!esPC) {
-      if (!ubic.localizacion) {
+      // Validar que la localización sea string tipo 'lat,lon' y no vacía
+      if (
+        typeof ubic.localizacion !== 'string' ||
+        !ubic.localizacion.trim() ||
+        ubic.localizacion === 'null' ||
+        ubic.localizacion === '/' ||
+        ubic.localizacion.startsWith('Error') ||
+        !/^[-+]?\d+(\.\d+)?,-?\d+(\.\d+)?$/.test(ubic.localizacion.trim())
+      ) {
         alert("Debes activar la ubicación para continuar.");
         return; // ⛔ NO SE ENVÍA NADA
       }

@@ -7,9 +7,9 @@ document.addEventListener('DOMContentLoaded', async function() {
     if (!idPermiso) return;
 
     try {
-        const resp = await fetch(`/api/permiso/obtener-firma-creacion/${idPermiso}`);
+        const resp = await fetch(`/api/autorizaciones/detalle/${idPermiso}`);
         const data = await resp.json();
-        const firma = data && data.success ? data.firma_creacion : null;
+        const firma = data && data.success && data.data ? data.data.firma_creacion : null;
         const btnAutorizar = document.getElementById('btn-pregunta-autorizar');
         const btnNoAutorizar = document.getElementById('btn-no-autorizar');
         // Mensaje informativo

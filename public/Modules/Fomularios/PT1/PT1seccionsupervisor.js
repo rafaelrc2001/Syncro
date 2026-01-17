@@ -550,10 +550,8 @@ if (window.obtenerUbicacionYIP) {
     dispositivo_supervisor = ubic.dispositivo || "";
 
     const esPC =
-      ubic.dispositivo &&
-      (typeof ubic.dispositivo === "string"
-        ? ubic.dispositivo.toLowerCase().includes("pc")
-        : (ubic.so && ["windows", "mac os", "macos", "linux"].includes(ubic.so.toLowerCase())));
+      (ubic.so && ["windows", "mac os", "macos", "linux"].includes(ubic.so.toLowerCase())) ||
+      (typeof ubic.dispositivo === "string" && ubic.dispositivo.toLowerCase().includes("pc"));
 
     // 📱 MÓVIL → ubicación OBLIGATORIA
     if (!esPC) {

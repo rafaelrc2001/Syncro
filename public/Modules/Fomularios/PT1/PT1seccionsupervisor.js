@@ -567,6 +567,7 @@ if (window.obtenerUbicacionYIP) {
         !/^[-+]?\d+(\.\d+)?,-?\d+(\.\d+)?$/.test(ubic.localizacion.trim())
       ) {
         alert("Debes activar la ubicación para continuar.");
+        setTimeout(() => { window.location.reload(); }, 500); // Recarga automática tras alert
         return; // ⛔ NO SE ENVÍA NADA
       }
       localizacion_supervisor = ubic.localizacion;

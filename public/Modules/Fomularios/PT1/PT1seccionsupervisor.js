@@ -550,8 +550,16 @@ if (window.obtenerUbicacionYIP) {
     dispositivo_supervisor = ubic.dispositivo || "";
 
     const esPC =
-      (ubic.so && ["windows", "mac os", "macos", "linux"].includes(ubic.so.toLowerCase())) ||
-      (typeof ubic.dispositivo === "string" && ubic.dispositivo.toLowerCase().includes("pc"));
+      (() => {
+        const so =
+          ubic.so ||
+          (ubic.dispositivo && typeof ubic.dispositivo === "object" && ubic.dispositivo.so) ||
+          "";
+        return (
+          (so && /windows|mac ?os|macos|linux/i.test(so)) ||
+          (typeof ubic.dispositivo === "string" && ubic.dispositivo.toLowerCase().includes("pc"))
+        );
+      })();
 
     // 📱 MÓVIL → ubicación OBLIGATORIA
     if (!esPC) {

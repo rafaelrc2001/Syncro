@@ -375,11 +375,30 @@ class DashboardFilter {
         default:
           statusClass = "status-default";
       }
+      // Determinar clase de color para subestatus
+      let substatusText = (p.Subestatus || p.subestatus || "").toLowerCase();
+      let substatusClass = "";
+      if (substatusText.includes("cierre con accidentes")) {
+        substatusClass = "cierre-accidentes";
+      } else if (substatusText.includes("cierre con incidentes")) {
+        substatusClass = "cierre-incidentes";
+      } else if (substatusText.includes("cierre sin incidentes")) {
+        substatusClass = "cierre-sin-incidentes";
+      } else if (substatusText.includes("no autorizado")) {
+        substatusClass = "no-autorizado";
+      } else if (substatusText.includes("cancelado")) {
+        substatusClass = "cancelado";
+      }
+      const substatusValue = (p.Subestatus || p.subestatus || "").trim() || "...";
       tbody.innerHTML += `
         <tr>
           <td>${p.Permiso || p.permiso || ""}</td>
           <td>${p.descripcion || p.Descripcion || p.descripcion_trabajo || ""}</td>
-          <td><span class="status-badge ${statusClass}">${p.Estado || p.estado || ""}</span></td>
+          <td>
+            <span class="status-badge ${statusClass}">${p.Estado || p.estado || ""}</span>
+            <br>
+            <span class="substatus-badge${substatusClass ? ' ' + substatusClass : ''}">${substatusValue}</span>
+          </td>
         </tr>
       `;
     });
@@ -388,32 +407,20 @@ class DashboardFilter {
   // Actualizar gráfica principal con sub-estatus
   updateAreasChart() {
     if (!window.areasChartInstance) return;
-    const subestatus = this.filteredData.subestatus || [];
-    if (subestatus.length > 0) {
-      const categories = subestatus.map((s) => s.subestatus);
-      const values = subestatus.map((s) => Number(s.cantidad_trabajos));
-      const baseColors = [
-        "#003B5C",
-        "#FF6F00",
-        "#00BFA5",
-        "#B0BEC5",
-        "#4A4A4A",
-        "#D32F2F",
-        "#1976D2",
-        "#FBC02D",
-        "#00BCD4",
-        "#D81B60",
-        "#455A64",
-      ];
-      const colors = categories.map((_, i) => baseColors[i % baseColors.length]);
-      window.areasChartInstance.updateData({ categories, values, colors });
-    } else {
-      window.areasChartInstance.updateData({
-        categories: [],
-        values: [],
-        colors: [],
-      });
-    }
+    // Generar los subestatus literales a partir de los permisos filtrados
+    const subestatusCounts = {};
+    this.filteredData.permisos.forEach((p) => {
+      const sub = (p.sub_estatus || p.subestatus || p.estatus || "Sin sub-estatus");
+      subestatusCounts[sub] = (subestatusCounts[sub] || 0) + 1;
+    });
+    const categories = Object.keys(subestatusCounts);
+    const values = Object.values(subestatusCounts);
+    const baseColors = [
+      "#003B5C", "#FF6F00", "#00BFA5", "#B0BEC5", "#4A4A4A",
+      "#D32F2F", "#1976D2", "#FBC02D", "#00BCD4", "#D81B60", "#455A64"
+    ];
+    const colors = categories.map((_, i) => baseColors[i % baseColors.length]);
+    window.areasChartInstance.updateData({ categories, values, colors });
   }
 
   // Actualizar gráfica de tipos

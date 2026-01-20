@@ -1042,3 +1042,6 @@ td {
     background-color: #bdbdbd;
     color: #fff;
 }
+
+/* Estilos para substatus-badge (círculo y color) */
+@import url("substatus-badge.css");

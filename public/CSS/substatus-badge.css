@@ -1,0 +1,42 @@
+.substatus-badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    text-transform: capitalize;
+    text-align: center;
+    min-width: 110px;
+    border: 1px solid rgba(0,0,0,0.07);
+    margin-top: 2px;
+    margin-bottom: 2px;
+    background-color: #F3F3F3;
+    color: #4A4A4A;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+
+
+/* Colores para subestatus comunes */
+.substatus-badge.cierre-accidentes::before {
+    background-color: #D32F2F;
+    box-shadow: 0 0 0 1px #D32F2F;
+}
+.substatus-badge.cierre-incidentes::before {
+    background-color: #FF6F00;
+    box-shadow: 0 0 0 1px #FF6F00;
+}
+.substatus-badge.cierre-sin-incidentes::before {
+    background-color: #00BFA5;
+    
+}
+.substatus-badge.no-autorizado::before {
+    background-color: #FFC107;
+    box-shadow: 0 0 0 1px #FFC107;
+}
+.substatus-badge.cancelado::before {
+    background-color: #B0BEC5;
+    box-shadow: 0 0 0 1px #B0BEC5;
+}

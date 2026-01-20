@@ -8,22 +8,22 @@ router.get("/tabla-permisos/:id_departamento", async (req, res) => {
   try {
     const result = await pool.query(
       `
-        SELECT 
-          pt.id_permiso,
-          pt.prefijo AS Permiso,
-          a.nombre AS Area,
-          pt.contrato AS Contrato,
-          pt.fecha_hora AS Fecha,
-          s.nombre AS Supervisor,
-          e.estatus AS Estado
-        FROM permisos_trabajo pt
-        INNER JOIN estatus e ON pt.id_permiso = e.id_permiso
-        INNER JOIN areas a ON pt.id_area = a.id_area
-        LEFT JOIN autorizaciones aut ON pt.id_permiso = aut.id_permiso
-        LEFT JOIN usuarios s ON aut.usuario_supervisor = s.id_usuario AND s.rol = 'supervisor'
+              SELECT 
+        pt.id_permiso,
+        pt.prefijo AS Permiso,
+        pt.contrato AS Contrato,
+        pt.fecha_hora AS Fecha,
+        pt.descripcion_trabajo as descripcion,
+        s.nombre AS Supervisor,
+        e.estatus AS Estado,
+        e.subestatus AS Subestatus
+      FROM permisos_trabajo pt
+      INNER JOIN estatus e ON pt.id_permiso = e.id_permiso
+      LEFT JOIN autorizaciones aut ON pt.id_permiso = aut.id_permiso
+      LEFT JOIN usuarios s ON aut.usuario_supervisor = s.id_usuario AND s.rol = 'supervisor'
         WHERE pt.id_departamento = $1
-        GROUP BY pt.id_permiso, a.nombre, s.nombre, e.estatus, pt.prefijo, pt.contrato
-        ORDER BY pt.fecha_hora DESC;
+        GROUP BY pt.id_permiso, s.nombre, e.estatus, e.subestatus, pt.prefijo, pt.contrato, pt.descripcion_trabajo
+ORDER BY pt.fecha_hora DESC;
       `,
       [id_departamento]
     );
@@ -41,21 +41,21 @@ router.get("/tabla-permisos-usuario/:id_usuario", async (req, res) => {
     const result = await pool.query(
       `
         SELECT 
-          pt.id_permiso,
-          pt.prefijo AS Permiso,
-          a.nombre AS Area,
-          pt.contrato AS Contrato,
-          pt.fecha_hora AS Fecha,
-          s.nombre AS Supervisor,
-          e.estatus AS Estado
-        FROM permisos_trabajo pt
-        INNER JOIN estatus e ON pt.id_permiso = e.id_permiso
-        INNER JOIN areas a ON pt.id_area = a.id_area
-        LEFT JOIN autorizaciones aut ON pt.id_permiso = aut.id_permiso
-        LEFT JOIN usuarios s ON aut.usuario_supervisor = s.id_usuario AND s.rol = 'supervisor'
+        pt.id_permiso,
+        pt.prefijo AS Permiso,
+        pt.contrato AS Contrato,
+        pt.fecha_hora AS Fecha,
+        pt.descripcion_trabajo as descripcion,
+        s.nombre AS Supervisor,
+        e.estatus AS Estado,
+        e.subestatus AS Subestatus
+      FROM permisos_trabajo pt
+      INNER JOIN estatus e ON pt.id_permiso = e.id_permiso
+      LEFT JOIN autorizaciones aut ON pt.id_permiso = aut.id_permiso
+      LEFT JOIN usuarios s ON aut.usuario_supervisor = s.id_usuario AND s.rol = 'supervisor'
         WHERE pt.id_usuario = $1
-        GROUP BY pt.id_permiso, a.nombre, s.nombre, e.estatus, pt.prefijo, pt.contrato
-        ORDER BY pt.fecha_hora DESC;
+        GROUP BY pt.id_permiso, s.nombre, e.estatus, e.subestatus, pt.prefijo, pt.contrato, pt.descripcion_trabajo
+ORDER BY pt.fecha_hora DESC;
       `,
       [id_usuario]
     );

@@ -1,78 +1,91 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // --- Lógica de usuario, avatar y logout ---
-  // Muestra el nombre del usuario, iniciales en el avatar y gestiona el cierre de sesión
+
+  // ===============================
+  // 1. USUARIO, AVATAR Y DATOS
+  // ===============================
   const usuario = JSON.parse(localStorage.getItem("usuario"));
+
   if (usuario && usuario.nombre && usuario.id_usuario) {
-    // Nombre en el sidebar/footer
+    // Nombre del usuario
     document.querySelectorAll(".user-info .name").forEach((el) => {
       el.textContent = `${usuario.nombre} ${usuario.apellidop || ""} ${usuario.apellidom || ""}`.trim();
     });
+
     // Avatar con iniciales
     const avatarDiv = document.querySelector(".user-profile .avatar");
-    if (avatarDiv && usuario.nombre) {
+    if (avatarDiv) {
       const partes = usuario.nombre.trim().split(" ");
-      let iniciales = "";
-      if (partes.length === 1) {
-        iniciales = partes[0].substring(0, 2).toUpperCase();
-      } else {
-        iniciales = (partes[0][0] + partes[1][0]).toUpperCase();
-      }
-      avatarDiv.textContent = iniciales;
+      avatarDiv.textContent =
+        partes.length === 1
+          ? partes[0].substring(0, 2).toUpperCase()
+          : (partes[0][0] + partes[1][0]).toUpperCase();
     }
-    // Mensaje de entrada por consola
+
     console.log(
-      `Entraste al departamento ${usuario.nombre} con el id: ${usuario.id}`
+      `Entraste al departamento ${usuario.nombre} con el id_usuario: ${usuario.id_usuario}`
     );
   }
-  // Botón cerrar sesión
-  const btnLogout = document.querySelector(".logout-btn");
-  if (btnLogout) {
-    btnLogout.addEventListener("click", async function () {
-      if (usuario && usuario.nombre && usuario.id) {
-        console.log(
-          `Saliste del departamento ${usuario.nombre} con el id: ${usuario.id}`
-        );
-      }
-      // Llamar a la función cerrarSesion de auth-check.js
+
+  // ===============================
+  // 2. LOGOUT (UNA SOLA VEZ)
+  // ===============================
+  const logoutBtn = document.querySelector(".logout-btn");
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", async function () {
+      const confirmar = confirm("¿Estás seguro que deseas cerrar sesión?");
+      if (!confirmar) return;
+
+      console.log(
+        `Saliste del departamento ${usuario?.nombre || ""}`
+      );
+
+      localStorage.removeItem("sidebarCollapsed");
+
       if (typeof cerrarSesion === "function") {
         await cerrarSesion();
       } else {
-        // Fallback si auth-check.js no está cargado
         localStorage.removeItem("usuario");
         window.location.href = "/login.html";
       }
     });
   }
-  // 1. Mapeo de rutas para el menú
+
+  // ===============================
+  // 3. RUTAS DEL MENÚ (DEPARTAMENTO)
+  // ===============================
   const menuRoutes = {
     "tablero": "/Modules/Departamentos/Dash-Usuario.html",
     "mis permisos": "/Modules/Departamentos/CrearPT.html",
     "autorizar permisos": "/Modules/Departamentos/AutorizarPT.html",
-    // Agregar más rutas según sea necesario
   };
 
-  // 2. Configuración dinámica del menú
   const menuItems = document.querySelectorAll(".sidebar-nav a");
   const currentPath = window.location.pathname.toLowerCase();
 
   menuItems.forEach((item) => {
-    // Normaliza el texto eliminando espacios extra
-    const menuText = item.querySelector("span").textContent.toLowerCase().replace(/\s+/g, " ").trim();
-    // Busca la clave normalizada en menuRoutes
-    const routeKey = Object.keys(menuRoutes).find(key => key === menuText);
-    if (routeKey) {
-      item.setAttribute("href", menuRoutes[routeKey]);
-      if (menuRoutes[routeKey].toLowerCase() === currentPath) {
+    const span = item.querySelector("span");
+    if (!span) return;
+
+    const menuText = span.textContent
+      .toLowerCase()
+      .replace(/\s+/g, " ")
+      .trim();
+
+    if (menuRoutes[menuText]) {
+      item.setAttribute("href", menuRoutes[menuText]);
+
+      if (menuRoutes[menuText].toLowerCase() === currentPath) {
         item.parentElement.classList.add("active");
       }
     } else {
-      item.addEventListener("click", function (e) {
-        e.preventDefault();
-      });
+      item.addEventListener("click", (e) => e.preventDefault());
     }
   });
 
-  // 3. Sidebar Collapse Functionality
+  // ===============================
+  // 4. COLLAPSE SIDEBAR
+  // ===============================
   const collapseBtn = document.querySelector(".collapse-btn");
   const sidebar = document.querySelector(".sidebar");
 
@@ -85,27 +98,14 @@ document.addEventListener("DOMContentLoaded", function () {
       );
     });
 
-    // Check localStorage for collapsed state
     if (localStorage.getItem("sidebarCollapsed") === "true") {
       sidebar.classList.add("collapsed");
     }
   }
 
-  // 4. Print Button Functionality - Manejado por LogicaImprimir.js
-  // El manejo de los botones de impresión se ha movido a LogicaImprimir.js
-
-  // 5. Logout button
-  const logoutBtn = document.querySelector(".logout-btn");
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", function () {
-      if (confirm("¿Estás seguro que deseas cerrar sesión?")) {
-        localStorage.removeItem("sidebarCollapsed");
-        window.location.href = "/login.html";
-      }
-    });
-  }
-
-  // 6. Status filter functionality
+  // ===============================
+  // 5. FILTRO DE ESTATUS
+  // ===============================
   const statusFilter = document.getElementById("status-filter");
   const tableBody = document.getElementById("table-body");
   const recordsCount = document.getElementById("records-count");
@@ -113,7 +113,6 @@ document.addEventListener("DOMContentLoaded", function () {
   if (statusFilter && tableBody && recordsCount) {
     const rows = Array.from(tableBody.querySelectorAll("tr"));
 
-    // Initialize counter
     updateRecordsCount(rows.length);
 
     statusFilter.addEventListener("change", function () {
@@ -123,20 +122,19 @@ document.addEventListener("DOMContentLoaded", function () {
         const statusBadge = row.querySelector(".status-badge");
         const rowStatus = statusBadge ? statusBadge.classList[1] : "";
 
-        if (selectedStatus === "all" || rowStatus === selectedStatus) {
-          row.style.display = "";
-        } else {
-          row.style.display = "none";
-        }
+        row.style.display =
+          selectedStatus === "all" || rowStatus === selectedStatus
+            ? ""
+            : "none";
       });
 
-      // Update counter
-      const visibleRows = rows.filter((row) => row.style.display !== "none");
-      updateRecordsCount(visibleRows.length);
+      const visibles = rows.filter((row) => row.style.display !== "none");
+      updateRecordsCount(visibles.length);
     });
 
     function updateRecordsCount(count) {
       recordsCount.textContent = count;
     }
   }
+
 });

@@ -1,3 +1,5 @@
+
+
 // Inicialización de app
 // Inicialización de app
 
@@ -41,7 +43,7 @@ const loginconsultaRouter = require("./loginconsulta");
 const graficaMesesRouter = require("./graficas/endpoint_grafica_meses");
 const departamentoConsultaRouter = require("./departamento_consulta");
 
-
+const graficaSubEstatusRouter = require("./graficas/endpoint_grafica_subestatus");
 
 
 
@@ -107,7 +109,8 @@ app.use(
       }
     },
   })
-);
+);app.use("/api", verificarAutenticacion, graficaSubEstatusRouter); // Monta las rutas de graficas/endpoint_grafica_subestatus.js bajo el prefijo /api
+
 
 // Endpoint de login de usuario departamento
 app.use("/endpoints", loginconsultaRouter);

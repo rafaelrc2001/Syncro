@@ -1,38 +1,33 @@
 // Gráfica de Permisos por Áreas - Barras Verticales
 // grafica-areas.js
 
-// Configuración de la gráfica
+
+// Configuración de la gráfica (igual que usuario)
 function initAreasChart() {
-  // Inicializa la gráfica vacía
+  // Solo dos categorías: Accidentes y Sin accidentes
   const areasData = {
-    categories: [],
-    values: [],
-    colors: ["#003B5C", "#FF6F00", "#00BFA5", "#B0BEC5", "#4A4A4A", "#D32F2F"],
+    categories: ["Accidentes", "Sin accidentes"],
+    values: [0, 0],
+    colors: ["#D32F2F", "#00BFA5"],
   };
 
-  // Inicializar gráfica
+  // Inicializar gráfica tipo pastel
   const areasChart = echarts.init(document.getElementById("areas-chart"));
 
-  // Configuración de la gráfica
   const areasOption = {
     title: {
       show: false,
     },
     tooltip: {
-      trigger: "axis",
-      axisPointer: {
-        type: "shadow",
-      },
+      trigger: "item",
       formatter: function (params) {
-        const data = params[0];
         const total = areasData.values.reduce((a, b) => a + b, 0);
-        const percentage =
-          total > 0 ? ((data.value / total) * 100).toFixed(1) : "0";
+        const percentage = total > 0 ? ((params.value / total) * 100).toFixed(1) : "0";
         return `
-          <div style="font-weight: 600; margin-bottom: 3px; font-size: 11px;">${data.name}</div>
+          <div style="font-weight: 600; margin-bottom: 3px; font-size: 11px;">${params.name}</div>
           <div style="display: flex; align-items: center; gap: 5px; font-size: 11px;">
-            <span style="display: inline-block; width: 8px; height: 8px; background: ${data.color}; border-radius: 50%;"></span>
-            Permisos: <strong>${data.value}</strong>
+            <span style="display: inline-block; width: 8px; height: 8px; background: ${params.color}; border-radius: 50%;"></span>
+            Permisos: <strong>${params.value}</strong>
           </div>
           <div style="font-size: 10px; color: #666; margin-bottom: 3px;">
             Porcentaje: ${percentage}%
@@ -48,102 +43,57 @@ function initAreasChart() {
       },
       padding: [5, 8],
     },
-    grid: {
-      left: "3%",
-      right: "3%",
-      bottom: "18%",
-      top: "5%",
-      containLabel: true,
-    },
-    xAxis: {
-      type: "category",
-      data: areasData.categories,
-      axisLabel: {
-        rotate: 35,
-        color: "#4A4A4A",
-        fontSize: 10,
-        fontWeight: 500,
-        interval: 0,
-        margin: 8,
+    legend: {
+      orient: 'vertical',
+      left: 'left',
+      textStyle: {
+        fontSize: 11,
+        color: '#4A4A4A',
       },
-      axisLine: {
-        lineStyle: {
-          color: "#B0BEC5",
-          width: 1,
-        },
-      },
-      axisTick: {
-        show: false,
-      },
-    },
-    yAxis: {
-      type: "value",
-      name: "Cantidad",
-      nameTextStyle: {
-        color: "#4A4A4A",
-        fontSize: 10,
-        fontWeight: 500,
-        padding: [0, 0, 0, 20],
-      },
-      axisLabel: {
-        color: "#4A4A4A",
-        fontSize: 10,
-      },
-      axisLine: {
-        show: false,
-      },
-      axisTick: {
-        show: false,
-      },
-      splitLine: {
-        lineStyle: {
-          color: "#F5F5F5",
-          width: 1,
-          type: "solid",
-        },
-      },
-      splitNumber: 4,
     },
     series: [
       {
-        name: "Permisos",
-        type: "bar",
-        data: areasData.values.map((value, index) => ({
-          value: value,
-          itemStyle: {
-            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-              { offset: 0, color: areasData.colors[index] },
-              { offset: 1, color: areasData.colors[index] + "80" },
-            ]),
-            borderRadius: [4, 4, 0, 0],
-            shadowColor: areasData.colors[index] + "30",
-            shadowBlur: 4,
-            shadowOffsetY: 2,
+        name: "Permisos por Área",
+        type: "pie",
+        radius: ["38%", "64%"],
+        center: ["50%", "50%"],
+        avoidLabelOverlap: false,
+        itemStyle: {
+          borderRadius: 8,
+          borderColor: "#fff",
+          borderWidth: 2,
+        },
+        label: {
+          show: true,
+          formatter: function (params) {
+            const total = areasData.values.reduce((a, b) => a + b, 0);
+            const percentage = total > 0 ? ((params.value / total) * 100).toFixed(1) : "0";
+            return `${params.name}: ${params.value} (${percentage}%)`;
           },
-          emphasis: {
-            itemStyle: {
-              color: areasData.colors[index],
-              shadowBlur: 6,
-              shadowOffsetY: 3,
-            },
-          },
-          // Etiqueta con porcentaje
+          fontSize: 11,
+          color: "#4A4A4A",
+        },
+        emphasis: {
           label: {
             show: true,
-            position: "top",
-            distance: 5,
-            formatter: function (params) {
-              const total = areasData.values.reduce((a, b) => a + b, 0);
-              const percentage =
-                total > 0 ? ((params.value / total) * 100).toFixed(1) : "0";
-              return `${percentage}%`;
-            },
-            fontSize: 10,
+            fontSize: 12,
             fontWeight: "bold",
-            color: "#4A4A4A",
+          },
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: "rgba(0, 0, 0, 0.5)",
+          },
+        },
+        data: areasData.categories.map((name, i) => ({
+          value: areasData.values[i],
+          name: name,
+          itemStyle: {
+            color: areasData.colors[i % areasData.colors.length],
           },
         })),
-        barWidth: "55%",
+        animationType: "scale",
+        animationEasing: "elasticOut",
         animationDelay: function (idx) {
           return idx * 80;
         },
@@ -165,46 +115,36 @@ function initAreasChart() {
 
   // Función para actualizar datos
   function updateAreasChart(newData) {
-    // Actualizar los datos globales
-    areasData.categories = newData.categories || areasData.categories;
-    areasData.values = newData.values || areasData.values;
-    areasData.colors = newData.colors || areasData.colors;
-
+    // Agrupar sub-estatus en dos categorías
+    let accidentes = 0;
+    let sinAccidentes = 0;
+    if (newData.categories && newData.values) {
+      newData.categories.forEach((cat, i) => {
+        const nombre = cat.toLowerCase();
+        if (nombre.includes("cierre con accidente") || nombre.includes("cierre con incidente")) {
+          accidentes += Number(newData.values[i]);
+        } else if (nombre.includes("cierre sin incidentes")) {
+          sinAccidentes += Number(newData.values[i]);
+        }
+      });
+    }
+    areasData.values = [accidentes, sinAccidentes];
+    // Mantener solo las dos categorías y colores
     const updatedOption = {
-      xAxis: {
-        data: areasData.categories,
-      },
       series: [
         {
-          data: areasData.values.map((value, index) => ({
-            value: value,
-            itemStyle: {
-              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                {
-                  offset: 0,
-                  color: areasData.colors[index],
-                },
-                {
-                  offset: 1,
-                  color: areasData.colors[index] + "80",
-                },
-              ]),
-              borderRadius: [4, 4, 0, 0],
-              shadowColor: areasData.colors[index] + "30",
-              shadowBlur: 4,
-              shadowOffsetY: 2,
+          data: [
+            {
+              value: areasData.values[0],
+              name: "Accidentes",
+              itemStyle: { color: areasData.colors[0] },
             },
-            // Mantener las etiquetas al actualizar
-            label: {
-              show: true,
-              position: "top",
-              distance: 5,
-              formatter: "{c}",
-              fontSize: 10,
-              fontWeight: "bold",
-              color: "#4A4A4A",
+            {
+              value: areasData.values[1],
+              name: "Sin accidentes",
+              itemStyle: { color: areasData.colors[1] },
             },
-          })),
+          ],
         },
       ],
     };
@@ -223,38 +163,13 @@ function initAreasChart() {
 const usuario = JSON.parse(localStorage.getItem("usuario"));
 const id_departamento = usuario && usuario.id ? usuario.id : 1;
 
-function cargarDatosAreas() {
-  fetch("/api/grafica/" + id_departamento)
-    .then((res) => res.json())
-    .then((data) => {
-      // Transforma los datos para la gráfica usando cantidad_trabajos
-      const categories = data.areas.map((a) => a.area);
-      const values = data.areas.map((a) => Number(a.cantidad_trabajos));
-      // Genera colores dinámicos si hay más áreas de las que tienes colores
-      const baseColors = [
-        "#003B5C",
-        "#FF6F00",
-        "#00BFA5",
-        "#B0BEC5",
-        "#4A4A4A",
-        "#D32F2F",
-      ];
-      const colors = categories.map(
-        (_, i) => baseColors[i % baseColors.length]
-      );
-      // Actualiza la gráfica
-      if (window.areasChartInstance) {
-        window.areasChartInstance.updateData({ categories, values, colors });
-      }
-    });
-}
+// ...existing code...
 
 // Auto-inicializar cuando el DOM esté listo
 document.addEventListener("DOMContentLoaded", function () {
   if (document.getElementById("areas-chart")) {
     window.areasChartInstance = initAreasChart();
-    // Datos serán cargados EXCLUSIVAMENTE por el filtro-global.js
-    // cargarDatosAreas(); // DESHABILITADO PERMANENTEMENTE
+    // cargarDatosSubEstatusPorUsuario(); // Comentado: ahora la gráfica se actualiza solo desde filtro-global.js
   }
 });
 

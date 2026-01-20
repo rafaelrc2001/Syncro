@@ -9,9 +9,13 @@ router.get("/permisos-tipo/:id_departamento", async (req, res) => {
     const result = await pool.query(
       `
         SELECT 
-          COUNT(pt.id_permiso) AS cantidad_trabajos
-        FROM permisos_trabajo pt
-        WHERE pt.id_departamento = $1;
+            COUNT(pt.id_permiso) AS cantidad_trabajos
+        FROM usuarios u
+        INNER JOIN departamentos d
+            ON u.departamento = d.nombre
+        INNER JOIN permisos_trabajo pt
+            ON d.id_departamento = pt.id_departamento
+        WHERE u.id_usuario = $1;
       `,
       [id_departamento]
     );

@@ -8,14 +8,19 @@ router.get("/grafica-estatus/:id_departamento", async (req, res) => {
   try {
     const result = await pool.query(
       `
-        SELECT 
+        SELECT
           e.estatus,
-          COUNT(pt.id_permiso) AS cantidad_trabajos
-        FROM permisos_trabajo pt
-        INNER JOIN estatus e ON pt.id_permiso = e.id_permiso
-        WHERE pt.id_departamento = $1
-        GROUP BY e.estatus
-        ORDER BY e.estatus;
+          COUNT(p.id_permiso) AS cantidad_trabajos
+      FROM usuarios u
+      INNER JOIN departamentos d
+          ON u.departamento = d.nombre
+      INNER JOIN permisos_trabajo p
+          ON d.id_departamento = p.id_departamento
+      INNER JOIN estatus e
+          ON p.id_permiso = e.id_permiso
+      WHERE u.id_usuario = $1
+      GROUP BY e.estatus
+      ORDER BY e.estatus;
       `,
       [id_departamento]
     );

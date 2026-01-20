@@ -342,6 +342,8 @@ function initStatusChart() {
 function cargarDatosEstatus() {
   const usuario = JSON.parse(localStorage.getItem("usuario"));
   const id_departamento = usuario && usuario.id ? usuario.id : 1;
+    console.log("[DEBUG] usuario localStorage:", usuario);
+    console.log("[DEBUG] id_departamento:", id_departamento);
   fetch("/api/grafica-estatus/" + id_departamento)
     .then((res) => res.json())
     .then((data) => {

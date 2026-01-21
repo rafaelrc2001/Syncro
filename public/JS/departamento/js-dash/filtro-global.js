@@ -79,13 +79,11 @@ class DashboardFilter {
     try {
       // Cargar datos en paralelo, pero ahora sub-estatus reemplaza áreas
       const [permisosRes, subEstatusRes, tiposRes, estatusRes] = await Promise.all([
-        fetch(`/api/tabla-permisos/${id_usuario}`),
-        fetch(`/api/grafica-sub-estatus-departamento/${usuario && usuario.id_usuario ? usuario.id_usuario : 1}`),
-        fetch(`/api/permisos-tipo/${id_usuario}`),
-        fetch(`/api/grafica-estatus/${id_usuario}`),
+        fetch(`/api/tabla-permisos-departamentos/${id_usuario}`),
+        fetch(`/api/grafica-sub-estatus-departamento/${id_usuario}`),
+        fetch(`/api/permisos-tipo-departamento/${id_usuario}`),
+        fetch(`/api/grafica-estatus-departamento/${id_usuario}`),
       ]);
-
-
 
       const [permisosData, subEstatusData, tiposData, estatusData] = await Promise.all([
         permisosRes.json(),

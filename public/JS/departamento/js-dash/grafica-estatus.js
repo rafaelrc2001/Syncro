@@ -72,34 +72,41 @@ function injectStatusChartStyles() {
 
 // Mapeo fijo estatus -> color (normalizado a minúsculas)
 const STATUS_COLOR_MAP = {
-  "activo": "#2ECC71",             // verde brillante
-  "terminado": "#1976D2",          // azul
-  "cancelado": "#D32F2F",          // rojo
+  activo: "#2ECC71", // verde brillante
+  terminado: "#1976D2", // azul
+  cancelado: "#D32F2F", // rojo
   "en espera del área": "#FF9800", // naranja
   "en espera del area": "#FF9800",
-  "espera seguridad": "#5E35B1",   // púrpura
-  "no autorizado": "#FBC02D",      // amarillo
+  "espera seguridad": "#5E35B1", // púrpura
+  "no autorizado": "#FBC02D", // amarillo
   "cierre sin incidentes": "#00BCD4", // cian
   "cierre con incidentes": "#D81B60", // magenta/rosa
-  "cierre con accidentes": "#455A64",  // gris oscuro
+  "cierre con accidentes": "#455A64", // gris oscuro
 };
 
 // Normaliza cadenas para comparar sin acentos ni mayúsculas
 function normalizeStatusKey(s) {
-  if (!s) return '';
+  if (!s) return "";
   try {
-     return s.toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+    return s
+      .toString()
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .trim();
   } catch (e) {
     return s.toString().toLowerCase().trim();
   }
 }
 
 // Mapa normalizado (clave normalizada -> color) para búsquedas rápidas
-const NORMALIZED_STATUS_COLOR_MAP = Object.keys(STATUS_COLOR_MAP).reduce((acc, k) => {
-  acc[normalizeStatusKey(k)] = STATUS_COLOR_MAP[k];
-  return acc;
-}, {});
-
+const NORMALIZED_STATUS_COLOR_MAP = Object.keys(STATUS_COLOR_MAP).reduce(
+  (acc, k) => {
+    acc[normalizeStatusKey(k)] = STATUS_COLOR_MAP[k];
+    return acc;
+  },
+  {}
+);
 
 // Configuración de la gráfica de estatus
 function initStatusChart() {
@@ -127,19 +134,19 @@ function initStatusChart() {
 
   // Reubicar DOM: envolver #status-chart en un wrapper con columna de chart y leyenda
   (function relocateChartAndCreateLegend() {
-    const chartEl = document.getElementById('status-chart');
+    const chartEl = document.getElementById("status-chart");
     if (!chartEl) return;
     const parent = chartEl.parentNode;
     if (!parent) return;
     // si el wrapper ya existe, no duplicar
-    if (parent.classList && parent.classList.contains('status-wrapper')) return;
-    const wrapper = document.createElement('div');
-    wrapper.className = 'status-wrapper';
-    const chartFlex = document.createElement('div');
-    chartFlex.className = 'status-chart-flex';
-    const legendDiv = document.createElement('div');
-    legendDiv.id = 'status-legend-list';
-    legendDiv.className = 'status-legend-list';
+    if (parent.classList && parent.classList.contains("status-wrapper")) return;
+    const wrapper = document.createElement("div");
+    wrapper.className = "status-wrapper";
+    const chartFlex = document.createElement("div");
+    chartFlex.className = "status-chart-flex";
+    const legendDiv = document.createElement("div");
+    legendDiv.id = "status-legend-list";
+    legendDiv.className = "status-legend-list";
     // reemplazar el chartEl por el wrapper y reubicar elementos
     parent.replaceChild(wrapper, chartEl);
     wrapper.appendChild(chartFlex);
@@ -169,7 +176,9 @@ function initStatusChart() {
           : params?.data?.total || 0;
 
         // Si no hay total confiable, intenta tomarlo desde la instancia
-        const chart = echarts.getInstanceByDom(document.getElementById("status-chart"));
+        const chart = echarts.getInstanceByDom(
+          document.getElementById("status-chart")
+        );
         const option = chart ? chart.getOption() : null;
         const pieData = option?.series?.[0]?.data || [];
         const totalFromChart = pieData.reduce((s, i) => s + (i.value || 0), 0);
@@ -196,8 +205,8 @@ function initStatusChart() {
       {
         name: "Estatus de Permisos",
         type: "pie",
-  radius: ["38%", "64%"],
-  center: ["50%", "50%"],
+        radius: ["38%", "64%"],
+        center: ["50%", "50%"],
         avoidLabelOverlap: false,
         itemStyle: {
           borderRadius: 10,
@@ -208,11 +217,14 @@ function initStatusChart() {
           show: true,
           formatter: function (params) {
             // Obtener el total igual que en el tooltip
-            const chart = echarts.getInstanceByDom(document.getElementById("status-chart"));
+            const chart = echarts.getInstanceByDom(
+              document.getElementById("status-chart")
+            );
             const option = chart ? chart.getOption() : null;
             const pieData = option?.series?.[0]?.data || [];
             const total = pieData.reduce((s, i) => s + (i.value || 0), 0);
-            const percentage = total > 0 ? ((params.value / total) * 100).toFixed(1) : "0";
+            const percentage =
+              total > 0 ? ((params.value / total) * 100).toFixed(1) : "0";
             return `${percentage}%`;
           },
           fontSize: 11,
@@ -251,7 +263,7 @@ function initStatusChart() {
   // Función para recalcular el centro del pie en píxeles y aplicarlo
   function updateChartCenter() {
     try {
-      const chartEl = document.getElementById('status-chart');
+      const chartEl = document.getElementById("status-chart");
       if (!chartEl) return;
       const w = Math.round(chartEl.clientWidth);
       const h = Math.round(chartEl.clientHeight);
@@ -259,15 +271,17 @@ function initStatusChart() {
       const cy = Math.round(h / 2);
       // aplicar centro en píxeles
       statusChart.setOption({ series: [{ center: [cx, cy] }] });
-      console.debug('[statusChart] center px', { w, h, cx, cy });
+      console.debug("[statusChart] center px", { w, h, cx, cy });
     } catch (e) {
-      console.warn('updateChartCenter error', e);
+      console.warn("updateChartCenter error", e);
     }
   }
 
   // Asegurar resize y centro tras primer render
   setTimeout(function () {
-    try { statusChart.resize(); } catch (e) {}
+    try {
+      statusChart.resize();
+    } catch (e) {}
     updateChartCenter();
   }, 160);
 
@@ -286,7 +300,10 @@ function initStatusChart() {
     };
     const updatedPieData = updatedData.categories.map((category, index) => {
       const key = normalizeStatusKey(category);
-      const color = NORMALIZED_STATUS_COLOR_MAP[key] || (Array.isArray(updatedData.colors) && updatedData.colors[index]) || '#cccccc';
+      const color =
+        NORMALIZED_STATUS_COLOR_MAP[key] ||
+        (Array.isArray(updatedData.colors) && updatedData.colors[index]) ||
+        "#cccccc";
       return {
         value: updatedData.values[index],
         name: `${updatedData.icons[index]} ${category}`,
@@ -306,17 +323,21 @@ function initStatusChart() {
     statusChart.setOption(updatedOption);
 
     // actualizar leyenda HTML externa
-    const legendEl = document.getElementById('status-legend-list');
+    const legendEl = document.getElementById("status-legend-list");
     if (legendEl) {
-      legendEl.innerHTML = '';
+      legendEl.innerHTML = "";
       updatedData.categories.forEach((cat, idx) => {
-        const item = document.createElement('div');
-        item.className = 'status-legend-item';
-        const dot = document.createElement('span');
-        dot.className = 'status-legend-dot';
-        dot.style.background = (updatedPieData[idx] && updatedPieData[idx].itemStyle && updatedPieData[idx].itemStyle.color) || '#ccc';
-        const label = document.createElement('span');
-        label.textContent = `${updatedData.icons[idx] || ''} ${cat}`.trim();
+        const item = document.createElement("div");
+        item.className = "status-legend-item";
+        const dot = document.createElement("span");
+        dot.className = "status-legend-dot";
+        dot.style.background =
+          (updatedPieData[idx] &&
+            updatedPieData[idx].itemStyle &&
+            updatedPieData[idx].itemStyle.color) ||
+          "#ccc";
+        const label = document.createElement("span");
+        label.textContent = `${updatedData.icons[idx] || ""} ${cat}`.trim();
         item.appendChild(dot);
         item.appendChild(label);
         legendEl.appendChild(item);
@@ -324,7 +345,9 @@ function initStatusChart() {
     }
 
     // Forzar resize y recalcular centro
-    try { statusChart.resize(); } catch (e) {}
+    try {
+      statusChart.resize();
+    } catch (e) {}
     setTimeout(updateChartCenter, 50);
   }
 
@@ -341,10 +364,9 @@ function initStatusChart() {
 
 function cargarDatosEstatus() {
   const usuario = JSON.parse(localStorage.getItem("usuario"));
-  const id_departamento = usuario && usuario.id ? usuario.id : 1;
-    console.log("[DEBUG] usuario localStorage:", usuario);
-    console.log("[DEBUG] id_departamento:", id_departamento);
-  fetch("/api/grafica-estatus/" + id_departamento)
+  const id_usuario = usuario && usuario.id_usuario ? usuario.id_usuario : null;
+  if (!id_usuario) return;
+  fetch("/api/grafica-estatus-departamento/" + id_usuario)
     .then((res) => res.json())
     .then((data) => {
       // Transforma los datos para la gráfica
@@ -364,7 +386,9 @@ function cargarDatosEstatus() {
       // Preferir el color fijo por estatus (mapa normalizado), si no existe usar baseColors
       const colors = categories.map((cat, i) => {
         const key = normalizeStatusKey(cat);
-        return NORMALIZED_STATUS_COLOR_MAP[key] || baseColors[i % baseColors.length];
+        return (
+          NORMALIZED_STATUS_COLOR_MAP[key] || baseColors[i % baseColors.length]
+        );
       });
       const icons = categories.map((_, i) => baseIcons[i % baseIcons.length]);
       if (window.statusChartInstance) {

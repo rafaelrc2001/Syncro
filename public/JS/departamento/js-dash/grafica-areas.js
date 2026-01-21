@@ -1,15 +1,16 @@
 // Gráfica de Permisos por Áreas - Barras Verticales
 // grafica-areas.js
 
-
-// Configuración de la gráfica (igual que usuario)
+// Configuración de la gráfica
 function initAreasChart() {
+  // Inicializa la gráfica vacía
   // Solo dos categorías: Accidentes y Sin accidentes
   const areasData = {
     categories: ["Accidentes", "Sin accidentes"],
     values: [0, 0],
     colors: ["#D32F2F", "#00BFA5"],
   };
+
 
   // Inicializar gráfica tipo pastel
   const areasChart = echarts.init(document.getElementById("areas-chart"));
@@ -162,6 +163,7 @@ function initAreasChart() {
 // Suponiendo que tienes el id_departamento disponible
 const usuario = JSON.parse(localStorage.getItem("usuario"));
 const id_departamento = usuario && usuario.id ? usuario.id : 1;
+
 
 // ...existing code...
 

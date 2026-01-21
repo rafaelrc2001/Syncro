@@ -1,305 +1,126 @@
-// Gráfica de Permisos por Tipo - Barras Horizontales
-// grafica-tipos.js
+// Gráfica de Total de Permisos por Mes (con estructura compatible con filtro global)
 
-// Configuración de la gráfica de tipos
 function initTypesChart() {
-  // Inicializa la gráfica vacía
-  const typesData = {
-    categories: [],
-    values: [],
-    colors: [
-      "#D32F2F",
-      "#FF6F00",
-      "#FFC107",
-      "#003B5C",
-      "#00BFA5",
-      "#B0BEC5",
-      "#4A4A4A",
-      "#1976D2",
-    ],
-    riskLevels: [], // Si tienes lógica de riesgo, puedes mapearla luego
-  };
+  // Inicializar instancia y exponer updateData
+  let chart = echarts.init(document.getElementById("type-chart"));
+  window.typesChartInstance = chart;
 
-  // Inicializar gráfica
-  const typesChart = echarts.init(document.getElementById("type-chart"));
-
-  // Configuración de la gráfica
-  const typesOption = {
-    title: {
-      show: false,
-    },
-    tooltip: {
-      trigger: "axis",
-      axisPointer: {
-        type: "shadow",
+  // Función para renderizar la gráfica de permisos por mes
+  function renderPermisosPorMes(permisos) {
+    const meses = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+    let conteoPorMes = Array(12).fill(0);
+    if (Array.isArray(permisos) && permisos.length > 0) {
+      permisos.forEach((permiso) => {
+        let fecha = permiso.Fecha || permiso.fecha_hora || permiso.fecha;
+        if (!fecha) return;
+        if (fecha.includes("T")) fecha = fecha.split("T")[0];
+        const mes = new Date(fecha).getMonth();
+        if (mes >= 0 && mes < 12) conteoPorMes[mes]++;
+      });
+    }
+    const option = {
+      title: {
+        text: "Total de Permisos por Mes",
+        left: "center",
+        textStyle: { fontSize: 16 }
       },
-      formatter: function (params) {
-        const data = params[0];
-        let total = 0;
-        let dataArr = [];
-        if (
-          data &&
-          data.seriesIndex !== undefined &&
-          params &&
-          params[0] &&
-          params[0].seriesIndex !== undefined &&
-          params[0].series &&
-          params[0].series.data &&
-          Array.isArray(params[0].series.data)
-        ) {
-          dataArr = params[0].series.data;
-          total = dataArr.reduce((acc, item) => acc + item.value, 0);
-        } else if (Array.isArray(typesData.values)) {
-          dataArr = typesData.values;
-          total = typesData.values.reduce((a, b) => a + b, 0);
-        }
-        // Log de depuración para ver los valores y el total
-        console.log("[DEBUG TIPOS]", {
-          value: data.value,
-          total,
-          data: dataArr,
-        });
-        const percentage =
-          total > 0 ? ((data.value / total) * 100).toFixed(1) : "0";
-        return `
-          <div style="font-weight: 600; margin-bottom: 3px; font-size: 11px;">${data.name}</div>
-          <div style="display: flex; align-items: center; gap: 5px; font-size: 11px; margin-bottom: 3px;">
-            <span style="display: inline-block; width: 8px; height: 8px; background: ${data.color}; border-radius: 50%;"></span>
-            Permisos: <strong>${data.value}</strong>
-          </div>
-          <div style="font-size: 10px; color: #666; margin-bottom: 3px;">
-            Porcentaje: ${percentage}%
-          </div>
-        `;
-      },
-      backgroundColor: "rgba(255, 255, 255, 0.95)",
-      borderColor: "#003B5C",
-      borderWidth: 1,
-      textStyle: {
-        color: "#1C1C1C",
-        fontSize: 11,
-      },
-      padding: [5, 8],
-    },
-    grid: {
-      left: "30%",
-      right: "3%",
-      bottom: "3%",
-      top: "5%",
-      containLabel: false,
-    },
-    xAxis: {
-      type: "value",
-      name: "Cantidad",
-      nameTextStyle: {
-        color: "#4A4A4A",
-        fontSize: 10,
-        fontWeight: 500,
-        padding: [0, 0, 0, 20],
-      },
-      axisLabel: {
-        color: "#4A4A4A",
-        fontSize: 10,
-      },
-      axisLine: {
-        show: false,
-      },
-      axisTick: {
-        show: false,
-      },
-      splitLine: {
-        lineStyle: {
-          color: "#F5F5F5",
-          width: 1,
-          type: "solid",
+      tooltip: {
+        trigger: "axis",
+        axisPointer: { type: "shadow" },
+        formatter: function (params) {
+          let total = 0;
+          let tooltip = params[0].axisValueLabel + "<br/>";
+          params.forEach((item) => {
+            tooltip += `${item.marker} ${item.seriesName}: ${item.value}<br/>`;
+            total += item.value;
+          });
+          tooltip += `<b>Total: ${total}</b>`;
+          return tooltip;
         },
       },
-      splitNumber: 4,
-    },
-    yAxis: {
-      type: "category",
-      data: typesData.categories,
-      axisLabel: {
-        color: "#4A4A4A",
-        fontSize: 10,
-        fontWeight: 500,
-        interval: 0,
-        margin: 8,
+      grid: {
+        left: "5%",
+        right: "5%",
+        bottom: "10%",
+        top: "18%",
+        containLabel: true,
       },
-      axisLine: {
-        lineStyle: {
-          color: "#B0BEC5",
-          width: 1,
-        },
+      xAxis: {
+        type: "category",
+        data: meses,
+        axisLabel: { fontSize: 13 },
       },
-      axisTick: {
-        show: false,
-      },
-    },
-    series: [
-      {
-        name: "Permisos",
-        type: "bar",
-        data: typesData.values.map((value, index) => ({
-          value: value,
-          itemStyle: {
-            color: new echarts.graphic.LinearGradient(1, 0, 0, 0, [
-              { offset: 0, color: typesData.colors[index] },
-              { offset: 1, color: typesData.colors[index] + "80" },
-            ]),
-            borderRadius: [0, 4, 4, 0],
-            shadowColor: typesData.colors[index] + "30",
-            shadowBlur: 4,
-            shadowOffsetX: 2,
-          },
-          emphasis: {
-            itemStyle: {
-              color: typesData.colors[index],
-              shadowBlur: 6,
-              shadowOffsetX: 3,
-            },
-          },
-          // Agregar etiqueta con el valor
-          label: {
-            show: true,
-            position: "right",
-            distance: 5,
-            formatter: "{c}",
-            fontSize: 10,
-            fontWeight: "bold",
-            color: "#4A4A4A",
-          },
-        })),
-        barWidth: "55%",
-        animationDelay: function (idx) {
-          return idx * 80;
-        },
-      },
-    ],
-    animationEasing: "elasticOut",
-    animationDelayUpdate: function (idx) {
-      return idx * 40;
-    },
-  };
-
-  // Aplicar configuración
-  typesChart.setOption(typesOption);
-
-  // Hacer responsive
-  window.addEventListener("resize", function () {
-    typesChart.resize();
-  });
-
-  // Función para actualizar datos
-  function updateTypesChart(newData) {
-    // Actualizar los datos internos para que el formatter siempre tenga los datos correctos
-    typesData.categories = newData.categories || typesData.categories;
-    typesData.values = newData.values || typesData.values;
-    typesData.colors = newData.colors || typesData.colors;
-    typesData.riskLevels = newData.riskLevels || typesData.riskLevels;
-
-    const updatedOption = {
       yAxis: {
-        data: typesData.categories,
+        type: "value",
+        name: "Cantidad",
+        axisLabel: { fontSize: 13 },
+        minInterval: 1,
+        min: 0,
       },
       series: [
         {
-          data: typesData.values.map((value, index) => ({
-            value: value,
-            itemStyle: {
-              color: new echarts.graphic.LinearGradient(1, 0, 0, 0, [
-                { offset: 0, color: typesData.colors[index] },
-                { offset: 1, color: typesData.colors[index] + "80" },
-              ]),
-              borderRadius: [0, 4, 4, 0],
-              shadowColor: typesData.colors[index] + "30",
-              shadowBlur: 4,
-              shadowOffsetX: 2,
+          name: "Permisos",
+          type: "bar",
+          data: conteoPorMes,
+          itemStyle: {
+            color: "#FF6F00"
+          },
+          barWidth: "55%",
+          label: {
+            show: true,
+            position: "top",
+            fontSize: 13,
+            fontWeight: "bold",
+            color: "#333",
+            formatter: function (params) {
+              return params.value > 0 ? params.value : "";
             },
-            // Mantener las etiquetas al actualizar
-            label: {
-              show: true,
-              position: "right",
-              distance: 5,
-              formatter: "{c}",
-              fontSize: 10,
-              fontWeight: "bold",
-              color: "#4A4A4A",
-            },
-          })),
-        },
+          },
+          emphasis: { focus: "series" },
+        }
       ],
+      animationEasing: "elasticOut",
+      animationDelayUpdate: function (idx) {
+        return idx * 40;
+      },
     };
-    typesChart.setOption(updatedOption);
+    chart.setOption(option);
   }
 
-  // Función para obtener estadísticas de riesgo
-  function getRiskStatistics() {
-    const stats = {
-      alto: 0,
-      medio: 0,
-      bajo: 0,
-      total: typesData.values.reduce((a, b) => a + b, 0),
-    };
-
-    typesData.riskLevels.forEach((risk, index) => {
-      const count = typesData.values[index];
-      if (risk === "Alto") stats.alto += count;
-      else if (risk === "Medio") stats.medio += count;
-      else stats.bajo += count;
-    });
-
-    return stats;
+  // updateData compatible con filtro global
+  function updateData(newData) {
+    // Permitir tanto {permisos: [...]}, como un array plano de permisos
+    if (Array.isArray(newData)) {
+      renderPermisosPorMes(newData);
+    } else if (newData && Array.isArray(newData.permisos)) {
+      renderPermisosPorMes(newData.permisos);
+    } else if (newData && Array.isArray(newData.values)) {
+      // Compatibilidad: si recibe .values, asume que son los permisos
+      renderPermisosPorMes(newData.values);
+    } else {
+      renderPermisosPorMes([]);
+    }
   }
 
-  // Retornar funciones públicas
+  // Exponer API pública
   return {
-    chart: typesChart,
-    updateData: updateTypesChart,
-    resize: () => typesChart.resize(),
-    getRiskStats: getRiskStatistics,
-    data: typesData,
+    chart,
+    updateData,
+    resize: () => chart.resize(),
   };
 }
 
-// Suponiendo que tienes el id_departamento disponible
-// Usa window.idDepartamento directamente para evitar duplicados
-
-function cargarDatosTipos() {
-  const usuario = JSON.parse(localStorage.getItem("usuario"));
-  const id_departamento = usuario && usuario.id ? usuario.id : 1;
-  fetch("/api/permisos-tipo/" + id_departamento)
-    .then((res) => res.json())
-    .then((data) => {
-      console.log("Datos recibidos para tipos:", data); // <-- Agrega este log
-      const categories = data.tipos.map((t) => t.tipo_permiso);
-      const values = data.tipos.map((t) => Number(t.cantidad_trabajos));
-      const baseColors = [
-        "#D32F2F",
-        "#FF6F00",
-        "#FFC107",
-        "#003B5C",
-        "#00BFA5",
-        "#B0BEC5",
-        "#4A4A4A",
-        "#1976D2",
-      ];
-      const colors = categories.map(
-        (_, i) => baseColors[i % baseColors.length]
-      );
-      if (window.typesChartInstance) {
-        window.typesChartInstance.updateData({ categories, values, colors });
-      }
-    });
-}
-
-// Auto-inicializar cuando el DOM esté listo
 document.addEventListener("DOMContentLoaded", function () {
   if (document.getElementById("type-chart")) {
     window.typesChartInstance = initTypesChart();
-    // Datos serán cargados EXCLUSIVAMENTE por el filtro-global.js
-    // cargarDatosTipos(); // DESHABILITADO PERMANENTEMENTE
+    // Cargar datos iniciales (por mes)
+    (async function () {
+      const usuario = JSON.parse(localStorage.getItem("usuario"));
+      const id_usuario = usuario && usuario.id_usuario ? usuario.id_usuario : null;
+      if (!id_usuario) return;
+      const response = await fetch(`/api/tabla-permisos-departamentos/${id_usuario}`);
+      const data = await response.json();
+      window.typesChartInstance.updateData({ permisos: data.permisos || [] });
+    })();
   }
 });
-
-// Exportar para uso global1 initTypesChart;

@@ -5,6 +5,7 @@ const pool = require("../database");
 // Endpoint para obtener conteo de permisos por estatus en un departamento
 router.get("/grafica-estatus-departamento/:id_departamentos", async (req, res) => {
   const { id_departamento } = req.params;
+  console.log("[LOG] Valor recibido en /grafica-estatus-departamento:", id_departamento);
   try {
     const result = await pool.query(
       `
@@ -24,6 +25,7 @@ router.get("/grafica-estatus-departamento/:id_departamentos", async (req, res) =
       `,
       [id_departamento]
     );
+    console.log("[LOG] Resultados SQL /grafica-estatus-departamento:", result.rows);
     res.json({ estatus: result.rows });
   } catch (error) {
     console.error("❌ Error al consultar permisos por estatus:", error);

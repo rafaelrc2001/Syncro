@@ -395,9 +395,10 @@ class DashboardFilter {
           <td>${p.Permiso || p.permiso || ""}</td>
           <td>${p.descripcion || p.Descripcion || p.descripcion_trabajo || ""}</td>
           <td>
-            <span class="status-badge ${statusClass}">${p.Estado || p.estado || ""}</span>
-            <br>
-            <span class="substatus-badge${substatusClass ? ' ' + substatusClass : ''}">${substatusValue}</span>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <span class="status-badge ${statusClass}">${p.Estado || p.estado || ""}</span>
+              <span class="substatus-badge${substatusClass ? ' ' + substatusClass : ''}">${substatusValue}</span>
+            </div>
           </td>
         </tr>
       `;

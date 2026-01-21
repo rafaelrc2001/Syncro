@@ -392,8 +392,8 @@ class DashboardFilter {
       const substatusValue = (p.Subestatus || p.subestatus || "").trim() || "...";
       tbody.innerHTML += `
         <tr>
-          <td>${p.Permiso || p.permiso || ""}</td>
-          <td style="width:60%;">${p.descripcion || p.Descripcion || p.descripcion_trabajo || ""}</td>
+          <td style="width:20%;">${p.Permiso || p.permiso || ""}</td>
+          <td>${p.descripcion || p.Descripcion || p.descripcion_trabajo || ""}</td>
           <td>
             <div style="display: flex; gap: 8px; align-items: center;">
               <span class="status-badge ${statusClass}">${p.Estado || p.estado || ""}</span>

@@ -4,7 +4,7 @@ const db = require("../database");
 
 // Endpoint para filtrar por departamento
 // Endpoint para filtrar por departamento con la misma lógica de joins
-router.get("/meses/departamento/:id_departamento", async (req, res) => {
+router.get("/meses/departamento-departamento/:id_departamento", async (req, res) => {
   const { id_departamento } = req.params;
   try {
     const result = await db.query(

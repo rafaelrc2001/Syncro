@@ -3,7 +3,7 @@ const router = express.Router();
 const pool = require("../database");
 
 // Endpoint para obtener conteo de permisos por tipo de permiso en un departamento
-router.get("/permisos-tipo/:id_departamento", async (req, res) => {
+router.get("/permisos-tipo-departamento/:id_departamento", async (req, res) => {
   const { id_departamento } = req.params;
   try {
     const result = await pool.query(

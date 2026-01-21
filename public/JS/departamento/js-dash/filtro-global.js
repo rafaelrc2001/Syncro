@@ -70,29 +70,45 @@ class DashboardFilter {
   // Cargar todos los datos iniciales
   async loadAllData() {
     const usuario = JSON.parse(localStorage.getItem("usuario"));
-    const id_departamento = usuario && usuario.id ? usuario.id : 1;
+    const id_usuario = usuario && usuario.id_usuario ? usuario.id_usuario : null;
+    if (!id_usuario) {
+      console.error("❌ No se encontró id_usuario en localStorage.usuario");
+      return;
+    }
 
     try {
-      // Cargar datos en paralelo
-      const [permisosRes, areasRes, tiposRes, estatusRes] = await Promise.all([
-        fetch(`/api/tabla-permisos/${id_departamento}`),
-        fetch(`/api/grafica/${id_departamento}`),
-        fetch(`/api/permisos-tipo/${id_departamento}`),
-        fetch(`/api/grafica-estatus/${id_departamento}`),
+      // Cargar datos en paralelo, pero ahora sub-estatus reemplaza áreas
+      const [permisosRes, subEstatusRes, tiposRes, estatusRes] = await Promise.all([
+        fetch(`/api/tabla-permisos/${id_usuario}`),
+        fetch(`/api/grafica-sub-estatus-departamento/${usuario && usuario.id_usuario ? usuario.id_usuario : 1}`),
+        fetch(`/api/permisos-tipo/${id_usuario}`),
+        fetch(`/api/grafica-estatus/${id_usuario}`),
       ]);
 
-      const [permisosData, areasData, tiposData, estatusData] =
-        await Promise.all([
-          permisosRes.json(),
-          areasRes.json(),
-          tiposRes.json(),
-          estatusRes.json(),
-        ]);
+
+
+      const [permisosData, subEstatusData, tiposData, estatusData] = await Promise.all([
+        permisosRes.json(),
+        subEstatusRes.json(),
+        tiposRes.json(),
+        estatusRes.json(),
+      ]);
+
+      // Agrupar sub-estatus para la gráfica principal
+      const subEstatusCounts = {};
+      (subEstatusData.estatus || []).forEach((e) => {
+        const key = e.sub_estatus || e.subestatus || e.estatus || "Sin sub-estatus";
+        subEstatusCounts[key] = (subEstatusCounts[key] || 0) + 1;
+      });
+      const subEstatusArray = Object.entries(subEstatusCounts).map(([subestatus, cantidad]) => ({
+        subestatus,
+        cantidad_trabajos: cantidad,
+      }));
 
       // Guardar datos originales
       this.originalData = {
         permisos: permisosData.permisos || [],
-        areas: areasData.areas || [],
+        subestatus: subEstatusArray,
         tipos: tiposData.tipos || [],
         estatus: estatusData.estatus || [],
       };
@@ -104,20 +120,12 @@ class DashboardFilter {
       this.updateAllVisualizations();
 
       console.log("✅ Datos cargados correctamente:", this.originalData);
-      console.log(
-        "📋 Estructura de permisos (primer elemento):",
-        this.originalData.permisos[0]
-      );
-
-      // Debug: Verificar campos de área en permisos
       if (this.originalData.permisos.length > 0) {
         const samplePermiso = this.originalData.permisos[0];
-        console.log(
-          "🔍 Campos disponibles en permiso:",
-          Object.keys(samplePermiso)
-        );
-        console.log("🏢 Campo Area:", samplePermiso.Area);
-        console.log("🏢 Campo area:", samplePermiso.area);
+        console.log("🔍 Campos disponibles en permiso:", Object.keys(samplePermiso));
+      }
+      if (this.originalData.subestatus.length > 0) {
+        console.log("🔍 Sub-estatus disponibles:", this.originalData.subestatus.map(s => s.subestatus));
       }
     } catch (error) {
       console.error("❌ Error al cargar datos:", error);
@@ -218,27 +226,41 @@ class DashboardFilter {
       !this.fechaInicio &&
       !this.fechaFinal
     ) {
-      this.filteredData.areas = [...this.originalData.areas];
+      // Agrupar subestatus originales en dos categorías
+      let accidentes = 0;
+      let sinAccidentes = 0;
+      (this.originalData.subestatus || []).forEach((s) => {
+        const sub = (s.subestatus || "").toLowerCase();
+        if (sub.includes("cierre con accidente") || sub.includes("cierre con incidente")) {
+          accidentes += s.cantidad_trabajos;
+        } else if (sub.includes("cierre sin incidentes")) {
+          sinAccidentes += s.cantidad_trabajos;
+        }
+      });
+      this.filteredData.subestatus = [
+        { subestatus: "Accidentes", cantidad_trabajos: accidentes },
+        { subestatus: "Sin accidentes", cantidad_trabajos: sinAccidentes },
+      ];
       this.filteredData.tipos = [...this.originalData.tipos];
       this.filteredData.estatus = [...this.originalData.estatus];
       return;
     }
 
-    // Filtrar áreas basado en permisos filtrados
-    const areasCounts = {};
+    // Filtrar sub-estatus basado en permisos filtrados y agrupar en dos categorías
+    let accidentes = 0;
+    let sinAccidentes = 0;
     this.filteredData.permisos.forEach((permiso) => {
-      const area = permiso.area || permiso.Area || "Sin área";
-      areasCounts[area] = (areasCounts[area] || 0) + 1;
+      const sub = (permiso.sub_estatus || permiso.subestatus || permiso.estatus || "").toLowerCase();
+      if (sub.includes("cierre con accidente") || sub.includes("cierre con incidente")) {
+        accidentes++;
+      } else if (sub.includes("cierre sin incidentes")) {
+        sinAccidentes++;
+      }
     });
-    this.filteredData.areas = Object.entries(areasCounts).map(
-      ([area, cantidad]) => ({
-        area,
-        cantidad_trabajos: cantidad,
-      })
-    );
-
-    console.log("🏢 Áreas recalculadas:", this.filteredData.areas);
-    console.log("📊 Conteos por área:", areasCounts);
+    this.filteredData.subestatus = [
+      { subestatus: "Accidentes", cantidad_trabajos: accidentes },
+      { subestatus: "Sin accidentes", cantidad_trabajos: sinAccidentes },
+    ];
 
     // Filtrar tipos basado en permisos filtrados
     this.filteredData.tipos = this.originalData.tipos
@@ -248,7 +270,6 @@ class DashboardFilter {
             .toLowerCase()
             .includes(tipo.tipo_permiso.toLowerCase())
         );
-
         return {
           ...tipo,
           cantidad_trabajos: permisosDelTipo.length,
@@ -300,27 +321,27 @@ class DashboardFilter {
     // Activos: estado "activo"
     const activos = this.filteredData.permisos.filter((p) => {
       const estado = (p.Estado || p.estado || "").toLowerCase();
-      return estado === "activo";
+      return( estado === "activo" ||
+              estado === "validado por seguridad" ||
+              estado === "trabajo finalizado" ||
+              estado === "espera liberacion del area"
+      );
     }).length;
     cards[2].textContent = activos;
 
     // Terminados: estados "terminado", "cancelado", "cierre con accidentes", "cierre con incidentes", "cierre sin incidentes"
     const terminados = this.filteredData.permisos.filter((p) => {
       const estado = (p.Estado || p.estado || "").toLowerCase();
-      return (
-        estado === "terminado" ||
-        estado === "cancelado" ||
-        estado === "cierre con accidentes" ||
-        estado === "cierre con incidentes" ||
-        estado === "cierre sin incidentes"
-      );
+      const subestatus = (p.Subestatus || p.subestatus || "").toLowerCase();
+      return estado === "cierre" && (subestatus === "cierre con incidentes" || subestatus === "cierre sin incidentes" || subestatus === "cierre con accidentes" );
     }).length;
     cards[3].textContent = terminados;
 
-    // No Autorizados: estado "no autorizado"
+    // No Autorizados: estatus 'cierre' y subestatus 'no autorizado' o 'cancelado' (literal)
     const noAutorizados = this.filteredData.permisos.filter((p) => {
       const estado = (p.Estado || p.estado || "").toLowerCase();
-      return estado === "no autorizado";
+      const subestatus = (p.Subestatus || p.subestatus || "").toLowerCase();
+      return estado === "cierre" && (subestatus === "no autorizado" || subestatus === "cancelado");
     }).length;
     cards[4].textContent = noAutorizados;
   }
@@ -332,6 +353,7 @@ class DashboardFilter {
 
     tbody.innerHTML = "";
     this.filteredData.permisos.forEach((p) => {
+      // Solo mostrar Permiso, Descripción del Trabajo y Estado
       let statusClass = "";
       switch ((p.Estado || p.estado || "").toLowerCase()) {
         case "activo":
@@ -355,110 +377,59 @@ class DashboardFilter {
         default:
           statusClass = "status-default";
       }
-
+      // Determinar clase de color para subestatus
+      let substatusText = (p.Subestatus || p.subestatus || "").toLowerCase();
+      let substatusClass = "";
+      if (substatusText.includes("cierre con accidentes")) {
+        substatusClass = "cierre-accidentes";
+      } else if (substatusText.includes("cierre con incidentes")) {
+        substatusClass = "cierre-incidentes";
+      } else if (substatusText.includes("cierre sin incidentes")) {
+        substatusClass = "cierre-sin-incidentes";
+      } else if (substatusText.includes("no autorizado")) {
+        substatusClass = "no-autorizado";
+      } else if (substatusText.includes("cancelado")) {
+        substatusClass = "cancelado";
+      }
+      const substatusValue = (p.Subestatus || p.subestatus || "").trim() || "...";
       tbody.innerHTML += `
         <tr>
           <td>${p.Permiso || p.permiso || ""}</td>
-          <td>${p.Tipo || p.tipo || ""}</td>
-          <td>${p.Actividad || p.actividad || ""}</td>
-          <td>${p.Supervisor || p.supervisor || ""}</td>
-          <td><span class="status-badge ${statusClass}">${
-        p.Estado || p.estado || ""
-      }</span></td>
+          <td>${p.descripcion || p.Descripcion || p.descripcion_trabajo || ""}</td>
+          <td>
+            <span class="status-badge ${statusClass}">${p.Estado || p.estado || ""}</span>
+            <br>
+            <span class="substatus-badge${substatusClass ? ' ' + substatusClass : ''}">${substatusValue}</span>
+          </td>
         </tr>
       `;
     });
   }
 
-  // Actualizar gráfica de áreas
+  // Actualizar gráfica principal con sub-estatus
   updateAreasChart() {
-    if (window.areasChartInstance) {
-      if (this.filteredData.areas.length > 0) {
-        const categories = this.filteredData.areas.map((a) => a.area);
-        const values = this.filteredData.areas.map((a) =>
-          Number(a.cantidad_trabajos)
-        );
-        const baseColors = [
-          "#003B5C",
-          "#FF6F00",
-          "#00BFA5",
-          "#B0BEC5",
-          "#4A4A4A",
-          "#D32F2F",
-        ];
-        const colors = categories.map(
-          (_, i) => baseColors[i % baseColors.length]
-        );
-        console.log("🔄 Actualizando gráfica de áreas:", {
-          categories,
-          values,
-        });
-        window.areasChartInstance.updateData({ categories, values, colors });
-      } else {
-        // Limpiar gráfica si no hay datos
-        window.areasChartInstance.updateData({
-          categories: [],
-          values: [],
-          colors: [],
-        });
-      }
-    }
+    if (!window.areasChartInstance) return;
+    // Generar los subestatus literales a partir de los permisos filtrados
+    const subestatusCounts = {};
+    this.filteredData.permisos.forEach((p) => {
+      const sub = (p.sub_estatus || p.subestatus || p.estatus || "Sin sub-estatus");
+      subestatusCounts[sub] = (subestatusCounts[sub] || 0) + 1;
+    });
+    const categories = Object.keys(subestatusCounts);
+    const values = Object.values(subestatusCounts);
+    const baseColors = [
+      "#003B5C", "#FF6F00", "#00BFA5", "#B0BEC5", "#4A4A4A",
+      "#D32F2F", "#1976D2", "#FBC02D", "#00BCD4", "#D81B60", "#455A64"
+    ];
+    const colors = categories.map((_, i) => baseColors[i % baseColors.length]);
+    window.areasChartInstance.updateData({ categories, values, colors });
   }
 
   // Actualizar gráfica de tipos
   updateTypesChart() {
     if (window.typesChartInstance) {
-      if (this.filteredData.tipos.length > 0) {
-        const categories = this.filteredData.tipos.map((t) => t.tipo_permiso);
-        const values = this.filteredData.tipos.map((t) =>
-          Number(t.cantidad_trabajos)
-        );
-        const baseColors = [
-          "#D32F2F",
-          "#FF6F00",
-          "#FFC107",
-          "#003B5C",
-          "#00BFA5",
-          "#B0BEC5",
-          "#4A4A4A",
-          "#1976D2",
-        ];
-        const colors = categories.map(
-          (_, i) => baseColors[i % baseColors.length]
-        );
-        const riskLevels = categories.map((category) => {
-          const tipo = category.toLowerCase();
-          if (
-            tipo.includes("fuego") ||
-            tipo.includes("radiacion") ||
-            tipo.includes("electrico")
-          ) {
-            return "Alto";
-          } else if (tipo.includes("confinado") || tipo.includes("altura")) {
-            return "Medio";
-          } else {
-            return "Bajo";
-          }
-        });
-        console.log("🔄 Actualizando gráfica de tipos:", {
-          categories,
-          values,
-        });
-        window.typesChartInstance.updateData({
-          categories,
-          values,
-          colors,
-          riskLevels,
-        });
-      } else {
-        // Limpiar gráfica si no hay datos
-        window.typesChartInstance.updateData({
-          categories: [],
-          values: [],
-          colors: [],
-          riskLevels: [],
-        });
-      }
+      // Para la gráfica de permisos por mes, pasar el array de permisos filtrados
+      window.typesChartInstance.updateData(this.filteredData.permisos);
     }
   }
 
@@ -467,10 +438,13 @@ class DashboardFilter {
     if (window.statusChartInstance) {
       if (this.filteredData.estatus.length > 0) {
         const categories = this.filteredData.estatus.map((e) => e.estatus);
-        const values = this.filteredData.estatus.map((e) =>
-          Number(e.cantidad_trabajos)
-        );
-        const colors = categories.map((status) => {
+        const values = this.filteredData.estatus.map((e) => Number(e.cantidad_trabajos));
+        // Colores e íconos por defecto para estatus desconocidos
+        const baseColors = [
+          "#00BFA5", "#FF6F00", "#FFC107", "#D32F2F", "#003B5C", "#B0BEC5", "#4A4A4A"
+        ];
+        const baseIcons = ["✓", "⚡", "⏱️", "✗", "⚠️", "🔒", "🛑"];
+        const colors = categories.map((status, i) => {
           const estado = status.toLowerCase();
           if (estado.includes("activo") || estado.includes("terminado")) {
             return "#00BFA5";
@@ -481,10 +455,11 @@ class DashboardFilter {
           } else if (estado.includes("no autorizado")) {
             return "#FFC107";
           } else {
-            return "#B0BEC5";
+            // Color por defecto, pero alternando para que no todos sean iguales
+            return baseColors[i % baseColors.length];
           }
         });
-        const icons = categories.map((status) => {
+        const icons = categories.map((status, i) => {
           const estado = status.toLowerCase();
           if (estado.includes("activo")) {
             return "✓";
@@ -497,7 +472,8 @@ class DashboardFilter {
           } else if (estado.includes("no autorizado")) {
             return "⚠️";
           } else {
-            return "📋";
+            // Ícono por defecto, pero alternando
+            return baseIcons[i % baseIcons.length];
           }
         });
         console.log("🔄 Actualizando gráfica de estatus:", {
@@ -573,6 +549,16 @@ document.addEventListener("DOMContentLoaded", function () {
   setTimeout(() => {
     dashboardFilter = new DashboardFilter();
     dashboardFilter.loadAllData();
+    window.dashboardFilter = dashboardFilter;
+    // Log automático para depuración
+    setTimeout(() => {
+      console.log("🔍 Estado de dashboardFilter:", window.dashboardFilter);
+      if (window.dashboardFilter && window.dashboardFilter.originalData) {
+        console.log("📋 Permisos cargados:", window.dashboardFilter.originalData.permisos);
+      } else {
+        console.warn("⚠️ dashboardFilter o permisos no disponibles");
+      }
+    }, 2000);
   }, 1500); // Aumenté el tiempo para asegurar que todo esté listo
 });
 

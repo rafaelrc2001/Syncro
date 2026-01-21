@@ -3,7 +3,7 @@ const router = express.Router();
 const pool = require("../database");
 
 // 🔹 API para obtener conteo de permisos por área filtrados por departamento
-router.get("/grafica/:id_departamento", async (req, res) => {
+router.get("/grafica-departamento/:id_departamento", async (req, res) => {
   const { id_departamento } = req.params;
   try {
     const result = await pool.query(

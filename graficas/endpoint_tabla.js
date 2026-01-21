@@ -3,7 +3,7 @@ const router = express.Router();
 const pool = require("../database");
 
 // Endpoint para obtener la tabla de permisos filtrada por departamento
-router.get("/tabla-permisos/:id_departamento", async (req, res) => {
+router.get("/tabla-permisos-departamentos/:id_departamento", async (req, res) => {
   const { id_departamento } = req.params;
   try {
     const result = await pool.query(
@@ -29,7 +29,7 @@ router.get("/tabla-permisos/:id_departamento", async (req, res) => {
       LEFT JOIN usuarios s
           ON aut.usuario_supervisor = s.id_usuario
           AND s.rol = 'supervisor'
-      WHERE u.id_usuario = 80
+      WHERE u.id_usuario = $1
       GROUP BY 
           pt.id_permiso,
           pt.prefijo,

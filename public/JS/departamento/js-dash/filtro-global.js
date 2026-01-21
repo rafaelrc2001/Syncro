@@ -393,7 +393,7 @@ class DashboardFilter {
       tbody.innerHTML += `
         <tr>
           <td>${p.Permiso || p.permiso || ""}</td>
-          <td>${p.descripcion || p.Descripcion || p.descripcion_trabajo || ""}</td>
+          <td style="width:60%;">${p.descripcion || p.Descripcion || p.descripcion_trabajo || ""}</td>
           <td>
             <div style="display: flex; gap: 8px; align-items: center;">
               <span class="status-badge ${statusClass}">${p.Estado || p.estado || ""}</span>

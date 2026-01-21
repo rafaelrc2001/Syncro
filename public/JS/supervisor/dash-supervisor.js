@@ -78,6 +78,30 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 // Llenar la tabla de permisos en Dash-Jefe.html usando el endpoint /api/graficas_jefes/permisos-jefes con paginación
 
+// Inicialización robusta de gráficas (puedes ajustar los IDs y funciones según tu dashboard de supervisor)
+(function initChartsWithRetry(retries = 10) {
+  function tryInit() {
+    let ok = true;
+    if (window.initAreasChart && document.getElementById('status-chart-1')) {
+      window.initAreasChart();
+    } else { ok = false; }
+    if (window.initStatusChart && document.getElementById('status-chart-2')) {
+      window.initStatusChart();
+    } else { ok = false; }
+    if (window.initTypesChart && document.getElementById('status-chart-3')) {
+      window.initTypesChart();
+    } else { ok = false; }
+    if (!ok && retries > 0) {
+      setTimeout(() => initChartsWithRetry(retries - 1), 200);
+    }
+  }
+  if (document.readyState === 'complete') {
+    tryInit();
+  } else {
+    window.addEventListener('load', tryInit);
+  }
+})();
+
 let permisosJefe = [];
 let permisosJefeFiltrados = [];
 let paginaActualJefe = 1;

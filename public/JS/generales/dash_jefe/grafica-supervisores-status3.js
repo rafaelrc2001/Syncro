@@ -1,43 +1,38 @@
-// Gráfica de Permisos por Tipo - Barras Horizontales
-// grafica-tipos.js
+// Gráfica de Supervisores de Seguridad en status-chart-3
+// grafica-supervisores-status3.js
 
-// Configuración de la gráfica de tipos
-function initTypesChart() {
-  // Procesar los datos del endpoint agrupando por tipo_permiso
-  function processTypesData(data) {
-    const typeCounts = {};
-    data.forEach((item) => {
-      if (item.tipo_permiso) {
-        typeCounts[item.tipo_permiso] =
-          (typeCounts[item.tipo_permiso] || 0) + 1;
+function processSupervisoresData(data) {
+  const supCounts = {};
+  const supLabels = {};
+  data.forEach((item) => {
+    if (item.supervisor) {
+      const normalized = item.supervisor
+        .normalize("NFD")
+        .replace(/\p{Diacritic}/gu, "")
+        .toLowerCase();
+      supCounts[normalized] = (supCounts[normalized] || 0) + 1;
+      if (!supLabels[normalized]) {
+        supLabels[normalized] = item.supervisor;
       }
-    });
-    const categories = Object.keys(typeCounts);
-    const values = categories.map((tipo) => typeCounts[tipo]);
-    // Puedes personalizar los colores según la cantidad de tipos
-    const colors = [
-      "#D32F2F",
-      "#FF6F00",
-      "#FFC107",
-      "#003B5C",
-      "#00BFA5",
-      "#7B1FA2",
-      "#388E3C",
-      "#1976D2",
-      "#C2185B",
-    ];
-    return {
-      categories,
-      values,
-      colors: categories.map((_, i) => colors[i % colors.length]),
-    };
-  }
+    }
+  });
+  const categories = Object.values(supLabels);
+  const values = Object.keys(supLabels).map((key) => supCounts[key]);
+  const colors = [
+    "#00BFA5", "#FF6F00", "#FFC107", "#D32F2F", "#003B5C", "#7B1FA2", "#1976D2", "#388E3C", "#F06292", "#8D6E63",
+    "#C2185B", "#0097A7", "#FBC02D", "#455A64", "#AED581"
+  ];
+  return {
+    categories,
+    values,
+    colors: categories.map((_, i) => colors[i % colors.length]),
+  };
+}
 
-  // Inicializar gráfica
-  const typesChart = echarts.init(document.getElementById("status-chart-3"));
+function initSupervisoresStatusChart() {
+  const supervisoresChart = echarts.init(document.getElementById("status-chart-3"));
 
-  // Configuración inicial vacía
-  const typesOption = {
+  const supervisoresOption = {
     title: { show: false },
     tooltip: {
       trigger: "axis",
@@ -48,7 +43,7 @@ function initTypesChart() {
           <div style="font-weight: 600; margin-bottom: 3px; font-size: 11px;">${data.name}</div>
           <div style="display: flex; align-items: center; gap: 5px; font-size: 11px; margin-bottom: 3px;">
               <span style="display: inline-block; width: 8px; height: 8px; background: ${data.color}; border-radius: 50%;"></span>
-              Permisos: <strong>${data.value}</strong>
+              Permisos autorizados: <strong>${data.value}</strong>
           </div>
         `;
       },
@@ -99,29 +94,31 @@ function initTypesChart() {
         type: "bar",
         data: [],
         barWidth: "55%",
-        animationDelay: function (idx) {
-          return idx * 80;
+        animationDelay: function (idx) { return idx * 80; },
+        label: {
+          show: true,
+          position: "right",
+          distance: 5,
+          formatter: "{c}",
+          fontSize: 10,
+          fontWeight: "bold",
+          color: "#4A4A4A",
         },
       },
     ],
     animationEasing: "elasticOut",
-    animationDelayUpdate: function (idx) {
-      return idx * 40;
-    },
+    animationDelayUpdate: function (idx) { return idx * 40; },
   };
-  typesChart.setOption(typesOption);
+  supervisoresChart.setOption(supervisoresOption);
+  supervisoresChart.resize();
 
-  // Hacer responsive
   window.addEventListener("resize", function () {
-    typesChart.resize();
+    supervisoresChart.resize();
   });
 
-  // Función para actualizar datos
-  function updateTypesChart(newData) {
-    const updatedOption = {
-      yAxis: {
-        data: newData.categories,
-      },
+  function updateSupervisoresChart(newData) {
+    supervisoresChart.setOption({
+      yAxis: { data: newData.categories },
       series: [
         {
           data: newData.values.map((value, index) => ({
@@ -148,32 +145,28 @@ function initTypesChart() {
           })),
         },
       ],
-    };
-    typesChart.setOption(updatedOption);
+    });
   }
 
-  // Obtener datos del endpoint y actualizar la gráfica
   fetch("/api/graficas_jefes/permisos-jefes")
     .then((response) => response.json())
     .then((data) => {
-      const processed = processTypesData(data);
-      updateTypesChart(processed);
+      const processed = processSupervisoresData(data);
+      updateSupervisoresChart(processed);
     })
     .catch((err) => {
-      console.error("Error al obtener datos de tipos de permisos:", err);
+      console.error("Error al obtener datos de supervisores:", err);
     });
 
-  // Retornar funciones públicas
   return {
-    chart: typesChart,
-    updateData: updateTypesChart,
-    resize: () => typesChart.resize(),
+    chart: supervisoresChart,
+    updateData: updateSupervisoresChart,
+    resize: () => supervisoresChart.resize(),
   };
 }
 
-// Auto-inicializar cuando el DOM esté listo
 document.addEventListener("DOMContentLoaded", function () {
-  if (document.getElementById("type-chart")) {
-    window.typesChartInstance = initTypesChart();
+  if (document.getElementById("status-chart-3")) {
+    window.supervisoresStatusChartInstance = initSupervisoresStatusChart();
   }
 });

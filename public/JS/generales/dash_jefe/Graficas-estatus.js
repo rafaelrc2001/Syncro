@@ -120,7 +120,7 @@ function initStatusChart() {
   // Inyectar estilos
   injectStatusChartStyles();
 
-  const statusChart = echarts.init(document.getElementById("status-chart"));
+  const statusChart = echarts.init(document.getElementById("status-chart-2"));
 
   // Configuración inicial vacía (sin formatter que dependa de seriesData)
   const statusOption = {
@@ -228,6 +228,7 @@ function initStatusChart() {
 
   // Aplicar configuración
   statusChart.setOption(statusOption);
+  statusChart.resize();
 
   // Hacer responsive
   window.addEventListener("resize", function () {
@@ -330,7 +331,7 @@ function initStatusChart() {
 
 // Auto-inicializar cuando el DOM esté listo
 document.addEventListener("DOMContentLoaded", function () {
-  if (document.getElementById("status-chart")) {
+  if (document.getElementById("status-chart-2")) {
     window.statusChartInstance = initStatusChart();
   }
 });

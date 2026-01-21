@@ -815,3 +815,81 @@ td {
         font-size: 0.75rem;
     }
 }
+
+
+.dashboard-grid-custom {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto auto auto;
+  grid-gap: 12px;
+  margin-bottom: 24px;
+    padding-left: 12px;
+  padding-right: 12px;
+}
+
+#status-chart-1-card { grid-column: 1; grid-row: 1; }
+#status-chart-2-card { grid-column: 2; grid-row: 1; }
+#status-chart-3-card { grid-column: 3; grid-row: 1; }
+
+#type-chart-1-card   { grid-column: 1 / span 2; grid-row: 2; }
+#status-chart-4-card { grid-column: 3; grid-row: 2; }
+
+#type-chart-2-card   { grid-column: 1 / span 3; grid-row: 3; }
+
+@media (max-width: 1200px) {
+  .dashboard-grid-custom {
+    grid-template-columns: 1fr 1fr;
+  }
+  #status-chart-1-card { grid-column: 1; grid-row: 1; }
+  #status-chart-2-card { grid-column: 2; grid-row: 1; }
+  #status-chart-3-card { grid-column: 1; grid-row: 2; }
+  #type-chart-1-card   { grid-column: 2; grid-row: 2; }
+  #status-chart-4-card { grid-column: 1; grid-row: 3; }
+  #type-chart-2-card   { grid-column: 2; grid-row: 3; }
+}
+
+@media (max-width: 800px) {
+  .dashboard-grid-custom {
+    grid-template-columns: 1fr;
+  }
+  .dashboard-grid-custom > .chart-card {
+    grid-column: 1 !important;
+    grid-row: auto !important;
+  }
+}
+
+
+/* Asegurar contenedores de gráficas */
+.chart-container {
+  position: relative;
+  width: 100%;
+  min-height: 400px; /* Altura mínima */
+}
+
+#status-chart-3,
+#status-chart-4 {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 350px;
+}
+
+/* Forzar repaint en contenedores grid */
+.grid-item {
+  transform: translateZ(0); /* Aceleración hardware */
+  backface-visibility: hidden;
+}
+
+/* Cuando el dashboard esté en una pestaña oculta */
+.dashboard-hidden .chart-container {
+  visibility: hidden;
+}
+
+.dashboard-visible .chart-container {
+  visibility: visible;
+  animation: fadeInChart 0.3s ease-in;
+}
+
+@keyframes fadeInChart {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

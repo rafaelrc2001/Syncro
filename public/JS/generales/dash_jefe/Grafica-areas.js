@@ -94,7 +94,7 @@ function initAreasChart() {
   }
 
   // Inicializar gráfica
-  const areasChart = echarts.init(document.getElementById("areas-chart"));
+  const areasChart = echarts.init(document.getElementById("status-chart-1"));
 
   // Configuración inicial vacía
   const areasOption = {

@@ -14,77 +14,96 @@ function actualizarTarjetasJefe() {
   }
   try {
     const data = window.permisosJefeFiltrados || [];
-
-    // Inicializar contadores y desglose
-    let total = 0;
-    let activos = 0;
-    let noAutorizados = 0;
-    let porAutorizar = 0;
-    let terminados = 0;
-    // Desglose de estatus
-    const desglose = {
-      activos: {},
-      noAutorizados: {},
-      porAutorizar: {},
-      terminados: {},
-    };
-
-    data.forEach((permiso) => {
-      total++;
-      const estatus = normalizar(permiso.estatus);
-      // Activo
-      if (estatus === "activo") {
-        activos++;
-        desglose.activos[estatus] = (desglose.activos[estatus] || 0) + 1;
-      }
-      // No autorizado
-      else if (estatus === "no autorizado") {
-        noAutorizados++;
-        desglose.noAutorizados[estatus] =
-          (desglose.noAutorizados[estatus] || 0) + 1;
-      }
-      // Por autorizar (en espera del area o espera seguridad)
-      else if (
-        estatus === "en espera del area" ||
-        estatus === "espera seguridad"
-      ) {
-        porAutorizar++;
-        desglose.porAutorizar[estatus] =
-          (desglose.porAutorizar[estatus] || 0) + 1;
-      }
-      // Terminados (cancelado, cierre con incidentes, cierre con accidentes, cierre sin incidentes, terminado)
-      else if (
-        estatus === "cancelado" ||
-        estatus === "cierre con incidentes" ||
-        estatus === "cierre con accidentes" ||
-        estatus === "cierre sin incidentes" ||
-        estatus === "terminado"
-      ) {
-        terminados++;
-        desglose.terminados[estatus] = (desglose.terminados[estatus] || 0) + 1;
-      }
+    // Depuración: mostrar valores únicos de Estado/Estatus y Subestatus
+    const estadosSet = new Set();
+    const subestatusSet = new Set();
+    data.forEach(p => {
+      estadosSet.add(p.Estado || p.estado || p.Estatus || p.estatus || '');
+      subestatusSet.add(p.Subestatus || p.subestatus || '');
     });
-
+    console.log('Valores únicos de Estado/Estatus:', Array.from(estadosSet));
+    console.log('Valores únicos de Subestatus:', Array.from(subestatusSet));
     // Seleccionar todos los elementos .count en el orden visual de las tarjetas
     const counts = document.querySelectorAll(".cards-section .card .count");
     if (counts.length >= 5) {
-      counts[0].textContent = total; // Total de Permisos
-      counts[1].textContent = porAutorizar; // Por Autorizar
-      counts[2].textContent = activos; // Activos
-      counts[3].textContent = terminados; // Terminados
-      counts[4].textContent = noAutorizados; // No Autorizados
+      // Total de permisos filtrados
+      counts[0].textContent = data.length;
+
+      // Por Autorizar: estados "en espera del área" y "espera seguridad"
+      const porAutorizar = data.filter((p) => {
+        const estado = normalizar(p.Estado || p.estado || p.Estatus || p.estatus);
+        return estado === "en espera del area" || estado === "espera seguridad";
+      });
+      counts[1].textContent = porAutorizar.length;
+
+      // Activos: estado "activo", "validado por seguridad", "trabajo finalizado", "espera liberacion del area"
+      const activos = data.filter((p) => {
+        const estado = normalizar(p.Estado || p.estado || p.Estatus || p.estatus);
+        return (
+          estado === "activo" ||
+          estado === "validado por seguridad" ||
+          estado === "trabajo finalizado" ||
+          estado === "espera liberacion del area"
+        );
+      });
+      counts[2].textContent = activos.length;
+
+      // Terminados: estado "cierre" y subestatus "cierre con incidentes", "cierre sin incidentes", "cierre con accidentes"
+      const terminados = data.filter((p) => {
+        const estado = normalizar(p.Estado || p.estado || p.Estatus || p.estatus);
+        const subestatus = normalizar(p.Subestatus || p.subestatus);
+        return (
+          estado === "cierre" &&
+          (subestatus === "cierre con incidentes" ||
+            subestatus === "cierre sin incidentes" ||
+            subestatus === "cierre con accidentes")
+        );
+      });
+      counts[3].textContent = terminados.length;
+
+      // No Autorizados: estado "cierre" y subestatus "no autorizado" o "cancelado"
+      const noAutorizados = data.filter((p) => {
+        const estado = normalizar(p.Estado || p.estado || p.Estatus || p.estatus);
+        const subestatus = normalizar(p.Subestatus || p.subestatus);
+        return (
+          estado === "cierre" &&
+          (subestatus === "no autorizado" || subestatus === "cancelado")
+        );
+      });
+      counts[4].textContent = noAutorizados.length;
 
       // Tooltips: mostrar desglose de estatus con explicación y formato visual (HTML)
       const explicaciones = [null, "", "", "", ""];
+      // Para Por Autorizar y Activos, si todos tienen el mismo Estado, mostrar desglose por Subestatus
+      function tooltipPorAutorizar() {
+        if (porAutorizar.length === 0) return null;
+        const primerEstado = normalizar(porAutorizar[0].Estado || porAutorizar[0].estado || porAutorizar[0].Estatus || porAutorizar[0].estatus);
+        const todosIguales = porAutorizar.every(p => normalizar(p.Estado || p.estado || p.Estatus || p.estatus) === primerEstado);
+        if (todosIguales) {
+          return contarPorSubestatus(porAutorizar);
+        } else {
+          return contarPorEstado(porAutorizar, 'Estado');
+        }
+      }
+      function tooltipActivos() {
+        if (activos.length === 0) return null;
+        const primerEstado = normalizar(activos[0].Estado || activos[0].estado || activos[0].Estatus || activos[0].estatus);
+        const todosIguales = activos.every(p => normalizar(p.Estado || p.estado || p.Estatus || p.estatus) === primerEstado);
+        if (todosIguales) {
+          return contarPorSubestatus(activos);
+        } else {
+          return contarPorEstado(activos, 'Estado');
+        }
+      }
       const tooltips = [
         null, // Total de Permisos no necesita desglose
-        desglose.porAutorizar,
-        desglose.activos,
-        desglose.terminados,
-        desglose.noAutorizados,
+        tooltipPorAutorizar(),
+        tooltipActivos(),
+        contarPorSubestatus(terminados),
+        contarPorSubestatus(noAutorizados),
       ];
       for (let i = 1; i < counts.length; i++) {
-        if (tooltips[i]) {
+        if (tooltips[i] && Object.keys(tooltips[i]).length > 0) {
           const lines = Object.entries(tooltips[i])
             .map(
               ([estatus, count]) =>
@@ -93,11 +112,31 @@ function actualizarTarjetasJefe() {
             .join("<br>");
           const html = `<div style='font-size:1rem;margin-bottom:6px;'>${explicaciones[i]}</div>${lines}`;
           counts[i].parentElement.setAttribute("data-tooltip", html);
+        } else {
+          counts[i].parentElement.removeAttribute("data-tooltip");
         }
       }
       // Función para capitalizar cada palabra
       function capitalizeWords(str) {
         return str.replace(/\b\w/g, (c) => c.toUpperCase());
+      }
+      // Función para contar por estado
+      function contarPorEstado(arr, campo) {
+        const out = {};
+        arr.forEach(p => {
+          const val = normalizar(p[campo] || p[campo.toLowerCase()]);
+          if (val) out[val] = (out[val] || 0) + 1;
+        });
+        return out;
+      }
+      // Función para contar por subestatus
+      function contarPorSubestatus(arr) {
+        const out = {};
+        arr.forEach(p => {
+          const val = normalizar(p.Subestatus || p.subestatus);
+          if (val) out[val] = (out[val] || 0) + 1;
+        });
+        return out;
       }
 
       // Reasignar eventos de tooltip a los cards

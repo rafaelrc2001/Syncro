@@ -149,7 +149,7 @@ function initPermisosMesEstadoChart() {
     xAxis: {
       type: 'category',
       data: mesesAbrev,
-      axisLabel: { rotate: 30 }
+      axisLabel: { rotate: 0 }
     },
     yAxis: {
       type: 'value',

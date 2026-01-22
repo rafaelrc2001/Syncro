@@ -284,9 +284,32 @@ function initStatusChart() {
   // Forzar resize de ECharts tras el cambio de tamaño de ventana y tras un pequeño delay
   function handleResize() {
     statusChart.resize();
-    setTimeout(() => statusChart.resize(), 200); // Forzar resize tras el reflow
+    setTimeout(() => statusChart.resize(), 200);
+    setTimeout(() => statusChart.resize(), 500);
   }
   window.addEventListener("resize", handleResize);
+
+  // Usar ResizeObserver para detectar cambios en el tamaño real del contenedor
+  // Mejorar robustez: observar tanto el contenedor padre como el canvas
+  const chartCanvas = document.getElementById("status-chart-2");
+  const chartContainer = chartCanvas?.closest('.chart-container') || chartCanvas?.parentElement;
+  let resizeObserver;
+  if (window.ResizeObserver) {
+    resizeObserver = new ResizeObserver(() => {
+      statusChart.resize();
+      setTimeout(() => statusChart.resize(), 200);
+      setTimeout(() => statusChart.resize(), 500);
+    });
+    if (chartContainer) resizeObserver.observe(chartContainer);
+    if (chartCanvas) resizeObserver.observe(chartCanvas);
+  }
+
+  // Limpieza del observer si la gráfica se destruye
+  if (chartCanvas) {
+    chartCanvas.addEventListener('remove', () => {
+      if (resizeObserver) resizeObserver.disconnect();
+    });
+  }
 
   // Función para actualizar datos
   function updateStatusChart(newData) {

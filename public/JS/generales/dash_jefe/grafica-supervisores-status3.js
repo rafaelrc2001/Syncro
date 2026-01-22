@@ -112,9 +112,30 @@ function initSupervisoresStatusChart() {
   supervisoresChart.setOption(supervisoresOption);
   supervisoresChart.resize();
 
-  window.addEventListener("resize", function () {
+  // Ajuste responsivo robusto usando ResizeObserver solo en el contenedor padre real
+  function handleResize() {
     supervisoresChart.resize();
-  });
+    setTimeout(() => supervisoresChart.resize(), 200);
+    setTimeout(() => supervisoresChart.resize(), 500);
+  }
+  window.addEventListener("resize", handleResize);
+
+  // Usar ResizeObserver solo en el contenedor .chart-container si existe
+  const chartCanvas = document.getElementById("status-chart-3");
+  const chartContainer = chartCanvas?.closest('.chart-container');
+  let resizeObserver;
+  if (window.ResizeObserver && chartContainer) {
+    resizeObserver = new ResizeObserver(() => {
+      handleResize();
+    });
+    resizeObserver.observe(chartContainer);
+  }
+  // Limpieza del observer si la gráfica se destruye
+  if (chartContainer) {
+    chartContainer.addEventListener('remove', () => {
+      if (resizeObserver) resizeObserver.disconnect();
+    });
+  }
 
   function updateSupervisoresChart(newData) {
     supervisoresChart.setOption({

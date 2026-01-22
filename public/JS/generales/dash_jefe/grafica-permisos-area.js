@@ -101,18 +101,37 @@ function initPermisosAreaChart() {
       splitNumber: 4,
     },
     yAxis: {
-      type: "category",
-      data: [],
-      axisLabel: {
-        color: "#4A4A4A",
-        fontSize: 10,
-        fontWeight: 500,
-        interval: 0,
-        margin: 8,
-      },
-      axisLine: { lineStyle: { color: "#B0BEC5", width: 1 } },
-      axisTick: { show: false },
-    },
+  type: "category",
+  data: [],
+  axisLabel: {
+    color: "#4A4A4A",
+    fontSize: 8,
+    fontWeight: 500,
+    interval: 0,
+    margin: 8,
+    formatter: function (value) {
+      const maxChars = 12; // caracteres por línea
+      if (value.length <= maxChars) return value;
+
+      const words = value.split(" ");
+      let line1 = "";
+      let line2 = "";
+
+      words.forEach(word => {
+        if ((line1 + word).length <= maxChars) {
+          line1 += (line1 ? " " : "") + word;
+        } else {
+          line2 += (line2 ? " " : "") + word;
+        }
+      });
+
+      return line1 + "\n" + line2;
+    }
+  },
+  axisLine: { lineStyle: { color: "#B0BEC5", width: 1 } },
+  axisTick: { show: false },
+},
+
     series: [
       {
         name: "Permisos",

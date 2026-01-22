@@ -538,21 +538,23 @@ h1, h2, h3, h4, h5, h6 {
 /* Cards Section */
 .cards-section {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(160px, 0.7fr)); /* Menos anchas */
     gap: 20px;
-    padding: 20px 30px;
+    padding: 20px 80px 20px 120px; /* Más hacia la derecha */
 }
 
 .card {
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    padding: 20px;
+    padding: 14px;
     display: flex;
-    gap: 15px;
+    gap: 10px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
     overflow: hidden;
+    min-width: 120px;
+    max-width: 160px;
 }
 
 .card::before {

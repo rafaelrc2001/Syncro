@@ -83,8 +83,12 @@ window.n8nFormHandler = async function () {
 
   // Enviar datos a n8n
   const response = await fetch(
-    // Usar el proxy seguro en Railway para evitar Mixed Content
-    "/webhook/2a372af8-6c33-41d2-a18d-a23a8f65c618",
+   
+  // "http://187.157.36.37/webhook/formulario-PT",
+   "http://187.157.36.37:5678/webhook/formulario-PT",
+   
+    //"https://7mhxkntt-5678.usw3.devtunnels.ms/webhook/formulario-PT",
+   //"https://7mhxkntt-5678.usw3.devtunnels.ms/webhook-test/formulario-PT",
     {
       method: "POST",
       headers: {
@@ -116,4 +120,3 @@ window.n8nFormHandler = async function () {
 document.addEventListener("DOMContentLoaded", function () {
   // Inicialización si es necesaria
 })
-

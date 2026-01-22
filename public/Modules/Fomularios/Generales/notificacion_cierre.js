@@ -114,20 +114,17 @@ window.n8nCierreHandler = async function () {
 
 	// Enviar datos a n8n
 	try {
-		const response = await fetch(
-			//"https://7mhxkntt-5678.usw3.devtunnels.ms/webhook-test/04937dcf-9408-4bd1-89d9-faf24ed2e02d",
-			//"https://7mhxkntt-5678.usw3.devtunnels.ms/webhook/04937dcf-9408-4bd1-89d9-faf24ed2e02d",
-			 //"http://187.157.36.37:5678/webhook/formulario-PT",
-			 "http://187.157.36.37:5678/webhook/04937dcf-9408-4bd1-89d9-faf24ed2e02d",
-
-			{
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(datosCierre),
-			}
-		);
+		   const response = await fetch(
+			   // Usar el proxy seguro en Railway para evitar Mixed Content
+			   "/webhook/04937dcf-9408-4bd1-89d9-faf24ed2e02d",
+			   {
+				   method: "POST",
+				   headers: {
+					   "Content-Type": "application/json",
+				   },
+				   body: JSON.stringify(datosCierre),
+			   }
+		   );
 		if (!response.ok) {
 			const errorData = await response.json().catch(() => ({}));
 			console.warn('[n8nCierreHandler] Error en respuesta de n8n:', errorData);

@@ -76,7 +76,7 @@ function renderTablaTiemposAutorizacion(datos, contenedorId = 'type-chart-2') {
         tr.style.background = '#f0f1f3';
       }
       tr.innerHTML = `
-        <td>${row.folio || row.Folio || ''}</td>
+        <td>${row.prefijo || row.prefijo || ''}</td>
         <td>${row.fecha_hora ? new Date(row.fecha_hora).toLocaleString() : ''}</td>
         <td>${tiempos.espera_area}</td>
         <td>${tiempos.validacion_seg}</td>
@@ -93,7 +93,7 @@ function renderTablaTiemposAutorizacion(datos, contenedorId = 'type-chart-2') {
   const wrapper = document.createElement('div');
   wrapper.style.overflowX = 'auto';
   wrapper.style.overflowY = 'auto';
-  wrapper.style.maxHeight = '370px'; // Aproximadamente 8 filas (ajustable)
+  wrapper.style.maxHeight = '150px'; // Aproximadamente 8 filas (ajustable)
   wrapper.appendChild(table);
   container.appendChild(wrapper);
 }

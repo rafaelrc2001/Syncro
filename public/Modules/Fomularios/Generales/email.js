@@ -83,17 +83,13 @@ window.n8nFormHandler = async function () {
 
   // Enviar datos a n8n
   const response = await fetch(
-   
-  // "http://187.157.36.37/webhook/formulario-PT",
-   "http://187.157.36.37:5678/webhook/formulario-PT",
-    //"https://7mhxkntt-5678.usw3.devtunnels.ms/webhook/formulario-PT",
-   //"https://7mhxkntt-5678.usw3.devtunnels.ms/webhook-test/formulario-PT",
+    'https://backend-api-permisos-production.up.railway.app/api/formulario-pt',
     {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify(formData)
     }
   );
 

@@ -121,14 +121,7 @@ function initSucursalesStatusChart() {
       itemWidth: 12,
       itemHeight: 12,
     },
-    title: {
-      text: '0',
-      subtext: 'Total ',
-      left: 'center',
-      top: '38%',
-      textStyle: { fontSize: 32, fontWeight: 'bold', color: '#003B5C' },
-      subtextStyle: { fontSize: 12, color: '#4A4A4A', fontWeight: 'normal' }
-    },
+    // Sin título central
     series: [
       {
         name: "Sucursales",
@@ -186,14 +179,7 @@ function initSucursalesStatusChart() {
     }));
     const total = newData.values.reduce((a, b) => a + b, 0);
     sucursalesChart.setOption({
-      title: {
-        text: `${total}`,
-        subtext: 'Total',
-        left: 'center',
-        top: '38%',
-        textStyle: { fontSize: 32, fontWeight: 'bold', color: '#003B5C' },
-        subtextStyle: { fontSize: 12, color: '#4A4A4A', fontWeight: 'normal' }
-      },
+      title: undefined,
       legend: {
         data: newData.categories.map((category, index) => `${newData.icons[index]} ${category}`),
       },

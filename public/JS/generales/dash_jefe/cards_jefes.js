@@ -95,21 +95,36 @@ function actualizarTarjetasJefe() {
           return contarPorEstado(activos, 'Estado');
         }
       }
+      // Nueva función: contar por estatus y subestatus
+      function contarPorEstatusYSubestatus(arr) {
+        const out = {};
+        arr.forEach(p => {
+          const estatus = normalizar(p.Estado || p.estado || p.Estatus || p.estatus);
+          const subestatus = normalizar(p.Subestatus || p.subestatus);
+          if (!estatus && !subestatus) return;
+          const key = `${estatus || '-'} / ${subestatus || '-'}`;
+          out[key] = (out[key] || 0) + 1;
+        });
+        return out;
+      }
+
       const tooltips = [
         null, // Total de Permisos no necesita desglose
-        tooltipPorAutorizar(),
-        tooltipActivos(),
-        contarPorSubestatus(terminados),
-        contarPorSubestatus(noAutorizados),
+        contarPorEstatusYSubestatus(porAutorizar),
+        contarPorEstatusYSubestatus(activos),
+        contarPorEstatusYSubestatus(terminados),
+        contarPorEstatusYSubestatus(noAutorizados),
       ];
       for (let i = 1; i < counts.length; i++) {
         if (tooltips[i] && Object.keys(tooltips[i]).length > 0) {
           const lines = Object.entries(tooltips[i])
             .map(
-              ([estatus, count]) =>
-                `<b>${capitalizeWords(estatus)}:</b> ${count}`
+              ([key, count]) => {
+                const [estatus, subestatus] = key.split(' / ');
+                return `<b>Estatus:</b> ${capitalizeWords(estatus)}<br><b>Subestatus:</b> ${capitalizeWords(subestatus)}<br><b>Total:</b> ${count}<hr style='margin:4px 0;'>`;
+              }
             )
-            .join("<br>");
+            .join("");
           const html = `<div style='font-size:1rem;margin-bottom:6px;'>${explicaciones[i]}</div>${lines}`;
           counts[i].parentElement.setAttribute("data-tooltip", html);
         } else {

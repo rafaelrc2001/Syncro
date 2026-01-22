@@ -100,11 +100,13 @@ function initPermisosMesEstadoChart() {
     console.error('No se encontró el contenedor #type-chart-1');
     return;
   }
-  // Asegurar tamaño mínimo
-  container.style.minHeight = '320px';
-  container.style.minWidth = '100%';
+  // Hacer el contenedor flexible y responsivo
+  container.style.minHeight = '180px';
+  container.style.height = '100%';
+  container.style.width = '100%';
 
   const chart = echarts.init(container);
+  const mesesAbrev = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
   const option = {
     tooltip: {
       trigger: 'axis',
@@ -122,25 +124,36 @@ function initPermisosMesEstadoChart() {
     },
     legend: {
       data: ['Por Autorizar', 'Activos', 'Cancelados', 'No Autorizados'],
-      top: 10
+      orient: 'vertical',
+      right: 10,
+      top: 'middle',
+      align: 'left',
+      itemWidth: 16,
+      itemHeight: 10,
+      padding: [0, 0, 0, 0],
+      textStyle: {
+        fontFamily: 'Montserrat, Roboto, Arial',
+        fontSize: 12,
+        color: '#333',
+        width: 110,
+        overflow: 'truncate'
+      }
     },
     grid: {
-      left: '3%',
-      right: '4%',
-      bottom: '5%',
+      left: 24,
+      right: 140,
+      top: 32,
+      bottom: 32,
       containLabel: true
     },
     xAxis: {
       type: 'category',
-      data: [
-        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
-      ],
+      data: mesesAbrev,
       axisLabel: { rotate: 30 }
     },
     yAxis: {
       type: 'value',
-      name: 'Permisos',
+      name: '',
       minInterval: 1
     },
     series: []
@@ -149,6 +162,14 @@ function initPermisosMesEstadoChart() {
   chart.resize();
 
   window.addEventListener('resize', () => chart.resize());
+
+  // ResizeObserver para detectar cualquier cambio de tamaño en el contenedor
+  if (window.ResizeObserver) {
+    const resizeObserver = new ResizeObserver(() => {
+      chart.resize();
+    });
+    resizeObserver.observe(container);
+  }
 
   function showError(msg) {
     container.innerHTML = `<div style='color:red;padding:2em;text-align:center;'>${msg}</div>`;

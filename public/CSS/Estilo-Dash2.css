@@ -378,40 +378,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .chart-container {
     width: 100%;
-    flex: 1;
-    min-height: 0;
-}
-
-/* Ajustes responsivos */
-@media (max-width: 1200px) {
-    .dashboard-grid {
-        grid-template-columns: 1fr;
-        height: auto;
-    }
     
-    .charts-container {
-        grid-template-columns: 1fr;
-        height: auto;
-    }
-    
-    .chart-card {
-        height: 350px;
-    }
-}
-
-@media (max-width: 768px) {
-    .dashboard-grid {
-        padding: 15px;
-        gap: 15px;
-    }
-    
-    .charts-container {
-        padding: 0 15px 15px;
-        gap: 15px;
-    }
-    
-    .chart-card {
-        padding: 15px;
         height: 300px;
     }
     

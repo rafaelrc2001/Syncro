@@ -364,11 +364,12 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Cards Section - Más compacta */
 .cards-section {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 12px;
-    padding: 15px 25px;
+    display: flex;
+    flex-direction: row;
     align-items: center;
+    gap: 12px;
+    padding: 15px 5px 15px 10px;
+    flex-wrap: nowrap;
 }
 
 .card {
@@ -383,6 +384,9 @@ h1, h2, h3, h4, h5, h6 {
     overflow: hidden;
     height: 75px;
     border: 1px solid rgba(0, 0, 0, 0.05);
+    min-width: 225px;
+    max-width: 260px;
+    width: 25%;
 }
 
 .card::before {

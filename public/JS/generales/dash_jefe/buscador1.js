@@ -250,25 +250,45 @@ class DashboardSearcher {
   }
 
   updateAllCharts() {
-    // Actualizar gráfica de áreas
-    if (window.areasChartInstance && window.areasChartInstance.updateData) {
-      const areasData = this.processAreasData(this.filteredData);
-      window.areasChartInstance.updateData(areasData);
+    // Usar los datos filtrados globales
+    const data = window.permisosJefeFiltrados || this.filteredData || [];
+
+    // Gráfica de áreas
+    if (window.permisosAreaChartInstance && window.permisosAreaChartInstance.updateData) {
+      const processed = (typeof processPermisosAreaData === 'function') ? processPermisosAreaData(data) : (window.processPermisosAreaData ? window.processPermisosAreaData(data) : null);
+      if (processed) window.permisosAreaChartInstance.updateData(processed);
     }
 
-    // Actualizar gráfica de tipos
-    if (window.typesChartInstance && window.typesChartInstance.updateData) {
-      const typesData = this.processTypesData(this.filteredData);
-      window.typesChartInstance.updateData(typesData);
+    // Gráfica de tipos/mes-estado
+    if (window.permisosMesEstadoChartInstance && window.permisosMesEstadoChartInstance.updateData) {
+      const processed = (typeof processPermisosMesEstadoData === 'function') ? processPermisosMesEstadoData(data) : (window.processPermisosMesEstadoData ? window.processPermisosMesEstadoData(data) : null);
+      if (processed) window.permisosMesEstadoChartInstance.updateData(processed);
     }
 
-    // Actualizar gráfica de estatus
+    // Gráfica de estatus
     if (window.statusChartInstance && window.statusChartInstance.updateData) {
-      const statusData = this.processStatusData(this.filteredData);
-      window.statusChartInstance.updateData(statusData);
+      const processed = (typeof processStatusData === 'function') ? processStatusData(data) : (window.processStatusData ? window.processStatusData(data) : null);
+      if (processed) window.statusChartInstance.updateData(processed);
     }
 
-    // Actualizar gráfica de tiempos
+    // Gráfica de supervisores
+    if (window.supervisoresStatusChartInstance && window.supervisoresStatusChartInstance.updateData) {
+      const processed = (typeof processSupervisoresData === 'function') ? processSupervisoresData(data) : (window.processSupervisoresData ? window.processSupervisoresData(data) : null);
+      if (processed) window.supervisoresStatusChartInstance.updateData(processed);
+    }
+
+    // Gráfica de sucursales
+    if (window.sucursalesStatusChartInstance && window.sucursalesStatusChartInstance.updateData) {
+      const processed = (typeof processSucursalesData === 'function') ? processSucursalesData(data) : (window.processSucursalesData ? window.processSucursalesData(data) : null);
+      if (processed) window.sucursalesStatusChartInstance.updateData(processed);
+    }
+
+    // Tabla de tiempos de autorización
+    if (window.tiemposAutorizacionTableInstance && window.tiemposAutorizacionTableInstance.updateData) {
+      window.tiemposAutorizacionTableInstance.updateData(data);
+    }
+
+    // Gráfica de tiempos (ECharts, no tabla)
     this.updateTiemposChart();
   }
 

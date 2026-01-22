@@ -275,24 +275,7 @@
     <script src="/JS/generales/dash_jefe/grafica-sucursales-status4.js"></script><!-- este es el que uso -->
     <script src="/JS/generales/dash_jefe/grafica-tiempos-autorizacion.js"></script> <!-- NUEVO: tabla de tiempos -->
 
-    <script>
-      // Lanzar evento personalizado al abrir/cerrar el menú lateral
-      const sidebarToggleBtn = document.getElementById('sidebar-toggle-btn');
-      if (sidebarToggleBtn) {
-        sidebarToggleBtn.addEventListener('click', function() {
-          setTimeout(function() {
-            window.dispatchEvent(new Event('dashboard-layout-changed'));
-          }, 350); // Espera a que termine la animación del menú
-        });
-      }
 
-      // Hacer que todas las gráficas escuchen el evento y hagan resize
-      window.addEventListener('dashboard-layout-changed', function() {
-        if (window.statusChartInstance && window.statusChartInstance.resize) window.statusChartInstance.resize();
-        if (window.supervisoresStatusChartInstance && window.supervisoresStatusChartInstance.resize) window.supervisoresStatusChartInstance.resize();
-        // Agrega aquí otras instancias de gráficas si es necesario
-      });
-    </script>
 
    <script src="/JS/jefe/dash-jefe.js"></script>
     <script src="/JS/generales/dash_jefe/cards_jefes.js"></script>

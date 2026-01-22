@@ -37,6 +37,7 @@ function calcularTiempos(row) {
   };
 }
 
+
 function renderTablaTiemposAutorizacion(datos, contenedorId = 'type-chart-2') {
   const container = document.getElementById(contenedorId);
   if (!container) return;
@@ -44,9 +45,9 @@ function renderTablaTiemposAutorizacion(datos, contenedorId = 'type-chart-2') {
 
   const table = document.createElement('table');
   table.className = 'tabla-tiempos-autorizacion';
-    table.style.width = '100%';
-    table.style.minWidth = '900px';
-    table.style.borderCollapse = 'collapse';
+  table.style.width = '100%';
+  table.style.minWidth = '900px';
+  table.style.borderCollapse = 'collapse';
 
   // Encabezados
   const thead = document.createElement('thead');
@@ -66,27 +67,27 @@ function renderTablaTiemposAutorizacion(datos, contenedorId = 'type-chart-2') {
 
   // Cuerpo
   const tbody = document.createElement('tbody');
-    datos.forEach((row, idx) => {
-      const tiempos = calcularTiempos(row);
-      const tr = document.createElement('tr');
-      // Alternar color de fondo
-      if (idx % 2 === 0) {
-        tr.style.background = '#fafbfc';
-      } else {
-        tr.style.background = '#f0f1f3';
-      }
-      tr.innerHTML = `
-        <td>${row.prefijo || row.prefijo || ''}</td>
-        <td>${row.fecha_hora ? new Date(row.fecha_hora).toLocaleString() : ''}</td>
-        <td>${tiempos.espera_area}</td>
-        <td>${tiempos.validacion_seg}</td>
-        <td>${tiempos.fin_trabajo}</td>
-        <td>${tiempos.autorizacion_cierre}</td>
-        <td style='background:#f0f0f0;font-weight:bold;color:#1565c0;'>${tiempos.total}</td>
-        <td>${row.total_revalidaciones != null ? row.total_revalidaciones : ''}</td>
-      `;
-      tbody.appendChild(tr);
-    });
+  datos.forEach((row, idx) => {
+    const tiempos = calcularTiempos(row);
+    const tr = document.createElement('tr');
+    // Alternar color de fondo
+    if (idx % 2 === 0) {
+      tr.style.background = '#fafbfc';
+    } else {
+      tr.style.background = '#f0f1f3';
+    }
+    tr.innerHTML = `
+      <td>${row.prefijo || row.prefijo || ''}</td>
+      <td>${row.fecha_hora ? new Date(row.fecha_hora).toLocaleString() : ''}</td>
+      <td>${tiempos.espera_area}</td>
+      <td>${tiempos.validacion_seg}</td>
+      <td>${tiempos.fin_trabajo}</td>
+      <td>${tiempos.autorizacion_cierre}</td>
+      <td style='background:#f0f0f0;font-weight:bold;color:#1565c0;'>${tiempos.total}</td>
+      <td>${row.total_revalidaciones != null ? row.total_revalidaciones : ''}</td>
+    `;
+    tbody.appendChild(tr);
+  });
   table.appendChild(tbody);
 
   // Scroll horizontal y vertical (máx. 8 filas visibles)
@@ -97,6 +98,13 @@ function renderTablaTiemposAutorizacion(datos, contenedorId = 'type-chart-2') {
   wrapper.appendChild(table);
   container.appendChild(wrapper);
 }
+
+// Instancia global para actualización desde el filtro global
+window.tiemposAutorizacionTableInstance = {
+  updateData: function (datos) {
+    renderTablaTiemposAutorizacion(datos);
+  }
+};
 
 // Inicialización automática al cargar
 function initTablaTiemposAutorizacion() {

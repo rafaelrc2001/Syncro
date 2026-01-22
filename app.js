@@ -15,7 +15,6 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const db = require("./database");
 require("dotenv").config();
-import fetch from 'node-fetch'
 
 const tablasRouter = require("./tablas");
 const listasRouter = require("./listas");
@@ -205,36 +204,6 @@ app.get("/api/usuarios/:id", verificarAutenticacion, tablasBase.getUsuarioById);
 app.use("/api", verificarAutenticacion, autorizacionesEstatusRouter);
 app.use('/api', detectarDispositivoRouter);
 app.use("/api", verificarAutenticacion, permisoVistaRouter);
-
-
-
-
-
-app.post('/webhook/formulario-PT', async (req, res) => {
-  try {
-    const response = await fetch(
-      'http://187.157.36.37:5678/webhook/formulario-PT',
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(req.body)
-      }
-    )
-
-    const text = await response.text()
-    res.status(200).send(text)
-  } catch (err) {
-    console.error(err)
-    res.status(500).json({ error: 'Error enviando a n8n' })
-  }
-})
-
-app.listen(process.env.PORT || 3000, () => {
-  console.log('Servidor activo con proxy n8n')
-})
-
-
-
 
 // Endpoint de estado de la aplicación
 app.listen(PORT, () => {

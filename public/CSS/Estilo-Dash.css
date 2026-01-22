@@ -855,7 +855,7 @@ td {
   grid-template-rows: auto auto auto;
   grid-gap: 12px;
   margin-bottom: 24px;
-    padding-left: 12px;
+    /* padding-left: 12px; Removed for responsive fix */
   padding-right: 12px;
 }
 
@@ -883,7 +883,7 @@ td {
 @media (max-width: 800px) {
     .dashboard-grid-custom {
         grid-template-columns: 1fr;
-        padding-left: 80px !important; /* Igual al ancho de la sidebar colapsada */
+            padding-left: 80px !important; /* sidebar colapsada */
         box-sizing: border-box;
     }
     .dashboard-grid-custom > .chart-card {

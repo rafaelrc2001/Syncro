@@ -108,8 +108,9 @@ class DashboardSearcher {
       this.originalData = await response.json();
       this.filteredData = [...this.originalData];
       
-      // Exponer datos filtrados globalmente para cards_supervisor.js
+      // Exponer datos filtrados globalmente para cards_supervisor.js y cards_jefes.js
       window.permisosJefeFiltrados = this.filteredData;
+      window.permisosSupervisorFiltrados = this.filteredData;
 
       console.log(
         "Datos originales cargados:",
@@ -185,8 +186,9 @@ class DashboardSearcher {
       return coincideBusqueda && coincideFecha;
     });
     
-    // Exponer datos filtrados globalmente para cards_supervisor.js
+    // Exponer datos filtrados globalmente para cards_supervisor.js y cards_jefes.js
     window.permisosJefeFiltrados = this.filteredData;
+    window.permisosSupervisorFiltrados = this.filteredData;
 
     // Indicador de resultados
     if (term || this.fechaInicio || this.fechaFinal) {

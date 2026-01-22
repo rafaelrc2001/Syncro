@@ -13,6 +13,8 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/CSS/EstiloGeneral.css" />
+        <link rel="stylesheet" href="/CSS/EstiloJefe.css" />
+    <link rel="stylesheet" href="/CSS/Estilo-Dash2.css" />
     <link rel="stylesheet" href="/CSS/Estilo-Dash.css" />
      <link rel="icon" type="image/png" href="/img/logo fuego.png">
   </head>
@@ -65,7 +67,7 @@
       <!-- Main Content -->
       <!-- Main Content -->
       <main class="main-content">
-        <header class="main-header">
+           <header class="main-header">
           <div class="header-content">
             <div class="header-left-image">
               <img
@@ -141,11 +143,7 @@
           </div>
         </section>
 
-        <!-- Filtros Simplificados -->
-        <section
-          class="filters-section"
-          style="display: flex; align-items: center; gap: 32px"
-        >
+        <section class="filters-section">
           <div class="search-bar-container">
             <div class="search-bar">
               <input type="text" placeholder="Buscar por folio, tipo..." />
@@ -192,98 +190,43 @@
               />
             </div>
           </div>
-          <div class="charts-btn-container">
-            <div style="display: flex; gap: 12px">
-              <button id="btn-ver-graficas-1" class="btn secondary charts-btn">
-                <i class="ri-bar-chart-line"></i> Ver Gráficas
-              </button>
-              <button id="btn-ver-graficas-2" class="btn secondary charts-btn">
-                <i class="ri-bar-chart-line"></i> Ver Gráficas 2
-              </button>
-              <button
-                id="btn-ver-graficas-meses"
-                class="btn secondary charts-btn"
-              >
-                <i class="ri-bar-chart-line"></i> Ver Gráfica Meses
-              </button>
-            </div>
-          </div>
+         
         </section>
-        <style>
-          .date-input:focus {
-            box-shadow: 0 0 8px #1976d2;
-            border-color: #1976d2;
-          }
-          .date-filter-item label {
-            transition: color 0.3s;
-          }
-          .date-input:focus + label,
-          .date-filter-item:focus-within label {
-            color: #1976d2;
-          }
-        </style>
 
-        <!-- Tabla de Permisos -->
-        <section class="permits-table">
-          <div class="table-header">
-            <h3>Permisos de Trabajo</h3>
-          </div>
-          <div class="table-container">
-            <table>
-              <thead>
-                <tr>
-                  <th>Permiso</th>
-                  <th>Tipo</th>
-                  <th>Descripción del Trabajo</th>
-                  <th>Solicitante</th>
-                  <th>Departamento</th>
-                  <th>Estatus</th>
-                  <th>SubEstatus</th>
-                  <th class="time-col" data-tooltip="Hora de creación">
-                    <i class="ri-time-line"></i> Creación
-                  </th>
-                  <th
-                    class="time-col"
-                    data-tooltip="Hora de autorización del área"
-                  >
-                    <i class="ri-building-line"></i> Área
-                  </th>
-                  <th
-                    class="time-col"
-                    data-tooltip="Hora de autorización de seguridad"
-                  >
-                    <i class="ri-shield-check-line"></i> Seguridad
-                  </th>
-                  <th
-                    class="time-col"
-                    data-tooltip="Tiempo total desde creación hasta activación"
-                  >
-                    <i class="ri-timer-line"></i> Total
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <!-- (Vacío: solo encabezado, sin filas) -->
-              </tbody>
-            </table>
-          </div>
-          <div class="table-footer">
-            <div class="pagination">
-              <button class="pagination-btn">
-                <i class="ri-arrow-left-s-line"></i>
-              </button>
-              <button class="pagination-btn active">1</button>
-              <button class="pagination-btn">2</button>
-              <button class="pagination-btn">3</button>
-              <button class="pagination-btn">...</button>
-              <button class="pagination-btn">10</button>
-              <button class="pagination-btn">
-                <i class="ri-arrow-right-s-line"></i>
-              </button>
-            </div>
-            <div class="records-counter">247 registros</div>
-          </div>
-        </section>
+        <!-- Dashboard Grid: Gráficas Principales -->
+       <!-- Dashboard Grid: Gráficas Principales y Secundarias con Grid -->
+
+       <div class="dashboard-grid-custom">
+        <!-- Fila 1: tres gráficas -->
+        <div class="chart-card" id="status-chart-1-card">
+          <div class="chart-title"><i class="ri-time-line" style="color: var(--naranja-seguridad)"></i> Permisos por Area</div>
+          <div id="status-chart-1" class="chart-container"></div>
+        </div>
+        <div class="chart-card" id="status-chart-2-card">
+          <div class="chart-title"><i class="ri-time-line" style="color: var(--naranja-seguridad)"></i> Permisos por Estatus</div>
+          <div id="status-chart-2" class="chart-container"></div>
+        </div>
+        <div class="chart-card" id="status-chart-3-card">
+          <div class="chart-title"><i class="ri-time-line" style="color: var(--naranja-seguridad)"></i> Supervisor de Seguridad</div>
+          <div id="status-chart-3" class="chart-container"></div>
+        </div>
+
+        <!-- Fila 2: dos gráficas -->
+        <div class="chart-card chart-card-wide" id="type-chart-1-card">
+          <div class="chart-title"><i class="ri-bar-chart-line" style="color: var(--naranja-seguridad)"></i> Cantidad de Permisos por Mes</div>
+          <div id="type-chart-1" class="chart-container"></div>
+        </div>
+        <div class="chart-card chart-card-wide" id="status-chart-4-card">
+          <div class="chart-title"><i class="ri-time-line" style="color: var(--verde-tecnico)"></i> Permisos por Sucursal</div>
+          <div id="status-chart-4" class="chart-container"></div>
+        </div>
+
+        <!-- Fila 3: una gráfica que abarca todo -->
+        <div class="chart-card chart-card-full" id="type-chart-2-card">
+          <div class="chart-title"><i class="ri-bar-chart-line" style="color: var(--naranja-seguridad)"></i> Tabla tiempo de autorizacion</div>
+          <div id="type-chart-2" class="chart-container"></div>
+        </div>
+      </div>
       </main>
     </div>
 
@@ -300,11 +243,14 @@
 
     <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
     <script src="/JS/supervisor/MenuSupervisor.js"></script>
-    <script src="/JS/generales/dash_jefe/Grafica-areas.js"></script>
-    <script src="/JS/generales/dash_jefe/Grafica-tipos.js"></script>
-    <script src="/JS/generales/dash_jefe/Graficas-estatus.js"></script>
-    <script src="/JS/generales/dash_jefe/Promedio.js"></script>
-    <script src="/JS/supervisor/dash-supervisor.js"></script>
+   
+    <script src="/JS/generales/dash_jefe/grafica-permisos-mes-estado.js"></script> <!-- este es el que uso -->
+    <script src="/JS/generales/dash_jefe/Graficas-estatus.js"></script> <!-- este es el que uso -->
+    <script src="/JS/generales/dash_jefe/grafica-permisos-area.js"></script> <!-- este es el que uso -->
+    <script src="/JS/generales/dash_jefe/grafica-supervisores-status3.js"></script> <!-- este es el que uso -->
+    <script src="/JS/generales/dash_jefe/grafica-sucursales-status4.js"></script><!-- este es el que uso -->
+    <script src="/JS/generales/dash_jefe/grafica-tiempos-autorizacion.js"></script> <!-- NUEVO: tabla de tiempos -->
+
     <script src="/JS/generales/dash_supervisor/cards_supervisor.js"></script>
   </body>
 </html>

@@ -49,6 +49,26 @@ function renderTablaTiemposAutorizacion(datos, contenedorId = 'type-chart-2') {
   table.style.minWidth = '900px';
   table.style.borderCollapse = 'collapse';
 
+  // Agregar estilos para sticky header
+  const styleId = 'tabla-tiempos-sticky-style';
+  if (!document.getElementById(styleId)) {
+    const style = document.createElement('style');
+    style.id = styleId;
+    style.textContent = `
+      .tabla-tiempos-autorizacion thead th {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: #444 !important;
+        color: #fff !important;
+      }
+      .tabla-tiempos-autorizacion thead tr {
+        background: #444 !important;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
   // Encabezados
   const thead = document.createElement('thead');
   thead.innerHTML = `

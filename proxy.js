@@ -1,17 +1,34 @@
-const express = require('express');
-const { createProxyMiddleware } = require('http-proxy-middleware');
+import express from 'express'
+import fetch from 'node-fetch'
+import cors from 'cors'
 
-const app = express();
+const app = express()
 
-// Proxy todas las peticiones que empiecen con /webhook/ hacia tu endpoint HTTP inseguro
-app.use(['/webhook', '/webhook-test'], createProxyMiddleware({
-  target: 'http://187.157.36.37:5678',
-  changeOrigin: true,
-  secure: false, // Permite HTTP en el destino
-  pathRewrite: (path, req) => path, // Mantiene la ruta original
-}));
+app.use(cors({
+  origin: 'https://syncro-production-30a.up.railway.app'
+}))
+app.use(express.json())
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Proxy HTTPS escuchando en el puerto ${PORT}`);
-});
+app.post('/webhook/formulario-PT', async (req, res) => {
+  try {
+    const response = await fetch(
+      'http://187.157.36.37:5678/webhook/formulario-PT',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(req.body)
+      }
+    )
+
+    const text = await response.text()
+    res.status(200).send(text)
+
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: 'Error enviando a n8n' })
+  }
+})
+
+app.listen(process.env.PORT || 3000, () => {
+  console.log('Proxy n8n activo')
+})

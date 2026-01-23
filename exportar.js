@@ -182,7 +182,6 @@ router.get("/exportar-autorizar/:id_departamento", async (req, res) => {
     let sql = `
   
 SELECT 
-
     pt.prefijo,
     pt.fecha_hora,
     pt.hora_inicio,

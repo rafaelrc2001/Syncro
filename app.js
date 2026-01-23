@@ -78,8 +78,16 @@ const usuarioCredencialRouter = require("./usuario_credencial");
 //   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 //   allowedHeaders: ["Content-Type", "Authorization"],
 // };
-app.use(cors());
-app.options("*", cors());
+app.use(cors({
+  origin: "https://syncro-production-30a.up.railway.app",
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
+app.options("*", cors({
+  origin: "https://syncro-production-30a.up.railway.app",
+  credentials: true
+}));
 
 // Middleware para cookies y sesiones
 app.use(cookieParser());

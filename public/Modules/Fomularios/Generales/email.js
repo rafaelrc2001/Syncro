@@ -91,9 +91,14 @@ window.n8nFormHandler = async function () {
  // "http://187.157.36.37:5678/webhook-test/Creacion-de-permisos-areas",
 
 
-    "https://7mhxkntt-5678.usw3.devtunnels.ms/webhook/formulario-PT",
+    //"https://7mhxkntt-5678.usw3.devtunnels.ms/webhook/formulario-PT",
    //"https://7mhxkntt-5678.usw3.devtunnels.ms/webhook-test/formulario-PT",
-    {
+    
+   //nuevo cierre de acuerdo al area
+  // "https://7mhxkntt-5678.usw3.devtunnels.ms/webhook-test/Creacion-de-permisos-areas",
+   "https://7mhxkntt-5678.usw3.devtunnels.ms/webhook/Creacion-de-permisos-areas",
+   
+   {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

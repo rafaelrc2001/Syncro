@@ -85,9 +85,13 @@ window.n8nFormHandler = async function () {
   const response = await fetch(
    
   // "http://187.157.36.37/webhook/formulario-PT",
-   "http://187.157.36.37:5678/webhook/formulario-PT",
+  // "http://187.157.36.37:5678/webhook/formulario-PT",  esta es la que esta activa
    
-    //"https://7mhxkntt-5678.usw3.devtunnels.ms/webhook/formulario-PT",
+//prueba de las areas:
+ // "http://187.157.36.37:5678/webhook-test/Creacion-de-permisos-areas",
+
+
+    "https://7mhxkntt-5678.usw3.devtunnels.ms/webhook/formulario-PT",
    //"https://7mhxkntt-5678.usw3.devtunnels.ms/webhook-test/formulario-PT",
     {
       method: "POST",

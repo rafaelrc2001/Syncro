@@ -116,7 +116,7 @@ window.n8nCierreHandler = async function () {
 	try {
 		   const response = await fetch(
 			   // Usar el proxy seguro en Railway para evitar Mixed Content
-			   "/webhook/04937dcf-9408-4bd1-89d9-faf24ed2e02d",
+			   "https://7mhxkntt-5678.usw3.devtunnels.ms/webhook/04937dcf-9408-4bd1-89d9-faf24ed2e02d",
 			   {
 				   method: "POST",
 				   headers: {

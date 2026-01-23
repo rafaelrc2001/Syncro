@@ -38,8 +38,9 @@
   async function exportCrear() {
     try {
       const usuario = JSON.parse(localStorage.getItem("usuario")) || {};
-      const id_departamento = usuario.id;
-      if (!id_departamento) throw new Error("No se encontró id_departamento");
+      // Usar id_usuario si existe, luego id_departamento, luego id
+      const id_para_exportar = usuario.id_usuario || usuario.id_departamento || usuario.id;
+      if (!id_para_exportar) throw new Error("No se encontró id_usuario, id_departamento ni id en el usuario");
 
       const status = document.getElementById("status-filter")?.value || "all";
       const searchInput = document.querySelector(".search-bar input");
@@ -59,8 +60,8 @@
         window.location.hostname === "localhost"
           ? "http://localhost:3000"
           : "https://syncro-production-30a.up.railway.app"; // Reemplaza por tu URL real de Railway
-      const url = `${apiOrigin}/api/exportar-crear/${encodeURIComponent(
-        id_departamento
+      const url = `${apiOrigin}/api/exportar-crear-usuario/${encodeURIComponent(
+        id_para_exportar
       )}?${params.toString()}`;
 
       console.log("Exportando Crear-PT desde (encoded):", url);
@@ -108,66 +109,15 @@
       console.log("Primer registro completo:", data[0]);
       console.log("Todos los campos disponibles:", Object.keys(data[0] || {}));
 
-      const columns = [
-        "id_permiso",
-        "prefijo",
-        "tipo_permiso",
-        "fecha",
-        "hora_inicio",
-        "tipo_actividad",
-        "planta_lugar_trabajo",
-        "descripcion_trabajo",
-        "empresa",
-        "nombre_solicitante",
-        "sucursal",
-        "contrato",
-        "ot_numero",
-        "equipo_intervenir",
-        "tag",
-        "responsable_area",
-        "responsable_seguridad",
-        "operador_responsable",
-        "area",
-        "estatus",
-        "fecha_hora",
-      ];
-
-      // Mapeo directo y seguro
-      const rowsForExport = data.map((r) => ({
-        id_permiso: r.id_permiso ?? r.id ?? r.idPermiso ?? "",
-        prefijo: r.prefijo ?? r.prefijo_permiso ?? "",
-        tipo_permiso: r.tipo_permiso ?? r.tipo_perm ?? r.tipo ?? "",
-        fecha:
-          r.fecha ?? (r.fecha_hora ? String(r.fecha_hora).slice(0, 10) : ""),
-        hora_inicio: r.hora_inicio ?? r.hora ?? "",
-        tipo_actividad: r.tipo_actividad ?? r.tipo_mantenimiento ?? "",
-        planta_lugar_trabajo:
-          r.planta_lugar_trabajo ?? r.planta ?? r.nombre_planta ?? "",
-        descripcion_trabajo: r.descripcion_trabajo ?? r.descripcion ?? "",
-        empresa: r.empresa ?? "",
-        nombre_solicitante: r.nombre_solicitante ?? r.solicitante ?? "",
-        sucursal: r.sucursal ?? "",
-        contrato:
-          r.contrato != null
-            ? String(r.contrato)
-            : r.contrato_df
-            ? String(r.contrato_df)
-            : "",
-        ot_numero: r.ot_numero ?? r.ot_no ?? "",
-        equipo_intervenir: r.equipo_intervenir ?? r.equipo_intervencion ?? "",
-        tag: r.tag ?? "",
-        responsable_area: r.responsable_area ?? r.responsable ?? "",
-        responsable_seguridad: r.responsable_seguridad ?? "",
-        operador_responsable: r.operador_responsable ?? r.operador_area ?? "",
-        area: r.area ?? "",
-        estatus: r.estatus ?? "",
-        fecha_hora: r.fecha_hora ?? "",
-      }));
-
-      console.log("Datos mapeados para exportar:", rowsForExport.slice(0, 3));
-
+      // Exportar todas las columnas devueltas por el endpoint
+      if (!data.length) {
+        alert("No hay datos para exportar con los filtros aplicados");
+        return;
+      }
+      const columns = Object.keys(data[0]);
+      const rowsForExport = data;
+      console.log("Exportando todas las columnas:", columns);
       const stamp = formatStamp();
-
       if (window.XLSX && typeof window.XLSX.utils !== "undefined") {
         try {
           const worksheet = window.XLSX.utils.json_to_sheet(rowsForExport, {

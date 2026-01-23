@@ -81,10 +81,11 @@ async function cargarEstatusEnDropdown() {
 async function cargarTargetasDesdePermisos() {
   try {
     const usuario = JSON.parse(localStorage.getItem("usuario"));
-    const id_departamento = usuario && usuario.id ? usuario.id : null;
-    if (!id_departamento)
-      throw new Error("No se encontró el id de departamento del usuario");
-    const response = await fetch(`/api/vertablas/${id_departamento}`);
+    // Usar id_usuario si existe, luego id_departamento, luego id
+    const id_para_fetch = (usuario && (usuario.id_usuario || usuario.id_departamento || usuario.id)) || null;
+    if (!id_para_fetch)
+      throw new Error("No se encontró id_usuario, id_departamento ni id en el usuario");
+    const response = await fetch(`/api/vertablas/${id_para_fetch}`);
     if (!response.ok) throw new Error("Error al consultar permisos");
     const permisos = await response.json();
 
@@ -119,6 +120,10 @@ async function cargarTargetasDesdePermisos() {
 
     // Actualiza las tarjetas en el HTML
     const counts = document.querySelectorAll(".card-content .count");
+    if (!counts || counts.length < 5) {
+      console.warn("No se encontraron suficientes elementos .card-content .count para actualizar las tarjetas", counts);
+      return;
+    }
     counts[0].textContent = total;
     counts[1].textContent = porAutorizar;
     counts[2].textContent = activos;
@@ -132,10 +137,11 @@ async function cargarTargetasDesdePermisos() {
 async function cargarPermisosTabla() {
   try {
     const usuario = JSON.parse(localStorage.getItem("usuario"));
-    const id_departamento = usuario && usuario.id ? usuario.id : null;
-    if (!id_departamento)
-      throw new Error("No se encontró el id de departamento del usuario");
-    const response = await fetch(`/api/vertablas/${id_departamento}`);
+    // Usar id_usuario si existe, luego id_departamento, luego id
+    const id_para_fetch = (usuario && (usuario.id_usuario || usuario.id_departamento || usuario.id)) || null;
+    if (!id_para_fetch)
+      throw new Error("No se encontró id_usuario, id_departamento ni id en el usuario");
+    const response = await fetch(`/api/vertablas/${id_para_fetch}`);
     if (!response.ok) throw new Error("Error al consultar permisos");
     permisosGlobal = await response.json();
     // Mostrar todos los permisos por defecto

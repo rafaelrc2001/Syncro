@@ -17,10 +17,11 @@ import {
 async function cargarTargetasDesdeAutorizar() {
   try {
     const usuario = JSON.parse(localStorage.getItem("usuario"));
-    const id_departamento = usuario && usuario.id_usuario ? usuario.id_usuario : null;
-    if (!id_departamento)
-      throw new Error("No se encontró el id de departamento del usuario");
-    const response = await fetch(`/api/autorizar/${id_departamento}`);
+    // Usar id_usuario si existe, luego id_departamento, luego id
+    const id_para_fetch = (usuario && (usuario.id_usuario || usuario.id_departamento || usuario.id)) || null;
+    if (!id_para_fetch)
+      throw new Error("No se encontró id_usuario, id_departamento ni id en el usuario");
+    const response = await fetch(`/api/autorizar/${id_para_fetch}`);
     if (!response.ok) throw new Error("Error al consultar permisos");
     const permisos = await response.json();
 
@@ -191,10 +192,11 @@ function asignarEventosVer() {
 async function cargarPermisosTabla() {
   try {
     const usuario = JSON.parse(localStorage.getItem("usuario"));
-    const id_departamento = usuario && usuario.id_usuario ? usuario.id_usuario : null;
-    if (!id_departamento)
-      throw new Error("No se encontró el id de departamento del usuario");
-    const response = await fetch(`/api/autorizar/${id_departamento}`);
+    // Usar id_usuario si existe, luego id_departamento, luego id
+    const id_para_fetch = (usuario && (usuario.id_usuario || usuario.id_departamento || usuario.id)) || null;
+    if (!id_para_fetch)
+      throw new Error("No se encontró id_usuario, id_departamento ni id en el usuario");
+    const response = await fetch(`/api/autorizar/${id_para_fetch}`);
     if (!response.ok) throw new Error("Error al consultar permisos");
     permisosGlobal = await response.json();
     // Mostrar todos los permisos por defecto

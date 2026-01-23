@@ -1,79 +1,124 @@
+
 const express = require("express");
 const router = express.Router();
 const pool = require("./database");
 // Endpoint para exportar datos detallados para supervisores
 router.get("/exportar-supervisor", async (req, res) => {
   try {
-    // Query params for filtering
-    const { q, status, ids } = req.query;
-    const params = [];
-    // Base query
-    let sql = `SELECT DISTINCT ON (pt.id_permiso)
+    // Consulta SQL base
+    let sql = `
+SELECT 
     pt.id_permiso,
+    pt.fecha_hora,
+    pt.id_area,
+    d.nombre AS id_departamento,
+    s.nombre AS id_sucursal,
     pt.prefijo,
     pt.contrato,
-    a.nombre AS area,
+    u.nombre AS id_usuario,
+    e.id_estatus,
     e.estatus,
-    pt.fecha_hora,
-    s.nombre AS sucursal,
-    sup.nombre AS responsable_seguridad
-    FROM permisos_trabajo pt
-    INNER JOIN areas a ON pt.id_area = a.id_area
-    INNER JOIN estatus e ON pt.id_estatus = e.id_estatus
-    LEFT JOIN sucursales s ON pt.id_sucursal = s.id_sucursal
-    LEFT JOIN autorizaciones az ON pt.id_permiso = az.id_permiso
-    LEFT JOIN supervisores sup ON az.id_supervisor = sup.id_supervisor
+    e.comentarios,
+    e.subestatus,
+    e.id_permiso AS estatus_id_permiso,
+    pt.tipo_mantenimiento,
+    pt.ot_numero,
+    pt.tag,
+    pt.hora_inicio,
+    pt.equipo_intervenir,
+    pt.descripcion_trabajo,
+    pt.nombre_solicitante,
+    pt.empresa,
+    pt.pal_epp_1,
+    pt.pal_epp_2,
+    pt.pal_fa_1,
+    pt.pal_fa_2,
+    pt.pal_epc_1,
+    pt.pal_epc_2,
+    pt.pal_cr_1,
+    pt.pco_eh_1,
+    pt.pco_ma_1,
+    pt.pco_ma_2,
+    pt.pco_ma_3,
+    pt.pco_ma_4,
+    pt.pco_ma_5,
+    pt.pco_era_1,
+    pt.pfg_cr_1,
+    pt.pfg_cr_1a,
+    pt.pfg_eppe_1,
+    pt.pfg_eppe_2,
+    pt.pfg_ma_1,
+    pt.pfg_ma_2,
+    pt.pfg_ma_3,
+    pt.pap_ce_1,
+    pt.pap_ce_2,
+    pt.pap_epe_1,
+    pt.nombre_departamento,
+    pt.columna_fuego_valor,
+    pt.columna_altura_valor,
+    pt.columna_apertura_valor,
+    pt.columna_confinado_valor,
+    pt.pno_cr_1,
+    pt.pno_cr_2,
+    pt.pno_cr_3,
+    pt.pno_cr_4,
+    pt.pno_cr_5,
+    pt.pno_cr_6,
+    pt.pno_cr_7,
+    pt.pno_cr_8,
+    pt.pno_cr_9,
+    pt.pno_cr_10,
+    pt.pno_cr_11,
+    pt.pno_cr_12,
+    pt.pno_cr_13,
+    pt.pno_epe_1,
+    pt.pno_epe_2,
+    pt.pno_epe_3,
+    pt.pno_epe_4,
+    pt.pno_epe_5,
+    pt.pno_epe_6,
+    pt.pno_epe_7,
+    pt.pno_epe_8,
+    pt.pno_epe_9,
+    pt.columna_nopeligrosovalor_valor,
+    pt.firma_creacion,
+    pt.ip_creacion,
+    pt.dispositivo_creacion,
+    pt.localizacion_creacion,
+    pt.temp_fuego,
+    pt.fluido_fuego,
+    pt.presion_fuego,
+    pt.temp_apertura,
+    pt.fluido_apertura,
+    pt.presion_apertura,
+    pt.temp_confinado,
+    pt.fluido_confinado,
+    pt.presion_confinado,
+    pt.temp_no_peligroso,
+    pt.fluido_no_peligroso,
+    pt.presion_no_peligroso
+FROM permisos_trabajo pt
+LEFT JOIN departamentos d ON pt.id_departamento = d.id_departamento
+LEFT JOIN sucursales s ON pt.id_sucursal = s.id_sucursal
+LEFT JOIN usuarios u ON pt.id_usuario = u.id_usuario
+LEFT JOIN estatus e ON pt.id_permiso = e.id_permiso
+ORDER BY pt.id_permiso;
     `;
 
-    // Status filter
-    if (status && status.toLowerCase() !== "all") {
-      params.push(status);
-      sql += ` AND lower(e.estatus) = lower($${params.length})`;
-    }
+    // Ejecutar la consulta y obtener los resultados
+    const result = await pool.query(sql);
 
-    // If the client provided a CSV list of ids, use it to restrict results
-    if (ids && typeof ids === "string" && ids.trim() !== "") {
-      const idList = ids
-        .split(",")
-        .map((s) => parseInt(s, 10))
-        .filter((n) => Number.isInteger(n));
-      if (idList.length > 0) {
-        // Add the id array as the next param and use ANY($n::int[])
-        params.push(idList);
-        sql += ` AND pt.id_permiso = ANY($${params.length}::int[])`;
+    // Debug opcional
+    if (process.env.EXPORT_DEBUG === "1") {
+      console.log(`exportar-supervisor: returned ${result.rows.length} rows`);
+      if (result.rows.length > 0) {
+        console.log(
+          "exportar-supervisor: sample columns=",
+          Object.keys(result.rows[0])
+        );
       }
     }
 
-    // Search query across prefijo, contrato, solicitante, tipo_permiso
-    if (q && q.trim() !== "") {
-      const like = `%${q}%`;
-      params.push(like);
-      sql += ` AND (
-        pt.prefijo::text ILIKE $${params.length} OR
-        pt.contrato::text ILIKE $${params.length} OR
-        COALESCE(ptnp.nombre_solicitante, pta.nombre_solicitante, ptc.nombre_solicitante, ptf.nombre_solicitante, pte.nombre_solicitante, ptr.nombre_solicitante, pta2.nombre_solicitante) ILIKE $${params.length} OR
-        tp.nombre ILIKE $${params.length}
-      )`;
-    }
-
-    sql += ` ORDER BY pt.id_permiso, pt.fecha_hora DESC;`;
-
-    const result = await pool.query(sql, params);
-    // Debugging: optionally log number of rows and column names returned
-    try {
-      if (process.env.EXPORT_DEBUG === "1") {
-        console.log(`exportar-supervisor: returned ${result.rows.length} rows`);
-        if (result.rows.length > 0) {
-          console.log(
-            "exportar-supervisor: sample columns=",
-            Object.keys(result.rows[0])
-          );
-        }
-      }
-    } catch (err) {
-      // Keep error logging always enabled for unexpected failures
-      console.error("Error logging export result:", err);
-    }
     res.json(result.rows);
   } catch (error) {
     console.error("Error en exportar-supervisor:", error);
@@ -83,110 +128,122 @@ router.get("/exportar-supervisor", async (req, res) => {
 
 module.exports = router;
 
+
+
 // Endpoint para exportar datos detallados filtrados por departamento (autorizar)
-router.get("/exportar-autorizar/:id_departamento", async (req, res) => {
+router.get("/exportar-autorizar-departamento/:id_departamento", async (req, res) => {
   try {
     const { id_departamento } = req.params;
-    const { q, status, ids } = req.query;
     const params = [];
 
-    // Base query (igual que exportar-supervisor pero filtrando por departamento)
-    // Add sensible fallbacks so exported JSON has non-null strings where possible
-    let sql = `SELECT DISTINCT ON (pt.id_permiso)
+    // Validar que el parámetro sea un número
+    const idDeptoInt = parseInt(id_departamento, 10);
+    if (isNaN(idDeptoInt)) {
+      return res.status(400).json({ error: "id_departamento debe ser un número válido" });
+    }
+
+    let sql = `
+  SELECT 
     pt.id_permiso,
+    pt.fecha_hora,
+    pt.id_area,
+    d.nombre AS id_departamento,
+    s.nombre AS id_sucursal,
     pt.prefijo,
     pt.contrato,
-    a.nombre AS area,
+    u_creador.nombre AS id_usuario,
+    e.id_estatus,
     e.estatus,
-    pt.fecha_hora,
-    s.nombre AS sucursal,
-    sup.nombre AS responsable_seguridad
-    FROM permisos_trabajo pt
-    INNER JOIN areas a ON pt.id_area = a.id_area
-    INNER JOIN estatus e ON pt.id_estatus = e.id_estatus
-    LEFT JOIN sucursales s ON pt.id_sucursal = s.id_sucursal
-    LEFT JOIN autorizaciones az ON pt.id_permiso = az.id_permiso
-    LEFT JOIN supervisores sup ON az.id_supervisor = sup.id_supervisor
-    WHERE a.id_departamento = $1
+    e.comentarios,
+    e.subestatus,
+    e.id_permiso AS estatus_id_permiso,
+    pt.tipo_mantenimiento,
+    pt.ot_numero,
+    pt.tag,
+    pt.hora_inicio,
+    pt.equipo_intervenir,
+    pt.descripcion_trabajo,
+    pt.nombre_solicitante,
+    pt.empresa,
+    pt.pal_epp_1,
+    pt.pal_epp_2,
+    pt.pal_fa_1,
+    pt.pal_fa_2,
+    pt.pal_epc_1,
+    pt.pal_epc_2,
+    pt.pal_cr_1,
+    pt.pco_eh_1,
+    pt.pco_ma_1,
+    pt.pco_ma_2,
+    pt.pco_ma_3,
+    pt.pco_ma_4,
+    pt.pco_ma_5,
+    pt.pco_era_1,
+    pt.pfg_cr_1,
+    pt.pfg_cr_1a,
+    pt.pfg_eppe_1,
+    pt.pfg_eppe_2,
+    pt.pfg_ma_1,
+    pt.pfg_ma_2,
+    pt.pfg_ma_3,
+    pt.pap_ce_1,
+    pt.pap_ce_2,
+    pt.pap_epe_1,
+    pt.nombre_departamento,
+    pt.columna_fuego_valor,
+    pt.columna_altura_valor,
+    pt.columna_apertura_valor,
+    pt.columna_confinado_valor,
+    pt.pno_cr_1,
+    pt.pno_cr_2,
+    pt.pno_cr_3,
+    pt.pno_cr_4,
+    pt.pno_cr_5,
+    pt.pno_cr_6,
+    pt.pno_cr_7,
+    pt.pno_cr_8,
+    pt.pno_cr_9,
+    pt.pno_cr_10,
+    pt.pno_cr_11,
+    pt.pno_cr_12,
+    pt.pno_cr_13,
+    pt.pno_epe_1,
+    pt.pno_epe_2,
+    pt.pno_epe_3,
+    pt.pno_epe_4,
+    pt.pno_epe_5,
+    pt.pno_epe_6,
+    pt.pno_epe_7,
+    pt.pno_epe_8,
+    pt.pno_epe_9,
+    pt.columna_nopeligrosovalor_valor,
+    pt.firma_creacion,
+    pt.ip_creacion,
+    pt.dispositivo_creacion,
+    pt.localizacion_creacion,
+    pt.temp_fuego,
+    pt.fluido_fuego,
+    pt.presion_fuego,
+    pt.temp_apertura,
+    pt.fluido_apertura,
+    pt.presion_apertura,
+    pt.temp_confinado,
+    pt.fluido_confinado,
+    pt.presion_confinado,
+    pt.temp_no_peligroso,
+    pt.fluido_no_peligroso,
+    pt.presion_no_peligroso
+  FROM permisos_trabajo pt
+  LEFT JOIN departamentos d ON pt.id_departamento = d.id_departamento
+  LEFT JOIN sucursales s ON pt.id_sucursal = s.id_sucursal
+  LEFT JOIN usuarios u_creador ON pt.id_usuario = u_creador.id_usuario
+  LEFT JOIN estatus e ON pt.id_permiso = e.id_permiso
+  WHERE pt.id_departamento = $1
+  ORDER BY pt.fecha_hora DESC, pt.id_permiso;
     `;
 
-    // If include_all=1 is provided, skip the pt_* existence check (useful for new permisos that
-    // haven't populated a type-specific table yet). Default is to enforce the existence check.
-    const includeAll = String(req.query.include_all || "0") === "1";
-
-    if (!includeAll) {
-      sql += `    /* Keep the existence check for type-specific rows so we only export permisos that have a pt_* record */\n      AND (
-        ptnp.id_permiso IS NOT NULL 
-        OR pta.id_permiso IS NOT NULL 
-        OR ptc.id_permiso IS NOT NULL 
-        OR ptf.id_permiso IS NOT NULL 
-        OR pte.id_permiso IS NOT NULL 
-        OR ptr.id_permiso IS NOT NULL 
-      OR pta2.id_permiso IS NOT NULL
-      OR pti.id_permiso IS NOT NULL
-      OR ptce.id_permiso IS NOT NULL
-      OR ptexc.id_permiso IS NOT NULL
-      )\n`;
-    }
-
-    // Push department param first
-    params.push(id_departamento);
-
-    // Debug: log if ids were provided (only when EXPORT_DEBUG=1)
-    if (ids && process.env.EXPORT_DEBUG === "1") {
-      console.log(`exportar-autorizar: received ids param=${ids}`);
-    }
-
-    // Status filter
-    if (status && status.toLowerCase() !== "all") {
-      params.push(status);
-      sql += ` AND lower(e.estatus) = lower($${params.length})`;
-    }
-
-    // If the client provided specific ids, restrict to them
-    if (ids && typeof ids === "string" && ids.trim() !== "") {
-      const idList = ids
-        .split(",")
-        .map((s) => parseInt(s, 10))
-        .filter((n) => Number.isInteger(n));
-      if (idList.length > 0) {
-        params.push(idList);
-        sql += ` AND pt.id_permiso = ANY($${params.length}::int[])`;
-      }
-    }
-
-    // Search query across prefijo, contrato, solicitante, tipo_permiso
-    if (q && q.trim() !== "") {
-      const like = `%${q}%`;
-      params.push(like);
-      sql += ` AND (
-        pt.prefijo::text ILIKE $${params.length} OR
-        pt.contrato::text ILIKE $${params.length} OR
-        COALESCE(ptnp.nombre_solicitante, pta.nombre_solicitante, ptc.nombre_solicitante, ptf.nombre_solicitante, pte.nombre_solicitante, ptr.nombre_solicitante, pta2.nombre_solicitante, '') ILIKE $${params.length} OR
-        tp.nombre ILIKE $${params.length}
-      )`;
-    }
-
-    sql += ` ORDER BY pt.id_permiso, pt.fecha_hora DESC;`;
-
+    params.push(idDeptoInt);
     const result = await pool.query(sql, params);
-    // Log rows/columns to help debugging in runtime (gated by EXPORT_DEBUG)
-    try {
-      if (process.env.EXPORT_DEBUG === "1") {
-        console.log(
-          `exportar-autorizar: returned ${result.rows.length} rows for departamento=${id_departamento}`
-        );
-        if (result.rows.length > 0) {
-          console.log(
-            "exportar-autorizar: sample columns=",
-            Object.keys(result.rows[0])
-          );
-        }
-      }
-    } catch (err) {
-      // Always log unexpected errors
-      console.error("Error logging export result (autorizar):", err);
-    }
     res.json(result.rows);
   } catch (error) {
     console.error("Error en exportar-autorizar:", error);
@@ -194,116 +251,258 @@ router.get("/exportar-autorizar/:id_departamento", async (req, res) => {
   }
 });
 
-// Endpoint para exportar datos detallados filtrados por departamento (crear)
-router.get("/exportar-crear/:id_departamento", async (req, res) => {
+
+
+
+// Endpoint para exportar datos detallados filtrados por departamento (autorizar)
+router.get("/exportar-crear-usuario/:id_usuario", async (req, res) => {
   try {
-    const { id_departamento } = req.params;
-    const { q, status, ids, include_all } = req.query;
+    const { id_usuario } = req.params;
     const params = [];
 
-    // If include_all=1 is provided, skip the pt_* existence check and return all permisos for the department
-    const includeAll = String(include_all || "0") === "1";
+    // Validar que el parámetro sea un número
+    const idUsuarioInt = parseInt(id_usuario, 10);
+    if (isNaN(idUsuarioInt)) {
+      return res.status(400).json({ error: "id_usuario debe ser un número válido" });
+    }
 
-    // Base query (igual que exportar-supervisor pero filtrando por departamento)
-    // Add sensible fallbacks so exported JSON has non-null strings where possible
-    let sql = `SELECT DISTINCT ON (pt.id_permiso)
+    let sql = `
+SELECT 
     pt.id_permiso,
+    pt.fecha_hora,
+    pt.id_area,
+    d.nombre AS id_departamento,
+    s.nombre AS id_sucursal,
     pt.prefijo,
     pt.contrato,
-    a.nombre AS area,
+    u.nombre AS id_usuario,
+    e.id_estatus,
     e.estatus,
-    pt.fecha_hora,
-    s.nombre AS sucursal,
-    sup.nombre AS responsable_seguridad
-    FROM permisos_trabajo pt
-    INNER JOIN areas a ON pt.id_area = a.id_area
-    INNER JOIN estatus e ON pt.id_estatus = e.id_estatus
-    LEFT JOIN sucursales s ON pt.id_sucursal = s.id_sucursal
-    LEFT JOIN autorizaciones az ON pt.id_permiso = az.id_permiso
-    LEFT JOIN supervisores sup ON az.id_supervisor = sup.id_supervisor
-    WHERE a.id_departamento = $1
+    e.comentarios,
+    e.subestatus,
+    e.id_permiso AS estatus_id_permiso,
+    pt.tipo_mantenimiento,
+    pt.ot_numero,
+    pt.tag,
+    pt.hora_inicio,
+    pt.equipo_intervenir,
+    pt.descripcion_trabajo,
+    pt.nombre_solicitante,
+    pt.empresa,
+    pt.pal_epp_1,
+    pt.pal_epp_2,
+    pt.pal_fa_1,
+    pt.pal_fa_2,
+    pt.pal_epc_1,
+    pt.pal_epc_2,
+    pt.pal_cr_1,
+    pt.pco_eh_1,
+    pt.pco_ma_1,
+    pt.pco_ma_2,
+    pt.pco_ma_3,
+    pt.pco_ma_4,
+    pt.pco_ma_5,
+    pt.pco_era_1,
+    pt.pfg_cr_1,
+    pt.pfg_cr_1a,
+    pt.pfg_eppe_1,
+    pt.pfg_eppe_2,
+    pt.pfg_ma_1,
+    pt.pfg_ma_2,
+    pt.pfg_ma_3,
+    pt.pap_ce_1,
+    pt.pap_ce_2,
+    pt.pap_epe_1,
+    pt.nombre_departamento,
+    pt.columna_fuego_valor,
+    pt.columna_altura_valor,
+    pt.columna_apertura_valor,
+    pt.columna_confinado_valor,
+    pt.pno_cr_1,
+    pt.pno_cr_2,
+    pt.pno_cr_3,
+    pt.pno_cr_4,
+    pt.pno_cr_5,
+    pt.pno_cr_6,
+    pt.pno_cr_7,
+    pt.pno_cr_8,
+    pt.pno_cr_9,
+    pt.pno_cr_10,
+    pt.pno_cr_11,
+    pt.pno_cr_12,
+    pt.pno_cr_13,
+    pt.pno_epe_1,
+    pt.pno_epe_2,
+    pt.pno_epe_3,
+    pt.pno_epe_4,
+    pt.pno_epe_5,
+    pt.pno_epe_6,
+    pt.pno_epe_7,
+    pt.pno_epe_8,
+    pt.pno_epe_9,
+    pt.columna_nopeligrosovalor_valor,
+    pt.firma_creacion,
+    pt.ip_creacion,
+    pt.dispositivo_creacion,
+    pt.localizacion_creacion,
+    pt.temp_fuego,
+    pt.fluido_fuego,
+    pt.presion_fuego,
+    pt.temp_apertura,
+    pt.fluido_apertura,
+    pt.presion_apertura,
+    pt.temp_confinado,
+    pt.fluido_confinado,
+    pt.presion_confinado,
+    pt.temp_no_peligroso,
+    pt.fluido_no_peligroso,
+    pt.presion_no_peligroso
+FROM permisos_trabajo pt
+LEFT JOIN departamentos d ON pt.id_departamento = d.id_departamento
+LEFT JOIN sucursales s ON pt.id_sucursal = s.id_sucursal
+LEFT JOIN usuarios u ON pt.id_usuario = u.id_usuario
+LEFT JOIN estatus e ON pt.id_permiso = e.id_permiso
+WHERE pt.id_usuario = $1
+ORDER BY pt.fecha_hora DESC;
     `;
 
-    /* WHERE a.id_departamento = $1\n`;*/
-
-    // If includeAll is false, append the existence check so behavior remains backwards compatible
-    if (!includeAll) {
-      sql += `    /* Keep the existence check for type-specific rows so we only export permisos that have a pt_* record */
-      AND (
-        ptnp.id_permiso IS NOT NULL 
-        OR pta.id_permiso IS NOT NULL 
-        OR ptc.id_permiso IS NOT NULL 
-        OR ptf.id_permiso IS NOT NULL 
-        OR pte.id_permiso IS NOT NULL 
-        OR ptr.id_permiso IS NOT NULL 
-  OR pta2.id_permiso IS NOT NULL
-  OR pti.id_permiso IS NOT NULL
-  OR ptce.id_permiso IS NOT NULL
-  OR ptexc.id_permiso IS NOT NULL
-      )\n`;
-    }
-
-    // Push department param first
-    params.push(id_departamento);
-
-    // Debug: log if ids were provided (only when EXPORT_DEBUG=1)
-    if (ids && process.env.EXPORT_DEBUG === "1") {
-      console.log(`exportar-crear: received ids param=${ids}`);
-    }
-
-    // Status filter
-    if (status && status.toLowerCase() !== "all") {
-      params.push(status);
-      sql += ` AND lower(e.estatus) = lower($${params.length})`;
-    }
-
-    // If the client provided specific ids, restrict to them
-    if (ids && typeof ids === "string" && ids.trim() !== "") {
-      const idList = ids
-        .split(",")
-        .map((s) => parseInt(s, 10))
-        .filter((n) => Number.isInteger(n));
-      if (idList.length > 0) {
-        params.push(idList);
-        sql += ` AND pt.id_permiso = ANY($${params.length}::int[])`;
-      }
-    }
-
-    // Search query across prefijo, contrato, solicitante, tipo_permiso
-    if (q && q.trim() !== "") {
-      const like = `%${q}%`;
-      params.push(like);
-      sql += ` AND (
-          pt.prefijo::text ILIKE $${params.length} OR
-          pt.contrato::text ILIKE $${params.length} OR
-          COALESCE(ptnp.nombre_solicitante, pta.nombre_solicitante, ptc.nombre_solicitante, ptf.nombre_solicitante, pte.nombre_solicitante, ptr.nombre_solicitante, pta2.nombre_solicitante, '') ILIKE $${params.length} OR
-          tp.nombre ILIKE $${params.length}
-        )`;
-    }
-
-    sql += ` ORDER BY pt.id_permiso, pt.fecha_hora DESC;`;
-
+    params.push(idUsuarioInt);
     const result = await pool.query(sql, params);
-    // Log rows/columns to help debugging in runtime (gated by EXPORT_DEBUG)
-    try {
-      if (process.env.EXPORT_DEBUG === "1") {
-        console.log(
-          `exportar-crear: returned ${result.rows.length} rows for departamento=${id_departamento}`
-        );
-        if (result.rows.length > 0) {
-          console.log(
-            "exportar-crear: sample columns=",
-            Object.keys(result.rows[0])
-          );
-        }
-      }
-    } catch (err) {
-      // Always log unexpected errors
-      console.error("Error logging export result (crear):", err);
-    }
     res.json(result.rows);
   } catch (error) {
-    console.error("Error en exportar-crear:", error);
+    console.error("Error en exportar-crear-usuario:", error);
     res.status(500).json({ error: "Error al exportar datos para crear" });
+  }
+});
+
+
+
+// Endpoint alternativo para exportar datos detallados filtrados por departamento (autorizar) con ruta /exportar-autorizar/:id_departamento
+router.get("/exportar-autorizar/:id_departamento", async (req, res) => {
+  try {
+    const { id_departamento } = req.params;
+    const params = [];
+
+    // Validar que el parámetro sea un número
+    const idDeptoInt = parseInt(id_departamento, 10);
+    if (isNaN(idDeptoInt)) {
+      return res.status(400).json({ error: "id_departamento debe ser un número válido" });
+    }
+
+    let sql = `
+  
+SELECT 
+    pt.id_permiso,
+    pt.fecha_hora,
+    pt.id_area,
+    -- Nombre del departamento
+    d.nombre AS id_departamento,
+    -- Nombre de la sucursal
+    s.nombre AS id_sucursal,
+    pt.prefijo,
+    pt.contrato,
+    -- Nombre del usuario (el que creó el permiso)
+    u_creador.nombre AS id_usuario,
+    -- TODAS LAS COLUMNAS DE ESTATUS
+    e.id_estatus,
+    e.estatus,
+    e.comentarios,
+    e.subestatus,
+    e.id_permiso AS estatus_id_permiso,
+    -- Continúan las columnas de permisos_trabajo
+    pt.tipo_mantenimiento,
+    pt.ot_numero,
+    pt.tag,
+    pt.hora_inicio,
+    pt.equipo_intervenir,
+    pt.descripcion_trabajo,
+    pt.nombre_solicitante,
+    pt.empresa,
+    pt.pal_epp_1,
+    pt.pal_epp_2,
+    pt.pal_fa_1,
+    pt.pal_fa_2,
+    pt.pal_epc_1,
+    pt.pal_epc_2,
+    pt.pal_cr_1,
+    pt.pco_eh_1,
+    pt.pco_ma_1,
+    pt.pco_ma_2,
+    pt.pco_ma_3,
+    pt.pco_ma_4,
+    pt.pco_ma_5,
+    pt.pco_era_1,
+    pt.pfg_cr_1,
+    pt.pfg_cr_1a,
+    pt.pfg_eppe_1,
+    pt.pfg_eppe_2,
+    pt.pfg_ma_1,
+    pt.pfg_ma_2,
+    pt.pfg_ma_3,
+    pt.pap_ce_1,
+    pt.pap_ce_2,
+    pt.pap_epe_1,
+    pt.nombre_departamento,
+    pt.columna_fuego_valor,
+    pt.columna_altura_valor,
+    pt.columna_apertura_valor,
+    pt.columna_confinado_valor,
+    pt.pno_cr_1,
+    pt.pno_cr_2,
+    pt.pno_cr_3,
+    pt.pno_cr_4,
+    pt.pno_cr_5,
+    pt.pno_cr_6,
+    pt.pno_cr_7,
+    pt.pno_cr_8,
+    pt.pno_cr_9,
+    pt.pno_cr_10,
+    pt.pno_cr_11,
+    pt.pno_cr_12,
+    pt.pno_cr_13,
+    pt.pno_epe_1,
+    pt.pno_epe_2,
+    pt.pno_epe_3,
+    pt.pno_epe_4,
+    pt.pno_epe_5,
+    pt.pno_epe_6,
+    pt.pno_epe_7,
+    pt.pno_epe_8,
+    pt.pno_epe_9,
+    pt.columna_nopeligrosovalor_valor,
+    pt.firma_creacion,
+    pt.ip_creacion,
+    pt.dispositivo_creacion,
+    pt.localizacion_creacion,
+    pt.temp_fuego,
+    pt.fluido_fuego,
+    pt.presion_fuego,
+    pt.temp_apertura,
+    pt.fluido_apertura,
+    pt.presion_apertura,
+    pt.temp_confinado,
+    pt.fluido_confinado,
+    pt.presion_confinado,
+    pt.temp_no_peligroso,
+    pt.fluido_no_peligroso,
+    pt.presion_no_peligroso
+FROM usuarios u_filtro
+INNER JOIN departamentos d_filtro ON u_filtro.departamento = d_filtro.nombre  
+INNER JOIN permisos_trabajo pt ON d_filtro.id_departamento = pt.id_departamento
+LEFT JOIN departamentos d ON pt.id_departamento = d.id_departamento
+LEFT JOIN sucursales s ON pt.id_sucursal = s.id_sucursal
+LEFT JOIN usuarios u_creador ON pt.id_usuario = u_creador.id_usuario
+LEFT JOIN estatus e ON pt.id_permiso = e.id_permiso
+WHERE u_filtro.id_usuario = $1 
+ORDER BY pt.fecha_hora DESC, pt.id_permiso;
+
+    `;
+
+    params.push(idDeptoInt);
+    const result = await pool.query(sql, params);
+    res.json(result.rows);
+  } catch (error) {
+    console.error("Error en exportar-autorizar (api):", error);
+    res.status(500).json({ error: "Error al exportar datos para autorizar (api)" });
   }
 });

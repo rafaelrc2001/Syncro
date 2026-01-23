@@ -42,8 +42,9 @@
   async function exportAutorizar() {
     try {
       const usuario = JSON.parse(localStorage.getItem("usuario")) || {};
-      const id_departamento = usuario.id;
-      if (!id_departamento) throw new Error("No se encontró id_departamento");
+      // Usar id_usuario si existe, luego id_departamento, luego id
+      const id_para_exportar = usuario.id_usuario || usuario.id_departamento || usuario.id;
+      if (!id_para_exportar) throw new Error("No se encontró id_usuario, id_departamento ni id en el usuario");
 
       const status =
         (document.getElementById("status-filter") || {}).value || "all";
@@ -78,7 +79,7 @@
 
       const origin = "http://localhost:3000";
       const url = `${origin}/api/exportar-autorizar/${encodeURIComponent(
-        id_departamento
+        id_para_exportar
       )}?${params.toString()}`;
       console.debug("exportAutorizar: requesting", url);
 
@@ -107,96 +108,32 @@
         }
       }
 
-      const columns = [
-        "id_permiso",
-        "prefijo",
-        "tipo_permiso",
-        "fecha",
-        "hora_inicio",
-        "tipo_actividad",
-        "planta_lugar_trabajo",
-        "descripcion_trabajo",
-        "empresa",
-        "nombre_solicitante",
-        "sucursal",
-        "contrato",
-        "ot_numero",
-        "equipo_intervenir",
-        "tag",
-        "responsable_area",
-        "responsable_seguridad",
-        "operador_responsable",
-        "area",
-        "estatus",
-        "fecha_hora",
-      ];
-
-      const stamp = formatStamp();
-
-      // Map incoming rows to the expected column keys
-      const rowsForExport = (Array.isArray(data) ? data : []).map((r) => ({
-        id_permiso: r.id_permiso ?? r.id ?? r.idPermiso ?? null,
-        prefijo: r.prefijo ?? r.prefijo_permiso ?? null,
-        tipo_permiso: r.tipo_permiso ?? r.tipo_perm ?? r.tipo ?? null,
-        fecha:
-          r.fecha ?? (r.fecha_hora ? String(r.fecha_hora).slice(0, 10) : null),
-        hora_inicio: r.hora_inicio ?? r.hora ?? null,
-        tipo_actividad: r.tipo_actividad ?? r.tipo_mantenimiento ?? null,
-        planta_lugar_trabajo:
-          r.planta_lugar_trabajo ?? r.planta ?? r.nombre_planta ?? null,
-        descripcion_trabajo: r.descripcion_trabajo ?? r.descripcion ?? null,
-        empresa: r.empresa ?? null,
-        nombre_solicitante: r.nombre_solicitante ?? r.solicitante ?? null,
-        sucursal: r.sucursal ?? null,
-        contrato:
-          r.contrato != null
-            ? String(r.contrato)
-            : r.contrato_df
-            ? String(r.contrato_df)
-            : "",
-        ot_numero: r.ot_numero ?? r.ot_no ?? null,
-        equipo_intervenir: r.equipo_intervenir ?? r.equipo_intervencion ?? null,
-        tag: r.tag ?? null,
-        responsable_area: r.responsable_area ?? r.responsable ?? null,
-        responsable_seguridad: r.responsable_seguridad ?? null,
-        operador_responsable: r.operador_responsable ?? r.operador_area ?? null,
-        area: r.area ?? null,
-        estatus: r.estatus ?? null,
-        fecha_hora: r.fecha_hora ?? null,
-      }));
-
-      if (
-        Array.isArray(rowsForExport) &&
-        rowsForExport.length > 0 &&
-        window.XLSX &&
-        typeof window.XLSX.utils !== "undefined"
-      ) {
-        // Ensure each object has all keys in columns (so XLSX header order is consistent)
-        const normalized = rowsForExport.map((r) => {
-          const obj = {};
-          columns.forEach((k) => {
-            obj[k] = k in r ? r[k] : null;
-          });
-          return obj;
-        });
-
-        const worksheet = window.XLSX.utils.json_to_sheet(normalized, {
-          header: columns,
-        });
-        const workbook = window.XLSX.utils.book_new();
-        window.XLSX.utils.book_append_sheet(workbook, worksheet, "AutorizarPT");
-
-        // Use same write flow as export_excel.js for compatibility
-        const wbout = window.XLSX.write(workbook, {
-          bookType: "xlsx",
-          type: "array",
-        });
-        const blob = new Blob([wbout], { type: "application/octet-stream" });
-        downloadBlob(blob, `autorizar-permisos-${stamp}.xlsx`);
+      // Exportar todas las columnas devueltas por el endpoint
+      if (!Array.isArray(data) || !data.length) {
+        alert("No hay datos para exportar");
         return;
       }
-
-      // Fallback to CSV when XLSX isn't available or data empty
+      // Mostrar en consola las columnas recibidas para depuración
+      console.log("Datos recibidos para exportar:", data);
+      console.log("Columnas detectadas:", Object.keys(data[0]));
+      const columns = Object.keys(data[0]);
+      const rowsForExport = data;
+      const stamp = formatStamp();
+      if (window.XLSX && typeof window.XLSX.utils !== "undefined") {
+        try {
+          const worksheet = window.XLSX.utils.json_to_sheet(rowsForExport, {
+            header: columns,
+          });
+          const workbook = window.XLSX.utils.book_new();
+          window.XLSX.utils.book_append_sheet(workbook, worksheet, "AutorizarPT");
+          window.XLSX.writeFile(workbook, `autorizar-permisos-${stamp}.xlsx`);
+          console.log(`Exportación exitosa: autorizar-permisos-${stamp}.xlsx`);
+          return;
+        } catch (err) {
+          console.error("Error al generar Excel:", err);
+        }
+      }
+      // Fallback to CSV
       toCsvAndDownload(
         rowsForExport,
         columns,

@@ -77,7 +77,12 @@
         }
       }
 
-      const origin = "http://localhost:3000";
+      // Centraliza el origin según entorno
+      const isRailway = window.location.origin.includes("railway") || window.location.hostname.endsWith("up.railway.app");
+      const origin =
+        window.location.hostname === "localhost"
+          ? "http://localhost:3000"
+          : "https://syncro-production-30a.up.railway.app";
       const url = `${origin}/api/exportar-autorizar/${encodeURIComponent(
         id_para_exportar
       )}?${params.toString()}`;

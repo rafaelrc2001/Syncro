@@ -50,13 +50,17 @@ async function cargarTargetasDesdeAutorizar() {
       }
     });
 
-    // Actualiza las tarjetas en el HTML
+    // Actualiza las tarjetas en el HTML de forma segura
     const counts = document.querySelectorAll(".card-content .count");
-    counts[0].textContent = total;
-    counts[1].textContent = porAutorizar;
-    counts[2].textContent = activos;
-    counts[3].textContent = terminados;
-    counts[4].textContent = noAutorizados;
+    if (counts.length >= 5) {
+      if (counts[0]) counts[0].textContent = total;
+      if (counts[1]) counts[1].textContent = porAutorizar;
+      if (counts[2]) counts[2].textContent = activos;
+      if (counts[3]) counts[3].textContent = terminados;
+      if (counts[4]) counts[4].textContent = noAutorizados;
+    } else {
+      console.warn("No se encontraron suficientes elementos .card-content .count en el DOM");
+    }
   } catch (err) {
     console.error("Error al cargar targetas desde permisos:", err);
   }

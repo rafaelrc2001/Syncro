@@ -84,6 +84,8 @@
             `Error del servidor: ${resp.status} - ${resp.statusText}`
           );
         data = await resp.json();
+        console.log("[EXPORT DEBUG] Datos recibidos del endpoint:", data);
+        // Ya no se filtra por clientIds, se exporta todo lo recibido
       } catch (err) {
         console.warn(
           "Fallo la exportación server-side, usando datos client-side:",
@@ -94,6 +96,7 @@
         } else {
           data = [];
         }
+        console.log("[EXPORT DEBUG] Datos del fallback client-side:", data);
       }
 
       if (!Array.isArray(data)) {

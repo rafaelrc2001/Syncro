@@ -93,14 +93,8 @@
         const resp = await fetch(url);
         if (!resp.ok) throw new Error("Error en exportar-autorizar server");
         data = await resp.json();
-        // If we sent clientIds, ensure we only keep those ids from server response
-        if (clientIds && clientIds.length > 0 && Array.isArray(data)) {
-          const idsSet = new Set(clientIds.map(String));
-          data = data.filter((r) => {
-            const id = r.id_permiso ?? r.id ?? r.idPermiso;
-            return id != null && idsSet.has(String(id));
-          });
-        }
+        console.log("[EXPORT DEBUG] Datos recibidos del endpoint:", data);
+        // Ya no se filtra por clientIds, se exporta todo lo recibido
       } catch (err) {
         console.warn(
           "Fallo la exportación server-side, usando datos client-side:",
@@ -111,6 +105,7 @@
         } else {
           data = [];
         }
+        console.log("[EXPORT DEBUG] Datos del fallback client-side:", data);
       }
 
       // Exportar todas las columnas devueltas por el endpoint, dividiendo fecha_hora en dos columnas
@@ -138,18 +133,36 @@
         return row;
       });
       // Determinar columnas (sin fecha_hora, con fecha y hora al final)
-      let columns = Object.keys(processed[0] || {});
-      // Si existe fecha y hora, asegurarse que estén al final
-      if (columns.includes("fecha") && columns.includes("hora")) {
-        columns = columns.filter((c) => c !== "fecha" && c !== "hora");
-        columns.push("fecha", "hora");
-      }
+      // Ordenar columnas según lo solicitado
+      const columns = [
+        "prefijo",
+        "fecha",
+        "hora",
+        "hora_inicio",
+        "id_departamento",
+        "id_area",
+        "id_sucursal",
+        "descripcion_trabajo",
+        "estatus",
+        "subestatus",
+        "empresa",
+      ];
+      // Agregar el resto de columnas que existan y no estén en la lista
+      const extraCols = Object.keys(processed[0] || {}).filter(
+        (c) => !columns.includes(c)
+      );
+      // Finalmente, agregar las columnas extra después de empresa y antes de hora
+      const finalColumns = [
+        ...columns.slice(0, 10), // hasta empresa
+        ...extraCols,
+        columns[10] // hora
+      ];
       const rowsForExport = processed;
       const stamp = formatStamp();
       if (window.XLSX && typeof window.XLSX.utils !== "undefined") {
         try {
           const worksheet = window.XLSX.utils.json_to_sheet(rowsForExport, {
-            header: columns,
+            header: finalColumns,
           });
           const workbook = window.XLSX.utils.book_new();
           window.XLSX.utils.book_append_sheet(workbook, worksheet, "AutorizarPT");
@@ -163,7 +176,7 @@
       // Fallback to CSV
       toCsvAndDownload(
         rowsForExport,
-        columns,
+        finalColumns,
         `autorizar-permisos-${stamp}.xlsx`
       );
     } catch (err) {

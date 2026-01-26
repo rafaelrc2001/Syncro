@@ -64,16 +64,55 @@ async function verificarRol(rolesPermitidos) {
   }
 
   if (!rolesPermitidos.includes(usuario.rol)) {
-    alert(`Acceso denegado. No tienes permisos para acceder a esta página.`);
-    // Redirigir según el rol
-    if (usuario.rol === "usuario") {
-      window.location.href = "/Modules/Usuario/Dash-Usuario.html";
-    } else if (usuario.rol === "supervisor") {
-      window.location.href = "/Modules/SupSeguridad/Dash-Supervisor.html";
-    } else if (usuario.rol === "jefe") {
-      window.location.href = "/Modules/JefeSeguridad/Dash-Jefe.html";
+    // Modal de advertencia: acceso denegado
+    let modal = document.getElementById('modalAccesoDenegado');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'modalAccesoDenegado';
+      modal.innerHTML = `
+        <div class="modal-overlay" style="display:flex;position:fixed;top:0;left:0;width:100vw;height:100vh;padding-top:40px;background:rgba(0,0,0,0.3);z-index:2147483647;justify-content:center;align-items:flex-start;">
+          <div class="modal-content" style="background:#fff;padding:2rem 1.5rem;border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,0.2);max-width:90vw;width:350px;text-align:center;z-index:2147483647;">
+            <h3 style=\"margin-bottom:1rem;color:#e53935;\">Acceso denegado</h3>
+            <p style=\"margin-bottom:2rem;\">No tienes permisos para acceder a esta página.</p>
+            <button id=\"btnCerrarModalAccesoDenegado\" style=\"padding:0.5rem 1.5rem;background:#e53935;color:#fff;border:none;border-radius:4px;cursor:pointer;\">Aceptar</button>
+          </div>
+        </div>
+      `;
+      if (document.body.firstChild) {
+        document.body.insertBefore(modal, document.body.firstChild);
+      } else {
+        document.body.appendChild(modal);
+      }
+    }
+    modal.style.display = 'flex';
+    const btnCerrar = document.getElementById('btnCerrarModalAccesoDenegado');
+    if (btnCerrar) {
+      btnCerrar.onclick = function() {
+        modal.style.display = 'none';
+        // Redirigir según el rol
+        if (usuario.rol === "usuario") {
+          window.location.href = "/Modules/Usuario/Dash-Usuario.html";
+        } else if (usuario.rol === "supervisor") {
+          window.location.href = "/Modules/SupSeguridad/Dash-Supervisor.html";
+        } else if (usuario.rol === "jefe") {
+          window.location.href = "/Modules/JefeSeguridad/Dash-Jefe.html";
+        } else {
+          window.location.href = "/login.html";
+        }
+      };
     } else {
-      window.location.href = "/login.html";
+      // Fallback: redirigir después de 2s si no hay botón
+      setTimeout(function() {
+        if (usuario.rol === "usuario") {
+          window.location.href = "/Modules/Usuario/Dash-Usuario.html";
+        } else if (usuario.rol === "supervisor") {
+          window.location.href = "/Modules/SupSeguridad/Dash-Supervisor.html";
+        } else if (usuario.rol === "jefe") {
+          window.location.href = "/Modules/JefeSeguridad/Dash-Jefe.html";
+        } else {
+          window.location.href = "/login.html";
+        }
+      }, 2000);
     }
     return false;
   }

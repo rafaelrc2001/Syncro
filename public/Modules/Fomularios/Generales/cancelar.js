@@ -50,7 +50,33 @@ if (btnGuardarCancelarPermiso) {
       .getElementById("comentarioCancelarPermiso")
       .value.trim();
     if (!comentario) {
-      alert("Debes escribir el motivo de la cancelación.");
+      // Modal de advertencia: motivo de cancelación requerido
+      let modal = document.getElementById('modalMotivoCancelacionRequerido');
+      if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'modalMotivoCancelacionRequerido';
+        modal.innerHTML = `
+          <div class="modal-overlay" style="display:flex;position:fixed;top:0;left:0;width:100vw;height:100vh;padding-top:40px;background:rgba(0,0,0,0.3);z-index:2147483647;justify-content:center;align-items:flex-start;">
+            <div class="modal-content" style="background:#fff;padding:2rem 1.5rem;border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,0.2);max-width:90vw;width:350px;text-align:center;z-index:2147483647;">
+              <h3 style=\"margin-bottom:1rem;color:#e53935;\">Campo requerido</h3>
+              <p style=\"margin-bottom:2rem;\">Debes escribir el motivo de la cancelación.</p>
+              <button id=\"btnCerrarModalMotivoCancelacionRequerido\" style=\"padding:0.5rem 1.5rem;background:#e53935;color:#fff;border:none;border-radius:4px;cursor:pointer;\">Aceptar</button>
+            </div>
+          </div>
+        `;
+        if (document.body.firstChild) {
+          document.body.insertBefore(modal, document.body.firstChild);
+        } else {
+          document.body.appendChild(modal);
+        }
+      }
+      modal.style.display = 'flex';
+      const btnCerrar = document.getElementById('btnCerrarModalMotivoCancelacionRequerido');
+      if (btnCerrar) {
+        btnCerrar.onclick = function() {
+          modal.style.display = 'none';
+        };
+      }
       return;
     }
     console.log("📝 [CANCELAR] Comentario:", comentario);
@@ -141,9 +167,41 @@ if (btnGuardarCancelarPermiso) {
       }
 
       // Quitar integración con n8n por ahora
-      alert("Permiso cancelado correctamente.");
-      modalCancelarPermisoUnico.style.display = "none";
-      window.location.href = "/Modules/Usuario/CrearPT.html";
+      // Modal de éxito en vez de alert
+      let modal = document.getElementById('modalPermisoCanceladoExito');
+      if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'modalPermisoCanceladoExito';
+        modal.innerHTML = `
+          <div class="modal-overlay" style="display:flex;position:fixed;top:0;left:0;width:100vw;height:100vh;padding-top:40px;background:rgba(0,0,0,0.3);z-index:2147483647;justify-content:center;align-items:flex-start;">
+            <div class="modal-content" style="background:#fff;padding:2rem 1.5rem;border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,0.2);max-width:90vw;width:350px;text-align:center;z-index:2147483647;">
+              <h3 style=\"margin-bottom:1rem;color:#388e3c;\">Éxito</h3>
+              <p style=\"margin-bottom:2rem;\">Permiso cancelado correctamente.</p>
+              <button id=\"btnCerrarModalPermisoCanceladoExito\" style=\"padding:0.5rem 1.5rem;background:#388e3c;color:#fff;border:none;border-radius:4px;cursor:pointer;\">Aceptar</button>
+            </div>
+          </div>
+        `;
+        if (document.body.firstChild) {
+          document.body.insertBefore(modal, document.body.firstChild);
+        } else {
+          document.body.appendChild(modal);
+        }
+      }
+      modal.style.display = 'flex';
+      const btnCerrar = document.getElementById('btnCerrarModalPermisoCanceladoExito');
+      if (btnCerrar) {
+        btnCerrar.onclick = function() {
+          modal.style.display = 'none';
+          modalCancelarPermisoUnico.style.display = "none";
+          window.location.href = "/Modules/Usuario/CrearPT.html";
+        };
+      } else {
+        // fallback: redirige después de 2s si no hay botón
+        setTimeout(function() {
+          modalCancelarPermisoUnico.style.display = "none";
+          window.location.href = "/Modules/Usuario/CrearPT.html";
+        }, 2000);
+      }
     } catch (err) {
      
     }

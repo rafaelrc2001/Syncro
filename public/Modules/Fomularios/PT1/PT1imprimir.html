@@ -850,16 +850,94 @@ document.addEventListener('DOMContentLoaded', function() {
                     body: JSON.stringify({ id_permiso: idPermiso, firma_creacion: base64 })
                 });
                 const data = await resp.json();
-                if (resp.ok && data.success) {
-                    alert('Firma guardada correctamente.');
-                    window.location.reload();
-                } else {
-                    alert('No se pudo guardar la firma.');
-                }
-            } catch (err) {
-                alert('Error al enviar la firma.');
-                console.error(err);
-            }
+                                if (resp.ok && data.success) {
+                                        // Modal de éxito: firma guardada correctamente
+                                        let modal = document.getElementById('modalFirmaGuardadaExito');
+                                        if (!modal) {
+                                                modal = document.createElement('div');
+                                                modal.id = 'modalFirmaGuardadaExito';
+                                                modal.innerHTML = `
+                                                    <div class="modal-overlay" style="display:flex;position:fixed;top:0;left:0;width:100vw;height:100vh;padding-top:40px;background:rgba(0,0,0,0.3);z-index:2147483647;justify-content:center;align-items:flex-start;">
+                                                        <div class="modal-content" style="background:#fff;padding:2rem 1.5rem;border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,0.2);max-width:90vw;width:350px;text-align:center;z-index:2147483647;">
+                                                            <h3 style=\"margin-bottom:1rem;color:#27ae60;\">Éxito</h3>
+                                                            <p style=\"margin-bottom:2rem;\">Firma guardada correctamente.</p>
+                                                            <button id=\"btnCerrarModalFirmaGuardadaExito\" style=\"padding:0.5rem 1.5rem;background:#27ae60;color:#fff;border:none;border-radius:4px;cursor:pointer;\">Aceptar</button>
+                                                        </div>
+                                                    </div>
+                                                `;
+                                                if (document.body.firstChild) {
+                                                    document.body.insertBefore(modal, document.body.firstChild);
+                                                } else {
+                                                    document.body.appendChild(modal);
+                                                }
+                                        }
+                                        modal.style.display = 'flex';
+                                        const btnCerrar = document.getElementById('btnCerrarModalFirmaGuardadaExito');
+                                        if (btnCerrar) {
+                                                btnCerrar.onclick = function() {
+                                                        modal.style.display = 'none';
+                                                        window.location.reload();
+                                                };
+                                        }
+                                } else {
+                                        // Modal de error: no se pudo guardar la firma
+                                        let modal = document.getElementById('modalFirmaGuardadaError');
+                                        if (!modal) {
+                                                modal = document.createElement('div');
+                                                modal.id = 'modalFirmaGuardadaError';
+                                                modal.innerHTML = `
+                                                    <div class="modal-overlay" style="display:flex;position:fixed;top:0;left:0;width:100vw;height:100vh;padding-top:40px;background:rgba(0,0,0,0.3);z-index:2147483647;justify-content:center;align-items:flex-start;">
+                                                        <div class="modal-content" style="background:#fff;padding:2rem 1.5rem;border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,0.2);max-width:90vw;width:350px;text-align:center;z-index:2147483647;">
+                                                            <h3 style=\"margin-bottom:1rem;color:#e53935;\">Error</h3>
+                                                            <p style=\"margin-bottom:2rem;\">No se pudo guardar la firma.</p>
+                                                            <button id=\"btnCerrarModalFirmaGuardadaError\" style=\"padding:0.5rem 1.5rem;background:#e53935;color:#fff;border:none;border-radius:4px;cursor:pointer;\">Aceptar</button>
+                                                        </div>
+                                                    </div>
+                                                `;
+                                                if (document.body.firstChild) {
+                                                    document.body.insertBefore(modal, document.body.firstChild);
+                                                } else {
+                                                    document.body.appendChild(modal);
+                                                }
+                                        }
+                                        modal.style.display = 'flex';
+                                        const btnCerrar = document.getElementById('btnCerrarModalFirmaGuardadaError');
+                                        if (btnCerrar) {
+                                                btnCerrar.onclick = function() {
+                                                        modal.style.display = 'none';
+                                                };
+                                        }
+                                }
+                        } catch (err) {
+                                // Modal de error: error al enviar la firma
+                                let modal = document.getElementById('modalFirmaEnvioError');
+                                if (!modal) {
+                                        modal = document.createElement('div');
+                                        modal.id = 'modalFirmaEnvioError';
+                                        modal.innerHTML = `
+                                            <div class="modal-overlay" style="display:flex;position:fixed;top:0;left:0;width:100vw;height:100vh;padding-top:40px;background:rgba(0,0,0,0.3);z-index:2147483647;justify-content:center;align-items:flex-start;">
+                                                <div class="modal-content" style="background:#fff;padding:2rem 1.5rem;border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,0.2);max-width:90vw;width:350px;text-align:center;z-index:2147483647;">
+                                                    <h3 style=\"margin-bottom:1rem;color:#e53935;\">Error</h3>
+                                                    <p style=\"margin-bottom:2rem;\">Error al enviar la firma.</p>
+                                                    <button id=\"btnCerrarModalFirmaEnvioError\" style=\"padding:0.5rem 1.5rem;background:#e53935;color:#fff;border:none;border-radius:4px;cursor:pointer;\">Aceptar</button>
+                                                </div>
+                                            </div>
+                                        `;
+                                        if (document.body.firstChild) {
+                                            document.body.insertBefore(modal, document.body.firstChild);
+                                        } else {
+                                            document.body.appendChild(modal);
+                                        }
+                                }
+                                modal.style.display = 'flex';
+                                const btnCerrar = document.getElementById('btnCerrarModalFirmaEnvioError');
+                                if (btnCerrar) {
+                                        btnCerrar.onclick = function() {
+                                                modal.style.display = 'none';
+                                        };
+                                }
+                                console.error(err);
+                        }
         });
     }
 });

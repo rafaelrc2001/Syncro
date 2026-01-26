@@ -108,7 +108,33 @@ function mostrarModalRevalidar() {
 
 			// Validar campos obligatorios
 			if (!id_permiso || !comentario || !firma) {
-				alert('Faltan campos obligatorios para revalidar.');
+				// Modal de campos obligatorios
+				let modal = document.getElementById('modalCamposObligatoriosRevalidar');
+				if (!modal) {
+					modal = document.createElement('div');
+					modal.id = 'modalCamposObligatoriosRevalidar';
+					modal.innerHTML = `
+						<div class="modal-overlay" style="display:flex;position:fixed;top:0;left:0;width:100vw;height:100vh;padding-top:40px;background:rgba(0,0,0,0.3);z-index:2147483647;justify-content:center;align-items:flex-start;">
+						  <div class="modal-content" style="background:#fff;padding:2rem 1.5rem;border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,0.2);max-width:90vw;width:350px;text-align:center;z-index:2147483647;">
+							<h3 style="margin-bottom:1rem;">Campos obligatorios</h3>
+							<p style="margin-bottom:2rem;">Faltan campos obligatorios para revalidar.</p>
+							<button id="btnCerrarModalCamposObligatoriosRevalidar" style="padding:0.5rem 1.5rem;background:#007bff;color:#fff;border:none;border-radius:4px;cursor:pointer;">Aceptar</button>
+						  </div>
+						</div>
+					`;
+					if (document.body.firstChild) {
+						document.body.insertBefore(modal, document.body.firstChild);
+					} else {
+						document.body.appendChild(modal);
+					}
+				}
+				modal.style.display = 'flex';
+				const btnCerrar = document.getElementById('btnCerrarModalCamposObligatoriosRevalidar');
+				if (btnCerrar) {
+					btnCerrar.onclick = function() {
+						modal.style.display = 'none';
+					};
+				}
 				console.warn('[Revalidaciones] Faltan campos: id_permiso:', id_permiso, 'comentario:', comentario, 'firma:', firma ? 'ok' : 'falta');
 				return;
 			}
@@ -134,20 +160,98 @@ function mostrarModalRevalidar() {
 					body: JSON.stringify(datosAEnviar)
 				});
 				if (response.ok) {
-					modal.style.display = 'none';
-					alert('Revalidación guardada correctamente.');
-					console.log('[Revalidaciones] Revalidación guardada correctamente.');
-					location.reload();
-				} else {
-					let data = {};
-					try { data = await response.json(); } catch(e){}
-					alert('Error al guardar revalidación: ' + (data.error || 'Error desconocido'));
-					console.error('[Revalidaciones] Error al guardar revalidación:', data);
-				}
-			} catch (err) {
-				alert('Error de red al guardar revalidación.');
-				console.error('[Revalidaciones] Error de red al guardar revalidación:', err);
-			}
+										modal.style.display = 'none';
+										// Modal de éxito: revalidación guardada correctamente
+										let modalExito = document.getElementById('modalRevalidacionGuardadaExito');
+										if (!modalExito) {
+												modalExito = document.createElement('div');
+												modalExito.id = 'modalRevalidacionGuardadaExito';
+												modalExito.innerHTML = `
+													<div class="modal-overlay" style="display:flex;position:fixed;top:0;left:0;width:100vw;height:100vh;padding-top:40px;background:rgba(0,0,0,0.3);z-index:2147483647;justify-content:center;align-items:flex-start;">
+														<div class="modal-content" style="background:#fff;padding:2rem 1.5rem;border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,0.2);max-width:90vw;width:350px;text-align:center;z-index:2147483647;">
+															<h3 style=\"margin-bottom:1rem;color:#27ae60;\">Éxito</h3>
+															<p style=\"margin-bottom:2rem;\">Revalidación guardada correctamente.</p>
+															<button id=\"btnCerrarModalRevalidacionGuardadaExito\" style=\"padding:0.5rem 1.5rem;background:#27ae60;color:#fff;border:none;border-radius:4px;cursor:pointer;\">Aceptar</button>
+														</div>
+													</div>
+												`;
+												if (document.body.firstChild) {
+													document.body.insertBefore(modalExito, document.body.firstChild);
+												} else {
+													document.body.appendChild(modalExito);
+												}
+										}
+										modalExito.style.display = 'flex';
+										const btnCerrarExito = document.getElementById('btnCerrarModalRevalidacionGuardadaExito');
+										if (btnCerrarExito) {
+												btnCerrarExito.onclick = function() {
+														modalExito.style.display = 'none';
+														location.reload();
+												};
+										}
+										console.log('[Revalidaciones] Revalidación guardada correctamente.');
+								} else {
+										let data = {};
+										try { data = await response.json(); } catch(e){}
+										// Modal de error: error al guardar revalidación
+										let modalError = document.getElementById('modalRevalidacionGuardadaError');
+										if (!modalError) {
+												modalError = document.createElement('div');
+												modalError.id = 'modalRevalidacionGuardadaError';
+												modalError.innerHTML = `
+													<div class="modal-overlay" style="display:flex;position:fixed;top:0;left:0;width:100vw;height:100vh;padding-top:40px;background:rgba(0,0,0,0.3);z-index:2147483647;justify-content:center;align-items:flex-start;">
+														<div class="modal-content" style="background:#fff;padding:2rem 1.5rem;border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,0.2);max-width:90vw;width:350px;text-align:center;z-index:2147483647;">
+															<h3 style=\"margin-bottom:1rem;color:#e53935;\">Error</h3>
+															<p style=\"margin-bottom:2rem;\">Error al guardar revalidación: ${data.error || 'Error desconocido'}</p>
+															<button id=\"btnCerrarModalRevalidacionGuardadaError\" style=\"padding:0.5rem 1.5rem;background:#e53935;color:#fff;border:none;border-radius:4px;cursor:pointer;\">Aceptar</button>
+														</div>
+													</div>
+												`;
+												if (document.body.firstChild) {
+													document.body.insertBefore(modalError, document.body.firstChild);
+												} else {
+													document.body.appendChild(modalError);
+												}
+										}
+										modalError.style.display = 'flex';
+										const btnCerrarError = document.getElementById('btnCerrarModalRevalidacionGuardadaError');
+										if (btnCerrarError) {
+												btnCerrarError.onclick = function() {
+														modalError.style.display = 'none';
+												};
+										}
+										console.error('[Revalidaciones] Error al guardar revalidación:', data);
+								}
+						} catch (err) {
+								// Modal de error: error de red al guardar revalidación
+								let modalRed = document.getElementById('modalRevalidacionRedError');
+								if (!modalRed) {
+										modalRed = document.createElement('div');
+										modalRed.id = 'modalRevalidacionRedError';
+										modalRed.innerHTML = `
+											<div class="modal-overlay" style="display:flex;position:fixed;top:0;left:0;width:100vw;height:100vh;padding-top:40px;background:rgba(0,0,0,0.3);z-index:2147483647;justify-content:center;align-items:flex-start;">
+												<div class="modal-content" style="background:#fff;padding:2rem 1.5rem;border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,0.2);max-width:90vw;width:350px;text-align:center;z-index:2147483647;">
+													<h3 style=\"margin-bottom:1rem;color:#e53935;\">Error</h3>
+													<p style=\"margin-bottom:2rem;\">Error de red al guardar revalidación.</p>
+													<button id=\"btnCerrarModalRevalidacionRedError\" style=\"padding:0.5rem 1.5rem;background:#e53935;color:#fff;border:none;border-radius:4px;cursor:pointer;\">Aceptar</button>
+												</div>
+											</div>
+										`;
+										if (document.body.firstChild) {
+											document.body.insertBefore(modalRed, document.body.firstChild);
+										} else {
+											document.body.appendChild(modalRed);
+										}
+								}
+								modalRed.style.display = 'flex';
+								const btnCerrarRed = document.getElementById('btnCerrarModalRevalidacionRedError');
+								if (btnCerrarRed) {
+										btnCerrarRed.onclick = function() {
+												modalRed.style.display = 'none';
+										};
+								}
+								console.error('[Revalidaciones] Error de red al guardar revalidación:', err);
+						}
 		};
 	} else {
 		modal.style.display = 'flex';

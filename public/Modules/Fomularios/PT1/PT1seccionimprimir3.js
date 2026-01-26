@@ -158,12 +158,64 @@ document.addEventListener("DOMContentLoaded", function () {
       var tipoCierre = document.getElementById("tipoCierrePermiso").value;
 
       if (!comentario) {
-        alert("Debes escribir el motivo del cierre.");
+        // Modal de advertencia: motivo de cierre requerido
+        let modal = document.getElementById('modalMotivoCierreRequerido');
+        if (!modal) {
+          modal = document.createElement('div');
+          modal.id = 'modalMotivoCierreRequerido';
+          modal.innerHTML = `
+            <div class="modal-overlay" style="display:flex;position:fixed;top:0;left:0;width:100vw;height:100vh;padding-top:40px;background:rgba(0,0,0,0.3);z-index:2147483647;justify-content:center;align-items:flex-start;">
+              <div class="modal-content" style="background:#fff;padding:2rem 1.5rem;border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,0.2);max-width:90vw;width:350px;text-align:center;z-index:2147483647;">
+                <h3 style=\"margin-bottom:1rem;color:#e53935;\">Campo requerido</h3>
+                <p style=\"margin-bottom:2rem;\">Debes escribir el motivo del cierre.</p>
+                <button id=\"btnCerrarModalMotivoCierreRequerido\" style=\"padding:0.5rem 1.5rem;background:#e53935;color:#fff;border:none;border-radius:4px;cursor:pointer;\">Aceptar</button>
+              </div>
+            </div>
+          `;
+          if (document.body.firstChild) {
+            document.body.insertBefore(modal, document.body.firstChild);
+          } else {
+            document.body.appendChild(modal);
+          }
+        }
+        modal.style.display = 'flex';
+        const btnCerrar = document.getElementById('btnCerrarModalMotivoCierreRequerido');
+        if (btnCerrar) {
+          btnCerrar.onclick = function() {
+            modal.style.display = 'none';
+          };
+        }
         return;
       }
 
       if (!tipoCierre) {
-        alert("Debes seleccionar el tipo de cierre.");
+        // Modal de advertencia: tipo de cierre requerido
+        let modal = document.getElementById('modalTipoCierreRequerido');
+        if (!modal) {
+          modal = document.createElement('div');
+          modal.id = 'modalTipoCierreRequerido';
+          modal.innerHTML = `
+            <div class="modal-overlay" style="display:flex;position:fixed;top:0;left:0;width:100vw;height:100vh;padding-top:40px;background:rgba(0,0,0,0.3);z-index:2147483647;justify-content:center;align-items:flex-start;">
+              <div class="modal-content" style="background:#fff;padding:2rem 1.5rem;border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,0.2);max-width:90vw;width:350px;text-align:center;z-index:2147483647;">
+                <h3 style=\"margin-bottom:1rem;color:#e53935;\">Campo requerido</h3>
+                <p style=\"margin-bottom:2rem;\">Debes seleccionar el tipo de cierre.</p>
+                <button id=\"btnCerrarModalTipoCierreRequerido\" style=\"padding:0.5rem 1.5rem;background:#e53935;color:#fff;border:none;border-radius:4px;cursor:pointer;\">Aceptar</button>
+              </div>
+            </div>
+          `;
+          if (document.body.firstChild) {
+            document.body.insertBefore(modal, document.body.firstChild);
+          } else {
+            document.body.appendChild(modal);
+          }
+        }
+        modal.style.display = 'flex';
+        const btnCerrar = document.getElementById('btnCerrarModalTipoCierreRequerido');
+        if (btnCerrar) {
+          btnCerrar.onclick = function() {
+            modal.style.display = 'none';
+          };
+        }
         return;
       }
 
@@ -270,7 +322,33 @@ document.addEventListener("DOMContentLoaded", function () {
         window.location.href = "/Modules/Departamentos/CrearPT.html";
       } catch (err) {
         console.error("Error completo:", err);
-        alert("Error al guardar el comentario de cierre o actualizar estatus.");
+        // Modal de error: no se pudo guardar el comentario de cierre o actualizar estatus
+        let modal = document.getElementById('modalErrorGuardarComentarioOCierreEstatus');
+        if (!modal) {
+          modal = document.createElement('div');
+          modal.id = 'modalErrorGuardarComentarioOCierreEstatus';
+          modal.innerHTML = `
+            <div class="modal-overlay" style="display:flex;position:fixed;top:0;left:0;width:100vw;height:100vh;padding-top:40px;background:rgba(0,0,0,0.3);z-index:2147483647;justify-content:center;align-items:flex-start;">
+              <div class="modal-content" style="background:#fff;padding:2rem 1.5rem;border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,0.2);max-width:90vw;width:350px;text-align:center;z-index:2147483647;">
+                <h3 style=\"margin-bottom:1rem;color:#e53935;\">Error</h3>
+                <p style=\"margin-bottom:2rem;\">Error al guardar el comentario de cierre o actualizar estatus.</p>
+                <button id=\"btnCerrarModalErrorGuardarComentarioOCierreEstatus\" style=\"padding:0.5rem 1.5rem;background:#e53935;color:#fff;border:none;border-radius:4px;cursor:pointer;\">Aceptar</button>
+              </div>
+            </div>
+          `;
+          if (document.body.firstChild) {
+            document.body.insertBefore(modal, document.body.firstChild);
+          } else {
+            document.body.appendChild(modal);
+          }
+        }
+        modal.style.display = 'flex';
+        const btnCerrar = document.getElementById('btnCerrarModalErrorGuardarComentarioOCierreEstatus');
+        if (btnCerrar) {
+          btnCerrar.onclick = function() {
+            modal.style.display = 'none';
+          };
+        }
       }
     });
   }

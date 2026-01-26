@@ -12,9 +12,37 @@ async function verificarSesionActiva() {
     const data = await response.json();
 
     if (!data.success || !data.usuario) {
-      // No hay sesión activa, redirigir al login
-      alert("Tu sesión ha expirado. Por favor, inicia sesión nuevamente.");
-      window.location.href = "/login.html";
+      // No hay sesión activa, mostrar modal y redirigir al login
+      let modal = document.getElementById('modalSesionExpirada');
+      if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'modalSesionExpirada';
+        modal.innerHTML = `
+          <div class="modal-overlay" style="display:flex;position:fixed;top:0;left:0;width:100vw;height:100vh;padding-top:40px;background:rgba(0,0,0,0.3);z-index:2147483647;justify-content:center;align-items:flex-start;">
+            <div class="modal-content" style="background:#fff;padding:2rem 1.5rem;border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,0.2);max-width:90vw;width:350px;text-align:center;z-index:2147483647;">
+              <h3 style="margin-bottom:1rem;">Sesión expirada</h3>
+              <p style="margin-bottom:2rem;">Tu sesión ha expirado. Por favor, inicia sesión nuevamente.</p>
+              <button id="btnCerrarModalSesionExpirada" style="padding:0.5rem 1.5rem;background:#007bff;color:#fff;border:none;border-radius:4px;cursor:pointer;">Aceptar</button>
+            </div>
+          </div>
+        `;
+        if (document.body.firstChild) {
+          document.body.insertBefore(modal, document.body.firstChild);
+        } else {
+          document.body.appendChild(modal);
+        }
+      }
+      modal.style.display = 'flex';
+      const btnCerrar = document.getElementById('btnCerrarModalSesionExpirada');
+      if (btnCerrar) {
+        btnCerrar.onclick = function() {
+          modal.style.display = 'none';
+          window.location.href = "/login.html";
+        };
+      } else {
+        // Fallback: redirigir si no se encuentra el botón
+        setTimeout(function(){ window.location.href = "/login.html"; }, 2000);
+      }
       return null;
     }
 

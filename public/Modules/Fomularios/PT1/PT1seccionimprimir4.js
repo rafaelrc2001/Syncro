@@ -163,7 +163,33 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       if (!tipoCierre) {
-        alert("Debes seleccionar el tipo de cierre.");
+        // Modal para tipo de cierre obligatorio
+        let modal = document.getElementById('modalTipoCierreObligatorio');
+        if (!modal) {
+          modal = document.createElement('div');
+          modal.id = 'modalTipoCierreObligatorio';
+          modal.innerHTML = `
+            <div class="modal-overlay" style="display:flex;position:fixed;top:0;left:0;width:100vw;height:100vh;padding-top:40px;background:rgba(0,0,0,0.3);z-index:2147483647;justify-content:center;align-items:flex-start;">
+              <div class="modal-content" style="background:#fff;padding:2rem 1.5rem;border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,0.2);max-width:90vw;width:350px;text-align:center;z-index:2147483647;">
+                <h3 style="margin-bottom:1rem;">Campo obligatorio</h3>
+                <p style="margin-bottom:2rem;">Debes seleccionar el tipo de cierre.</p>
+                <button id="btnCerrarModalTipoCierreObligatorio" style="padding:0.5rem 1.5rem;background:#007bff;color:#fff;border:none;border-radius:4px;cursor:pointer;">Aceptar</button>
+              </div>
+            </div>
+          `;
+          if (document.body.firstChild) {
+            document.body.insertBefore(modal, document.body.firstChild);
+          } else {
+            document.body.appendChild(modal);
+          }
+        }
+        modal.style.display = 'flex';
+        const btnCerrar = document.getElementById('btnCerrarModalTipoCierreObligatorio');
+        if (btnCerrar) {
+          btnCerrar.onclick = function() {
+            modal.style.display = 'none';
+          };
+        }
         return;
       }
 
@@ -661,9 +687,33 @@ async function imprimirPermisoTradicional() {
     window.print();
   } catch (error) {
     console.error("Error al imprimir:", error);
-    alert(
-      "Ocurrió un error al preparar la impresión. Por favor, inténtalo nuevamente."
-    );
+    // Modal para error de impresión
+    let modal = document.getElementById('modalErrorImpresion');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'modalErrorImpresion';
+      modal.innerHTML = `
+        <div class="modal-overlay" style="display:flex;position:fixed;top:0;left:0;width:100vw;height:100vh;padding-top:40px;background:rgba(0,0,0,0.3);z-index:2147483647;justify-content:center;align-items:flex-start;">
+          <div class="modal-content" style="background:#fff;padding:2rem 1.5rem;border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,0.2);max-width:90vw;width:350px;text-align:center;z-index:2147483647;">
+            <h3 style="margin-bottom:1rem;">Error de impresión</h3>
+            <p style="margin-bottom:2rem;">Ocurrió un error al preparar la impresión. Por favor, inténtalo nuevamente.</p>
+            <button id="btnCerrarModalErrorImpresion" style="padding:0.5rem 1.5rem;background:#007bff;color:#fff;border:none;border-radius:4px;cursor:pointer;">Aceptar</button>
+          </div>
+        </div>
+      `;
+      if (document.body.firstChild) {
+        document.body.insertBefore(modal, document.body.firstChild);
+      } else {
+        document.body.appendChild(modal);
+      }
+    }
+    modal.style.display = 'flex';
+    const btnCerrar = document.getElementById('btnCerrarModalErrorImpresion');
+    if (btnCerrar) {
+      btnCerrar.onclick = function() {
+        modal.style.display = 'none';
+      };
+    }
   }
 }
 

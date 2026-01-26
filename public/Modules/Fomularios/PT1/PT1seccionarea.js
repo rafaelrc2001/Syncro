@@ -442,14 +442,92 @@ const idPermiso = params.get('id') || window.idPermisoActual;
           body: JSON.stringify({ id_estatus: idEstatus })
         });
         if (!respCierre.ok) {
-          alert('Error al cerrar el permiso.');
+          // Modal de error al cerrar permiso
+          let modal = document.getElementById('modalCierreError');
+          if (!modal) {
+            modal = document.createElement('div');
+            modal.id = 'modalCierreError';
+            modal.innerHTML = `
+              <div class="modal-overlay" style="display:flex;position:fixed;top:0;left:0;width:100vw;height:100vh;padding-top:40px;background:rgba(0,0,0,0.3);z-index:2147483647;justify-content:center;align-items:flex-start;">
+                <div class="modal-content" style="background:#fff;padding:2rem 1.5rem;border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,0.2);max-width:90vw;width:350px;text-align:center;z-index:2147483647;">
+                  <h3 style="margin-bottom:1rem;color:#e53935;">Error</h3>
+                  <p style="margin-bottom:2rem;">Error al cerrar el permiso.</p>
+                  <button id="btnCerrarModalCierreError" style="padding:0.5rem 1.5rem;background:#e53935;color:#fff;border:none;border-radius:4px;cursor:pointer;">Aceptar</button>
+                </div>
+              </div>
+            `;
+            if (document.body.firstChild) {
+              document.body.insertBefore(modal, document.body.firstChild);
+            } else {
+              document.body.appendChild(modal);
+            }
+          }
+          modal.style.display = 'flex';
+          const btnCerrar = document.getElementById('btnCerrarModalCierreError');
+          if (btnCerrar) {
+            btnCerrar.onclick = function() {
+              modal.style.display = 'none';
+            };
+          }
           return;
         }
         modalCierre.style.display = 'none';
-        alert('Permiso cerrado correctamente.');
-        window.location.href = "/Modules/Departamentos/AutorizarPT.html";
+        // Modal de éxito al cerrar permiso
+        let modalExito = document.getElementById('modalCierreExito');
+        if (!modalExito) {
+          modalExito = document.createElement('div');
+          modalExito.id = 'modalCierreExito';
+          modalExito.innerHTML = `
+            <div class="modal-overlay" style="display:flex;position:fixed;top:0;left:0;width:100vw;height:100vh;padding-top:40px;background:rgba(0,0,0,0.3);z-index:2147483647;justify-content:center;align-items:flex-start;">
+              <div class="modal-content" style="background:#fff;padding:2rem 1.5rem;border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,0.2);max-width:90vw;width:350px;text-align:center;z-index:2147483647;">
+                <h3 style="margin-bottom:1rem;color:#27ae60;">¡Éxito!</h3>
+                <p style="margin-bottom:2rem;">Permiso cerrado correctamente.</p>
+                <button id="btnCerrarModalCierreExito" style="padding:0.5rem 1.5rem;background:#27ae60;color:#fff;border:none;border-radius:4px;cursor:pointer;">Aceptar</button>
+              </div>
+            </div>
+          `;
+          if (document.body.firstChild) {
+            document.body.insertBefore(modalExito, document.body.firstChild);
+          } else {
+            document.body.appendChild(modalExito);
+          }
+        }
+        modalExito.style.display = 'flex';
+        const btnCerrarExito = document.getElementById('btnCerrarModalCierreExito');
+        if (btnCerrarExito) {
+          btnCerrarExito.onclick = function() {
+            modalExito.style.display = 'none';
+            window.location.href = "/Modules/Departamentos/AutorizarPT.html";
+          };
+        }
       } catch (err) {
-        alert('Error al guardar la firma o cerrar el permiso.');
+        // Modal de error al guardar la firma o cerrar el permiso
+        let modal = document.getElementById('modalCierreFirmaError');
+        if (!modal) {
+          modal = document.createElement('div');
+          modal.id = 'modalCierreFirmaError';
+          modal.innerHTML = `
+            <div class="modal-overlay" style="display:flex;position:fixed;top:0;left:0;width:100vw;height:100vh;padding-top:40px;background:rgba(0,0,0,0.3);z-index:2147483647;justify-content:center;align-items:flex-start;">
+              <div class="modal-content" style="background:#fff;padding:2rem 1.5rem;border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,0.2);max-width:90vw;width:350px;text-align:center;z-index:2147483647;">
+                <h3 style="margin-bottom:1rem;color:#e53935;">Error</h3>
+                <p style="margin-bottom:2rem;">Error al guardar la firma o cerrar el permiso.</p>
+                <button id="btnCerrarModalCierreFirmaError" style="padding:0.5rem 1.5rem;background:#e53935;color:#fff;border:none;border-radius:4px;cursor:pointer;">Aceptar</button>
+              </div>
+            </div>
+          `;
+          if (document.body.firstChild) {
+            document.body.insertBefore(modal, document.body.firstChild);
+          } else {
+            document.body.appendChild(modal);
+          }
+        }
+        modal.style.display = 'flex';
+        const btnCerrar = document.getElementById('btnCerrarModalCierreFirmaError');
+        if (btnCerrar) {
+          btnCerrar.onclick = function() {
+            modal.style.display = 'none';
+          };
+        }
       }
 
 
@@ -536,7 +614,33 @@ async function insertarAutorizacionArea() {
       }
     }
     if (!esValida) {
-      alert('Debes activar la ubicación en tu dispositivo y otorgar permisos para poder autorizar.');
+      // Modal de advertencia de ubicación no válida
+      let modal = document.getElementById('modalUbicacionNoValida');
+      if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'modalUbicacionNoValida';
+        modal.innerHTML = `
+          <div class="modal-overlay" style="display:flex;position:fixed;top:0;left:0;width:100vw;height:100vh;padding-top:40px;background:rgba(0,0,0,0.3);z-index:2147483647;justify-content:center;align-items:flex-start;">
+            <div class="modal-content" style="background:#fff;padding:2rem 1.5rem;border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,0.2);max-width:90vw;width:350px;text-align:center;z-index:2147483647;">
+              <h3 style="margin-bottom:1rem;color:#e53935;">Ubicación requerida</h3>
+              <p style="margin-bottom:2rem;">Debes activar la ubicación en tu dispositivo y otorgar permisos para poder autorizar.</p>
+              <button id="btnCerrarModalUbicacionNoValida" style="padding:0.5rem 1.5rem;background:#e53935;color:#fff;border:none;border-radius:4px;cursor:pointer;">Aceptar</button>
+            </div>
+          </div>
+        `;
+        if (document.body.firstChild) {
+          document.body.insertBefore(modal, document.body.firstChild);
+        } else {
+          document.body.appendChild(modal);
+        }
+      }
+      modal.style.display = 'flex';
+      const btnCerrar = document.getElementById('btnCerrarModalUbicacionNoValida');
+      if (btnCerrar) {
+        btnCerrar.onclick = function() {
+          modal.style.display = 'none';
+        };
+      }
       return;
     }
   }
@@ -667,7 +771,33 @@ async function insertarAutorizacionArea() {
     }
     console.log("[DEPURACIÓN] Respuesta HTTP de /api/autorizaciones/area:", respArea.status, respAreaData);
     if (!respArea.ok) {
-      alert("Error al guardar la autorización de área: " + (respAreaData.error || respArea.status));
+      // Modal de error al guardar la autorización de área
+      let modal = document.getElementById('modalErrorGuardarArea');
+      if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'modalErrorGuardarArea';
+        modal.innerHTML = `
+          <div class="modal-overlay" style="display:flex;position:fixed;top:0;left:0;width:100vw;height:100vh;padding-top:40px;background:rgba(0,0,0,0.3);z-index:2147483647;justify-content:center;align-items:flex-start;">
+            <div class="modal-content" style="background:#fff;padding:2rem 1.5rem;border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,0.2);max-width:90vw;width:350px;text-align:center;z-index:2147483647;">
+              <h3 style="margin-bottom:1rem;color:#e53935;">Error</h3>
+              <p style="margin-bottom:2rem;">Error al guardar la autorización de área: ${(respAreaData.error || respArea.status)}</p>
+              <button id="btnCerrarModalErrorGuardarArea" style="padding:0.5rem 1.5rem;background:#e53935;color:#fff;border:none;border-radius:4px;cursor:pointer;">Aceptar</button>
+            </div>
+          </div>
+        `;
+        if (document.body.firstChild) {
+          document.body.insertBefore(modal, document.body.firstChild);
+        } else {
+          document.body.appendChild(modal);
+        }
+      }
+      modal.style.display = 'flex';
+      const btnCerrar = document.getElementById('btnCerrarModalErrorGuardarArea');
+      if (btnCerrar) {
+        btnCerrar.onclick = function() {
+          modal.style.display = 'none';
+        };
+      }
       return;
     }
 
@@ -768,7 +898,33 @@ if (btnAutorizar) {
         if (operador && operador.trim() !== '') {
           if (!firma || firma.trim() === '') {
             if (isCanvasFirmaOperadorBlank()) {
-              alert('El operador del área debe firmar antes de autorizar el permiso.');
+              // Modal de advertencia de firma de operador en blanco
+              let modal = document.getElementById('modalFirmaOperadorObligatoria');
+              if (!modal) {
+                modal = document.createElement('div');
+                modal.id = 'modalFirmaOperadorObligatoria';
+                modal.innerHTML = `
+                  <div class="modal-overlay" style="display:flex;position:fixed;top:0;left:0;width:100vw;height:100vh;padding-top:40px;background:rgba(0,0,0,0.3);z-index:2147483647;justify-content:center;align-items:flex-start;">
+                    <div class="modal-content" style="background:#fff;padding:2rem 1.5rem;border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,0.2);max-width:90vw;width:350px;text-align:center;z-index:2147483647;">
+                      <h3 style="margin-bottom:1rem;color:#e53935;">Firma requerida</h3>
+                      <p style="margin-bottom:2rem;">El operador del área debe firmar antes de autorizar el permiso.</p>
+                      <button id="btnCerrarModalFirmaOperadorObligatoria" style="padding:0.5rem 1.5rem;background:#e53935;color:#fff;border:none;border-radius:4px;cursor:pointer;">Aceptar</button>
+                    </div>
+                  </div>
+                `;
+                if (document.body.firstChild) {
+                  document.body.insertBefore(modal, document.body.firstChild);
+                } else {
+                  document.body.appendChild(modal);
+                }
+              }
+              modal.style.display = 'flex';
+              const btnCerrar = document.getElementById('btnCerrarModalFirmaOperadorObligatoria');
+              if (btnCerrar) {
+                btnCerrar.onclick = function() {
+                  modal.style.display = 'none';
+                };
+              }
               return;
             }
           }
@@ -797,7 +953,33 @@ if (btnGuardarFirma) {
       return c.toDataURL() === blank.toDataURL();
     }
     if (!canvas || isCanvasBlank(canvas)) {
-      alert('Por favor, firma antes de guardar.');
+      // Modal de advertencia de firma obligatoria antes de guardar
+      let modal = document.getElementById('modalFirmaObligatoriaGuardar');
+      if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'modalFirmaObligatoriaGuardar';
+        modal.innerHTML = `
+          <div class="modal-overlay" style="display:flex;position:fixed;top:0;left:0;width:100vw;height:100vh;padding-top:40px;background:rgba(0,0,0,0.3);z-index:2147483647;justify-content:center;align-items:flex-start;">
+            <div class="modal-content" style="background:#fff;padding:2rem 1.5rem;border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,0.2);max-width:90vw;width:350px;text-align:center;z-index:2147483647;">
+              <h3 style="margin-bottom:1rem;color:#e53935;">Firma requerida</h3>
+              <p style="margin-bottom:2rem;">Por favor, firma antes de guardar.</p>
+              <button id="btnCerrarModalFirmaObligatoriaGuardar" style="padding:0.5rem 1.5rem;background:#e53935;color:#fff;border:none;border-radius:4px;cursor:pointer;">Aceptar</button>
+            </div>
+          </div>
+        `;
+        if (document.body.firstChild) {
+          document.body.insertBefore(modal, document.body.firstChild);
+        } else {
+          document.body.appendChild(modal);
+        }
+      }
+      modal.style.display = 'flex';
+      const btnCerrar = document.getElementById('btnCerrarModalFirmaObligatoriaGuardar');
+      if (btnCerrar) {
+        btnCerrar.onclick = function() {
+          modal.style.display = 'none';
+        };
+      }
       if (outputFirma) outputFirma.value = "";
       return;
     }
@@ -853,7 +1035,33 @@ if (btnNoAutorizar) {
       ? responsableInput.value.trim()
       : "";
     if (!responsable_area) {
-      alert("Debes ingresar el nombre del responsable antes de rechazar 2.");
+      // Modal para responsable obligatorio antes de rechazar
+      let modal = document.getElementById('modalResponsableObligatorioNoAutorizar');
+      if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'modalResponsableObligatorioNoAutorizar';
+        modal.innerHTML = `
+          <div class="modal-overlay" style="display:flex;position:fixed;top:0;left:0;width:100vw;height:100vh;padding-top:40px;background:rgba(0,0,0,0.3);z-index:2147483647;justify-content:center;align-items:flex-start;">
+            <div class="modal-content" style="background:#fff;padding:2rem 1.5rem;border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,0.2);max-width:90vw;width:350px;text-align:center;z-index:2147483647;">
+              <h3 style="margin-bottom:1rem;">Campo obligatorio</h3>
+              <p style="margin-bottom:2rem;">Debes ingresar el nombre del responsable antes de rechazar.</p>
+              <button id="btnCerrarModalResponsableObligatorioNoAutorizar" style="padding:0.5rem 1.5rem;background:#007bff;color:#fff;border:none;border-radius:4px;cursor:pointer;">Aceptar</button>
+            </div>
+          </div>
+        `;
+        if (document.body.firstChild) {
+          document.body.insertBefore(modal, document.body.firstChild);
+        } else {
+          document.body.appendChild(modal);
+        }
+      }
+      modal.style.display = 'flex';
+      const btnCerrar = document.getElementById('btnCerrarModalResponsableObligatorioNoAutorizar');
+      if (btnCerrar) {
+        btnCerrar.onclick = function() {
+          modal.style.display = 'none';
+        };
+      }
       return;
     }
     // Mostrar solo el modalConfirmarNoAutorizar para 'No Autorizar'
@@ -937,7 +1145,33 @@ if (btnNoAutorizar) {
               return c.toDataURL() === blank.toDataURL();
             }
             if (!canvas || isCanvasBlank(canvas)) {
-              alert('Por favor, firma antes de guardar.');
+              // Modal de advertencia de firma obligatoria antes de guardar comentario
+              let modal = document.getElementById('modalFirmaObligatoriaGuardarComentario');
+              if (!modal) {
+                modal = document.createElement('div');
+                modal.id = 'modalFirmaObligatoriaGuardarComentario';
+                modal.innerHTML = `
+                  <div class="modal-overlay" style="display:flex;position:fixed;top:0;left:0;width:100vw;height:100vh;padding-top:40px;background:rgba(0,0,0,0.3);z-index:2147483647;justify-content:center;align-items:flex-start;">
+                    <div class="modal-content" style="background:#fff;padding:2rem 1.5rem;border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,0.2);max-width:90vw;width:350px;text-align:center;z-index:2147483647;">
+                      <h3 style=\"margin-bottom:1rem;color:#e53935;\">Firma requerida</h3>
+                      <p style=\"margin-bottom:2rem;\">Por favor, firma antes de guardar.</p>
+                      <button id=\"btnCerrarModalFirmaObligatoriaGuardarComentario\" style=\"padding:0.5rem 1.5rem;background:#e53935;color:#fff;border:none;border-radius:4px;cursor:pointer;\">Aceptar</button>
+                    </div>
+                  </div>
+                `;
+                if (document.body.firstChild) {
+                  document.body.insertBefore(modal, document.body.firstChild);
+                } else {
+                  document.body.appendChild(modal);
+                }
+              }
+              modal.style.display = 'flex';
+              const btnCerrar = document.getElementById('btnCerrarModalFirmaObligatoriaGuardarComentario');
+              if (btnCerrar) {
+                btnCerrar.onclick = function() {
+                  modal.style.display = 'none';
+                };
+              }
               if (outputFirma) outputFirma.value = "";
               return;
             }
@@ -986,7 +1220,33 @@ if (btnNoAutorizar) {
         return canvas.toDataURL() === blank.toDataURL();
       }
       if (!firma || isFirmaBlank()) {
-        alert('Por favor, firma antes de guardar.');
+        // Modal de advertencia de firma obligatoria antes de guardar
+        let modal = document.getElementById('modalFirmaObligatoriaGuardarNoAutorizar');
+        if (!modal) {
+          modal = document.createElement('div');
+          modal.id = 'modalFirmaObligatoriaGuardarNoAutorizar';
+          modal.innerHTML = `
+            <div class="modal-overlay" style="display:flex;position:fixed;top:0;left:0;width:100vw;height:100vh;padding-top:40px;background:rgba(0,0,0,0.3);z-index:2147483647;justify-content:center;align-items:flex-start;">
+              <div class="modal-content" style="background:#fff;padding:2rem 1.5rem;border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,0.2);max-width:90vw;width:350px;text-align:center;z-index:2147483647;">
+                <h3 style=\"margin-bottom:1rem;color:#e53935;\">Firma requerida</h3>
+                <p style=\"margin-bottom:2rem;\">Por favor, firma antes de guardar.</p>
+                <button id=\"btnCerrarModalFirmaObligatoriaGuardarNoAutorizar\" style=\"padding:0.5rem 1.5rem;background:#e53935;color:#fff;border:none;border-radius:4px;cursor:pointer;\">Aceptar</button>
+              </div>
+            </div>
+          `;
+          if (document.body.firstChild) {
+            document.body.insertBefore(modal, document.body.firstChild);
+          } else {
+            document.body.appendChild(modal);
+          }
+        }
+        modal.style.display = 'flex';
+        const btnCerrar = document.getElementById('btnCerrarModalFirmaObligatoriaGuardarNoAutorizar');
+        if (btnCerrar) {
+          btnCerrar.onclick = function() {
+            modal.style.display = 'none';
+          };
+        }
         if (outputFirma) outputFirma.value = "";
         return;
       }
@@ -1347,7 +1607,34 @@ if (btnConfirmarAutorizar) {
             // 2. Validaciones básicas
             if (!idPermiso) return;
             if (!responsable_area) {
-              alert("Debes ingresar el nombre del responsable del área. 4");
+              // Modal para responsable obligatorio al autorizar
+              let modal = document.getElementById('modalResponsableObligatorioAutorizar');
+              if (!modal) {
+                modal = document.createElement('div');
+                modal.id = 'modalResponsableObligatorioAutorizar';
+                modal.innerHTML = `
+                  <div class="modal-overlay" style="display:flex;position:fixed;top:0;left:0;width:100vw;height:100vh;padding-top:40px;background:rgba(0,0,0,0.3);z-index:2147483647;justify-content:center;align-items:flex-start;">
+                    <div class="modal-content" style="background:#fff;padding:2rem 1.5rem;border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,0.2);max-width:90vw;width:350px;text-align:center;z-index:2147483647;">
+                      <h3 style="margin-bottom:1rem;">Campo obligatorio</h3>
+                      <p style="margin-bottom:2rem;">Debes ingresar el nombre del responsable del área.</p>
+                      <button id="btnCerrarModalResponsableObligatorioAutorizar" style="padding:0.5rem 1.5rem;background:#007bff;color:#fff;border:none;border-radius:4px;cursor:pointer;">Aceptar</button>
+                    </div>
+                  </div>
+                `;
+                if (document.body.firstChild) {
+                  document.body.insertBefore(modal, document.body.firstChild);
+                } else {
+                  document.body.appendChild(modal);
+                }
+              }
+              modal.style.display = 'flex';
+              const btnCerrar = document.getElementById('btnCerrarModalResponsableObligatorioAutorizar');
+              if (btnCerrar) {
+                btnCerrar.onclick = function() {
+                  modal.style.display = 'none';
+                  if (responsableInput) responsableInput.focus();
+                };
+              }
               if (responsableInput) responsableInput.focus();
               return;
             }
@@ -1414,12 +1701,64 @@ if (btnConfirmarAutorizar) {
               }
               confirmationModal.style.display = "flex";
             } else {
-              alert("Permiso autorizado exitosamente");
-              window.location.reload();
+              // Modal de éxito
+              let modal = document.getElementById('modalExitoAutorizacion');
+              if (!modal) {
+                modal = document.createElement('div');
+                modal.id = 'modalExitoAutorizacion';
+                modal.innerHTML = `
+                  <div class="modal-overlay" style="display:flex;position:fixed;top:0;left:0;width:100vw;height:100vh;padding-top:40px;background:rgba(0,0,0,0.3);z-index:2147483647;justify-content:center;align-items:flex-start;">
+                    <div class="modal-content" style="background:#fff;padding:2rem 1.5rem;border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,0.2);max-width:90vw;width:350px;text-align:center;z-index:2147483647;">
+                      <h3 style="margin-bottom:1rem;">¡Éxito!</h3>
+                      <p style="margin-bottom:2rem;">Permiso autorizado exitosamente.</p>
+                      <button id="btnCerrarModalExitoAutorizacion" style="padding:0.5rem 1.5rem;background:#27ae60;color:#fff;border:none;border-radius:4px;cursor:pointer;">Aceptar</button>
+                    </div>
+                  </div>
+                `;
+                if (document.body.firstChild) {
+                  document.body.insertBefore(modal, document.body.firstChild);
+                } else {
+                  document.body.appendChild(modal);
+                }
+              }
+              modal.style.display = 'flex';
+              const btnCerrar = document.getElementById('btnCerrarModalExitoAutorizacion');
+              if (btnCerrar) {
+                btnCerrar.onclick = function() {
+                  modal.style.display = 'none';
+                  window.location.reload();
+                };
+              }
             }
           } catch (err) {
             console.error("Error al autorizar el permiso:", err, err?.message, err?.stack);
-            alert("Ocurrió un error al autorizar el permiso. Por favor, intenta nuevamente.");
+            // Modal de error al autorizar el permiso
+            let modal = document.getElementById('modalErrorAutorizacion');
+            if (!modal) {
+              modal = document.createElement('div');
+              modal.id = 'modalErrorAutorizacion';
+              modal.innerHTML = `
+                <div class="modal-overlay" style="display:flex;position:fixed;top:0;left:0;width:100vw;height:100vh;padding-top:40px;background:rgba(0,0,0,0.3);z-index:2147483647;justify-content:center;align-items:flex-start;">
+                  <div class="modal-content" style="background:#fff;padding:2rem 1.5rem;border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,0.2);max-width:90vw;width:350px;text-align:center;z-index:2147483647;">
+                    <h3 style="margin-bottom:1rem;color:#e53935;">Error</h3>
+                    <p style="margin-bottom:2rem;">Ocurrió un error al autorizar el permiso. Por favor, intenta nuevamente.</p>
+                    <button id="btnCerrarModalErrorAutorizacion" style="padding:0.5rem 1.5rem;background:#e53935;color:#fff;border:none;border-radius:4px;cursor:pointer;">Aceptar</button>
+                  </div>
+                </div>
+              `;
+              if (document.body.firstChild) {
+                document.body.insertBefore(modal, document.body.firstChild);
+              } else {
+                document.body.appendChild(modal);
+              }
+            }
+            modal.style.display = 'flex';
+            const btnCerrar = document.getElementById('btnCerrarModalErrorAutorizacion');
+            if (btnCerrar) {
+              btnCerrar.onclick = function() {
+                modal.style.display = 'none';
+              };
+            }
           }
         };
       }
@@ -1458,7 +1797,31 @@ if (btnConfirmarAutorizar) {
       const comentarioInput = document.getElementById("comentarioNoAutorizar");
       const comentario = comentarioInput ? comentarioInput.value.trim() : "";
       if (!comentario) {
-        alert("Por favor agregue un comentario.");
+        // Modal de comentario vacío
+        let modal = document.getElementById('modalComentarioVacio');
+        if (!modal) {
+          modal = document.createElement('div');
+          modal.id = 'modalComentarioVacio';
+          modal.innerHTML = `
+            <div class="modal-overlay" style="display:flex;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.3);z-index:9999;justify-content:center;align-items:center;">
+              <div class="modal-content" style="background:#fff;padding:2rem 1.5rem;border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,0.2);max-width:90vw;width:350px;text-align:center;">
+                <h3 style="margin-bottom:1rem;">Comentario requerido</h3>
+                <p style="margin-bottom:2rem;">Por favor agregue un comentario.</p>
+                <button id="btnCerrarModalComentarioVacio" style="padding:0.5rem 1.5rem;background:#007bff;color:#fff;border:none;border-radius:4px;cursor:pointer;">Aceptar</button>
+              </div>
+            </div>
+          `;
+          document.body.appendChild(modal);
+        }
+        modal.style.display = 'flex';
+        // Cerrar modal y enfocar input
+        const btnCerrar = document.getElementById('btnCerrarModalComentarioVacio');
+        if (btnCerrar) {
+          btnCerrar.onclick = function() {
+            modal.style.display = 'none';
+            if (comentarioInput) comentarioInput.focus();
+          };
+        }
         if (comentarioInput) comentarioInput.focus();
         return;
       }

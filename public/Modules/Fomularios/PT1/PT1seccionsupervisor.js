@@ -450,7 +450,33 @@ function validarSupervisorYCategoria() {
   const categoriaInput = document.getElementById("responsable-aprobador2");
   const categoria = categoriaInput ? categoriaInput.value.trim() : "";
   if (!supervisor || !categoria) {
-    alert("Debes seleccionar el supervisor y la categoría antes de autorizar.");
+    // Modal para supervisor y categoría obligatorios
+    let modal = document.getElementById('modalSupervisorCategoriaObligatoria');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'modalSupervisorCategoriaObligatoria';
+      modal.innerHTML = `
+        <div class="modal-overlay" style="display:flex;position:fixed;top:0;left:0;width:100vw;height:100vh;padding-top:40px;background:rgba(0,0,0,0.3);z-index:2147483647;justify-content:center;align-items:flex-start;">
+          <div class="modal-content" style="background:#fff;padding:2rem 1.5rem;border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,0.2);max-width:90vw;width:350px;text-align:center;z-index:2147483647;">
+          <h3 style="margin-bottom:1rem;">Campos obligatorios</h3>
+          <p style="margin-bottom:2rem;">Debes seleccionar el supervisor y la categoría antes de autorizar.</p>
+          <button id="btnCerrarModalSupervisorCategoriaObligatoria" style="padding:0.5rem 1.5rem;background:#007bff;color:#fff;border:none;border-radius:4px;cursor:pointer;">Aceptar</button>
+          </div>
+        </div>
+      `;
+      if (document.body.firstChild) {
+        document.body.insertBefore(modal, document.body.firstChild);
+      } else {
+        document.body.appendChild(modal);
+      }
+    }
+    modal.style.display = 'flex';
+    const btnCerrar = document.getElementById('btnCerrarModalSupervisorCategoriaObligatoria');
+    if (btnCerrar) {
+      btnCerrar.onclick = function() {
+        modal.style.display = 'none';
+      };
+    }
     if (!supervisor && (supervisorAutoInput || supervisorInput)) {
       (supervisorAutoInput || supervisorInput).focus();
     } else if (!categoria && categoriaInput) categoriaInput.focus();

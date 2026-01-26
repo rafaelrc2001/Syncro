@@ -160,22 +160,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (respSetCierre.ok && respSetCierreData && respSetCierreData.success) {
 
                   //mensaje de carga
-
-                    let loadingDiv = document.createElement('div');
-                    loadingDiv.id = 'loading-cierre-area';
-                    loadingDiv.style.position = 'fixed';
-                    loadingDiv.style.top = '0';
-                    loadingDiv.style.left = '0';
-                    loadingDiv.style.width = '100vw';
-                    loadingDiv.style.height = '100vh';
-                    loadingDiv.style.background = 'rgba(0,0,0,0.4)';
-                    loadingDiv.style.display = 'flex';
-                    loadingDiv.style.alignItems = 'center';
-                    loadingDiv.style.justifyContent = 'center';
-                    loadingDiv.style.zIndex = '9999';
-                    loadingDiv.innerHTML = '<div style="background:#fff;padding:2em 3em;border-radius:8px;font-size:1.3em;font-weight:600;">Cargando cierre de área...</div>';
-                    document.body.appendChild(loadingDiv);
-
+                  let loadingDiv = document.createElement('div');
+                  loadingDiv.id = 'loading-cierre-area';
+                  loadingDiv.style.position = 'fixed';
+                  loadingDiv.style.top = '0';
+                  loadingDiv.style.left = '0';
+                  loadingDiv.style.width = '100vw';
+                  loadingDiv.style.height = '100vh';
+                  loadingDiv.style.background = 'rgba(0,0,0,0.4)';
+                  loadingDiv.style.display = 'flex';
+                  loadingDiv.style.alignItems = 'center';
+                  loadingDiv.style.justifyContent = 'center';
+                  loadingDiv.style.zIndex = '9999';
+                  loadingDiv.innerHTML = '<div style="background:#fff;padding:2em 3em;border-radius:8px;font-size:1.3em;font-weight:600;">Cargando cierre de área...</div>';
+                  document.body.appendChild(loadingDiv);
 
                   // Enviar notificación de cierre a n8n, pero no bloquear el flujo si falla
                   try {
@@ -184,12 +182,40 @@ document.addEventListener('DOMContentLoaded', function () {
                     console.warn('No se pudo enviar la notificación de cierre a n8n:', e);
                   }
 
-                    // Ocultar mensaje de cargando
-                     document.body.removeChild(loadingDiv);
+                  // Ocultar mensaje de cargando
+                  document.body.removeChild(loadingDiv);
 
-
-                  alert('Cierre de área realizado correctamente.');
-                  window.location.reload();
+                  // Modal de éxito en vez de alert
+                  let modal = document.getElementById('modalCierreAreaExito');
+                  if (!modal) {
+                    modal = document.createElement('div');
+                    modal.id = 'modalCierreAreaExito';
+                    modal.innerHTML = `
+                      <div class="modal-overlay" style="display:flex;position:fixed;top:0;left:0;width:100vw;height:100vh;padding-top:40px;background:rgba(0,0,0,0.3);z-index:2147483647;justify-content:center;align-items:flex-start;">
+                        <div class="modal-content" style="background:#fff;padding:2rem 1.5rem;border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,0.2);max-width:90vw;width:350px;text-align:center;z-index:2147483647;">
+                          <h3 style=\"margin-bottom:1rem;color:#388e3c;\">Éxito</h3>
+                          <p style=\"margin-bottom:2rem;\">Cierre de área realizado correctamente.</p>
+                          <button id=\"btnCerrarModalCierreAreaExito\" style=\"padding:0.5rem 1.5rem;background:#388e3c;color:#fff;border:none;border-radius:4px;cursor:pointer;\">Aceptar</button>
+                        </div>
+                      </div>
+                    `;
+                    if (document.body.firstChild) {
+                      document.body.insertBefore(modal, document.body.firstChild);
+                    } else {
+                      document.body.appendChild(modal);
+                    }
+                  }
+                  modal.style.display = 'flex';
+                  const btnCerrar = document.getElementById('btnCerrarModalCierreAreaExito');
+                  if (btnCerrar) {
+                    btnCerrar.onclick = function() {
+                      modal.style.display = 'none';
+                      window.location.reload();
+                    };
+                  } else {
+                    // fallback: reload after 2s if button not found
+                    setTimeout(function() { window.location.reload(); }, 2000);
+                  }
                 } else {
                   const errorMsg = respSetCierreData && respSetCierreData.error ? respSetCierreData.error : 'Error al actualizar el estatus a cierre.';
                   console.error('[CierreArea] Error al actualizar estatus a cierre:', errorMsg);

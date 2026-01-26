@@ -1,5 +1,43 @@
 document.addEventListener("DOMContentLoaded", function () {
 
+  // Modal reutilizable para confirmaciones
+  function showConfirmModal(msg, onConfirm, onCancel) {
+    let modal = document.getElementById("confirm-modal");
+    if (!modal) {
+      modal = document.createElement("div");
+      modal.id = "confirm-modal";
+      modal.style.position = "fixed";
+      modal.style.top = 0;
+      modal.style.left = 0;
+      modal.style.width = "100vw";
+      modal.style.height = "100vh";
+      modal.style.background = "rgba(0,0,0,0.6)";
+      modal.style.display = "flex";
+      modal.style.alignItems = "center";
+      modal.style.justifyContent = "center";
+      modal.style.zIndex = 10000;
+      modal.innerHTML = `
+        <div style="background:#222;padding:2rem 2.5rem;border-radius:12px;box-shadow:0 2px 16px #0008;max-width:90vw;min-width:260px;text-align:center;">
+          <div style="font-size:1.2rem;margin-bottom:1.5rem;color:#fff;">${msg}</div>
+          <button id="confirm-yes" style="margin-right:1.5rem;padding:0.5rem 1.5rem;font-size:1rem;background:#27ae60;color:#fff;border:none;border-radius:5px;cursor:pointer;">Sí</button>
+          <button id="confirm-no" style="padding:0.5rem 1.5rem;font-size:1rem;background:#e74c3c;color:#fff;border:none;border-radius:5px;cursor:pointer;">No</button>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    } else {
+      modal.querySelector("div").firstChild.textContent = msg;
+      modal.style.display = "flex";
+    }
+    document.getElementById("confirm-yes").onclick = () => {
+      modal.style.display = "none";
+      if (onConfirm) onConfirm();
+    };
+    document.getElementById("confirm-no").onclick = () => {
+      modal.style.display = "none";
+      if (onCancel) onCancel();
+    };
+  }
+
   // ===============================
   // 1. USUARIO, AVATAR Y DATOS
   // ===============================
@@ -37,20 +75,23 @@ document.addEventListener("DOMContentLoaded", function () {
   const logoutBtn = document.querySelector(".logout-btn");
 
   if (logoutBtn) {
-    logoutBtn.addEventListener("click", async function () {
-      const confirmar = confirm("¿Estás seguro que deseas cerrar sesión?");
-      if (!confirmar) return;
-
-      console.log("Cerrando sesión...");
-
-      localStorage.removeItem("sidebarCollapsed");
-
-      if (typeof cerrarSesion === "function") {
-        await cerrarSesion();
-      } else {
-        localStorage.removeItem("usuario");
-        window.location.href = "/login.html";
-      }
+    logoutBtn.addEventListener("click", function () {
+      showConfirmModal(
+        "¿Estás seguro que deseas cerrar sesión?",
+        async function () {
+          console.log("Cerrando sesión...");
+          localStorage.removeItem("sidebarCollapsed");
+          if (typeof cerrarSesion === "function") {
+            await cerrarSesion();
+          } else {
+            localStorage.removeItem("usuario");
+            window.location.href = "/login.html";
+          }
+        },
+        function () {
+          // Cancelado, no hacer nada
+        }
+      );
     });
   }
 

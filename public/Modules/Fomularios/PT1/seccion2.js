@@ -342,10 +342,41 @@ function initDragAndDropConstructor() {
     );
 
     if (alreadyExists) {
-      alert(`⚠️ Ya existe un  "${formName}". `);
+      showDragDropModal(`⚠️ Ya existe un "${formName}".`);
       console.warn(`[DRAG&DROP] Formulario duplicado bloqueado: ${formName}`);
       return;
     }
+// Modal reutilizable para advertencias de drag&drop
+function showDragDropModal(msg) {
+  let modal = document.getElementById("dragdrop-modal");
+  if (!modal) {
+    modal = document.createElement("div");
+    modal.id = "dragdrop-modal";
+    modal.style.position = "fixed";
+    modal.style.top = 0;
+    modal.style.left = 0;
+    modal.style.width = "100vw";
+    modal.style.height = "100vh";
+    modal.style.background = "rgba(0,0,0,0.6)";
+    modal.style.display = "flex";
+    modal.style.alignItems = "center";
+    modal.style.justifyContent = "center";
+    modal.style.zIndex = 9999;
+    modal.innerHTML = `
+      <div style="background:#222;padding:2rem 2.5rem;border-radius:12px;box-shadow:0 2px 16px #0008;max-width:90vw;min-width:260px;text-align:center;">
+        <div style="font-size:1.2rem;margin-bottom:1rem;color:#fff;">${msg}</div>
+        <button id="close-dragdrop-modal" style="padding:0.5rem 1.5rem;font-size:1rem;background:#e74c3c;color:#fff;border:none;border-radius:5px;cursor:pointer;">Cerrar</button>
+      </div>
+    `;
+    document.body.appendChild(modal);
+    document.getElementById("close-dragdrop-modal").onclick = () => {
+      modal.remove();
+    };
+  } else {
+    modal.querySelector("div").firstChild.textContent = msg;
+    modal.style.display = "flex";
+  }
+}
 
     // Obtener el template desde el DOM
     const template = document.getElementById(templateId);

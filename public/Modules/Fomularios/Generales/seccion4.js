@@ -166,7 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const newIndex = activityCount + 1;
 
       if (newIndex > 10) {
-        alert("Máximo 10 actividades permitidas");
+        showGeneralErrorModal("Máximo 10 actividades permitidas");
         return;
       }
 
@@ -251,7 +251,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Validar que el campo 'plant' tenga texto (ubicación libre)
       const plantInput = document.getElementById("plant");
       if (!plantInput || !plantInput.value.trim()) {
-        alert("Por favor, ingrese la ubicación antes de continuar.");
+        showGeneralErrorModal("Por favor, ingrese la ubicación antes de continuar.");
         plantInput.focus();
         e.preventDefault();
         return;
@@ -276,9 +276,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Validación rápida: no permitir enviar si falta la hora
       const horaInput = document.getElementById("start-time");
       if (horaInput && !horaInput.value) {
-        alert(
-          "Por favor, selecciona una hora de inicio antes de enviar el formulario."
-        );
+        showGeneralErrorModal("Por favor, selecciona una hora de inicio antes de enviar el formulario.");
         e.preventDefault();
         return;
       }
@@ -294,7 +292,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const astActivitiesContainer1 = document.querySelector(".ast-activities");
         const activityDivs = astActivitiesContainer1 ? astActivitiesContainer1.querySelectorAll(".ast-activity") : [];
         if (!activityDivs || activityDivs.length === 0) {
-          alert("Debe agregar al menos una actividad antes de continuar.");
+          showGeneralErrorModal("Debe agregar al menos una actividad antes de continuar.");
           submitBtn.disabled = false;
           submitBtn.innerHTML = originalHTML;
           return;
@@ -339,9 +337,7 @@ document.addEventListener("DOMContentLoaded", () => {
               "Por favor completa todos los campos obligatorios antes de guardar el permiso.";
             modal.classList.add("active");
           } else {
-            alert(
-              "Por favor completa todos los campos obligatorios antes de guardar el permiso."
-            );
+            showGeneralErrorModal("Por favor completa todos los campos obligatorios antes de guardar el permiso.");
           }
           submitBtn.disabled = false;
           submitBtn.innerHTML = originalHTML;
@@ -467,7 +463,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Validar que id_departamento e id_sucursal sean números válidos
         if ([id_departamento, id_sucursal].some((v) => isNaN(v) || typeof v !== "number")) {
-          alert("Error: Debe seleccionar correctamente la sucursal.");
+          showGeneralErrorModal("Error: Debe seleccionar correctamente la sucursal.");
           submitBtn.disabled = false;
           submitBtn.innerHTML = originalHTML;
           return;
@@ -494,7 +490,7 @@ document.addEventListener("DOMContentLoaded", () => {
           return /android|iphone|ipad|ipod|ios/i.test(ua);
         }
         if (esDispositivoMovil() && (!localizacion_creacion || localizacion_creacion === 'null' || localizacion_creacion === '')) {
-          alert('Debes activar la ubicación en tu dispositivo para poder guardar el permiso.');
+          showGeneralErrorModal('Debes activar la ubicación en tu dispositivo para poder guardar el permiso.');
           submitBtn.disabled = false;
           submitBtn.innerHTML = originalHTML;
           return;
@@ -698,7 +694,7 @@ ip_creacion,
 
         const participants = collectParticipants();
         if (participants.length === 0) {
-          alert("Debe agregar al menos un participante antes de continuar.");
+          showGeneralErrorModal("Debe agregar al menos un participante antes de continuar.");
           submitBtn.disabled = false;
           submitBtn.innerHTML = originalHTML;
           return;
@@ -762,7 +758,7 @@ ip_creacion,
           }
         } catch (estatusError) {
           console.error("Error al guardar estatus:", estatusError);
-          alert("Error al guardar el estatus final: " + (estatusError.message || estatusError));
+          showGeneralErrorModal("Error al guardar el estatus final: " + (estatusError.message || estatusError));
           submitBtn.disabled = false;
           submitBtn.innerHTML = originalHTML;
           return;
@@ -797,8 +793,39 @@ ip_creacion,
             "Error al procesar la solicitud: " + error.message;
           modal.classList.add("active");
         } else {
-          alert("Error al procesar la solicitud: " + error.message);
+          showGeneralErrorModal("Error al procesar la solicitud: " + error.message);
         }
+      // Modal reutilizable para errores generales
+      function showGeneralErrorModal(msg) {
+        let modal = document.getElementById("general-error-modal");
+        if (!modal) {
+          modal = document.createElement("div");
+          modal.id = "general-error-modal";
+          modal.style.position = "fixed";
+          modal.style.top = 0;
+          modal.style.left = 0;
+          modal.style.width = "100vw";
+          modal.style.height = "100vh";
+          modal.style.background = "rgba(0,0,0,0.6)";
+          modal.style.display = "flex";
+          modal.style.alignItems = "center";
+          modal.style.justifyContent = "center";
+          modal.style.zIndex = 9999;
+          modal.innerHTML = `
+            <div style="background:#222;padding:2rem 2.5rem;border-radius:12px;box-shadow:0 2px 16px #0008;max-width:90vw;min-width:260px;text-align:center;">
+              <div style="font-size:1.2rem;margin-bottom:1rem;color:#fff;">${msg}</div>
+              <button id="close-general-error-modal" style="padding:0.5rem 1.5rem;font-size:1rem;background:#e74c3c;color:#fff;border:none;border-radius:5px;cursor:pointer;">Cerrar</button>
+            </div>
+          `;
+          document.body.appendChild(modal);
+          document.getElementById("close-general-error-modal").onclick = () => {
+            modal.remove();
+          };
+        } else {
+          modal.querySelector("div").firstChild.textContent = msg;
+          modal.style.display = "flex";
+        }
+      }
       } finally {
         submitBtn.disabled = false;
         submitBtn.innerHTML = originalHTML;

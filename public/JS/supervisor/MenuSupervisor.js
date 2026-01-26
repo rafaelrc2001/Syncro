@@ -23,25 +23,59 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // ===============================
-  // 2. LOGOUT (UNA SOLA VEZ ✔)
+  // 2. LOGOUT (MODAL UNIFICADO)
   // ===============================
+  if (!document.getElementById('logout-modal')) {
+    const modal = document.createElement('div');
+    modal.id = 'logout-modal';
+    modal.innerHTML = `
+      <div class="modal-overlay" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.3);z-index:9999;justify-content:center;align-items:center;">
+        <div class="modal-content" style="background:#fff;padding:2rem 1.5rem;border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,0.2);max-width:90vw;width:350px;text-align:center;">
+          <h3 style="margin-bottom:1rem;">Cerrar sesión</h3>
+          <p style="margin-bottom:2rem;">¿Estás seguro que deseas cerrar sesión?</p>
+          <button id="logout-confirm-btn" style="margin-right:1rem;padding:0.5rem 1.5rem;background:#d9534f;color:#fff;border:none;border-radius:4px;cursor:pointer;">Sí, cerrar</button>
+          <button id="logout-cancel-btn" style="padding:0.5rem 1.5rem;background:#6c757d;color:#fff;border:none;border-radius:4px;cursor:pointer;">Cancelar</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+  }
+
+  function showLogoutModal(onConfirm) {
+    const overlay = document.querySelector('#logout-modal .modal-overlay');
+    overlay.style.display = 'flex';
+    const confirmBtn = document.getElementById('logout-confirm-btn');
+    const cancelBtn = document.getElementById('logout-cancel-btn');
+
+    function cleanup() {
+      overlay.style.display = 'none';
+      confirmBtn.removeEventListener('click', confirmHandler);
+      cancelBtn.removeEventListener('click', cancelHandler);
+    }
+    function confirmHandler() {
+      cleanup();
+      onConfirm();
+    }
+    function cancelHandler() {
+      cleanup();
+    }
+    confirmBtn.addEventListener('click', confirmHandler);
+    cancelBtn.addEventListener('click', cancelHandler);
+  }
+
   const logoutBtn = document.querySelector(".logout-btn");
-
   if (logoutBtn) {
-    logoutBtn.addEventListener("click", async function () {
-      const confirmar = confirm("¿Estás seguro que deseas cerrar sesión?");
-      if (!confirmar) return;
-
-      console.log(`Saliste como supervisor ${usuario?.nombre || ""}`);
-
-      localStorage.removeItem("sidebarCollapsed");
-
-      if (typeof cerrarSesion === "function") {
-        await cerrarSesion();
-      } else {
-        localStorage.removeItem("usuario");
-        window.location.href = "/login.html";
-      }
+    logoutBtn.addEventListener("click", function () {
+      showLogoutModal(async function () {
+        console.log(`Saliste como supervisor ${usuario?.nombre || ""}`);
+        localStorage.removeItem("sidebarCollapsed");
+        if (typeof cerrarSesion === "function") {
+          await cerrarSesion();
+        } else {
+          localStorage.removeItem("usuario");
+          window.location.href = "/login.html";
+        }
+      });
     });
   }
 

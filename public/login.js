@@ -6,6 +6,38 @@ document.addEventListener("DOMContentLoaded", function () {
   const loginBtn = document.querySelector(".login-btn");
   const loginForm = document.querySelector(".login-form");
 
+  // Modal de error reutilizable
+  function showErrorModal(msg) {
+    let modal = document.getElementById("login-error-modal");
+    if (!modal) {
+      modal = document.createElement("div");
+      modal.id = "login-error-modal";
+      modal.style.position = "fixed";
+      modal.style.top = 0;
+      modal.style.left = 0;
+      modal.style.width = "100vw";
+      modal.style.height = "100vh";
+      modal.style.background = "rgba(0,0,0,0.6)";
+      modal.style.display = "flex";
+      modal.style.alignItems = "center";
+      modal.style.justifyContent = "center";
+      modal.style.zIndex = 9999;
+      modal.innerHTML = `
+        <div style="background:#222;padding:2rem 2.5rem;border-radius:12px;box-shadow:0 2px 16px #0008;max-width:90vw;min-width:260px;text-align:center;">
+          <div style="font-size:1.2rem;margin-bottom:1rem;color:#fff;">${msg}</div>
+          <button id="close-login-error-modal" style="padding:0.5rem 1.5rem;font-size:1rem;background:#e74c3c;color:#fff;border:none;border-radius:5px;cursor:pointer;">Cerrar</button>
+        </div>
+      `;
+      document.body.appendChild(modal);
+      document.getElementById("close-login-error-modal").onclick = () => {
+        modal.remove();
+      };
+    } else {
+      modal.querySelector("div").firstChild.textContent = msg;
+      modal.style.display = "flex";
+    }
+  }
+
   loginForm.addEventListener("submit", async function (e) {
     e.preventDefault();
     loginBtn.classList.add("loading");
@@ -59,15 +91,15 @@ document.addEventListener("DOMContentLoaded", function () {
           } else if (data.usuario.rol === "departamentos") {
             window.location.href = "Modules/Departamentos/Dash-Usuario.html";
           } else {
-            alert("Rol no reconocido.");
+            showErrorModal("Rol no reconocido.");
           }
         }
       } else {
-        alert("Usuario o contraseña incorrectos");
+        showErrorModal("Usuario o contraseña incorrectos");
       }
     } catch (error) {
       loginBtn.classList.remove("loading");
-      alert("Error de conexión con el servidor");
+      showErrorModal("Error de conexión con el servidor");
     }
   });
 

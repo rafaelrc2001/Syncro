@@ -37,10 +37,10 @@ document.addEventListener('DOMContentLoaded', async function() {
                 if (mensaje) mensaje.textContent = 'No se encontró el id del permiso.';
                 return;
             }
-            if (!output || !output.value) {
+          /*  if (!output || !output.value) {
                 if (mensaje) mensaje.textContent = 'Por favor, firma antes de guardar.';
                 return;
-            }
+            }*/
             try {
                 const resp = await fetch('/api/autorizaciones/firma-operador-area', {
                     method: 'POST',

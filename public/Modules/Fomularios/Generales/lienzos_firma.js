@@ -68,7 +68,7 @@ document.getElementById('guardar').onclick = () => {
         return c.toDataURL() === blank.toDataURL();
     };
     if (isCanvasBlank(canvas)) {
-        alert('Por favor, firma antes de guardar.');
+      /*  alert('Por favor, firma antes de guardar.');*/
         console.warn('[FIRMA] Intento de guardar firma en blanco');
         // Bloquear el flujo: no guardar, no continuar, no enviar nada
         if (output) output.value = "";
@@ -91,3 +91,5 @@ document.getElementById('guardar').onclick = () => {
         console.warn('[FIRMA] No se encontró btnAgregarFirmaContinuar');
     }
 };
+
+

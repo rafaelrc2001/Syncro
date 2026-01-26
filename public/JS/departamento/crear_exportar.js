@@ -113,14 +113,33 @@
         alert("No hay datos para exportar con los filtros aplicados");
         return;
       }
-      const columns = Object.keys(data[0]);
-      const rowsForExport = data;
-      console.log("Exportando todas las columnas:", columns);
+      // Procesar los datos para dividir fecha_hora en fecha y hora
+      const processed = data.map((row) => {
+        let fecha = "";
+        let hora = "";
+        if (row.fecha_hora) {
+          try {
+            const d = new Date(row.fecha_hora);
+            if (!isNaN(d.getTime())) {
+              fecha = d.toISOString().slice(0, 10);
+              hora = d.toTimeString().slice(0, 5);
+            }
+          } catch {}
+        }
+        // Eliminar fecha_hora y agregar fecha y hora
+        const { fecha_hora, ...rest } = row;
+        return { ...rest, fecha, hora };
+      });
+      // Ordenar columnas: poner fecha y hora al final
+      const columns = Object.keys(processed[0] || {}).filter(c => c !== "fecha" && c !== "hora");
+      const finalColumns = [...columns, "fecha", "hora"];
+      const rowsForExport = processed;
+      console.log("Exportando todas las columnas:", finalColumns);
       const stamp = formatStamp();
       if (window.XLSX && typeof window.XLSX.utils !== "undefined") {
         try {
           const worksheet = window.XLSX.utils.json_to_sheet(rowsForExport, {
-            header: columns,
+            header: finalColumns,
           });
           const workbook = window.XLSX.utils.book_new();
           window.XLSX.utils.book_append_sheet(workbook, worksheet, "CrearPT");
@@ -130,14 +149,14 @@
           console.error("Error al generar Excel:", err);
           toCsvAndDownload(
             rowsForExport,
-            columns,
+            finalColumns,
             `crear-permisos-${stamp}.xlsx`
           );
         }
       } else {
         toCsvAndDownload(
           rowsForExport,
-          columns,
+          finalColumns,
           `crear-permisos-${stamp}.xlsx`
         );
       }

@@ -113,16 +113,38 @@
         }
       }
 
-      // Exportar todas las columnas devueltas por el endpoint
+      // Exportar todas las columnas devueltas por el endpoint, dividiendo fecha_hora en dos columnas
       if (!Array.isArray(data) || !data.length) {
         alert("No hay datos para exportar");
         return;
       }
-      // Mostrar en consola las columnas recibidas para depuración
-      console.log("Datos recibidos para exportar:", data);
-      console.log("Columnas detectadas:", Object.keys(data[0]));
-      const columns = Object.keys(data[0]);
-      const rowsForExport = data;
+      // Procesar los datos para dividir fecha_hora en fecha y hora
+      const processed = data.map((row) => {
+        if (row.fecha_hora) {
+          let fecha = "";
+          let hora = "";
+          try {
+            const d = new Date(row.fecha_hora);
+            if (!isNaN(d.getTime())) {
+              // Formato YYYY-MM-DD y HH:mm
+              fecha = d.toISOString().slice(0, 10);
+              hora = d.toTimeString().slice(0, 5);
+            }
+          } catch {}
+          // Copiar el resto de los campos, pero quitar fecha_hora
+          const { fecha_hora, ...rest } = row;
+          return { ...rest, fecha, hora };
+        }
+        return row;
+      });
+      // Determinar columnas (sin fecha_hora, con fecha y hora al final)
+      let columns = Object.keys(processed[0] || {});
+      // Si existe fecha y hora, asegurarse que estén al final
+      if (columns.includes("fecha") && columns.includes("hora")) {
+        columns = columns.filter((c) => c !== "fecha" && c !== "hora");
+        columns.push("fecha", "hora");
+      }
+      const rowsForExport = processed;
       const stamp = formatStamp();
       if (window.XLSX && typeof window.XLSX.utils !== "undefined") {
         try {

@@ -109,19 +109,59 @@
       console.log("Primer registro completo:", data[0]);
       console.log("Todos los campos disponibles:", Object.keys(data[0] || {}));
 
-      // Exportar todas las columnas devueltas por el endpoint
+      // Exportar todas las columnas devueltas por el endpoint, dividiendo fecha_hora en dos columnas
       if (!data.length) {
         alert("No hay datos para exportar con los filtros aplicados");
         return;
       }
-      const columns = Object.keys(data[0]);
-      const rowsForExport = data;
-      console.log("Exportando todas las columnas:", columns);
+      // Procesar los datos para dividir fecha_hora en fecha y hora
+      const processed = data.map((row) => {
+        let fecha = "";
+        let hora = "";
+        if (row.fecha_hora) {
+          try {
+            const d = new Date(row.fecha_hora);
+            if (!isNaN(d.getTime())) {
+              fecha = d.toISOString().slice(0, 10);
+              hora = d.toTimeString().slice(0, 5);
+            }
+          } catch {}
+        }
+        // Eliminar fecha_hora y agregar fecha y hora
+        const { fecha_hora, ...rest } = row;
+        return { ...rest, fecha, hora };
+      });
+      // Ordenar columnas según lo solicitado
+      const columns = [
+        "prefijo",
+        "fecha",
+        "hora",
+        "hora_inicio",
+        "id_departamento",
+        "id_area",
+        "id_sucursal",
+        "descripcion_trabajo",
+        "estatus",
+        "subestatus",
+        "empresa",
+      ];
+      // Agregar el resto de columnas que existan y no estén en la lista
+      const extraCols = Object.keys(processed[0] || {}).filter(
+        (c) => !columns.includes(c)
+      );
+      // Finalmente, agregar las columnas extra después de empresa y antes de hora
+      const finalColumns = [
+        ...columns.slice(0, 10), // hasta empresa
+        ...extraCols,
+        columns[10] // hora
+      ];
+      const rowsForExport = processed;
+      console.log("Exportando todas las columnas:", finalColumns);
       const stamp = formatStamp();
       if (window.XLSX && typeof window.XLSX.utils !== "undefined") {
         try {
           const worksheet = window.XLSX.utils.json_to_sheet(rowsForExport, {
-            header: columns,
+            header: finalColumns,
           });
           const workbook = window.XLSX.utils.book_new();
           window.XLSX.utils.book_append_sheet(workbook, worksheet, "CrearPT");
@@ -131,14 +171,14 @@
           console.error("Error al generar Excel:", err);
           toCsvAndDownload(
             rowsForExport,
-            columns,
+            finalColumns,
             `crear-permisos-${stamp}.xlsx`
           );
         }
       } else {
         toCsvAndDownload(
           rowsForExport,
-          columns,
+          finalColumns,
           `crear-permisos-${stamp}.xlsx`
         );
       }

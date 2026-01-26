@@ -33,7 +33,48 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Transformar los objetos en una hoja de cálculo
       // Asegurarse de que SheetJS (XLSX) esté cargado en la página
-      const worksheet = XLSX.utils.json_to_sheet(data);
+      // Procesar los datos para dividir fecha_hora en fecha y hora
+      const processed = data.map((row) => {
+        let fecha = "";
+        let hora = "";
+        if (row.fecha_hora) {
+          try {
+            const d = new Date(row.fecha_hora);
+            if (!isNaN(d.getTime())) {
+              fecha = d.toISOString().slice(0, 10);
+              hora = d.toTimeString().slice(0, 5);
+            }
+          } catch {}
+        }
+        // Eliminar fecha_hora y agregar fecha y hora
+        const { fecha_hora, ...rest } = row;
+        return { ...rest, fecha, hora };
+      });
+      // Ordenar columnas: poner fecha y hora al final
+      const columns = [
+        "prefijo",
+        "fecha",
+        "hora",
+        "hora_inicio",
+        "id_departamento",
+        "id_area",
+        "id_sucursal",
+        "descripcion_trabajo",
+        "estatus",
+        "subestatus",
+        "empresa"
+      ];
+      // Agregar el resto de columnas que existan y no estén en la lista
+      const extraCols = Object.keys(processed[0] || {}).filter(
+        (c) => !columns.includes(c)
+      );
+      // Finalmente, agregar las columnas extra después de empresa y antes de hora
+      const finalColumns = [
+        ...columns.slice(0, 10), // hasta empresa
+        ...extraCols,
+        columns[10] // hora
+      ];
+      const worksheet = XLSX.utils.json_to_sheet(processed, { header: finalColumns });
       const workbook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(workbook, worksheet, "ExportarSupervisor");
 
@@ -43,9 +84,11 @@ document.addEventListener("DOMContentLoaded", () => {
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `exportar_supervisor_${new Date()
-        .toISOString()
-        .slice(0, 10)}.xlsx`;
+      const now = new Date();
+      const pad = n => n.toString().padStart(2, '0');
+      const fecha = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+      const hora = `${pad(now.getHours())}-${pad(now.getMinutes())}`;
+      a.download = `exportar_supervisor_${fecha}_${hora}.xlsx`;
       document.body.appendChild(a);
       a.click();
       a.remove();

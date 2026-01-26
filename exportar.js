@@ -18,6 +18,7 @@ SELECT
     pt.descripcion_trabajo,
     e.estatus,
     e.subestatus,
+    pt.empresa,
     e.comentarios, 
     pt.contrato,
     pt.tipo_mantenimiento,
@@ -25,7 +26,6 @@ SELECT
     pt.tag,
     pt.equipo_intervenir,
     pt.nombre_solicitante,
-    pt.empresa,
     pt.nombre_departamento
 FROM permisos_trabajo pt
 LEFT JOIN departamentos d ON pt.id_departamento = d.id_departamento
@@ -83,6 +83,7 @@ router.get("/exportar-autorizar-departamento/:id_departamento", async (req, res)
     pt.descripcion_trabajo,
     e.estatus,
     e.subestatus,
+    pt.empresa,
     e.comentarios, 
     pt.contrato,
     pt.tipo_mantenimiento,
@@ -90,7 +91,6 @@ router.get("/exportar-autorizar-departamento/:id_departamento", async (req, res)
     pt.tag,
     pt.equipo_intervenir,
     pt.nombre_solicitante,
-    pt.empresa,
     pt.nombre_departamento
   FROM permisos_trabajo pt
   LEFT JOIN departamentos d ON pt.id_departamento = d.id_departamento
@@ -138,6 +138,7 @@ SELECT
     pt.descripcion_trabajo,
     e.estatus,
     e.subestatus,
+     pt.empresa,
     e.comentarios, 
     pt.contrato,
     pt.tipo_mantenimiento,
@@ -145,7 +146,6 @@ SELECT
     pt.tag,
     pt.equipo_intervenir,
     pt.nombre_solicitante,
-    pt.empresa,
     pt.nombre_departamento
 FROM permisos_trabajo pt
 LEFT JOIN departamentos d ON pt.id_departamento = d.id_departamento
@@ -191,6 +191,7 @@ SELECT
     pt.descripcion_trabajo,
     e.estatus,
     e.subestatus,
+    pt.empresa,
     e.comentarios, 
     pt.contrato,
     pt.tipo_mantenimiento,
@@ -198,7 +199,6 @@ SELECT
     pt.tag,
     pt.equipo_intervenir,
     pt.nombre_solicitante,
-    pt.empresa,
     pt.nombre_departamento
 FROM usuarios u_filtro
 INNER JOIN departamentos d_filtro ON u_filtro.departamento = d_filtro.nombre  

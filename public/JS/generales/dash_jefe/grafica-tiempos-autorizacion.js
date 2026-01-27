@@ -41,7 +41,7 @@ function calcularTiempos(row) {
 
   const espera_area = (f_creacion && f_area) ? (f_area - f_creacion) / 60000 : null;
   const validacion_seg = (f_area && f_supervisor) ? (f_supervisor - f_area) / 60000 : null;
-  const fin_trabajo = (f_supervisor && f_cierre_usuario) ? (f_cierre_usuario - f_supervisor) / 60000 : null;
+  const fin_trabajo = (f_area && f_cierre_usuario) ? (f_cierre_usuario - f_area) / 60000 : null;
   const autorizacion_cierre = (f_cierre_usuario && f_cierre_area) ? (f_cierre_area - f_cierre_usuario) / 60000 : null;
   const total = (f_creacion && f_cierre_area) ? (f_cierre_area - f_creacion) / 60000 : null;
 

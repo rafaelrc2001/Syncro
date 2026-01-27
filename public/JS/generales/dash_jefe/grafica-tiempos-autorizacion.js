@@ -22,16 +22,22 @@ function minutosADuracion(minutos) {
 
 function calcularTiempos(row) {
   // Usar los strings tal cual, pero para cálculos convertir solo localmente a Date
-  function toDate(str) {
+
+  function toDateIgnoreSeconds(str) {
     if (!str) return null;
-    // Si ya es ISO, se puede usar directo
-    return new Date(str);
+    // Quitar segundos y milisegundos para evitar saltos de hora
+    // "2026-01-27T10:41:38" => "2026-01-27T10:41"
+    let base = str.split('T');
+    if (!base[1]) return new Date(str);
+    let hm = base[1].split(':');
+    if (hm.length < 2) return new Date(str);
+    return new Date(base[0] + 'T' + hm[0] + ':' + hm[1]);
   }
-  const f_creacion = toDate(row.fecha_hora);
-  const f_area = toDate(row.fecha_hora_area);
-  const f_supervisor = toDate(row.fecha_hora_supervisor);
-  const f_cierre_usuario = toDate(row.fecha_hora_cierre_usuario);
-  const f_cierre_area = toDate(row.fecha_hora_cierre_area);
+  const f_creacion = toDateIgnoreSeconds(row.fecha_hora);
+  const f_area = toDateIgnoreSeconds(row.fecha_hora_area);
+  const f_supervisor = toDateIgnoreSeconds(row.fecha_hora_supervisor);
+  const f_cierre_usuario = toDateIgnoreSeconds(row.fecha_hora_cierre_usuario);
+  const f_cierre_area = toDateIgnoreSeconds(row.fecha_hora_cierre_area);
 
   const espera_area = (f_creacion && f_area) ? (f_area - f_creacion) / 60000 : null;
   const validacion_seg = (f_area && f_supervisor) ? (f_supervisor - f_area) / 60000 : null;

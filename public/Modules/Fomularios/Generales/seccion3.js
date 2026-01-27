@@ -8,12 +8,42 @@ document.addEventListener("DOMContentLoaded", () => {
     const removeBtn = firstParticipant.querySelector(".remove-participant");
     if (removeBtn) {
       removeBtn.addEventListener("click", function () {
-        if (confirm("¿Está seguro de eliminar este participante?")) {
+        showDeleteParticipantModal(() => {
           firstParticipant.remove();
           renumberParticipants();
-        }
+        });
       });
     }
+  }
+
+  // Modal de confirmación para eliminar participante
+  function showDeleteParticipantModal(onConfirm) {
+    let modal = document.getElementById('delete-participant-modal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'delete-participant-modal';
+      modal.innerHTML = `
+        <div class="modal-overlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.3);z-index:9999;display:flex;align-items:center;justify-content:center;">
+          <div class="modal-content" style="background:#fff;padding:2em 1.5em;border-radius:8px;box-shadow:0 2px 16px #0002;max-width:350px;text-align:center;">
+            <div style="font-size:1.2em;margin-bottom:1em;">¿Está seguro de eliminar este participante?</div>
+            <button id="modal-confirm-delete" style="margin:0 1em 0 0;padding:0.5em 1.2em;background:#c62828;color:#fff;border:none;border-radius:4px;">Eliminar</button>
+            <button id="modal-cancel-delete" style="padding:0.5em 1.2em;background:#eee;color:#333;border:none;border-radius:4px;">Cancelar</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+    modal.style.display = 'block';
+    const confirmBtn = modal.querySelector('#modal-confirm-delete');
+    const cancelBtn = modal.querySelector('#modal-cancel-delete');
+    function closeModal() {
+      modal.style.display = 'none';
+    }
+    confirmBtn.onclick = function() {
+      closeModal();
+      if (typeof onConfirm === 'function') onConfirm();
+    };
+    cancelBtn.onclick = closeModal;
   }
 
   // Función para renumerar participantes
@@ -76,14 +106,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
       participantsContainer.appendChild(newParticipant);
 
-      // Evento para eliminar participante
+      // Evento para eliminar participante con modal
       newParticipant
         .querySelector(".remove-participant")
         .addEventListener("click", function () {
-          if (confirm("¿Está seguro de eliminar este participante?")) {
+          showDeleteParticipantModal(() => {
             newParticipant.remove();
             renumberParticipants();
-          }
+          });
         });
     });
   }

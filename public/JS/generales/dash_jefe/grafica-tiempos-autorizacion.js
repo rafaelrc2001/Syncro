@@ -98,10 +98,18 @@ function renderTablaTiemposAutorizacion(datos, contenedorId = 'type-chart-2') {
     // Mostrar fecha de creación en hora local de México
     let fechaCreacion = '';
     if (row.fecha_hora) {
-      const date = new Date(row.fecha_hora);
+      // Si la fecha viene como "YYYY-MM-DD HH:mm:ss" se interpreta como local, pero si es UTC hay que ajustar
+      // Forzar a UTC si el string no tiene zona horaria
+      let date;
+      if (/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/.test(row.fecha_hora)) {
+        // Convertir a ISO agregando 'Z' para UTC
+        date = new Date(row.fecha_hora.replace(' ', 'T') + 'Z');
+      } else {
+        date = new Date(row.fecha_hora);
+      }
       fechaCreacion = new Intl.DateTimeFormat('es-MX', {
         timeZone: 'America/Mexico_City',
-        day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'
+        day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true
       }).format(date);
     }
     tr.innerHTML = `

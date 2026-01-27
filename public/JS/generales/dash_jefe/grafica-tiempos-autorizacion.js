@@ -14,12 +14,18 @@ function minutosADuracion(minutos) {
 }
 
 function calcularTiempos(row) {
-  // Convertir fechas a objetos Date
-  const f_creacion = row.fecha_hora ? new Date(row.fecha_hora) : null;
-  const f_area = row.fecha_hora_area ? new Date(row.fecha_hora_area) : null;
-  const f_supervisor = row.fecha_hora_supervisor ? new Date(row.fecha_hora_supervisor) : null;
-  const f_cierre_usuario = row.fecha_hora_cierre_usuario ? new Date(row.fecha_hora_cierre_usuario) : null;
-  const f_cierre_area = row.fecha_hora_cierre_area ? new Date(row.fecha_hora_cierre_area) : null;
+  // Convertir fechas a objetos Date y ajustar a zona horaria de México (UTC-6)
+  function toMexicoDate(fechaStr) {
+    if (!fechaStr) return null;
+    const date = new Date(fechaStr);
+    // Ajustar a UTC-6 (México)
+    return new Date(date.getTime() - (date.getTimezoneOffset() * 60000) - (6 * 60 * 60000));
+  }
+  const f_creacion = toMexicoDate(row.fecha_hora);
+  const f_area = toMexicoDate(row.fecha_hora_area);
+  const f_supervisor = toMexicoDate(row.fecha_hora_supervisor);
+  const f_cierre_usuario = toMexicoDate(row.fecha_hora_cierre_usuario);
+  const f_cierre_area = toMexicoDate(row.fecha_hora_cierre_area);
 
   // Calcular diferencias en minutos
   const espera_area = (f_creacion && f_area) ? (f_area - f_creacion) / 60000 : null;
@@ -91,14 +97,20 @@ function renderTablaTiemposAutorizacion(datos, contenedorId = 'type-chart-2') {
     const tiempos = calcularTiempos(row);
     const tr = document.createElement('tr');
     // Alternar color de fondo
-    if (idx % 2 === 0) {
-      tr.style.background = '#fafbfc';
-    } else {
-      tr.style.background = '#f0f1f3';
+    tr.style.background = idx % 2 === 0 ? '#fafbfc' : '#f0f1f3';
+    // Ajustar fecha de creación a México (UTC-6)
+    let fechaCreacion = '';
+    if (row.fecha_hora) {
+      const date = new Date(row.fecha_hora);
+      // Ajustar a UTC-6
+      const mexicoDate = new Date(date.getTime() - (date.getTimezoneOffset() * 60000) - (6 * 60 * 60000));
+      fechaCreacion = mexicoDate.toLocaleString('es-MX', {
+        day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'
+      });
     }
     tr.innerHTML = `
-      <td>${row.prefijo || row.prefijo || ''}</td>
-      <td>${row.fecha_hora ? new Date(row.fecha_hora).toLocaleString() : ''}</td>
+      <td>${row.prefijo || ''}</td>
+      <td>${fechaCreacion}</td>
       <td>${tiempos.espera_area}</td>
       <td>${tiempos.validacion_seg}</td>
       <td>${tiempos.fin_trabajo}</td>

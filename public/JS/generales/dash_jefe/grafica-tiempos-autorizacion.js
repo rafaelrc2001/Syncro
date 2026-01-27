@@ -16,33 +16,28 @@ function minutosADuracion(minutos) {
 }
 
 // 🔹 FUNCIÓN ÚNICA PARA FECHAS (HORA LOCAL MÉXICO)
-function parseLocalDate(fechaStr) {
-  if (!fechaStr) return null;
-  // Convierte "YYYY-MM-DD HH:mm:ss(.ms)" a formato válido JS
-  return new Date(fechaStr.replace(' ', 'T'));
-}
+
+// Ya no se hace ninguna conversión de zona horaria ni a objeto Date para mostrar o calcular
+// Solo se usa el string tal cual viene del backend
 
 function calcularTiempos(row) {
-  const f_creacion = parseLocalDate(row.fecha_hora);
-  const f_area = parseLocalDate(row.fecha_hora_area);
-  const f_supervisor = parseLocalDate(row.fecha_hora_supervisor);
-  const f_cierre_usuario = parseLocalDate(row.fecha_hora_cierre_usuario);
-  const f_cierre_area = parseLocalDate(row.fecha_hora_cierre_area);
+  // Usar los strings tal cual, pero para cálculos convertir solo localmente a Date
+  function toDate(str) {
+    if (!str) return null;
+    // Si ya es ISO, se puede usar directo
+    return new Date(str);
+  }
+  const f_creacion = toDate(row.fecha_hora);
+  const f_area = toDate(row.fecha_hora_area);
+  const f_supervisor = toDate(row.fecha_hora_supervisor);
+  const f_cierre_usuario = toDate(row.fecha_hora_cierre_usuario);
+  const f_cierre_area = toDate(row.fecha_hora_cierre_area);
 
-  const espera_area =
-    (f_creacion && f_area) ? (f_area - f_creacion) / 60000 : null;
-
-  const validacion_seg =
-    (f_area && f_supervisor) ? (f_supervisor - f_area) / 60000 : null;
-
-  const fin_trabajo =
-    (f_supervisor && f_cierre_usuario) ? (f_cierre_usuario - f_supervisor) / 60000 : null;
-
-  const autorizacion_cierre =
-    (f_cierre_usuario && f_cierre_area) ? (f_cierre_area - f_cierre_usuario) / 60000 : null;
-
-  const total =
-    (f_creacion && f_cierre_area) ? (f_cierre_area - f_creacion) / 60000 : null;
+  const espera_area = (f_creacion && f_area) ? (f_area - f_creacion) / 60000 : null;
+  const validacion_seg = (f_area && f_supervisor) ? (f_supervisor - f_area) / 60000 : null;
+  const fin_trabajo = (f_supervisor && f_cierre_usuario) ? (f_cierre_usuario - f_supervisor) / 60000 : null;
+  const autorizacion_cierre = (f_cierre_usuario && f_cierre_area) ? (f_cierre_area - f_cierre_usuario) / 60000 : null;
+  const total = (f_creacion && f_cierre_area) ? (f_cierre_area - f_creacion) / 60000 : null;
 
   return {
     espera_area: minutosADuracion(espera_area),

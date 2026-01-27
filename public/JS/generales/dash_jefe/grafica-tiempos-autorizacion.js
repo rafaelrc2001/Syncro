@@ -107,15 +107,20 @@ function renderTablaTiemposAutorizacion(datos, contenedorId = 'type-chart-2') {
 
     let fechaCreacion = '';
     if (row.fecha_hora) {
-      const date = parseLocalDate(row.fecha_hora);
-      fechaCreacion = new Intl.DateTimeFormat('es-MX', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true
-      }).format(date);
+      // Mostrar la fecha tal cual viene del backend, solo formateando a dd/MM/yyyy, HH:mm
+      // Quitar la 'Z' si existe y tomar solo la parte local
+      let str = row.fecha_hora.replace('Z', '');
+      // Si tiene milisegundos, quitarlos
+      str = str.replace(/\.(\d{3,})/, '');
+      // str ahora es "2026-01-27T10:06:28" o similar
+      const [fecha, hora] = str.split('T');
+      if (fecha && hora) {
+        const [y, m, d] = fecha.split('-');
+        const [hh, mm] = hora.split(':');
+        fechaCreacion = `${d}/${m}/${y}, ${hh}:${mm}`;
+      } else {
+        fechaCreacion = row.fecha_hora;
+      }
     }
 
     tr.innerHTML = `

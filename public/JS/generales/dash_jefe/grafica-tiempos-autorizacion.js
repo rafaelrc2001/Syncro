@@ -105,23 +105,22 @@ function renderTablaTiemposAutorizacion(datos, contenedorId = 'type-chart-2') {
     const tr = document.createElement('tr');
     tr.style.background = idx % 2 === 0 ? '#fafbfc' : '#f0f1f3';
 
-    let fechaCreacion = '';
-    if (row.fecha_hora) {
-      // Mostrar la fecha tal cual viene del backend, solo formateando a dd/MM/yyyy, HH:mm
-      // Quitar la 'Z' si existe y tomar solo la parte local
-      let str = row.fecha_hora.replace('Z', '');
-      // Si tiene milisegundos, quitarlos
+    // Formateador reutilizable para fechas tipo "2026-01-27T10:06:28.495Z"
+    function formatearFechaISO(strFecha) {
+      if (!strFecha) return '';
+      let str = strFecha.replace('Z', '');
       str = str.replace(/\.(\d{3,})/, '');
-      // str ahora es "2026-01-27T10:06:28" o similar
       const [fecha, hora] = str.split('T');
       if (fecha && hora) {
         const [y, m, d] = fecha.split('-');
         const [hh, mm] = hora.split(':');
-        fechaCreacion = `${d}/${m}/${y}, ${hh}:${mm}`;
-      } else {
-        fechaCreacion = row.fecha_hora;
+        return `${d}/${m}/${y}, ${hh}:${mm}`;
       }
+      return strFecha;
     }
+
+    let fechaCreacion = formatearFechaISO(row.fecha_hora);
+    let fechaCierreUsuario = formatearFechaISO(row.fecha_hora_cierre_usuario);
 
     tr.innerHTML = `
       <td>${row.prefijo || ''}</td>
@@ -135,6 +134,8 @@ function renderTablaTiemposAutorizacion(datos, contenedorId = 'type-chart-2') {
       </td>
       <td>${row.total_revalidaciones ?? ''}</td>
     `;
+    // Si quieres mostrar la fecha de cierre usuario en una columna, agrega aquí:
+    // <td>${fechaCierreUsuario}</td>
     tbody.appendChild(tr);
   });
 

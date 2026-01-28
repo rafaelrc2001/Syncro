@@ -1201,15 +1201,7 @@ if (btnNoAutorizar) {
     const usuario = JSON.parse(localStorage.getItem("usuario"));
 
 
-     // 3.2 Enviar notificación a N8N de permiso no autorizado
-        if (window.notificacionPermisosNoAutorizadosHandler) {
-          try {
-            await window.notificacionPermisosNoAutorizadosHandler();
-          } catch (e) {
-            console.warn("Error al enviar notificación de NO AUTORIZADO a N8N:", e);
-          }
-        }
-        
+ 
 
 
       const comentario = document
@@ -1431,6 +1423,18 @@ if (btnNoAutorizar) {
         } else {
           return;
         }
+
+
+            // 3.2 Enviar notificación a N8N de permiso no autorizado
+        if (window.notificacionPermisosNoAutorizadosHandler) {
+          try {
+            await window.notificacionPermisosNoAutorizadosHandler();
+          } catch (e) {
+            console.warn("Error al enviar notificación de NO AUTORIZADO a N8N:", e);
+          }
+        }
+        
+        
 
         // 4. Mostrar el modal de no confirmación
         const noConfirmationModal = document.getElementById("no-confirmation-modal");

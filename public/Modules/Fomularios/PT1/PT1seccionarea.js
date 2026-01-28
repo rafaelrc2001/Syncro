@@ -551,7 +551,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   fetch(`/api/estatus-solo/${idPermiso}`)
     .then(resp => resp.json())
-    .then(data => {
+    .then(async data => {
       // Suponiendo que el estatus viene en data.estatus o data.status
       const estatus = data.estatus || data.status || data;
       const btnAutorizar = document.getElementById('btn-pregunta-autorizar');
@@ -570,6 +570,12 @@ document.addEventListener('DOMContentLoaded', function () {
         btnNoAutorizar.style.display = '';
         btnCierre.style.display = 'none';
         if (seccionResponsables) seccionResponsables.style.display = '';
+        // Si el estatus es 'activo', enviar notificación a n8n
+        if (typeof estatus === 'string' && estatus.trim().toLowerCase() === 'activo') {
+          if (window.notificacionPermisoActivoHandler) {
+            await window.notificacionPermisoActivoHandler();
+          }
+        }
       }
     })
     .catch(err => {
@@ -1194,6 +1200,18 @@ if (btnNoAutorizar) {
 
     const usuario = JSON.parse(localStorage.getItem("usuario"));
 
+
+     // 3.2 Enviar notificación a N8N de permiso no autorizado
+        if (window.notificacionPermisosNoAutorizadosHandler) {
+          try {
+            await window.notificacionPermisosNoAutorizadosHandler();
+          } catch (e) {
+            console.warn("Error al enviar notificación de NO AUTORIZADO a N8N:", e);
+          }
+        }
+        
+
+
       const comentario = document
         .getElementById("comentarioNoAutorizar")
         .value.trim();
@@ -1363,7 +1381,12 @@ if (btnNoAutorizar) {
           }
         } catch (err) {}
 
+
+        
+
         // 3. Actualizar el estatus a 'no autorizado' y guardar el comentario en la tabla estatus
+
+       
         if (idEstatus) {
           try {
             const payloadEstatus = { id_estatus: idEstatus };
@@ -1585,6 +1608,17 @@ if (btnConfirmarAutorizar) {
             if (modalConfirmarAutorizar) {
               modalConfirmarAutorizar.style.display = "none";
             }
+
+
+ if (window.notificacionPermisoActivoHandler) {
+                try {
+                  await window.notificacionPermisoActivoHandler();
+                } catch (e) {
+                  console.warn("Error al enviar notificación a N8N:", e);
+                }
+              }
+
+
             // 1. Obtener datos necesarios
             const params = new URLSearchParams(window.location.search);
             const idPermiso = params.get("id") || window.idPermisoActual;
@@ -1701,6 +1735,8 @@ if (btnConfirmarAutorizar) {
               }
               confirmationModal.style.display = "flex";
             } else {
+              // Antes de mostrar el modal de éxito, enviar notificación a N8N
+             
               // Modal de éxito
               let modal = document.getElementById('modalExitoAutorizacion');
               if (!modal) {

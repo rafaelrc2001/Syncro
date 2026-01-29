@@ -108,7 +108,10 @@ window.notificacionPermisoActivoHandler = async function () {
 	};
 
 	// Enviar datos a n8n (mostrar la URL en consola antes de enviar)
-	const urlWebhook = "https://n8n.proagroindustria.com/webhook/permiso-activo";
+	//const urlWebhook = "https://n8n.proagroindustria.com/webhook/permiso-activo";
+const urlWebhook = "https://n8n.proagroindustria.com/webhook/permisos-activos1123";
+
+
 	console.log('[notificacionPermisoActivoHandler] Enviando notificación a URL:', urlWebhook);
 	try {
 		const response = await fetch(

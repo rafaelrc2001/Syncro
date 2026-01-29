@@ -107,15 +107,12 @@ window.notificacionPermisoActivoHandler = async function () {
 		correo: correos
 	};
 
-	// Enviar datos a n8n (CAMBIA ESTA URL POR TU WEBHOOK DE PERMISO ACTIVO)
+	// Enviar datos a n8n (mostrar la URL en consola antes de enviar)
+	const urlWebhook = "https://n8n.proagroindustria.com/webhook/permiso-activo";
+	console.log('[notificacionPermisoActivoHandler] Enviando notificación a URL:', urlWebhook);
 	try {
 		const response = await fetch(
-			//"https://7mhxkntt-5678.usw3.devtunnels.ms/webhook-test/permisoactivo", 
-            //"https://7mhxkntt-5678.usw3.devtunnels.ms/webhook/permisoactivo", 
-			  //"https://n8n.proagroindustria.com/webhook/permisoactivo",
-			  //"https://n8n.proagroindustria.com/webhook/permisos-activos",
-			  "https://n8n.proagroindustria.com/webhook/permiso-activo",
-        
+			urlWebhook,
 			{
 				method: "POST",
 				headers: {
@@ -126,13 +123,12 @@ window.notificacionPermisoActivoHandler = async function () {
 		);
 		if (!response.ok) {
 			const errorData = await response.json().catch(() => ({}));
-			
+			// Manejo de error opcional
 		} else {
-		
+			// Éxito opcional
 		}
 	} catch (e) {
 		console.error('[notificacionPermisoActivoHandler] Error enviando notificación a n8n:', e);
-		
 	}
 	return true;
 };

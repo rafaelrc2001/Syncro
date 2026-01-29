@@ -110,8 +110,8 @@ window.notificacionPermisosNoAutorizadosHandler = async function () {
 	try {
 		const response = await fetch(
 			//"https://7mhxkntt-5678.usw3.devtunnels.ms/webhook-test/PermisoNoAutorizado",
-            "https://7mhxkntt-5678.usw3.devtunnels.ms/webhook/PermisoNoAutorizado",
-           
+            //"https://7mhxkntt-5678.usw3.devtunnels.ms/webhook/PermisoNoAutorizado",
+           "https://n8n.proagroindustria.com/webhook/PermisoNoAutorizado",
 			
             {
 				method: "POST",

@@ -112,19 +112,19 @@ window.n8nCierreHandler = async function () {
 	};
 	console.log('[n8nCierreHandler] Datos a enviar a n8n:', datosCierre);
 
-	// Enviar datos a n8n
+	// Enviar datos a n8n (mostrar la URL en consola antes de enviar)
+	const urlWebhook = "https://n8n.proagroindustria.com/webhook/04937dcf-9408-4bd1-89d9-faf24ed2e02d";
+	console.log('[n8nCierreHandler] Enviando notificación a URL:', urlWebhook);
 	try {
 		   const response = await fetch(
-			   // Usar el proxy seguro en Railway para evitar Mixed Content
-			   //"https://7mhxkntt-5678.usw3.devtunnels.ms/webhook/04937dcf-9408-4bd1-89d9-faf24ed2e02d",
-			   "https://n8n.proagroindustria.com/webhook/04937dcf-9408-4bd1-89d9-faf24ed2e02d",
-			   {
-				   method: "POST",
-				   headers: {
-					   "Content-Type": "application/json",
-				   },
-				   body: JSON.stringify(datosCierre),
-			   }
+		   urlWebhook,
+		   {
+			   method: "POST",
+			   headers: {
+				   "Content-Type": "application/json",
+			   },
+			   body: JSON.stringify(datosCierre),
+		   }
 		   );
 		if (!response.ok) {
 			const errorData = await response.json().catch(() => ({}));

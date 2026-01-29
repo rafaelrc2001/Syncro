@@ -106,14 +106,13 @@ window.notificacionPermisosNoAutorizadosHandler = async function () {
 		correo: correos
 	};
 
-	// Enviar datos a n8n (CAMBIA ESTA URL POR TU WEBHOOK DE PERMISO NO AUTORIZADO)
+	// Enviar datos a n8n (mostrar la URL en consola antes de enviar)
+	const urlWebhook = "https://n8n.proagroindustria.com/webhook/PermisoNoAutorizado";
+	console.log('[notificacionPermisosNoAutorizadosHandler] Enviando notificación a URL:', urlWebhook);
 	try {
 		const response = await fetch(
-			//"https://7mhxkntt-5678.usw3.devtunnels.ms/webhook-test/PermisoNoAutorizado",
-            //"https://7mhxkntt-5678.usw3.devtunnels.ms/webhook/PermisoNoAutorizado",
-           "https://n8n.proagroindustria.com/webhook/PermisoNoAutorizado",
-			
-            {
+			urlWebhook,
+			{
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",

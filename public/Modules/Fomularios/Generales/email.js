@@ -88,7 +88,7 @@ window.n8nFormHandler = async function () {
   // "http://187.157.36.37:5678/webhook/formulario-PT",  esta es la que esta activa
    
 //prueba de las areas:
-  "http://187.157.36.37:5678/webhook-test/Creacion-de-permisos-areas",
+  "https://187.157.36.37:5678/webhook-test/Creacion-de-permisos-areas",
 
 
     //"https://7mhxkntt-5678.usw3.devtunnels.ms/webhook/formulario-PT",

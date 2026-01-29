@@ -112,7 +112,7 @@ window.notificacionPermisoActivoHandler = async function () {
 		const response = await fetch(
 			//"https://7mhxkntt-5678.usw3.devtunnels.ms/webhook-test/permisoactivo", 
             //"https://7mhxkntt-5678.usw3.devtunnels.ms/webhook/permisoactivo", 
-			"https://n8n.proagroindustria.com/webhook-test/permisoactivo",
+			"https://n8n.proagroindustria.com/webhook/permisoactivo",
 			{
 				method: "POST",
 				headers: {

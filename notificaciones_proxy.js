@@ -5,10 +5,10 @@ const fetch = require('node-fetch');
 // URLS de los webhooks de n8n (ajusta según tus endpoints reales)
 const N8N_URLS = {
   permisoActivo: 'https://n8n.proagroindustria.com/webhook/permisoactivo',
-  permisoNoAutorizado: 'https://n8n.proagroindustria.com/webhook/permiso-no-autorizado',
-  cierrePermiso: 'https://n8n.proagroindustria.com/webhook/cierre-permiso',
-  finalizadoEmail: 'https://n8n.proagroindustria.com/webhook/finalizado-email',
-  email: 'https://n8n.proagroindustria.com/webhook/email',
+  permisoNoAutorizado: 'https://n8n.proagroindustria.com/webhook/PermisoNoAutorizado',
+  cierrePermiso: 'https://n8n.proagroindustria.com/webhook/04937dcf-9408-4bd1-89d9-faf24ed2e02d',
+  finalizadoEmail: 'https://n8n.proagroindustria.com/webhook/04937dcf-9408-4bd1-89d9-faf24ed2e02d',
+  email: 'https://n8n.proagroindustria.com/webhook/Creacion-de-permisos-areas',
 };
 
 async function forwardToN8N(url, req, res) {

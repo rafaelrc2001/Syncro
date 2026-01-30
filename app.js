@@ -59,6 +59,9 @@ const graficasJefesRouter = require("./graficas/graficas_jefes/graficas_jefes");
 const equipoBuscarRouter = require("./equipo_buscar");
 const { verificarAutenticacion, verificarRol, verificarSesion, cerrarSesion } = require("./middleware/auth");
 
+// Proxy para notificaciones a n8n
+const notificacionesProxyRouter = require("./notificaciones_proxy");
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -125,7 +128,15 @@ app.use(
       }
     },
   })
-);app.use("/api", verificarAutenticacion, graficaSubEstatusRouter); // Monta las rutas de graficas/endpoint_grafica_subestatus.js bajo el prefijo /api
+
+);
+
+
+
+// === ENDPOINTS PÚBLICOS PARA NOTIFICACIONES (proxy a n8n) ===
+app.use("/api", notificacionesProxyRouter);
+
+app.use("/api", verificarAutenticacion, graficaSubEstatusRouter); // Monta las rutas de graficas/endpoint_grafica_subestatus.js bajo el prefijo /api
 
 
 // Endpoint de login de usuario departamento
@@ -219,7 +230,14 @@ app.get("/api/usuarios/:id", verificarAutenticacion, tablasBase.getUsuarioById);
 
 app.use("/api", verificarAutenticacion, autorizacionesEstatusRouter);
 app.use('/api', detectarDispositivoRouter);
+
 app.use("/api", verificarAutenticacion, permisoVistaRouter);
+
+// Endpoint para notificar permiso activo
+app.post("/api/notificar-permiso-activo", verificarAutenticacion, (req, res) => {
+  // Aquí va la lógica para notificar permiso activo
+  res.json({ success: true, message: "Notificación enviada correctamente." });
+});
 
 // Endpoint de estado de la aplicación
 app.listen(PORT, () => {

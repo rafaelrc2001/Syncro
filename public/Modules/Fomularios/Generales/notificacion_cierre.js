@@ -113,27 +113,27 @@ window.n8nCierreHandler = async function () {
 	console.log('[n8nCierreHandler] Datos a enviar a n8n:', datosCierre);
 
 	// Enviar datos a n8n (mostrar la URL en consola antes de enviar)
-	const urlWebhook = "https://n8n.proagroindustria.com/webhook/04937dcf-9408-4bd1-89d9-faf24ed2e02d";
-	console.log('[n8nCierreHandler] Enviando notificación a URL:', urlWebhook);
+	const urlApi = "/api/notificar-cierre-permiso";
+	console.log('[n8nCierreHandler] Enviando notificación a backend local:', urlApi);
 	try {
-		   const response = await fetch(
-		   urlWebhook,
-		   {
-			   method: "POST",
-			   headers: {
-				   "Content-Type": "application/json",
-			   },
-			   body: JSON.stringify(datosCierre),
-		   }
-		   );
+		const response = await fetch(
+			urlApi,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(datosCierre),
+			}
+		);
 		if (!response.ok) {
 			const errorData = await response.json().catch(() => ({}));
-			console.warn('[n8nCierreHandler] Error en respuesta de n8n:', errorData);
+			console.warn('[n8nCierreHandler] Error en respuesta del backend:', errorData);
 		} else {
-			console.log('[n8nCierreHandler] Notificación enviada correctamente a n8n');
+			console.log('[n8nCierreHandler] Notificación enviada correctamente al backend');
 		}
 	} catch (e) {
-		console.error('[n8nCierreHandler] Error enviando notificación a n8n:', e);
+		console.error('[n8nCierreHandler] Error enviando notificación al backend:', e);
 	}
 	return true;
 };

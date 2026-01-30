@@ -107,12 +107,11 @@ window.notificacionPermisosNoAutorizadosHandler = async function () {
 	};
 
 	// Enviar datos a n8n (mostrar la URL en consola antes de enviar)
-	const urlWebhook = "https://n8n.proagroindustria.com/webhook/PermisoNoAutorizado";
-	  
-	console.log('[notificacionPermisosNoAutorizadosHandler] Enviando notificación a URL:', urlWebhook);
+	const urlApi = "/api/notificar-permiso-no-autorizado";
+	console.log('[notificacionPermisosNoAutorizadosHandler] Enviando notificación a backend local:', urlApi);
 	try {
 		const response = await fetch(
-			urlWebhook,
+			urlApi,
 			{
 				method: "POST",
 				headers: {
@@ -128,7 +127,7 @@ window.notificacionPermisosNoAutorizadosHandler = async function () {
 			// Éxito opcional
 		}
 	} catch (e) {
-		console.error('[notificacionPermisosNoAutorizadosHandler] Error enviando notificación a n8n:', e);
+		console.error('[notificacionPermisosNoAutorizadosHandler] Error enviando notificación a backend local:', e);
 	}
 	return true;
 };

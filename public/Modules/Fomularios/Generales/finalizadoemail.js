@@ -153,7 +153,7 @@ window.n8nFormHandlerFinalizado = async function () {
 
   try {
     const response = await fetch(
-       "https://n8n.proagroindustria.com/webhook/04937dcf-9408-4bd1-89d9-faf24ed2e02d",
+      "/api/notificar-finalizado-email",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },

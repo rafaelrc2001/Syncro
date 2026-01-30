@@ -83,25 +83,8 @@ window.n8nFormHandler = async function () {
 
   // Enviar datos a n8n
   const response = await fetch(
-   
-  // "http://187.157.36.37/webhook/formulario-PT",
-   "https://n8n.proagroindustria.com/webhook/Creacion-de-permisos-areas", // esta es la que esta activa
-   
-//prueba de las areas:
-  //"http://187.157.36.37:5678/webhook-test/Creacion-de-permisos-areas",
-
-
-    //"https://7mhxkntt-5678.usw3.devtunnels.ms/webhook/formulario-PT",
-   //"https://7mhxkntt-5678.usw3.devtunnels.ms/webhook-test/formulario-PT",
-    
-   //nuevo cierre de acuerdo al area
-  // "https://7mhxkntt-5678.usw3.devtunnels.ms/webhook-test/Creacion-de-permisos-areas",
-   
-  
- // "https://7mhxkntt-5678.usw3.devtunnels.ms/webhook/Creacion-de-permisos-areas",
-  
-//"https://7mhxkntt-5678.usw3.devtunnels.ms/webhook-test/CreacionPermisosAsegurait",
-   {
+    "/api/notificar-email",
+    {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

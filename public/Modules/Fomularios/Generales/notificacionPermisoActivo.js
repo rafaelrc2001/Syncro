@@ -108,14 +108,11 @@ window.notificacionPermisoActivoHandler = async function () {
 	};
 
 	// Enviar datos a n8n (mostrar la URL en consola antes de enviar)
-	const urlWebhook = "https://n8n.proagroindustria.com/webhook/permisoactivo";
-	 // const urlWebhook = "https://n8n.proagroindustria.com/webhook/saludoprueba";
-
-
-	console.log('[notificacionPermisoActivoHandler] Enviando notificación a URL:', urlWebhook);
+	const urlApi = "/api/notificar-permiso-activo";
+	console.log('[notificacionPermisoActivoHandler] Enviando notificación a backend local:', urlApi);
 	try {
 		const response = await fetch(
-			urlWebhook,
+			urlApi,
 			{
 				method: "POST",
 				headers: {
@@ -131,7 +128,7 @@ window.notificacionPermisoActivoHandler = async function () {
 			// Éxito opcional
 		}
 	} catch (e) {
-		console.error('[notificacionPermisoActivoHandler] Error enviando notificación a n8n:', e);
+		console.error('[notificacionPermisoActivoHandler] Error enviando notificación a backend local:', e);
 	}
 	return true;
 };
